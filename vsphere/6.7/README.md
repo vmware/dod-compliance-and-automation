@@ -3,8 +3,8 @@
 ### Contents
 - [Ansible Playbook](#ansible-playbook)
 - [Inspec Profile](#inspec-profile)
-- [PowerCLI Scripts](powercli-scripts)
-- [Docs](docs)
+- [PowerCLI Scripts](#powercli-scripts)
+- [Docs](#docs)
 
 ## Ansible Playbook
 
