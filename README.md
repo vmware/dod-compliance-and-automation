@@ -30,14 +30,14 @@ In order to better serve the needs of our DoD partners, and those who wish to me
 STIG development is essentially an exercise where a specific product is filtered through all applicable SRGs to produce product-specific, NIST 800-53 backed hardening guidance. That content is then vetted, tested and approved by the DISA Risk Management Executive (RME) and posted on iase.disa.mil and public.cyber.mil. VMware has a number of official STIGs published on those sites and we are working on many more. While we go through the official, lengthy DISA process, we want to make the SRG content available for public consumption versus while we wait for the official posting.
 
 * Where a STIG is already published
- * The SRG documentation will be the official source content for the published STIG.
+  * The SRG documentation will be the official source content for the published STIG.
 * Where a STIG is not published but the product is in the DISA queue
- * The SRG content will be in a usable, beta quality form from a VMware perspective
- * The content will not have any DISA review or approval, nor can we guarantee that any STIG will be published. We have very little influence over the DISA queue.
- * Please feel free to contact DISA RME if you would like to see the STIG request prioritized higher in their queue
+  * The SRG content will be in a usable, beta quality form from a VMware perspective
+  * The content will not have any DISA review or approval, nor can we guarantee that any STIG will be published. We have very little influence over the DISA queue.
+  * Please feel free to contact DISA RME if you would like to see the STIG request prioritized higher in their queue
   * https://public.cyber.mil/knowledge-base/scap-srg-stig-questions/
 * Where a STIG is not published and the product is not in the DISA queue
- * Certain lower impact products may not ever realistically make it to the top of the DISA queue. In those cases, the SRG content will be provided in place of a STIG because some guidance is better than none at all.
+  * Certain lower impact products may not ever realistically make it to the top of the DISA queue. In those cases, the SRG content will be provided in place of a STIG because some guidance is better than none at all.
 
 In all cases, the product's status in regards to the official STIG process will be noted at the top of the project README.md
 
