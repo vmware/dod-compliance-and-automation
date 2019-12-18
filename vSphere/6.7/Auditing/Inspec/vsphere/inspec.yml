@@ -1,0 +1,13 @@
+name: vSphere 6.7
+title: InSpec Profile
+maintainer: Ryan Lakey
+copyright: VMware
+copyright_email: rlakey@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile for vSphere 6.7
+version: 6.7.0
+inputs:
+  - name: vmName
+    value: ""
+    type: string
+    description: "The virtual machine name to audit"

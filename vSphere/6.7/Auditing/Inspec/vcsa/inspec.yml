@@ -1,0 +1,12 @@
+name: vCenter 6.7 VCSA
+title: InSpec Profile
+maintainer: Ryan Lakey
+copyright: VMware
+copyright_email: rlakey@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile for vCenter 6.7 VCSA
+version: 6.7.0
+
+inputs:
+- name: postgresconfpath
+  value: "/storage/db/vpostgres/postgresql.conf"  #Enter postgres config file path
