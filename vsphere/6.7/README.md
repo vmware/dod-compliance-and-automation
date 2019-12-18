@@ -1,6 +1,6 @@
 # VMware vSphere 6.7 DoD STIG Compliance and Automation
 
-### Contents
+## Contents
 - [Overview](#overview)
 - [Ansible Playbook](#ansible-playbook)
 - [Inspec Profile](#inspec-profile)
