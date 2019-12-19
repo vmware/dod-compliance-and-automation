@@ -14,6 +14,8 @@ Content for compliance auditing and remediation of the VMware vSphere 6.7 DoD ST
 
 Current version: **Draft vSphere 6.7 STIG**  
 
+Note - Some content may be absent such as Vulnerability IDs for draft content and will be added once released by DISA  
+
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
 
 The VMware vSphere 6.7 Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of vSphere 6.7 in the Department of Defense (DoD). The following comprise the VMware vSphere 6.7 STIGs:
