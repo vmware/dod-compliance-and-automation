@@ -1,12 +1,18 @@
-name: vCenter 6.7 VCSA
+name: vCenter 6.7 Appliance
 title: InSpec Profile
-maintainer: Ryan Lakey
+maintainer:
 copyright: VMware
-copyright_email: rlakey@vmware.com
+copyright_email:
 license: Apache-2.0
-summary: An InSpec Compliance Profile for vCenter 6.7 VCSA
+summary: An InSpec Compliance Profile for vCenter 6.7 Appliance
 version: 6.7.0
 
 inputs:
+- name: photonIp
+  value: "x.x.x.x"  #Enter IP for PhotonOS
+- name: ntpServer
+  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+- name: syslogServer
+  value: "x.x.x.x:514"  #Enter IP or FQDN of Syslog Server and Port
 - name: postgresconfpath
   value: "/storage/db/vpostgres/postgresql.conf"  #Enter postgres config file path
