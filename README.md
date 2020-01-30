@@ -84,4 +84,4 @@ The dod-compliance-and-automation project team welcomes contributions from the c
 
 ## License
 
-The dod-compliance-and-automation project is available under the [Apache License, Version 2.0](License).
+The dod-compliance-and-automation project is available under the [Apache License, Version 2.0](LICENSE.txt).
