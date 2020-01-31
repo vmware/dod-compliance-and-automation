@@ -1,9 +1,8 @@
-# Ansible Playbook for Photon OS 1.0 DISA STIG
-Ansible playbook to remediate Photon OS 1.0 DISA STIG Controls
+# Ansible Playbook for vSphere VCSA 6.7 DISA STIG
+Ansible playbook to remediate vSphere VCSA 6.7 DISA STIG Controls
 
 ## Requirements
--Draft Photon OS 1.0 DISA STIG
--VMware Photon OS 1.0
+-Draft vSphere 6.7 DISA STIG
 -Tested with Ansible 2.8.5
 
 ## Playbook Structure
