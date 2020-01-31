@@ -33,11 +33,19 @@ All technical NIST SP 800-53 requirements were considered while developing this 
 
 ## Ansible Playbook
 
+Ansible is used for remediation of some aspects of the STIG mainly dealing with the vCenter Appliance.
+
 ## Inspec Profile
+
+Inspec is used for auditing and when combined with [Heimdall](https://github.com/mitre/heimdall) the results can be easily viewed and tracked over time.
 
 ## PowerCLI Scripts
 
+PowerCLI can be used for both auditing and remediation aspects for native vSphere controls.
+
 ## Docs
+
+Supporting documentation will be here such as smartcard configuration guides, srg spreadsheets, etc.
 
 ## Severities
 
