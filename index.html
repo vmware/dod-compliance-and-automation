@@ -53,10 +53,12 @@
             <h2 id="overview">Overview</h2>
 
             <p>VMware is a trusted partner in highly secure, mission critical systems around the world, including the US Department of Defense (DoD). In the DoD, all IT systems must adhere to the rigorous Risk Management Framework (RMF) as defined in DoDI 8510.01. A critical component of RMF is the mandatory implementation of Security Technical Implementation Guides (STIGs) and Security Requirements Guidelines (SRGs) as maintained by the Defense Information Systems Agency (DISA). Where a product specific STIG is not available, the relevant SRGs must be used instead.</p>
+            
+            <p><a href="http://acqnotes.com/wp-content/uploads/2014/09/DoD-Instruction-8510.01-Risk-Management-Framework-RMF-for-DoD-Information-Technology-IT-24-May-2016.pdf">DoDI 8510.01</a></p>
 
             <p>"STIGs are product-specific and document applicable DoD policies and security requirements, as well as best practices and configuration guidelines. STIGs are associated with security controls through CCIs, which are decompositions of NIST SP 800-53 security controls into single, actionable, measurable items."</p>
             
-            <p>"SRGs are developed by DISA to provide general security compliance guidelines and serve as source guidance documents for STIGs."</p>
+            <p><a href="https://dodcio.defense.gov/Portals/0/Documents/Cyber/CyberDis-ImpPlan.pdf">DoD Cybersecurity Discipline Implementation Plan</a></p>
 
             <p>"STIGs and SRGs provide configuration for technologies such as operating systems, browsers, antivirus, web services, databases, Active Directory, and domain name services. The combination of applicable STIGs and SRGs will result in a secure configuration to prevent issues such as insider threats, data exfiltration, or advanced persistent threats."</p>
             
@@ -70,6 +72,35 @@
         <div class='row'>
           <div class='content'>
             <h2 id="srg">SRG Documentation</h2>
+
+            <p>STIG development is essentially an exercise where a specific product is filtered through all applicable SRGs to produce product-specific, NIST 800-53 backed hardening guidance. That content is then vetted, tested and approved by the DISA Risk Management Executive (RME) and posted on iase.disa.mil and public.cyber.mil. VMware has a number of official STIGs published on those sites and we are working on many more. While we go through the official, lengthy DISA process, we want to make the SRG content available for public consumption and contributions while we wait for the official posting.</p>
+
+            <ul>
+              <li style="list-style-type:square;">Where a STIG is already published</li>
+              <ul>
+                <li>The SRG documentation will be the official source content for the published STIG</li>
+              </ul>
+            </ul>
+            <ul>
+              <li style="list-style-type:square;">Where a STIG is not published but the product is in the DISA queue</li>
+              <ul>
+                <li>The SRG content will be in a usable, beta quality form from a VMware perspective</li>
+                <li>The content will not have any DISA review or approval, nor can we guarantee that any STIG will be published. We have very little influence over the DISA queue</li>
+                <li>The SRG content will be in a usable, beta quality form from a VMware perspective</li>
+                <li>Please feel free to contact DISA RME if you would like to see the STIG request prioritized higher in their queue</li>
+                <li>https://public.cyber.mil/knowledge-base/scap-srg-stig-questions/</li>
+              </ul>
+            </ul>
+            <ul>
+              <li style="list-style-type:square;">Where a STIG is not published and the product is not in the DISA queue</li>
+              <ul>
+                <li>Certain lower impact products may not ever realistically make it to the top of the DISA queue. In those cases, the SRG content will be provided in place of a STIG under the presumption that some guidance is better than none at all</li>
+              </ul>
+            </ul>
+
+            <p>In all cases, the product's status in regards to the official STIG process will be noted at the top of the project README.md</p>
+
+            <p><b>NOTE:</b> This project represents VMware's effort to document our compliance against the SRG requirements and nothing more. A published STIG is our eventual goal, in most cases, but this content should not be viewed to be "as good as a STIG". A DISA published STIG includes technical validation, review of requirement fulfillment, accuracy and style, risk acceptance and is digitally signed by the RME and posted on a .mil. This SRG content is intended to provided value to our customers while the STIGs are in process. Except for products that have published STIGs already, there is no explicit or implied DISA approval of the provided content.</p>
           </div>
         </div>
       </div>
@@ -78,7 +109,33 @@
       <div class='container'>
         <div class='row'>
           <h2 id='compauto'>Compliance and Automation</h2>
-          <p>We've provided a few guides to help get you started:</p>
+          <p>STIG documents are written to be portable, offline hardening documentation where a sysadmin can go through, step by step, and STIG a system with no external dependencies. That said, many STIGs are either too complex or need to be applied to so many instances that manual steps are not an ideal solution. To augment the plain language STIG content, we are providing a number of ways to script or fully automate your VMWare compliance activities.</p>
+          
+          <h4>Auditing with InSpec</h4>
+
+          <p>The role of STIG assessment automation is traditionally filled by SCAP with OVAL. VMware has looked at providing SCAP and OVAL content but we decided to move forward with InSpec for a number of reasons including, but not limited to, the following:</p>
+
+          <ul>
+            <li>Speed of development, low time to value</li>
+            <li>Ease of use, readability</li>
+            <li>Agentless</li>
+            <li>Active community</li>
+            <li>Backed by Mitre with <a href="https://github.com/mitre/inspec_tools">STIG-specific tooling</a></li>
+            <li>Appropriate for open source</li>
+            <li>Flexibility, extensibility</li>
+            <li>DevSecOps friendly</li>
+          </ul>
+
+          <p>We may elaborate on these points in the future but the decision was not a difficult one. A blog post covering InSpec basics will be forthcoming.</p>
+
+          <h4>Remediation with Ansible</h4>
+
+          <p><a href="https://www.ansible.com/overview/how-ansible-works"></a> Ansible is a relatively simple, extremely powerful IT automation platform. It's benefits are well documented and very similar to those listed for InSpec above. We are providing Ansible remediation content in order to integrate with existing configuration management systems.</p>
+
+          <h4>Auditing and Remediation with PowerCLI</h4>
+
+          <p><a href="https://code.vmware.com/web/dp/tool/vmware-powercli/">PowerCLI</a> is an extension of Microsoft's PowerShell that is provided by VMware free of charge for automating virtual infrastructure. PowerCLI can be deployed on Windows or Linux operating systems and can reach out remotely to query and configure VMware product installations.</p>
+
         </div>
       </div>
     </section>
