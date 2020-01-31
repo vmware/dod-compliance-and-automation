@@ -49,5 +49,22 @@ Configure each <Connector> node with the value 'maxThreads=\"800\"'
 Ex:
 
 <Connector .. maxThreads=\"800\" ..>"
+
+  begin
+    vcui_conf = xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml')
+
+      if vcui_conf['Server/Service/Connector/attribute::maxThreads'].is_a?(Array)
+        vcui_conf['Server/Service/Connector/attribute::maxThreads'].each do |x|
+          describe x do
+            it { should eq "800" }
+          end
+        end
+      else
+        describe xml(vcui_conf['Server/Service/Connector/attribute::maxThreads']) do
+          it { should eq "800" }
+        end
+      end
+  end
+
 end
 

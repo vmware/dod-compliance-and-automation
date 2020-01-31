@@ -47,8 +47,22 @@ If the output does not match the expected result, this is a finding"
 
 Configure the http <Connector> node with the value 'connectionTimeout=\"20000\"'
 
-Ex:
+Ex:<Connector .. connectionTimeout=\"20000\" ..>"
 
-<Connector .. connectionTimeout=\"20000\" ..>"
+  begin
+    vcui_conf = xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml')
+
+      if vcui_conf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
+        vcui_conf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
+          describe x do
+            it { should eq "20000" }
+          end
+        end
+      else
+        describe xml(vcui_conf['Server/Service/Connector/attribute::connectionTimeout']) do
+          it { should eq "20000" }
+        end
+      end
+  end
+  
 end
-

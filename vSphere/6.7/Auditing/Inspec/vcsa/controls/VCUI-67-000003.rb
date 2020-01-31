@@ -42,5 +42,22 @@ Navigate to each of the <Connector> nodes.
 
 Remove any configuration for 'maxPostSize'.
 "
+
+  begin
+    vcui_conf = xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml')
+
+      if vcui_conf['Server/Service/Connector/attribute::maxPostSize'].is_a?(Array)
+        vcui_conf['Server/Service/Connector/attribute::maxPostSize'].each do |x|
+          describe x do
+            it { should_not exist }
+          end
+        end
+      else
+        describe xml(vcui_conf['Server/Service/Connector/attribute::maxPostSizes']) do
+          it { should_not exist }
+        end
+      end
+  end
+
 end
 
