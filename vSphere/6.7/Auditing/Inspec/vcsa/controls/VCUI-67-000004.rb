@@ -45,5 +45,9 @@ Ex:
 
 <Context useHttpOnly=\"true\" sessionCookieName=\"VSPHERE-UI-JSESSIONID\"
 sessionCookiePath=\"/ui\">"
-end
 
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/context.xml') do
+    its(['Context/attribute::useHttpOnly']) { should eq ['true'] }
+  end
+
+end
