@@ -1,0 +1,169 @@
+# This file contains the auditctl rules that are loaded
+# whenever the audit daemon is started via the initscripts.
+# The rules are simply the parameters that would be passed
+# to auditctl.
+
+# First rule - delete all
+-D
+
+# Increase the buffers to survive stress events.
+# Make this bigger for busy systems
+-b 640
+
+# Clean up some noise
+-a exclude,always -F msgtype=CWD
+-a exclude,always -F msgtype=PROCTITLE
+
+# Exclude VCSA specific commands that are run constantly at idle
+-a exit,never -F exe=/usr/bin/iostat
+-a exit,never -F exe=/usr/bin/vmstat
+-a exit,never -F exe=/usr/bin/vmtoolsd
+-a exit,never -F exe=/usr/sbin/ip
+-a exit,never -F exe=/usr/sbin/ldconfig
+-a exit,never -F exe=/usr/bin/uname
+-a exit,never -F exe=/usr/bin/dircolors
+-a exit,never -F exe=/usr/bin/id
+
+# Exclude certain exit codes on VCSA
+-a exit,never -F arch=b64 -S open -F success=1 -F exit=4
+-a exit,never -F arch=b64 -S open -F success=1 -F exit=5
+
+# Exclude certain exit codes on vcova and Log Insight
+#-a exit,never -F arch=b64 -S open -F success=1 -F exit=8
+#-a exit,never -F arch=b64 -S execve -F success=1 -F exit=0
+
+# SRG-OS-000256-GPOS-00097
+-w /etc/audit/auditd.conf -p wa -k audit_settings
+-w /etc/audit/audit.rules -p wa -k audit_settings
+-w /etc/audit/rules.d/ -p wa -k audit_settings
+
+
+
+
+
+# SRG-OS-000366-GPOS-00153
+# not required but not a bad idea
+-w /usr/lib/rpm/rpmrc -p wa
+
+# Watch sshd configuration
+-w /etc/ssh/sshd_config -p wa -k sshd
+
+# Watch login configuration
+-w /etc/login.defs -p wa
+-w /etc/securetty -p wa
+-w /etc/resolv.conf -p wa
+
+# Watch TCP_WRAPPERS configuration
+-w /etc/hosts.allow -p wa
+-w /etc/hosts.deny -p wa
+
+# Watch filesystem and NFS exports
+-w /etc/fstab -p wa
+-w /etc/exports -p wa
+
+# Watch init configuration
+-w /etc/rc.d/init.d/ -p wa
+-w /etc/sysconfig/ -p wa
+
+# Watch kernel configuration
+-w /etc/sysctl.conf -p wa
+
+# Watch shell configuration
+-w /etc/profile.d/ -p wa -k shells
+-w /etc/profile -p wa -k shells
+-w /etc/shells -p wa -k shells
+
+# Watch cron
+-w /etc/anacrontab -p wa -k cron
+-w /etc/cron.allow -p wa -k cron
+-w /etc/cron.deny -p wa -k cron
+-w /etc/cron.d/ -p wa -k cron
+-w /etc/cron.daily/ -p wa -k cron
+-w /etc/cron.hourly/ -p wa -k cron
+-w /etc/cron.weekly/ -p wa -k cron
+-w /etc/cron.monthly/ -p wa -k cron
+
+# Watch PAM and authentication configuration
+-w /etc/pam.d/ -p wa
+-w /etc/nsswitch.conf -p wa
+
+# Audit time changes
+-a always,exit -F arch=b32 -S adjtimex -S stime -S settimeofday -S clock_settime -k time_change
+-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime -k time_change
+-w /etc/localtime -p wa -k time_change
+
+# Audit system events
+-a always,exit -F arch=b32 -S acct -S reboot -S sched_setparam -S sched_setscheduler -S setrlimit -S swapon 
+-a always,exit -F arch=b64 -S acct -S reboot -S sched_setparam -S sched_setscheduler -S setrlimit -S swapon
+
+# Audit all unsuccessful attempts to access or modify files
+-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k no_access
+-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k no_access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k no_access
+-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k no_access
+
+# Audit all link creation
+-a always,exit -F arch=b32 -S link -S symlink
+-a always,exit -F arch=b64 -S link -S symlink
+
+# Audit all network modifications
+-a always,exit -F arch=b32 -S sethostname -S setdomainname -k network_modification
+-a always,exit -F arch=b64 -S sethostname -S setdomainname -k network_modification
+-w /etc/issue -p wa -k network_modification
+-w /etc/issue.net -p wa -k network_modification
+-w /etc/hosts -p wa -k network_modification
+-w /etc/sysconfig/network -p wa -k network_modification
+
+# Audit modules
+-w /sbin/insmod -p x -k modules
+-w /sbin/rmmod -p x -k modules
+-w /sbin/modprobe -p x -k modules
+-a always,exit -F arch=b32 -S init_module -S delete_module -k modules
+-a always,exit -F arch=b64 -S init_module -S delete_module -k modules
+
+# Audit file deletions
+-a exit,always -F arch=b64 -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid=0 -k delete
+-a exit,always -F arch=b64 -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete
+-a exit,always -F arch=b32 -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid=0 -k delete
+-a exit,always -F arch=b32 -S rmdir -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete
+
+# Audit other utilities
+-w /bin/ping -p x -k privileged
+-w /bin/eject -p x -k privileged
+-w /bin/ping6 -p x -k privileged
+-w /usr/bin/wall -p x -k privileged
+-w /sbin/unix_chkpwd -p x -k privileged
+-w /usr/lib/vmware-vmafd/bin/cdc-cli -p x -k vcsa_privileged
+-w /usr/lib/vmware-vmafd/bin/dir-cli -p x -k vcsa_privileged
+-w /usr/lib/vmware-vmafd/bin/domainjoin  -p x -k vcsa_privileged
+-w /usr/lib/vmware-vmafd/bin/sl-cli -p x -k vcsa_privileged
+-w /usr/lib/vmware-vmafd/bin/vdcpromo -p x -k vcsa_privileged
+-w /usr/lib/vmware-vmafd/bin/vecs-cli -p x -k vcsa_privileged
+-w /usr/lib/vmware-vmafd/bin/vmafd-cli -p x -k vcsa_privileged
+-w /usr/bin/netmgr -p x -k vcsa_privileged
+-w /usr/bin/tdnf -p x -k vcsa_privileged
+-w /usr/bin/dcli -p x -k vcsa_privileged
+-w /usr/lib/vmware-vmon/vmon-cli -p x -k vcsa_privileged
+-w /usr/sbin/vmon-cli -p x -k vcsa_privileged
+-w /usr/bin/gnutls-cli -p x -k vcsa_privileged
+-w /usr/lib/vmware-vmca/bin/certificate-manager -p x -k vcsa_privileged
+-w /usr/bin/nc -p x -k vcsa_privileged
+-w /usr/bin/scp -p x -k vcsa_privileged
+-w /usr/bin/sftp -p x -k vcsa_privileged
+
+# Audit other VCSA sensitive files
+-w /etc/vmware-vpx/vcdb.properties -p wra -k vcsa_sensitive
+-w /etc/vmware-vpx/embedded_db.cfg -p wra -k vcsa_sensitive
+-w /storage/db/vpostgres_ssl/server.key -p wra -k vcsa_sensitive
+-w /etc/vmware/vmware-vmafd/machine-ssl.key -p wra -k vcsa_sensitive
+-w /etc/vmware-rbd/ssl/rbd-ca.key -p wra -k vcsa_sensitive
+-w /etc/vmware-rbd/ssl/waiter.key -p wra -k vcsa_sensitive
+-w /etc/vmware-rhttpproxy/ssl/rui.key -p wra -k vcsa_sensitive
+-w /etc/vmware-vpx/ssl/rui.key -p wra -k vcsa_sensitive
+-w /etc/vmware-vpx/ssl/vcsoluser.key -p wra -k vcsa_sensitive
+-w /etc/vmware-vpx/ssl/data-encipherment.key -p wra -k vcsa_sensitive
+-w /usr/lib/vmware-updatemgr/bin/ssl/jetty.key -p wra -k vcsa_sensitive
+-w /usr/lib/vmware-updatemgr/bin/ssl/rui.key -p wra -k vcsa_sensitive
+-w /opt/vmware/var/lib/vami/update/data/signature.key -p wra -k vcsa_sensitive
+-w /var/lib/vmware/vmcam/ssl/rui.key -p wra -k vcsa_sensitive
+-w /etc/vmware-vpx/vpxd.cfg -p wra -k vcsa_sensitive

@@ -1,0 +1,7 @@
+# This is the main launching playbook for VCSA 6.7
+
+- hosts: all
+  roles:
+    - photon
+    - postgres
+    - vami
