@@ -8,7 +8,6 @@ an attacker could potentially use to their advantage since each event record
 might contain communication ports, protocols, services, trust relationships,
 user names, etc. The vSphere UI restricts all access to log file by default but
 this configuration must be verified."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000357-WSR-000150"
   tag gid: nil
@@ -39,5 +38,14 @@ If any files are returned, this is a finding."
 # chown vsphere-ui:users /storage/log/vmware/vsphere-ui/logs/<file>
 
 Note: Subsitute <file> with the listed file"
+
+  command('find /storage/log/vmware/vsphere-ui/logs/ -maxdepth 1 -type f').stdout.split.each do | fname |
+    describe file(fname) do
+      it { should_not be_more_permissive_than('0600') }
+      its('owner') {should eq 'vsphere-ui'}
+      its('group') {should eq 'users'}
+    end
+  end
+
 end
 

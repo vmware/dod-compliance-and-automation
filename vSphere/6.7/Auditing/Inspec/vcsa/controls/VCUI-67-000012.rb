@@ -12,7 +12,6 @@ log files, password files, etc.
 *.jsp.  This check ensures that the *.jsp and *.jspx file types has been
 properly mapped to servlets.
   "
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000456-WSR-000187"
   tag gid: nil
@@ -41,26 +40,31 @@ properly mapped to servlets.
 Expected result:
 
 <servlet-mapping>
- \xC2\xA0 \xC2\xA0<servlet-name>jsp</servlet-name>
- \xC2\xA0 \xC2\xA0<url-pattern>*.jsp</url-pattern>
- \xC2\xA0 \xC2\xA0<url-pattern>*.jspx</url-pattern>
+ <servlet-name>jsp</servlet-name>
+ <url-pattern>*.jsp</url-pattern>
+ <url-pattern>*.jspx</url-pattern>
 </servlet-mapping>
 
 If the jsp and jspx file url-patterns are not configured as in the expected
 result, this is a finding."
   tag fix: "Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/web.xml
 
-Navigate to and locate the mapping for the JSP servlet. \xC2\xA0It is the
-\xC2\xA0<servlet-mapping> node that contains <servlet-name>jsp</servlet-name>
+Navigate to and locate the mapping for the JSP servlet. It is the
+<servlet-mapping> node that contains <servlet-name>jsp</servlet-name>
 
 Configure the <servlet-mapping> node to look like the code snippet below
 
- \xC2\xA0 \xC2\xA0<!-- The mappings for the JSP servlet -->
- \xC2\xA0 \xC2\xA0<servlet-mapping>
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0<servlet-name>jsp</servlet-name>
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0<url-pattern>*.jsp</url-pattern>
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0<url-pattern>*.jspx</url-pattern>
- \xC2\xA0 \xC2\xA0</servlet-mapping>
+ <!-- The mappings for the JSP servlet -->
+ <servlet-mapping>
+ <servlet-name>jsp</servlet-name>
+ <url-pattern>*.jsp</url-pattern>
+ <url-pattern>*.jspx</url-pattern>
+ </servlet-mapping>
 "
-end
 
+  list = ["*.jsp", "*.jspx"]
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/web.xml') do
+    its('/web-app/servlet-mapping[servlet-name="jsp"]/url-pattern') { should be_in list }
+  end
+
+end

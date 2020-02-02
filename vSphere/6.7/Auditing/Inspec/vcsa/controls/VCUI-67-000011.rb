@@ -3,10 +3,9 @@ control "VCUI-67-000011" do
 invoke OS shell programs disabled."
   desc  "MIME mappings tell the vSphere UI what type of program various file
 types and extensions are and what external utilities or programs are needed to
-execute the file type.\xC2\xA0By ensuring that various shell script MIME types
+execute the file type. By ensuring that various shell script MIME types
 are not included in web.xml, the server is protected against malicious users
 tricking the server into executing shell command files."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000439-WSR-000155"
   tag gid: nil
@@ -38,5 +37,10 @@ If the command produces any output, this is a finding."
 <mime-type>application/x-shar</mime-type>
 <mime-type>application/x-sh</mime-type>
 <mime-type>application/x-ksh</mime-type>"
+
+  describe command('grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' /usr/lib/vmware-vsphere-ui/server/conf/web.xml') do
+    its ('stdout.strip') { should eq '' }
+  end
+
 end
 

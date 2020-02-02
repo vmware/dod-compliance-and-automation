@@ -3,7 +3,6 @@ control "VCUI-67-000009" do
   desc  "The vSphere UI ships with a number of plugins out of the box. Any
 additional plugins may affect the availability and integrity of the system and
 must be approved and documented by the ISSO before deployment."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000380-WSR-000072"
   tag gid: nil
@@ -35,5 +34,10 @@ finding."
 following command.
 
 # rm <file>"
+
+  describe command('diff <(find /usr/lib/vmware-vsphere-ui/plugin-packages/vsphere-client/plugins -type f|sort) <(rpm -ql vsphere-ui|grep "/usr/lib/vmware-vsphere-ui/plugin-packages/vsphere-client/plugins/"|sort)') do
+    its ('stdout.strip') { should eq '' }
+  end
+
 end
 

@@ -7,7 +7,6 @@ access the listed internal classes directly, or if a new class is defined under
 the protected packages. The vSphere UI comes pre-configured with the
 appropriate packages defined in 'package.access' and this configuration must be
 maintained. "
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000435-WSR-000147"
   tag gid: nil
@@ -43,5 +42,9 @@ finding."
 
 package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat.
 "
-end
 
+  describe parse_config_file('/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties').params['package.access'] do
+    it { should eq 'sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat.' }
+  end
+
+end

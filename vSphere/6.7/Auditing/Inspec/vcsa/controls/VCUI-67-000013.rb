@@ -12,7 +12,6 @@ provide WebDAV services. Because the WebDAV service has been found to have an
 excessive number of vulnerabilities, this servlet must not be installed.
 vSphere UI does not configure WebDAV by default.
   "
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -43,5 +42,9 @@ Find the <servlet-name>webdav</servlet-name> node and remove the entire parent
 
 Find the <servlet-name>webdav</servlet-name> node and remove the entire parent
 <servlet-mapping> block."
-end
 
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/web.xml') do
+    its('/web-app/servlet-mapping[servlet-name="webdav"]') { should eq [] }
+  end
+
+end

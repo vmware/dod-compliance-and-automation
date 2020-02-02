@@ -11,7 +11,6 @@ processes, including vSphere UI, and the individual json config files control
 the early jvm logging. Ensuring these json files are configured correctly
 enables early java stdout and stderr logging.
   "
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000160"
   tag gid: nil
@@ -49,5 +48,9 @@ the 'PreStartCommandArg' block add or re-configure the following line:
 \"%VMWARE_LOG_DIR%/vmware/vsphere-ui/logs/vsphere-ui-runtime.log\",
 
 Restart the appliance for changes to take effect."
-end
 
+  describe json('/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json') do
+    its('StreamRedirectFile') { should eq '%VMWARE_LOG_DIR%/vmware/vsphere-ui/logs/vsphere-ui-runtime.log'}
+  end
+
+end

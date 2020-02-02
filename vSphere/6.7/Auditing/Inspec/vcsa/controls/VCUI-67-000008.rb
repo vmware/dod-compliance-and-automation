@@ -4,7 +4,6 @@ control "VCUI-67-000008" do
 shipping state is essential for file validation and non-repudiation of the
 vSphere UI itself. There is no reason that the MD5 hash of the rpm original
 files should be changed after installation, excluding configuration files."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000358-WSR-000163"
   tag gid: nil
@@ -30,5 +29,10 @@ files should be changed after installation, excluding configuration files."
 If is any output, this is a finding."
   tag fix: "Re-install the VCSA or roll back to a snapshot. Modifying the
 vSphere UI installation files manually is not supported by VMware."
+
+  describe command('rpm -V vsphere-ui|grep "^..5......"|grep -E "\.war|\.jar|\.sh|\.py"') do
+    its ('stdout.strip') { should eq '' }
+  end
+
 end
 
