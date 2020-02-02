@@ -11,7 +11,6 @@ duration of that request. If more simultaneous requests are received than can
 be handled by the currently available request processing threads, additional
 threads will be created up to the value of the 'maxThreads' attribute.
   "
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000142"
   tag gid: nil

@@ -5,7 +5,6 @@ will be handled by the container FORM URL parameter parsing. Limit its size to
 reduce exposure to a DOS attack. If 'maxPostSize' is not set, the default value
 of 2097152 (2MB) is used. Security Token Service is configured in it's shipping
 state to not set a value for 'maxPostSize'."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000159"
   tag gid: nil

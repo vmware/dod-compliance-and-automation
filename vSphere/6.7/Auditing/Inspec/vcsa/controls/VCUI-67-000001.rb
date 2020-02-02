@@ -12,7 +12,6 @@ request body (if any). This prevents idle sockets that are not sending HTTP
 requests from consuming system resources and potentially denying new
 connections.
   "
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000142"
   tag gid: nil

@@ -52,5 +52,10 @@ Ensure the log pattern in log pattern in the
 
 pattern=\"%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b
 %{#hashedSessionId#}s %I %D\""
+
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml') do
+    its(['Server/Service/Engine/Host/Valve/attribute::pattern']) { should cmp ['%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b %{#hashedSessionId#}s %I %D'] }
+  end
+
 end
 
