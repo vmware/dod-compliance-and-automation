@@ -8,7 +8,6 @@ used by the hosted application, and any backends being used for data storage.
 This information could be used by an attacker to blueprint what type of attacks
 might be successful. As such, vSphere UI must be configured to hide the server
 version at all times."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -44,5 +43,21 @@ If the output does not match the expected result, this is a finding"
 Navigate to each of the <Connector> nodes.
 
 Configure each <Connector> node with 'server=\"Anonymous\"'."
-end
 
+  begin
+    vcui_conf = xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml')
+
+      if vcui_conf['Server/Service/Connector/attribute::server'].is_a?(Array)
+        vcui_conf['Server/Service/Connector/attribute::server'].each do |x|
+          describe x do
+            it { should eq "Anonymous" }
+          end
+        end
+      else
+        describe xml(vcui_conf['Server/Service/Connector/attribute::server']) do
+          it { should eq "Anonymous" }
+        end
+      end
+  end
+
+end

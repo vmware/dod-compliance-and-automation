@@ -9,7 +9,6 @@ configures log sizes and roation appropriately as part of it's installation
 routine. Verifying that the logging configuration file (serviceability.xml) has
 not been modified is sufficient to determine if the logging configuration has
 been modified from the default."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -35,5 +34,9 @@ been modified from the default."
 If the above command returns any output, this is a finding."
   tag fix: "Re-install the VCSA or roll back to a snapshot. Modifying the
 vSphere UI installation files manually is not supported by VMware."
-end
 
+  describe command('rpm -V vsphere-ui|grep serviceability.xml|grep "^..5......"') do
+    its ('stdout.strip') { should eq '' }
+  end
+
+end

@@ -1,11 +1,10 @@
 control "VCUI-67-000029" do
-  title "vSphere UI must must be configured with the appropriate ports."
-  desc  "Web servers provide numerous processes, features, and functionalities
-that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or
-too unsecure to run on a production system. The ports that vSphere UI listens
-on are configured in the catalina.properties file and must be veriified as
-accurate to their shipping state."
-  impact CAT II
+  title "vSphere UI must disable the shutdown port."
+  desc  "An attacker has at least two reasons to stop a web server. The first
+is to cause a DoS, and the second is to put in place changes the attacker made
+to the web server configuration. If the Tomcat shutdown port feature is
+enabled, a shutdown signal can be sent to vSphere UI through this port. To
+ensure availability, the shutdown port must be disabled."
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -24,28 +23,37 @@ accurate to their shipping state."
   tag mitigation_controls: nil
   tag responsibility: nil
   tag ia_controls: nil
-  tag check: "At the command prompt, execute the following command:
+  tag check: "At the command prompt, execute the following commands:
 
-# grep '.port' /usr/lib/vmware-vsphere-ui/server/conf/catalina.properties
+# xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | sed '2
+s/xmlns=\".*\"//g' |  xmllint --xpath '/Server/@port' -
 
 Expected result:
 
-http.port=5090
-proxy.port=443
-https.port=5443
+port=\"${shutdown.port}\"
 
-If the output of the command does not match the expected result, this is a
-finding."
+If the output does not match the expected result, this is a finding.
+
+# grep shutdown /etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json
+
+Expected result:
+
+\"-Dshutdown.port=-1\",
+
+If the output does not match the expected result, this is a finding."
   tag fix: "Navigate to and open
-/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties
+/usr/lib/vmware-vsphere-ui/server/conf/server.xml
 
-Navigate to the ports specification section.
+Make sure that the server port is disabled:
 
-Set the vSphere UI port specifications according to the shipping configuration
-below:
+<Server port=\"-1\""
 
-http.port=5090
-proxy.port=443
-https.port=5443"
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml') do
+    its('Server/attribute::port') { should include '${shutdown.port}' }
+  end
+
+  describe json('/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json') do
+    its('StartCommandArgs') { should include '-Dshutdown.port=-1'}
+  end
+
 end
-

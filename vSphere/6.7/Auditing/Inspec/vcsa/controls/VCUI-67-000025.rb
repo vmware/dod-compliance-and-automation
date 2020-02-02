@@ -14,7 +14,6 @@ does not need to cause an error condition to gain this information.
 debugging level to zero (0), no debugging information will be provided to a
 malicious user.
   "
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -56,11 +55,13 @@ Set the <param-value> to \"0\" in all <param-name>debug</param-name> nodes.
 
 Note: The debug setting should look like the below:
 
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 <init-param>
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0
-\xC2\xA0<param-name>debug</param-name>
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0
-\xC2\xA0<param-value>0</param-value>
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0 </init-param>"
-end
+ <init-param>
+ <param-name>debug</param-name>
+ <param-value>0</param-value>
+ </init-param>"
 
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/web.xml') do
+    its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
+  end
+
+end

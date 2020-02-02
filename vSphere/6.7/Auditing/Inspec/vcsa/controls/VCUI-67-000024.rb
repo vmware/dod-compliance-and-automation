@@ -6,7 +6,6 @@ enabled in production.  Allowing a attacker to conduct a Trace operation
 against the Security Token Service will expose information that would be useful
 to perform a more targeted attack. vSphere UI provides the allowTrace parameter
 as means to disable responding to Trace requests."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -37,5 +36,15 @@ this is NOT a finding."
 Navigate to and locate 'allowTrace=\"true\"'
 
 Remove the 'allowTrace=\"true\"' setting."
-end
 
+  describe.one do
+    describe xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml') do
+      its(['Server/Service/Connector/attribute::allowTrace']) { should eq [] }
+    end
+
+    describe xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml') do
+      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp "false" }
+    end
+  end
+
+end

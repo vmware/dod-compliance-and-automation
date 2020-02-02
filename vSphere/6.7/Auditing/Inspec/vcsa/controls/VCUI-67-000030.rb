@@ -1,13 +1,12 @@
 control "VCUI-67-000030" do
-  title "vSphere UI must disable the shutdown port."
-  desc  "An attacker has at least two reasons to stop a web server. The first
-is to cause a DoS, and the second is to put in place changes the attacker made
-to the web server configuration. If the Tomcat shutdown port feature is
-enabled, a shutdown signal can be sent to vSphere UI through this port. To
-ensure availability, the shutdown port must be disabled.
-
-  "
-  impact CAT II
+  title "vSphere UI must set the secure flag for cookies."
+  desc  "The secure flag is an option that can be set by the application server
+when sending a new cookie to the user within an HTTP Response. The purpose of
+the secure flag is to prevent cookies from being observed by unauthorized
+parties due to the transmission of a the cookie in clear text. By setting the
+secure flag, the browser will prevent the transmission of a cookie over an
+unencrypted channel. vSphere UI is configured to only be accessible over a TLS
+tunnel but this cookie flag is still a recommended best practice."
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -26,29 +25,32 @@ ensure availability, the shutdown port must be disabled.
   tag mitigation_controls: nil
   tag responsibility: nil
   tag ia_controls: nil
-  tag check: "At the command prompt, execute the following commands:
+  tag check: "At the command prompt, execute the following command:
 
-# xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | sed '2
-s/xmlns=\".*\"//g' |  xmllint --xpath '/Server/@port' -
-
-Expected result:
-
-port=\"${shutdown.port}\"
-
-If the output does not match the expected result, this is a finding.
-
-# grep shutdown /etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json
+# xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/web.xml | sed
+'s/xmlns=\".*\"//g' | xmllint --xpath
+'/web-app/session-config/cookie-config/secure' -
 
 Expected result:
 
-\"-Dshutdown.port=-1\",
+<secure>true</secure>
 
-If the output does not match the expected result, this is a finding."
-  tag fix: "Navigate to and open
-/usr/lib/vmware-vsphere-ui/server/conf/server.xml
+If the output of the command does not match the expected result, this is a
+finding."
+  tag fix: "Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/web.xml
 
-Make sure that the server port is disabled:
+Navigate to the /<web-apps>/<session-config>/<cookie-config> node and configure
+it as follows.
 
-<Server port=\"-1\" \xE2\x80\xA6"
+
+
+    <cookie-config>
+      <http-only>true</http-only>
+      <secure>true</secure>
+    </cookie-config>"
+
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/web.xml') do
+    its('/web-app/session-config/cookie-config/secure') { should cmp 'true' }
+  end
+
 end
-

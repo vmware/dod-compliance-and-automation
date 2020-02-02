@@ -5,7 +5,6 @@ accordance with site policy."
 originating system. This information can then be used for diagnostic purposes,
 forensics purposes, or other purposes relevant to ensuring the availability and
 integrity of the hosted application."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -70,5 +69,12 @@ input(type=\"imfile\"
       Tag=\"ui-runtime\"
       Severity=\"info\"
       Facility=\"local0\")"
-end
 
+  describe file('/etc/vmware-syslog/stig-services-vsphere-ui.conf') do
+    it { should exist }
+  end
+  describe command('grep -v "^#" /etc/vmware-syslog/stig-services-vsphere-ui.conf') do
+    its ('stdout') { should match "input(type=\"imfile\" File=\"/var/log/vmware/vsphere-ui/logs/access/localhost_access*\"\nTag=\"vami-access\"\nSeverity=\"info\"\nFacility=\"local0\")\ninput(type=\"imfile\" File=\"/var/log/vmware/vsphere-ui/logs/vsphere-ui-runtime*\"\nTag=\"ui-runtime\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
+  end
+
+end

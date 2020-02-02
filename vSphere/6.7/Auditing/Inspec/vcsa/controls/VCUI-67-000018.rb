@@ -4,7 +4,6 @@ control "VCUI-67-000018" do
 protection and a best practice. Servers where the limit is too high or
 unlimited can potentiall run out of system resources and negatively affect
 system availability."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -41,5 +40,9 @@ Navigate to the <Connector> configured with port=\"${http.port}\". Add or
 change the folllowing value:
 
 acceptCount=\"300\""
-end
+ 
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml') do
+    its(['Server/Service/Connector[@port=\'${http.port}\']/@acceptCount']) { should cmp '300'}
+  end
 
+end

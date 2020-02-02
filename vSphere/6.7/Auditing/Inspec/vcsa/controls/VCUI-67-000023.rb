@@ -9,7 +9,6 @@ used by the hosted application, and any backends being used for data storage.
 This information could be used by an attacker to blueprint what type of attacks
 might be successful. As such, vSphere UI must be configured to not show server
 version information in error pages."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -54,5 +53,9 @@ Inside this block, add the following on a new line:
 
 <Valve className=\"org.apache.catalina.valves.ErrorReportValve\"
 showServerInfo=\"false\"/>"
-end
 
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml') do
+    its(['Server/Service/Engine/Host/Valve[@className=\'org.apache.catalina.valves.ErrorReportValve\']/@showServerInfo']) { should cmp 'false' }
+  end
+
+end

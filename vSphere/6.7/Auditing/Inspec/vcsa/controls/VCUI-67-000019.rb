@@ -12,7 +12,6 @@ an effort to break out of the document home or root home directory or to bypass
 security checks. vSphere UI must be configured to use a consistent character
 set via the URIEncoding attribute on the Connector nodes.
   "
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -48,5 +47,21 @@ If the output does not match the expected result, this is a finding"
 Navigate to each of the <Connector> nodes.
 
 Configure each <Connector> node with the value 'URIEncoding=\"UTF-8\"'."
-end
 
+  begin
+    vcui_conf = xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml')
+
+      if vcui_conf['Server/Service/Connector/attribute::URIEncoding'].is_a?(Array)
+        vcui_conf['Server/Service/Connector/attribute::URIEncoding'].each do |x|
+          describe x do
+            it { should eq "UTF-8" }
+          end
+        end
+      else
+        describe xml(vcui_conf['Server/Service/Connector/attribute::URIEncoding']) do
+          it { should eq "UTF-8" }
+        end
+      end
+  end
+
+end

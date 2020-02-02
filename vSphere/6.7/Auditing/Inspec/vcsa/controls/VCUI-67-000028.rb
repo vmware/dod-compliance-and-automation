@@ -1,18 +1,10 @@
 control "VCUI-67-000028" do
-  title "vSphere UI application, libraries, and configuration files must only
-be accessible to privileged users."
-  desc  "A web server can be modified through parameter modification, patch
-installation, upgrades to the web server or modules, and security parameter
-changes. With each of these changes, there is the potential for an adverse
-effect such as a DoS, web server instability, or hosted application instability.
-
-    To limit changes to the web server and limit exposure to any adverse
-effects from the changes, files such as the web server application files,
-libraries, and configuration files must have permissions and ownership set
-properly to only allow privileged users access. vSphere UI sets the required
-file permissions during installation and those permissions must be maintained.
-  "
-  impact CAT II
+  title "vSphere UI must must be configured with the appropriate ports."
+  desc  "Web servers provide numerous processes, features, and functionalities
+that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or
+too unsecure to run on a production system. The ports that vSphere UI listens
+on are configured in the catalina.properties file and must be veriified as
+accurate to their shipping state."
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -31,7 +23,38 @@ file permissions during installation and those permissions must be maintained.
   tag mitigation_controls: nil
   tag responsibility: nil
   tag ia_controls: nil
-  tag check: "See SRG-APP-000211-WSR-000030"
-  tag fix: "See SRG-APP-000211-WSR-000030"
-end
+  tag check: "At the command prompt, execute the following command:
 
+# grep '.port' /usr/lib/vmware-vsphere-ui/server/conf/catalina.properties
+
+Expected result:
+
+http.port=5090
+proxy.port=443
+https.port=5443
+
+If the output of the command does not match the expected result, this is a
+finding."
+  tag fix: "Navigate to and open
+/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties
+
+Navigate to the ports specification section.
+
+Set the vSphere UI port specifications according to the shipping configuration
+below:
+
+http.port=5090
+proxy.port=443
+https.port=5443"
+
+  describe parse_config_file('/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties').params['http.port'] do
+    it { should eq '5090' }
+  end
+  describe parse_config_file('/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties').params['proxy.port'] do
+    it { should eq '443' }
+  end
+  describe parse_config_file('/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties').params['https.port'] do
+    it { should eq '5443' }
+  end
+
+end

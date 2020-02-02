@@ -9,7 +9,6 @@ user will not obtain directory browsing information or an error message that
 reveals the server type and version. Ensuring that every document directory has
 an index.jsp (or equivalent) file is one approach to mitigating the
 vulnerability."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -47,11 +46,16 @@ finding."
 
 Add the following section under the <web-apps> node:
 
- \xC2\xA0 \xC2\xA0<welcome-file-list>
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0<welcome-file>index.html</welcome-file>
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0<welcome-file>index.htm</welcome-file>
- \xC2\xA0 \xC2\xA0 \xC2\xA0 \xC2\xA0<welcome-file>index.jsp</welcome-file>
- \xC2\xA0 \xC2\xA0</welcome-file-list>
+ <welcome-file-list>
+ <welcome-file>index.html</welcome-file>
+ <welcome-file>index.htm</welcome-file>
+ <welcome-file>index.jsp</welcome-file>
+ </welcome-file-list>
 "
-end
 
+  list = ["index.html", "index.htm", "index.jsp"]
+  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/web.xml') do
+    its('/web-app/welcome-file-list/welcome-file') { should be_in list }
+  end
+
+end
