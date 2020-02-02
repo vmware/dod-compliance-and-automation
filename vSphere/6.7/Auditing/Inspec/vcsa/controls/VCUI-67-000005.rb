@@ -12,7 +12,6 @@ standard web servers. When AccessLogValve is properly configured, log files
 will contain all the forensic information necessary in the case of a security
 incident.
   "
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000160"
   tag gid: nil
