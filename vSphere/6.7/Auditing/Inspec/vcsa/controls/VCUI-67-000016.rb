@@ -7,7 +7,6 @@ accounts on the machine hosting the web server. The resources to which these
 accounts have access must also be closely monitored and controlled. The vSphere
 UI files must be adequately protected with correct permissions as applied \"out
 of the box\"."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -42,5 +41,13 @@ If the command produces any output, this is a finding."
 
 Repeat the command for each file that was returned
 "
-end
 
+  command('find /usr/lib/vmware-vsphere-ui/server/lib /usr/lib/vmware-vsphere-ui/server/conf -xdev -type f').stdout.split.each do | fname |
+    describe file(fname) do
+      it { should_not be_more_permissive_than('0770') }
+      its('owner') {should eq 'vsphere-ui'}
+      its('group') {should eq 'root'}
+    end
+  end
+
+end

@@ -9,7 +9,6 @@ information protected outside the application's realm. By checking that no
 symbolic links exist in the document root, the web server is protected from
 users jumping outside the hosted application directory tree and gaining access
 to the other directories, including the system root."
-  impact CAT II
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
@@ -40,5 +39,9 @@ Note: Replace <file_name> for the name of any files that were returned.
 unlink <file_name>
 
 Repeat the commands for each file that was returned."
-end
 
+  describe command('find /usr/lib/vmware-vsphere-ui/server/static/ -type l -ls') do
+    its ('stdout.strip') { should eq '' }
+  end
+
+end
