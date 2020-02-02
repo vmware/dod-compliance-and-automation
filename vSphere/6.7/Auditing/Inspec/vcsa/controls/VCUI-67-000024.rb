@@ -6,6 +6,7 @@ enabled in production.  Allowing a attacker to conduct a Trace operation
 against the Security Token Service will expose information that would be useful
 to perform a more targeted attack. vSphere UI provides the allowTrace parameter
 as means to disable responding to Trace requests."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

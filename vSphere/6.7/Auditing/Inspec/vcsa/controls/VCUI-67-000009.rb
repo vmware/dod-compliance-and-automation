@@ -3,6 +3,7 @@ control "VCUI-67-000009" do
   desc  "The vSphere UI ships with a number of plugins out of the box. Any
 additional plugins may affect the availability and integrity of the system and
 must be approved and documented by the ISSO before deployment."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000380-WSR-000072"
   tag gid: nil
@@ -40,4 +41,3 @@ following command.
   end
 
 end
-

@@ -9,8 +9,8 @@ activity to go un-logged.
     On the VCSA, the vmware-vmon service starts up the JVMs for various vCenter
 processes, including vSphere UI, and the individual json config files control
 the early jvm logging. Ensuring these json files are configured correctly
-enables early java stdout and stderr logging.
-  "
+enables early java stdout and stderr logging."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000160"
   tag gid: nil

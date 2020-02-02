@@ -5,6 +5,7 @@ that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or
 too unsecure to run on a production system. The ports that vSphere UI listens
 on are configured in the catalina.properties file and must be veriified as
 accurate to their shipping state."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

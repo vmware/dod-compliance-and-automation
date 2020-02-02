@@ -5,6 +5,7 @@ is to cause a DoS, and the second is to put in place changes the attacker made
 to the web server configuration. If the Tomcat shutdown port feature is
 enabled, a shutdown signal can be sent to vSphere UI through this port. To
 ensure availability, the shutdown port must be disabled."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

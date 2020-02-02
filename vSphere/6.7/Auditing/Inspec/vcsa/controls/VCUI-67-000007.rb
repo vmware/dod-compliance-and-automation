@@ -8,6 +8,7 @@ an attacker could potentially use to their advantage since each event record
 might contain communication ports, protocols, services, trust relationships,
 user names, etc. The vSphere UI restricts all access to log file by default but
 this configuration must be verified."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000357-WSR-000150"
   tag gid: nil
@@ -48,4 +49,3 @@ Note: Subsitute <file> with the listed file"
   end
 
 end
-

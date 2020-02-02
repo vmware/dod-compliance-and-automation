@@ -10,8 +10,8 @@ inserted into the request processing pipeline to provide robust access logging.
 The Access Log Valve creates log files in the same format as those created by
 standard web servers. When AccessLogValve is properly configured, log files
 will contain all the forensic information necessary in the case of a security
-incident.
-  "
+incident."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000160"
   tag gid: nil
@@ -57,4 +57,3 @@ pattern=\"%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b
   end
 
 end
-

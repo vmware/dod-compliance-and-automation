@@ -10,8 +10,8 @@ milliseconds the server will wait after accepting a connection for the request
 URI line to be presented. This timeout will also be used when reading the
 request body (if any). This prevents idle sockets that are not sending HTTP
 requests from consuming system resources and potentially denying new
-connections.
-  "
+connections."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000142"
   tag gid: nil

@@ -9,6 +9,7 @@ used by the hosted application, and any backends being used for data storage.
 This information could be used by an attacker to blueprint what type of attacks
 might be successful. As such, vSphere UI must be configured to not show server
 version information in error pages."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

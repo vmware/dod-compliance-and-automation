@@ -9,6 +9,7 @@ configures log sizes and roation appropriately as part of it's installation
 routine. Verifying that the logging configuration file (serviceability.xml) has
 not been modified is sufficient to determine if the logging configuration has
 been modified from the default."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

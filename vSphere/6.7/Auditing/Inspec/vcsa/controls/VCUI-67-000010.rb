@@ -7,6 +7,7 @@ access the listed internal classes directly, or if a new class is defined under
 the protected packages. The vSphere UI comes pre-configured with the
 appropriate packages defined in 'package.access' and this configuration must be
 maintained. "
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000435-WSR-000147"
   tag gid: nil

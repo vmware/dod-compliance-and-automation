@@ -7,6 +7,7 @@ parties due to the transmission of a the cookie in clear text. By setting the
 secure flag, the browser will prevent the transmission of a cookie over an
 unencrypted channel. vSphere UI is configured to only be accessible over a TLS
 tunnel but this cookie flag is still a recommended best practice."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

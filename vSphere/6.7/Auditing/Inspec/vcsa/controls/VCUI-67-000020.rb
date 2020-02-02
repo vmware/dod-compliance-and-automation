@@ -9,6 +9,7 @@ user will not obtain directory browsing information or an error message that
 reveals the server type and version. Ensuring that every document directory has
 an index.jsp (or equivalent) file is one approach to mitigating the
 vulnerability."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

@@ -6,6 +6,7 @@ potential DoS for users depends on what type of application the web server is
 hosting. For the Security Token Service, it is preferable that the service
 abort startup on any initialization failure rather than continuing in a
 degraded, and potentailly insecure, state."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

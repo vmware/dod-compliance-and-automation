@@ -8,6 +8,7 @@ used by the hosted application, and any backends being used for data storage.
 This information could be used by an attacker to blueprint what type of attacks
 might be successful. As such, vSphere UI must be configured to hide the server
 version at all times."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

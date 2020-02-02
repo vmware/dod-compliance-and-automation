@@ -6,6 +6,7 @@ are better able to launch an attack against the server and its applications.
 When you tag a cookie with the HttpOnly flag, it tells the browser that this
 particular cookie should only be accessed by the originating server. Any
 attempt to access the cookie from client script is strictly forbidden."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000159"
   tag gid: nil

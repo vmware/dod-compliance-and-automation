@@ -10,8 +10,8 @@ log files, password files, etc.
 
     As Tomcat is a java-based web server, the main file extension used is
 *.jsp.  This check ensures that the *.jsp and *.jspx file types has been
-properly mapped to servlets.
-  "
+properly mapped to servlets."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000456-WSR-000187"
   tag gid: nil

@@ -5,6 +5,7 @@ accordance with site policy."
 originating system. This information can then be used for diagnostic purposes,
 forensics purposes, or other purposes relevant to ensuring the availability and
 integrity of the hosted application."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

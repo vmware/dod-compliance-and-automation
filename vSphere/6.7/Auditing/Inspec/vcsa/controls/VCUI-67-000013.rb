@@ -10,8 +10,8 @@ modify unauthorized files on the web server and must therefore be disabled.
     Tomcat uses the org.apache.catalina.servlets.WebdavServlet servlet to
 provide WebDAV services. Because the WebDAV service has been found to have an
 excessive number of vulnerabilities, this servlet must not be installed.
-vSphere UI does not configure WebDAV by default.
-  "
+vSphere UI does not configure WebDAV by default."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

@@ -7,6 +7,7 @@ accounts on the machine hosting the web server. The resources to which these
 accounts have access must also be closely monitored and controlled. The vSphere
 UI files must be adequately protected with correct permissions as applied \"out
 of the box\"."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

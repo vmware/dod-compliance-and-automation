@@ -12,8 +12,8 @@ does not need to cause an error condition to gain this information.
 
     vSphere UI can be configured to set the debugging level.  By setting the
 debugging level to zero (0), no debugging information will be provided to a
-malicious user.
-  "
+malicious user."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

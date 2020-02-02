@@ -6,6 +6,7 @@ types and extensions are and what external utilities or programs are needed to
 execute the file type. By ensuring that various shell script MIME types
 are not included in web.xml, the server is protected against malicious users
 tricking the server into executing shell command files."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000439-WSR-000155"
   tag gid: nil
@@ -43,4 +44,3 @@ If the command produces any output, this is a finding."
   end
 
 end
-

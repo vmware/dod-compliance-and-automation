@@ -10,8 +10,8 @@ application.
     An attacker can also enter Unicode characters into hosted applications in
 an effort to break out of the document home or root home directory or to bypass
 security checks. vSphere UI must be configured to use a consistent character
-set via the URIEncoding attribute on the Connector nodes.
-  "
+set via the URIEncoding attribute on the Connector nodes."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

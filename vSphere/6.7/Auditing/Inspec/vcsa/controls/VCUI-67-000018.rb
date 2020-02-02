@@ -4,6 +4,7 @@ control "VCUI-67-000018" do
 protection and a best practice. Servers where the limit is too high or
 unlimited can potentiall run out of system resources and negatively affect
 system availability."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil

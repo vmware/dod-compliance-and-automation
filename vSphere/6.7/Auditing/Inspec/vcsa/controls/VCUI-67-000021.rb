@@ -6,6 +6,7 @@ locating directories without default pages. In the scenario, the web server
 will display to the user a listing of the files in the directory being
 accessed. Ensuring that directory listing is disabled is one approach to
 mitigating the vulnerability."
+  impact 0.5
   tag severity: "CAT II"
   tag gtitle: nil
   tag gid: nil
