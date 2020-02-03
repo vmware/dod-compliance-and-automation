@@ -25,7 +25,7 @@ and SRGs will result in a secure configuration to prevent issues such as insider
 exfiltration, or advanced persistent threats.
 
 
-In order to better serve the needs of our DoD partners, and those who wish to meet the bar set by the DoD, VMware is providing STIG and SRG documentation as well as compliance auditing and remediation code for community consumption and contribution.
+In order to better serve the needs of our DoD partners, and those who wish to meet the bar set by the DoD, VMware is providing STIG and SRG documentation, as well as compliance auditing and remediation code, for community consumption and contribution.
 
 ## SRG Documentation
 
