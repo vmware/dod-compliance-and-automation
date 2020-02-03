@@ -1,13 +1,6 @@
 # InSpec Profile
-An InSpec Compliance Profile
+An InSpec Compliance Profile for vSphere 6.7 VCSA STIG
 ---
-Name: vCenter 6.7 VCSA
-Author: Ryan Lakey
-Status: 
-Copyright: VMware
-Copyright Email: rlakey@vmware.com
-Version: 6.7.0
-
-Reference: 
-Reference by: 
-Reference source: 
+Name: VMware vSphere 6.7 VCSA STIG  
+Author: Ryan Lakey  
+Version: 6.7.0  
