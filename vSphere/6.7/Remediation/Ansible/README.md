@@ -4,6 +4,7 @@ Ansible playbook to remediate vSphere VCSA 6.7 DISA STIG Controls
 ## Requirements
 -Draft vSphere 6.7 DISA STIG
 -Tested with Ansible 2.8.5
+-Tested with vCenter 6.7 U3
 
 ## Playbook Structure
 Photon role under roles folder so this can be combined with other product specific ansible playbooks.
@@ -40,3 +41,5 @@ Disabling root ssh logins is set to false in the default variables yaml. You sho
 PHTN-10-000035 run_sshd_permitrootlogin: false  
 
 ## License
+Copyright 2019-2020 VMware, Inc.  
+SPDX-License-Identifier: Apache-2.0  
