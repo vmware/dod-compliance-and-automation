@@ -25,6 +25,12 @@ The VMware vSphere 6.7 Security Technical Implementation Guides (STIGs) provide 
 - **VMware vSphere 6.7 Appliance Photon OS STIG**
 - **VMware vSphere 6.7 Appliance VAMI STIG**
 - **VMware vSphere 6.7 Appliance PostgreSQL STIG**
+- **VMware vSphere 6.7 Appliance EAM STIG**
+- **VMware vSphere 6.7 Appliance Perfcharts STIG**
+- **VMware vSphere 6.7 Appliance STS STIG**
+- **VMware vSphere 6.7 Appliance vSphere UI STIG**
+- **VMware vSphere 6.7 Appliance vSphere Client STIG**
+- **VMware vSphere 6.7 Appliance rhttpproxy STIG**
 - **VMware vSphere 6.7 vCenter Server for Windows STIG**
 
 The VMware vSphere 6.7 STIGs presume operation in an environment compliant with all applicable DoD guidance.
