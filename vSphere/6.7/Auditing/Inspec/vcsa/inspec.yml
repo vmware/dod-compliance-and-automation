@@ -1,10 +1,10 @@
-name: vCenter 6.7 Appliance
-title: InSpec Profile
-maintainer:
-copyright: VMware
-copyright_email:
+name: vcsa-67-stig
+title: InSpec Profile for the vCenter 6.7 Appliance DISA STIG
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
 license: Apache-2.0
-summary: An InSpec Compliance Profile for vCenter 6.7 Appliance
+summary: Audits vCenter 6.7 Appliance specific DISA STIGs
 version: 6.7.0
 
 inputs:
