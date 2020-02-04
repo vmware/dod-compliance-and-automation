@@ -1,6 +1,4 @@
-# InSpec Profile
-InSpec Profile for the vCenter 6.7 Appliance DISA STIG
----
+# InSpec Profile for the vCenter 6.7 Appliance DISA STIG
 Name: vCenter 6.7 Appliance DISA STIG  
 Version: 6.7.0
 
@@ -26,4 +24,4 @@ inspec exec C:\Inspec\Profiles\vcsa -t ssh://root@<vcsa IP or FQDN> --password '
 
 Specify the profile inputs at run time vs. editing the inspec.yaml
 
-inspec exec C:\Inspec\Profiles\vcsa -t ssh://root@<vcsa IP or FQDN> --password '<password>' --input=photonIp=10.184.102.139 ntpServer=time.vmware.com syslogServer=test.local:514
+inspec exec C:\Inspec\Profiles\vcsa -t ssh://root@<vcsa IP or FQDN> --password '<password>' --input=photonIp=10.1.1.1 ntpServer=time.test.local syslogServer=test.local:514
