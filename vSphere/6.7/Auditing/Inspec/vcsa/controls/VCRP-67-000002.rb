@@ -26,11 +26,14 @@ entirely consumed."
   tag ia_controls: "AC-10"
   tag check: "At the command prompt, execute the following command:
 
-# sed -n \"/<http>/,/http>/p\" /etc/vmware-rhttpproxy/config.xml|grep -z
---color=always 'maxConnections'
+# xmllint --xpath '/config/vmacore/http/maxConnections'
+/etc/vmware-rhttpproxy/config.xml
 
-If the value of 'maxConnections' is not set to '2048', is missing or is
-commented, this is a finding."
+Expected result:
+
+<maxConnections> 2048 </maxConnections>
+
+If the output does not match the expected result, this is a finding."
   tag fix: "Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
 Locate the <http> block and configure <maxConnections> as follows:
@@ -40,7 +43,6 @@ Locate the <http> block and configure <maxConnections> as follows:
 Restart the service for changes to take effect.
 
 # vmon-cli --restart rhttpproxy"
-
   
   describe.one do
   

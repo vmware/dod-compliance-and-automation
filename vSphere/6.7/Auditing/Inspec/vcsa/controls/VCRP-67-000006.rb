@@ -24,10 +24,13 @@ service start up in order to capture information relevant to investigations."
   tag ia_controls: "AU-14 (2)"
   tag check: "At the command prompt, execute the following command:
 
-# grep \"<outputToFiles>\" /etc/vmware-rhttpproxy/config.xml
+# xmllint --xpath '/config/log/outputToFiles' /etc/vmware-rhttpproxy/config.xml
 
-If the value of 'outputToFiles' is not set to 'true', is missing or is
-commented, this is a finding."
+Expected result:
+
+<outputToFiles>true</outputToFiles>
+
+If the output does not match the expected result, this is a finding."
   tag fix: "Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
 Locate the <log> block and configure <outputToFiles> as follows:

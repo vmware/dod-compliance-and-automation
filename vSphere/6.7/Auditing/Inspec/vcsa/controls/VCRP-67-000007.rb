@@ -30,16 +30,22 @@ server.
   tag ia_controls: "IA-5 (2) (b)"
   tag check: "At the command prompt, execute the following command:
 
-# stat -c \"%n is owned by %U and group owned by %G\"
+# stat -c \"%n permisions are %a, is owned by %U and group owned by %G\"
 /etc/vmware-rhttpproxy/ssl/rui.key
 
-If the key is not owned by root and group owned by root, this is a finding."
+Expected result:
+
+/etc/vmware-rhttpproxy/ssl/rui.key permisions are 600, is owned by root and
+group owned by root
+
+If the output does not match the expected result, this is a finding."
   tag fix: "At the command prompt, execute the following command:
 
 # chown root:root /etc/vmware-rhttpproxy/ssl/rui.key
 "
 
   describe file('/etc/vmware-rhttpproxy/ssl/rui.key') do
+    its('mode') { should eq '0600'}
     its('owner') { should eq 'root' }
     its('group') { should eq 'root' }
   end

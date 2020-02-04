@@ -26,10 +26,9 @@ session of HTTPS rather than plain-text HTTP."
   tag ia_controls: "AC-17 (1)"
   tag check: "At the command prompt, execute the following command:
 
-# sed -n \"/^  <ssl>/,/ssl>/p\" /etc/vmware-rhttpproxy/config.xml|grep -E -z
---color=always '<privateKey|<certificate|<vecsServerName'
+# xmllint --xpath '/config/ssl' /etc/vmware-rhttpproxy/config.xml
 
-Expected Output:
+Expected result:
 
 <ssl>
     <!-- The server private key file -->
@@ -40,8 +39,7 @@ Expected Output:
     <vecsServerName>localhost</vecsServerName>
   </ssl>
 
-If the returned output does not match the expected output, this is a finding.
-"
+If the output does not match the expected result, this is a finding."
   tag fix: "Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
 Locate the first <ssl> block and configure <protocols> as follows:

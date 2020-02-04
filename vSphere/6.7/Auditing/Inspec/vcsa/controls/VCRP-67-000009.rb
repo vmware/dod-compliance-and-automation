@@ -26,22 +26,37 @@ integrity of the hosted application."
   tag ia_controls: "AU-4 (1)"
   tag check: "At the command prompt, execute the following command:
 
-# grep \"<outputToSyslog>\" /etc/vmware-rhttpproxy/config.xml
+# grep -v \"^#\" /etc/vmware-syslog/stig-services-rhttproxy.conf
 
-If the value of 'outputToSyslog' is not set to 'true', is missing or is
-commented, this is a finding."
-  tag fix: "Navigate to and open /etc/vmware-rhttpproxy/config.xml
+Expected result:
 
-Locate the <log> block and configure <outputToSyslog> as follows:
+input(type=\"imfile\"
+      File=\"/var/log/vmware/rhttpproxy/rhttpproxy.log\"
+      Tag=\"rhttpproxy-main\"
+      Severity=\"info\"
+      Facility=\"local0\")
 
-<outputToSyslog>true</outputToSyslog>
+If the file does not exist, this is a finding.
 
-Restart the service for changes to take effect.
+If the output of the command does not match the expected result, this is a
+finding."
+  tag fix: "Navigate to and open
+/etc/vmware-syslog/stig-services-rhttproxy.conf , creating the file if it does
+not exist.
 
-# vmon-cli --restart rhttpproxy"
+Set the contents of the file as follows:
 
-  describe xml('/etc/vmware-rhttpproxy/config.xml') do
-    its(['/config/log/outputToSyslog']) { should cmp ['true'] }
+input(type=\"imfile\"
+      File=\"/var/log/vmware/rhttpproxy/rhttpproxy.log\"
+      Tag=\"rhttpproxy-main\"
+      Severity=\"info\"
+      Facility=\"local0\")"
+
+  describe file('/etc/vmware-syslog/stig-services-rhttproxy.conf') do
+    it { should exist }
+  end
+  describe command('grep -v "^#" /etc/vmware-syslog/stig-services-rhttproxy.conf') do
+    its ('stdout') { should match "input(type=\"imfile\" File=\"/var/log/vmware/rhttpproxy/rhttpproxy.log\"\nTag=\"rhttpproxy-main\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
   end
 
 end

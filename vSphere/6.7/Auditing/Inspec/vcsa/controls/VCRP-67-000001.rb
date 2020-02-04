@@ -25,11 +25,14 @@ connected to an active client."
   tag ia_controls: "AC-10"
   tag check: "At the command prompt, execute the following command:
 
-# sed -n \"/<clientSocket/,/clientSocket>/p\"
-/etc/vmware-rhttpproxy/config.xml|grep -z --color=always 'idleTimeSec'
+# xmllint --xpath '/config/vmacore/tcpKeepAlive/clientSocket/idleTimeSec'
+/etc/vmware-rhttpproxy/config.xml
 
-If the value of 'idleTimeSec' is not set to '900'. is missing or is commented,
-this is a finding."
+Expected result:
+
+<idleTimeSec>900</idleTimeSec>
+
+If the output does not match the expected result, this is a finding."
   tag fix: "Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
 Locate the <clientSocket> block and configure <idleTimeSec> as follows:

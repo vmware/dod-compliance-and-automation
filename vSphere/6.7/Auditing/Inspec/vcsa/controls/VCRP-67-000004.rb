@@ -26,14 +26,16 @@ client connections. "
   tag ia_controls: "AC-17 (2)"
   tag check: "At the command prompt, execute the following command:
 
-# sed -n \"/    <ssl>/,/ssl>/p\" /etc/vmware-rhttpproxy/config.xml|grep -z
---color=always 'protocols'
+# xmllint --xpath '/config/vmacore/ssl/protocols'
+/etc/vmware-rhttpproxy/config.xml
 
-If the value of 'protocols' is not set to 'tls1.2', is missing or is commented,
-this is a finding.
+Expected result:
 
-Note: Some older, custom developed clients do not support TLS 1.2 and will fail
-when this is implemented."
+<protocols>tls1.2</protocols>
+
+If there is no output, this is NOT a finding.
+
+If the output does not match the expected result, this is a finding."
   tag fix: "Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
 Locate the <ssl> block inside of the <vmacore> block and configure <protocols>

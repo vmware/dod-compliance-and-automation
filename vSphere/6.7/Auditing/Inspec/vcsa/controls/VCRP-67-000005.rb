@@ -26,7 +26,13 @@ logging in order to capture client IP addresses and the associated actions."
   tag ia_controls: "AC-17 (1)"
   tag check: "At the command prompt, execute the following command:
 
-# grep \"<level>\" /etc/vmware-rhttpproxy/config.xml"
+# xmllint --xpath '/config/log/level' /etc/vmware-rhttpproxy/config.xml
+
+Expected result:
+
+<level>verbose</level>
+
+If the output does not match the expected result, this is a finding."
   tag fix: "Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
 Locate the <log> block and configure <level> as follows:

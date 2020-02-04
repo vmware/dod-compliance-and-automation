@@ -24,11 +24,13 @@ over the client TLS connection."
   tag ia_controls: "AC-17 (2)"
   tag check: "At the command prompt, execute the following command:
 
-# sed -n \"/    <ssl>/,/ssl>/p\" /etc/vmware-rhttpproxy/config.xml|grep -z
---color=always 'fips'
+# xmllint --xpath '/config/vmacore/ssl/fips' /etc/vmware-rhttpproxy/config.xml
 
-If the value of 'fips' is not set to 'true', is missing or is commented, this
-is a finding."
+Expected result:
+
+<fips>true</fips>
+
+If the output does not match the expected result, this is a finding."
   tag fix: "Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
 Locate the <ssl> block inside of the <vmacore> block and configure <fips> as
