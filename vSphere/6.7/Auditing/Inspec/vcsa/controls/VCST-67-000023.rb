@@ -51,5 +51,9 @@ Note: The setting should look like the below:
       <param-name>listings</param-name>
       <param-value>false</param-value>
 </init-param>"
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp "false" }
+  end
+
+end

@@ -39,5 +39,9 @@ command:
 Restart the service with the following command:
 
 # service-control --restart vmware-stsd"
-end
 
+  describe command('ls /usr/lib/vmware-sso/vmware-sts/webapps/*.war') do
+    its ('stdout.strip') { should eq '/usr/lib/vmware-sso/vmware-sts/webapps/ROOT.war' }
+  end
+
+end

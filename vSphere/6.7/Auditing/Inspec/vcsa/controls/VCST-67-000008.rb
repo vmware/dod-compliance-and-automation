@@ -33,5 +33,9 @@ excluding configuration files."
 If is any output, this is a finding."
   tag fix: "Re-install the VCSA or roll back to a snapshot. Modifying the
 Security Token Service installation files manually is not supported by VMware."
-end
 
+  describe command('rpm -V vmware-identity-sts|grep "^..5......"|grep -E "\.war|\.jar|\.sh|\.py"') do
+    its ('stdout.strip') { should eq '' }
+  end
+
+end

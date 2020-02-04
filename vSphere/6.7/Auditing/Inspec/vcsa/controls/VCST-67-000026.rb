@@ -12,8 +12,7 @@ does not need to cause an error condition to gain this information.
 
     The Security Token Service can be configured to set the debugging level. By
 setting the debugging level to zero (0), no debugging information will be
-provided to a malicious user.
-  "
+provided to a malicious user."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000266-WSR-000160"
@@ -42,8 +41,8 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 Expected result:
 
 <init-param>
-\t<param-name>debug</param-name>
-\t<param-value>0</param-value>
+<param-name>debug</param-name>
+<param-value>0</param-value>
 </init-param>
 
 If the output of the command does not match the expected result, this is a
@@ -60,5 +59,9 @@ Note: The debug setting should look like the below:
                   <param-name>debug</param-name>
                   <param-value>0</param-value>
                </init-param>"
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
+  end
+
+end

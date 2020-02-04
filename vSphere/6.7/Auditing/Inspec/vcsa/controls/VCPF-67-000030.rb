@@ -52,7 +52,7 @@ Navigate to the <session-config> node and configure it as follows.
     <session-timeout>6</session-timeout>
   </session-config>"
 
-  describe xml('//usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml') do
+  describe xml('/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml') do
     its('/web-app/session-config/cookie-config/secure') { should cmp 'true' }
   end
 

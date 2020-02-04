@@ -12,8 +12,7 @@ happens to be the context class loader at the time. The
 JreMemoryLeakPreventionListener class is designed to initialise these
 singletons when Tomcat's common class loader is the context class loader.
 Proper use of JRE memory leak protection will ensure that the hosted
-application does not consume system resources and cause an unstable environment.
-  "
+application does not consume system resources and cause an unstable environment."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000141-WSR-000086"
@@ -54,5 +53,9 @@ Navigate to the <Server> node.
 Add '<Listener
 className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>' to
 the <Server> node."
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+    its('Server/Listener/attribute::className') { should include 'org.apache.catalina.core.JreMemoryLeakPreventionListener' }
+  end
+
+end

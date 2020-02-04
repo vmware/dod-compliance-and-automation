@@ -40,5 +40,9 @@ Note: Replace <file_name> for the name of any files that were returned.
 # unlink <file_name>
 
 Repeat the commands for each file that was returned."
-end
 
+  describe command('find /usr/lib/vmware-sso/vmware-sts/webapps/ -type l -ls') do
+    its ('stdout.strip') { should eq '' }
+  end
+
+end

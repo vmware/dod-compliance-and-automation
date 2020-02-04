@@ -10,8 +10,7 @@ application.
     An attacker can also enter Unicode characters into hosted applications in
 an effort to break out of the document home or root home directory or to bypass
 security checks. The Security Token Service must be configured to use a
-consistent character set via the URIEncoding attribute on the Connector nodes.
-  "
+consistent character set via the URIEncoding attribute on the Connector nodes."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000251-WSR-000157"
@@ -47,5 +46,9 @@ If the output does not match the expected result, this is a finding"
 Navigate to each of the <Connector> nodes.
 
 Configure each <Connector> node with the value 'URIEncoding=\"UTF-8\"'."
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+    its(['Server/Service/Connector/@URIEncoding']) { should cmp 'UTF-8'}
+  end
+
+end

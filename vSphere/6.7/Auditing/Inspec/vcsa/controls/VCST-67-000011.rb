@@ -44,5 +44,9 @@ finding."
 
 package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.
 "
-end
 
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties').params['package.access'] do
+    it { should eq 'sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.' }
+  end
+
+end

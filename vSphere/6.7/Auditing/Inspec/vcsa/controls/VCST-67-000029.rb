@@ -41,5 +41,9 @@ text editor.
 Add or modify the following setting:
 
 base.shutdown.port=-1"
-end
 
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties').params['base.shutdown.port'] do
+    it { should eq '-1' }
+  end
+
+end

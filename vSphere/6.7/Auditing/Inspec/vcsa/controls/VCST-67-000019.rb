@@ -41,5 +41,9 @@ Navigate to the <Connector> configured with port=\"${bio-custom.http.port}\".
 Add or change the folllowing value:
 
 acceptCount=\"100\""
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+    its(['Server/Service/Connector[@port="${bio-custom.http.port}"]/@acceptCount']) { should cmp '100'}
+  end
+
+end

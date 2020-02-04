@@ -48,5 +48,9 @@ Navigate to the <session-config> node and configure it as follows.
         </cookie-config>
     </session-config>
 "
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    its(['/web-app/session-config/cookie-config/http-only']) { should cmp 'true' }
+  end
+
+end

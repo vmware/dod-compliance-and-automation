@@ -52,5 +52,10 @@ Inside this block, add the following on a new line:
 
 <Valve className=\"org.apache.catalina.valves.ErrorReportValve\"
 showReport=\"false\" showServerInfo=\"false\" />"
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+    its(['Server/Service/Engine/Host/Valve[@className=\'org.apache.catalina.valves.ErrorReportValve\']/@showServerInfo']) { should cmp 'false' }
+    its(['Server/Service/Engine/Host/Valve[@className=\'org.apache.catalina.valves.ErrorReportValve\']/@showReport']) { should cmp 'false' }
+  end
+
+end

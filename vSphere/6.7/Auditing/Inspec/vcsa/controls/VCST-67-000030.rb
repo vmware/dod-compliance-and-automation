@@ -48,5 +48,9 @@ it as follows.
       <http-only>true</http-only>
       <secure>true</secure>
     </cookie-config>"
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    its('/web-app/session-config/cookie-config/secure') { should cmp 'true' }
+  end
+
+end

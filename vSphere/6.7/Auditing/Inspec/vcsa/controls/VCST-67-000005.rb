@@ -10,8 +10,7 @@ inserted into the request processing pipeline to provide robust access logging.
 The Access Log Valve creates log files in the same format as those created by
 standard web servers. When AccessLogValve is properly configured, log files
 will contain all the forensic information necessary in the case of a security
-incident.
-  "
+incident."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000016-WSR-000005"
@@ -61,5 +60,9 @@ internalProxies=\"127\\.0\\.0\\.1\" />
 directory=\"logs\" pattern=\"%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s
 %b &quot;%{User-Agent}i&quot;\" resolveHosts=\"false\"
 prefix=\"localhost_access_log\" suffix=\".txt\" />"
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+    its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ['%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;'] }
+  end
+
+end

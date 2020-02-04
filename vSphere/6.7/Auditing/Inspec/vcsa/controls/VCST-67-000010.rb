@@ -32,5 +32,9 @@ confirmed."
 If the command produces any output, this is a finding."
   tag fix: "Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 . Remove the <Realm> node returned in the check."
-end
 
+  describe command('grep UserDatabaseRealm /usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+    its ('stdout.strip') { should eq '' }
+  end
+
+end

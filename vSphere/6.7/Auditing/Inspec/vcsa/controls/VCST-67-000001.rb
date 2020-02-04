@@ -10,9 +10,7 @@ milliseconds the server will wait after accepting a connection for the request
 URI line to be presented. This timeout will also be used when reading the
 request body (if any). This prevents idle sockets that are not sending HTTP
 requests from consuming system resources and potentially denying new
-connections.
-
-  "
+connections."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000001-WSR-000001"
@@ -51,5 +49,21 @@ Navigate to each of the <Connector> nodes.
 Configure each <Connector> node with the value:
 
 connectionTimeout=\"60000\""
-end
 
+  begin
+    vcui_conf = xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml')
+
+      if vcui_conf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
+        vcui_conf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
+          describe x do
+            it { should eq "60000" }
+          end
+        end
+      else
+        describe xml(vcui_conf['Server/Service/Connector/attribute::connectionTimeout']) do
+          it { should eq "60000" }
+        end
+      end
+  end
+
+end

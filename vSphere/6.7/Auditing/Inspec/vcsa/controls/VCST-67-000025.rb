@@ -36,5 +36,15 @@ this is NOT a finding."
 Navigate to and locate 'allowTrace=\"true\"'
 
 Remove the 'allowTrace=\"true\"' setting."
-end
 
+  describe.one do
+    describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+      its(['Server/Service/Connector/attribute::allowTrace']) { should eq [] }
+    end
+
+    describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp "false" }
+    end
+  end
+
+end

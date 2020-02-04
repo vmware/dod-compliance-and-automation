@@ -11,8 +11,7 @@ concurrent HTTP/HTTPS requests. In Tomcat, each incoming request requires a
 thread for the duration of that request. If more simultaneous requests are
 received than can be handled by the currently available request processing
 threads, additional threads will be created up to the value of the maxThreads
-attribute.
-  "
+attribute."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000001-WSR-000001"
@@ -40,18 +39,22 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 
 Expected result:
 
-maxThreads=\"150\"
+maxThreads=\"300\"
 
 If the output does not match the expected result, this is a finding"
   tag fix: "Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
 Navigate to the <Executor> mode with the name of tomcatThreadPool and configure
-with the value 'maxThreads=\"150\"'
+with the value 'maxThreads=\"300\"'
 
 Note: The <Executor> node should be configured per the below:
 
-<Executor maxThreads=\"150\" minSpareThreads=\"50\" name=\"tomcatThreadPool\"
+<Executor maxThreads=\"300\" minSpareThreads=\"50\" name=\"tomcatThreadPool\"
 namePrefix=\"tomcat-http--\" />
 "
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+    its(['/Server/Service/Executor[@name="tomcatThreadPool"]/@maxThreads']) { should cmp '300' }
+  end
+
+end

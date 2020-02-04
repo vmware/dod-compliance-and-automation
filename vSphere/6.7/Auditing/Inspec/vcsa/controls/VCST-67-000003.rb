@@ -42,5 +42,9 @@ Navigate to each of the <Connector> nodes.
 
 Remove any configuration for 'maxPostSize'.
 "
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
+    its('Server/Service/Connector/attribute::maxPostSize') { should eq [] }
+  end
+
+end

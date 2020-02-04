@@ -49,5 +49,17 @@ bio-custom.http.port=7080
 bio-custom.https.port=8443
 bio-ssl-localhost.https.port=7444
 "
-end
 
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties').params['bio-custom.http.port'] do
+    it { should eq '7080' }
+  end
+
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties').params['bio-custom.https.port'] do
+    it { should eq '8443' }
+  end
+
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties').params['bio-ssl-localhost.https.port'] do
+    it { should eq '7444' }
+  end
+
+end

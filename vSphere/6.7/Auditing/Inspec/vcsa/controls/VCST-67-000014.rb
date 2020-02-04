@@ -10,8 +10,7 @@ modify unauthorized files on the web server and must therefore be disabled.
     Tomcat uses the org.apache.catalina.servlets.WebdavServlet servlet to
 provide WebDAV services. Because the WebDAV service has been found to have an
 excessive number of vulnerabilities, this servlet must not be installed. The
-Security Token Service does not configure WebDAV by default.
-  "
+Security Token Service does not configure WebDAV by default."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000141-WSR-000085"
@@ -43,5 +42,9 @@ Find the <servlet-name>webdav</servlet-name> node and remove the entire parent
 
 Find the <servlet-name>webdav</servlet-name> node and remove the entire parent
 <servlet-mapping> block."
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    its('/web-app/servlet-mapping[servlet-name="webdav"]') { should eq [] }
+  end
+
+end

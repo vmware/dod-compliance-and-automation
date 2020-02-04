@@ -34,11 +34,15 @@ permissions as applied \"out of the box\"."
 If the command produces any output, this is a finding."
   tag fix: "At the command prompt, execute the following command:
 
-# chown\xC2\xA0root:root <file_name>
+# chown\ root:root <file_name>
 
 Repeat the command for each file that was returned
 
 Note: Replace <file_name> for the name of the file that was returned.
 "
-end
 
+  describe command('find /usr/lib/vmware-sso/vmware-sts/ -xdev -type f -a \'(\' -not -user root -o -not -group root \')\' -exec ls -ld {} \;') do
+   its('stdout.strip') { should eq ''}
+  end
+
+end

@@ -42,5 +42,9 @@ finding."
 Add or change the following line:
 
 org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true"
-end
 
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties').params['org.apache.catalina.startup.EXIT_ON_INIT_FAILURE'] do
+    it { should eq 'true' }
+  end
+
+end

@@ -37,5 +37,13 @@ If any files are returned, this is a finding."
 # chown root:root <file>
 
 Note: Subsitute <file> with the listed file."
-end
 
+  command('find /storage/log/vmware/sso/ -type f -xdev').stdout.split.each do | fname |
+    describe file(fname) do
+      it { should_not be_more_permissive_than('0644') }
+      its('owner') {should eq 'root'}
+      its('group') {should eq 'root'}
+    end
+  end
+
+end

@@ -13,8 +13,7 @@ an effort to break out of the document home or root home directory or to bypass
 security checks. VMware utilizes the standard Tomcat SetCharacterEncodingFilter
 to provide a layer of defense against character encoding attacks. Filters are
 Java objects that performs filtering tasks on either the request to a resource
-(a servlet or static content), or on the response from a resource, or both.
-  "
+(a servlet or static content), or on the response from a resource, or both."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000251-WSR-000157"
@@ -69,7 +68,7 @@ Expected result:
       <param-name>ignore</param-name>
       <param-value>false</param-value>
     </init-param>
-\t<async-supported>true</async-supported>
+<async-supported>true</async-supported>
 </filter>
 
 If the output is does not match the expected result, this is a finding."
@@ -91,7 +90,12 @@ Configure the <web-app> node with the child nodes listed below.
       <param-name>ignore</param-name>
       <param-value>false</param-value>
     </init-param>
-\t<async-supported>true</async-supported>
+<async-supported>true</async-supported>
 </filter>"
-end
 
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    its('/web-app/filter-mapping[filter-name="setCharacterEncodingFilter"]/url-pattern') { should cmp '*' }
+    its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/filter-class') { should cmp 'org.apache.catalina.filters.SetCharacterEncodingFilter' }
+  end
+
+end

@@ -37,7 +37,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath '/web-app/welcome-file-list' -
 Expected result:
 
 <welcome-file-list>
-\t<welcome-file>index.html</welcome-file>
+<welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
 </welcome-file-list>
@@ -49,11 +49,16 @@ finding."
 Add the following section under the <web-apps> node:
 
 <welcome-file-list>
-\t<welcome-file>index.html</welcome-file>
+<welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
 </welcome-file-list>
 
 "
-end
 
+  list = ["index.html", "index.htm", "index.jsp"]
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    its('/web-app/welcome-file-list/welcome-file') { should be_in list }
+  end
+
+end

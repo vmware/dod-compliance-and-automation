@@ -59,5 +59,29 @@ Ensure that the following lines are present:
 1catalina.org.apache.juli.FileHandler.directory = ${catalina.base}/logs
 1catalina.org.apache.juli.FileHandler.prefix = catalina.
 1catalina.org.apache.juli.FileHandler.bufferSize = -1"
-end
 
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/logging.properties').params['handlers'] do
+    it { should eq '1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler, java.util.logging.ConsoleHandler' }
+  end
+
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/logging.properties').params['.handlers'] do
+    it { should eq '1catalina.org.apache.juli.FileHandler' }
+  end
+
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/logging.properties').params['1catalina.org.apache.juli.FileHandler.level'] do
+    it { should eq 'FINE' }
+  end
+
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/logging.properties').params['1catalina.org.apache.juli.FileHandler.directory'] do
+    it { should eq '${catalina.base}/logs' }
+  end
+
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/logging.properties').params['1catalina.org.apache.juli.FileHandler.prefix'] do
+    it { should eq 'catalina.' }
+  end
+
+  describe parse_config_file('/usr/lib/vmware-sso/vmware-sts/conf/logging.properties').params['1catalina.org.apache.juli.FileHandler.bufferSize'] do
+    it { should eq '-1' }
+  end
+
+end

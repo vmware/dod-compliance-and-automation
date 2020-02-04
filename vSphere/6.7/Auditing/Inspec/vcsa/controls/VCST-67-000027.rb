@@ -64,5 +64,12 @@ input(type=\"imfile\"
       PersistStateInterval=\"200\"
       Severity=\"info\"
       Facility=\"local0\")"
-end
 
+  describe file('/etc/vmware-syslog/stig-services-sso.conf') do
+    it { should exist }
+  end
+  describe command('grep -v "^#" /etc/vmware-syslog/stig-services-sso.conf') do
+    its ('stdout') { should match "input(type=\"imfile\" File=\"/var/log/vmware/sso/*.log\"\nTag=\"vmidentity\"\nPersistStateInterval=\"200\"\nSeverity=\"info\"\nFacility=\"local0\")\ninput(type=\"imfile\" File=\"/var/log/vmware/sso/sts-runtime.log.*\"\nTag=\"sts-runtime\"\nPersistStateInterval=\"200\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
+  end
+
+end

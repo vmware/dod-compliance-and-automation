@@ -11,8 +11,7 @@ log files, password files, etc.
 
     As Tomcat is a java-based web server, the main file extension used is
 *.jsp.  This check ensures that the *.jsp and *.jspx file types has been
-properly mapped to servlets.
-  "
+properly mapped to servlets."
   impact 0.5
   tag severity: "CAT II"
   tag gtitle: "SRG-APP-000141-WSR-000083"
@@ -59,5 +58,10 @@ Inside the <web-app> parent node, add the following:
     <url-pattern>*.jspx</url-pattern>
 </servlet-mapping>
 "
-end
 
+  list = ["*.jsp", "*.jspx"]
+  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    its('/web-app/servlet-mapping[servlet-name="JspServlet"]/url-pattern') { should be_in list }
+  end
+
+end
