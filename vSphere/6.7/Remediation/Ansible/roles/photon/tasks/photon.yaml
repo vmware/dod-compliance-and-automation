@@ -676,7 +676,7 @@
     - { regexp: '^#?install rds', line: 'install rds /bin/false' }
     - { regexp: '^#?install tipc', line: 'install tipc /bin/false' }
     - { regexp: '^#?install bluetooth', line: 'install bluetooth /bin/false' }
-    - { regexp: '^#?install usb_storage', line: 'install usb_storage /bin/false' }
+    - { regexp: '^#?install usb_storage', line: 'install usb-storage /bin/false' }
     - { regexp: '^#?install ieee1394', line: 'install ieee1394 /bin/false' }
     - { regexp: '^#?install cramfs', line: 'install cramfs /bin/false' }
     - { regexp: '^#?install freevxfs', line: 'install freevxfs /bin/false' }
