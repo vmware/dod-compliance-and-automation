@@ -3,7 +3,7 @@
 var_syslog_server_name: ''
 var_syslog_server_port: ''
 # udp, tcp, or tls
-var_syslog_server_protocol: 'tls'
+var_syslog_server_protocol: 'tcp'
 
 # ntp variables
 var_ntp_servers:
