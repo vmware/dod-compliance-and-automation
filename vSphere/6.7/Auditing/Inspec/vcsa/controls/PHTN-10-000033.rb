@@ -39,7 +39,7 @@ install decnet /bin/false
 install rds /bin/false
 install tipc /bin/false
 install bluetooth /bin/false
-install usb_storage /bin/false
+install usb-storage /bin/false
 install ieee1394 /bin/false
 install cramfs /bin/false
 install freevxfs /bin/false
@@ -63,7 +63,7 @@ install decnet /bin/false
 install rds /bin/false
 install tipc /bin/false
 install bluetooth /bin/false
-install usb_storage /bin/false
+install usb-storage /bin/false
 install ieee1394 /bin/false
 install cramfs /bin/false
 install freevxfs /bin/false
@@ -114,8 +114,8 @@ install udf /bin/false
     its('stdout.strip') {should eq "install bluetooth /bin/false"}
   end
 
-  describe command('modprobe --showconfig | grep "^install usb_storage" | grep "/bin"') do
-    its('stdout.strip') {should eq "install usb_storage /bin/false"}
+  describe command('modprobe --showconfig | grep "^install usb-storage" | grep "/bin"') do
+    its('stdout.strip') {should eq "install usb-storage /bin/false"}
   end
 
   describe command('modprobe --showconfig | grep "^install ieee1394" | grep "/bin"') do
