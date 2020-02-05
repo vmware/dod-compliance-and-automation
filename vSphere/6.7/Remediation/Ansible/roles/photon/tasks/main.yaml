@@ -1,2 +1,2 @@
 - include: photon.yaml
-  tags: os
+  tags: photon
