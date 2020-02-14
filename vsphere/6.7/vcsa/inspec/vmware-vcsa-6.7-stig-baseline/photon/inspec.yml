@@ -1,0 +1,22 @@
+name: vmware-vcsa-6.7-photon-stig-baseline
+title: InSpec Wrapper Profile for VMware vCenter Service Appliance 6.7 Photon DISA STIG
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 6.7.0
+
+inputs:
+- name: photonIp
+  type: string
+  value: "x.x.x.x"  #Enter IP for PhotonOS
+- name: ntpServer1
+  type: string
+  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+- name: ntpServer2
+  type: string
+  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+- name: syslogServer
+  type: string
+  value: "x.x.x.x:514"  #Enter IP or FQDN of Syslog Server and Port

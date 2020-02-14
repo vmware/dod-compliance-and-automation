@@ -1,0 +1,13 @@
+name: vmware-vm-6.7-stig-baseline
+title: InSpec Profile for VMware vSphere Virtual Machine 6.7 DISA STIG
+maintainer: The Authors
+copyright: The Authors
+copyright_email:
+license: Apache-2.0
+summary: An InSpec Compliance Profile for vSphere 6.7 Virtual Machines
+version: 6.7.0
+inputs:
+  - name: vmName
+    value: ""
+    type: string
+    description: "The virtual machine name to audit"

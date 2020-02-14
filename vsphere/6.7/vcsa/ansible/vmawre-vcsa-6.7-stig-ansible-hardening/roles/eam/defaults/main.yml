@@ -1,0 +1,39 @@
+---
+
+# Turn specific controls on/off by setting the value to true or false
+
+#VCEM-67-000001
+run_connection_timeout: true
+#VCEM-67-000002
+run_max_threads: true
+#VCEM-67-000003
+run_max_post_size: true
+#VCEM-67-000004
+run_http_only: true
+#VCEM-67-000005
+run_access_valve_pattern: true
+#VCEM-67-000006
+run_json_stream_redirect_file: true
+#VCEM-67-000007
+run_logs_permissions: true
+#VCEM-67-000010
+run_user_database_realm: true
+#VCEM-67-000011
+run_catalina_properties: true
+#VCEM-67-000012
+run_removed_mime_mappings: true
+#VCEM-67-000010
+
+#VCEM-67-000010
+
+#VCEM-67-000010
+
+#VCEM-67-000010
+
+#VCEM-67-000010
+
+#VCEM-67-000010
+
+#VCEM-67-000010
+
+#VCEM-67-000010

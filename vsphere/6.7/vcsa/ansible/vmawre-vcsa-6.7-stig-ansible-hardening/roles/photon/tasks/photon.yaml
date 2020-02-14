@@ -1,0 +1,2747 @@
+# VMware vSphere 6.7 vCenter Server Appliance Photon Ansible Playbook
+
+---
+
+ #---------- Ansible version 2.8.5 --------#
+
+
+############################################
+
+# This will cover all the auditd rules and replace the audit.STIG.rules file
+
+- name: PHTN-10-000001 - Update/Create audit.STIG.rules file
+  template:
+    src: audit.STIG.rules.j2
+    dest: /etc/audit/rules.d/audit.STIG.rules
+    owner: root
+    group: root
+    mode: '0640'
+    force: yes
+  tags:
+  - PHTN-10-000001
+  - PHTN-10-000012
+  - PHTN-10-000020
+  - PHTN-10-000044
+  - PHTN-10-000045
+  - PHTN-10-000046
+  - PHTN-10-000047
+  - PHTN-10-000056
+  - PHTN-10-000071
+  - PHTN-10-000072
+  - PHTN-10-000073
+  - PHTN-10-000074
+  - auditd
+  notify:
+    - restart auditd
+  when:
+  - run_auditd_rules | bool
+
+############################################
+
+# Title: The Photon operating system must automatically lock an account when three unsuccessful logon attempts occur.
+# auth    required        pam_tally2.so file=/var/log/tallylog deny=3 onerr=fail even_deny_root unlock_time=86400 root_unlock_time=300
+
+- name: PHTN-10-000002 - Automatically lock an account when three unsuccessful logon attempts occur
+  pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_tally2.so
+    module_arguments: 'deny={{ var_pamd_lock }}'
+    state: args_present
+  tags:
+  - PHTN-10-000002
+  - pam
+  when:
+  - run_pamd_lock | bool
+
+############################################
+
+# Title: The Photon operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting SSH access.
+
+- name: PHTN-10-000003 - Update sshd_config banner
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^Banner.*$'
+    line: Banner {{ var_sshd_banner }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000003
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_banner | bool
+
+- name: PHTN-10-000003 - Update/Create /etc/issue file
+  template:
+    src: issue.j2
+    dest: /etc/issue
+    owner: root
+    group: root
+    mode: '0644'
+    force: yes
+  tags:
+  - PHTN-10-000003
+  - sshd
+  notify:
+    - restart sshd
+  when:
+  - run_sshd_banner | bool
+
+############################################
+
+# Title: The Photon operating system must limit the number of concurrent sessions to ten for all accounts and/or account types.
+
+- name: PHTN-10-000004 - Limit the number of concurrent sessions to ten for all accounts and/or account types
+  lineinfile:
+    path: /etc/security/limits.conf
+    state: present
+    insertbefore: ^# End of file
+    regexp: ^#?\*.*maxlogins
+    line: '*              hard    maxlogins      {{ var_limits_maxlogins }}'
+    firstmatch: yes
+  tags:
+  - PHTN-10-000004
+  - limits.conf
+  when:
+  - run_limits_maxlogins | bool
+
+############################################
+
+# Title: The Photon operating system must set a session inactivity timeout of 15 minutes or less.
+
+- name: PHTN-10-000005 - Create /etc/profile.d/tmout.sh if it doesn't exist
+  copy:
+    content: ""
+    dest: /etc/profile.d/tmout.sh
+    force: no
+    group: root
+    owner: root
+    mode: 0644
+  tags:
+  - PHTN-10-000005
+  - tmout.sh
+  when:
+  - run_configure_tmout | bool
+
+- name: PHTN-10-000005 - Set a session inactivity timeout of 15 minutes or less
+  lineinfile:
+    path: /etc/profile.d/tmout.sh
+    state: present
+    regexp: '^TMOUT='
+    line: 'TMOUT={{ var_tmout_sh }}'
+    firstmatch: yes
+  tags:
+  - PHTN-10-000005
+  - tmout.sh
+  when:
+  - run_configure_tmout | bool
+
+- name: PHTN-10-000005 - Set a session inactivity timeout of 15 minutes or less readonly
+  lineinfile:
+    path: /etc/profile.d/tmout.sh
+    state: present
+    insertafter: '^TMOUT='
+    regexp: '^readonly'
+    line: 'readonly TMOUT'
+  tags:
+  - PHTN-10-000005
+  - tmout.sh
+  when:
+  - run_configure_tmout | bool
+
+- name: PHTN-10-000005 - Set a session inactivity timeout of 15 minutes or less export
+  lineinfile:
+    path: /etc/profile.d/tmout.sh
+    state: present
+    insertafter: '^readonly'
+    regexp: '^export'
+    line: 'export TMOUT'
+  tags:
+  - PHTN-10-000005
+  - tmout.sh
+  when:
+  - run_configure_tmout | bool
+
+- name: PHTN-10-000005 - Set a session inactivity timeout of 15 minutes or less mesg
+  lineinfile:
+    path: /etc/profile.d/tmout.sh
+    state: present
+    insertafter: '^export'
+    regexp: '^mesg'
+    line: 'mesg n 2>/dev/null'
+  tags:
+  - PHTN-10-000005
+  - tmout.sh
+  when:
+  - run_configure_tmout | bool
+
+############################################
+
+# Title: The Photon operating system must have the sshd SyslogFacility set to authpriv.
+
+- name: PHTN-10-000006 - Update sshd_config SyslogFacility
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^SyslogFacility.*$'
+    line: SyslogFacility {{ var_sshd_syslogfacility }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000006
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_syslogfacility | bool
+
+############################################
+
+# Title: The Photon operating system must have sshd authentication logging enabled.
+
+- name: PHTN-10-000007 - Update rsyslog to log ssh authentication
+  lineinfile:
+    path: /etc/rsyslog.conf
+    state: present
+    regexp: '^authpriv'
+    line: authpriv.*   /var/log/audit/sshinfo.log
+    firstmatch: yes
+  tags:
+  - PHTN-10-000007
+  - sshd
+  notify:
+  - restart syslog
+  when:
+  - run_sshd_rsyslog | bool
+
+############################################
+
+# Title: The Photon operating system must have the sshd LogLevel set to INFO
+
+- name: PHTN-10-000008 - Update sshd_config LogLevel
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^LogLevel.*$'
+    line: LogLevel {{ var_sshd_loglevel }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000008
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_loglevel | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to use approved encryption algorithms.
+
+- name: PHTN-10-000009 - Update sshd_config FipsMode
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^FipsMode.*$'
+    line: FipsMode {{ var_sshd_fipsmode }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000009
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_fipsmode | bool
+
+############################################
+
+# Title: The Photon operating system must configure auditd to log to disk.
+
+- name: PHTN-10-000010 - Configure auditd write_logs
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    regexp: '^write_logs = no$'
+    line: write_logs = {{ var_auditd_write_logs }}
+    state: present
+    backrefs: yes
+  tags:
+  - PHTN-10-000010
+  - auditd
+  when:
+  - run_auditd_write_logs | bool
+
+############################################
+
+# Title: The Photon operating system must configure auditd to use the correct log format.
+
+- name: PHTN-10-000011 - Configure auditd log_format
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: log_format = {{ var_auditd_log_format }}
+    state: present
+  tags:
+  - PHTN-10-000011
+  - auditd
+  when:
+  - run_auditd_log_format | bool
+
+############################################
+
+# Title: The Photon operating system audit log must log space limit problems to syslog.
+
+- name: PHTN-10-000013 - Configure auditd space_left_action
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: space_left_action = {{ var_auditd_space_left_action }}
+    state: present
+  tags:
+  - PHTN-10-000013
+  - auditd
+  when:
+  - run_auditd_space_left_action | bool
+
+############################################
+
+# Title: The Photon operating system audit log must attempt to log audit failures to syslog.
+
+- name: PHTN-10-000014 - Configure auditd disk_full_action
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: disk_full_action = {{ var_auditd_disk_full_action }}
+    state: present
+  tags:
+  - PHTN-10-000014
+  - auditd
+  when:
+  - run_auditd_disk_full_action | bool
+
+- name: PHTN-10-000014 - Configure auditd disk_error_action
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: disk_error_action = {{ var_auditd_disk_error_action }}
+    state: present
+  tags:
+  - PHTN-10-000014
+  - auditd
+  when:
+  - run_auditd_disk_error_action | bool
+
+- name: PHTN-10-000014 - Configure auditd admin_space_left_action
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: admin_space_left_action = {{ var_auditd_admin_space_left_action }}
+    state: present
+  tags:
+  - PHTN-10-000014
+  - auditd
+  when:
+  - run_auditd_admin_space_left_action | bool
+
+############################################
+
+# Title: The Photon operating system audit log must have correct permissions.
+
+- name: PHTN-10-000015 - Find audit log files
+  find:
+    paths: /var/log/audit/
+    file_type: file
+    patterns: "*.log*"
+  register: auditlogs
+  tags:
+  - PHTN-10-000015
+  - perms
+  when:
+  - run_audit_logs_permissions | bool
+
+- name: PHTN-10-000015 - Set audit logs permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "0600"
+  with_items: " {{ auditlogs.files }}"
+  tags:
+  - PHTN-10-000015
+  - perms
+  when:
+  - run_audit_logs_permissions | bool
+
+# Title: The Photon operating system audit log must be owned by root.
+
+- name: PHTN-10-000016 - Set audit logs owner
+  file:
+    path: "{{ item.path }}"
+    state: file
+    owner: root
+  with_items: " {{ auditlogs.files }}"
+  tags:
+  - PHTN-10-000016
+  - perms
+  when:
+  - run_audit_logs_owner | bool
+
+# Title: The Photon operating system audit log must be group-owned by root.
+
+- name: PHTN-10-000017 - Set audit logs permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    group: root
+  with_items: " {{ auditlogs.files }}"
+  tags:
+  - PHTN-10-000017
+  - perms
+  when:
+  - run_audit_logs_group | bool
+
+############################################
+
+# Title: The Photon operating system must have the auditd service running.
+
+- name: PHTN-10-000018 - Enable auditd service
+  service:
+    name: auditd
+    enabled: 'yes'
+    state: started
+  tags:
+  - PHTN-10-000018
+  - auditd
+  when:
+  - run_auditd_enable | bool
+
+############################################
+
+# Title: The Photon operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.
+
+- name: PHTN-10-000019 - Find audit config files
+  find:
+    paths: /etc/audit
+    file_type: file
+    recurse: yes
+  register: auditconfigfiles
+  tags:
+  - PHTN-10-000019
+  - perms
+  when:
+  - run_audit_config_permissions | bool
+
+- name: PHTN-10-000019 - Set audit config file permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "0640"
+  with_items: " {{ auditconfigfiles.files }}"
+  tags:
+  - PHTN-10-000019
+  - perms
+  when:
+  - run_audit_config_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must enforce password complexity by requiring that at least one upper-case character be used.
+# password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
+
+- name: PHTN-10-000021 - Enforce password complexity by requiring that at least one upper-case character be used
+  pamd:
+    name: system-password
+    type: password
+    control: requisite
+    module_path: pam_cracklib.so
+    module_arguments: 'ucredit={{ var_pamd_upperchars }}'
+    state: args_present
+  tags:
+  - PHTN-10-000021
+  - pam
+  when:
+  - run_pamd_upperchars | bool
+
+############################################
+
+# Title: The Photon operating system must enforce password complexity by requiring that at least one lower-case character be used.
+# password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
+
+- name: PHTN-10-000022 - Enforce password complexity by requiring that at least one lower-case character be used
+  pamd:
+    name: system-password
+    type: password
+    control: requisite
+    module_path: pam_cracklib.so
+    module_arguments: 'lcredit={{ var_pamd_lowerchars }}'
+    state: args_present
+  tags:
+  - PHTN-10-000022
+  - pam
+  when:
+  - run_pamd_lowerchars | bool
+
+############################################
+
+# Title: The Photon operating system must enforce password complexity by requiring that at least one numeric character be used.
+# password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
+
+- name: PHTN-10-000023 - Enforce password complexity by requiring that at least one numeric character be used
+  pamd:
+    name: system-password
+    type: password
+    control: requisite
+    module_path: pam_cracklib.so
+    module_arguments: 'dcredit={{ var_pamd_numberchars }}'
+    state: args_present
+  tags:
+  - PHTN-10-000023
+  - pam
+  when:
+  - run_pamd_numchars | bool
+
+############################################
+
+# Title: The Photon operating system must require that new passwords are at least four characters different from the old password.
+# password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
+
+- name: PHTN-10-000024 - New passwords are at least four characters different from the old password
+  pamd:
+    name: system-password
+    type: password
+    control: requisite
+    module_path: pam_cracklib.so
+    module_arguments: 'difok={{ var_pamd_diffchars }}'
+    state: args_present
+  tags:
+  - PHTN-10-000024
+  - pam
+  when:
+  - run_pamd_diffchars | bool
+
+############################################
+
+# Title: The Photon operating system must store only encrypted representations of passwords.
+# password   required pam_unix.so sha512 shadow try_first_pass
+
+- name: PHTN-10-000025 - store only encrypted representations of passwords
+  pamd:
+    name: system-password
+    type: password
+    control: required
+    module_path: pam_unix.so
+    module_arguments: 'sha512'
+    state: args_present
+  tags:
+  - PHTN-10-000025
+  - pam
+  when:
+  - run_pamd_encryption | bool
+
+############################################
+
+# Title: The Photon operating system must store only encrypted representations of passwords.
+
+- name: PHTN-10-000026 - Configure login.defs ENCRYPT_METHOD setting
+  lineinfile:
+    path: /etc/login.defs
+    state: present
+    regexp: '^ENCRYPT_METHOD'
+    line: ENCRYPT_METHOD {{ var_login_encrypt_method }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000026
+  - login.defs
+  when:
+  - run_login_encrypt_method | bool
+
+############################################
+
+# Title: The Photon operating system must be configured so that passwords for new users are restricted to a 24 hour minimum lifetime.
+
+- name: PHTN-10-000027 - Configure login.defs PASS_MIN_DAYS setting
+  lineinfile:
+    path: /etc/login.defs
+    state: present
+    regexp: '^PASS_MIN_DAYS'
+    line: PASS_MIN_DAYS   {{ var_login_pass_min_days }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000027
+  - login.defs
+  when:
+  - run_login_pass_min_days | bool
+
+############################################
+
+# Title: The Photon operating system must be configured so that passwords for new users are restricted to a 90 day maximum lifetime.
+
+- name: PHTN-10-000028 - Configure login.defs PASS_MAX_DAYS setting
+  lineinfile:
+    path: /etc/login.defs
+    state: present
+    regexp: '^PASS_MAX_DAYS'
+    line: PASS_MAX_DAYS   {{ var_login_pass_max_days }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000028
+  - login.defs
+  when:
+  - run_login_pass_max_days | bool
+
+############################################
+
+# Title: The Photon operating system must prohibit password reuse for a minimum of five generations.
+# password required pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
+
+- name: PHTN-10-000029 - Prohibit password reuse for a minimum of five generations add pam_pwhistory.so before pam_unix.so
+  pamd:
+    name: system-password
+    type: password
+    control: required
+    module_path: pam_unix.so
+    new_type: password
+    new_control: required
+    new_module_path: pam_pwhistory.so
+    state: before
+  tags:
+  - PHTN-10-000029
+  - pam
+  when:
+  - run_pamd_pwremember | bool
+
+- name: PHTN-10-000029 - Prohibit password reuse for a minimum of five generations
+  pamd:
+    name: system-password
+    type: password
+    control: required
+    module_path: pam_pwhistory.so
+    module_arguments: 'remember={{ var_pamd_pwremember }}'
+    state: args_present
+  tags:
+  - PHTN-10-000029
+  - pam
+  when:
+  - run_pamd_pwremember | bool
+
+############################################
+
+# Title: The Photon operating system must ensure that the old passwords are being stored.
+
+- name: PHTN-10-000030 - Create /etc/security/opasswd if it doesn't exist
+  copy:
+    content: ""
+    dest: /etc/security/opasswd
+    force: no
+    group: root
+    owner: root
+    mode: 0600
+  tags:
+  - PHTN-10-000030
+  - perms
+  when:
+  - run_create_opasswd | bool
+
+############################################
+
+# Title: The Photon operating system must enforce a minimum 8-character password length.
+# password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
+
+- name: PHTN-10-000031 - Enforce a minimum 8-character password length
+  pamd:
+    name: system-password
+    type: password
+    control: requisite
+    module_path: pam_cracklib.so
+    module_arguments: 'minlen={{ var_pamd_minlength }}'
+    state: args_present
+  tags:
+  - PHTN-10-000031
+  - pam
+  when:
+  - run_pamd_minlength | bool
+
+############################################
+
+# Title: The Photon operating system must disable the loading of unnecessary kernel modules.
+
+- name: PHTN-10-000033 - Disable unnecessary kernel modules
+  lineinfile:
+    path: /etc/modprobe.d/modprobe.conf
+    state: present
+    regexp: "{{ item.regexp }}" 
+    line: "{{ item.line }}" 
+    firstmatch: yes
+  with_items:
+    - { regexp: '^#?install sctp', line: 'install sctp /bin/false' }
+    - { regexp: '^#?install dccp /bin/false', line: 'install dccp /bin/false' }
+    - { regexp: '^#?install dccp_ipv4', line: 'install dccp_ipv4 /bin/false' }
+    - { regexp: '^#?install dccp_ipv6', line: 'install dccp_ipv6 /bin/false' }
+    - { regexp: '^#?install ipx', line: 'install ipx /bin/false' }
+    - { regexp: '^#?install appletalk', line: 'install appletalk /bin/false' }
+    - { regexp: '^#?install decnet', line: 'install decnet /bin/false' }
+    - { regexp: '^#?install rds', line: 'install rds /bin/false' }
+    - { regexp: '^#?install tipc', line: 'install tipc /bin/false' }
+    - { regexp: '^#?install bluetooth', line: 'install bluetooth /bin/false' }
+    - { regexp: '^#?install usb.*storage', line: 'install usb_storage /bin/false' }
+    - { regexp: '^#?install ieee1394', line: 'install ieee1394 /bin/false' }
+    - { regexp: '^#?install cramfs', line: 'install cramfs /bin/false' }
+    - { regexp: '^#?install freevxfs', line: 'install freevxfs /bin/false' }
+    - { regexp: '^#?install jffs2', line: 'install jffs2 /bin/false' }
+    - { regexp: '^#?install hfs /bin/false', line: 'install hfs /bin/false' }
+    - { regexp: '^#?install hfsplus', line: 'install hfsplus /bin/false' }
+    - { regexp: '^#?install squashfs', line: 'install squashfs /bin/false' }
+    - { regexp: '^#?install udf', line: 'install udf /bin/false' }
+  tags:
+  - PHTN-10-000033
+  - packages
+  when:
+  - run_disable_kernel_modules | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disallow root logins. 
+
+- name: PHTN-10-000035 - Update sshd_config PermitRootLogin
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^PermitRootLogin.*$'
+    line: PermitRootLogin {{ var_sshd_permitrootlogin }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000035
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_permitrootlogin | bool
+
+############################################
+
+# Title: The Photon operating system must disable new accounts immeidately upon password expiration.
+
+- name: PHTN-10-000036 - Disable new accounts immediately upon password expiration.
+  lineinfile:
+    path: /etc/default/useradd
+    state: present
+    regexp: '^INACTIVE.*$'
+    line: INACTIVE={{ var_useradd_inactive }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000036
+  - users
+  when:
+  - run_useradd_inactive | bool
+
+############################################
+
+# Title: The Photon operating system must use TCP syncookies.
+
+- name: PHTN-10-000037 - Set kernel parameter net.ipv4.tcp_syncookies
+  sysctl:
+    name: net.ipv4.tcp_syncookies
+    value: '{{ var_sysctl_tcp_syncookies }}'
+    state: present
+    sysctl_set: yes
+  tags:
+  - PHTN-10-000037
+  - sysctl.conf
+  when:
+  - run_sysctl_tcp_syncookies | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disconnect idle SSH sessions.
+
+- name: PHTN-10-000038 - Update sshd_config ClientAliveInterval
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^ClientAliveInterval.*$'
+    line: ClientAliveInterval {{ var_sshd_clientaliveinterval }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000038
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_clientaliveinterval | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disconnect idle SSH sessions.
+
+- name: PHTN-10-000039 - Update sshd_config ClientAliveCountMax
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^ClientAliveCountMax.*$'
+    line: ClientAliveCountMax {{ var_sshd_clientalivecountmax }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000039
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_clientalivecountmax | bool
+
+############################################
+
+# Title: The Photon operating system must configure rsyslog to offload system logs to a central server.
+
+- name: PHTN-10-000040 - Set syslog server when UDP is specified
+  lineinfile:
+    path: /etc/vmware-syslog/syslog.conf
+    state: present
+    regexp: '^.*{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+    line: '*.* @{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+  tags:
+  - PHTN-10-000040
+  - syslog
+  notify:
+  - restart syslog
+  when:
+  - var_syslog_server_name != ''
+  - var_syslog_server_port != ''
+  - var_syslog_server_protocol == 'udp'
+  - run_set_syslog_server | bool
+
+- name: PHTN-10-000040 - Set syslog server when TCP is specified
+  lineinfile:
+    path: /etc/vmware-syslog/syslog.conf
+    state: present
+    regexp: '^.*{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+    line: '*.* @@{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+  tags:
+  - PHTN-10-000040
+  - syslog
+  notify:
+  - restart syslog
+  when:
+  - var_syslog_server_name != ''
+  - var_syslog_server_port != ''
+  - var_syslog_server_protocol == 'tcp'
+  - run_set_syslog_server | bool
+
+- name: PHTN-10-000040 - Set syslog server when TLS is specified
+  lineinfile:
+    path: /etc/vmware-syslog/syslog.conf
+    state: present
+    regexp: '^.*{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+    line: '*.* @@(o){{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+  tags:
+  - PHTN-10-000040
+  - syslog
+  notify:
+  - restart syslog
+  when:
+  - var_syslog_server_name != ''
+  - var_syslog_server_port != ''
+  - var_syslog_server_protocol == 'tls'
+  - run_set_syslog_server | bool
+
+- name: PHTN-10-000040 - Set syslog server when TLS is specified other options 1
+  lineinfile:
+    path: /etc/vmware-syslog/syslog.conf
+    state: present
+    line: $ActionSendStreamDriverAuthMode anon
+  tags:
+  - PHTN-10-000040
+  - syslog
+  notify:
+  - restart syslog
+  when:
+  - var_syslog_server_name != ''
+  - var_syslog_server_port != ''
+  - var_syslog_server_protocol == 'tls'
+  - run_set_syslog_server | bool
+
+- name: PHTN-10-000040 - Set syslog server when TLS is specified other options 2
+  lineinfile:
+    path: /etc/vmware-syslog/syslog.conf
+    state: present
+    line: $ActionSendStreamDriverMode 1
+  tags:
+  - PHTN-10-000040
+  - syslog
+  notify:
+  - restart syslog
+  when:
+  - var_syslog_server_name != ''
+  - var_syslog_server_port != ''
+  - var_syslog_server_protocol == 'tls'
+  - run_set_syslog_server | bool
+
+- name: PHTN-10-000040 - Enable syslog service
+  service:
+    name: syslog
+    enabled: 'yes'
+    state: started
+  tags:
+  - PHTN-10-000040
+  - syslog
+  when:
+  - run_set_syslog_server | bool
+
+############################################
+
+# Title: The Photon operating system /var/log directory must be owned by root.
+
+- name: PHTN-10-000041 - Set /var/log owner and group to root
+  file:
+    path: /var/log
+    state: directory
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000041
+  - perms
+  when:
+  - run_log_dir_permissions | bool
+
+############################################
+
+# Title: The Photon operating system messages file must be owned by root.
+
+- name: PHTN-10-000042 - Set /var/log/vmware/messages owner and group to root
+  file:
+    path: /var/log/vmware/messages
+    state: file
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000042
+  - perms
+  when:
+  - run_log_messages_permissions_owner | bool
+
+############################################
+
+# Title: The Photon operating system messages file must have mode 0640 or less permissive.
+
+- name: PHTN-10-000043 - Set /var/log/vmware/messages permissions
+  file:
+    path: /var/log/vmware/messages
+    state: file
+    mode: 0640
+  tags:
+  - PHTN-10-000043
+  - perms
+  when:
+  - run_log_messages_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must initiate auditing as part of the boot process.
+
+- name: PHTN-10-000048 - Add audit=1 in /boot/grub2/grub.cfg
+  replace:
+    path: /boot/grub2/grub.cfg
+    regexp: '^(\s*linux(?!.* audit=).*)'
+    replace: '\1 audit=1'
+  tags:
+  - PHTN-10-000048
+  - auditd
+  when:
+  - run_grub_enable_audit | bool
+
+- name: PHTN-10-000048 - Replace audit=1 in /boot/grub2/grub.cfg
+  replace:
+    path: /boot/grub2/grub.cfg
+    regexp: '^(\s*linux.*? audit=)(?!1)(\S*)(.*)'
+    replace: '\g<1>1\3'
+  tags:
+  - PHTN-10-000048
+  - auditd
+  when:
+  - run_grub_enable_audit | bool
+
+############################################
+
+# Title: The Photon operating system audit files and directories must have correct permissions.
+
+- name: PHTN-10-000049 - Set /etc/audit/auditd.conf owner and group to root
+  file:
+    path: /etc/audit/auditd.conf
+    state: file
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000049
+  - perms
+  when:
+  - run_audit_conf_permissions | bool
+
+############################################
+
+# Title: The Photon operating system audit files and directories must have correct permissions.
+
+- name: PHTN-10-000050 - Set owner/group on audit tools
+  file:
+    path: "{{ item.file }}"
+    state: file
+    owner: root
+    group: root
+  with_items:
+    - { file: '/usr/sbin/auditctl' }
+    - { file: '/usr/sbin/auditd' }
+    - { file: '/usr/sbin/aureport' }
+    - { file: '/usr/sbin/ausearch' }
+    - { file: '/usr/sbin/autrace' }
+  tags:
+  - PHTN-10-000050
+  - perms
+  when:
+  - run_audit_tools_owner | bool
+
+############################################
+
+# Title: The Photon operating system must protect audit tools from unauthorized modification.
+
+- name: PHTN-10-000051 - Set permissions on audit tools
+  file:
+    path: "{{ item.file }}"
+    state: file
+    mode: 0750
+  with_items:
+    - { file: '/usr/sbin/auditctl' }
+    - { file: '/usr/sbin/auditd' }
+    - { file: '/usr/sbin/aureport' }
+    - { file: '/usr/sbin/ausearch' }
+    - { file: '/usr/sbin/autrace' }
+  tags:
+  - PHTN-10-000051
+  - perms
+  when:
+  - run_audit_tools_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must enforce password complexity by requiring that at least one special character be used.
+# password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
+
+- name: PHTN-10-000052 - Enforce password complexity by requiring that at least one special character be used
+  pamd:
+    name: system-password
+    type: password
+    control: requisite
+    module_path: pam_cracklib.so
+    module_arguments: 'ocredit={{ var_pamd_complexchars }}'
+    state: args_present
+  tags:
+  - PHTN-10-000052
+  - pam
+  when:
+  - run_pamd_complexchars | bool
+
+############################################
+
+# Title: The Photon operating system must set an inactivity timeout value for non-interactive sessions.
+
+- name: PHTN-10-000054 - Set a session inactivity timeout of 15 minutes or less
+  lineinfile:
+    path: /etc/bash.bashrc
+    state: present
+    regexp: '^TMOUT='
+    line: 'TMOUT={{ var_tmout_sh }}'
+    insertafter: EOF
+    firstmatch: yes
+  tags:
+  - PHTN-10-000054
+  - bash.bashrc
+  when:
+  - run_configure_bash_tmout | bool
+
+- name: PHTN-10-000054 - Set a session inactivity timeout of 15 minutes or less readonly
+  lineinfile:
+    path: /etc/bash.bashrc
+    state: present
+    insertafter: '^TMOUT='
+    regexp: '^readonly'
+    line: 'readonly TMOUT'
+  tags:
+  - PHTN-10-000054
+  - bash.bashrc
+  when:
+  - run_configure_bash_tmout | bool
+
+- name: PHTN-10-000054 - Set a session inactivity timeout of 15 minutes or less export
+  lineinfile:
+    path: /etc/bash.bashrc
+    state: present
+    insertafter: '^readonly'
+    regexp: '^export'
+    line: 'export TMOUT'
+  tags:
+  - PHTN-10-000054
+  - bash.bashrc
+  when:
+  - run_configure_bash_tmout | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd with a specific ListenAddress.
+
+- name: PHTN-10-000055 - Configure sshd listen address
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^ListenAddress.*$'
+    line:  ListenAddress {{ ansible_eth0.ipv4.address }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000055
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_listenaddress | bool
+
+############################################
+
+# Title: The Photon operating system must configure auditd to keep five rotated log files.
+
+- name: PHTN-10-000057 - Configure auditd num_logs
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: num_logs = {{ var_auditd_num_logs }}
+    state: present
+  tags:
+  - PHTN-10-000057
+  - auditd
+  when:
+  - run_auditd_num_logs | bool
+
+############################################
+
+# Title: The Photon operating system must configure auditd to keep five rotated log files.
+
+- name: PHTN-10-000058 - Configure auditd max_log_file_action
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: max_log_file_action = {{ var_auditd_max_log_file_action }}
+    state: present
+  tags:
+  - PHTN-10-000058
+  - auditd
+  when:
+  - run_auditd_max_log_file_action | bool
+
+############################################
+
+# Title: The Photon operating system must configure a cron job to rotate auditd logs daily.
+
+- name: PHTN-10-000059 - Create /etc/cron.daily/audit-rotate if it doesn't exist
+  copy:
+    content: ""
+    dest: /etc/cron.daily/audit-rotate
+    force: no
+    group: root
+    owner: root
+    mode: 0700
+  tags:
+  - PHTN-10-000059
+  - auditd
+  when:
+  - run_auditd_cron_rotate | bool
+
+- name: PHTN-10-000059 - Configure /etc/cron.daily/audit-rotate /bin/bash
+  lineinfile:
+    path: /etc/cron.daily/audit-rotate
+    state: present
+    regexp: '^#!/bin/bash'
+    line: '#!/bin/bash'
+    firstmatch: yes
+  tags:
+  - PHTN-10-000059
+  - auditd
+  when:
+  - run_auditd_cron_rotate | bool
+
+- name: PHTN-10-000059 - Configure /etc/cron.daily/audit-rotate service auditd rotate
+  lineinfile:
+    path: /etc/cron.daily/audit-rotate
+    state: present
+    insertafter: '^#!/bin/bash'
+    regexp: '^service auditd rotate'
+    line: 'service auditd rotate'
+  tags:
+  - PHTN-10-000059
+  - auditd
+  when:
+  - run_auditd_cron_rotate | bool
+
+############################################
+
+# Title: The Photon operating system must configure auditd to log space limit problems to syslog.
+
+- name: PHTN-10-000060 - Configure auditd space_left
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: space_left = {{ var_auditd_space_left }}
+    state: present
+  tags:
+  - PHTN-10-000060
+  - auditd
+  when:
+  - run_auditd_space_left | bool
+
+############################################
+
+# Title: The Photon operating system must be configured to synchronize with an approved DoD time source.
+
+- name: PHTN-10-000061 - Remove Unknown NTP Servers
+  lineinfile:
+    path: /etc/ntp.conf
+    state: absent
+    regexp: '^server ((?!({{ var_ntp_servers[0] }}|{{ var_ntp_servers[1] }})).)*$'
+  tags:
+  - PHTN-10-000061
+  - ntp
+  notify:
+  - restart ntp
+  when:
+  - var_ntp_servers[0] != ''
+  - var_ntp_servers[1] != ''
+  - run_set_ntp_server | bool
+
+- name: PHTN-10-000061 - Configure NTP Servers
+  lineinfile:
+    path: /etc/ntp.conf
+    state: present
+    regexp: '^server {{ item }}'
+    line: 'server {{ item }}'
+  with_items:
+  - "{{ var_ntp_servers }}"
+  tags:
+  - PHTN-10-000061
+  - ntp
+  notify:
+  - restart ntp
+  when:
+  - var_ntp_servers[0] != ''
+  - var_ntp_servers[1] != ''
+  - run_set_ntp_server | bool
+
+- name: PHTN-10-000061 - Enable ntp service
+  service:
+    name: ntpd
+    enabled: 'yes'
+    state: started
+  tags:
+  - PHTN-10-000061
+  - ntp
+  when:
+  - var_ntp_servers[0] != ''
+  - var_ntp_servers[1] != ''
+  - run_set_ntp_server | bool
+
+############################################
+
+# Title: The Photon operating system RPM package management tool must cryptographically verify the authenticity of all software packages during installation.
+
+- name: PHTN-10-000063 - Configure gpgcheck in /etc/tdnf/tdnf.conf
+  lineinfile:
+    path: /etc/tdnf/tdnf.conf
+    state: present
+    regexp: '^gpgcheck.*$'
+    line:  gpgcheck=1
+    firstmatch: yes
+  tags:
+  - PHTN-10-000063
+  - packages
+  when:
+  - run_tdnf_gpgcheck | bool
+
+############################################
+
+# Title: The Photon operating system RPM package management tool must cryptographically verify the authenticity of all software packages during installation.
+
+- name: PHTN-10-000064 - Find yum repos
+  find:
+    paths: /etc/yum.repos.d/
+    file_type: file
+    patterns: "*.repo"
+  register: yumrepos
+  tags:
+  - PHTN-10-000064
+  - packages
+  when:
+  - run_yum_gpgcheck | bool
+
+- name: PHTN-10-000064 - Configure gpgcheck in yum repos
+  lineinfile:
+    path: "{{ item.path }}"
+    state: present
+    regexp: '^gpgcheck.*$'
+    line:  gpgcheck=1
+    firstmatch: yes
+  with_items: " {{ yumrepos.files }}"
+  tags:
+  - PHTN-10-000064
+  - packages
+  when:
+  - run_yum_gpgcheck | bool
+
+############################################
+
+# Title: The Photon operating system must prohibit the use of cached authenticators after one day.
+
+- name: PHTN-10-000066 - Get current CacheEntryExpiry value
+  shell: /opt/likewise/bin/lwregshell list_values "HKEY_THIS_MACHINE\Services\lsass\Parameters\Providers\ActiveDirectory"|grep "CacheEntryExpiry"
+  register: lwcacheentryexpiry
+  changed_when: false
+  tags:
+  - PHTN-10-000066
+  - registry
+  when:
+  - run_likewise_cacheexpiry | bool
+  
+- set_fact:
+    lwcacheexpiryvalue: "{{ lwcacheentryexpiry.stdout | regex_search(regexplw,'\\1') }}"
+  vars:
+    regexplw: '\(([^\)]+)\)'
+  tags:
+  - PHTN-10-000066
+  - registry
+  when:
+  - run_likewise_cacheexpiry | bool
+
+- name: PHTN-10-000066 - Set current CacheEntryExpiry value
+  shell: /opt/likewise/bin/lwregshell set_value "[HKEY_THIS_MACHINE\Services\lsass\Parameters\Providers\ActiveDirectory]" CacheEntryExpiry {{ var_lw_cache_entry_expiry }}
+  tags:
+  - PHTN-10-000066
+  - registry
+  when:
+  - var_lw_cache_entry_expiry not in lwcacheexpiryvalue
+  - run_likewise_cacheexpiry | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to use prefered ciphers.
+
+- name: PHTN-10-000067 - Configure sshd to use prefered ciphers
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^Ciphers.*$'
+    line: Ciphers {{ var_sshd_ciphers }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000067
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_ciphers | bool
+
+############################################
+
+# Title: The Photon operating system must implement address space layout randomization to protect its memory from unauthorized code execution.
+
+- name: PHTN-10-000069 - Set kernel parameter randomize_va_space
+  sysctl:
+    name: kernel.randomize_va_space
+    value: '{{ var_sysctl_randomize_va_space }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000069
+  - sysctl.conf
+  when:
+  - run_sysctl_randomize_va_space | bool
+
+############################################
+
+# Title: The Photon operating system must remove all software components after updated versions have been installed.
+
+- name: PHTN-10-000070 - Configure clean_requirements_on_remove in /etc/tdnf/tdnf.conf
+  lineinfile:
+    path: /etc/tdnf/tdnf.conf
+    state: present
+    regexp: '^clean_requirements_on_remove.*$'
+    line:  clean_requirements_on_remove=true
+    firstmatch: yes
+  tags:
+  - PHTN-10-000070
+  - packages
+  when:
+  - run_tdnf_cleanreqs | bool
+
+############################################
+
+# Title: The Photon operating system must set the FAIL_DELAY parameter.
+
+- name: PHTN-10-000076 - Configure login.defs FAIL_DELAY setting
+  lineinfile:
+    path: /etc/login.defs
+    state: present
+    regexp: '^FAIL_DELAY'
+    line: FAIL_DELAY {{ var_login_fail_delay }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000076
+  - login.defs
+  when:
+  - run_login_fail_delay | bool
+
+############################################
+
+# Title: The Photon operating system must enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt.
+# auth optional pam_faildelay.so delay=4000000
+
+- name: PHTN-10-000077 - Enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt add
+  pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_tally2.so
+    new_type: auth
+    new_control: optional
+    new_module_path: pam_faildelay.so
+    module_arguments: 'delay={{ var_pamd_faildelay }}'
+    state: after
+  tags:
+  - PHTN-10-000077
+  - pam
+  when:
+  - run_pamd_faildelay | bool
+
+- name: PHTN-10-000077 - Enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt change
+  pamd:
+    name: system-auth
+    type: auth
+    control: optional
+    module_path: pam_faildelay.so
+    module_arguments: 'delay={{ var_pamd_faildelay }}'
+    state: args_present
+  tags:
+  - PHTN-10-000077
+  - pam
+  when:
+  - run_pamd_faildelay | bool
+
+############################################
+
+# Title: The Photon operating system must ensure that audit events are flushed to disk at proper intervals.
+
+- name: PHTN-10-000078 - Configure auditd flush
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: flush = {{ var_auditd_flush }}
+    state: present
+  tags:
+  - PHTN-10-000078
+  - auditd
+  when:
+  - run_auditd_flush | bool
+
+- name: PHTN-10-000078 - Configure auditd freq
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    line: freq = {{ var_auditd_freq }}
+    state: present
+  tags:
+  - PHTN-10-000078
+  - auditd
+  when:
+  - run_auditd_freq | bool
+
+############################################
+
+# Title: The Photon operating system must create a home directory for all new local interactive user accounts.
+
+- name: PHTN-10-000080 - Configure login.defs CREATE_HOME setting
+  lineinfile:
+    path: /etc/login.defs
+    state: present
+    regexp: '^CREATE_HOME'
+    line: CREATE_HOME {{ var_login_createhome }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000080
+  - login.defs
+  when:
+  - run_login_createhome | bool
+
+############################################
+
+# Title: The Photon operating system must disabled the debug-shell service.
+
+- name: PHTN-10-000081 - Stop and disable debug-shell service
+  service:
+    name: debug-shell
+    state: stopped
+    enabled: no
+  tags:
+  - PHTN-10-000081
+  - services
+  when:
+  - run_service_debug_shell | bool
+
+############################################
+
+# Title: The Photon operating system must configure a secure umask for all shells.
+
+- name: PHTN-10-000082 - Configure /etc/profile.d/umask.sh
+  template:
+    src: umask.sh.j2
+    dest: /etc/profile.d/umask.sh
+    owner: root
+    group: root
+    mode: '0644'
+    force: yes
+  tags:
+  - PHTN-10-000082
+  - umask
+  when:
+  - run_configure_default_umask | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disallow Generic Security Service Application Program Interface (GSSAPI) authentication.
+
+- name: PHTN-10-000083 - Configure sshd to disallow Generic Security Service Application Program Interface (GSSAPI) authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^GSSAPIAuthentication.*$'
+    line: GSSAPIAuthentication {{ var_sshd_gssapiauthentication }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000083
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_gssapiauthentication | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disable environment processing.
+
+- name: PHTN-10-000084 - Configure sshd to disable environment processing
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^PermitUserEnvironment.*$'
+    line: PermitUserEnvironment {{ var_sshd_permituserenvironment }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000084
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_permituserenvironment | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disable X11 forwarding.
+
+- name: PHTN-10-000085 - Configure sshd to disable X11 forwarding
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^X11Forwarding.*$'
+    line: X11Forwarding {{ var_sshd_x11forwarding }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000085
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_x11forwarding | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to perform strict mode checking of home directory configuration files.
+
+- name: PHTN-10-000086 - Configure sshd to perform strict mode checking of home directory configuration files
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^StrictModes.*$'
+    line: StrictModes {{ var_sshd_strictmodes }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000086
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_strictmodes | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disallow Kerberos authentication.
+
+- name: PHTN-10-000087 - Configure sshd to disallow Kerberos authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^KerberosAuthentication.*$'
+    line: KerberosAuthentication {{ var_sshd_kerberosauth }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000087
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_kerberosauth | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to use privilege separation.
+
+- name: PHTN-10-000088 - Configure sshd to use privilege separation
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^UsePrivilegeSeparation.*$'
+    line: UsePrivilegeSeparation {{ var_sshd_useprivsep }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000088
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_useprivsep | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disallow authentication with an empty password.
+
+- name: PHTN-10-000089 - Configure sshd to disallow authentication with an empty password
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^PermitEmptyPasswords.*$'
+    line: PermitEmptyPasswords {{ var_sshd_permitemptypasswords }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000089
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_permitemptypasswords | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disallow compression of the encrypted session stream.
+
+- name: PHTN-10-000090 - Configure sshd to disallow compression of the encrypted session stream
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^Compression.*$'
+    line: Compression {{ var_sshd_compression }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000090
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_compression | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to display the last login immeidately after authentication.
+
+- name: PHTN-10-000091 - Configure sshd to display the last login immeidately after authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^PrintLastLog.*$'
+    line: PrintLastLog {{ var_sshd_printlastlog }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000091
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_printlastlog | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to ignore user-specific trusted hosts lists.
+
+- name: PHTN-10-000092 - Configure sshd to ignore user-specific trusted hosts lists
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^IgnoreRhosts.*$'
+    line: IgnoreRhosts {{ var_sshd_ignorerhosts }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000092
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_ignorerhosts | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to ignore user-specific known_host files.
+
+- name: PHTN-10-000093 - Configure sshd to ignore user-specific known_host files
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^IgnoreUserKnownHosts.*$'
+    line: IgnoreUserKnownHosts {{ var_sshd_ignoreuserknownhosts }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000093
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_ignoreuserknownhosts | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to limit the number of allowed login attempts per connection.
+
+- name: PHTN-10-000094 - Configure sshd to limit the number of allowed login attempts per connection
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^MaxAuthTries.*$'
+    line: MaxAuthTries {{ var_sshd_maxauthtries }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000094
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_maxauthtries | bool
+
+############################################
+
+# Title: The Photon operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled on the command line.
+
+- name: PHTN-10-000095 - Ctrl-Alt-Delete key sequence is disabled on the command line
+  systemd:
+    name: ctrl-alt-del.target
+    enabled: no
+    masked: yes
+    daemon_reload: yes
+  tags:
+  - PHTN-10-000095
+  - systemctl
+  when:
+  - run_mask_ctrl_alt_del | bool
+
+
+############################################
+
+# Title: The Photon operating system must be configured so that the /etc/skel default scripts are protected from unauthorized modification.
+
+- name: PHTN-10-000096 - Set skel file permissions .bash_logout
+  file:
+    path: /etc/skel/.bash_logout
+    state: file
+    mode: "0750"
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000096
+  - perms
+  when:
+  - run_skel_config_permissions | bool
+
+- name: PHTN-10-000096 - Set skel file permissions .bash_profile
+  file:
+    path: /etc/skel/.bash_profile
+    state: file
+    mode: "0644"
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000096
+  - perms
+  when:
+  - run_skel_config_permissions | bool
+
+- name: PHTN-10-000096 - Set skel file permissions .bashrc
+  file:
+    path: /etc/skel/.bashrc
+    state: file
+    mode: "0750"
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000096
+  - perms
+  when:
+  - run_skel_config_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must be configured so that the /root path is protected from unauthorized access.
+
+- name: PHTN-10-000097 - Set /root file permissions
+  file:
+    path: /root
+    state: directory
+    mode: "0700"
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000097
+  - perms
+  when:
+  - run_root_dir_permissions | bool
+
+############################################
+
+# Title: Local initialization files are used to configure the user's shell environment upon login. Malicious modification of these files could compromise accounts upon logon.
+
+- name: PHTN-10-000098 - Set /etc/bash.bashrc permissions
+  file:
+    path: /etc/bash.bashrc
+    state: file
+    mode: o-w
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000098
+  - perms
+  when:
+  - run_init_files_permissions | bool
+
+- name: PHTN-10-000098 - Set /etc/profile permissions
+  file:
+    path: /etc/profile
+    state: file
+    mode: o-w
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000098
+  - perms
+  when:
+  - run_init_files_permissions | bool
+
+- name: PHTN-10-000098 - Find profile.d files
+  find:
+    paths: /etc/profile.d/
+    file_type: file
+  register: profilefiles
+  tags:
+  - PHTN-10-000098
+  - perms
+  when:
+  - run_init_files_permissions | bool
+
+- name: PHTN-10-000098 - Set profile files permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: o-w
+    owner: root
+    group: root
+  with_items: " {{ profilefiles.files }}"
+  tags:
+  - PHTN-10-000098
+  - perms
+  when:
+  - run_init_files_permissions | bool
+
+############################################
+
+# Title: If system startup scripts are accessible to unauthorized modification this could compromise the system on startup.
+
+- name: PHTN-10-000099 - Find rc.d files
+  find:
+    paths: /etc/rc.d/
+    file_type: file
+    recurse: yes
+  register: rcdfiles
+  tags:
+  - PHTN-10-000099
+  - perms
+  when:
+  - run_rcd_files_permissions | bool
+
+- name: PHTN-10-000099 - Set rc.d files permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: o-w
+    owner: root
+    group: root
+  with_items: " {{ rcdfiles.files }}"
+  tags:
+  - PHTN-10-000099
+  - perms
+  when:
+  - run_rcd_files_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must be configured so that the /etc/cron.allow file is protected from unauthorized modification.
+
+- name: PHTN-10-000101 - Set /etc/cron.allow permissions
+  file:
+    path: /etc/cron.allow
+    state: file
+    mode: 0600
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000101
+  - perms
+  when:
+  - run_cron_allow_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must be configured so that all cron jobs are protected from unauthorized modification.
+
+- name: PHTN-10-000102 - Find cron.d files
+  find:
+    paths: /etc/cron.d/
+    file_type: file
+    recurse: yes
+  register: crondfiles
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+- name: PHTN-10-000102 - Set cron.d files permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: o-w
+    owner: root
+    group: root
+  with_items: " {{ crondfiles.files }}"
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+- name: PHTN-10-000102 - Find cron.daily files
+  find:
+    paths: /etc/cron.daily/
+    file_type: file
+    recurse: yes
+  register: crondailyfiles
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+- name: PHTN-10-000102 - Set cron.daily files permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: o-w
+    owner: root
+    group: root
+  with_items: " {{ crondailyfiles.files }}"
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+- name: PHTN-10-000102 - Find cron.hourly files
+  find:
+    paths: /etc/cron.hourly/
+    file_type: file
+    recurse: yes
+  register: cronhourlyfiles
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+- name: PHTN-10-000102 - Set cron.hourly files permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: o-w
+    owner: root
+    group: root
+  with_items: " {{ cronhourlyfiles.files }}"
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+- name: PHTN-10-000102 - Find cron.monthly files
+  find:
+    paths: /etc/cron.monthly/
+    file_type: file
+    recurse: yes
+  register: cronmonthlyfiles
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+- name: PHTN-10-000102 - Set cron.monthly files permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: o-w
+    owner: root
+    group: root
+  with_items: " {{ cronmonthlyfiles.files }}"
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+- name: PHTN-10-000102 - Find cron.weekly files
+  find:
+    paths: /etc/cron.weekly/
+    file_type: file
+    recurse: yes
+  register: cronweeklyfiles
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+- name: PHTN-10-000102 - Set cron.weekly files permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: o-w
+    owner: root
+    group: root
+  with_items: " {{ cronweeklyfiles.files }}"
+  tags:
+  - PHTN-10-000102
+  - perms
+  when:
+  - run_cron_files_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must be configured so that all cron paths are protected from unauthorized modification.
+
+- name: PHTN-10-000103 - Set cron directory permissions
+  file:
+    path: "{{ item.dir }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - { dir: '/etc/cron.d' }
+    - { dir: '/etc/cron.daily' }
+    - { dir: '/etc/cron.hourly' }
+    - { dir: '/etc/cron.monthly' }
+    - { dir: '/etc/cron.weekly' }
+  tags:
+  - PHTN-10-000103
+  - perms
+  when:
+  - run_cron_dir_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must not forward IPv4 or IPv6 source-routed packets.
+
+- name: PHTN-10-000104 - Set kernel parameter net.ipv4.conf.all.accept_source_route
+  sysctl:
+    name: net.ipv4.conf.all.accept_source_route
+    value: '{{ var_sysctl_net_ipv4_conf_all_accept_source_route }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000104
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_all_accept_source_route | bool
+
+- name: PHTN-10-000104 - Set kernel parameter net.ipv4.conf.default.accept_source_route
+  sysctl:
+    name: net.ipv4.conf.default.accept_source_route
+    value: '{{ var_sysctl_net_ipv4_conf_default_accept_source_route }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000104
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_default_accept_source_route | bool
+
+- name: PHTN-10-000104 - Set kernel parameter net.ipv4.conf.eth0.accept_source_route
+  sysctl:
+    name: net.ipv4.conf.eth0.accept_source_route
+    value: '{{ var_sysctl_net_ipv4_conf_eth0_accept_source_route }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000104
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_eth0_accept_source_route | bool
+
+- name: PHTN-10-000104 - Set kernel parameter net.ipv6.conf.all.accept_source_route
+  sysctl:
+    name: net.ipv6.conf.all.accept_source_route
+    value: '{{ var_sysctl_net_ipv6_conf_all_accept_source_route }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000104
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv6_conf_all_accept_source_route | bool
+
+- name: PHTN-10-000104 - Set kernel parameter net.ipv6.conf.default.accept_source_route
+  sysctl:
+    name: net.ipv6.conf.default.accept_source_route
+    value: '{{ var_sysctl_net_ipv6_conf_default_accept_source_route }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000104
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv6_conf_default_accept_source_route | bool
+
+- name: PHTN-10-000104 - Set kernel parameter net.ipv6.conf.eth0.accept_source_route
+  sysctl:
+    name: net.ipv6.conf.eth0.accept_source_route
+    value: '{{ var_sysctl_net_ipv6_conf_eth0_accept_source_route }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000104
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv6_conf_eth0_accept_source_route | bool
+
+############################################
+
+# Title: The Photon operating system must not respond to IPv4 Internet Control Message Protocol (ICMP) echoes sent to a broadcast address.
+
+- name: PHTN-10-000105 - Set kernel parameter net.ipv4.icmp_echo_ignore_broadcasts
+  sysctl:
+    name: net.ipv4.icmp_echo_ignore_broadcasts
+    value: '{{ var_sysctl_net_ipv4_icmp_echo_ignore_broadcasts }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000105
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_icmp_echo_ignore_broadcasts | bool
+
+############################################
+
+# Title: The Photon operating system must prevent IPv4 Internet Control Message Protocol (ICMP) redirect messages from being accepted.
+
+- name: PHTN-10-000106 - Set kernel parameter net.ipv4.conf.all.accept_redirects
+  sysctl:
+    name: net.ipv4.conf.all.accept_redirects
+    value: '{{ var_sysctl_net_ipv4_conf_all_accept_redirects }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000106
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_all_accept_redirects | bool
+
+- name: PHTN-10-000106 - Set kernel parameter net.ipv4.conf.default.accept_redirects
+  sysctl:
+    name: net.ipv4.conf.default.accept_redirects
+    value: '{{ var_sysctl_net_ipv4_conf_default_accept_redirects }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000106
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_default_accept_redirects | bool
+
+- name: PHTN-10-000106 - Set kernel parameter net.ipv4.conf.eth0.accept_redirects
+  sysctl:
+    name: net.ipv4.conf.eth0.accept_redirects
+    value: '{{ var_sysctl_net_ipv4_conf_eth0_accept_redirects }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000106
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_eth0_accept_redirects | bool
+
+############################################
+
+# Title: The Photon operating system must prevent IPv4 Internet Control Message Protocol (ICMP) secure redirect messages from being accepted.
+
+- name: PHTN-10-000107 - Set kernel parameter net.ipv4.conf.all.secure_redirects
+  sysctl:
+    name: net.ipv4.conf.all.secure_redirects
+    value: '{{ var_sysctl_net_ipv4_conf_all_secure_redirects }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000107
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_all_secure_redirects | bool
+
+- name: PHTN-10-000107 - Set kernel parameter net.ipv4.conf.default.secure_redirects
+  sysctl:
+    name: net.ipv4.conf.default.secure_redirects
+    value: '{{ var_sysctl_net_ipv4_conf_default_secure_redirects }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000107
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_default_secure_redirects | bool
+
+- name: PHTN-10-000107 - Set kernel parameter net.ipv4.conf.eth0.secure_redirects
+  sysctl:
+    name: net.ipv4.conf.eth0.secure_redirects
+    value: '{{ var_sysctl_net_ipv4_conf_eth0_secure_redirects }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000107
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_eth0_secure_redirects | bool
+
+############################################
+
+# Title: The Photon operating system must not send IPv4 Internet Control Message Protocol (ICMP) redirects.
+
+- name: PHTN-10-000108 - Set kernel parameter net.ipv4.conf.all.send_redirects
+  sysctl:
+    name: net.ipv4.conf.all.send_redirects
+    value: '{{ var_sysctl_net_ipv4_conf_all_send_redirects }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000108
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_all_send_redirects | bool
+
+- name: PHTN-10-000108 - Set kernel parameter net.ipv4.conf.default.send_redirects
+  sysctl:
+    name: net.ipv4.conf.default.send_redirects
+    value: '{{ var_sysctl_net_ipv4_conf_default_send_redirects }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000108
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_default_send_redirects | bool
+
+- name: PHTN-10-000108 - Set kernel parameter net.ipv4.conf.eth0.send_redirects
+  sysctl:
+    name: net.ipv4.conf.eth0.send_redirects
+    value: '{{ var_sysctl_net_ipv4_conf_eth0_send_redirects }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000108
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_eth0_send_redirects | bool
+
+############################################
+
+# Title: The Photon operating system must log IPv4 packets with impossible addresses.
+
+- name: PHTN-10-000109 - Set kernel parameter net.ipv4.conf.all.log_martians
+  sysctl:
+    name: net.ipv4.conf.all.log_martians
+    value: '{{ var_sysctl_net_ipv4_conf_all_log_martians }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000109
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_all_log_martians | bool
+
+- name: PHTN-10-000109 - Set kernel parameter net.ipv4.conf.default.log_martians
+  sysctl:
+    name: net.ipv4.conf.default.log_martians
+    value: '{{ var_sysctl_net_ipv4_conf_default_log_martians }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000109
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_default_log_martians | bool
+
+- name: PHTN-10-000109 - Set kernel parameter net.ipv4.conf.eth0.log_martians
+  sysctl:
+    name: net.ipv4.conf.eth0.log_martians
+    value: '{{ var_sysctl_net_ipv4_conf_eth0_log_martians }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000109
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_eth0_log_martians | bool
+
+############################################
+
+# Title: The Photon operating system must use a reverse-path filter for IPv4 network traffic.
+
+- name: PHTN-10-000110 - Set kernel parameter net.ipv4.conf.all.rp_filter
+  sysctl:
+    name: net.ipv4.conf.all.rp_filter
+    value: '{{ var_sysctl_net_ipv4_conf_all_rp_filter }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000110
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_all_rp_filter | bool
+
+- name: PHTN-10-000110 - Set kernel parameter net.ipv4.conf.default.rp_filter
+  sysctl:
+    name: net.ipv4.conf.default.rp_filter
+    value: '{{ var_sysctl_net_ipv4_conf_default_rp_filter }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000110
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_default_rp_filter | bool
+
+- name: PHTN-10-000110 - Set kernel parameter net.ipv4.conf.eth0.rp_filter
+  sysctl:
+    name: net.ipv4.conf.eth0.rp_filter
+    value: '{{ var_sysctl_net_ipv4_conf_eth0_rp_filter }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000110
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_eth0_rp_filter | bool
+
+############################################
+
+# Title: The Photon operating system must not perform multicast packet forwarding.
+
+- name: PHTN-10-000111 - Set kernel parameter net.ipv4.conf.all.mc_forwarding
+  sysctl:
+    name: net.ipv4.conf.all.mc_forwarding
+    value: '{{ var_sysctl_net_ipv4_conf_all_mc_forwarding }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000111
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_all_mc_forwarding | bool
+
+- name: PHTN-10-000111 - Set kernel parameter net.ipv4.conf.default.mc_forwarding
+  sysctl:
+    name: net.ipv4.conf.default.mc_forwarding
+    value: '{{ var_sysctl_net_ipv4_conf_default_mc_forwarding }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000111
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_default_mc_forwarding | bool
+
+- name: PHTN-10-000111 - Set kernel parameter net.ipv4.conf.eth0.mc_forwarding
+  sysctl:
+    name: net.ipv4.conf.eth0.mc_forwarding
+    value: '{{ var_sysctl_net_ipv4_conf_eth0_mc_forwarding }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000111
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_conf_eth0_mc_forwarding | bool
+
+- name: PHTN-10-000111 - Set kernel parameter net.ipv6.conf.all.mc_forwarding
+  sysctl:
+    name: net.ipv6.conf.all.mc_forwarding
+    value: '{{ var_sysctl_net_ipv6_conf_all_mc_forwarding }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000111
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv6_conf_all_mc_forwarding | bool
+
+- name: PHTN-10-000111 - Set kernel parameter net.ipv6.conf.default.mc_forwarding
+  sysctl:
+    name: net.ipv6.conf.default.mc_forwarding
+    value: '{{ var_sysctl_net_ipv6_conf_default_mc_forwarding }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000111
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv6_conf_default_mc_forwarding | bool
+
+- name: PHTN-10-000111 - Set kernel parameter net.ipv6.conf.eth0.mc_forwarding
+  sysctl:
+    name: net.ipv6.conf.eth0.mc_forwarding
+    value: '{{ var_sysctl_net_ipv6_conf_eth0_mc_forwarding }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000111
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv6_conf_eth0_mc_forwarding | bool
+
+############################################
+
+# Title: The Photon operating system must not perform IPv4 packet forwarding.
+
+- name: PHTN-10-000112 - Set kernel parameter net.ipv4.ip_forward
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '{{ var_sysctl_net_ipv4_ip_forward }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000112
+  - sysctl.conf
+  when:
+  - run_sysctl_net_ipv4_ip_forward | bool
+
+############################################
+
+# Title: The Photon operating system must send TCP timestamps.
+
+- name: PHTN-10-000113 - Set kernel parameter net.ipv4.tcp_timestamps
+  sysctl:
+    name: net.ipv4.tcp_timestamps
+    value: '{{ var_sysctl_tcp_timestamps }}'
+    state: present
+    sysctl_set: yes
+    reload: yes
+  tags:
+  - PHTN-10-000113
+  - sysctl.conf
+  when:
+  - run_sysctl_tcp_timestamps | bool
+
+############################################
+
+# Title: The Photon OS must not have the xinetd service enabled.
+
+- name: PHTN-10-000114 - Disable xinetd service
+  service:
+    name: xinetd
+    enabled: no
+    state: stopped
+  tags:
+  - PHTN-10-000114
+  - services
+  when:
+  - run_xinetd_disable | bool
+
+############################################
+
+# Title: The Photon operating system must be configured to protect the SSH public host key from unauthorized modification.
+
+- name: PHTN-10-000115 - Find sshd public key files
+  find:
+    paths: /etc/ssh/
+    file_type: file
+    patterns: "*key.pub"
+  register: sshpubkeys
+  tags:
+  - PHTN-10-000115
+  - sshd
+  - perms
+  when:
+  - run_ssh_pubkeys_permissions | bool
+
+- name: PHTN-10-000115 - Set sshd public key permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "0644"
+    owner: root
+    group: root
+  with_items: " {{ sshpubkeys.files }}"
+  tags:
+  - PHTN-10-000115
+  - sshd
+  - perms
+  when:
+  - run_ssh_pubkeys_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must be configured to protect the SSH private host key from unauthorized access.
+
+- name: PHTN-10-000116 - Find sshd private key files
+  find:
+    paths: /etc/ssh/
+    file_type: file
+    patterns: "*key"
+  register: sshprikeys
+  tags:
+  - PHTN-10-000116
+  - sshd
+  - perms
+  when:
+  - run_ssh_prikeys_permissions | bool
+
+- name: PHTN-10-000116 - Set sshd private key permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "0600"
+    owner: root
+    group: root
+  with_items: " {{ sshprikeys.files }}"
+  tags:
+  - PHTN-10-000116
+  - sshd
+  - perms
+  when:
+  - run_ssh_prikeys_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must enforce password complexity on the root account.
+# password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
+
+- name: PHTN-10-000117 - Enforce password complexity on the root account
+  pamd:
+    name: system-password
+    type: password
+    control: requisite
+    module_path: pam_cracklib.so
+    module_arguments: 'enforce_for_root'
+    state: args_present
+  tags:
+  - PHTN-10-000117
+  - pam
+  when:
+  - run_pamd_enforceforroot | bool
+
+############################################
+
+# Title: The Photon operating system must protect all boot configuration files from unauthorized access.
+
+- name: PHTN-10-000118 - Find boot config files
+  find:
+    paths: /boot/
+    file_type: file
+    patterns: "*.cfg"
+  register: bootcfgfiles
+  tags:
+  - PHTN-10-000118
+  - perms
+  when:
+  - run_boot_config_file_permissions | bool
+
+- name: PHTN-10-000118 - Set boot config file permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "0600"
+    owner: root
+    group: root
+  with_items: " {{ bootcfgfiles.files }}"
+  tags:
+  - PHTN-10-000118
+  - perms
+  when:
+  - run_boot_config_file_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must protect sshd configuration from unauthorized access.
+
+- name: PHTN-10-000119 - Set sshd_config file permissions
+  file:
+    path: /etc/ssh/sshd_config
+    state: file
+    mode: "0600"
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000119
+  - sshd
+  - perms
+  when:
+  - run_ssh_config_file_permissions | bool
+
+############################################
+
+# Title: The Photon operating system must protect all sysctl configuration files from unauthorized access.
+
+- name: PHTN-10-000120 - Find sysctl files
+  find:
+    paths: /etc/sysctl.d/
+    file_type: file
+  register: sysctlfiles
+  tags:
+  - PHTN-10-000120
+  - perms
+  when:
+  - run_sysctl_file_permissions | bool
+
+- name: PHTN-10-000120 - Set sysctl config file permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "0600"
+    owner: root
+    group: root
+  with_items: " {{ sysctlfiles.files }}"
+  tags:
+  - PHTN-10-000120
+  - perms
+  when:
+  - run_sysctl_file_permissions | bool
+
+- name: PHTN-10-000120 - Set sysctl.conf file permissions
+  file:
+    path: /etc/sysctl.conf
+    state: file
+    mode: "0600"
+    owner: root
+    group: root
+  tags:
+  - PHTN-10-000120
+  - perms
+  when:
+  - run_sysctl_file_permissions | bool
+
+############################################
+
+# Title: The operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
+
+- name: PHTN-10-000121 - Configure login.defs UMASK setting
+  lineinfile:
+    path: /etc/login.defs
+    state: present
+    regexp: '^UMASK '
+    line: UMASK {{ var_login_umask }}
+  tags:
+  - PHTN-10-000121
+  - login.defs
+  when:
+  - run_login_umask | bool
+
+############################################
+
+# Title: The Photon operating system must configure sshd to disallow HostbasedAuthentication.
+
+- name: PHTN-10-000122 - Configure sshd to disallow HostbasedAuthentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^HostbasedAuthentication.*$'
+    line: HostbasedAuthentication {{ var_sshd_hostbasedauth }}
+    firstmatch: yes
+  tags:
+  - PHTN-10-000122
+  - sshd
+  notify:
+  - restart sshd
+  when:
+  - run_sshd_hostbasedauth | bool
+
+############################################
+
+# Title: The Photon operating system must employ a deny-all, allow-by-exception firewall policy for allowing connections to other systems.
+
+- name: PHTN-10-000123 - Configure iptables input chain policy to drop
+  iptables:
+    chain: INPUT
+    policy: DROP
+  tags:
+  - PHTN-10-000123
+  - firewall
+  when:
+  - run_default_firewall_rules | bool
+
+- name: PHTN-10-000123 - Configure iptables forward chain policy to drop
+  iptables:
+    chain: FORWARD
+    policy: DROP
+  tags:
+  - PHTN-10-000123
+  - firewall
+  when:
+  - run_default_firewall_rules | bool
+
+- name: PHTN-10-000123 - Configure iptables output chain policy to accept
+  iptables:
+    chain: OUTPUT
+    policy: ACCEPT
+  tags:
+  - PHTN-10-000123
+  - firewall
+  when:
+  - run_default_firewall_rules | bool

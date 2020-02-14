@@ -1,0 +1,8 @@
+name: vmware-vcsa-6.7-vsphereui-stig-baseline
+title: InSpec Wrapper Profile for VMware vCenter Service Appliance 6.7 vSphere UI DISA STIG
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 6.7.0

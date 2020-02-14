@@ -1,0 +1,230 @@
+# VMware vSphere 6.7 vCenter Server Appliance EAM Ansible Playbook
+
+---
+
+ #---------- Ansible version 2.8.5 --------#
+
+
+############################################
+
+# Title: ESX Agent Manager must limit the amount of time that each TCP connection is kept alive
+
+- name: VCEM-67-000001 - ESX Agent Manager must limit the amount of time that each TCP connection is kept alive
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector'
+    attribute: 'connectionTimeout'
+    value: '{{ var_server_connectiontimeout }}'
+  tags:
+  - VCEM-67-000001
+  when:
+  - run_connection_timeout | bool
+
+############################################
+
+# Title: ESX Agent Manager must limit the number of concurrent connections permitted
+
+- name: VCEM-67-000002 - ESX Agent Manager must limit the number of concurrent connections permitted
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Executor'
+    attribute: 'maxThreads'
+    value: '{{ var_server_maxthreads }}'
+  tags:
+  - VCEM-67-000002
+  when:
+  - run_max_threads | bool
+
+############################################
+
+# Title: ESX Agent Manager must limit the maximum size of a POST request
+
+- name: VCEM-67-000003 - ESX Agent Manager must limit the maximum size of a POST request
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector/@maxPostSize'
+    state: absent
+  tags:
+  - VCEM-67-000003
+  when:
+  - run_max_post_size | bool
+
+############################################
+
+# Title: ESX Agent Manager must protect cookies from XSS
+
+- name: VCEM-67-000004 - ESX Agent Manager must protect cookies from XSS
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:session-config/x:cookie-config/x:http-only'
+    value: '{{ var_web_http_only }}'
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCEM-67-000004
+  when:
+  - run_http_only | bool
+
+############################################
+
+# Title: ESX Agent Manager must record user access in a format that enables monitoring of remote access
+
+- name: VCEM-67-000005 - ESX Agent Manager must record user access in a format that enables monitoring of remote access
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
+    attribute: 'pattern'
+    value: '{{ var_access_log_valve_pattern }}'
+  tags:
+  - VCEM-67-000005
+  when:
+  - run_access_valve_pattern | bool
+
+############################################
+
+# Title: ESX Agent Manager must generate log records for system startup and shutdown
+
+- name: VCEM-67-000006 - ESX Agent Manager must generate log records for system startup and shutdown
+  lineinfile:
+    path: '{{ var_eam_json_path }}'
+    state: present
+    regexp: '^.*"StreamRedirectFile".*$'
+    line: '    "StreamRedirectFile" : "{{ var_stream_redirect_file }}",'
+    insertbefore: ^.*WorkingDir.*$
+    firstmatch: yes
+  tags:
+  - VCEM-67-000006
+  when:
+  - run_json_stream_redirect_file | bool
+
+############################################
+
+# Title: ESX Agent Manager log files must only be modifiable by privileged users
+
+- name: VCEM-67-000007 - Find EAM log files
+  find:
+    paths: '{{ var_eam_logs_path }}'
+    file_type: file
+    patterns: "*.log*,*.txt*"
+  register: eamlogs
+  tags:
+  - VCEM-67-000007
+  when:
+  - run_logs_permissions | bool
+
+- name: VCEM-67-000007 - Set EAM log permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "0644"
+    owner: "eam"
+    group: "users"
+  with_items: " {{ eamlogs.files }}"
+  tags:
+  - VCEM-67-000007
+  when:
+  - run_logs_permissions | bool
+
+############################################
+
+# Title: ESX Agent Manager application files must be verified for their integrity
+# VCEM-67-000008 requires manual remediation
+
+############################################
+
+# Title: ESX Agent Manager must only run one webapp
+# VCEM-67-000009 requires manual remediation
+
+############################################
+
+# Title: ESX Agent Manager must not be configured with unsupported realms
+
+- name: VCEM-67-000010 - Remove GlobalNamingResources
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/GlobalNamingResources'
+    state: absent
+  tags:
+  - VCEM-67-000010
+  when:
+  - run_user_database_realm | bool
+
+- name: VCEM-67-000010 - Remove Realm
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Realm'
+    state: absent
+  tags:
+  - VCEM-67-000010
+  when:
+  - run_user_database_realm | bool
+
+############################################
+
+# Title: ESX Agent Manager must be configured to limit access to internal packages
+
+- name: VCEM-67-000011 - Configure catalina.properties file
+  template:
+    src: catalina.properties.j2
+    dest: '{{ var_catalina_props_path }}'
+    owner: eam
+    group: cis
+    mode: '0644'
+    force: yes
+  tags:
+  - VCEM-67-000011
+  when:
+  - run_catalina_properties | bool
+
+############################################
+
+# Title: ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled
+
+- name: VCEM-67-000012 - ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled CSH
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping[extension="csh"]'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCEM-67-000012
+  when:
+  - run_removed_mime_mappings | bool
+
+- name: VCEM-67-000012 - ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled SH
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping[extension="sh"]'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCEM-67-000012
+  when:
+  - run_removed_mime_mappings | bool
+
+- name: VCEM-67-000012 - ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled SHAR
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping[extension="shar"]'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCEM-67-000012
+  when:
+  - run_removed_mime_mappings | bool
+
+- name: VCEM-67-000012 - ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled KSH
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping[extension="ksh"]'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCEM-67-000012
+  when:
+  - run_removed_mime_mappings | bool
+

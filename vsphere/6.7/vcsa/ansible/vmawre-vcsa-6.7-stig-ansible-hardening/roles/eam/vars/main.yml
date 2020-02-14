@@ -1,0 +1,21 @@
+# eam variables
+
+# server.xml variables
+var_server_xml_path: '/usr/lib/vmware-eam/web/conf/server.xml'
+var_server_connectiontimeout: '20000'
+var_server_maxthreads: '300'
+var_access_log_valve_pattern: '%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;'
+
+# web.xml variables
+var_web_xml_path: '/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml'
+var_web_http_only: 'true'
+
+# eam.json variables
+var_eam_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/eam.json'
+var_stream_redirect_file: '%VMWARE_LOG_DIR%/vmware/eam/jvm.log'
+
+# eam log variables
+var_eam_logs_path: '/var/log/vmware/eam/web/'
+
+# catalina properties variables
+var_catalina_props_path: '/etc/vmware-eam/catalina.properties'
