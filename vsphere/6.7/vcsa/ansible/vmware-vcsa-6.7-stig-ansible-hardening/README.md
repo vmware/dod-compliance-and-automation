@@ -5,12 +5,27 @@ An ansible playbook to harden VMware vCenter Server Appliance 6.7 against the dr
 -Draft vSphere 6.7 DISA STIG
 -Tested with Ansible 2.8.5
 -Tested with vCenter 6.7 U3
+-Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 10 to run an Unbuntu box for example
+
+## Status
+Complete Components
+
+- Photon
+- PostGres
+- VAMI
+
+In-Progress Components
+
+- EAM
+- Perfcharts
+- rhttpproxy
+- vsphere-client
+- vsphere-ui
 
 ## Playbook Structure
-Photon role under roles folder so this can be combined with other product specific ansible playbooks.
+Using the Photon role as an example...  
 
-- photon-stig.yml - Main playbook to run
-- README.md - Readme file
+- vcsa-stig.yml - Main playbook to run
 - /roles/photon/defaults/main.yml - Default variables used to turn controls on/off in the playbook.  Set these to true/false
 - /roles/photon/handlers/main.yaml - handlers referenced in the photon task
 - /roles/photon/tasks/main.yml - Default role playbook
@@ -24,22 +39,22 @@ Photon role under roles folder so this can be combined with other product specif
 
 Run all controls on a single host. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' photon-stig.yaml -k -v  
+ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v  
 ```
 
 Run all controls on a single host in check mode and does not change anything. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' photon-stig.yaml -k -v --check  
+ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v --check  
 ```
 
 Run all controls on a single host and only for a specific control PHTN-OS-000001. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' photon-stig.yaml -k -v --tags PHTN-OS-000001  
+ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v --tags PHTN-OS-000001  
 ```
 
 Run all controls on a single host and only for a specific group of controls for ssh. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' photon-stig.yaml -k -v --tags sshd  
+ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v --tags sshd  
 ```
 
 Run all controls on a single host and only for controls tagged 'photon' and also supplies variables at the command line. Prompts for user password and displays verbose output
@@ -49,9 +64,9 @@ ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v --tags phot
 
 
 ## Misc
-To set syslog or NTP you must update the variables at the top of /roles/photon/vars/main.yml  
+To set syslog or NTP you must update the variables at the top of /roles/photon/vars/main.yml or specifiy then at the command line
 
-Disabling root ssh logins is set to false in the default variables yaml. You should configure other ssh besides root before enabling this control.  
+Disabling root ssh logins is set to false in the default variables yaml for Photon. You should configure other ssh access besides root before enabling this control if needed.  
 
 PHTN-10-000035 run_sshd_permitrootlogin: false  
 
