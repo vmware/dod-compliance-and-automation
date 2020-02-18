@@ -2,12 +2,11 @@
 
 ## Contents
 - [Overview](#overview)
-- [Ansible Playbook](#ansible-playbook)
-- [Inspec Profile](#inspec-profile)
-- [PowerCLI Scripts](#powercli-scripts)
+- [Using this Repo](#using-this-repo)
 - [Docs](#docs)
 - [Severities](#severties)
 - [Disclaimer](#disclaimer)
+- [License](#license)
 
 ## Overview
 Content for compliance auditing and remediation of the VMware vSphere 6.7 DoD STIG Baseline.
@@ -37,17 +36,11 @@ The VMware vSphere 6.7 STIGs presume operation in an environment compliant with 
 
 All technical NIST SP 800-53 requirements were considered while developing this STIG. Requirements that are applicable and configurable will be included in the final STIG.
 
-## Ansible Playbook
+## Using this Repo
 
-Ansible is used for remediation of some aspects of the STIG mainly dealing with the vCenter Appliance.
+This repo for 6.7 is split up between controls for the vCenter Server Appliance (vcsa) and vSphere.  Within each of those areas are supporting auditing and remediation scripts (PowerCLI), playbooks (Ansible), and profiles (Inspec).  
 
-## Inspec Profile
-
-Inspec is used for auditing and when combined with [Heimdall](https://github.com/mitre/heimdall) the results can be easily viewed and tracked over time.
-
-## PowerCLI Scripts
-
-PowerCLI can be used for both auditing and remediation aspects for native vSphere controls.
+In each of those areas you will find instructions on how to run those components and other relevant notes.  
 
 ## Docs
 
