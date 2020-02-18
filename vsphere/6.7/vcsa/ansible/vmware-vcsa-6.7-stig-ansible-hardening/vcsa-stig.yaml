@@ -2,11 +2,11 @@
 
 - hosts: all
   roles:
-    - eam
-    - perfcharts
+#    - eam
+#    - perfcharts
     - photon
     - postgres
-    - rhttpproxy
+#    - rhttpproxy
     - vami
-    - vsphere-client
-    - vsphere-ui
+#    - vsphere-client
+#    - vsphere-ui
