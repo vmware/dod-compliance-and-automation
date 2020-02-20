@@ -25,7 +25,14 @@ and SRGs will result in a secure configuration to prevent issues such as insider
 exfiltration, or advanced persistent threats.
 
 
-In order to better serve the needs of our DoD partners, and those who wish to meet the bar set by the DoD, VMware is providing STIG and SRG documentation, as well as compliance auditing and remediation code, for community consumption and contribution.
+In order to better serve the needs of our DoD partners, and those who wish to meet the bar set by the DoD, VMware is hereby providing three elements for community consumption and contribution.
+
+* SRG Documentation
+  * Raw SRG content that is either the source material for an existing or future STIG, or that can be used in place of a proper STIG.
+* Auditing Automation
+  * InSpec and PowerCLI content is provided to audit and report on the state of compliance for an associated set of SRG/STIG controls.
+* Remediation Automation
+  * Ansible and PowerCLI content is provided to programmatically help get the system into a compliant state.
 
 ## SRG Documentation
 
@@ -43,11 +50,11 @@ STIG development is essentially an exercise where a specific product is filtered
 
 In all cases, the product's status in regards to the official STIG process will be noted at the top of the project README.md
 
-__NOTE__: This project represents VMware's effort to document our compliance against the SRG requirements and nothing more. A published STIG is our eventual goal, in most cases, but this content should not be viewed to be "as good as a STIG". A DISA published STIG includes technical validation, review of requirement fulfillment, accuracy and style, risk acceptance and is digitally signed by the RME and posted on a .mil. This SRG content is intended to provided value to our customers while the STIGs are in process. Except for products that have published STIGs already, there is no explicit or implied DISA approval of the provided content.
+__NOTE__: This project represents VMware's effort to document our compliance against the SRG requirements and nothing more. A published STIG is our eventual goal, in most cases, but this content should not be viewed to be "as good as a STIG". A DISA published STIG includes technical validation, review of requirement fulfillment, accuracy and style, risk acceptance and is digitally signed by the RME and posted on a .mil. This SRG content is intended to provided value to our partners while the STIGs are in process. Except for products that have published STIGs already, there is no explicit or implied DISA approval of the provided content.
 
 ## Compliance Automation
 
-STIG documents are written to be portable, offline hardening documentation where a sysadmin can go through, step by step, and STIG a system with no external dependencies. That said, many STIGs are either too complex or need to be applied to so many instances that manual steps are not an ideal solution. To augment the plain language STIG content, we are providing a number of ways to script or fully automate your VMWare compliance activities.
+STIG documents are written to be portable, offline hardening documentation where a sysadmin can go through, step by step, and STIG a system with no external dependencies. That said, many STIGs are either too complex or need to be applied to so many instances that manual steps are just not feasible. To augment the plain language STIG content, we are providing a number of ways to script or fully automate your VMware compliance activities.
 
 ### Auditing with InSpec
 
@@ -74,11 +81,15 @@ We may elaborate on these points in the future but the decision was not a diffic
 
 ## Documentation
 
-Depending on the product, there may be a need to host DoD specific whitepapers, notes and addendums that have no other appropriate place. These items will be provided under the Documentation path where applicable.
+Depending on the product, there may be a need to host DoD specific whitepapers, notes and addendums that have no other appropriate place. These items will be provided under the docs path where applicable.
 
 ## Contributing
 
 The dod-compliance-and-automation project team welcomes contributions from the community. If you wish to contribute code and you have not signed our contributor license agreement (CLA), our bot will update the issue when you open a Pull Request. For any questions about the CLA process, please refer to our [FAQ](https://cla.vmware.com/faq).
+
+* __SRG Content__ - VMware owns the state of the SRG/STIG controls provided here, including their applicability and how the requirements are addressed. That said, we are open to ideas for further hardening, additional methods, refinements, expansion, etc.
+
+* __Automation Content__ - VMware provides the automation content in a beta complete state. Once it is used by the broad github audience, we expect the need for refinements and we highly encourage feedback and direct contributions.
 
 ## License
 
