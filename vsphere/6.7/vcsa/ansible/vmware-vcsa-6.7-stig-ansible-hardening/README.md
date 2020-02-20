@@ -5,7 +5,7 @@ An ansible playbook to harden VMware vCenter Server Appliance 6.7 against the dr
 - Draft vSphere 6.7 DISA STIG
 - Tested with Ansible 2.8.5
 - Tested with vCenter 6.7 U3
--Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 10 to run an Unbuntu box for example
+- Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 10 to run an Unbuntu box for example
 
 ## Status
 Complete Components
