@@ -1,7 +1,7 @@
 # Lighttpd
 # /opt/vmware/etc/lighttpd/lighttpd.conf
 var_conf_server_max_connections: 1024
-var_conf_ssl_ciphers: "FIPS:!aNULL:!eNULL"
+var_conf_ssl_ciphers: "!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES"
 var_conf_ssl_engine: '"enable"'
 var_conf_server_error_log: 'log_root + "/error.log"'
 var_conf_mimetype_xattr: "disable"
