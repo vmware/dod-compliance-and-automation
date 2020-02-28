@@ -14,10 +14,6 @@ run_conf_server_mod_accesslog: true
 #VCLD-67-000005
 run_conf_server_error_log: true
 #VCLD-67-000006
-#VCLD-67-000007
-#VCLD-67-000008
-#VCLD-67-000009
-#VCLD-67-000010
 run_conf_comment_accesslog_format: true
 #VCLD-67-000011
 run_vami_logs_root_owned: true

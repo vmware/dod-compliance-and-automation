@@ -113,10 +113,6 @@
     replace: '# \1'
   tags:
   - VCLD-67-000006
-  - VCLD-67-000007
-  - VCLD-67-000008
-  - VCLD-67-000009
-  - VCLD-67-000010
   - conf
   notify:
   - restart vami

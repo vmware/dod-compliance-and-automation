@@ -30,13 +30,8 @@ output is not as expected, this is a finding."
 Comment any existing accesslog.format lines by adding a '#' at the beginning of
 the line."
 
-  describe.one do
-    describe command('grep "accesslog.format" /opt/vmware/etc/lighttpd/lighttpd.conf') do
-      its ('stdout.strip') { should match /^# accesslog.format.*$/ }
-    end
-    describe command('grep "accesslog.format" /opt/vmware/etc/lighttpd/lighttpd.conf') do
-      its ('stdout.strip') { should match /^accesslog.format.*%r.*$/ }
-    end
+  describe command('grep "accesslog.format" /opt/vmware/etc/lighttpd/lighttpd.conf') do
+    its ('stdout.strip') { should match /^# accesslog.format.*$/ }
   end
 
 end
