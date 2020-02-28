@@ -136,50 +136,19 @@
   when:
   - run_vami_logs_root_owned | bool
 
-
-- name: VCLD-67-000011 - VAMI log files must be owned by root
+- name: VCLD-67-000011 - VAMI log file permissions
   file:
     path: "{{ item.path }}"
     state: file
     owner: root
+    group: root
+    mode: "0640"
   with_items: " {{ vamilogfiles.files }}"
   tags:
   - VCLD-67-000011
   - perms
   when:
-  - run_vami_logs_root_owned | bool
-
-############################################
-
-# Title: VAMI log files must be group owned by root
-
-- name: VCLD-67-000012 - VAMI log files must be group owned by root
-  file:
-    path: "{{ item.path }}"
-    state: file
-    group: root
-  with_items: " {{ vamilogfiles.files }}"
-  tags:
-  - VCLD-67-000012
-  - perms
-  when:
-  - run_vami_logs_root_group | bool
-
-############################################
-
-# Title: VAMI log files must only be accessible by privileged users.
-
-- name: VCLD-67-000013 - VAMI log files must only be accessible by privileged users.
-  file:
-    path: "{{ item.path }}"
-    state: file
-    mode: "0640"
-  with_items: " {{ vamilogfiles.files }}"
-  tags:
-  - VCLD-67-000013
-  - perms
-  when:
-  - run_vami_logs_permissions | bool
+  - run_vami_logs | bool
 
 ############################################
 

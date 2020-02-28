@@ -21,16 +21,25 @@ non-privileged users."
   tag nist: ["AU-9", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
-stat -c \"%n owner is '%U'\" /opt/vmware/var/log/lighttpd/*.log
+stat -c \"%n has %a permissions and is owned by %U:%G\" /opt/vmware/var/log/lighttpd/*.log
 
-If the owner of any file is not \"root\", this is a finding."
+Expected result:
+
+/opt/vmware/var/log/lighttpd/access.log has 644 permissions and is owned by root:root
+/opt/vmware/var/log/lighttpd/error.log has 644 permissions and is owned by root:root
+
+If the output does not match the expected result, this is a finding."
   desc 'fix', "At the command prompt, enter the following command:
 
-chown root:root /opt/vmware/var/log/lighttpd/*.log"
+# chown root:root /opt/vmware/var/log/lighttpd/*.log
+# chmod 640 /opt/vmware/var/log/lighttpd/*.log
+"
 
   command('find /opt/vmware/var/log/lighttpd/ -maxdepth 1 -name "*.log"').stdout.split.each do | fname |
     describe file(fname) do
       its('owner') { should cmp 'root' }
+      its('group') { should cmp 'root' }
+      it { should_not be_more_permissive_than('0640') }
     end
   end
 

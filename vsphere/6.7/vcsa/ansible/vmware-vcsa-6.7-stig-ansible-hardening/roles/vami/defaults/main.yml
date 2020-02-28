@@ -16,11 +16,7 @@ run_conf_server_error_log: true
 #VCLD-67-000006
 run_conf_comment_accesslog_format: true
 #VCLD-67-000011
-run_vami_logs_root_owned: true
-#VCLD-67-000012
-run_vami_logs_root_group: true
-#VCLD-67-000013
-run_vami_logs_permissions: true
+run_vami_logs: true
 #VCLD-67-000014
 run_vami_syslog_config: true
 #VCLD-67-000016
