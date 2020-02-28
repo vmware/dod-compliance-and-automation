@@ -3,7 +3,7 @@
 var_conf_server_max_connections: 1024
 var_conf_ssl_ciphers: "!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES"
 var_conf_ssl_engine: '"enable"'
-var_conf_server_error_log: 'log_root + "/error.log"'
+var_conf_server_error_log: '"/opt/vmware/var/log/lighttpd/error.log"'
 var_conf_mimetype_xattr: "disable"
 var_conf_url_access_deny: '( "~", ".inc" )'
 var_conf_server_max_keep_alive_idle: 30

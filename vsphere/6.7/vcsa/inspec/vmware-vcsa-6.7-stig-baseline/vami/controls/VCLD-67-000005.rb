@@ -15,17 +15,21 @@ more difficult for suspicous activity to go un-logged."
   tag nist: ["AU-12 a", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
-egrep 'server\\sstarted|server\\sstopped' /opt/vmware/var/log/lighttpd/error.log
+# /opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf|grep \"server.errorlog\"
 
-If server stopped and server started times are not listed, this is a finding."
+Expected result:
+
+    server.errorlog                   = \"/opt/vmware/var/log/lighttpd/error.log\"
+
+If the output does not match the expected result, this is a finding."
   desc 'fix', "Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
 
 Configure the \"lighttpd.conf\" file with the following:
 
-server.errorlog = log_root + \"/error.log\""
+server.errorlog = \"/opt/vmware/var/log/lighttpd/error.log\""
 
   describe parse_config_file('/opt/vmware/etc/lighttpd/lighttpd.conf').params['server.errorlog'] do
-    it { should eq "log_root + \"/error.log\"" }
+    it { should eq "/opt/vmware/var/log/lighttpd/error.log" }
   end
 
 end
