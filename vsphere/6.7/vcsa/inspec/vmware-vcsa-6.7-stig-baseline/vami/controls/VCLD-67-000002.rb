@@ -28,16 +28,16 @@ TC Server while encrypting data for transmission."
 /opt/vmware/sbin/vami-lighttpd -p -f
 /opt/vmware/etc/lighttpd/lighttpd.conf|grep \"ssl.cipher-list\"
 
-If the value ssl.cipher-list = \"FIPS:!aNULL:!eNULL\" is not returned or
+If the value ssl.cipher-list = \"!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES\" is not returned or
 commented out, this is a finding."
   desc 'fix', "Navigate to and open /etc/applmgmt/appliance/lighttpd.conf
 
 Remove any existing \"ssl.cipher-list\" entry and repalce with the following:
 
-ssl.cipher-list = \"FIPS:!aNULL:!eNULL\""
+ssl.cipher-list = \"!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES\""
 
   describe parse_config_file('/etc/applmgmt/appliance/lighttpd.conf').params['ssl.cipher-list'] do
-    it { should eq "\"FIPS:!aNULL:!eNULL\"" }
+    it { should eq "\"!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES\"" }
   end
 
 end
