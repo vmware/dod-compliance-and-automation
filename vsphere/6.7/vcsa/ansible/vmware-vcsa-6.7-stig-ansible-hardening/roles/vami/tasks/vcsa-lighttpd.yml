@@ -574,29 +574,6 @@
 
 ############################################
 
-# Title: VAMI must be configured to utilize the Common Information Model Object Manager. 
-
-- name: VCLD-67-000032 - VAMI must be configured to utilize the Common Information Model Object Manager.
-  lineinfile:
-    path: /opt/vmware/etc/lighttpd/lighttpd.conf
-    state: present
-    regexp: "{{ item.regexp }}" 
-    line: "{{ item.line }}"
-  with_items:
-  - { line: '$HTTP["url"] =~ "^/cimom" {', regexp: '^\$HTTP\["url"\] =~ "\^\/cimom" {$' }
-  - { line: '    proxy.server = ( "" =>', regexp: '^    proxy.server = \( "" =>$' }
-  - { line: '                      "host" => "127.0.0.1",', regexp: '^                      "host" => "127.0.0.1",$' }
-  - { line: '                      "port" => "5488"', regexp: '^                      "port" => "5488"$' }
-  tags:
-  - VCLD-67-000032
-  - conf
-  notify:
-  - restart vami
-  when:
-  - run_conf_set_cimon_conf | bool
-
-############################################
-
 # Title: VAMI must be protected from being stopped by a non-privileged user.
 
 - name: VCLD-67-000033 - VAMI must be protected from being stopped by a non-privileged user.

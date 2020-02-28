@@ -57,8 +57,6 @@ run_conf_dir_listing_activate: true
 run_conf_remove_mod_status: true
 #VCLD-67-000031
 run_conf_debug_log_request_handling: true
-#VCLD-67-000032
-run_conf_set_cimon_conf: true
 #VCLD-67-000033
 run_service_remove_user: true
 #VCLD-67-000034
