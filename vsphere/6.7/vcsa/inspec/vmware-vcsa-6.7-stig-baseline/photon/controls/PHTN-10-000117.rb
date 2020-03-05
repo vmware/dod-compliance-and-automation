@@ -4,7 +4,7 @@ root account."
   desc  "Password complexity rules must apply to all accounts on the system,
 including root. Without specifying the enforce_for_root flag, pam_cracklib does
 not apply complexity rules to the root user. While root users can find way
-around this requirement, give it's superuser power, it is necessary to attempt
+around this requirement, given it's superuser power, it is necessary to attempt
 to force compliance."
   impact 0.5
   tag severity: "CAT II"
@@ -37,4 +37,3 @@ minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root"
   end
 
 end
-

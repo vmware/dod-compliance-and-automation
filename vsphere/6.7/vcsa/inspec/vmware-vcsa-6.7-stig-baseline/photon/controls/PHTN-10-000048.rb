@@ -19,8 +19,7 @@ includes processes created before auditd starts. "
 # grep \"audit=1\" /proc/cmdline
 
 If no results are returned, this is a finding."
-  desc 'fix', "Open /boot/grub2/grub.cfg with a text editor and locate the
-following line inside the 'menuentry \"Photon\" {}' block:
+  desc 'fix', "Open /boot/grub2/grub.cfg with a text editor and locate the boot command line arguments. An example is below:
 
 linux \"/\"$photon_linux root=$rootpartition net.ifnames=0 $photon_cmdline
 coredump_filter=0x37 consoleblank=0
@@ -30,6 +29,8 @@ Add \"audit=1\" to the end of the line so it reads as follows:
 linux \"/\"$photon_linux root=$rootpartition net.ifnames=0 $photon_cmdline
 coredump_filter=0x37 consoleblank=0 audit=1
 
+Note: Do not copy/paste in this example argument line. This may change in future releases. Find the similar line and append \"audit=1\" to it.
+
 Reboot the system for the change to take effect."
 
   describe file ('/boot/grub2/grub.cfg') do
@@ -37,4 +38,3 @@ Reboot the system for the change to take effect."
   end
 
 end
-

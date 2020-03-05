@@ -21,7 +21,7 @@ compromised."
 If the value of PASS_MAX_DAYS is greater than 90, this is a finding
 
 "
-  desc 'fix', "Open /etc/login.defs with a text editor. Modify the PASS_MIN_DAYS
+  desc 'fix', "Open /etc/login.defs with a text editor. Modify the PASS_MAX_DAYS
 line to the following:
 
 PASS_MAX_DAYS   90"
@@ -31,4 +31,3 @@ PASS_MAX_DAYS   90"
   end
 
 end
-
