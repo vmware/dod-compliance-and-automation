@@ -165,7 +165,7 @@ $V94651 = $true #Duplicates
 #ESXi
 $V93949 = $true  #Lockdown Mode
 $V93951 = $true  #DCUI.Access List
-$V93953 = $false  #Lockdown Mode Exceptions
+$V93953 = $true  #Lockdown Mode Exceptions
 $V93955 = $true  #Syslog
 $V93957 = $true  #Account Lock Failures
 $V93959 = $true  #Account Unlock Timeout
@@ -191,7 +191,7 @@ $V93997 = $true  #SSH PermitTunnel no
 $V93999 = $true  #SSH ClientAliveCountMax 3
 $V94001 = $true  #SSH ClientAliveInterval 200
 $V94003 = $true  #SSH MaxSessions 1
-$V94005 = $false  #Authorized Keys
+$V94005 = $true  #Authorized Keys
 $V94007 = $true  #Log Level
 $V94009 = $true  #Password Complexity
 $V94011 = $true  #Password Reuse
@@ -208,7 +208,7 @@ $V94033 = $true  #DCUI Timeout
 $V94035 = $true  #Core Dumps
 $V94037 = $true  #Persistent Logs
 $V94039 = $true  #NTP
-$V94041 = $false #Acceptance Level
+$V94041 = $true #Acceptance Level
 $V94043 = $true  #Isolate vMotion
 $V94045 = $true  #Protect Management
 $V94047 = $true  #Protect Storage traffic
@@ -458,7 +458,7 @@ Try{
     If($V94563){
         $vmtitle01 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoCopyDisable.Keys
-        $settingvalue = [boolean]$stigSettings.vmIsoCopyDisable.Values
+        $settingvalue = [string]$stigSettings.vmIsoCopyDisable.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -521,7 +521,7 @@ Try{
     If($V94565){
         $vmtitle02 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoDndDisable.Keys
-        $settingvalue = [boolean]$stigSettings.vmIsoDndDisable.Values
+        $settingvalue = [string]$stigSettings.vmIsoDndDisable.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -584,7 +584,7 @@ Try{
     If($V94569){
         $vmtitle04 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoPasteDisable.Keys
-        $settingvalue = [boolean]$stigSettings.vmIsoPasteDisable.Values
+        $settingvalue = [string]$stigSettings.vmIsoPasteDisable.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -647,7 +647,7 @@ Try{
     If($V94571){
         $vmtitle05 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoDiskShrink.Keys
-        $settingvalue = [boolean]$stigSettings.vmIsoDiskShrink.Values
+        $settingvalue = [string]$stigSettings.vmIsoDiskShrink.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -710,7 +710,7 @@ Try{
     If($V94573){
         $vmtitle06 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoDiskWiper.Keys
-        $settingvalue = [boolean]$stigSettings.vmIsoDiskWiper.Values
+        $settingvalue = [string]$stigSettings.vmIsoDiskWiper.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -819,7 +819,7 @@ Try{
     If($V94577){
         $vmtitle08 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoHgfsDisable.Keys
-        $settingvalue = [boolean]$stigSettings.vmIsoHgfsDisable.Values
+        $settingvalue = [string]$stigSettings.vmIsoHgfsDisable.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -1175,7 +1175,7 @@ Try{
     If($V94625){
         $vmtitle34 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmRemoteVnc.Keys
-        $settingvalue = [boolean]$stigSettings.vmRemoteVnc.Values
+        $settingvalue = [string]$stigSettings.vmRemoteVnc.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -1301,7 +1301,7 @@ Try{
     If($V94629){
         $vmtitle37 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmDevConnDisable.Keys
-        $settingvalue = [boolean]$stigSettings.vmDevConnDisable.Values
+        $settingvalue = [string]$stigSettings.vmDevConnDisable.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -1364,7 +1364,7 @@ Try{
     If($V94631){
         $vmtitle39 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmEnableHostInfo.Keys
-        $settingvalue = [boolean]$stigSettings.vmEnableHostInfo.Values
+        $settingvalue = [string]$stigSettings.vmEnableHostInfo.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -1527,7 +1527,7 @@ Try{
     If($V94641){
         $vmtitle44 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmGuestLock.Keys
-        $settingvalue = [boolean]$stigSettings.vmGuestLock.Values
+        $settingvalue = [string]$stigSettings.vmGuestLock.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -1589,7 +1589,7 @@ Try{
     If($V94643){
         $vmtitle45 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmMks3D.Keys
-        $settingvalue = [boolean]$stigSettings.vmMks3D.Values
+        $settingvalue = [string]$stigSettings.vmMks3D.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -1751,7 +1751,7 @@ Try{
     $Severity = "CAT III"
     If($V93951){
         $esxititle02 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
-        $settingname = $stigSettings.DCUIAccess.Keys
+        $settingname = [string]$stigSettings.DCUIAccess.Keys
         $settingvalue = [string]$stigsettings.DCUIAccess.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -1863,7 +1863,7 @@ Try{
     $Severity = "CAT II"
     If($V93955){
         $esxititle04 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
-        $settingname = $stigsettings.syslogHost.Keys
+        $settingname = [string]$stigsettings.syslogHost.Keys
         $settingvalue = [string]$stigsettings.syslogHost.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -1926,7 +1926,7 @@ Try{
     $Severity = "CAT II"
     If($V93957){
         $esxititle05 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
-        $settingname = $stigsettings.accountLockFailures.Keys
+        $settingname = [string]$stigsettings.accountLockFailures.Keys
         $settingvalue = [string]$stigsettings.accountLockFailures.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -1989,7 +1989,7 @@ Try{
     $Severity = "CAT II"
     If($V93959){
         $esxititle06 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
-        $settingname = $stigsettings.accountUnlockTime.Keys
+        $settingname = [string]$stigsettings.accountUnlockTime.Keys
         $settingvalue = [string]$stigsettings.accountUnlockTime.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -3441,7 +3441,7 @@ Try{
     If($V94015){
         $esxititle34 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.enableMob.Keys
-        $settingvalue = [boolean]$stigsettings.enableMob.Values
+        $settingvalue = [string]$stigsettings.enableMob.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
         ForEach($vmhost in $vmhostsv){
