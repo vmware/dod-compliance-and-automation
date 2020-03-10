@@ -3,7 +3,7 @@ control "ESXI-67-000071" do
 installing ESXi."
   desc  "Always check the SHA1 or MD5 hash after downloading an ISO, offline
 bundle, or patch to ensure integrity and authenticity of the downloaded files."
-  impact 1.0
+  impact 0.7
   tag severity: "CAT I"
   tag gtitle: "SRG-OS-000480-VMM-002000"
   tag rid: "ESXI-67-000071"

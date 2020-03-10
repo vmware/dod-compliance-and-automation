@@ -11,7 +11,7 @@ applications that require this functionality. This will also affect how a layer
 specific MAC address for licensing. Reject MAC Changes can be set at the
 vSwitch and/or the Portgroup level. You can override switch level settings at
 the Portgroup level."
-  impact 1.0
+  impact 0.7
   tag severity: "CAT I"
   tag gtitle: "SRG-OS-000480-VMM-002000"
   tag rid: "ESXI-67-000060"

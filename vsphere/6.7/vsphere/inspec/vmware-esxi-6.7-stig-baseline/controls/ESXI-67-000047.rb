@@ -15,7 +15,7 @@ VMware partner.
     Community Supported VIBs are not supported and do not have a digital
 signature.  To protect the security and integrity of your ESXi hosts do not
 allow unsigned (CommunitySupported) VIBs to be installed on your hosts."
-  impact 1.0
+  impact 0.7
   tag severity: "CAT I"
   tag gtitle: "SRG-OS-000366-VMM-001430"
   tag rid: "ESXI-67-000047"

@@ -4,7 +4,7 @@ password."
   desc  "Configuring this setting for the SSH daemon provides additional
 assurance that remote login via SSH will require a password, even in the event
 of misconfiguration elsewhere."
-  impact 1.0
+  impact 0.7
   tag severity: "CAT I"
   tag gtitle: "SRG-OS-000480-VMM-002000"
   tag rid: "ESXI-67-000015"

@@ -2,7 +2,7 @@ control "ESXI-67-000072" do
   title "The ESXi host must have all security patches and updates installed."
   desc  "Installing software updates is a fundamental mitigation against the
 exploitation of publicly-known vulnerabilities."
-  impact 1.0
+  impact 0.7
   tag severity: "CAT I"
   tag gtitle: "SRG-OS-000480-VMM-002000"
   tag rid: "ESXI-67-000072"
