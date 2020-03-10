@@ -425,7 +425,7 @@ $report = @()
 Try
 {
     Write-ToConsole "...Gathering info on target hosts in $vcenter"
-    $vmhosts = Get-VMHost | Where {$_.version -match "^6.7*"} | Sort-Object -Property Name -ErrorAction Stop
+    $vmhosts = Get-VMHost | Where {$_.version -match "^6.7*"} | Where {$_.connectionstate -ne "Disconnected" } | Where {$_.connectionstate -ne "NotResponding" }|  Sort-Object -Property Name -ErrorAction Stop
     $vmhostsv = $vmhosts | Get-View | Sort-Object -Property Name -ErrorAction Stop
     Write-ToConsole "...Gathering info on target virtual machines in $vcenter"
     $vms = Get-VM | Sort-Object -Property Name -ErrorAction Stop
