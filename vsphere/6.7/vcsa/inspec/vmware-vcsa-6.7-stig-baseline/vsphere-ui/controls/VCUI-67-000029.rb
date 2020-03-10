@@ -36,7 +36,7 @@ If the output does not match the expected result, this is a finding."
 
 Make sure that the server port is disabled:
 
-<Server port=\"-1\""
+<Server port=\"${shutdown.port}\" ...>"
 
   describe xml('/usr/lib/vmware-vsphere-ui/server/conf/server.xml') do
     its('Server/attribute::port') { should include '${shutdown.port}' }
