@@ -1,0 +1,78 @@
+control "ESXI-67-000038" do
+  title "ESXi hosts utilizing Host Profiles and/or Auto Deploy must use the
+vSphere Authentication Proxy to protect passwords when adding themselves to
+Active Directory."
+  desc  "If you configure your host to join an Active Directory domain using
+Host Profiles and/or Auto Deploy, the Active Directory credentials are saved in
+the profile and are transmitted over the network. To avoid having to save
+Active Directory credentials in the Host Profile and to avoid transmitting
+Active Directory credentials over the network, use the vSphere Authentication
+Proxy."
+  impact 0.5
+  tag severity: "CAT II"
+  tag gtitle: "SRG-OS-000104-VMM-000500"
+  tag rid: "ESXI-67-000038"
+  tag stig_id: "ESXI-67-000038"
+  tag cci: "CCI-000764"
+  tag nist: ["IA-2", "Rev_4"]
+  desc 'check', "From the vSphere Client go to Home >> Host Profiles >> and select
+a Host Profile to edit. View the settings under Security and Services >>
+Security Settings >> Authentication Configuration >> Active Directory
+Configuration >> Join Domain Method. Verify the method used to join hosts to a
+domain is set to \"Use vSphere Authentication Proxy to add the host to domain\".
+
+or
+
+From a PowerCLI command prompt while connected to vCenter run the following
+command:
+
+Get-VMHost | Select Name, ` @{N=\"HostProfile\";E={$_ | Get-VMHostProfile}}, `
+@{N=\"JoinADEnabled\";E={($_ |
+Get-VmHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirectory.Enabled}},
+` @{N=\"JoinDomainMethod\";E={(($_ |
+Get-VMHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirectory
+| Select -ExpandProperty Policy | Where {$_.Id -eq
+\"JoinDomainMethodPolicy\"}).Policyoption.Id}}
+
+Verify if JoinADEnabled is True then JoinDomainMethod should be
+\"FixedCAMConfigOption\".
+
+If you are not using Host Profiles to join active directory, this is not a
+finding."
+  desc 'fix', "From the vSphere Client go to Home >> Host Profiles >> and select a
+Host Profile to edit. View the settings under Security and Services >> Security
+Settings >> Authentication Configuration >> Active Directory Configuration >>
+Join Domain Method. Set the method used to join hosts to a domain to \"Use
+vSphere Authentication Proxy to add the host to domain\" and provide the IP
+address of the vSphere Authentication Proxy server."
+
+  command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostProfile"
+  hostprofile = powercli_command(command).stdout
+
+  if hostprofile.empty?
+    describe "" do
+      skip "There are no attached host profiles to this host so this control is not applicable"
+    end
+  end
+
+  if !hostprofile.empty?
+    command1 = "(Get-VMHost -Name #{input('vmhostName')} | Get-VMHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirectory.Enabled"
+    adEnabled = powercli_command(command1).stdout.strip
+
+    if adEnabled.match?("True")
+      command2 = "(Get-VMHost -Name #{input('vmhostName')} | Get-VMHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirectory | Select-Object -ExpandProperty Policy | Where {$_.Id -eq 'JoinDomainMethodPolicy'} | Select-Object -ExpandProperty PolicyOption | Select-Object -ExpandProperty Id"
+      describe powercli_command(command2) do
+        its('stdout.strip') { should cmp "FixedCAMConfigOption" }
+      end
+    end
+
+    if adEnabled.match?("False")
+      describe "" do
+        skip "Active Directory is not enabled on this host so this control is not applicable"
+      end
+    end
+
+  end
+
+end
+
