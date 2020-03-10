@@ -23,8 +23,9 @@ business or to address authorized quality of life issues.
 unsafe are open to attack through those ports, protocols, and services. This
 can allow unauthorized access to the database and through the database to other
 components of the information system."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000142-DB-000094"
   tag gid: nil
   tag rid: "VCPG-67-000011"

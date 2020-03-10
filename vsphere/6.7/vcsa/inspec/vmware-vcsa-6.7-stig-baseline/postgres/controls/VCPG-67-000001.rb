@@ -28,8 +28,9 @@ each query tab and navigation pane may count as a separate session.
 
     (Sessions may also be referred to as connections or logons, which for the
 purposes of this requirement are synonyms.)"
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000001-DB-000031"
   tag gid: nil
   tag rid: "VCPG-67-000001"

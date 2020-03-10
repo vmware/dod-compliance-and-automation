@@ -8,8 +8,9 @@ client and to identify which file types are not to be delivered to a client.
     By not specifying which files can and which files cannot be served to a
 user, the web server could deliver to a user web server configuration files,
 log files, password files, etc."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000141-WSR-000083"
   tag gid: nil
   tag rid: "VCLD-67-000020"

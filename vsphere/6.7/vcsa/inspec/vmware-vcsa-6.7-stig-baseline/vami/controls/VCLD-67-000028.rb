@@ -10,8 +10,9 @@ application.
     An attacker can also enter Unicode into hosted applications in an effort to
 break out of the document home or root home directory or to bypass security
 checks."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000251-WSR-000157"
   tag gid: nil
   tag rid: "VCLD-67-000028"

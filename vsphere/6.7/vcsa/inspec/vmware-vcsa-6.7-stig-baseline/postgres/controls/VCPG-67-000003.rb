@@ -11,8 +11,9 @@ or interfere with the auditing of critical events.
 the audit log. Misconfigured audits may also make it more difficult to
 establish, correlate, and investigate the events relating to an incident or
 identify those responsible for one."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000090-DB-000065"
   tag gid: nil
   tag rid: "VCPG-67-000003"

@@ -7,8 +7,9 @@ system.
     The web server must provide the capability to disable, uninstall, or
 deactivate functionality and services that are deemed to be non-essential to
 the web server mission or can adversely impact server performance."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000141-WSR-000075"
   tag gid: nil
   tag rid: "VCLD-67-000016"

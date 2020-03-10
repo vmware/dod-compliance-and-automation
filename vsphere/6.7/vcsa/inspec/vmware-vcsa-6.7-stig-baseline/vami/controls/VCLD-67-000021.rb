@@ -10,8 +10,9 @@ authors.
 
     WebDAV is not widely used and has serious security concerns because it may
 allow clients to modify unauthorized files on the web server."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000141-WSR-000085"
   tag gid: nil
   tag rid: "VCLD-67-000021"

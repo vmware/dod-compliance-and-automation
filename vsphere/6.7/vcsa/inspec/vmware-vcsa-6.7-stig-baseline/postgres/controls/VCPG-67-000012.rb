@@ -17,8 +17,9 @@ information system without identification or authentication; and
 without individual authentication. Organizations may require unique
 identification of individuals in group accounts (e.g., shared privilege
 accounts) or for detailed accountability of individual activity."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000148-DB-000103"
   tag gid: nil
   tag rid: "VCPG-67-000012"

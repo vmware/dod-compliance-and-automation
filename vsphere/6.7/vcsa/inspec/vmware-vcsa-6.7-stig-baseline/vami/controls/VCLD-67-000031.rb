@@ -9,8 +9,9 @@ type of code being used by the hosted application, and any backends being used
 for data storage may be displayed. Since this information may be placed in logs
 and general messages during normal operation of the web server, an attacker
 does not need to cause an error condition to gain this information."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000266-WSR-000160"
   tag gid: nil
   tag rid: "VCLD-67-000031"

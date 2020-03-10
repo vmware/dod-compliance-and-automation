@@ -17,8 +17,9 @@ environment, systems should either be validated in a testing environment or
 prior to installation. This requirement is usually a function of the design of
 the IDPS component. Compliance can be verified by acceptance/validation
 processes or vendor attestation."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000226-DB-000147"
   tag gid: nil
   tag rid: "VCPG-67-000016"

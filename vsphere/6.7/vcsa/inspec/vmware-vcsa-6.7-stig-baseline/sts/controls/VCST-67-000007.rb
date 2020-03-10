@@ -7,7 +7,8 @@ undertake is the modification or deletion of log records to cover his tracks
 and prolong discovery. The web server must protect the log data from
 unauthorized modification. Security Token Service restricts all modification of
 log files by default but this configuration must be verified."
-  tag severity: nil
+  impact 0.5
+  tag severity: "CAT II"
   tag gtitle: "SRG-APP-000119-WSR-000069"
   tag gid: nil
   tag rid: "VCST-67-000007"

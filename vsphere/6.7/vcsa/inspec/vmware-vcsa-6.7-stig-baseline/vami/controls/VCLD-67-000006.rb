@@ -4,8 +4,9 @@ establish what type of events occurred."
   desc  "After a security incident has occurred, investigators will often
 review log files to determine what happened.  Understanding what type of event
 occurred is critical for investigation of a susipicous event."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000095-WSR-000056"
   tag gid: nil
   tag rid: "VCLD-67-000006"

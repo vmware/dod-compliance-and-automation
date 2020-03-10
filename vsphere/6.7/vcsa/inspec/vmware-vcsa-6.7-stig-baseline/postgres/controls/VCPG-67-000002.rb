@@ -28,8 +28,9 @@ actions.
 
     Organizations may define additional events requiring continuous or ad hoc
 auditing."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000089-DB-000064"
   tag gid: nil
   tag rid: "VCPG-67-000002"

@@ -19,8 +19,9 @@ modules are described in FIPS 140-2 Annex A.
 
     NSA Type-X (where X=1, 2, 3, 4) products are NSA-certified, hardware-based
 encryption modules."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000179-DB-000114"
   tag gid: nil
   tag rid: "VCPG-67-000015"

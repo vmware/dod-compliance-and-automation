@@ -7,8 +7,9 @@ applications. Removing scripts not needed for application operation or deemed
 vulnerable helps to secure the web server. To assure scripts are not added to
 the web server and run maliciously, those script mappings that are not needed
 or used by the web server for hosted application operation must be removed."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000141-WSR-000082"
   tag gid: nil
   tag rid: "VCLD-67-000019"

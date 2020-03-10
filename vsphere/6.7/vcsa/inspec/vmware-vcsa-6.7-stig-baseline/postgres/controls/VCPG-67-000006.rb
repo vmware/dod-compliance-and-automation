@@ -24,8 +24,9 @@ activity.
 
     Modification of database audit data could mask the theft of, or the
 unauthorized modification of, sensitive data stored in the database."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000119-DB-000060"
   tag gid: nil
   tag rid: "VCPG-67-000006"

@@ -4,8 +4,9 @@ control "VCLD-67-000014" do
 configuring VAMI to send events to a syslog facility. Without ensuring that
 logs are created, that rsyslog configs are created and that those configs are
 loaded, the log file monitoring and shipping will not be effective."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000125-WSR-000071"
   tag gid: nil
   tag rid: "VCLD-67-000014"

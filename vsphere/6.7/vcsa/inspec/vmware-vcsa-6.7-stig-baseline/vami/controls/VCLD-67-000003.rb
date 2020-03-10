@@ -11,8 +11,9 @@ the complete communication session.
 
     In order to protect the integrity and confidentiality of the remote
 sessions, Lighttpd uses SSL/TLS."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000015-WSR-000014"
   tag gid: nil
   tag rid: "VCLD-67-000003"

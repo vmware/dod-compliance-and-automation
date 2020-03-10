@@ -6,8 +6,9 @@ server to clients and securely exchange the shared secret key used to encrypt
 communications between the web server and clients.By gaining access to the
 private key, an attacker can pretend to be an authorized server and decrypt the
 SSL traffic between a client and the web server."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000176-WSR-000096"
   tag gid: nil
   tag rid: "VCLD-67-000025"

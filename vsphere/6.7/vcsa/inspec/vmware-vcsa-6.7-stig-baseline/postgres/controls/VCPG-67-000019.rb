@@ -21,8 +21,9 @@ passwords entered by mistake as the username, mission/business information that
 can be derived from (if not stated explicitly by) information recorded, and
 personal information, such as account numbers, social security numbers, and
 credit card numbers."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000266-DB-000162"
   tag gid: nil
   tag rid: "VCPG-67-000019"

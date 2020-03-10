@@ -4,8 +4,9 @@ control "VCPG-67-000021" do
 management system, the vPostgres deployment must log events to stderr. Those
 events will be caputred and logged to disk where they will be picked up by
 rsyslog for shipping."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000359-DB-000319"
   tag gid: nil
   tag rid: "VCPG-67-000021"

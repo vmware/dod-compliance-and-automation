@@ -11,8 +11,9 @@ of Greenwich Mean Time (GMT), or local time with an offset from UTC.
 representation of date and time. Rather, it is a database state counter and
 does not correspond to calendar and clock time. This requirement does not refer
 to that meaning of TIMESTAMP."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000374-DB-000322"
   tag gid: nil
   tag rid: "VCPG-67-000023"

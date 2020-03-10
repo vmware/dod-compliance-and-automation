@@ -8,8 +8,9 @@ must be disabled.
 
     NIST SP 800-52 defines the approved TLS versions for government
 applications."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000439-WSR-000156"
   tag gid: nil
   tag rid: "VCLD-67-000034"

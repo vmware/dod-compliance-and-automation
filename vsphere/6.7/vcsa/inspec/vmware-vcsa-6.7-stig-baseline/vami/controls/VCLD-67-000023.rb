@@ -10,8 +10,9 @@ information protected outside the application's realm.
     By checking that no symbolic links exist in the document root, the web
 server is protected from users jumping outside the hosted application directory
 tree and gaining access to the other directories, including the system root."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000141-WSR-000087"
   tag gid: nil
   tag rid: "VCLD-67-000023"

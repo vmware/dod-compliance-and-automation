@@ -11,11 +11,10 @@ locating directories without default pages. In the scenario, the web server
 will display to the user a listing of the files in the directory being
 accessed. By having a default hosted application web page, the anonymous web
 user will not obtain directory browsing information or an error message that
-reveals the server type and version.
-
-  "
+reveals the server type and version."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000266-WSR-000142"
   tag gid: nil
   tag rid: "VCLD-67-000029"

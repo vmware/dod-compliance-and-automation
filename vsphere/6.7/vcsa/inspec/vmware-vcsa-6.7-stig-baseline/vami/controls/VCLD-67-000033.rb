@@ -3,8 +3,9 @@ control "VCLD-67-000033" do
   desc  "An attacker has at least two reasons to stop a web server. The first
 is to cause a DoS, and the second is to put in place changes the attacker made
 to the web server configuration. "
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000435-WSR-000147"
   tag gid: nil
   tag rid: "VCLD-67-000033"

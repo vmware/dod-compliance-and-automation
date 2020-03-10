@@ -8,8 +8,9 @@ for file validation and non-repudiation of the information.
     VMware delivers product updates and patches regularly.  It is crucial that
 system administrators coordinate installation of product updates with the site
 ISSO to ensure that only valid files are uploaded onto the system."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000131-WSR-000051"
   tag gid: nil
   tag rid: "VCLD-67-000015"

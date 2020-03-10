@@ -15,8 +15,9 @@ encryption possible for a private web server.
 catalina.properties file.  Only those ciphers specified in the configuration
 file, and which are available in the installed OpenSSL library, will be used by
 TC Server while encrypting data for transmission."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000014-WSR-000006"
   tag gid: nil
   tag rid: "VCLD-67-000002"

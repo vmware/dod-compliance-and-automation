@@ -9,8 +9,9 @@ input may be disruptive or cause the system to fail into an unsafe state.
     The behavior will be derived from the organizational and system
 requirements and includes, but is not limited to, notification of the
 appropriate personnel, creating an audit record, and rejecting invalid input."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000447-DB-000393"
   tag gid: nil
   tag rid: "VCPG-67-000024"

@@ -6,8 +6,9 @@ determine the attacker's location, intent, and degree of success.
 
     Lighttpd uses the mod_accesslog module to share information with external
 monitoring systems."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000016-WSR-000005"
   tag gid: nil
   tag rid: "VCLD-67-000004"

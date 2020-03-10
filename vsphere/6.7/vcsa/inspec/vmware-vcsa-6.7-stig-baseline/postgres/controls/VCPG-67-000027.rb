@@ -8,8 +8,9 @@ audit logs.
     Disconnection may be initiated by the user or forced by the system (as in a
 timeout) or result from a system or network failure. To the greatest extent
 possible, all disconnections must be logged."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000505-DB-000352"
   tag gid: nil
   tag rid: "VCPG-67-000027"

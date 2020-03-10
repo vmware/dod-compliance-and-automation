@@ -15,8 +15,9 @@ systems and networks.
 
     An example would be preventing Lighttpd from keeping idle connections open
 for too long."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000141-WSR-000086"
   tag gid: nil
   tag rid: "VCLD-67-000022"

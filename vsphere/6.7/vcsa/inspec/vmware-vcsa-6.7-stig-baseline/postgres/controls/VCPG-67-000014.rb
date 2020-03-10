@@ -22,8 +22,9 @@ authorized and authenticated users. If unauthorized users have access to one or
 more of the DBMS's private keys, an attacker could gain access to the key(s)
 and use them to impersonate the database on the network or otherwise perform
 unauthorized actions."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000176-DB-000068"
   tag gid: nil
   tag rid: "VCPG-67-000014"

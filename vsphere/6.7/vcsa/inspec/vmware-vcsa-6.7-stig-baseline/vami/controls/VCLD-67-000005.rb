@@ -5,8 +5,9 @@ when a service is stopped. Many forms of suspicious actions can be
 detected by analyzing logs for unexpected service starts and stops.
 Also, by starting to log immediately after a service starts, it becomes
 more difficult for suspicous activity to go un-logged."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000089-WSR-000047"
   tag gid: nil
   tag rid: "VCLD-67-000005"

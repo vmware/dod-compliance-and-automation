@@ -12,8 +12,9 @@ changes, including upgrades and modifications.
 
     Unmanaged changes that occur to the database software libraries or
 configuration can lead to unauthorized or compromised installations."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000133-DB-000362"
   tag gid: nil
   tag rid: "VCPG-67-000009"

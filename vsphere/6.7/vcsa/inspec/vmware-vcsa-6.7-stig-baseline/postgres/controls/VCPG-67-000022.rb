@@ -4,8 +4,9 @@ control "VCPG-67-000022" do
 configuring vPostgres to send events to a syslog facility. Without ensuring
 that logs are created, that rsyslog configs are create and that those configs
 are loaded, the log file monitoring and shipping will not be effective."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000359-DB-000319"
   tag gid: nil
   tag rid: "VCPG-67-000022"

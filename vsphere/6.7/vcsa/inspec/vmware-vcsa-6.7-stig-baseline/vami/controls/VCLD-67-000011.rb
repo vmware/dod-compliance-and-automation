@@ -11,8 +11,9 @@ read, write, copy, etc. This can be done by the web server if the web server is
 also doing the logging function. The web server may also use an external log
 system. In either case, the logs must be protected from access by
 non-privileged users."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000118-WSR-000068"
   tag gid: nil
   tag rid: "VCLD-67-000011"

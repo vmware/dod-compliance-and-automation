@@ -17,8 +17,9 @@ module generates the status overview of the webserver. The information covers:
 
     While this information is useful on a development system, production
 systems must not have mod_status enabled."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000266-WSR-000159"
   tag gid: nil
   tag rid: "VCLD-67-000030"

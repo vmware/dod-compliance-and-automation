@@ -11,8 +11,9 @@ is the standard method for protecting passwords during transmission.
     DBMS passwords sent in clear text format across the network are vulnerable
 to discovery by unauthorized users. Disclosure of passwords may easily lead to
 unauthorized access to the database."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000172-DB-000075"
   tag gid: nil
   tag rid: "VCPG-67-000013"

@@ -8,8 +8,9 @@ certain ways.
 
     Lighttpd provides the maxConnections attribute of the <Connector Elements>
 to limit the number of concurrent TCP connections."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000001-WSR-000001"
   tag gid: nil
   tag rid: "VCLD-67-000001"

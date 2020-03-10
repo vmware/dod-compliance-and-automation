@@ -10,8 +10,9 @@ system-wide table of files opened by all processes, called the file table.
     As a single-threaded server, Lighttpd must be limited in the number of file
 descriptors that can be allocated.  This will prevent Lighttpd from being used
 in a form of DoS attack against the Operating System."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000246-WSR-000149"
   tag gid: nil
   tag rid: "VCLD-67-000027"

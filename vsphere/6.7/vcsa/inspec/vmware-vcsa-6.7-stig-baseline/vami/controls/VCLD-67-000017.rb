@@ -9,8 +9,9 @@ needed for the user's job role, or the user could use the function in an
 unintentional manner.A MIME tells the web server what type of program various
 file types and extensions are and what external utilities or programs are
 needed to execute the file type."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "vami"
-  tag severity: nil
   tag gtitle: "SRG-APP-000141-WSR-000081"
   tag gid: nil
   tag rid: "VCLD-67-000017"

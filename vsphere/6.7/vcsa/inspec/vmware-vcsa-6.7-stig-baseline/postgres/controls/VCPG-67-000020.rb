@@ -14,8 +14,9 @@ well as the backup and archiving of those records.
 system, to other kinds of local repository, or directly to a centralized log
 management system. Whatever the method used, it must be compatible with
 off-loading the records to the centralized system."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000356-DB-000314"
   tag gid: nil
   tag rid: "VCPG-67-000020"

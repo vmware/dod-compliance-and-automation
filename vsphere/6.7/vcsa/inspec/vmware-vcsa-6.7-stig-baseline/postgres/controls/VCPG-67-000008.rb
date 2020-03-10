@@ -10,8 +10,9 @@ actions being taken by unauthorized individuals.
 
     Conversely, if critical tables or other objects rely on unauthorized owner
 accounts, these objects may be lost when an account is removed."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000133-DB-000200"
   tag gid: nil
   tag rid: "VCPG-67-000008"

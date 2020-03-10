@@ -26,8 +26,9 @@ final determination is the prerogative of the application owner, subject to
 Authorizing Official concurrence. In any case, sufficient auditing resources
 must be allocated to avoid audit data loss in all but the most extreme
 situations."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000109-DB-000321"
   tag gid: nil
   tag rid: "VCPG-67-000004"

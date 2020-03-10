@@ -2,8 +2,9 @@ control "VCPG-67-000026" do
   title "The vPostgres database must set log_connections to on."
   desc  "For completeness of forensic analysis, it is necessary to track
 who/what (a user or other principal) logs on to the DBMS."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000503-DB-000350"
   tag gid: nil
   tag rid: "VCPG-67-000026"

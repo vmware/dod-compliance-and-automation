@@ -13,8 +13,9 @@ the modification of audit tools.
 source audit tools needed to successfully view and manipulate audit information
 system activity and records. Audit tools include custom queries and report
 generators."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000122-DB-000203"
   tag gid: nil
   tag rid: "VCPG-67-000007"

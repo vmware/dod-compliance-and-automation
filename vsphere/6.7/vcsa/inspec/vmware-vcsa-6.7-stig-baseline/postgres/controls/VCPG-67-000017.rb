@@ -19,8 +19,9 @@ or code implementing security functionality should not be commingled with
 objects or code implementing application logic. When security and non-security
 functionality are commingled, users who have access to non-security
 functionality may be able to access security functionality."
+  impact 0.5
+  tag severity: "CAT II"
   tag component: "postgres"
-  tag severity: nil
   tag gtitle: "SRG-APP-000233-DB-000124"
   tag gid: nil
   tag rid: "VCPG-67-000017"
