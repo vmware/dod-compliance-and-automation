@@ -134,7 +134,7 @@
   - VCLD-67-000011
   - perms
   when:
-  - run_vami_logs_root_owned | bool
+  - run_vami_logs | bool
 
 - name: VCLD-67-000011 - VAMI log file permissions
   file:
