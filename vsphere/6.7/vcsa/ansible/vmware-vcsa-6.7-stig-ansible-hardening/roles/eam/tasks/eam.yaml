@@ -18,6 +18,8 @@
   tags:
   - VCEM-67-000001
   - eam
+  notify:
+  - restart eam
   when:
   - run_connection_timeout | bool
 
@@ -34,6 +36,8 @@
   tags:
   - VCEM-67-000002
   - eam
+  notify:
+  - restart eam
   when:
   - run_max_threads | bool
 
@@ -48,7 +52,9 @@
     state: absent
   tags:
   - VCEM-67-000003
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_max_post_size | bool
 
@@ -65,7 +71,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000004
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_http_only | bool
 
@@ -81,7 +89,9 @@
     value: '{{ var_access_log_valve_pattern }}'
   tags:
   - VCEM-67-000005
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_access_valve_pattern | bool
 
@@ -99,7 +109,9 @@
     firstmatch: yes
   tags:
   - VCEM-67-000006
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_json_stream_redirect_file | bool
 
@@ -154,7 +166,9 @@
     state: absent
   tags:
   - VCEM-67-000010
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_user_database_realm | bool
 
@@ -165,7 +179,9 @@
     state: absent
   tags:
   - VCEM-67-000010
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_user_database_realm | bool
 
@@ -183,7 +199,9 @@
     force: yes
   tags:
   - VCEM-67-000011
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_catalina_properties | bool
 
@@ -200,7 +218,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000012
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_removed_mime_mappings | bool
 
@@ -213,7 +233,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000012
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_removed_mime_mappings | bool
 
@@ -226,7 +248,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000012
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_removed_mime_mappings | bool
 
@@ -239,7 +263,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000012
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_removed_mime_mappings | bool
 
@@ -256,7 +282,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000013
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_java_servlet | bool
 
@@ -273,7 +301,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000014
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_remove_webdav | bool
 
@@ -288,7 +318,9 @@
     state: present
   tags:
   - VCEM-67-000015
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_mem_leak_prevention | bool
 
@@ -340,7 +372,9 @@
     force: yes
   tags:
   - VCEM-67-000018
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_catalina_properties_shutdown | bool
 
@@ -357,6 +391,8 @@
   tags:
   - VCEM-67-000019
   - eam
+  notify:
+  - restart eam
   when:
   - run_accept_count | bool
 
@@ -373,6 +409,8 @@
   tags:
   - VCEM-67-000020
   - eam
+  notify:
+  - restart eam
   when:
   - run_uri_encoding | bool
 
@@ -389,7 +427,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000021
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_filter | bool
 
@@ -403,7 +443,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000021
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_filter | bool
 
@@ -417,7 +459,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000021
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_filter | bool
 
@@ -430,7 +474,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000021
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_filter | bool
 
@@ -444,7 +490,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000021
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_filter | bool
 
@@ -458,7 +506,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000021
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_filter | bool
 
@@ -472,7 +522,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000021
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_filter | bool
 
@@ -532,7 +584,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000022
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_welcome_file | bool
 
@@ -549,7 +603,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000023
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_remove_listings | bool
 
@@ -566,7 +622,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000024
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_error_page | bool
 
@@ -581,7 +639,9 @@
     state: absent
   tags:
   - VCEM-67-000025
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_allow_trace | bool
 
@@ -598,7 +658,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000026
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_remove_debug | bool
 
@@ -619,6 +681,8 @@
   tags:
   - VCEM-67-000027
   - eam
+  notify:
+  - restart eam
   when:
   - run_eam_syslog_config | bool
 
@@ -635,7 +699,9 @@
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCEM-67-000028
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_web_cookie_secure | bool
 
@@ -653,7 +719,9 @@
     force: yes
   tags:
   - VCEM-67-000029
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_catalina_properties_bioport | bool
 
@@ -671,6 +739,8 @@
     force: yes
   tags:
   - VCEM-67-000030
-  - eam  
+  - eam
+  notify:
+  - restart eam
   when:
   - run_catalina_properties_shutdownport | bool

@@ -11,3 +11,6 @@
 
 - name: restart ntp
   service: name=ntpd state=restarted
+
+- name: restart eam
+  shell: vmon-cli --restart eam
