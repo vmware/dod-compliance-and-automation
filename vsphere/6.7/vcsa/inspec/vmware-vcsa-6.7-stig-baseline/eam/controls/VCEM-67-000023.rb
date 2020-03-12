@@ -16,34 +16,26 @@ mitigating the vulnerability."
   tag nist: ["SI-11 a", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
-# xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed
-'s/xmlns=\".*\"//g' | xmllint --xpath
-'//param-name[text()=\"listings\"]/parent::init-param' -
+# xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '//param-name[text()=\"listings\"]/parent::init-param' -
 
 Expected result:
 
-<init-param>
-      <param-name>listings</param-name>
-      <param-value>false</param-value>
-</init-param>
+XPath set is empty
 
-If the output of the command does not match the expected result, this is a
-finding."
-  desc 'fix', "Navigate to and open
-/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xm
+If the output of the command does not match the expected result, this is a finding."
+  desc 'fix', "Navigate to and open /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
 
-Set the <param-value> to \"false\" in all <param-name>listing</param-name>
-nodes.
+Find and remove the entire block returned in the check.
 
-Note: The setting should look like the below:
+Example:
 
 <init-param>
       <param-name>listings</param-name>
-      <param-value>false</param-value>
+      <param-value>true</param-value>
 </init-param>"
 
   describe xml('/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml') do
-    its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp "false" }
+    its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp "" }
   end
 
 end
