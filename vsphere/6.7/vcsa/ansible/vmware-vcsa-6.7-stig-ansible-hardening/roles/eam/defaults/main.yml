@@ -22,18 +22,37 @@ run_user_database_realm: true
 run_catalina_properties: true
 #VCEM-67-000012
 run_removed_mime_mappings: true
-#VCEM-67-000010
-
-#VCEM-67-000010
-
-#VCEM-67-000010
-
-#VCEM-67-000010
-
-#VCEM-67-000010
-
-#VCEM-67-000010
-
-#VCEM-67-000010
-
-#VCEM-67-000010
+#VCEM-67-000013
+run_java_servlet: true
+#VCEM-67-000014
+run_remove_webdav: true
+#VCEM-67-000015
+run_mem_leak_prevention: true
+#VCEM-67-000017
+run_web_files_permissions: true
+#VCEM-67-000018
+run_catalina_properties_shutdown: true
+#VCEM-67-000019
+run_accept_count: true
+#VCEM-67-000020
+run_uri_encoding: true
+#VCEM-67-000021
+run_web_filter: true
+#VCEM-67-000022
+run_web_welcome_file: true
+#VCEM-67-000023
+run_web_remove_listings: true
+#VCEM-67-000024
+run_web_error_page: true
+#VCEM-67-000025
+run_allow_trace: true
+#VCEM-67-000026
+run_web_remove_debug: true
+#VCEM-67-000027
+run_eam_syslog_config: true
+#VCEM-67-000028
+run_web_cookie_secure: true
+#VCEM-67-000029
+run_catalina_properties_bioport: true
+#VCEM-67-000030
+run_catalina_properties_shutdownport: true
