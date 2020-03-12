@@ -23,10 +23,7 @@ Java objects that performs filtering tasks on either the request to a resource
   tag nist: ["SI-10", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
-# xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed
-'s/xmlns=\".*\"//g' | xmllint --xpath
-'/web-app/filter-mapping/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter-mapping'
--
+# xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/filter-mapping/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter-mapping' -
 
 Expected result:
 
@@ -39,24 +36,22 @@ If the output is does not match the expected result, this is a finding.
 
 At the command prompt, execute the following command:
 
-# xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed
-'s/xmlns=\".*\"//g' | xmllint --xpath
-'/web-app/filter/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter'
--
+# xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/filter/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter' -
 
 Expected result:
 
 <filter>
-    <filter-name>setCharacterEncodingFilter</filter-name>
-
-<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-      <param-name>ignore</param-name>
-      <param-value>false</param-value>
-    </init-param>
-<async-supported>true</async-supported>
+  <filter-name>setCharacterEncodingFilter</filter-name>
+  <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+  <init-param>
+    <param-name>encoding</param-name>
+    <param-value>UTF-8</param-value>
+	</init-param>
+	<init-param>
+    <param-name>ignore</param-name>
+    <param-value>false</param-value>
+  </init-param>
+	<async-supported>true</async-supported>
 </filter>
 
 If the output is does not match the expected result, this is a finding."
@@ -70,21 +65,24 @@ Configure the <web-app> node with the child nodes listed below.
 </filter-mapping>
 
 <filter>
-    <filter-name>setCharacterEncodingFilter</filter-name>
-
-<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-      <param-name>ignore</param-name>
-      <param-value>false</param-value>
-    </init-param>
-<async-supported>true</async-supported>
+  <filter-name>setCharacterEncodingFilter</filter-name>
+  <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+  <init-param>
+    <param-name>encoding</param-name>
+    <param-value>UTF-8</param-value>
+	</init-param>
+	<init-param>
+    <param-name>ignore</param-name>
+    <param-value>false</param-value>
+  </init-param>
+	<async-supported>true</async-supported>
 </filter>"
 
   describe xml('/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml') do
     its('/web-app/filter-mapping[filter-name="setCharacterEncodingFilter"]/url-pattern') { should cmp '*' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/filter-class') { should cmp 'org.apache.catalina.filters.SetCharacterEncodingFilter' }
+    its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="encoding"]/param-value') { should cmp 'UTF-8' }
+    its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="ignore"]/param-value') { should cmp 'false' }
   end
 
 end
