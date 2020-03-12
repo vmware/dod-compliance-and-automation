@@ -4,7 +4,7 @@
 var_server_xml_path: '/usr/lib/vmware-eam/web/conf/server.xml'
 var_server_connectiontimeout: '20000'
 var_server_maxthreads: '300'
-var_access_log_valve_pattern: '%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;'
+var_access_log_valve_pattern: '%h %{X-Forwarded-For}i %l %u %t [%I] &quot;%r&quot; %s %b [Processing time %D msec] &quot;%{User-Agent}i&quot;'
 var_server_acceptcount: '300'
 var_server_uriencoding: 'UTF-8'
 
