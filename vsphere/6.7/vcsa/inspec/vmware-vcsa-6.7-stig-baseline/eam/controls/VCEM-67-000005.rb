@@ -27,8 +27,7 @@ incident."
 
 Expected result:
 
-pattern=\"%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b
-&quot;%{User-Agent}i&quot;\"
+pattern=\"%h %{X-Forwarded-For}i %l %u %t [%I] &quot;%r&quot; %s %b [Processing time %D msec] &quot;%{User-Agent}i&quot;\"
 
 If the output does not match the expected result, this is a finding.
 "
@@ -45,13 +44,13 @@ internalProxies=\"127\\.0\\.0\\.1\"/>
 
 <Valve className=\"org.apache.catalina.valves.AccessLogValve\"
 directory=\"${eam.catalina.logdir}\"
-pattern=\"%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;\"
+pattern=\"%h %{X-Forwarded-For}i %l %u %t [%I] &quot;%r&quot; %s %b [Processing time %D msec] &quot;%{User-Agent}i&quot;\"
 resolveHosts=\"false\"
 prefix=\"localhost_access_log\"
 suffix=\".txt\"/>"
 
   describe xml('/usr/lib/vmware-eam/web/conf/server.xml') do
-    its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ['%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;'] }
+    its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ['%h %{X-Forwarded-For}i %l %u %t [%I] &quot;%r&quot; %s %b [Processing time %D msec] &quot;%{User-Agent}i&quot;'] }
   end
 
 end
