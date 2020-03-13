@@ -590,37 +590,37 @@
 #   when:
 #   - run_web_filter | bool
 
-- name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param
-  xml:
-    path: '{{ var_web_xml_path }}'
-    xpath: '/x:web-app/x:filter/x:init-param[2]/x:param-name'
-    value: 'ignore'
-    state: present
-    namespaces:
-      x: http://java.sun.com/xml/ns/javaee
-  tags:
-  - VCEM-67-000021
-  - eam
-  notify:
-  - restart eam
-  when:
-  - run_web_filter | bool
+# - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param
+#   xml:
+#     path: '{{ var_web_xml_path }}'
+#     xpath: '/x:web-app/x:filter/x:init-param[2]/x:param-name'
+#     value: 'ignore'
+#     state: present
+#     namespaces:
+#       x: http://java.sun.com/xml/ns/javaee
+#   tags:
+#   - VCEM-67-000021
+#   - eam
+#   notify:
+#   - restart eam
+#   when:
+#   - run_web_filter | bool
 
-- name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param ignore
-  xml:
-    path: '{{ var_web_xml_path }}'
-    xpath: '/x:web-app/x:filter/x:init-param[2]/x:param-value'
-    value: 'false'
-    state: present
-    namespaces:
-      x: http://java.sun.com/xml/ns/javaee
-  tags:
-  - VCEM-67-000021
-  - eam
-  notify:
-  - restart eam
-  when:
-  - run_web_filter | bool
+# - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param ignore
+#   xml:
+#     path: '{{ var_web_xml_path }}'
+#     xpath: '/x:web-app/x:filter/x:init-param[2]/x:param-value'
+#     value: 'false'
+#     state: present
+#     namespaces:
+#       x: http://java.sun.com/xml/ns/javaee
+#   tags:
+#   - VCEM-67-000021
+#   - eam
+#   notify:
+#   - restart eam
+#   when:
+#   - run_web_filter | bool
 
 ############################################
 
