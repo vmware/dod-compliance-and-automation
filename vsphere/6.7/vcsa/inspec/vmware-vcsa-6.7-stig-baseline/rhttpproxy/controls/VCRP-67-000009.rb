@@ -15,7 +15,7 @@ integrity of the hosted application."
   tag nist: ["AU-4 (1)", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
-# grep -v \"^#\" /etc/vmware-syslog/stig-services-rhttproxy.conf
+# grep -v \"^#\" /etc/vmware-syslog/stig-services-rhttpproxy.conf
 
 Expected result:
 
@@ -30,7 +30,7 @@ If the file does not exist, this is a finding.
 If the output of the command does not match the expected result, this is a
 finding."
   desc 'fix', "Navigate to and open
-/etc/vmware-syslog/stig-services-rhttproxy.conf , creating the file if it does
+/etc/vmware-syslog/stig-services-rhttpproxy.conf , creating the file if it does
 not exist.
 
 Set the contents of the file as follows:
@@ -41,11 +41,12 @@ input(type=\"imfile\"
       Severity=\"info\"
       Facility=\"local0\")"
 
-  describe file('/etc/vmware-syslog/stig-services-rhttproxy.conf') do
+  describe file('/etc/vmware-syslog/stig-services-rhttpproxy.conf') do
     it { should exist }
   end
-  describe command('grep -v "^#" /etc/vmware-syslog/stig-services-rhttproxy.conf') do
-    its ('stdout') { should match "input(type=\"imfile\" File=\"/var/log/vmware/rhttpproxy/rhttpproxy.log\"\nTag=\"rhttpproxy-main\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
+  
+  describe command('grep -v "^#" /etc/vmware-syslog/stig-services-rhttpproxy.conf') do
+    its ('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/vmware/rhttpproxy/rhttpproxy.log\"\n      Tag=\"rhttpproxy-main\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
   end
 
 end
