@@ -14,7 +14,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
     attribute: 'connectionTimeout'
-    value: '{{ var_server_connectiontimeout }}'
+    value: '{{ var_server_xml_connectiontimeout }}'
   tags:
   - VCEM-67-000001
   - eam
@@ -32,7 +32,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Executor'
     attribute: 'maxThreads'
-    value: '{{ var_server_maxthreads }}'
+    value: '{{ var_server_xml_maxthreads }}'
   tags:
   - VCEM-67-000002
   - eam
@@ -66,7 +66,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:session-config/x:cookie-config/x:http-only'
-    value: '{{ var_web_http_only }}'
+    value: '{{ var_web_xml_http_only }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
@@ -86,7 +86,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
     attribute: 'pattern'
-    value: '{{ var_access_log_valve_pattern }}'
+    value: '{{ var_server_xml_access_log_valve_pattern }}'
   tags:
   - VCEM-67-000005
   - eam
@@ -277,7 +277,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="JspServlet"]/x:url-pattern'
-    value: '{{ var_servlet_jsp_url_pattern }}'
+    value: '{{ var_web_xml_servlet_jsp_url_pattern }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
@@ -334,29 +334,28 @@
 # Title: ESX Agent Manager directory tree must have permissions in an "out of the box" state.
 
 - name: VCEM-67-000017 - Find EAM web files
-  find:
-    paths: '{{ var_eam_web_path }}'
-    file_type: file
-    recurse: yes
-  register: webfiles
+  shell: find {{ var_eam_web_path }} -xdev -type f -a '(' -not -user eam -o -not -group cis ')';
+  register: files
   tags:
   - VCEM-67-000017
-  - eam  
+  - eam
+  changed_when: files.stdout!=""
   when:
   - run_web_files_permissions | bool
 
 - name: VCEM-67-000017 - Set EAM web files owner and group
   file:
-    path: "{{ item.path }}"
+    path: "{{ item }}"
     state: file
     owner: "eam"
     group: "cis"
-  with_items: " {{ webfiles.files }}"
+  with_items: "{{ files.stdout_lines }}"
   tags:
   - VCEM-67-000017
   - eam  
   when:
   - run_web_files_permissions | bool
+  - files.stdout != ""
 
 ############################################
 
@@ -387,7 +386,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
     attribute: 'acceptCount'
-    value: '{{ var_server_acceptcount }}'
+    value: '{{ var_server_xml_acceptcount }}'
   tags:
   - VCEM-67-000019
   - eam
@@ -405,7 +404,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
     attribute: 'URIEncoding'
-    value: '{{ var_server_uriencoding }}'
+    value: '{{ var_server_xml_uriencoding }}'
   tags:
   - VCEM-67-000020
   - eam
@@ -531,7 +530,7 @@
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param 1
   xml:
     path: '{{ var_web_xml_path }}'
-    xpath: '/x:web-app/x:filter/x:init-param[1]'
+    xpath: '/x:web-app/x:filter/x:init-param/x:param-name'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
@@ -546,7 +545,7 @@
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param
   xml:
     path: '{{ var_web_xml_path }}'
-    xpath: '/x:web-app/x:filter/x:init-param[1]/x:param-name'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-name'
     value: 'encoding'
     state: present
     namespaces:
@@ -562,7 +561,7 @@
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param encoding
   xml:
     path: '{{ var_web_xml_path }}'
-    xpath: '/x:web-app/x:filter/x:init-param[1]/x:param-value'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-value'
     value: 'UTF-8'
     state: present
     namespaces:
@@ -575,52 +574,69 @@
   when:
   - run_web_filter | bool
 
-# - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param 2
-#   xml:
-#     path: '{{ var_web_xml_path }}'
-#     xpath: '/x:web-app/x:filter/x:init-param[2]'
-#     state: present
-#     namespaces:
-#       x: http://java.sun.com/xml/ns/javaee
-#   tags:
-#   - VCEM-67-000021
-#   - eam
-#   notify:
-#   - restart eam
-#   when:
-#   - run_web_filter | bool
+- name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Check for init-param 2 existance
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]'
+    count: yes
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  register: counts
+  tags:
+  - VCEM-67-000021
+  - eam
+  when:
+  - run_web_filter | bool
 
-# - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param
-#   xml:
-#     path: '{{ var_web_xml_path }}'
-#     xpath: '/x:web-app/x:filter/x:init-param[2]/x:param-name'
-#     value: 'ignore'
-#     state: present
-#     namespaces:
-#       x: http://java.sun.com/xml/ns/javaee
-#   tags:
-#   - VCEM-67-000021
-#   - eam
-#   notify:
-#   - restart eam
-#   when:
-#   - run_web_filter | bool
+- name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param 2
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+    state: present
+    add_children:
+    - init-param:
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCEM-67-000021
+  - eam
+  notify:
+  - restart eam
+  when:
+  - run_web_filter | bool
+  - counts.count == 0
 
-# - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param ignore
-#   xml:
-#     path: '{{ var_web_xml_path }}'
-#     xpath: '/x:web-app/x:filter/x:init-param[2]/x:param-value'
-#     value: 'false'
-#     state: present
-#     namespaces:
-#       x: http://java.sun.com/xml/ns/javaee
-#   tags:
-#   - VCEM-67-000021
-#   - eam
-#   notify:
-#   - restart eam
-#   when:
-#   - run_web_filter | bool
+- name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-name'
+    value: 'ignore'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCEM-67-000021
+  - eam
+  notify:
+  - restart eam
+  when:
+  - run_web_filter | bool
+
+- name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param ignore
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-value'
+    value: 'false'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCEM-67-000021
+  - eam
+  notify:
+  - restart eam
+  when:
+  - run_web_filter | bool
 
 ############################################
 
@@ -630,7 +646,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:welcome-file-list/x:welcome-file'
-    value: '{{ var_web_welcome_file_list }}'
+    value: '{{ var_web_xml_welcome_file_list }}'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
@@ -669,7 +685,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:error-page[x:exception-type="java.lang.Throwable"]/x:location'
-    value: '{{ var_web_error_page }}'
+    value: '{{ var_web_xml_error_page }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
@@ -744,7 +760,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
-    value: '{{ var_cookie_secure }}'
+    value: '{{ var_web_xml_cookie_secure }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:

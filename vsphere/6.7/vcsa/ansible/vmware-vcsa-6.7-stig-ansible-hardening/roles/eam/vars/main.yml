@@ -2,20 +2,20 @@
 
 # server.xml variables
 var_server_xml_path: '/usr/lib/vmware-eam/web/conf/server.xml'
-var_server_connectiontimeout: '20000'
-var_server_maxthreads: '300'
-var_access_log_valve_pattern: '%h %{X-Forwarded-For}i %l %u %t [%I] &quot;%r&quot; %s %b [Processing time %D msec] &quot;%{User-Agent}i&quot;'
-var_server_acceptcount: '300'
-var_server_uriencoding: 'UTF-8'
+var_server_xml_connectiontimeout: '20000'
+var_server_xml_maxthreads: '300'
+var_server_xml_access_log_valve_pattern: '%h %{X-Forwarded-For}i %l %u %t [%I] &quot;%r&quot; %s %b [Processing time %D msec] &quot;%{User-Agent}i&quot;'
+var_server_xml_acceptcount: '300'
+var_server_xml_uriencoding: 'UTF-8'
 
 # web.xml variables
 var_web_xml_path: '/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml'
-var_web_http_only: 'true'
-var_servlet_jsp_url_pattern: '*.jsp'
-var_filter_class: 'org.apache.catalina.filters.SetCharacterEncodingFilter'
-var_web_welcome_file_list: 'index.jsp'
-var_web_error_page: '/error.jsp'
-var_cookie_secure: 'true'
+var_web_xml_http_only: 'true'
+var_web_xml_servlet_jsp_url_pattern: '*.jsp'
+var_web_xml_filter_class: 'org.apache.catalina.filters.SetCharacterEncodingFilter'
+var_web_xml_welcome_file_list: 'index.jsp'
+var_web_xml_error_page: '/error.jsp'
+var_web_xml_cookie_secure: 'true'
 
 # eam.json variables
 var_eam_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/eam.json'
@@ -28,4 +28,4 @@ var_eam_logs_path: '/var/log/vmware/eam/web/'
 var_catalina_props_path: '/etc/vmware-eam/catalina.properties'
 
 # misc variables
-var_eam_web_path: '/usr/lib/vmware-eam/web'
+var_eam_web_path: '/usr/lib/vmware-eam/web/'
