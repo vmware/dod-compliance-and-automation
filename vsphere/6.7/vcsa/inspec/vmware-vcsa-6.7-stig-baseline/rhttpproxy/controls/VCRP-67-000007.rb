@@ -34,9 +34,9 @@ If the output does not match the expected result, this is a finding."
 "
 
   describe file('/etc/vmware-rhttpproxy/ssl/rui.key') do
-    its('mode') { should eq '0600'}
-    its('owner') { should eq 'root' }
-    its('group') { should eq 'root' }
+    its('mode') { should cmp '0600'}
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
 
 end
