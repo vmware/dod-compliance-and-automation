@@ -17,13 +17,13 @@ configuration files."
   desc 'check', "At the command prompt, execute the following command:
 
 # rpm -V VMware-perfcharts|grep \"^..5......\"|grep \"/usr/lib\"|grep -v -E
-\"\\.properties|\\.conf\"
+\"\\.properties|\\.conf|\\.xml\"
 
 If any files are returned, this is a finding."
   desc 'fix', "Re-install the VCSA or roll back to a snapshot. Modifying the
 Performance Charts installation files manually is not supported by VMware."
 
-  describe command('rpm -V VMware-perfcharts|grep "^..5......"|grep "/usr/lib"|grep -v -E "\.properties|\.conf"') do
+  describe command('rpm -V VMware-perfcharts|grep "^..5......"|grep "/usr/lib"|grep -v -E "\.properties|\.conf|\.xml"') do
     its ('stdout.strip') { should eq '' }
   end
 
