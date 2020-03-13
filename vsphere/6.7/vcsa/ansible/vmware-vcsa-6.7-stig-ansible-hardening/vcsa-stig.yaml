@@ -8,5 +8,6 @@
     - postgres
     - rhttpproxy
     - vami
+    - sts
 #    - vsphere-client
 #    - vsphere-ui

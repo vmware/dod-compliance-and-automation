@@ -1,0 +1,12 @@
+input(type="imfile"
+      File="/var/log/vmware/sso/*.log"
+      Tag="vmidentity"
+      PersistStateInterval="200"
+      Severity="info"
+      Facility="local0")
+input(type="imfile"
+      File="/var/log/vmware/sso/sts-runtime.log.*"
+      Tag="sts-runtime"
+      PersistStateInterval="200"
+      Severity="info"
+      Facility="local0")

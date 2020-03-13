@@ -1,0 +1,42 @@
+# sts variables
+
+# server.xml variables
+var_server_xml_path: '/usr/lib/vmware-sso/vmware-sts/conf/server.xml'
+var_server_xml_connectiontimeout: '60000'
+var_server_xml_maxthreads: '300'
+var_server_xml_access_log_valve_pattern: '%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;" resolveHosts="false" prefix="localhost_access_log" suffix=".txt'
+var_server_xml_acceptcount: '100'
+var_server_xml_uriencoding: 'UTF-8'
+
+# web.xml variables
+var_web_xml_path: '/usr/lib/vmware-sso/vmware-sts/conf/web.xml'
+var_web_xml_http_only: 'true'
+var_web_xml_servlet_jsp_url_pattern1: '*.jsp'
+var_web_xml_servlet_jsp_url_pattern2: '*.jspx'
+var_web_xml_welcome_file_list1: 'index.html'
+var_web_xml_welcome_file_list2: 'index.htm'
+var_web_xml_welcome_file_list3: 'index.jsp'
+var_web_xml_error_page: '/error.jsp'
+var_web_xml_cookie_secure: 'true'
+
+# sts log variables
+var_sts_logs_path: '/storage/log/vmware/sso'
+var_logging_props_path: '/usr/lib/vmware-sso/vmware-sts/conf/logging.properties'
+var_logging_props_handlers: '1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler, java.util.logging.ConsoleHandler'
+var_logging_props_dothandlers: '1catalina.org.apache.juli.FileHandler'
+var_logging_props_level: 'FINE'
+var_logging_props_directory: '${catalina.base}/logs'
+var_logging_props_prefix: 'catalina.'
+var_logging_props_buffersize: '-1'
+
+# catalina properties variables
+var_catalina_props_path: '/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties'
+var_catalina_props_package_access: 'sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.'
+var_catalina_props_init_failure: 'true'
+var_catalina_props_ports_http: '7080'
+var_catalina_props_ports_https: '8443'
+var_catalina_props_ports_ssl: '7444'
+var_catalina_props_shutdown_port: '-1'
+
+# misc variables
+var_sts_web_path: '/usr/lib/vmware-sso/vmware-sts'

@@ -1,0 +1,2 @@
+- include: sts.yaml
+  tags: sts
