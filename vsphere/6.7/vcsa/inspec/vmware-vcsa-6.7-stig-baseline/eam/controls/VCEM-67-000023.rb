@@ -35,7 +35,7 @@ Example:
 </init-param>"
 
   describe xml('/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml') do
-    its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp "" }
+    its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should eq [] }
   end
 
 end
