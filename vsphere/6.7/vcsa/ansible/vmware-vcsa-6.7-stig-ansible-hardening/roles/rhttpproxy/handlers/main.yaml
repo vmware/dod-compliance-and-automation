@@ -1,0 +1,22 @@
+---
+
+- name: restart sshd
+  service: name=sshd state=restarted
+
+- name: restart auditd
+  service: name=auditd state=restarted
+
+- name: restart syslog
+  service: name=syslog state=restarted
+
+- name: restart ntp
+  service: name=ntpd state=restarted
+
+- name: restart eam
+  shell: vmon-cli --restart eam
+
+- name: restart perfcharts
+  shell: vmon-cli --restart perfcharts
+
+- name: restart rhttpproxy
+  shell: vmon-cli --restart rhttpproxy

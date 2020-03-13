@@ -1,0 +1,196 @@
+# VMware vSphere 6.7 vCenter Server Appliance Perfcharts Ansible Playbook
+
+---
+
+ #---------- Ansible version 2.8.5 --------#
+
+############################################
+
+# Title: rhttpproxy must drop connections to disconnected clients.
+
+- name: VCRP-67-000001 - rhttpproxy must drop connections to disconnected clients.
+  xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/vmacore/tcpKeepAlive/clientSocket/idleTimeSec'
+    value: '{{ var_config_xml_idletimesec }}'
+    state: present
+  tags:
+  - VCRP-67-000001
+  - rhttpproxy
+  notify:
+  - restart rhttpproxy
+  when:
+  - run_config_idletimesec | bool
+
+############################################
+
+# Title: rhttpproxy must set a limit on established connections.
+
+- name: VCRP-67-000002 - rhttpproxy must set a limit on established connections.
+  xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/vmacore/http/maxConnections'
+    value: '{{ var_config_xml_maxconnections }}'
+    state: present
+  tags:
+  - VCRP-67-000002
+  - rhttpproxy
+  notify:
+  - restart rhttpproxy
+  when:
+  - run_config_maxconnections | bool
+
+############################################
+
+# Title: rhttpproxy must be configured to operate solely with FIPS ciphers.
+
+- name: VCRP-67-000003 - rhttpproxy must be configured to operate solely with FIPS ciphers.
+  xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/vmacore/ssl/fips'
+    value: '{{ var_config_xml_fips }}'
+    state: present
+  tags:
+  - VCRP-67-000003
+  - rhttpproxy
+  notify:
+  - restart rhttpproxy
+  when:
+  - run_config_fips | bool
+
+############################################
+
+# Title: rhttpproxy must use cryptography to protect the integrity of remote sessions.
+
+- name: VCRP-67-000004 - rhttpproxy must use cryptography to protect the integrity of remote sessions.
+  xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/vmacore/ssl/protocols'
+    state: absent
+  tags:
+  - VCRP-67-000004
+  - rhttpproxy
+  notify:
+  - restart rhttpproxy
+  when:
+  - run_config_remove_protocols | bool
+
+############################################
+
+# Title: rhttpproxy must produce log records containing sufficient information to establish the source of events.
+
+- name: VCRP-67-000005 - rhttpproxy must produce log records containing sufficient information to establish the source of events.
+  xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/log/level'
+    value: '{{ var_config_xml_log_level }}'
+    state: present
+  tags:
+  - VCRP-67-000005
+  - rhttpproxy
+  notify:
+  - restart rhttpproxy
+  when:
+  - run_config_log_level | bool
+
+############################################
+
+# Title: rhttpproxy must have logging enabled.
+
+- name: VCRP-67-000006 - rhttpproxy must have logging enabled.
+  xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/log/outputToFiles'
+    value: '{{ var_config_xml_log_files }}'
+    state: present
+  tags:
+  - VCRP-67-000006
+  - rhttpproxy
+  notify:
+  - restart rhttpproxy
+  when:
+  - run_config_log_files | bool
+
+############################################
+
+# Title: The rhttpproxy private key file must protected from unauthorized access.
+
+- name: VCRP-67-000007 - The rhttpproxy private key file must protected from unauthorized access.
+  file:
+    path: "{{ var_key_path }}"
+    state: file
+    mode: 0600
+    owner: "root"
+    group: "root"
+  tags:
+  - VCRP-67-000007
+  - rhttpproxy
+  when:
+  - run_key_permissions | bool
+
+############################################
+
+# Title: rhttproxy must exclusively use the HTTPS protocol for client connections.
+
+- name: VCRP-67-000008 - rhttproxy must exclusively use the HTTPS protocol for client connections. Private Key
+  xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/ssl/privateKey'
+    value: '{{ var_config_xml_ssl_private_key }}'
+    state: present
+  tags:
+  - VCRP-67-000008
+  - rhttpproxy
+  notify:
+  - restart rhttpproxy
+  when:
+  - run_config_ssl | bool
+
+- name: VCRP-67-000008 - rhttproxy must exclusively use the HTTPS protocol for client connections. Cert
+  xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/ssl/certificate'
+    value: '{{ var_config_xml_ssl_cert }}'
+    state: present
+  tags:
+  - VCRP-67-000008
+  - rhttpproxy
+  notify:
+  - restart rhttpproxy
+  when:
+  - run_config_ssl | bool
+
+- name: VCRP-67-000008 - rhttproxy must exclusively use the HTTPS protocol for client connections. VECS
+  xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/ssl/vecsServerName'
+    value: '{{ var_config_xml_ssl_vecs }}'
+    state: present
+  tags:
+  - VCRP-67-000008
+  - rhttpproxy
+  notify:
+  - restart rhttpproxy
+  when:
+  - run_config_ssl | bool
+
+############################################
+
+# Title: rhttpproxy log files must be moved to a permanent repository in accordance with site policy.
+
+- name: VCRP-67-000009 - rhttpproxy log files must be moved to a permanent repository in accordance with site policy.
+  template:
+    src: stig-services-rhttpproxy.conf.j2
+    dest: /etc/vmware-syslog/stig-services-rhttpproxy.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: yes
+  notify:
+  - restart syslog
+  tags:
+  - VCRP-67-000009
+  - rhttpproxy
+  when:
+  - run_syslog_config | bool
+
