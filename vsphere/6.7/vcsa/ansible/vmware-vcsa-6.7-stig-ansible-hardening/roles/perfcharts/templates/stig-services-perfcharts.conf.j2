@@ -1,0 +1,10 @@
+input(type="imfile"
+      File="/var/log/vmware/perfcharts/localhost_access_log.*.txt"
+      Tag="perfcharts-localhost_access"
+      Severity="info"
+      Facility="local0")
+input(type="imfile"
+      File="/var/log/vmware/perfcharts/vmware-perfcharts-runtime.log.std*"
+      Tag="perfcharts-runtime"
+      Severity="info"
+      Facility="local0")

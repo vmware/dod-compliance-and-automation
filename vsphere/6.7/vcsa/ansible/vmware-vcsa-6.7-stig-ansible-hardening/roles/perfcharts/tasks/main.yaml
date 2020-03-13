@@ -1,0 +1,2 @@
+- include: perfcharts.yaml
+  tags: perfcharts
