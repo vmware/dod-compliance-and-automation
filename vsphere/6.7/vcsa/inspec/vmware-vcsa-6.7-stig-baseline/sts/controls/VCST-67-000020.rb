@@ -36,8 +36,9 @@ Navigate to each of the <Connector> nodes.
 
 Configure each <Connector> node with the value 'URIEncoding=\"UTF-8\"'."
 
+  list = ["UTF-8"]
   describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
-    its(['Server/Service/Connector/@URIEncoding']) { should cmp 'UTF-8'}
+    its(['Server/Service/Connector/@URIEncoding']) { should be_in list}
   end
 
 end
