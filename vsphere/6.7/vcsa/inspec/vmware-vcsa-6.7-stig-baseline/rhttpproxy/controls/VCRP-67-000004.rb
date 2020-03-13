@@ -36,8 +36,16 @@ Restart the service for changes to take effect.
 
 # vmon-cli --restart rhttpproxy"
 
-  describe xml('/etc/vmware-rhttpproxy/config.xml') do
-    its(['/config/vmacore/ssl/protocols']) { should cmp ['tls1.2'] }
+  describe.one do
+  
+    describe xml('/etc/vmware-rhttpproxy/config.xml') do
+      its(['/config/vmacore/ssl/protocols']) { should cmp ['tls1.2'] }
+    end
+
+    describe xml('/etc/vmware-rhttpproxy/config.xml') do
+      its(['/config/vmacore/ssl/protocols']) { should cmp [] }
+    end
+
   end
 
 end
