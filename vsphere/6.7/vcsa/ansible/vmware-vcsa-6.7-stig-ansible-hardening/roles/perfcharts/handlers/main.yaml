@@ -17,3 +17,24 @@
 
 - name: restart perfcharts
   shell: vmon-cli --restart perfcharts
+
+- name: restart rhttpproxy
+  shell: vmon-cli --restart rhttpproxy
+
+- name: restart sts
+  shell: service-control --restart vmware-stsd
+
+- name: restart vsphere-client
+  shell: vmon-cli --restart vsphere-client
+
+- name: restart vsphere-ui
+  shell: vmon-cli --restart vsphere-ui
+
+- name: restart vami
+  service: name=vami-lighttp state=restarted
+
+- name: restart vpostgres
+  shell: vmon-cli --restart vmware-vpostgres
+
+- name: reload vpostgres config
+  shell: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "SELECT pg_reload_conf();"

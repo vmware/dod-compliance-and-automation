@@ -14,7 +14,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
     attribute: 'connectionTimeout'
-    value: '{{ var_server_connectiontimeout }}'
+    value: '{{ var_server_xml_connectiontimeout }}'
   tags:
   - VCPF-67-000001
   - perfcharts
@@ -32,7 +32,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Executor'
     attribute: 'maxThreads'
-    value: '{{ var_server_maxthreads }}'
+    value: '{{ var_server_xml_maxthreads }}'
   tags:
   - VCPF-67-000002
   - perfcharts
@@ -66,7 +66,7 @@
   xml:
     path: '{{ var_web_stats_xml_path }}'
     xpath: '/x:web-app/x:session-config/x:cookie-config/x:http-only'
-    value: '{{ var_web_http_only }}'
+    value: '{{ var_web_xml_http_only }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
@@ -86,7 +86,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
     attribute: 'pattern'
-    value: '{{ var_access_log_valve_pattern }}'
+    value: '{{ var_server_xml_access_log_valve_pattern }}'
   tags:
   - VCPF-67-000005
   - perfcharts
@@ -256,7 +256,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="jsp"]/x:url-pattern[1]'
-    value: '{{ var_servlet_jsp_url_pattern1 }}'
+    value: '{{ var_web_xml_servlet_jsp_url_pattern1 }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
@@ -271,7 +271,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="jsp"]/x:url-pattern[2]'
-    value: '{{ var_servlet_jsp_url_pattern2 }}'
+    value: '{{ var_web_xml_servlet_jsp_url_pattern2 }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
@@ -325,33 +325,31 @@
 
 ############################################
 
-# Title: Performance Charts directory tree must have permissions in an "out of the box" state.   Need to find a faster way...3k files.
+# Title: Performance Charts directory tree must have permissions in an "out of the box" state.
 
-# - name: VCPF-67-000016 - Find perfchart web files
-#   find:
-#     paths: '{{ var_perfcharts_web_path }}'
-#     file_type: file
-#     exclude: 'statsreport/WEB-INF/web.xml'
-#     recurse: yes
-#   register: webfiles
-#   tags:
-#   - VCPF-67-000016
-#   - perfcharts
-#   when:
-#   - run_web_files_permissions | bool
+- name: VCPF-67-000016 - Find perfchart web files
+  shell: find {{ var_perfcharts_web_path }} -xdev -type f -a '(' -not -user perfcharts -o -not -group cis ')';
+  register: files
+  tags:
+  - VCPF-67-000016
+  - perfcharts
+  changed_when: files.stdout != "/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml"
+  when:
+  - run_web_files_permissions | bool
 
-# - name: VCPF-67-000016 - Set perfchart web files owner and group
-#   file:
-#     path: "{{ item.path }}"
-#     state: file
-#     owner: "perfcharts"
-#     group: "cis"
-#   with_items: " {{ webfiles.files }}"
-#   tags:
-#   - VCPF-67-000016
-#   - perfcharts
-#   when:
-#   - run_web_files_permissions | bool
+- name: VCPF-67-000016 - Set perfchart web files owner and group
+  file:
+    path: "{{ item }}"
+    state: file
+    owner: "perfcharts"
+    group: "cis"
+  with_items: "{{ files.stdout_lines }}"
+  tags:
+  - VCPF-67-000016
+  - perfcharts
+  when:
+  - run_web_files_permissions | bool
+  - files.stdout != "/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml"
 
 ############################################
 
@@ -382,7 +380,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
     attribute: 'acceptCount'
-    value: '{{ var_server_acceptcount }}'
+    value: '{{ var_server_xml_acceptcount }}'
   tags:
   - VCPF-67-000018
   - perfcharts
@@ -400,7 +398,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
     attribute: 'URIEncoding'
-    value: '{{ var_server_uriencoding }}'
+    value: '{{ var_server_xml_uriencoding }}'
   tags:
   - VCPF-67-000019
   - perfcharts
@@ -523,47 +521,116 @@
   when:
   - run_web_filter | bool
 
-# - name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param
-#   xml:
-#     path: '{{ var_web_xml_path }}'
-#     xpath: '/x:web-app/x:filter/x:init-param[x:param-name="encoding"]/x:param-name'
-#     value: 'encoding'
-#     state: present
-#     namespaces:
-#       x: http://java.sun.com/xml/ns/javaee
-#   tags:
-#   - VCPF-67-000020
-#   - perfcharts
-#   when:
-#   - run_web_filter | bool
+- name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param 1
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter/x:init-param/x:param-name'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCPF-67-000020
+  - perfcharts
+  notify:
+  - restart perfcharts
+  when:
+  - run_web_filter | bool
 
-# - name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param encoding
-#   xml:
-#     path: '{{ var_web_xml_path }}'
-#     xpath: '/x:web-app/x:filter/x:init-param/x:param-name'
-#     value: 'encoding'
-#     state: present
-#     namespaces:
-#       x: http://java.sun.com/xml/ns/javaee
-#   tags:
-#   - VCPF-67-000020
-#   - perfcharts
-#   when:
-#   - run_web_filter | bool
+- name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param encoding
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-name'
+    value: 'encoding'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCPF-67-000020
+  - perfcharts
+  notify:
+  - restart perfcharts
+  when:
+  - run_web_filter | bool
 
-# - name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param encoding value
-#   xml:
-#     path: '{{ var_web_xml_path }}'
-#     xpath: '/x:web-app/x:filter/x:init-param/x:param-value'
-#     value: 'UTF-8'
-#     state: present
-#     namespaces:
-#       x: http://java.sun.com/xml/ns/javaee
-#   tags:
-#   - VCPF-67-000020
-#   - perfcharts
-#   when:
-#   - run_web_filter | bool
+- name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param encoding value
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-value'
+    value: 'UTF-8'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCPF-67-000020
+  - perfcharts
+  notify:
+  - restart perfcharts
+  when:
+  - run_web_filter | bool
+
+- name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Check for init-param 2 existance
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]'
+    count: yes
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  register: counts
+  tags:
+  - VCPF-67-000020
+  - perfcharts
+  when:
+  - run_web_filter | bool
+
+- name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param 2
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+    state: present
+    add_children:
+    - init-param:
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCPF-67-000020
+  - perfcharts
+  notify:
+  - restart perfcharts
+  when:
+  - run_web_filter | bool
+  - counts.count == 0
+
+- name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-name'
+    value: 'ignore'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCPF-67-000020
+  - perfcharts
+  notify:
+  - restart perfcharts
+  when:
+  - run_web_filter | bool
+
+- name: VCPF-67-000020 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param ignore
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-value'
+    value: 'false'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCPF-67-000020
+  - perfcharts
+  notify:
+  - restart perfcharts
+  when:
+  - run_web_filter | bool
 
 ############################################
 
@@ -573,7 +640,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[1]'
-    value: '{{ var_web_welcome_file_list1 }}'
+    value: '{{ var_web_xml_welcome_file_list1 }}'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
@@ -589,7 +656,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[2]'
-    value: '{{ var_web_welcome_file_list2 }}'
+    value: '{{ var_web_xml_welcome_file_list2 }}'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
@@ -605,7 +672,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[3]'
-    value: '{{ var_web_welcome_file_list3 }}'
+    value: '{{ var_web_xml_welcome_file_list3 }}'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
@@ -644,7 +711,7 @@
   xml:
     path: '{{ var_web_stats_xml_path }}'
     xpath: '/x:web-app/x:error-page[x:exception-type="java.lang.Throwable"]/x:location'
-    value: '{{ var_web_error_page }}'
+    value: '{{ var_web_xml_error_page }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
@@ -791,12 +858,12 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
-    value: '{{ var_cookie_secure }}'
+    value: '{{ var_web_xml_cookie_secure }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCPF-67-000030
-  - eam
+  - perfcharts
   notify:
   - restart perfcharts
   when:
