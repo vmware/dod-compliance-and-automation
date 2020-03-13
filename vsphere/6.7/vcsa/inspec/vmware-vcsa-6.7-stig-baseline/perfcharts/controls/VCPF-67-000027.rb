@@ -55,7 +55,7 @@ input(type=\"imfile\"
     it { should exist }
   end
   describe command('grep -v "^#" /etc/vmware-syslog/stig-services-perfcharts.conf') do
-    its ('stdout') { should match "input(type=\"imfile\" File=\"/var/log/vmware/perfcharts/localhost_access_log.*.txt\"\nTag=\"perfcharts-localhost_access\"\nSeverity=\"info\"\nFacility=\"local0\")\ninput(type=\"imfile\"\nFile=\"/var/log/vmware/perfcharts/vmware-perfcharts-runtime.log.std*\"\nTag=\"perfcharts-runtime\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
+    its ('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/vmware/perfcharts/localhost_access_log.*.txt\"\n      Tag=\"perfcharts-localhost_access\"\n      Severity=\"info\"\n      Facility=\"local0\")\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/perfcharts/vmware-perfcharts-runtime.log.std*\"\n      Tag=\"perfcharts-runtime\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
   end
 
 end
