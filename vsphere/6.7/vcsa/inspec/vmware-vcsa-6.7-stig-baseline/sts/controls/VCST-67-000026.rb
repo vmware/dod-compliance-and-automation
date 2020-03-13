@@ -34,8 +34,7 @@ Expected result:
 <param-value>0</param-value>
 </init-param>
 
-If the output of the command does not match the expected result, this is a
-finding."
+If the output of the command does not match the expected result, this is a finding. If no lines is returned this is NOT a finding."
   desc 'fix', "Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml
 
 Navigate to all <debug> nodes that are not set to \"0\".
@@ -49,8 +48,16 @@ Note: The debug setting should look like the below:
                   <param-value>0</param-value>
                </init-param>"
 
-  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
-    its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
+  describe.one do
+
+    describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should eq [] }
+    end
+
+    describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
+    end
+  
   end
 
 end
