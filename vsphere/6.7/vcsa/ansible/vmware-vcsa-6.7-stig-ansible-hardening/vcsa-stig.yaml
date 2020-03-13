@@ -9,5 +9,5 @@
     - rhttpproxy
     - vami
     - sts
-#    - vsphere-client
-#    - vsphere-ui
+    - vsphere-client
+    - vsphere-ui
