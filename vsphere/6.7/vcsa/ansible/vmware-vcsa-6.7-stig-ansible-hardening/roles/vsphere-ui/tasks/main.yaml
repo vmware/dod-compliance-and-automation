@@ -1,0 +1,2 @@
+- include: vsphere-ui.yaml
+  tags: vsphere-ui
