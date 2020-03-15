@@ -12,6 +12,24 @@
 - name: restart ntp
   service: name=ntpd state=restarted
 
+- name: restart eam
+  shell: vmon-cli --restart eam
+
+- name: restart perfcharts
+  shell: vmon-cli --restart perfcharts
+
+- name: restart rhttpproxy
+  shell: vmon-cli --restart rhttpproxy
+
+- name: restart sts
+  shell: service-control --restart vmware-stsd
+
+- name: restart vsphere-client
+  shell: vmon-cli --restart vsphere-client
+
+- name: restart vsphere-ui
+  shell: vmon-cli --restart vsphere-ui
+
 - name: restart vami
   service: name=vami-lighttp state=restarted
 
