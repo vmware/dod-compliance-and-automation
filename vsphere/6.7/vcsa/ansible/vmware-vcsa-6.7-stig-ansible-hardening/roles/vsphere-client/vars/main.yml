@@ -1,0 +1,40 @@
+# vsphere-client variables
+
+# server.xml variables
+var_server_xml_path: '/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml'
+var_server_xml_connectiontimeout: '20000'
+var_server_xml_maxthreads: '800'
+var_server_xml_ciphers: 'TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_RSA_WITH_AES_256_CBC_SHA256,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA'
+var_server_xml_ssl_enabled: 'true'
+var_server_xml_ssl_protocols: 'TLSv1.2'
+var_server_xml_https_scheme: 'https'
+var_server_xml_access_log_valve_pattern: "%h %{x-forwarded-for}i %l %u %t \\&quot;%r\\&quot; %s %b %{\\#hashedSessionId\\#}s %I %D"
+var_server_xml_acceptcount: '300'
+var_server_xml_uriencoding: 'UTF-8'
+var_server_xml_server: 'Anonymous'
+var_server_xml_port_9090: '9090'
+var_server_xml_port_9443: '9443'
+var_server_xml_shutdown_port: '-1'
+
+# context.xml variables
+var_context_xml_path: '/usr/lib/vmware-vsphere-client/server/configuration/context.xml'
+var_context_xml_http_only: 'true'
+
+# web.xml variables
+var_web_xml_path: '/usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml'
+var_web_xml_servlet_jsp_url_pattern1: '*.jsp'
+var_web_xml_servlet_jsp_url_pattern2: '*.jspx'
+var_web_xml_welcome_file_list1: 'index.html'
+var_web_xml_welcome_file_list2: 'index.htm'
+var_web_xml_welcome_file_list3: 'index.jsp'
+
+# json variables
+var_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-client.json'
+var_json_stream_redirect_file: '%VMWARE_LOG_DIR%/vmware/vsphere-client/logs/vsphere-client-runtime.log'
+
+# log variables
+var_logs_path: '/storage/log/vmware/vsphere-client/logs'
+
+# misc variables
+var_keystore_path: '/etc/vmware/vsphere-client/keystore.jks'
+var_files_web_path: '/usr/lib/vmware-vsphere-client/server'

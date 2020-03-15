@@ -1,0 +1,10 @@
+input(type="imfile"
+      File="/var/log/vmware/vsphere-client/logs/access/localhost_access*"
+      Tag="client-access"
+      Severity="info"
+      Facility="local0")
+input(type="imfile"
+      File="/var/log/vmware/vsphere-client/logs/vsphere-client-runtime*"
+      Tag="client-runtime"
+      Severity="info"
+      Facility="local0")

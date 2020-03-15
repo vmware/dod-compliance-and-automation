@@ -1,0 +1,60 @@
+---
+
+# Turn specific controls on/off by setting the value to true or false
+
+#VCFL-67-000001
+run_connection_timeout: true
+#VCFL-67-000002
+run_max_threads: true
+#VCFL-67-000003
+run_max_post_size: true
+#VCFL-67-000004
+run_http_only: true
+#VCFL-67-000005
+run_server_ciphers: true
+#VCFL-67-000006
+run_server_ssl_enabled: true
+#VCFL-67-000007
+run_server_ssl_protocols: true
+#VCFL-67-000008
+run_server_https_scheme: true
+#VCFL-67-000009
+run_access_valve_pattern: true
+#VCFL-67-000010
+run_json_stream_redirect_file: true
+#VCFL-67-000011
+run_logs_permissions: true
+#VCFL-67-000013
+run_removed_mime_mappings: true
+#VCFL-67-000014
+run_java_servlet: true
+#VCFL-67-000015
+run_remove_webdav: true
+#VCFL-67-000016
+run_mem_leak_prevention: true
+#VCFL-67-000018
+run_key_permissions: true
+#VCFL-67-000019
+run_web_files_permissions: true
+#VCFL-67-000020
+run_accept_count: true
+#VCFL-67-000021
+run_uri_encoding: true
+#VCFL-67-000022
+run_web_welcome_file: true
+#VCFL-67-000023
+run_web_remove_listings: true
+#VCFL-67-000024
+run_min_info: true
+#VCFL-67-000025
+run_allow_trace: true
+#VCFL-67-000026
+run_web_remove_debug: true
+#VCFL-67-000027
+run_syslog_config: true
+#VCFL-67-000028
+run_server_ports: true
+#VCFL-67-000029
+run_server_shutdownport: true
+#VCFL-67-000030
+run_web_cookie_secure: true
