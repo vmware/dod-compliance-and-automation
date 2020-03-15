@@ -41,8 +41,16 @@ Note: The setting should look like the below:
       <param-value>false</param-value>
 </init-param>"
 
-  describe xml('/usr/lib/vmware-vsphere-ui/server/conf/web.xml') do
-    its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp "false" }
+  describe.one do
+
+    describe xml('/usr/lib/vmware-vsphere-ui/server/conf/web.xml') do
+      its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should eq [] }
+    end
+
+    describe xml('/usr/lib/vmware-vsphere-ui/server/conf/web.xml') do
+      its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp "false" }
+    end
+
   end
 
 end
