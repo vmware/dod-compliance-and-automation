@@ -165,9 +165,6 @@
     no_extra_spaces: yes
     option: 'package.access'
     value: '{{ var_catalina_props_package_access }}'
-    group: root
-    owner: vsphere-ui
-    mode: 0770
   tags:
   - VCUI-67-000010
   - vsphere-ui
@@ -357,9 +354,6 @@
     no_extra_spaces: yes
     option: 'org.apache.catalina.startup.EXIT_ON_INIT_FAILURE'
     value: '{{ var_catalina_props_init_failure }}'
-    group: root
-    owner: vsphere-ui
-    mode: 0770
   tags:
   - VCUI-67-000017
   - vsphere-ui
@@ -584,9 +578,6 @@
     no_extra_spaces: yes
     option: 'http.port'
     value: '{{ var_catalina_props_ports_http }}'
-    group: root
-    owner: vsphere-ui
-    mode: 0770
   tags:
   - VCUI-67-000028
   - vsphere-ui
@@ -603,9 +594,6 @@
     no_extra_spaces: yes
     option: 'https.port'
     value: '{{ var_catalina_props_ports_https }}'
-    group: root
-    owner: vsphere-ui
-    mode: 0770
   tags:
   - VCUI-67-000028
   - vsphere-ui
@@ -622,9 +610,6 @@
     no_extra_spaces: yes
     option: 'proxy.port'
     value: '{{ var_catalina_props_ports_proxy }}'
-    group: root
-    owner: vsphere-ui
-    mode: 0770
   tags:
   - VCUI-67-000028
   - vsphere-ui
