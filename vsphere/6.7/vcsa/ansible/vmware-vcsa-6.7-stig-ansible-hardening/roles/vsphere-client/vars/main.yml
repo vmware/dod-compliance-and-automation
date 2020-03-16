@@ -8,7 +8,9 @@ var_server_xml_ciphers: 'TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDH_ECDSA_WIT
 var_server_xml_ssl_enabled: 'true'
 var_server_xml_ssl_protocols: 'TLSv1.2'
 var_server_xml_https_scheme: 'https'
-var_server_xml_access_log_valve_pattern: "%h %{x-forwarded-for}i %l %u %t \\&quot;%r\\&quot; %s %b %{\\#hashedSessionId\\#}s %I %D"
+#This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+#Also & needs to just be a " which turns into &quot
+var_server_xml_access_log_valve_pattern: '{% raw %}%h %{x-forwarded-for}i %l %u %t "%r" %s %b %{#hashedSessionId#}s %I %D{% endraw %}'
 var_server_xml_acceptcount: '300'
 var_server_xml_uriencoding: 'UTF-8'
 var_server_xml_server: 'Anonymous'

@@ -51,7 +51,7 @@ directory=\"logs\" pattern=\"%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s
 prefix=\"localhost_access_log\" suffix=\".txt\" />"
 
   describe xml('/usr/lib/vmware-sso/vmware-sts/conf/server.xml') do
-    its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ['%h %{X-Forwarded-For}i %l %u %t &amp;quot;%r&amp;quot; %s %b &amp;quot;%{User-Agent}i&amp;quot;&quot; resolveHosts=&quot;false&quot; prefix=&quot;localhost_access_log&quot; suffix=&quot;.txt'] }
+    its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ['%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;'] }
   end
 
 end

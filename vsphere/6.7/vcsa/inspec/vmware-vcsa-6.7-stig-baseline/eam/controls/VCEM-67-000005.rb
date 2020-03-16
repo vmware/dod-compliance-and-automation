@@ -50,7 +50,7 @@ prefix=\"localhost_access_log\"
 suffix=\".txt\"/>"
 
   describe xml('/usr/lib/vmware-eam/web/conf/server.xml') do
-    its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ['%h %{X-Forwarded-For}i %l %u %t [%I] &amp;quot;%r&amp;quot; %s %b [Processing time %D msec] &amp;quot;%{User-Agent}i&amp;quot;'] }
+    its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ['%h %{X-Forwarded-For}i %l %u %t [%I] &quot;%r&quot; %s %b [Processing time %D msec] &quot;%{User-Agent}i&quot;'] }
   end
 
 end
