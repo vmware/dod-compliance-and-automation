@@ -85,7 +85,7 @@
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
     attribute: 'pattern'
-    value: "{{ var_server_xml_access_log_valve_pattern }}"
+    value: '{{ var_server_xml_access_log_valve_pattern }}'
   tags:
   - VCUI-67-000005
   - vsphere-ui

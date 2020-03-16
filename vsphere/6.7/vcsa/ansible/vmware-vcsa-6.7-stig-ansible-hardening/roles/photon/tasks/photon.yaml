@@ -32,7 +32,7 @@
   - PHTN-10-000074
   - auditd
   notify:
-    - restart auditd
+    - reload auditd
   when:
   - run_auditd_rules | bool
 

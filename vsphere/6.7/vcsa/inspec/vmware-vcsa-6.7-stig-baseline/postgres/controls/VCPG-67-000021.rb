@@ -34,6 +34,9 @@ log_destination = 'stderr'"
     describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
       its('log_destination') { should cmp "stderr" }
     end
+    describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
+      its('log_destination') { should cmp "'stderr'" }
+    end
   end
 
 end

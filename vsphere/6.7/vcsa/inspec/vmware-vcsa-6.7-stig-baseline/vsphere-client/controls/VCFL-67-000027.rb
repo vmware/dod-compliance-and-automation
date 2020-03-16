@@ -54,7 +54,7 @@ input(type=\"imfile\"
     it { should exist }
   end
   describe command('grep -v "^#" /etc/vmware-syslog/stig-vsphere-client.conf') do
-    its ('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/vmware/vsphere-client/logs/access/localhost_access*\"\n      Tag=\"client-access\"\n      Severity=\"info\"\n      Facility=\"local0\")\ninput(type=\"imfile\"      File=\"/var/log/vmware/vsphere-client/logs/vsphere-client-runtime*\"\n      Tag=\"client-runtime\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
+    its ('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/vmware/vsphere-client/logs/access/localhost_access*\"\n      Tag=\"client-access\"\n      Severity=\"info\"\n      Facility=\"local0\")\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vsphere-client/logs/vsphere-client-runtime*\"\n      Tag=\"client-runtime\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
   end
 
 end
