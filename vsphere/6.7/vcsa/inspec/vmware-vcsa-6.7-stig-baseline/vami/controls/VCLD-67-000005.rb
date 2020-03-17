@@ -29,8 +29,16 @@ Configure the \"lighttpd.conf\" file with the following:
 
 server.errorlog = \"/opt/vmware/var/log/lighttpd/error.log\""
 
-  describe parse_config_file('/opt/vmware/etc/lighttpd/lighttpd.conf').params['server.errorlog'] do
-    it { should eq "/opt/vmware/var/log/lighttpd/error.log" }
+  describe.one do
+
+    describe parse_config_file('/opt/vmware/etc/lighttpd/lighttpd.conf').params['server.errorlog'] do
+      it { should eq "\"/opt/vmware/var/log/lighttpd/error.log\"" }
+    end
+
+    describe parse_config_file('/opt/vmware/etc/lighttpd/lighttpd.conf').params['server.errorlog'] do
+      it { should eq "/opt/vmware/var/log/lighttpd/error.log" }
+    end
+
   end
 
 end
