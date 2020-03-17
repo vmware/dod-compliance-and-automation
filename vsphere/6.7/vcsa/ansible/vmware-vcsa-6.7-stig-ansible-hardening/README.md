@@ -10,15 +10,12 @@ An ansible playbook to harden VMware vCenter Server Appliance 6.7 against the dr
 ## Status
 Complete Components
 
-- Photon
-- PostGres
-- VAMI
-
-In-Progress Components
-
 - EAM
 - Perfcharts
+- Photon
+- PostGres
 - rhttpproxy
+- VAMI
 - vsphere-client
 - vsphere-ui
 
