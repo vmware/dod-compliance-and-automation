@@ -9,6 +9,7 @@
     File Name  : VMware_vSphere_6.7_STIG_Compliance_Report.ps1
     Author     : Ryan Lakey
     Version    : 1.0
+    License    : Apache-2.0
 
     Tested against
     -PowerCLI 11.3

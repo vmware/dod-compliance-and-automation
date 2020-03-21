@@ -11,6 +11,7 @@
     File Name  : VMware_6.7_STIG_Remediate_ESXi.ps1 
     Author     : Ryan Lakey
     Version    : 1.0
+    License    : Apache-2.0
 
     Tested against
     -PowerCLI 11.3
