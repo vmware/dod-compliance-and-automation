@@ -1737,7 +1737,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -1800,7 +1800,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -1849,7 +1849,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -1912,7 +1912,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -1975,7 +1975,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2038,7 +2038,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2087,7 +2087,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2150,7 +2150,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2199,7 +2199,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2248,7 +2248,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2297,7 +2297,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2346,7 +2346,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2395,7 +2395,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2454,7 +2454,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2503,7 +2503,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2552,7 +2552,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2601,7 +2601,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2650,7 +2650,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2699,7 +2699,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2748,7 +2748,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2797,7 +2797,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2846,7 +2846,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2895,7 +2895,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2944,7 +2944,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -2993,7 +2993,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3042,7 +3042,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3091,7 +3091,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3140,7 +3140,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3188,7 +3188,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3251,7 +3251,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3314,7 +3314,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3377,7 +3377,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3426,7 +3426,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3489,7 +3489,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3538,7 +3538,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3587,7 +3587,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3637,7 +3637,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3665,7 +3665,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3728,7 +3728,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3791,7 +3791,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3854,7 +3854,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3917,7 +3917,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -3966,7 +3966,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4029,7 +4029,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4089,7 +4089,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4139,7 +4139,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4189,7 +4189,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4217,7 +4217,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4245,7 +4245,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4273,7 +4273,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4334,7 +4334,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4362,7 +4362,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4425,7 +4425,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4516,7 +4516,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4566,7 +4566,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4629,7 +4629,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4724,7 +4724,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4819,7 +4819,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4914,7 +4914,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -4977,7 +4977,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5039,7 +5039,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5101,7 +5101,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5163,7 +5163,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5209,7 +5209,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5272,7 +5272,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5300,7 +5300,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5353,7 +5353,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5398,7 +5398,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5447,7 +5447,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5496,7 +5496,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5570,7 +5570,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5644,7 +5644,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5718,7 +5718,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5790,7 +5790,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5856,7 +5856,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5902,7 +5902,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5948,7 +5948,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -5994,7 +5994,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -6052,7 +6052,7 @@ Try{
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vm.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vcenter)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
