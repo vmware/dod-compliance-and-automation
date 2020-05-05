@@ -95,13 +95,11 @@
 # Title: The Photon operating system must limit the number of concurrent sessions to ten for all accounts and/or account types.
 
 - name: PHTN-10-000004 - Limit the number of concurrent sessions to ten for all accounts and/or account types
-  lineinfile:
-    path: /etc/security/limits.conf
-    state: present
-    insertbefore: ^# End of file
-    regexp: ^#?\*.*maxlogins
-    line: '*              hard    maxlogins      {{ var_limits_maxlogins }}'
-    firstmatch: yes
+  pam_limits:
+    limit_item: maxlogins
+    domain: "*"
+    limit_type: hard
+    value: "{{ var_limits_maxlogins }}"
   tags:
   - PHTN-10-000004
   - limits.conf
