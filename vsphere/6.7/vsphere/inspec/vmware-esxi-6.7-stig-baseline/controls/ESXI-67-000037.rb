@@ -48,8 +48,13 @@ Get-VMHost | Get-VMHostAuthentication | Set-VMHostAuthentication -JoinDomain
 -Domain \"domain name\" -User \"username\" -Password \"password\""
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostAuthentication | Select-Object -ExpandProperty DomainMembershipStatus"
-  describe powercli_command(command) do
-    its('stdout.strip') { should cmp "Joined" }
+  describe.one do
+    describe powercli_command(command) do
+      its('stdout.strip') { should cmp "Ok" }
+    end
+    describe powercli_command(command) do
+      its('stdout.strip') { should cmp "Joined" }
+    end
   end
 
 end
