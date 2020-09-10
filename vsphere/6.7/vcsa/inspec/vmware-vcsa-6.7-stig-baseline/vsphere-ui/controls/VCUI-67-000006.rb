@@ -12,12 +12,11 @@ the early jvm logging. Ensuring these json files are configured correctly
 enables early java stdout and stderr logging."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000266-WSR-000160"
-  tag gid: nil
+  tag gtitle: "SRG-APP-000089-WSR-000047"
   tag rid: "VCUI-67-000006"
   tag stig_id: "VCUI-67-000006"
-  tag cci: "CCI-001312"
-  tag nist: ["SI-11 a", "Rev_4"]
+  tag cci: "CCI-000169"
+  tag nist: ["AU-12 a", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # grep StreamRedirectFile /etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json

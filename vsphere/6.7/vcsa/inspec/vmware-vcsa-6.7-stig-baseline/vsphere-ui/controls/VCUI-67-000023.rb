@@ -11,12 +11,11 @@ might be successful. As such, vSphere UI must be configured to not show server
 version information in error pages."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000266-WSR-000159"
   tag rid: "VCUI-67-000023"
   tag stig_id: "VCUI-67-000023"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-001312"
+  tag nist: ["SI-11 a", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | xmllint

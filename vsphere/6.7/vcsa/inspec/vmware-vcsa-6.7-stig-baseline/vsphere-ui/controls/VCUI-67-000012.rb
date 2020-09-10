@@ -13,12 +13,11 @@ log files, password files, etc.
 properly mapped to servlets."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000456-WSR-000187"
-  tag gid: nil
+  tag gtitle: "SRG-APP-000141-WSR-000083"
   tag rid: "VCUI-67-000012"
   tag stig_id: "VCUI-67-000012"
-  tag cci: "CCI-002605"
-  tag nist: ["SI-2 c", "Rev_4"]
+  tag cci: "CCI-000381"
+  tag nist: ["CM-7 a", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/web.xml | sed

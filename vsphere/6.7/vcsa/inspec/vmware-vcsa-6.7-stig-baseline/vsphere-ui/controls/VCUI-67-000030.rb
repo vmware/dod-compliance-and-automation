@@ -9,12 +9,11 @@ unencrypted channel. vSphere UI is configured to only be accessible over a TLS
 tunnel but this cookie flag is still a recommended best practice."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000439-WSR-000155"
   tag rid: "VCUI-67-000030"
   tag stig_id: "VCUI-67-000030"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-002418"
+  tag nist: ["SC-8", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/web.xml | sed

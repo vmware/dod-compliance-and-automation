@@ -10,12 +10,11 @@ user names, etc. The vSphere UI restricts all access to log file by default but
 this configuration must be verified."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000357-WSR-000150"
-  tag gid: nil
+  tag gtitle: "SRG-APP-000118-WSR-000068"
   tag rid: "VCUI-67-000007"
   tag stig_id: "VCUI-67-000007"
-  tag cci: "CCI-001849"
-  tag nist: ["AU-4", "Rev_4"]
+  tag cci: "CCI-000162"
+  tag nist: ["AU-9", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # find /storage/log/vmware/vsphere-ui/logs/ -xdev -type f -a '(' -not -perm 600

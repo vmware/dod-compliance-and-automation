@@ -13,12 +13,11 @@ requests from consuming system resources and potentially denying new
 connections."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000266-WSR-000142"
-  tag gid: nil
+  tag gtitle: "SRG-APP-000001-WSR-000001"
   tag rid: "VCUI-67-000001"
   tag stig_id: "VCUI-67-000001"
-  tag cci: "CCI-001312"
-  tag nist: ["SI-11 a", "Rev_4"]
+  tag cci: "CCI-000054"
+  tag nist: ["AC-10", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | sed '2

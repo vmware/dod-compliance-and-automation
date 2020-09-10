@@ -8,12 +8,11 @@ to perform a more targeted attack. vSphere UI provides the allowTrace parameter
 as means to disable responding to Trace requests."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000266-WSR-000160"
   tag rid: "VCUI-67-000024"
   tag stig_id: "VCUI-67-000024"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-001312"
+  tag nist: ["SI-11 a", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # grep allowTrace /usr/lib/vmware-vsphere-ui/server/conf/server.xml

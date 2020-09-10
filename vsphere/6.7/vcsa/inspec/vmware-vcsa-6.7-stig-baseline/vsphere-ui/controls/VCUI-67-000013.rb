@@ -13,12 +13,11 @@ excessive number of vulnerabilities, this servlet must not be installed.
 vSphere UI does not configure WebDAV by default."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000141-WSR-000085"
   tag rid: "VCUI-67-000013"
   tag stig_id: "VCUI-67-000013"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-000381"
+  tag nist: ["CM-7 a", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # grep -n 'webdav' /usr/lib/vmware-vsphere-ui/server/conf/web.xml

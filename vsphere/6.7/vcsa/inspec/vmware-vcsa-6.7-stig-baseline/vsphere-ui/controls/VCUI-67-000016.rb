@@ -9,12 +9,11 @@ UI files must be adequately protected with correct permissions as applied \"out
 of the box\"."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000211-WSR-000030"
   tag rid: "VCUI-67-000016"
   tag stig_id: "VCUI-67-000016"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-001082"
+  tag nist: ["SC-2", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # find /usr/lib/vmware-vsphere-ui/server/lib

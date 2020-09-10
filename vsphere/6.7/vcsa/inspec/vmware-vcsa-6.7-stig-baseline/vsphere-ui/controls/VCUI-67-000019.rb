@@ -13,12 +13,11 @@ security checks. vSphere UI must be configured to use a consistent character
 set via the URIEncoding attribute on the Connector nodes."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000251-WSR-000157"
   tag rid: "VCUI-67-000019"
   tag stig_id: "VCUI-67-000019"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-001310"
+  tag nist: ["SI-10", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | sed '2

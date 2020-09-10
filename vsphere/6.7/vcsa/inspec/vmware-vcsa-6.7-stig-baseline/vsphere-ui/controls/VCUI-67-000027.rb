@@ -7,12 +7,11 @@ forensics purposes, or other purposes relevant to ensuring the availability and
 integrity of the hosted application."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000358-WSR-000163"
   tag rid: "VCUI-67-000027"
   tag stig_id: "VCUI-67-000027"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-001851"
+  tag nist: ["AU-4 (1)", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # grep -v \"^#\" /etc/vmware-syslog/stig-services-vsphere-ui.conf

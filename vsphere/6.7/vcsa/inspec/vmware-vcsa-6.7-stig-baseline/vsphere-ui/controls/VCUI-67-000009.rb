@@ -5,12 +5,11 @@ additional plugins may affect the availability and integrity of the system and
 must be approved and documented by the ISSO before deployment."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000380-WSR-000072"
-  tag gid: nil
+  tag gtitle: "SRG-APP-000131-WSR-000073"
   tag rid: "VCUI-67-000009"
   tag stig_id: "VCUI-67-000009"
-  tag cci: "CCI-001813"
-  tag nist: ["CM-5 (1)", "Rev_4"]
+  tag cci: "CCI-001749"
+  tag nist: ["CM-5 (3)", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # diff <(find /usr/lib/vmware-vsphere-ui/plugin-packages/vsphere-client/plugins

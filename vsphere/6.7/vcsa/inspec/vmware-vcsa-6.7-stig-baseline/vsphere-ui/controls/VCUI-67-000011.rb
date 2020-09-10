@@ -8,12 +8,11 @@ are not included in web.xml, the server is protected against malicious users
 tricking the server into executing shell command files."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000439-WSR-000155"
-  tag gid: nil
+  tag gtitle: "SRG-APP-000141-WSR-000081"
   tag rid: "VCUI-67-000011"
   tag stig_id: "VCUI-67-000011"
-  tag cci: "CCI-002418"
-  tag nist: ["SC-8", "Rev_4"]
+  tag cci: "CCI-000381"
+  tag nist: ["CM-7 a", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # grep -En '(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)'

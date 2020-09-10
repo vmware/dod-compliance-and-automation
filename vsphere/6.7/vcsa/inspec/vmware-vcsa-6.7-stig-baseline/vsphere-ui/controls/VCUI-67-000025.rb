@@ -15,12 +15,11 @@ debugging level to zero (0), no debugging information will be provided to a
 malicious user."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000266-WSR-000160"
   tag rid: "VCUI-67-000025"
   tag stig_id: "VCUI-67-000025"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-001312"
+  tag nist: ["SI-11 a", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/web.xml | sed

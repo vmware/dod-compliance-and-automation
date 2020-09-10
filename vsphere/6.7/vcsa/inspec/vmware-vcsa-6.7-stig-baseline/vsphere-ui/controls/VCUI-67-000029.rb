@@ -7,12 +7,11 @@ enabled, a shutdown signal can be sent to vSphere UI through this port. To
 ensure availability, the shutdown port must be disabled."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000435-WSR-000147"
   tag rid: "VCUI-67-000029"
   tag stig_id: "VCUI-67-000029"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-002385"
+  tag nist: ["SC-5", "Rev_4"]
   desc 'check', "At the command prompt, execute the following commands:
 
 # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | sed '2

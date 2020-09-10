@@ -7,12 +7,11 @@ on are configured in the catalina.properties file and must be veriified as
 accurate to their shipping state."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000383-WSR-000175"
   tag rid: "VCUI-67-000028"
   tag stig_id: "VCUI-67-000028"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-001762"
+  tag nist: ["CM-7 (1) (b)", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # grep '.port' /usr/lib/vmware-vsphere-ui/server/conf/catalina.properties

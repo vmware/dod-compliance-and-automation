@@ -13,12 +13,11 @@ will contain all the forensic information necessary in the case of a security
 incident."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000266-WSR-000160"
-  tag gid: nil
+  tag gtitle: "SRG-APP-000016-WSR-000005"
   tag rid: "VCUI-67-000005"
   tag stig_id: "VCUI-67-000005"
-  tag cci: "CCI-001312"
-  tag nist: ["SI-11 a", "Rev_4"]
+  tag cci: "CCI-000067"
+  tag nist: ["AC-17 (1)", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | xmllint

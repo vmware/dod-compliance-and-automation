@@ -6,12 +6,11 @@ vSphere UI itself. There is no reason that the MD5 hash of the rpm original
 files should be changed after installation, excluding configuration files."
   impact 0.5  
   tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000358-WSR-000163"
-  tag gid: nil
+  tag gtitle: "SRG-APP-000131-WSR-000051"
   tag rid: "VCUI-67-000008"
   tag stig_id: "VCUI-67-000008"
-  tag cci: "CCI-001851"
-  tag nist: ["AU-4 (1)", "Rev_4"]
+  tag cci: "CCI-001749"
+  tag nist: ["CM-5 (3)", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # rpm -V vsphere-ui|grep \"^..5......\"|grep -E \"\\.war|\\.jar|\\.sh|\\.py\"

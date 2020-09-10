@@ -8,12 +8,11 @@ particular cookie should only be accessed by the originating server. Any
 attempt to access the cookie from client script is strictly forbidden."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000266-WSR-000159"
-  tag gid: nil
+  tag gtitle: "SRG-APP-000001-WSR-000002"
   tag rid: "VCUI-67-000004"
   tag stig_id: "VCUI-67-000004"
-  tag cci: "CCI-001312"
-  tag nist: ["SI-11 a", "Rev_4"]
+  tag cci: "CCI-000054"
+  tag nist: ["AC-10", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/context.xml | xmllint

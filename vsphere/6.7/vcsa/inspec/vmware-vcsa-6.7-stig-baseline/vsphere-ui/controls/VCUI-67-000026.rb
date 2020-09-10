@@ -11,12 +11,11 @@ not been modified is sufficient to determine if the logging configuration has
 been modified from the default."
   impact 0.5
   tag severity: "CAT II"
-  tag gtitle: nil
-  tag gid: nil
+  tag gtitle: "SRG-APP-000357-WSR-000150"
   tag rid: "VCUI-67-000026"
   tag stig_id: "VCUI-67-000026"
-  tag cci: nil
-  tag nist: nil
+  tag cci: "CCI-001849"
+  tag nist: ["AU-4", "Rev_4"]
   desc 'check', "At the command prompt, execute the following command:
 
 # rpm -V vsphere-ui|grep serviceability.xml|grep \"^..5......\"
