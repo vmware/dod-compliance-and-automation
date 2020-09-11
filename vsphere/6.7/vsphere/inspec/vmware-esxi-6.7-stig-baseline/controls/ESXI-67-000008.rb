@@ -76,10 +76,10 @@ Get-VMHost | Get-AdvancedSetting -Name Config.Etc.issue | Set-AdvancedSetting
   
   describe.one do
     describe powercli_command(command) do
-      its('stdout.strip') { should cmp "You are accessing a U.S. Government" }
+      its('stdout.strip') { should match "You are accessing a U.S. Government" }
     end
     describe powercli_command(command) do
-    its('stdout.strip') { should cmp "I've read & consent to terms in IS user agreem't" }
+    its('stdout.strip') { should match "I've read & consent to terms in IS user agreem't" }
     end
   end
 
