@@ -805,11 +805,24 @@
 
 - name: VCST-67-000024 - The Security Token Service must be configured to show error pages with minimal information.
   xml:
-    path: '{{ var_web_stats_xml_path }}'
-    xpath: '/x:web-app/x:error-page[x:exception-type="java.lang.Throwable"]/x:location'
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+    attribute: 'showReport'
+    value: 'false'
+  tags:
+  - VCST-67-000024
+  - sts
+  notify:
+  - restart sts
+  when:
+  - run_web_error_page | bool
+
+- name: VCST-67-000024 - The Security Token Service must be configured to show error pages with minimal information.
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+    attribute: 'showServerInfo'
     value: '{{ var_web_xml_error_page }}'
-    namespaces:
-      x: http://java.sun.com/xml/ns/javaee
   tags:
   - VCST-67-000024
   - sts
