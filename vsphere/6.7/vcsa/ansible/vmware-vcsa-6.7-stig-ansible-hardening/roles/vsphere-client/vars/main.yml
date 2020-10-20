@@ -29,6 +29,7 @@ var_web_xml_servlet_jsp_url_pattern2: '*.jspx'
 var_web_xml_welcome_file_list1: 'index.html'
 var_web_xml_welcome_file_list2: 'index.htm'
 var_web_xml_welcome_file_list3: 'index.jsp'
+var_web_xml_cookie_secure: 'true'
 
 # json variables
 var_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-client.json'
