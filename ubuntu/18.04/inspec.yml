@@ -1,0 +1,297 @@
+name: Canonical Ubuntu 18.04 LTS Security Technical Implementation Guide
+title: Canonical Ubuntu 18.04 LTS Security Technical Implementation Guide
+maintainer: The Authors
+copyright: The Authors
+copyright_email: you@example.com
+license: Apache-2.0
+summary: "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
+version: 0.2.0
+
+supports:
+  - platform-name: ubuntu
+    release: 18.04
+
+inputs:
+  - name: platform_name
+    description: Name of the OS/Platform
+    type: String
+    value: 'ubuntu'
+
+  - name: platform_release
+    description: Release number of the OS/Platform
+    type: Numeric
+    value: 18.04
+
+  - name: supported_until
+    description: Support end date for OS/Platform security updates
+    type: String
+    value: '2021-04-30'
+
+  - name: log_file_path
+    description: Audit log file path (SHOULD BE REPLACED/REMOVED WHEN auditd.conf_path FUNCTIONALITY BECOMES AVAILABLE IN INSPEC)
+    type: String
+    value: '/var/log/audit/audit.log'
+
+  - name: log_file_dir
+    description: Audit log file directory (SHOULD BE REPLACED/REMOVED WHEN auditd.conf_path FUNCTIONALITY BECOMES AVAILABLE IN INSPEC)
+    type: String
+    value: '/var/log/audit/'
+
+  - name: org_name
+    description: Organization Name
+    type: String
+    value: 'DoD'
+
+#V-219301
+  - name: maxlogins
+    description: Maximum number of concurrent sessions
+    type: Numeric
+    value: 10
+
+#V-219172
+  - name: min_num_uppercase_char
+    description: Minimum number of upper case characters needed in a password (Denoted in negative numbers)
+    type: Numeric
+    value: -1
+
+#V-219173
+  - name: min_num_lowercase_char
+    description: Minimum number of lower case characters needed in a password (Denoted in negative numbers)
+    type: Numeric
+    value: -1
+
+#V-219174
+  - name: min_num_numeric_char
+    description: Minimum number of numeric characters needed in a password (Denoted in negative numbers)
+    type: Numeric
+    value: -1
+
+#V-219210
+  - name: min_num_special_char
+    description: Minimum number of special characters needed in a password (Denoted in negative numbers)
+    type: Numeric
+    value: -1
+
+#V-219175
+  - name: min_num_characters_to_change
+    description: Minimum number of characters that need to be changed for password rotation
+    type: Numeric
+    value: 8
+
+#V-219180
+  - name: min_num_password_generations
+    description: Minimum number of passwords to remember
+    type: Numeric
+    value: 5
+
+#V-219326
+  - name: max_account_inactive_days
+    description: Maximum number of days an account can remain inactive
+    type: Numeric
+    value: 35
+
+#V-219329
+  - name: temporary_accounts
+    description: Temporary user accounts
+    type: Array
+    value: []
+
+  - name: known_system_accounts
+    description: System accounts that support approved system activities
+    type: Array
+    value: [
+      'root',
+      'bin',
+      'daemon',
+      'adm',
+      'lp',
+      'sync',
+      'shutdown',
+      'halt',
+      'mail',
+      'operator',
+      'nobody',
+      'systemd-bus-proxy',
+      'systemd-network',
+      'dbus',
+      'polkitd',
+      'tss',
+      'postfix',
+      'chrony',
+      'sshd',
+      'sssd',
+      'rpc',
+      'ntp',
+      'vboxadd',
+      'nfsnobody',
+      'vagrant',
+      'rpcuser',
+      'sys',
+      'man',
+      'news',
+      'uucp',
+      'proxy',
+      'www-data',
+      'backup',
+      'list',
+      'irc',
+      'gnats',
+      'systemd-timesync',
+      'systemd-resolve',
+      'syslog',
+      '_apt',
+      'lxd',
+      'messagebus',
+      'uuidd',
+      'dnsmasq',
+      'statd',
+      'landscape',
+      'pollinate',
+      'ubuntu',
+      'clamav',
+      '_chrony'
+    ]
+
+  - name: disallowed_accounts
+    description: Accounts that are not allowed on the system
+    type: Array
+    value: [
+      'games',
+      'gopher',
+      'ftp',
+    ]
+
+  - name: user_accounts
+    description: Accounts of known managed users
+    type: Array
+    value: []
+
+  - name: exempt_home_users
+    description: These are `home dir` exempt interactive accounts
+    type: Array
+    value: []
+
+  - name: non_interactive_shells
+    description: These shells do not allow a user to login
+    type: Array
+    value: [
+      '/sbin/nologin',
+      '/sbin/halt',
+      '/sbin/shutdown',
+      '/bin/false',
+      '/bin/sync',
+      '/bin/true'
+    ]
+
+  - name: disable_slow_controls
+    description: This attribute disables controls that consistently take a long time to complete
+    type: Boolean
+    value: false
+
+  - name: known_system_mount_points
+    description: Known System Mount Points
+    type: Array
+    value: [
+      '/',
+      '/boot',
+      'none'
+    ]
+
+#V-219335
+  - name: is_kdump_required
+    description: Is kdump service required? (check with SA and documented with ISSO)
+    type: Boolean
+    value: false
+
+#V-219195
+  - name: audit_tools
+    description: Audit tools
+    type: Array
+    value: [
+      '/sbin/auditctl',
+      '/sbin/aureport',
+      '/sbin/ausearch',
+      '/sbin/autrace',
+      '/sbin/auditd',
+      '/sbin/audispd',
+      '/sbin/augenrules'
+    ]
+
+#V-219331
+  - name: is_system_networked
+    description: Set to true if the system is networked for NTP check
+    type: Boolean
+    value: true
+
+  - name: banner_text
+    description: Standard Mandatory DoD Notice and Consent Banner
+    type: String
+    value: 'You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+
+    By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+
+    -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.
+
+    -At any time, the USG may inspect and seize data stored on this IS.
+
+    -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.
+
+    -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
+
+    -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.'
+
+#V-219346
+  - name: is_wireless_available
+    description: Set to true if the system has a wireless network radio available (default:false)
+    type: Boolean
+    value: false
+
+#V-219237
+  - name: standard_audit_log_size
+    description: Set audit log size in bytes (default:1073741824 per control specification)
+    type: Numeric
+    value: 8894028
+
+#V-219305
+  - name: client_alive_interval
+    description: Client Alive Interval
+    type: Numeric
+    value: 900
+
+  - name: client_alive_count_max
+    description: Client Alive Interval
+    type: Numeric
+    value: 1
+
+#V-219346
+  - name: allowed_network_interfaces
+    description: Array of allowed network interfaces (wired & wireless)
+    type: Array
+    value: [
+      'lo',
+      'eth0'
+    ]
+
+#V-219152
+  - name: action_mail_acct
+    description: Email to be notified when allocated audit record storage volume reaches 
+    type: string
+    value: root
+
+#V-219169
+  - name: sudo_accounts
+    description: Array of users who need access to security functions are part of the sudo group.
+    type: Array
+    value: []
+  
+  #V-219321
+  - name: dod_ca_path
+    description: Path to DoD CA cert.
+    type: String
+    value: '/etc/ssl/certs/CA.pem'
+
+  #V-219301
+  - name: limits_conf_path
+    description: Path to limits.conf
+    type: String
+    value: '/etc/security/limits.conf'
