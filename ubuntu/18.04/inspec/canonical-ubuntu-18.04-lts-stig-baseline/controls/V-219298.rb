@@ -1,80 +1,58 @@
+# encoding: UTF-8
+
 control 'V-219298' do
   title "The Ubuntu operating system must generate audit records when
-    successful/unsuccessful attempts to use modprobe command."
-  desc  "Without the capability to generate audit records, it would be
-    difficult to establish, correlate, and investigate the events relating to an
-    incident or identify those responsible for one.
+successful/unsuccessful attempts to use modprobe command."
+  desc  "Without generating audit records that are specific to the security and
+mission needs of the organization, it would be difficult to establish,
+correlate, and investigate the events relating to an incident or identify those
+responsible for one.
 
     Audit records can be generated from various components within the
-    information system (e.g., module or policy filter).
-
-    The list of audited events is the set of events for which audits are to be
-    generated. This set of events is typically a subset of the list of all events
-    for which the system is capable of generating audit records.
-
-    DoD has defined the list of events for which the Ubuntu operating system
-    will provide an audit record generation capability as the following:
-
-    1) Successful and unsuccessful attempts to access, modify, or delete
-    privileges, security objects, security levels, or categories of information
-    (e.g., classification levels);
-
-    2) Access actions, such as successful and unsuccessful logon attempts,
-    privileged activities or other system-level access, starting and ending time
-    for user access to the system, concurrent logons from different workstations,
-    successful and unsuccessful accesses to objects, all program initiations, and
-    all direct access to the information system;
-
-    3) All account creations, modifications, disabling, and terminations; and
-
-    4) All kernel module load, unload, and restart actions.
+information system (e.g., module or policy filter).
   "
-  impact 0.5
-  tag "gtitle": "SRG-OS-000477-GPOS-00222"
-  tag "satisfies": nil
-  tag "gid": 'V-219298'
-  tag "rid": "SV-219298r381493_rule"
-  tag "stig_id": "UBTU-18-010389"
-  tag "fix_id": "F-21022r305223_fix"
-  tag "cci": [ "CCI-000172" ]
-  tag "nist": nil
-
-  tag "false_negatives": nil
-  tag "false_positives": nil
-  tag "documentable": false
-  tag "mitigations": nil
-  tag "severity_override_guidance": false
-  tag "potential_impacts": nil
-  tag "third_party_tools": nil
-  tag "mitigation_controls": nil
-  tag "responsibility": nil
-  tag "ia_controls": nil
-  desc 'check', "Verify if the Ubuntu operating system is configured to audit the
-    execution of the module management program \"modprobe\", by running the following command:
+  desc  'rationale', ''
+  desc  'check', "
+    Verify if the Ubuntu operating system is configured to audit the execution
+of the module management program \"modprobe\", by running the following command:
 
     sudo auditctl -l | grep \"/sbin/modprobe\"
 
     -w /sbin/modprobe -p x -k modules
 
-    If the command does not return a line, or the line is commented out, this is a finding.
+    If the command does not return a line, or the line is commented out, this
+is a finding.
 
-    Note: The '-k' allows for specifying an arbitrary identifier and the string after
-    it does not need to match the example output above.
+    Note: The '-k' allows for specifying an arbitrary identifier and the string
+after it does not need to match the example output above.
   "
-  desc 'fix', "Configure the Ubuntu operating system to audit the execution
-    of the module management program \"modprobe\".
+  desc  'fix', "
+    Configure the Ubuntu operating system to audit the execution of the module
+management program \"modprobe\".
 
-    Add or update the following rule in the \"/etc/audit/rules.d/stig.rules\" file.
+    Add or update the following rule in the \"/etc/audit/rules.d/stig.rules\"
+file.
 
     -w /sbin/modprobe -p x -k modules
 
     Note:
-    The \"root\" account must be used to view/edit any files in the /etc/audit/rules.d/ directory.
+    The \"root\" account must be used to view/edit any files in the
+/etc/audit/rules.d/ directory.
 
     In order to reload the rules file, issue the following command:
 
     # sudo augenrules --load
   "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000477-GPOS-00222'
+  tag gid: 'V-219298'
+  tag rid: 'SV-219298r508662_rule'
+  tag stig_id: 'UBTU-18-010389'
+  tag fix_id: 'F-21022r305223_fix'
+  tag cci: ['SV-109923', 'V-100819', 'CCI-000172']
+  tag nist: ['AU-12 c']
+
   @audit_file = '/sbin/modprobe'
 
   audit_lines_exist = !auditd.lines.index { |line| line.include?(@audit_file) }.nil?
@@ -98,3 +76,4 @@ control 'V-219298' do
     end
   end
 end
+

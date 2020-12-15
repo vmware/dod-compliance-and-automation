@@ -3,3 +3,4 @@ sudo_accounts: [ "ubuntu" ]
 dod_ca_path: "/usr/local/share/ca-certificates/DoD_PKE_CA_chain.pem"
 maxlogins: 9
 standard_audit_log_size: 2187740
+allowed_network_interfaces: ['lo','eth0','ens5']
