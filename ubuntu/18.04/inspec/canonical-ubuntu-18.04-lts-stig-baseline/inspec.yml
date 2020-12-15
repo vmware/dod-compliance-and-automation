@@ -295,3 +295,9 @@ inputs:
     description: Path to limits.conf
     type: String
     value: '/etc/security/limits.conf'
+
+  #V-219336
+  - name: aide_conf_path
+    description: Path to aide.conf
+    type: String
+    value: '/etc/security/aide.conf'
