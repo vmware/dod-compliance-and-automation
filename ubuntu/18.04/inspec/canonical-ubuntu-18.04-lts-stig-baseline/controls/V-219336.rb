@@ -67,6 +67,8 @@ control 'V-219336' do
     /sbin/audispd p+i+n+u+g+s+b+acl+xattrs+sha512
     /sbin/augenrules p+i+n+u+g+s+b+acl+xattrs+sha512
   "
+  aide_conf = aide_conf input('aide_conf_path')
+
   aide_conf_exists = aide_conf.exist?
 
   if aide_conf_exists
