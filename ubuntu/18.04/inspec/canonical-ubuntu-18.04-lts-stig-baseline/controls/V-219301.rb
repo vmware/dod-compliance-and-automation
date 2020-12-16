@@ -1,36 +1,23 @@
+# encoding: UTF-8
+
 control 'V-219301' do
   title "The Ubuntu operating system must limit the number of concurrent
-    sessions to ten for all accounts and/or account types."
+sessions to ten for all accounts and/or account types."
   desc  "Ubuntu operating system management includes the ability to control the
-    number of users and user sessions that utilize an Ubuntu operating system.
-    Limiting the number of allowed users and sessions per user is helpful in
-    reducing the risks related to DoS attacks.
+number of users and user sessions that utilize an operating system. Limiting
+the number of allowed users and sessions per user is helpful in reducing the
+risks related to DoS attacks.
 
     This requirement addresses concurrent sessions for information system
-    accounts and does not address concurrent sessions by single users via multiple
-    system accounts. The maximum number of concurrent sessions should be defined
-    based upon mission needs and the operational environment for each system.
+accounts and does not address concurrent sessions by single users via multiple
+system accounts. The maximum number of concurrent sessions should be defined
+based on mission needs and the operational environment for each system.
   "
-  impact 0.3
-  tag "gtitle": "SRG-OS-000027-GPOS-00008"
-  tag "gid": 'V-219301'
-  tag "rid": "SV-219301r378532_rule"
-  tag "stig_id": "UBTU-18-010400"
-  tag "fix_id": "F-21025r305232_fix"
-  tag "cci": [ "CCI-000054" ]
-  tag "nist": nil
-  tag "false_negatives": nil
-  tag "false_positives": nil
-  tag "documentable": false
-  tag "mitigations": nil
-  tag "severity_override_guidance": false
-  tag "potential_impacts": nil
-  tag "third_party_tools": nil
-  tag "mitigation_controls": nil
-  tag "responsibility": nil
-  tag "ia_controls": nil
-  desc 'check', "Verify that the Ubuntu operating system limits the number of
-    concurrent sessions to ten for all accounts and/or account types by running the following command:
+  desc  'rationale', ''
+  desc  'check', "
+    Verify that the Ubuntu operating system limits the number of concurrent
+sessions to ten for all accounts and/or account types by running the following
+command:
 
     # grep maxlogins /etc/security/limits.conf | grep -v '^* hard maxlogins'
 
@@ -39,18 +26,28 @@ control 'V-219301' do
     * hard maxlogins 10
 
     If the \"maxlogins\" item is missing or the value is not set to 10 or less,
-    it is commented out, this is a finding.
+it is commented out, this is a finding.
   "
-  desc 'fix', "Configure the Ubuntu operating system to limit the number of concurrent sessions
-    to ten for all accounts and/or account types.
+  desc  'fix', "
+    Configure the Ubuntu operating system to limit the number of concurrent
+sessions to ten for all accounts and/or account types.
 
     Add the following line to the top of the /etc/security/limits.conf:
 
     * hard maxlogins 10
   "
-  limits_conf = limits_conf input('limits_conf_path')
+  impact 0.3
+  tag severity: 'low'
+  tag gtitle: 'SRG-OS-000027-GPOS-00008'
+  tag gid: 'V-219301'
+  tag rid: 'SV-219301r508662_rule'
+  tag stig_id: 'UBTU-18-010400'
+  tag fix_id: 'F-21025r305232_fix'
+  tag cci: ['V-100825', 'SV-109929', 'CCI-000054']
+  tag nist: ['AC-10']
 
   describe limits_conf do
     its('*') { should include ['hard', 'maxlogins', input('maxlogins').to_s] }
   end
 end
+

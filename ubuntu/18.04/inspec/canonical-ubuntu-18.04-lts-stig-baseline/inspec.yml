@@ -25,22 +25,22 @@ inputs:
   - name: supported_until
     description: Support end date for OS/Platform security updates
     type: String
-    value: '2021-04-30'
+    value: '2023-04-30'
 
   - name: log_file_path
-    description: Audit log file path (SHOULD BE REPLACED/REMOVED WHEN auditd.conf_path FUNCTIONALITY BECOMES AVAILABLE IN INSPEC)
+    description: Audit log file path
     type: String
     value: '/var/log/audit/audit.log'
 
   - name: log_file_dir
-    description: Audit log file directory (SHOULD BE REPLACED/REMOVED WHEN auditd.conf_path FUNCTIONALITY BECOMES AVAILABLE IN INSPEC)
+    description: Audit log file directory
     type: String
     value: '/var/log/audit/'
 
   - name: org_name
     description: Organization Name
     type: String
-    value: 'DoD'
+    value: 'VMware'
 
 #V-219301
   - name: maxlogins
@@ -300,4 +300,18 @@ inputs:
   - name: aide_conf_path
     description: Path to aide.conf
     type: String
-    value: '/etc/security/aide.conf'
+    value: '/etc/aide/aide.conf'
+
+  #V-219162 
+  - name: audit_sp_remote_server
+    description: Address of the remote server receiving the audit log
+    type: String
+    value: '192.0.0.1'
+
+  #V-219336
+  - name: sssd_conf_path
+    description: Path to sssd.conf
+    type: String
+    value: '/etc/sssd/sssd.conf'
+
+    
