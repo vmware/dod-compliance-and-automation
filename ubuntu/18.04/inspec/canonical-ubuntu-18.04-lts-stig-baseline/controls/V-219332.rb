@@ -58,6 +58,7 @@ doing the following,
   tag cci: ['V-100887', 'SV-109991', 'CCI-002046']
   tag nist: ['AU-8 (1) (b)']
 
+  chrony_file_path = '/etc/chrony/chrony.conf'
   chrony_file = file('/etc/chrony/chrony.conf')
 
   if chrony_file.exist?
@@ -66,8 +67,8 @@ doing the following,
       its('content') { should match %r{^makestep 1 -1} }
     end
   else
-    describe (config_file + ' exists') do
-      subject { chrony_file.exist }
+    describe (chrony_file_path + ' exists') do
+      subject { chrony_file.exist? }
       it { should be true }
     end
   end
