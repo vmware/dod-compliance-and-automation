@@ -36,3 +36,7 @@ inputs:
     value: "15160138"
     type: string
     description: "ESXi Patch Build Number to check for latest updates.  Refer to https://kb.vmware.com/s/article/2143832 for build numbers"
+  - name: exceptionUsers
+    value: ""
+    type: string
+    description: "Users allowed to bypass lockdown mode."
