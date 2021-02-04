@@ -41,7 +41,7 @@ unnecessary users from the exceptions list."
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')} | Get-View; (Get-View $vmhost.ConfigManager.HostAccessManager).QueryLockdownExceptions()"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "" }
+    its('stdout.strip') { should cmp "#{input('exceptionUsers')}" }
   end
 
 end
