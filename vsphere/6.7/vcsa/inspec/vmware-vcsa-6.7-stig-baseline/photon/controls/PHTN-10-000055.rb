@@ -31,8 +31,9 @@ At the command line, execute the following command:
 
 # service sshd reload"
 
-  describe command('sshd -T|&grep -i ListenAddress') do
-    its ('stdout.strip') { should match /listenaddress #{input('photonIp')}/ }
+  photonIp = command("ip -br addr show eth0 |&awk '{print $3}' |&cut -d'/' -f1").stdout.strip
+  describe command("sshd -T|&grep -i ListenAddress|&awk '{print $2}' |&cut -d':' -f1") do
+    its ('stdout.strip') { should match /#{photonIp}/ }
   end
 
 end
