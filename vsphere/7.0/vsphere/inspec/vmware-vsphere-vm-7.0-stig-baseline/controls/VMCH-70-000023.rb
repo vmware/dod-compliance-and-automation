@@ -1,0 +1,68 @@
+# encoding: UTF-8
+
+control 'VMCH-70-000023' do
+  title '3D features on the virtual machine must be disabled when not required.'
+  desc  "It is recommended that 3D acceleration be disabled on virtual machines
+that do not require 3D functionality, (e.g. most server workloads or desktops
+not using 3D applications)."
+  desc  'rationale', ''
+  desc  'check', "
+    From the vSphere Client select the Virtual Machine, right click and go to
+Edit Settings >> VM Options Tab >> Advanced >> Configuration Parameters >> Edit
+Configuration. Find the \"mks.enable3d\" value and verify it is set to
+\"false\".
+
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host or vCenter
+server, run the following command:
+
+    Get-VM \"VM Name\" | Get-AdvancedSetting -Name mks.enable3d
+
+    If the virtual machine advanced setting \"mks.enable3d\" does not exist or
+is not set to \"false\", this is a finding.
+
+    If a virtual machine requires 3D features, this is not a finding.
+  "
+  desc  'fix', "
+    From the vSphere Client select the Virtual Machine, right click and go to
+Edit Settings >> VM Options Tab >> Advanced >> Configuration Parameters >> Edit
+Configuration. Find the \"mks.enable3d\" value and set it to \"false\".
+
+    Note: The VM must be powered off to modify the advanced settings through
+the vSphere Client. It is recommended to configure these settings with PowerCLI
+as this can be done while the VM is powered on. In this case the modified
+settings will not take effect until a cold boot of the VM.
+
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host or vCenter
+server, run the following command:
+
+    If the setting does not exist, run:
+
+    Get-VM \"VM Name\" | New-AdvancedSetting -Name mks.enable3d -Value false
+
+    If the setting exists, run:
+
+    Get-VM \"VM Name\" | Get-AdvancedSetting -Name mks.enable3d |
+Set-AdvancedSetting -Value false
+  "
+  impact 0.3
+  tag severity: 'low'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag gid: nil
+  tag rid: nil
+  tag stig_id: 'VMCH-70-000023'
+  tag fix_id: nil
+  tag cci: 'CCI-000366'
+  tag nist: ['CM-6 b']
+
+  command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name mks.enable3d).value"
+  describe powercli_command(command) do
+    its ('stdout.strip') { should cmp "false" }
+    its ('exit_status') { should cmp 0 }
+  end
+
+end
+

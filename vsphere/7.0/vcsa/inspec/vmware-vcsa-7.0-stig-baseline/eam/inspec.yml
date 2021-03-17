@@ -1,0 +1,90 @@
+name: vCenter Virtual Appliance 7.0 ESXi Agent Manager Profile
+title: vCenter Virtual Appliance 7.0 ESXi Agent Manager Profile
+maintainer: The Authors
+copyright: The Authors
+copyright_email:
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 0.1.0
+
+inputs:
+- name: serverXmlPath
+  description: Tomcat server.xml path
+  type: string
+  value: "/usr/lib/vmware-eam/web/conf/server.xml"
+- name: webXmlPath
+  description: Tomcat web.xml path
+  type: string
+  value: "/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml"
+- name: svcJsonPath
+  description: Tomcat service config file
+  type: string
+  value: "/etc/vmware/vmware-vmon/svcCfgfiles/eam.json"
+- name: logPath
+  description: Service Log Directory
+  type: string
+  value: "/var/log/vmware/eam/web/"
+- name: appPath
+  description: Application Directory
+  type: string
+  value: "/usr/lib/vmware-eam/web/webapps"
+- name: rootPath
+  description: Root Application Directory
+  type: string
+  value: "/usr/lib/vmware-eam/web/"
+- name: catalinaPropertiesPath
+  description: Tomcat catalina.properties path
+  type: string
+  value: "/etc/vmware-eam/catalina.properties"
+- name: syslogConfPath
+  description: EAM syslog conf
+  type: string
+  value: "/etc/vmware-syslog/stig-services-eam.conf"
+- name: connectionTimeout
+  description: "VCEM-70-000001"
+  type: string
+  value: "60000"
+- name: maxThreads
+  description: "VCEM-70-000002"
+  type: string
+  value: "300"
+- name: cookieHttpOnly
+  description: "VCEM-70-000004"
+  type: string
+  value: "true"
+- name: accessValvePattern
+  description: "VCEM-70-000005"
+  type: string
+  value: "%h %{X-Forwarded-For}i %l %u %t [%I] &quot;%r&quot; %s %b [Processing time %D msec] &quot;%{User-Agent}i&quot;"
+- name: streamRedirectFile
+  description: "VCEM-70-000006"
+  type: string
+  value: "%VMWARE_LOG_DIR%/vmware/eam/jvm.log"
+- name: packageAccess
+  description: "VCEM-70-000011"
+  type: string
+  value: "package.access=\\\nsun.,\\\norg.apache.catalina.,\\\norg.apache.coyote.,\\\norg.apache.tomcat.,\\\norg.apache.jasper."
+- name: memLeakListener
+  description: "VCEM-70-000015"
+  type: string
+  value: "org.apache.catalina.core.JreMemoryLeakPreventionListener"
+- name: acceptCount
+  description: "VCEM-70-000019"
+  type: string
+  value: "300"
+- name: uriEncoding
+  description: "VCEM-70-000020"
+  type: string
+  value: "UTF-8"
+- name: server
+  description: "VCEM-70-000026"
+  type: string
+  value: "Anonymous"
+- name: httpPort
+  description: "VCEM-70-000031"
+  type: string
+  value: "15005"
+- name: shutdownPort
+  description: "VCEM-70-000032"
+  type: string
+  value: "-1"
