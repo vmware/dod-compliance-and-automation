@@ -1,0 +1,14 @@
+name: vSphere 7.0 vCenter STIG Profile
+title: vSphere 7.0 vCenter STIG Profile
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.0
+
+inputs:
+  - name: ipfixCollectorAddress
+    value: "10.1.1.1"
+    type: string
+    description: "If IpFix is used enter the collector address"

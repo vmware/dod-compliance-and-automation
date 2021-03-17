@@ -1,0 +1,52 @@
+name: vmware-photon-3.0-stig-inspec-baseline
+title: InSpec Profile VMware Photon OS 3.0 Appliance based deployments
+maintainer: Ryan Lakey
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 3.0
+
+inputs:
+- name: verbose
+  type: boolean
+  description: Enables/disables extra output for troubleshooting
+  value: True
+- name: authprivlog
+  type: string
+  value: "/var/log/audit/auth.log"  #Enter expected log path for authpriv log in rsyslog conf
+- name: photonIp
+  type: string
+  value: "x.x.x.x"  #Enter IP for PhotonOS
+- name: ntpServer1
+  type: string
+  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+- name: ntpServer2
+  type: string
+  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+- name: syslogServer
+  type: string
+  value: "x.x.x.x:514"  #Enter IP or FQDN of Syslog Server and Port
+- name: disabled_modules
+  description: List of Kernel modules that must be disabled
+  type: array
+  value:
+    - sctp
+    - dccp
+    - dccp_ipv4
+    - dccp_ipv6
+    - ipx
+    - appletalk
+    - decnet
+    - rds
+    - tipc
+    - bluetooth
+    - usb_storage
+    - ieee1394
+    - cramfs
+    - freevxfs
+    - jffs2
+    - hfs
+    - hfsplus
+    - squashfs
+    - udf
