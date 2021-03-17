@@ -7,4 +7,3 @@ The vCenter Server Appliance (VCSA) is vCenter as you know it but delivered with
 <img src="https://github.com/vmware/dod-compliance-and-automation/blob/vsphere7/vsphere/7.0/vcsa/Diagram.png" width="484" height="457">
 
 
-In the next major version of vSphere, there will be no Windows version of vCenter so no distinction between "vCenter" and "VCSA" will be necessary.
