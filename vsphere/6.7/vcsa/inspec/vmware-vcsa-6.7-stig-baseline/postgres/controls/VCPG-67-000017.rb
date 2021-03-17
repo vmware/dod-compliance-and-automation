@@ -43,17 +43,8 @@ ON <name> FROM <user>;\"
 Replace <name> and <user> with the Access Privilege name and account,
 respectively, discovered during the check."
 
-  # describe postgres_session('postgres','','localhost').query("\\dp .*.;") do
-  #   its('output.lines') { should match /(postgres)=/ }
-  # end
-
-  # describe postgres_session('postgres','','localhost').query("\\dp .*.;") do
-  #   it do
-  #     lines = subject.output.split(/\n/)
-  #     users_not_postgres = lines.all? {|line| line !~ /(postgres)=/ }
-  #     expect(users_not_postgres).to be false
-  #   end
-  # end
-
+  describe command("psql -U postgres -c '\\dp .*.;' | awk -F'|' '{print $4}' | grep -v 'Access' | sed -r '/^\s*$/d' | cut -d'+' -f1 | grep -v -E 'postgres=|=r|w/postgres'") do
+    its ('stdout.strip') { should cmp '' }
+  end
 end
 
