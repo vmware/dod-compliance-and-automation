@@ -1,5 +1,4 @@
 control "VCLD-67-000002" do
-control 'V-239716' do
   title "VAMI must be configured with FIPS 140-2 compliant ciphers for HTTPS
 connections."
   desc  "Encryption of data in flight is an essential element of protecting

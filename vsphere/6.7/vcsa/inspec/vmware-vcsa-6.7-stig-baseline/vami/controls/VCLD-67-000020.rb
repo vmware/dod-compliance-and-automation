@@ -41,7 +41,7 @@ could potentially deliver sensitive files.
   runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout
 
   describe parse_config(runtime).params['url.access-deny'] do
-    it { should cmp '( "~", ".inc" )' }
+    it { should cmp '("~", ".inc")' }
   end
 
 end
