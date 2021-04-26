@@ -1,5 +1,5 @@
 control "VCST-67-000026" do
-  title "The Security Token Service must have the debug option disabled."
+  title 'The Security Token Service must have the debug option disabled.'
   desc  "Information needed by an attacker to begin looking for possible
 vulnerabilities in a web server includes any information about the web server
 and plug-ins or modules being used. When debugging or trace information is
@@ -11,53 +11,63 @@ and general messages during normal operation of the web server, an attacker
 does not need to cause an error condition to gain this information.
 
     The Security Token Service can be configured to set the debugging level. By
-setting the debugging level to zero (0), no debugging information will be
-provided to a malicious user."
-  impact 0.5
-  tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000266-WSR-000160"
-  tag gid: nil
-  tag rid: "VCST-67-000026"
-  tag stig_id: "VCST-67-000026"
-  tag cci: "CCI-001312"
-  tag nist: ["SI-11 a", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+setting the debugging level to zero, no debugging information will be provided
+to a malicious user.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
 
-# xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
+    # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
 s/xmlns=\".*\"//g' | xmllint --xpath
 '//param-name[text()=\"debug\"]/parent::init-param' -
 
-Expected result:
+    Expected result:
 
-<init-param>
-<param-name>debug</param-name>
-<param-value>0</param-value>
-</init-param>
+    <init-param>
+    <param-name>debug</param-name>
+    <param-value>0</param-value>
+    </init-param>
 
-If the output of the command does not match the expected result, this is a finding. If no lines is returned this is NOT a finding."
-  desc 'fix', "Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml
+    If the output of the command does not match the expected result, this is a
+finding.
 
-Navigate to all <debug> nodes that are not set to \"0\".
+    If no lines are returned, this is NOT a finding.
+  "
+  desc  'fix', "
+    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
 
-Set the <param-value> to \"0\" in all <param-name>debug</param-name> nodes.
+    Navigate to all <debug> nodes that are not set to \"0\".
 
-Note: The debug setting should look like the below:
+    Set the <param-value> to \"0\" in all <param-name>debug</param-name> nodes.
 
-               <init-param>
-                  <param-name>debug</param-name>
-                  <param-value>0</param-value>
-               </init-param>"
+    Note: The debug setting should look like the following:
+
+                   <init-param>
+                      <param-name>debug</param-name>
+                      <param-value>0</param-value>
+                   </init-param>
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000266-WSR-000160'
+  tag gid: 'V-239677'
+  tag rid: 'SV-239677r679103_rule'
+  tag stig_id: 'VCST-67-000026'
+  tag fix_id: 'F-42869r679102_fix'
+  tag cci: ['CCI-001312']
+  tag nist: ['SI-11 a']
 
   describe.one do
 
-    describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    describe xml("#{input('webXmlPath')}") do
       its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should eq [] }
     end
 
-    describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
+    describe xml("#{input('webXmlPath')}") do
       its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
     end
-  
+
   end
 
 end

@@ -1,5 +1,5 @@
 control "VCST-67-000021" do
-  title "The Security Token Service must use the setCharacterEncodingFilter
+  title "The Security Token Service must use the \"setCharacterEncodingFilter\"
 filter."
   desc  "Invalid user input occurs when a user inserts data or characters into
 a hosted application's data entry field and the hosted application is
@@ -10,80 +10,87 @@ application.
 
     An attacker can also enter Unicode characters into hosted applications in
 an effort to break out of the document home or root home directory or to bypass
-security checks. VMware utilizes the standard Tomcat SetCharacterEncodingFilter
+security checks. VMware uses the standard Tomcat \"SetCharacterEncodingFilter\"
 to provide a layer of defense against character encoding attacks. Filters are
-Java objects that performs filtering tasks on either the request to a resource
-(a servlet or static content), or on the response from a resource, or both."
-  impact 0.5
-  tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000251-WSR-000157"
-  tag gid: nil
-  tag rid: "VCST-67-000021"
-  tag stig_id: "VCST-67-000021"
-  tag cci: "CCI-001310"
-  tag nist: ["SI-10", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+Java objects that perform filtering tasks on the request to a resource (a
+servlet or static content), the response from a resource, or both.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
 
-# xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
+    # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
 s/xmlns=\".*\"//g' | xmllint --xpath
 '/web-app/filter-mapping/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter-mapping'
 -
 
-Expected result:
+    Expected result:
 
-<filter-mapping>
-    <filter-name>setCharacterEncodingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-</filter-mapping>
+    <filter-mapping>
+        <filter-name>setCharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-If the output is does not match the expected result, this is a finding.
+    If the output is does not match the expected result, this is a finding.
 
-At the command prompt, execute the following command:
+    At the command prompt, execute the following command:
 
-# xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
+    # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
 s/xmlns=\".*\"//g' | xmllint --xpath
 '/web-app/filter/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter'
 -
 
-Expected result:
+    Expected result:
 
-<filter>
-    <filter-name>setCharacterEncodingFilter</filter-name>
-
-<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-      <param-name>ignore</param-name>
-      <param-value>false</param-value>
-    </init-param>
-<async-supported>true</async-supported>
-</filter>
-
-If the output is does not match the expected result, this is a finding."
-  desc 'fix', "Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml
-
-Configure the <web-app> node with the child nodes listed below.
-
-<filter-mapping>
-    <filter-name>setCharacterEncodingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-</filter-mapping>
-<filter>
-    <filter-name>setCharacterEncodingFilter</filter-name>
+    <filter>
+        <filter-name>setCharacterEncodingFilter</filter-name>
 
 <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-      <param-name>ignore</param-name>
-      <param-value>false</param-value>
-    </init-param>
-<async-supported>true</async-supported>
-</filter>"
+        <init-param>
+          <param-name>encoding</param-name>
+          <param-value>UTF-8</param-value>
+          <param-name>ignore</param-name>
+          <param-value>false</param-value>
+        </init-param>
+    <async-supported>true</async-supported>
+    </filter>
 
-  describe xml('/usr/lib/vmware-sso/vmware-sts/conf/web.xml') do
-    its('/web-app/filter-mapping[filter-name="setCharacterEncodingFilter"]/url-pattern') { should cmp '*' }
+    If the output is does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
+
+    Configure the <web-app> node with the child nodes listed below:
+
+    <filter-mapping>
+        <filter-name>setCharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>setCharacterEncodingFilter</filter-name>
+
+<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+        <init-param>
+          <param-name>encoding</param-name>
+          <param-value>UTF-8</param-value>
+          <param-name>ignore</param-name>
+          <param-value>false</param-value>
+        </init-param>
+    <async-supported>true</async-supported>
+    </filter>
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000251-WSR-000157'
+  tag gid: 'V-239672'
+  tag rid: 'SV-239672r679088_rule'
+  tag stig_id: 'VCST-67-000021'
+  tag fix_id: 'F-42864r679087_fix'
+  tag cci: ['CCI-001310']
+  tag nist: ['SI-10']
+
+  describe xml("#{input('webXmlPath')}") do
+    its('/web-app/filter-mapping[filter-name="setCharacterEncodingFilter"]/url-pattern') { should cmp '/*' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/filter-class') { should cmp 'org.apache.catalina.filters.SetCharacterEncodingFilter' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="encoding"]/param-value') { should cmp 'UTF-8' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="ignore"]/param-value') { should cmp 'false' }
