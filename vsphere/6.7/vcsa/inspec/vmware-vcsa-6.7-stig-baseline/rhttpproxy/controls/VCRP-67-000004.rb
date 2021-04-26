@@ -1,48 +1,55 @@
 control "VCRP-67-000004" do
-  title "rhttpproxy must use cryptography to protect the integrity of remote
-sessions."
-  desc  "rhttpproxy supports TLS 1.0, 1.1 and 1.2 and can be configured to
-support any combination thereof. Due to intrinsic problems in TLS 1.0 and 1.1
-they must  be disabled and TLS 1.2 must be the only procotol supported for
-client connections. "
-  impact 0.5
-  tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000015-WSR-000014"
-  tag gid: nil
-  tag rid: "VCRP-67-000004"
-  tag stig_id: "VCRP-67-000004"
-  tag cci: "CCI-001453"
-  tag nist: ["AC-17 (2)", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+  title "The rhttpproxy must use cryptography to protect the integrity of
+remote sessions."
+  desc  "The rhttpproxy can be configured to support TLS 1.0, 1.1 and 1.2. Due
+to intrinsic problems in TLS 1.0 and TLS 1.1, they are disabled by default. The
+protocol block in the rhttproxy configuration is commented out by default, and
+this configuration forces TLS 1.2. The block may also be set to \"tls1.2\" in
+certain upgrade scenarios, but the effect is the same."
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
 
-# xmllint --xpath '/config/vmacore/ssl/protocols'
+    # xmllint --xpath '/config/vmacore/ssl/protocols'
 /etc/vmware-rhttpproxy/config.xml
 
-Expected result:
+    Expected result:
 
-<protocols>tls1.2</protocols>
+    <protocols>tls1.2</protocols>
 
-If there is no output, this is NOT a finding.
+    If there is no output, this is NOT a finding.
 
-If the output does not match the expected result, this is a finding."
-  desc 'fix', "Navigate to and open /etc/vmware-rhttpproxy/config.xml
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    Navigate to and open /etc/vmware-rhttpproxy/config.xml.
 
-Locate the <ssl> block inside of the <vmacore> block and configure <protocols>
-as follows:
+    Locate the <config>/<vmacore>/<ssl> block and configure <protocols> as
+follows:
 
-<protocols>tls1.2</protocols>
+    <protocols>tls1.2</protocols>
 
-Restart the service for changes to take effect.
+    Restart the service for changes to take effect.
 
-# vmon-cli --restart rhttpproxy"
+    # vmon-cli --restart rhttpproxy
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000015-WSR-000014'
+  tag gid: 'V-240719'
+  tag rid: 'SV-240719r679670_rule'
+  tag stig_id: 'VCRP-67-000004'
+  tag fix_id: 'F-43911r679669_fix'
+  tag cci: ['CCI-001453']
+  tag nist: ['AC-17 (2)']
 
   describe.one do
-  
-    describe xml('/etc/vmware-rhttpproxy/config.xml') do
-      its(['/config/vmacore/ssl/protocols']) { should cmp ['tls1.2'] }
+
+    describe xml("#{input('configXmlPath')}") do
+      its(['/config/vmacore/ssl/protocols']) { should cmp "#{input('protocols')}" }
     end
 
-    describe xml('/etc/vmware-rhttpproxy/config.xml') do
+    describe xml("#{input('configXmlPath')}") do
       its(['/config/vmacore/ssl/protocols']) { should cmp [] }
     end
 
