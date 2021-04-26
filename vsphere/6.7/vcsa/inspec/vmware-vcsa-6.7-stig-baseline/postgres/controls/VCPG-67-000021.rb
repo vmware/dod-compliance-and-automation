@@ -1,42 +1,57 @@
 control "VCPG-67-000021" do
-  title "The vPostgres database must be configured to log to stderr."
-  desc  "In order for vPostgres logs to be successfully sent to a remote log
-management system, the vPostgres deployment must log events to stderr. Those
-events will be caputred and logged to disk where they will be picked up by
-rsyslog for shipping."
+  title 'VMware Postgres must be configured to log to stderr.'
+  desc  "Without the ability to centrally manage the content captured in the
+audit records, identification, troubleshooting, and correlation of suspicious
+behavior would be difficult and could lead to a delayed or incomplete analysis
+of an ongoing attack.
+
+    The content captured in audit records must be managed from a central
+location (necessitating automation). Centralized management of audit records
+and logs provides for efficiency in maintenance and management of records, as
+well as the backup and archiving of those records.
+
+    For VMware Postgres logs to be successfully sent to a remote log management
+system, log events must be sent to stderr. Those events will be captured and
+logged to disk, where they will be picked up by rsyslog for shipping.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
+
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SHOW
+log_destination;\"|sed -n 3p|sed -e 's/^[ ]*//'
+
+    Expected result:
+
+    stderr
+
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    At the command prompt, execute the following commands:
+
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
+log_destination TO 'stderr';\"
+
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
+pg_reload_conf();\"
+  "
   impact 0.5
-  tag severity: "CAT II"
-  tag component: "postgres"
-  tag gtitle: "SRG-APP-000359-DB-000319"
-  tag gid: nil
-  tag rid: "VCPG-67-000021"
-  tag stig_id: "VCPG-67-000021"
-  tag cci: "CCI-001855"
-  tag nist: ["AU-5 (1)", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000359-DB-000319'
+  tag satisfies: ['SRG-APP-000359-DB-000319', 'SRG-APP-000515-DB-000318']
+  tag gid: 'V-239213'
+  tag rid: 'SV-239213r717065_rule'
+  tag stig_id: 'VCPG-67-000021'
+  tag fix_id: 'F-42405r679011_fix'
+  tag cci: ['CCI-001855']
+  tag nist: ['AU-5 (1)']
 
-# grep \"^log_destination\"  /storage/db/vpostgres/postgresql.conf
-
-If 'log_destination' is not set to at least 'stderr', this is a finding.
-
-If there is no output, vPostgres will default to \"stderr\", this is not a
-finding."
-  desc 'fix', "Navigate to and open /storage/db/vpostgres/postgresql.conf.
-
-Find and replace 'log_destination', if it exists, with the below configuration:
-
-log_destination = 'stderr'"
-
-  describe.one do
-    describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
-      its('log_destination') { should cmp nil }
-    end
-    describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
-      its('log_destination') { should cmp "stderr" }
-    end
-    describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
-      its('log_destination') { should cmp "'stderr'" }
-    end
+  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
+  sqlquery = "SHOW log_destination;"
+  
+  describe sql.query(sqlquery) do
+   its('output') {should cmp "#{input('pg_log_destination')}" }
   end
 
 end

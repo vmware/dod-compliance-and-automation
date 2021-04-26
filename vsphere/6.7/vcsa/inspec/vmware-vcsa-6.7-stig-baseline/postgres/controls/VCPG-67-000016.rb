@@ -1,59 +1,61 @@
 control "VCPG-67-000016" do
-  title "The vPostgres database must complete writing log entries prior to
-returning results."
-  desc  "Failure to a known state can address safety or security in accordance
-with the mission/business needs of the organization.
+  title "VMware Postgres must write log entries to disk prior to returning
+operation success or failure."
+  desc  "Failure to a known secure state helps prevent a loss of
+confidentiality, integrity, or availability in the event of a failure of the
+information system or a component of the system. Preserving  system state
+information helps to facilitate system restart and return to the operational
+mode of the organization with less disruption of mission/business processes.
 
-    Failure to a known secure state helps prevent a loss of confidentiality,
-integrity, or availability in the event of a failure of the information system
-or a component of the system.
+    Aggregating log writes saves on performance but leaves a window for log
+data loss. The logging system inside VMware Postgres is capable of writing logs
+to disk fully and completely before the associated operation is returned to the
+client. This ensures that database activity is always captured, even in the
+event of a system crash during or immediately after a given operation.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
 
-    Preserving information system state information helps to facilitate system
-restart and return to the operational mode of the organization with less
-disruption of mission/business processes.
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
+name,setting FROM pg_settings WHERE name IN
+('fsync','full_page_writes','synchronous_commit');\"|sed -n '3,5p'|sed -e 's/^[
+]*//'
 
-    Since it is usually not possible to test this capability in a production
-environment, systems should either be validated in a testing environment or
-prior to installation. This requirement is usually a function of the design of
-the IDPS component. Compliance can be verified by acceptance/validation
-processes or vendor attestation."
-  impact 0.5
-  tag severity: "CAT II"
-  tag component: "postgres"
-  tag gtitle: "SRG-APP-000226-DB-000147"
-  tag gid: nil
-  tag rid: "VCPG-67-000016"
-  tag stig_id: "VCPG-67-000016"
-  tag cci: "CCI-001665"
-  tag nist: ["SC-24", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+    Expected result:
 
-# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT name,setting
-FROM pg_settings WHERE name IN
-('fsync','full_page_writes','synchronous_commit');\"
+    fsync              | on
+    full_page_writes   | on
+    synchronous_commit | on
 
-If \"fsync\", \"full_page_writes\", and \"synchronous_commit\" are not all
-\"on\", this is a finding.
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    At the command prompt, execute the following commands:
 
-The command should return the below output
-        name        | setting
---------------------+---------
- fsync              | on
- full_page_writes   | on
- synchronous_commit | on
-(3 rows)"
-  desc 'fix', "At the command prompt, execute the following commands:
-
-# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
 <name> TO 'on';\"
 
-/opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
 pg_reload_conf();\"
 
-Note: Substitute <name> with the incorrectly set parameter
-"
+    Note: Substitute <name> with the incorrectly set parameter (fsync,
+full_page_writes, synchronous_commit)
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000226-DB-000147'
+  tag gid: 'V-239208'
+  tag rid: 'SV-239208r717060_rule'
+  tag stig_id: 'VCPG-67-000016'
+  tag fix_id: 'F-42400r678996_fix'
+  tag cci: ['CCI-001665']
+  tag nist: ['SC-24']
 
-  describe postgres_session('postgres','','localhost').query("SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');") do
+  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
+  sqlquery = "SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');"
+  
+  describe sql.query(sqlquery) do
     its('output.strip') { should match /^fsync\|on$/ }
     its('output.strip') { should match /^full_page_writes\|on$/ }
     its('output.strip') { should match /^synchronous_commit\|on$/ }
