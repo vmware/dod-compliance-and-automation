@@ -1,44 +1,59 @@
 control "VCLD-67-000002" do
+control 'V-239716' do
   title "VAMI must be configured with FIPS 140-2 compliant ciphers for HTTPS
 connections."
-  desc  "Encryption of data-in-flight is an essential element of protecting
-information confidentiality.  If a web server uses weak or outdated encryption
-algorithms, then the server's communications can potentially be compromised.
+  desc  "Encryption of data in flight is an essential element of protecting
+information confidentiality. If a web server uses weak or outdated encryption
+algorithms, the server's communications can potentially be compromised.
 
     The US Federal Information Processing Standards (FIPS) publication 140-2,
-Security Requirements for Cryptographic Modules (FIPS 140-2) identifies eleven
+Security Requirements for Cryptographic Modules (FIPS 140-2), identifies 11
 areas for a cryptographic module used inside a security system that protects
-information.  FIPS 140-2 approved ciphers provide the maximum level of
+information. FIPS 140-2 approved ciphers provide the maximum level of
 encryption possible for a private web server.
 
-    Configuration of ciphers used by TC Server are set in the
-catalina.properties file.  Only those ciphers specified in the configuration
-file, and which are available in the installed OpenSSL library, will be used by
-TC Server while encrypting data for transmission."
-  impact 0.5
-  tag severity: "CAT II"
-  tag component: "vami"
-  tag gtitle: "SRG-APP-000014-WSR-000006"
-  tag gid: nil
-  tag rid: "VCLD-67-000002"
-  tag stig_id: "VCLD-67-000002"
-  tag cci: "CCI-000068"
-  tag nist: ["AC-17 (2)", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+    VAMI is compiled to use VMware's FIPS-validated OpenSSL module and cannot
+be configured otherwise. Ciphers may still be specified in order of preference,
+but no non-FIPS-approved ciphers will be implemented.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
 
-/opt/vmware/sbin/vami-lighttpd -p -f
+    # /opt/vmware/sbin/vami-lighttpd -p -f
 /opt/vmware/etc/lighttpd/lighttpd.conf|grep \"ssl.cipher-list\"
 
-If the value ssl.cipher-list = \"!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES\" is not returned or
-commented out, this is a finding."
-  desc 'fix', "Navigate to and open /etc/applmgmt/appliance/lighttpd.conf
+    Expected result:
 
-Remove any existing \"ssl.cipher-list\" entry and repalce with the following:
+    ssl.cipher-list                   =
+\"!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES\"
 
-ssl.cipher-list = \"!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES\""
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    Navigate to and open /etc/applmgmt/appliance/lighttpd.conf.
 
-  describe parse_config_file('/etc/applmgmt/appliance/lighttpd.conf').params['ssl.cipher-list'] do
-    it { should eq "\"!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES\"" }
+    Add or reconfigure the following value:
+
+    ssl.cipher-list                   =
+\"!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES\"
+  "
+  impact 0.7
+  tag severity: 'high'
+  tag gtitle: 'SRG-APP-000014-WSR-000006'
+  tag satisfies: ['SRG-APP-000014-WSR-000006', 'SRG-APP-000179-WSR-000111',
+'SRG-APP-000416-WSR-000118', 'SRG-APP-000439-WSR-000188']
+  tag gid: 'V-239716'
+  tag rid: 'SV-239716r679258_rule'
+  tag stig_id: 'VCLD-67-000002'
+  tag fix_id: 'F-42908r679257_fix'
+  tag cci: ['CCI-000068', 'CCI-000803', 'CCI-002418']
+  tag nist: ['AC-17 (2)', 'IA-7', 'SC-8']
+
+  runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout
+
+  describe parse_config(runtime).params['ssl.cipher-list'] do
+    it { should cmp "#{input('sslCipherList')}" }
   end
 
 end

@@ -1,37 +1,50 @@
 control "VCLD-67-000027" do
-  title "VAMI must protect against or limit the effects of HTTP types of Denial
-of Service (DoS) attacks."
+  title "VAMI must protect against or limit the effects of HTTP types of
+denial-of-service (DoS) attacks."
   desc  "In UNIX and related computer operating systems, a file descriptor is
 an indicator used to access a file or other input/output resource, such as a
 pipe or network connection. File descriptors index into a per-process file
-descriptor table maintained by the kernel, that in turn indexes into a
+descriptor table maintained by the kernel, which in turn indexes into a
 system-wide table of files opened by all processes, called the file table.
 
     As a single-threaded server, Lighttpd must be limited in the number of file
-descriptors that can be allocated.  This will prevent Lighttpd from being used
-in a form of DoS attack against the Operating System."
+descriptors that can be allocated. This will prevent Lighttpd from being used
+in a form of DoS attack against the operating system.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
+
+    # /opt/vmware/sbin/vami-lighttpd -p -f
+/opt/vmware/etc/lighttpd/lighttpd.conf|grep \"server.max-fds\"
+
+    Expected result:
+
+        server.max-fds                    = 2048
+
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
+
+    Add or reconfigure the following value:
+
+    server.max-fds = 2048
+  "
   impact 0.5
-  tag severity: "CAT II"
-  tag component: "vami"
-  tag gtitle: "SRG-APP-000246-WSR-000149"
-  tag gid: nil
-  tag rid: "VCLD-67-000027"
-  tag stig_id: "VCLD-67-000027"
-  tag cci: "CCI-001094"
-  tag nist: ["SC-5 (1)", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000246-WSR-000149'
+  tag gid: 'V-239734'
+  tag rid: 'SV-239734r679312_rule'
+  tag stig_id: 'VCLD-67-000027'
+  tag fix_id: 'F-42926r679311_fix'
+  tag cci: ['CCI-001094']
+  tag nist: ['SC-5 (1)']
 
-grep '^server.max-fds' /opt/vmware/etc/lighttpd/lighttpd.conf
+  runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout
 
-If the value for \"server.max-fds\" is not set to \"2048\", this is a finding."
-  desc 'fix', "Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
-
-Configure the \"lighttpd.conf\" file with the following:
-
-server.max-fds = 2048"
-
-  describe parse_config_file('/opt/vmware/etc/lighttpd/lighttpd.conf').params['server.max-fds'] do
-    it { should eq '2048' }
+  describe parse_config(runtime).params['server.max-fds'] do
+    it { should cmp "#{input('maxFds')}" }
   end
 
 end
