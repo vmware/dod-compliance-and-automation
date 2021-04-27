@@ -41,14 +41,16 @@ as follows:
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
   
+  value = input('maxconnections')
+
   describe.one do
   
-    describe xml('/etc/vmware-rhttpproxy/config.xml') do
-      its(['/config/vmacore/http/maxConnections']) { should cmp "#{input('maxConnections')}" }
+    describe xml("#{input('configXmlPath')}") do
+      its(['/config/vmacore/http/maxConnections']) { should cmp [value] }
     end
 
-    describe xml('/etc/vmware-rhttpproxy/config.xml') do
-      its(['/config/vmacore/http/maxConnections']) { should cmp [" #{input('maxConnections')} "] }
+    describe xml("#{input('configXmlPath')}") do
+      its(['/config/vmacore/http/maxConnections']) { should cmp [" #{value} "] }
     end
   
   end

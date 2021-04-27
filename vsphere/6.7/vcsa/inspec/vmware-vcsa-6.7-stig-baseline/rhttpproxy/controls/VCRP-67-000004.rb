@@ -43,10 +43,12 @@ follows:
   tag cci: ['CCI-001453']
   tag nist: ['AC-17 (2)']
 
+  value = input('protocols')
+
   describe.one do
 
     describe xml("#{input('configXmlPath')}") do
-      its(['/config/vmacore/ssl/protocols']) { should cmp "#{input('protocols')}" }
+      its(['/config/vmacore/ssl/protocols']) { should cmp value }
     end
 
     describe xml("#{input('configXmlPath')}") do

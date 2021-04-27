@@ -20,7 +20,7 @@ inputs:
   description: VCRP-67-000001
   type: string
   value: "900"
-- name: maxConnections
+- name: maxconnections
   description: VCRP-67-000002
   type: string
   value: "2048"
