@@ -1,36 +1,40 @@
 control "VCPG-67-000024" do
-  title "vPostgres database must be configured to validate characer encoding to
-UTF-8."
+  title 'VMware Postgres must set client-side character encoding to UTF-8.'
   desc  "A common vulnerability is unplanned behavior when invalid inputs are
 received. This requirement guards against adverse or unintended system behavior
 caused by invalid inputs, where information system responses to the invalid
-input may be disruptive or cause the system to fail into an unsafe state.
+input may be disruptive or cause the system to fail to an unsafe state."
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
 
-    The behavior will be derived from the organizational and system
-requirements and includes, but is not limited to, notification of the
-appropriate personnel, creating an audit record, and rejecting invalid input."
-  impact 0.5
-  tag severity: "CAT II"
-  tag component: "postgres"
-  tag gtitle: "SRG-APP-000447-DB-000393"
-  tag gid: nil
-  tag rid: "VCPG-67-000024"
-  tag stig_id: "VCPG-67-000024"
-  tag cci: "CCI-002754"
-  tag nist: ["SI-10 (3)", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SHOW
+client_encoding;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
-# grep '^\\s*client_encoding\\b' /storage/db/vpostgres/postgresql.conf
+    Expected result:
 
-If \"client_encoding\" is not \"UTF8\", this is a finding.
- "
-  desc 'fix', "At the command prompt, execute the following commands:
+    UTF8
 
-# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    At the command prompt, execute the following commands:
+
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
 client_encoding TO 'UTF8';\"
 
-/opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
-pg_reload_conf();\""
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
+pg_reload_conf();\"
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000447-DB-000393'
+  tag gid: 'V-239216'
+  tag rid: 'SV-239216r717067_rule'
+  tag stig_id: 'VCPG-67-000024'
+  tag fix_id: 'F-42408r679020_fix'
+  tag cci: ['CCI-002754']
+  tag nist: ['SI-10 (3)']
 
   describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
     its('client_encoding') { should cmp "UTF8" }

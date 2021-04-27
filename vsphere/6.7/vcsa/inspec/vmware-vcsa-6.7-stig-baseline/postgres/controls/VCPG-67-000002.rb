@@ -1,60 +1,56 @@
 control "VCPG-67-000002" do
-  title "vPostgres database log file data must contain required data elements."
+  title 'VMware Postgres log files must contain required fields.'
   desc  "Without the capability to generate audit records, it would be
 difficult to establish, correlate, and investigate the events relating to an
 incident or identify those responsible for one.
 
-    Audit records can be generated from various components within the DBMS
-(e.g., process, module). Certain specific application functionalities may be
-audited as well. The list of audited events is the set of events for which
-audits are to be generated. This set of events is typically a subset of the
-list of all events for which the system is capable of generating audit records.
+    As an embedded database that is only accessible via localhost, VMware
+Postgres on the VCSA does not implement robust auditing. However, it can and
+must be configured to log reasonable levels of information relating to user
+actions to enable proper troubleshooting.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
 
-    DoD has defined the list of events for which the DBMS will provide an audit
-record generation capability as the following:
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SHOW
+log_line_prefix;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
-    (i) Successful and unsuccessful attempts to access, modify, or delete
-privileges, security objects, security levels, or categories of information
-(e.g., classification levels);
+    Expected result:
 
-    (ii) Access actions, such as successful and unsuccessful logon attempts,
-privileged activities, or other system-level access, starting and ending time
-for user access to the system, concurrent logons from different workstations,
-successful and unsuccessful accesses to objects, all program initiations, and
-all direct access to the information system; and
+    %m %c %x %d %u %r %p %l
 
-    (iii) All account creation, modification, disabling, and termination
-actions.
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    At the command prompt, execute the following commands:
 
-    Organizations may define additional events requiring continuous or ad hoc
-auditing."
-  impact 0.5
-  tag severity: "CAT II"
-  tag component: "postgres"
-  tag gtitle: "SRG-APP-000089-DB-000064"
-  tag gid: nil
-  tag rid: "VCPG-67-000002"
-  tag stig_id: "VCPG-67-000002"
-  tag cci: "CCI-000169"
-  tag nist: ["AU-12 a", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
+log_line_prefix TO '%m %c %x %d %u %r %p %l ';\"
 
-# grep '^\\s*log_line_prefix\\b' /storage/db/vpostgres/postgresql.conf
-
-If \"log_line_prefix\" is not set to \"%m %d %u %r %p %l %c \", this is a
-finding:
- "
-  desc 'fix', "At the command prompt, execute the following commands:
-
-# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
-log_line_prefix TO '%m %d %u %r %p %l %c ';\"
-
-/opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
 pg_reload_conf();\"
-"
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000089-DB-000064'
+  tag satisfies: ['SRG-APP-000089-DB-000064', 'SRG-APP-000095-DB-000039',
+'SRG-APP-000096-DB-000040', 'SRG-APP-000097-DB-000041',
+'SRG-APP-000098-DB-000042', 'SRG-APP-000099-DB-000043',
+'SRG-APP-000100-DB-000201', 'SRG-APP-000101-DB-000044',
+'SRG-APP-000375-DB-000323']
+  tag gid: 'V-239197'
+  tag rid: 'SV-239197r717050_rule'
+  tag stig_id: 'VCPG-67-000002'
+  tag fix_id: 'F-42389r678963_fix'
+  tag cci: ['CCI-000169']
+  tag nist: ['AU-12 a']
 
-  describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
-    its('log_line_prefix') { should eq "'%m %d %u %r %p %l %c '" }
+  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
+  sqlquery = "SHOW log_line_prefix;"
+
+  describe sql.query(sqlquery) do
+   its('output') {should cmp "#{input('pg_log_line_prefix')}" }
   end
 
 end

@@ -1,52 +1,55 @@
 control "VCPG-67-000019" do
-  title "The DBMS must provide non-privileged users with error messages that
-provide information necessary for corrective actions without revealing
-information that could be exploited by adversaries."
+  title "VMware Postgres must provide non-privileged users with minimal error
+information."
   desc  "Any DBMS or associated application providing too much information in
 error messages on the screen or printout risks compromising the data and
-security of the system. The structure and content of error messages need to be
-carefully considered by the organization and development team.
+security of the system. The structure and content of error messages must
+contain the minimal amount of information.
 
     Databases can inadvertently provide a wealth of information to an attacker
 through improperly handled error messages. In addition to sensitive business or
 personal information, database errors can provide host names, IP addresses,
 user names, and other system information not required for troubleshooting but
 very useful to someone targeting the system.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
 
-    Carefully consider the structure/content of error messages. The extent to
-which information systems are able to identify and handle error conditions is
-guided by organizational policy and operational requirements. Information that
-could be exploited by adversaries includes, for example, logon attempts with
-passwords entered by mistake as the username, mission/business information that
-can be derived from (if not stated explicitly by) information recorded, and
-personal information, such as account numbers, social security numbers, and
-credit card numbers."
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SHOW
+client_min_messages;\"|sed -n 3p|sed -e 's/^[ ]*//'
+
+    Expected result:
+
+    notice
+
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    At the command prompt, execute the following commands:
+
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
+client_min_messages TO 'notice';\"
+
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
+pg_reload_conf();\"
+  "
   impact 0.5
-  tag severity: "CAT II"
-  tag component: "postgres"
-  tag gtitle: "SRG-APP-000266-DB-000162"
-  tag gid: nil
-  tag rid: "VCPG-67-000019"
-  tag stig_id: "VCPG-67-000019"
-  tag cci: "CCI-001312"
-  tag nist: ["SI-11 a", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000266-DB-000162'
+  tag satisfies: ['SRG-APP-000266-DB-000162', 'SRG-APP-000267-DB-000163']
+  tag gid: 'V-239211'
+  tag rid: 'SV-239211r717062_rule'
+  tag stig_id: 'VCPG-67-000019'
+  tag fix_id: 'F-42403r679005_fix'
+  tag cci: ['CCI-001312']
+  tag nist: ['SI-11 a']
 
-# grep \"client_min_messages\" /storage/db/vpostgres/postgresql.conf
-
-If there is no output, this is not a finding. If there is output and
-'client_min_messages' is not set to 'notice', this is a finding."
-  desc 'fix', "Navigate to and open /storage/db/vpostgres/postgresql.conf.
-
-Find the 'client_min_messages' setting and set it to 'notice'."
-
-  describe.one do
-    describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
-      its('client_min_messages') { should cmp nil }
-    end
-    describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
-      its('client_min_messages') { should cmp "notice" }
-    end
+  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
+  sqlquery = "SHOW client_min_messages;"
+  
+  describe sql.query(sqlquery) do
+   its('output') {should cmp "#{input('pg_client_min_messages')}" }
   end
 
 end

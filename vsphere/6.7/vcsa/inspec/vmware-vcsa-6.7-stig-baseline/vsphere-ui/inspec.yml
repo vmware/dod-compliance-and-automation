@@ -1,8 +1,114 @@
 name: vmware-vcsa-6.7-vsphereui-stig-baseline
-title: InSpec Wrapper Profile for VMware vCenter Service Appliance 6.7 vSphere UI DISA STIG
-maintainer: The Authors
-copyright: The Authors
+title: VMware vSphere 6.7 UI Tomcat Security Technical Implementation Guide
+maintainer: VMware
+copyright: VMware
 copyright_email: stigs@vmware.com
 license: Apache-2.0
-summary: An InSpec Compliance Profile
-version: 6.7.0
+summary: "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
+version: 6.7.0 Version 1 Release 1
+
+inputs:
+- name: serverXmlPath
+  description: Tomcat server.xml path
+  type: string
+  value: "/usr/lib/vmware-vsphere-ui/server/conf/server.xml"
+- name: webXmlPath
+  description: Tomcat web.xml path
+  type: string
+  value: "/usr/lib/vmware-sso/vmware-sts/conf/web.xml"
+- name: contextXmlPath
+  description: Tomcat context.xml path
+  type: string
+  value: "/usr/lib/vmware-vsphere-ui/server/conf/context.xml"
+- name: svcJsonPath
+  description: Tomcat service config file
+  type: string
+  value: "/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json"
+- name: logPath
+  description: Service Log Directory
+  type: string
+  value: "/storage/log/vmware/vsphere-ui/logs/"
+- name: loggingProperties
+  description: Logging Properties file
+  type: string
+  value: "/usr/lib/vmware-sso/vmware-sts/conf/logging.properties"
+- name: appPath
+  description: Application Directory
+  type: string
+  value: "/usr/lib/vmware-vsphere-ui/server/static/"
+- name: rootPath
+  description: Root Application Directory
+  type: string
+  value: "/usr/lib/vmware-vsphere-ui/server/lib"
+- name: catalinaPropertiesPath
+  description: Tomcat catalina.properties path
+  type: string
+  value: "/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties"
+- name: syslogConfPath
+  description: Syslog conf
+  type: string
+  value: "/etc/vmware-syslog/vmware-services-vsphere-ui.conf"
+- name: connectionTimeout
+  description: "VCUI-67-000001"
+  type: string
+  value: "300000"
+- name: maxThreads
+  description: "VCUI-67-000002"
+  type: string
+  value: "800"
+- name: cookieHttpOnly
+  description: "VCUI-67-000004"
+  type: string
+  value: "true"
+- name: accessValvePattern
+  description: "VCUI-67-000005"
+  type: string
+  value: "%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b %{#hashedSessionId#}s %I %D %S %{set-cookie}o"
+- name: streamRedirectFile
+  description: "VCUI-67-000006"
+  type: string
+  value: "%VMWARE_LOG_DIR%/vmware/vsphere-ui/logs/vsphere-ui-runtime.log"
+- name: packageAccess
+  description: "VCUI-67-000010"
+  type: string
+  value: "sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat."
+- name: memLeakListener
+  description: "VCUI-67-000014"
+  type: string
+  value: "org.apache.catalina.core.JreMemoryLeakPreventionListener"
+- name: acceptCount
+  description: "VCUI-67-000018"
+  type: string
+  value: "300"
+- name: uriEncoding
+  description: "VCUI-67-000020"
+  type: string
+  value: "UTF-8"
+- name: server
+  description: "VCUI-67-000022"
+  type: string
+  value: "Anonymous"
+- name: catalinahttpPort
+  description: "VCUI-67-000028"
+  type: string
+  value: "5090"
+- name: catalinaproxyPort
+  description: "VCUI-67-000028"
+  type: string
+  value: "443"
+- name: catalinahttpsPort
+  description: "VCUI-67-000028"
+  type: string
+  value: "5443"
+- name: shutdownPortVariable
+  description: "VCUI-67-000029"
+  type: string
+  value: "${shutdown.port}"
+- name: shutdownPort
+  description: "VCUI-67-000029"
+  type: string
+  value: "-Dshutdown.port=-1"
+- name: sessionCookiePath
+  description: "VCUI-70-000032"
+  type: string
+  value: "/ui"

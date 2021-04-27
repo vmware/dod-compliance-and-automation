@@ -1,55 +1,49 @@
 control "VCPG-67-000004" do
-  title "vPostgres database must have log_truncate_on_rotation enabled."
-  desc  "It is critical that when the DBMS is at risk of failing to process
-audit logs as required, it take action to mitigate the failure. Audit
-processing failures include: software/hardware errors; failures in the audit
-capturing mechanisms; and audit storage capacity being reached or exceeded.
-Responses to audit failure depend upon the nature of the failure mode.
+  title "VMware Postgres must be configured to overwrite older logs when
+necessary."
+  desc  "Without proper configuration, log files for VMware Postgres can grow
+without bound, filling the partition and potentially affecting the availability
+of the VCSA. One part of this configuration is to ensure that the logging
+subsystem overwrites, rather than appending to, any previous logs that would
+share the same name. This is avoided in other configuration steps, but this
+best practice should also be followed."
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
 
-    When availability is an overriding concern, approved actions in response to
-an audit failure are as follows:
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SHOW
+log_truncate_on_rotation;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
-    (i) If the failure was caused by the lack of audit record storage capacity,
-the DBMS must continue generating audit records, if possible (automatically
-restarting the audit service if necessary), overwriting the oldest audit
-records in a first-in-first-out manner.
+    Expected result:
 
-    (ii) If audit records are sent to a centralized collection server and
-communication with this server is lost or the server fails, the DBMS must queue
-audit records locally until communication is restored or until the audit
-records are retrieved manually. Upon restoration of the connection to the
-centralized collection server, action should be taken to synchronize the local
-audit data with the collection server.
+    on
 
-    Systems where availability is paramount will most likely be MAC I; the
-final determination is the prerogative of the application owner, subject to
-Authorizing Official concurrence. In any case, sufficient auditing resources
-must be allocated to avoid audit data loss in all but the most extreme
-situations."
-  impact 0.5
-  tag severity: "CAT II"
-  tag component: "postgres"
-  tag gtitle: "SRG-APP-000109-DB-000321"
-  tag gid: nil
-  tag rid: "VCPG-67-000004"
-  tag stig_id: "VCPG-67-000004"
-  tag cci: "CCI-000140"
-  tag nist: ["AU-5 b", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    At the command prompt, execute the following commands:
 
-# grep '^\\s*log_truncate_on_rotation\\b' /storage/db/vpostgres/postgresql.conf
-
-If \"log_truncate_on_rotation\" is not set to \"on\", this is a finding."
-  desc 'fix', "At the command prompt, execute the following commands:
-
-# /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
 log_truncate_on_rotation TO 'on';\"
 
-/opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
-pg_reload_conf();\""
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
+pg_reload_conf();\"
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000109-DB-000321'
+  tag gid: 'V-239199'
+  tag rid: 'SV-239199r717051_rule'
+  tag stig_id: 'VCPG-67-000004'
+  tag fix_id: 'F-42391r678969_fix'
+  tag cci: ['CCI-000140']
+  tag nist: ['AU-5 b']
 
-  describe parse_config_file('/storage/db/vpostgres/postgresql.conf') do
-    its('log_truncate_on_rotation') { should eq "on" }
+  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
+  sqlquery = "SHOW log_truncate_on_rotation;"
+  
+  describe sql.query(sqlquery) do
+   its('output') {should cmp "#{input('pg_log_truncate_on_rotation')}" }
   end
 
 end

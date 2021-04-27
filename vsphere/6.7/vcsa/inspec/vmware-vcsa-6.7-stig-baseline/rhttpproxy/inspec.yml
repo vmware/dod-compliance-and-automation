@@ -1,8 +1,50 @@
 name: vmware-vcsa-6.7-rhttpproxy-stig-baseline
-title: InSpec Wrapper Profile for VMware vCenter Service Appliance 6.7 Rhttpproxy DISA STIG
-maintainer: The Authors
-copyright: The Authors
+title: VMware vSphere 6.7 RhttpProxy Security Technical Implementation Guide
+maintainer: VMware
+copyright: VMware
 copyright_email: stigs@vmware.com
 license: Apache-2.0
-summary: An InSpec Compliance Profile
-version: 6.7.0
+summary: "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
+version: 6.7.0 Version 1 Release 1
+
+inputs:
+- name: configXmlPath
+  description: Path to config.xml
+  type: string
+  value: "/etc/vmware-rhttpproxy/config.xml"
+- name: sslKey
+  description: Path to ssl key
+  type: string
+  value: "/etc/vmware-rhttpproxy/ssl/rui.key"
+- name: idleTimeSec
+  description: VCRP-67-000001
+  type: string
+  value: "900"
+- name: maxconnections
+  description: VCRP-67-000002
+  type: string
+  value: "2048"
+- name: fips
+  description: VCRP-67-000003
+  type: string
+  value: "true"
+- name: protocols
+  description: VCRP-67-000004
+  type: string
+  value: "tls1.2"
+- name: logLevel
+  description: VCRP-67-000005
+  type: string
+  value: "verbose"
+- name: outputToFiles
+  description: VCRP-67-000006
+  type: string
+  value: "true"
+- name: certificateFile
+  description: VCRP-67-000008
+  type: string
+  value: "/etc/vmware-rhttpproxy/ssl/rui.crt"
+- name: vecsServerName
+  description: VCRP-67-000008
+  type: string
+  value: "localhost"

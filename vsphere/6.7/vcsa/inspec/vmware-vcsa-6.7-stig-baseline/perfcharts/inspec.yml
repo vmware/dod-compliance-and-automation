@@ -1,8 +1,94 @@
 name: vmware-vcsa-6.7-perfcharts-stig-baseline
-title: InSpec Wrapper Profile for VMware vCenter Service Appliance 6.7 Perfcharts DISA STIG
-maintainer: The Authors
-copyright: The Authors
+title: VMware vSphere 6.7 Perfcharts Tomcat Security Technical Implementation Guide
+maintainer: VMware
+copyright: VMware
 copyright_email: stigs@vmware.com
 license: Apache-2.0
-summary: An InSpec Compliance Profile
-version: 6.7.0
+summary: "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
+version: 6.7.0 Version 1 Release 1
+
+inputs:
+- name: serverXmlPath
+  description: Tomcat server.xml path
+  type: string
+  value: "/usr/lib/vmware-perfcharts/tc-instance/conf/server.xml"
+- name: webXmlPath
+  description: Tomcat web.xml path
+  type: string
+  value: "/usr/lib/vmware-perfcharts/tc-instance/conf/web.xml"
+- name: statswebXmlPath
+  description: Tomcat web.xml path
+  type: string
+  value: "/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml"
+- name: svcJsonPath
+  description: Tomcat service config file
+  type: string
+  value: "/etc/vmware/vmware-vmon/svcCfgfiles/perfcharts.json"
+- name: logPath
+  description: Service Log Directory
+  type: string
+  value: "/storage/log/vmware/perfcharts/"
+- name: appPath
+  description: Application Directory
+  type: string
+  value: "/usr/lib/vmware-perfcharts/tc-instance/webapps"
+- name: rootPath
+  description: Root Application Directory
+  type: string
+  value: "/usr/lib/vmware-perfcharts/tc-instance"
+- name: catalinaPropertiesPath
+  description: Tomcat catalina.properties path
+  type: string
+  value: "/usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties"
+- name: syslogConfPath
+  description: Syslog conf
+  type: string
+  value: "/etc/vmware-syslog/vmware-services-perfcharts.conf"
+- name: connectionTimeout
+  description: "VCPF-67-000001"
+  type: string
+  value: "20000"
+- name: maxThreads
+  description: "VCPF-67-000002"
+  type: string
+  value: "300"
+- name: cookieHttpOnly
+  description: "VCPF-67-000004"
+  type: string
+  value: "true"
+- name: accessValvePattern
+  description: "VCPF-67-000005"
+  type: string
+  value: "%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;"
+- name: streamRedirectFile
+  description: "VCPF-67-000006"
+  type: string
+  value: "%VMWARE_LOG_DIR%/vmware/perfcharts/vmware-perfcharts-runtime.log"
+- name: packageAccess
+  description: "VCPF-67-000011"
+  type: string
+  value: "package.access = \\\nsun.,\\\norg.apache.catalina.,\\\norg.apache.coyote.,\\\norg.apache.jasper.,\\\norg.apache.naming.resources.,\\\norg.apache.tomcat."
+- name: memLeakListener
+  description: "VCPF-67-000014"
+  type: string
+  value: "org.apache.catalina.core.JreMemoryLeakPreventionListener"
+- name: acceptCount
+  description: "VCPF-67-000018"
+  type: string
+  value: "300"
+- name: uriEncoding
+  description: "VCPF-67-000020"
+  type: string
+  value: "UTF-8"
+- name: httpPort
+  description: "VCPF-67-000028"
+  type: string
+  value: "13080"
+- name: httpsPort
+  description: "VCPF-67-000028"
+  type: string
+  value: "8443"
+- name: shutdownPort
+  description: "VCPF-67-000029"
+  type: string
+  value: "-1"

@@ -2,7 +2,7 @@ control "VCPF-67-000002" do
   title "Performance Charts must limit the number of concurrent connections
 permitted."
   desc  "Resource exhaustion can occur when an unlimited number of concurrent
-requests are allowed on a web site, facilitating a denial of service attack.
+requests are allowed on a website, facilitating a denial-of-service attack.
 Unless the number of requests is controlled, the web server can consume enough
 system resources to cause a system crash.
 
@@ -10,40 +10,45 @@ system resources to cause a system crash.
 concurrent HTTP/HTTPS requests. In Tomcat, each incoming request requires a
 thread for the duration of that request. If more simultaneous requests are
 received than can be handled by the currently available request processing
-threads, additional threads will be created up to the value of the maxThreads
-attribute."
+threads, additional threads will be created up to the value of the
+\"maxThreads\" attribute.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, execute the following command:
+
+    # xmllint --xpath '/Server/Service/Executor/@maxThreads'
+/usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
+
+    Expected result:
+
+    maxThreads=\"300\"
+
+    If the output does not match the expected result, this is a finding.
+  "
+  desc  'fix', "
+    Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml.
+
+    Navigate to the <Executor> mode with the name of \"tomcatThreadPool\" and
+configure with the value 'maxThreads=\"300\"'.
+
+    Note: The <Executor> node should be configured as follows:
+
+    <Executor maxThreads=\"300\" minSpareThreads=\"50\"
+name=\"tomcatThreadPool\" namePrefix=\"tomcat-http--\"/>
+  "
   impact 0.5
-  tag severity: "CAT II"
-  tag gtitle: "SRG-APP-000001-WSR-000001"
-  tag gid: nil
-  tag rid: "VCPF-67-000002"
-  tag stig_id: "VCPF-67-000002"
-  tag cci: "CCI-000054"
-  tag nist: ["AC-10", "Rev_4"]
-  desc 'check', "At the command prompt, execute the following command:
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000001-WSR-000001'
+  tag gid: 'V-239403'
+  tag rid: 'SV-239403r717041_rule'
+  tag stig_id: 'VCPF-67-000002'
+  tag fix_id: 'F-42595r674931_fix'
+  tag cci: ['CCI-000054']
+  tag nist: ['AC-10']
 
-# xmllint --xpath '/Server/Service/Executor/@maxThreads'
-/usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
-
-Expected result:
-
-maxThreads=\"300\"
-
-If the output does not match the expected result, this is a finding"
-  desc 'fix', "Navigate to and open
-/usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
-
-Navigate to the <Executor> mode with the name of tomcatThreadPool and configure
-with the value 'maxThreads=\"300\"'
-
-Note: The <Executor> node should be configured per the below:
-
-<Executor maxThreads=\"300\" minSpareThreads=\"50\" name=\"tomcatThreadPool\"
-namePrefix=\"tomcat-http--\"/>
-"
-
-  describe xml('/usr/lib/vmware-perfcharts/tc-instance/conf/server.xml') do
-    its(['/Server/Service/Executor[@name="tomcatThreadPool"]/@maxThreads']) { should cmp '300' }
+  describe xml("#{input('serverXmlPath')}") do
+    its(['/Server/Service/Executor[@name="tomcatThreadPool"]/@maxThreads']) { should cmp "#{input('maxThreads')}" }
   end
 
 end
