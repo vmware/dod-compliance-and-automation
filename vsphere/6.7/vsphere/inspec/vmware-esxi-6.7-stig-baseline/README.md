@@ -1,6 +1,6 @@
 # vmware-esxi-6.7-stig-baseline
-Inspec Profile to validate the secure configuration of VMware vSphere ESXi version 6.7 against the draft DISA vSphere 6.7 STIG
-Version: 6.7.0 Draft
+Inspec Profile to validate the secure configuration of VMware vSphere ESXi version 6.7 against the DISA vSphere 6.7 STIG
+Version: 6.7.0 Version 1 Release 1
 
 ## How to run InSpec locally from Powershell on Windows
 
