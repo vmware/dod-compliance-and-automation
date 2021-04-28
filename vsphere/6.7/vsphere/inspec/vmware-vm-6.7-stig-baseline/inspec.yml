@@ -1,11 +1,12 @@
 name: vmware-vm-6.7-stig-baseline
-title: InSpec Profile for VMware vSphere Virtual Machine 6.7 DISA STIG
-maintainer: The Authors
-copyright: The Authors
-copyright_email:
+title: VMware vSphere 6.7 Virtual Machine Security Technical Implementation Guide
+maintainer: VMware
+copyright: VMware
+copyright_email: stigs@vmware.com
 license: Apache-2.0
-summary: An InSpec Compliance Profile for vSphere 6.7 Virtual Machines
-version: 6.7.0
+summary: "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
+version: 6.7.0 Version 1 Release 1
+
 inputs:
   - name: vmName
     value: ""

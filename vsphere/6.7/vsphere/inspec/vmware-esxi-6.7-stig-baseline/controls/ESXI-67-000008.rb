@@ -1,31 +1,28 @@
 control "ESXI-67-000008" do
   title "The ESXi host must display the Standard Mandatory DoD Notice and
 Consent Banner before granting access to the system via SSH."
-  desc  "Failure to display the DoD logon banner prior to a log in attempt will
+  desc  "Failure to display the DoD logon banner prior to a logon attempt will
 negate legal proceedings resulting from unauthorized access to system
 resources."
-  impact 0.5
-  tag severity: "CAT II"
-  tag gtitle: "SRG-OS-000023-VMM-000060"
-  tag rid: "ESXI-67-000008"
-  tag stig_id: "ESXI-67-000008"
-  tag cci: "CCI-000048"
-  tag nist: ["AC-8 a", "Rev_4"]
-  desc 'check', "From the vSphere Client select the ESXi Host and go to Configure
->> System >> Advanced System Settings.  Select the Config.Etc.issue value and
-verify it is set to DoD logon banner below.
+  desc  'rationale', ''
+  desc  'check', "
+    From the vSphere Client, select the ESXi host and go to Configure >> System
+>> Advanced System Settings.
 
-or
+    Select the \"Config.Etc.issue\" value and verify it is set to the DoD logon
+banner below.
 
-From a PowerCLI command prompt while connected to the ESXi host run the
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host, run the
 following command:
 
-Get-VMHost | Get-AdvancedSetting -Name Config.Etc.issue
+    Get-VMHost | Get-AdvancedSetting -Name Config.Etc.issue
 
-If the Config.Etc.issue setting (/etc/issue file) does not contain the logon
-banner exactly as shown below this is a finding.
+    If the \"Config.Etc.issue\" setting (/etc/issue file) does not contain the
+logon banner exactly as shown below, this is a finding.
 
-\"You are accessing a U.S. Government (USG) Information System (IS) that is
+    \"You are accessing a U.S. Government (USG) Information System (IS) that is
 provided for USG-authorized use only. By using this IS (which includes any
 device attached to this IS), you consent to the following conditions: -The USG
 routinely intercepts and monitors communications on this IS for purposes
@@ -41,12 +38,16 @@ above, using this IS does not constitute consent to PM, LE or CI investigative
 searching or monitoring of the content of privileged communications, or work
 product, related to personal representation or services by attorneys,
 psychotherapists, or clergy, and their assistants. Such communications and work
-product are private and confidential. See User Agreement for details.\""
-  desc 'fix', "From the vSphere Client select the ESXi Host and go to Configure >>
-System >> Advanced System Settings. Click Edit and select the Config.Etc.issue
-value and set it to the following.
+product are private and confidential. See User Agreement for details.\"
+  "
+  desc  'fix', "
+    From the vSphere Client, select the ESXi host and go to Configure >> System
+>> Advanced System Settings.
 
-\"You are accessing a U.S. Government (USG) Information System (IS) that is
+    Click \"Edit\", select the \"Config.Etc.issue\" value, and set it to the
+following:
+
+    \"You are accessing a U.S. Government (USG) Information System (IS) that is
 provided for USG-authorized use only. By using this IS (which includes any
 device attached to this IS), you consent to the following conditions: -The USG
 routinely intercepts and monitors communications on this IS for purposes
@@ -64,13 +65,23 @@ product, related to personal representation or services by attorneys,
 psychotherapists, or clergy, and their assistants. Such communications and work
 product are private and confidential. See User Agreement for details.\"
 
-or
+    or
 
-From a PowerCLI command prompt while connected to the ESXi host run the
+    From a PowerCLI command prompt while connected to the ESXi host, run the
 following commands:
 
-Get-VMHost | Get-AdvancedSetting -Name Config.Etc.issue | Set-AdvancedSetting
--Value \"<insert logon banner>\""
+    Get-VMHost | Get-AdvancedSetting -Name Config.Etc.issue |
+Set-AdvancedSetting -Value \"<insert logon banner>\"
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000023-VMM-000060'
+  tag gid: 'V-239265'
+  tag rid: 'SV-239265r674724_rule'
+  tag stig_id: 'ESXI-67-000008'
+  tag fix_id: 'F-42457r674723_fix'
+  tag cci: ['CCI-000048']
+  tag nist: ['AC-8 a']
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Config.Etc.issue | Select-Object -ExpandProperty Value"
   
