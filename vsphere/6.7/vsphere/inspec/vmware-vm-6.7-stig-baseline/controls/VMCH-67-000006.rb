@@ -12,44 +12,51 @@ they have been attacked or hacked.
 
     There can be valid use cases for these types of disks such as with an
 application presentation solution where read only disks are desired and such
-cases should be identified and documented."
-  impact 0.5
-  tag severity: "CAT II"
-  tag gtitle: "SRG-OS-000480-VMM-002000"
-  tag gid: nil
-  tag rid: "VMCH-67-000006"
-  tag stig_id: "VMCH-67-000006"
-  tag cci: "CCI-000366"
-  tag nist: ["CM-6 b", "Rev_4"]
-  desc 'check', "From the vSphere Web Client right-click the Virtual Machine and
-go to Edit Settings. Review the attached hard disks and verify they are not
-configured as independent nonpersistent disks.
+cases should be identified and documented.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    From the vSphere Web Client right-click the Virtual Machine and go to Edit
+Settings. Review the attached hard disks and verify they are not configured as
+independent nonpersistent disks.
 
-or
+    or
 
-From a PowerCLI command prompt while connected to the ESXi host or vCenter
+    From a PowerCLI command prompt while connected to the ESXi host or vCenter
 server, run the following command:
 
-Get-VM \"VM Name\" | Get-HardDisk | Select Parent, Name, Filename, DiskType,
-Persistence | FT -AutoSize
+    Get-VM \"VM Name\" | Get-HardDisk | Select Parent, Name, Filename,
+DiskType, Persistence | FT -AutoSize
 
-If the virtual machine has attached disks that are in independent nonpersistent
-mode and are not documented, this is a finding."
-  desc 'fix', "From the vSphere Web Client right-click the Virtual Machine and go
-to Edit Settings. Select the target hard disk and change the mode to persistent
-or uncheck Independent.
+    If the virtual machine has attached disks that are in independent
+nonpersistent mode and are not documented, this is a finding.
+  "
+  desc  'fix', "
+    From the vSphere Web Client right-click the Virtual Machine and go to Edit
+Settings. Select the target hard disk and change the mode to persistent or
+uncheck Independent.
 
-or
+    or
 
-From a PowerCLI command prompt while connected to the ESXi host or vCenter
+    From a PowerCLI command prompt while connected to the ESXi host or vCenter
 server, run the following command:
 
-Get-VM \"VM Name\" | Get-HardDisk | Set-HardDisk -Persistence
+    Get-VM \"VM Name\" | Get-HardDisk | Set-HardDisk -Persistence
 IndependentPersistent
 
-or
+    or
 
-Get-VM \"VM Name\" | Get-HardDisk | Set-HardDisk -Persistence Persistent"
+    Get-VM \"VM Name\" | Get-HardDisk | Set-HardDisk -Persistence Persistent
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag gid: 'V-239337'
+  tag rid: 'SV-239337r679560_rule'
+  tag stig_id: 'VMCH-67-000006'
+  tag fix_id: 'F-42529r679559_fix'
+  tag cci: ['CCI-000366']
+  tag nist: ['CM-6 b']
 
   command = "(Get-VM -Name #{input('vmName')} | Get-HardDisk).Persistence"
   results = powercli_command(command)
