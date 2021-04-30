@@ -54,7 +54,7 @@ param (
 $date = Get-Date
 
 #Report Name
-$ReportName = "vSphere 6.7 DISA STIG (Draft) Compliance Report"
+$ReportName = "vSphere 6.7 DISA STIG Version 1 Release 1 Compliance Report"
 
 #Report Path - move to parameter later
 $ReportOutputPath = "C:\PowerCLI\Output"
@@ -72,8 +72,8 @@ $tabarray = @('Overview','Virtual Machines','ESXi','vCenter')
 $stigsettings = @{
     ##### Environment Specific STIG Values #####
     syslogHost              = @{"Syslog.global.logHost" = $syslogServer}
-    stigVibRE               = "dod-esxi65-stig-re"   #Update with STIG VIB version used
-    stigVibRD               = "dod-esxi65-stig-rd"   #Update with STIG VIB version used
+    stigVibRE               = "dod-esxi67-stig-re"   #Update with STIG VIB version used
+    stigVibRD               = "dod-esxi67-stig-rd"   #Update with STIG VIB version used
     esxAdminsGroup          = @{"Config.HostAgent.plugins.hostsvc.esxAdminsGroup" = $esxAdminGroup}
     allowedNetworks         = $allowedNetworks #@("10.0.0.0/8","192.168.0.0/16")  #Allows IP ranges for the ESXi firewall.  These should be in the same order as seen in the UI.
     allowedIPs              = $allowedIPs  #@()  #Allows IP addresses if any for the ESXi firewall.  These should be in the same order as seen in the UI.
@@ -100,6 +100,7 @@ $stigsettings = @{
     passHistory             = @{"Security.PasswordHistory" = "5"}
     passComplexity          = @{"Security.PasswordQualityControl" = "similar=deny retry=3 min=disabled,disabled,disabled,disabled,15"}
     banner                  = @{"Config.Etc.issue" = "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. By using this IS (which includes any device attached to this IS), you consent to the following conditions: -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations. -At any time, the USG may inspect and seize data stored on this IS. -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose. -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy. -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."}
+    SuppressShellWarning    = @{"UserVars.SuppressShellWarning" = 0}
     ## Virtual Machines
     vmIsoCopyDisable        = @{"isolation.tools.copy.disable" = $true}
     vmIsoDndDisable         = @{"isolation.tools.dnd.disable" = $true}
