@@ -243,7 +243,7 @@ $V239327 = $true  #Secureboot V94487 ESXI-67-000076
 $V239328 = $true  #DoD Cert V94489 ESXI-67-000078
 $V239329 = $true  #host must not suppress warnings ESXI-67-000079 NEW
 $V239330 = $true  #central log host ESXI-67-100004 NEW
-$V239331 = $false #FIPS-approved ciphers ESXI-67-100010 NEW
+$V239331 = $true  #FIPS-approved ciphers ESXI-67-100010 NEW
 
 #vCenter
 $V94725 = $true  #Permissions
@@ -5498,46 +5498,42 @@ Try{
     $Title = "The ESXi host SSH daemon must be configured to only use FIPS 140-2 approved ciphers."
     $Severity = "CAT II"
     If($V239331){
-        $esxititle100010 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
-        Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
+        $esxititle100010 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+        Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
         ForEach($vmhost in $vmhosts){
-            Write-ToConsole "...Checking ESXi Host $($vmhost.Name) for $title"
-            $result = Test-WebServerSSL -URL $vmhost.name
-            If($result.Certificate.Issuer -match $stigsettings.certAuthName){
+            Write-ToConsole "...Checking ESXi Host $($vmhost.Name) for $title"        
+            $esxcli = Get-EsxCli -VMHost $vmhost -V2
+            $results = $esxcli.software.vib.list.Invoke() | Where {$_.Name -eq $stigsettings.stigVibRE -or $_.Name -eq $stigsettings.stigVibRD}
+            If($results){
                 $esxiarray += New-Object PSObject -Property ([ordered]@{
                     "Name" = $vmhost.name
-                    "Cert Issuer" = $result.Certificate.Issuer
-                    "Cert Expires" = $result.Certificate.NotAfter
-                    "Cert Serial" = $result.Certificate.SerialNumber
-                    "Cert Thumbprint" = $result.Certificate.Thumbprint
-                    "Expected" = "Certificate issued from a DoD CA and valid"
+                    "Setting" = "Ciphers aes128-ctr,aes192-ctr,aes256-ctr"
+                    "Value" = "Set by STIG VIB $($results.name)"
+                    "Expected" = "STIG VIB Installed"
                     "Severity" = $Severity
                     "Compliant" = $true
                 })
             }Else{
                 $esxiarray += New-Object PSObject -Property ([ordered]@{
                     "Name" = $vmhost.name
-                    "Cert Issuer" = $result.Certificate.Issuer
-                    "Cert Expires" = $result.Certificate.NotAfter
-                    "Cert Serial" = $result.Certificate.SerialNumber
-                    "Cert Thumbprint" = $result.Certificate.Thumbprint
-                    "Expected" = "Certificate issued from a DoD CA and valid"
+                    "Setting" = "Ciphers aes128-ctr,aes192-ctr,aes256-ctr"
+                    "Value" = "STIG VIB NOT installed"
+                    "Expected" = "STIG VIB Installed"
                     "Severity" = $Severity
                     "Compliant" = $false
                 })
             }
-
         }
-        $esxiarray78 = Set-TableRowColor -ArrayOfObjects $esxiarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $esxiarray100010 = Set-TableRowColor -ArrayOfObjects $esxiarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmhostsarrayall += $esxiarray
     }
     Else{
-        Write-ToConsole "...Skipping disabled control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
+        Write-ToConsoleRed "...Skipping disabled control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
 }
 Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -6845,6 +6841,12 @@ $report += Get-HtmlContentTable $esxiarray76
 $report += Get-HtmlContentClose
 $report += Get-HtmlContentOpen -HeaderText $esxititle78
 $report += Get-HtmlContentTable $esxiarray78
+$report += Get-HtmlContentClose
+$report += Get-HtmlContentOpen -HeaderText $esxititle100004
+$report += Get-HtmlContentTable $esxiarray100004
+$report += Get-HtmlContentClose
+$report += Get-HtmlContentOpen -HeaderText $esxititle100010
+$report += Get-HtmlContentTable $esxiarray100010
 $report += Get-HtmlContentClose
 $report += Get-HTMLTabContentClose
 
