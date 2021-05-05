@@ -54,7 +54,7 @@ param (
 $date = Get-Date
 
 #Report Name
-$ReportName = "vSphere 6.7 DISA STIG (Draft) Compliance Report"
+$ReportName = "vSphere 6.7 DISA STIG Version 1 Release 1 Compliance Report"
 
 #Report Path - move to parameter later
 $ReportOutputPath = "C:\PowerCLI\Output"
@@ -72,8 +72,8 @@ $tabarray = @('Overview','Virtual Machines','ESXi','vCenter')
 $stigsettings = @{
     ##### Environment Specific STIG Values #####
     syslogHost              = @{"Syslog.global.logHost" = $syslogServer}
-    stigVibRE               = "dod-esxi65-stig-re"   #Update with STIG VIB version used
-    stigVibRD               = "dod-esxi65-stig-rd"   #Update with STIG VIB version used
+    stigVibRE               = "dod-esxi67-stig-re"   #Update with STIG VIB version used
+    stigVibRD               = "dod-esxi67-stig-rd"   #Update with STIG VIB version used
     esxAdminsGroup          = @{"Config.HostAgent.plugins.hostsvc.esxAdminsGroup" = $esxAdminGroup}
     allowedNetworks         = $allowedNetworks #@("10.0.0.0/8","192.168.0.0/16")  #Allows IP ranges for the ESXi firewall.  These should be in the same order as seen in the UI.
     allowedIPs              = $allowedIPs  #@()  #Allows IP addresses if any for the ESXi firewall.  These should be in the same order as seen in the UI.
@@ -100,6 +100,7 @@ $stigsettings = @{
     passHistory             = @{"Security.PasswordHistory" = "5"}
     passComplexity          = @{"Security.PasswordQualityControl" = "similar=deny retry=3 min=disabled,disabled,disabled,disabled,15"}
     banner                  = @{"Config.Etc.issue" = "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. By using this IS (which includes any device attached to this IS), you consent to the following conditions: -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations. -At any time, the USG may inspect and seize data stored on this IS. -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose. -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy. -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."}
+    SuppressShellWarning    = @{"UserVars.SuppressShellWarning" = 0}
     ## Virtual Machines
     vmIsoCopyDisable        = @{"isolation.tools.copy.disable" = $true}
     vmIsoDndDisable         = @{"isolation.tools.dnd.disable" = $true}
@@ -164,81 +165,85 @@ $V94649 = $true #Duplicates
 $V94651 = $true #Duplicates
 
 #ESXi
-$V93949 = $true  #Lockdown Mode
-$V93951 = $true  #DCUI.Access List
-$V93953 = $true  #Lockdown Mode Exceptions
-$V93955 = $true  #Syslog
-$V93957 = $true  #Account Lock Failures
-$V93959 = $true  #Account Unlock Timeout
-$V93961 = $true  #Consent Banner Welcome
-$V93963 = $true  #Consent Banner /etc/issue
-$V93965 = $true  #SSH Banner
-$V93967 = $true  #SSH Ciphers aes128-ctr,aes192-ctr,aes256-ctr
-$V93969 = $true  #SSH Protocol 2
-$V93971 = $true  #SSH IgnoreRhosts yes
-$V93973 = $true  #SSH HostbasedAuthentication no
-$V93975 = $true  #SSH PermitRootLogin no
-$V93977 = $true  #SSH PermitEmptyPasswords no
-$V93979 = $true  #SSH PermitUserEnvironment no
-$V93981 = $true  #SSH MACs hmac-sha1,hmac-sha2-256,hmac-sha2-512
-$V93983 = $true  #SSH GSSAPIAuthentication no
-$V93985 = $true  #SSH KerberosAuthentication no
-$V93987 = $true  #SSH StrictModes yes
-$V93989 = $true  #SSH Compression no
-$V93991 = $true  #SSH GatewayPorts no
-$V93993 = $true  #SSH X11Forwarding no
-$V93995 = $true  #SSH AcceptEnv
-$V93997 = $true  #SSH PermitTunnel no
-$V93999 = $true  #SSH ClientAliveCountMax 3
-$V94001 = $true  #SSH ClientAliveInterval 200
-$V94003 = $true  #SSH MaxSessions 1
-$V94005 = $true  #Authorized Keys
-$V94007 = $true  #Log Level
-$V94009 = $true  #Password Complexity
-$V94011 = $true  #Password Reuse
-$V94013 = $true  #Password Hashes
-$V94015 = $true  #Mob
-$V94017 = $true  #SSH Running
-$V94021 = $true  #Active Directory
-$V94023 = $true  #Authentication Proxy
-$V94025 = $true  #AD Admin Group
-$V94027 = $true  #2FA
-$V94029 = $true  #Shell Interactive Timeout
-$V94031 = $true  #Shell Timeout
-$V94033 = $true  #DCUI Timeout
-$V94035 = $true  #Core Dumps
-$V94037 = $true  #Persistent Logs
-$V94039 = $true  #NTP
-$V94041 = $true #Acceptance Level
-$V94043 = $true  #Isolate vMotion
-$V94045 = $true  #Protect Management
-$V94047 = $true  #Protect Storage traffic
+$V239258 = $true  #Lockdown Mode V93949 ESXI-67-000001
+$V239259 = $true  #DCUI.Access List V93951 ESXI-67-000002
+$V239260 = $true  #Lockdown Mode Exceptions V93953 ESXI-67-000003
+$V239261 = $true  #Syslog V93955 ESXI-67-000004
+$V239262 = $true  #Account Lock Failures V93957 ESXI-67-000005
+$V239263 = $true  #Account Unlock Timeout V93959 ESXI-67-000006
+$V239264 = $true  #Consent Banner Welcome V93961 ESXI-67-000007
+$V239265 = $true  #Consent Banner /etc/issue V93963 ESXI-67-000008
+$V239266 = $true  #SSH Banner V93965 ESXI-67-000009
+$V239267 = $true  #SSH Ciphers aes128-ctr,aes192-ctr,aes256-ctr V93967 ESXI-67-000010
+#$V93969 = $true  #SSH Protocol 2 V93969 ESXI-67-000011 #Removed
+$V239268 = $true  #SSH IgnoreRhosts yes V93971 ESXI-67-000012
+$V239269 = $true  #SSH HostbasedAuthentication no V93973 ESXI-67-000013
+$V239270 = $true  #SSH PermitRootLogin no V93975 ESXI-67-000014
+$V239271 = $true  #SSH PermitEmptyPasswords no V93977 ESXI-67-000015
+$V239272 = $true  #SSH PermitUserEnvironment no V93979 ESXI-67-000016
+#$V93981 = $true  #SSH MACs hmac-sha1,hmac-sha2-256,hmac-sha2-512 V93981 #Removed
+$V239273 = $true  #SSH GSSAPIAuthentication no V93983 ESXI-67-000018
+$V239274 = $true  #SSH KerberosAuthentication no V93985 ESXI-67-000019
+$V239275 = $true  #SSH StrictModes yes V93987 ESXI-67-000020
+$V239276 = $true  #SSH Compression no V93989 ESXI-67-000021
+$V239277 = $true  #SSH GatewayPorts no V93991 ESXI-67-000022
+$V239278 = $true  #SSH X11Forwarding no V93993 ESXI-67-000023
+$V239279 = $true  #SSH AcceptEnv no V93995 ESXI-67-000024
+$V239280 = $true  #SSH PermitTunnel no V93997 ESXI-67-000025
+$V239281 = $true  #SSH ClientAliveCountMax 3 V93999 ESXI-67-000026
+$V239282 = $true  #SSH ClientAliveInterval 200 V94001 ESXI-67-000027
+$V239283 = $true  #SSH MaxSessions 1 V94003 ESXI-67-000028
+$V239284 = $true  #Authorized Keys V94005 ESXI-67-000029
+$V239285 = $true  #Log Level V94007 ESXI-67-000030
+$V239286 = $true  #Password Complexity V94009 ESXI-67-000031
+$V239287 = $true  #Password Reuse V94011 ESXI-67-000032
+$V239288 = $true  #Password Hashes V94013 ESXI-67-000033
+$V239289 = $true  #Mob V94015 ESXI-67-000034
+$V239290 = $true  #SSH Running V94017 ESXI-67-000035
+$V239291 = $true  #disable ESXi Shell V94019 ESXI-67-000036
+$V239292 = $true  #Active Directory V94021 ESXI-67-000037
+$V239293 = $true  #Authentication Proxy V94023 ESXI-67-000038
+$V239294 = $true  #AD Admin Group V94025 ESXI-67-000039
+$V239295 = $false  #2FA multifactor authentication for local DCUI access V94027 ESXI-67-000040_________________________________________________________________________
+$V239296 = $true  #Shell Interactive Timeout V94029 ESXI-67-000041
+$V239297 = $true  #Shell Timeout V94031 ESXI-67-000042
+$V239298 = $true  #DCUI Timeout V94033 ESXI-67-000043
+$V239299 = $true  #Core Dumps V94035 ESXI-67-000044
+$V239300 = $true  #Persistent Logs V94037 ESXI-67-000045
+$V239301 = $true  #NTP V94039 ESXI-67-000046
+$V239302 = $true #Acceptance Level V94041 ESXI-67-000047
+$V239303 = $true  #Isolate vMotion V94043 ESXI-67-000048
+$V239304 = $true  #Protect Management V94045 ESXI-67-000049
+$V239305 = $true  #Protect Storage traffic V94047 ESXI-67-000050
 #$V94049 = $true  #VMK Separation #Removed from 6.7
-$V94051 = $true  #TCP/IP Stacks
-$V94053 = $true  #SNMP
-$V94055 = $true  #iSCSI CHAP
-$V94057 = $true  #Memory Salting
-$V94059 = $true  #Firewall Rules
-$V94061 = $true  #Default Firewall
-$V94063 = $true  #BPDU
-$V94065 = $true  #Forged Transmits
-$V94067 = $true  #MAC Changes
-$V94069 = $true  #Prom Mode
-$V94071 = $true  #dvFilter
-$V94073 = $true  #Native VLAN
-$V94075 = $true  #VLAN 4095
-$V94077 = $true  #Reserved VLANs
-$V94079 = $true  #DTP
-$V94081 = $true  #STP
-$V94083 = $true  #Required VLANs
-$V94349 = $true  #CIM Account
-$V94477 = $true  #Checksum
-$V94479 = $true  #Patch Level
+$V239306 = $true  #TCP/IP Stacks V94051 ESXI-67-000052
+$V239307 = $true  #SNMP V94053 ESXI-67-000053
+$V239308 = $true  #iSCSI CHAP V94055 ESXI-67-000054
+$V239309 = $true  #Memory Salting V94057 ESXI-67-000055
+$V239310 = $true  #Firewall Rules V94059 ESXI-67-000056
+$V239311 = $true  #Default Firewall V94061 ESXI-67-000057
+$V239312 = $true  #BPDU V94063 ESXI-67-000058
+$V239313 = $true  #Forged Transmits V94065 ESXI-67-000059
+$V239314 = $true  #MAC Changes V94067 ESXI-67-000060
+$V239315 = $true  #Prom Mode V94069 ESXI-67-000061
+$V239316 = $true  #dvFilter V94071 ESXI-67-000062
+$V239317 = $true  #Native VLAN V94073 ESXI-67-000063
+$V239318 = $true  #VLAN 4095 V94075 ESXI-67-000064
+$V239319 = $true  #Reserved VLANs V94077 ESXI-67-000065
+$V239320 = $true  #DTP V94079 ESXI-67-000066
+$V239321 = $true  #STP V94081 ESXI-67-000067
+$V239322 = $true  #Required VLANs V94083 ESXI-67-000068
+$V239323 = $true  #CIM Account V94349 ESXI-67-000070
+$V239324 = $true  #Checksum V94477 ESXI-67-000071
+$V239325 = $true  #Patch Level V94479 ESXI-67-000072
 #Removed from 6.7 $V94481 = $true  #TLS 1.2 SFCB
-$V94483 = $true  #TLS 1.2 ipFilter vSAN
-#Removed from 6.7 $V94485 = $true  #TLS 1.2 authd
-$V94487 = $true  #Secureboot
-$V94489 = $true  #DoD Cert
+$V239326 = $true  #TLS 1.2 ipFilter vSAN V94483 ESXI-67-000074
+#Removed from 6.7 $V94485 = $true  #TLS 1.2 authd 
+$V239327 = $true  #Secureboot V94487 ESXI-67-000076
+$V239328 = $true  #DoD Cert V94489 ESXI-67-000078
+$V239329 = $true  #host must not suppress warnings ESXI-67-000079 NEW
+$V239330 = $true  #central log host ESXI-67-100004 NEW
+$V239331 = $true  #FIPS-approved ciphers ESXI-67-100010 NEW
 
 #vCenter
 $V94725 = $true  #Permissions
@@ -1697,13 +1702,13 @@ Catch{
 #Initialize array for all ESXi report data
 $vmhostsarrayall = @()
 
-## ESXI-65-000001
+## ESXI-67-000001
 Try{
-    $VULID = "V-93949"
-    $STIGID = "ESXI-65-000001"
+    $VULID = "V-239258"
+    $STIGID = "ESXI-67-000001"
     $Title = "The ESXi host must limit the number of concurrent sessions to ten for all accounts and/or account types by enabling lockdown mode."
     $Severity = "CAT II"
-    If($V93949){
+    If($V239258){
         $esxititle01 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -1744,13 +1749,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000002
+## ESXI-67-000002
 Try{
-    $VULID = "V-93951"
-    $STIGID = "ESXI-65-000002"
+    $VULID = "V-239259"
+    $STIGID = "ESXI-67-000002"
     $Title = "The ESXi host must verify the DCUI.Access list."
     $Severity = "CAT III"
-    If($V93951){
+    If($V239259){
         $esxititle02 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.DCUIAccess.Keys
         $settingvalue = [string]$stigsettings.DCUIAccess.Values
@@ -1807,13 +1812,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000003
+## ESXI-67-000003
 Try{
-    $VULID = "V-93953"
-    $STIGID = "ESXI-65-000003"
+    $VULID = "V-239260"
+    $STIGID = "ESXI-67-000003"
     $Title = "The ESXi host must verify the exception users list for lockdown mode."
     $Severity = "CAT III"
-    If($V93953){
+    If($V239260){
         $esxititle03 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -1856,13 +1861,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000004
+## ESXI-67-000004
 Try{
-    $VULID = "V-93955"
-    $STIGID = "ESXI-65-000005"
+    $VULID = "V-239261"
+    $STIGID = "ESXI-67-000004"
     $Title = "Remote logging for ESXi hosts must be configured."
     $Severity = "CAT II"
-    If($V93955){
+    If($V239261){
         $esxititle04 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigsettings.syslogHost.Keys
         $settingvalue = [string]$stigsettings.syslogHost.Values
@@ -1919,13 +1924,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000005
+## ESXI-67-000005
 Try{
-    $VULID = "V-93957"
-    $STIGID = "ESXI-65-000005"
+    $VULID = "V-239262"
+    $STIGID = "ESXI-67-000005"
     $Title = "The ESXi host must enforce the limit of three consecutive invalid logon attempts by a user."
     $Severity = "CAT II"
-    If($V93957){
+    If($V239262){
         $esxititle05 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigsettings.accountLockFailures.Keys
         $settingvalue = [string]$stigsettings.accountLockFailures.Values
@@ -1982,13 +1987,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000006
+## ESXI-67-000006
 Try{
-    $VULID = "V-93959"
-    $STIGID = "ESXI-65-000006"
+    $VULID = "V-239263"
+    $STIGID = "ESXI-67-000006"
     $Title = "The ESXi host must enforce the unlock timeout of 15 minutes after a user account is locked out."
     $Severity = "CAT II"
-    If($V93959){
+    If($V239263){
         $esxititle06 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigsettings.accountUnlockTime.Keys
         $settingvalue = [string]$stigsettings.accountUnlockTime.Values
@@ -2045,13 +2050,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000007
+## ESXI-67-000007
 Try{
-    $VULID = "V-93961"
-    $STIGID = "ESXI-65-000007"
+    $VULID = "V-239264"
+    $STIGID = "ESXI-67-000007"
     $Title = "The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system."
     $Severity = "CAT II"
-    If($V93961){
+    If($V239264){
         $esxititle07 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -2094,13 +2099,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000008
+## ESXI-67-000008
 Try{
-    $VULID = "V-93963"
-    $STIGID = "ESXI-65-000008"
+    $VULID = "V-239265"
+    $STIGID = "ESXI-67-000008"
     $Title = "The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system."
     $Severity = "CAT II"
-    If($V93963){
+    If($V239265){
         $esxititle08 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.banner.Keys
         $settingvalue = [string]$stigsettings.banner.Values
@@ -2157,13 +2162,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000009
+## ESXI-67-000009
 Try{
-    $VULID = "V-93965"
-    $STIGID = "ESXI-65-000009"
+    $VULID = "V-239266"
+    $STIGID = "ESXI-67-000009"
     $Title = "The ESXi host SSH daemon must be configured with the Department of Defense (DoD) login banner."
     $Severity = "CAT II"
-    If($V93965){
+    If($V239266){
         $esxititle09 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -2206,13 +2211,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000010
+## ESXI-67-000010
 Try{
-    $VULID = "V-93967"
-    $STIGID = "ESXI-65-000010"
+    $VULID = "V-239267"
+    $STIGID = "ESXI-67-000010"
     $Title = "The ESXi host SSH daemon must use DoD-approved encryption to protect the confidentiality of remote access sessions."
     $Severity = "CAT II"
-    If($V93967){
+    If($V239267){
         $esxititle10 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -2304,13 +2309,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000012
+## ESXI-67-000012
 Try{
-    $VULID = "V-93971"
-    $STIGID = "ESXI-65-000012"
+    $VULID = "V-239268"
+    $STIGID = "ESXI-67-000012"
     $Title = "The ESXi host SSH daemon must ignore .rhosts files."
     $Severity = "CAT II"
-    If($V93971){
+    If($V239268){
         $esxititle12 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -2353,13 +2358,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000013
+## ESXI-67-000013
 Try{
-    $VULID = "V-93973"
-    $STIGID = "ESXI-65-000013"
+    $VULID = "V-239269"
+    $STIGID = "ESXI-67-000013"
     $Title = "The ESXi host SSH daemon must not allow host-based authentication."
     $Severity = "CAT II"
-    If($V93973){
+    If($V239269){
         $esxititle13 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -2402,13 +2407,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000014
+## ESXI-67-000014
 Try{
-    $VULID = "V-93975"
-    $STIGID = "ESXI-65-000014"
+    $VULID = "V-239270"
+    $STIGID = "ESXI-67-000014"
     $Title = "The ESXi host SSH daemon must not allow host-based authentication."
     $Severity = "CAT III"
-    If($V93975){
+    If($V239270){
         $esxititle14 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -2461,13 +2466,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000015
+## ESXI-67-000015
 Try{
-    $VULID = "V-93977"
-    $STIGID = "ESXI-65-000015"
+    $VULID = "V-239271"
+    $STIGID = "ESXI-67-000015"
     $Title = "The ESXi host SSH daemon must not allow authentication using an empty password."
     $Severity = "CAT I"
-    If($V93977){
+    If($V239271){
         $esxititle15 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -2510,13 +2515,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000016
+## ESXI-67-000016
 Try{
-    $VULID = "V-93979"
-    $STIGID = "ESXI-65-000016"
+    $VULID = "V-239272"
+    $STIGID = "ESXI-67-000016"
     $Title = "The ESXi host SSH daemon must not permit user environment settings."
     $Severity = "CAT II"
-    If($V93979){
+    If($V239272){
         $esxititle16 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -2608,13 +2613,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000018
+# ESXI-67-000018
 Try{
-    $VULID = "V-93983"
-    $STIGID = "ESXI-65-000018"
+    $VULID = "V-239273"
+    $STIGID = "ESXI-67-000018"
     $Title = "The ESXi host SSH daemon must not permit GSSAPI authentication."
     $Severity = "CAT III"
-    If($V93983){
+    If($V239273){
         $esxititle18 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -2657,13 +2662,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000019
+# ESXI-67-000019
 Try{
-    $VULID = "V-93985"
-    $STIGID = "ESXI-65-000019"
+    $VULID = "V-239274"
+    $STIGID = "ESXI-67-000019"
     $Title = "The ESXi host SSH daemon must not permit Kerberos authentication."
     $Severity = "CAT III"
-    If($V93985){
+    If($V239274){
         $esxititle19 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -2706,13 +2711,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000020
+# ESXI-67-000020
 Try{
-    $VULID = "V-93987"
-    $STIGID = "ESXI-65-000020"
+    $VULID = "V-239275"
+    $STIGID = "ESXI-67-000020"
     $Title = "The ESXi host SSH daemon must perform strict mode checking of home directory configuration files."
     $Severity = "CAT II"
-    If($V93987){
+    If($V239275){
         $esxititle20 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -2755,13 +2760,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000021
+# ESXI-67-000021
 Try{
-    $VULID = "V-93989"
-    $STIGID = "ESXI-65-000021"
+    $VULID = "V-239276"
+    $STIGID = "ESXI-67-000021"
     $Title = "The ESXi host SSH daemon must not allow compression or must only allow compression after successful authentication."
     $Severity = "CAT II"
-    If($V93989){
+    If($V239276){
         $esxititle21 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -2804,13 +2809,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000022
+# ESXI-67-000022
 Try{
-    $VULID = "V-93991"
-    $STIGID = "ESXI-65-000022"
+    $VULID = "V-239277"
+    $STIGID = "ESXI-67-000022"
     $Title = "The ESXi host SSH daemon must be configured to not allow gateway ports."
     $Severity = "CAT III"
-    If($V93991){
+    If($V239277){
         $esxititle22 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -2853,13 +2858,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000023
+# ESXI-67-000023
 Try{
-    $VULID = "V-93993"
-    $STIGID = "ESXI-65-000023"
+    $VULID = "V-239278"
+    $STIGID = "ESXI-67-000023"
     $Title = "The ESXi host SSH daemon must be configured to not allow X11 forwarding."
     $Severity = "CAT II"
-    If($V93993){
+    If($V239278){
         $esxititle23 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -2902,13 +2907,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000024
+# ESXI-67-000024
 Try{
-    $VULID = "V-93995"
-    $STIGID = "ESXI-65-000024"
+    $VULID = "V-239279"
+    $STIGID = "ESXI-67-000024"
     $Title = "The ESXi host SSH daemon must not accept environment variables from the client."
     $Severity = "CAT II"
-    If($V93995){
+    If($V239279){
         $esxititle24 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -2951,13 +2956,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000025
+# ESXI-67-000025
 Try{
-    $VULID = "V-93997"
-    $STIGID = "ESXI-65-000025"
+    $VULID = "V-239280"
+    $STIGID = "ESXI-67-000025"
     $Title = "The ESXi host SSH daemon must not permit tunnels."
     $Severity = "CAT II"
-    If($V93997){
+    If($V239280){
         $esxititle25 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3000,13 +3005,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000026
+# ESXI-67-000026
 Try{
-    $VULID = "V-93999"
-    $STIGID = "ESXI-65-000026"
+    $VULID = "V-239281"
+    $STIGID = "ESXI-67-000026"
     $Title = "The ESXi host SSH daemon must set a timeout count on idle sessions."
     $Severity = "CAT III"
-    If($V93999){
+    If($V239281){
         $esxititle26 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3049,13 +3054,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000027
+# ESXI-67-000027
 Try{
-    $VULID = "V-94001"
-    $STIGID = "ESXI-65-000027"
+    $VULID = "V-239282"
+    $STIGID = "ESXI-67-000027"
     $Title = "The ESXi hostSSH daemon must set a timeout interval on idle sessions."
     $Severity = "CAT III"
-    If($V94001){
+    If($V239282){
         $esxititle27 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3098,13 +3103,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000028
+# ESXI-67-000028
 Try{
-    $VULID = "V-94003"
-    $STIGID = "ESXI-65-000028"
+    $VULID = "V-239283"
+    $STIGID = "ESXI-67-000028"
     $Title = "The ESXi host SSH daemon must limit connections to a single session."
     $Severity = "CAT II"
-    If($V94003){
+    If($V239283){
         $esxititle28 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3147,13 +3152,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000029
+# ESXI-67-000029
 Try{
-    $VULID = "V-94005"
-    $STIGID = "ESXI-65-000029"
+    $VULID = "V-239284"
+    $STIGID = "ESXI-67-000029"
     $Title = "The ESXi host must remove keys from the SSH authorized_keys file."
     $Severity = "CAT II"
-    If($V94005){
+    If($V239284){
         $esxititle29 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3195,13 +3200,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000030
+## ESXI-67-000030
 Try{
-    $VULID = "V-94007"
-    $STIGID = "ESXI-65-000030"
+    $VULID = "V-239285"
+    $STIGID = "ESXI-67-000030"
     $Title = "The ESXi host must produce audit records containing information to establish what type of events occurred."
     $Severity = "CAT III"
-    If($V94007){
+    If($V239285){
         $esxititle30 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.logLevel.Keys
         $settingvalue = [string]$stigsettings.logLevel.Values
@@ -3258,13 +3263,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000031
+# ESXI-67-000031
 Try{
-    $VULID = "V-94009"
-    $STIGID = "ESXI-65-000031"
+    $VULID = "V-239286"
+    $STIGID = "ESXI-67-000031"
     $Title = "The ESXi host must enforce password complexity by requiring that at least one upper-case character be used."
     $Severity = "CAT II"
-    If($V94009){
+    If($V239286){
         $esxititle31 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.passComplexity.Keys
         $settingvalue = [string]$stigsettings.passComplexity.Values
@@ -3321,13 +3326,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000032
+# ESXI-67-000032
 Try{
-    $VULID = "V-94011"
-    $STIGID = "ESXI-65-000032"
+    $VULID = "V-239287"
+    $STIGID = "ESXI-67-000032"
     $Title = "The ESXi host must prohibit the reuse of passwords within five iterations."
     $Severity = "CAT II"
-    If($V94011){
+    If($V239287){
         $esxititle32 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.passHistory.Keys
         $settingvalue = [string]$stigsettings.passHistory.Values
@@ -3384,13 +3389,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000033
+# ESXI-67-000033
 Try{
-    $VULID = "V-94013"
-    $STIGID = "ESXI-65-000033"
+    $VULID = "V-239288"
+    $STIGID = "ESXI-67-000033"
     $Title = "The password hashes stored on the ESXi host must have been generated using a FIPS 140-2 approved cryptographic hashing algorithm."
     $Severity = "CAT II"
-    If($V94013){
+    If($V239288){
         $esxititle33 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3433,13 +3438,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000034
+## ESXI-67-000034
 Try{
-    $VULID = "V-94015"
-    $STIGID = "ESXI-65-000034"
+    $VULID = "V-239289"
+    $STIGID = "ESXI-67-000034"
     $Title = "The ESXi host must disable the Managed Object Browser (MOB)."
     $Severity = "CAT II"
-    If($V94015){
+    If($V239289){
         $esxititle34 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.enableMob.Keys
         $settingvalue = [string]$stigsettings.enableMob.Values
@@ -3496,13 +3501,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000035
+# ESXI-67-000035
 Try{
-    $VULID = "V-94017"
-    $STIGID = "ESXI-65-000035"
+    $VULID = "V-239290"
+    $STIGID = "ESXI-67-000035"
     $Title = "The ESXi host must be configured to disable non-essential capabilities by disabling SSH."
     $Severity = "CAT II"
-    If($V94017){
+    If($V239290){
         $esxititle35 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3545,13 +3550,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000036
+# ESXI-67-000036
 Try{
-    $VULID = "V-94019"
-    $STIGID = "ESXI-65-000036"
+    $VULID = "V-239291"
+    $STIGID = "ESXI-67-000036"
     $Title = "The ESXi host must disable ESXi Shell unless needed for diagnostics or troubleshooting."
     $Severity = "CAT II"
-    If($V94019){
+    If($V239291){
         $esxititle36 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3594,13 +3599,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000037
+# ESXI-67-000037
 Try{
-    $VULID = "V-94021"
-    $STIGID = "ESXI-65-000037"
+    $VULID = "V-239292"
+    $STIGID = "ESXI-67-000037"
     $Title = "The ESXi host must use Active Directory for local user authentication."
     $Severity = "CAT III"
-    If($V94021){
+    If($V239292){
         $esxititle37 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3644,13 +3649,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000038
+# ESXI-67-000038
 Try{
-    $VULID = "V-94023"
-    $STIGID = "ESXI-65-000038"
+    $VULID = "V-239293"
+    $STIGID = "ESXI-67-000038"
     $Title = "The ESXi host must use the vSphere Authentication Proxy to protect passwords when adding ESXi hosts to Active Directory."
     $Severity = "CAT II"
-    If($V94023){
+    If($V239293){
         $esxititle38 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -3672,13 +3677,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000039
+## ESXI-67-000039
 Try{
-    $VULID = "V-94025"
-    $STIGID = "ESXI-65-000039"
-    $Title = "The ESXi host must disable the Managed Object Browser (MOB)."
+    $VULID = "V-239294"
+    $STIGID = "ESXI-67-000039"
+    $Title = "Active Directory ESX Admin group membership must not be used when adding ESXi hosts to Active Directory."
     $Severity = "CAT III"
-    If($V94025){
+    If($V239294){
         $esxititle39 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.esxAdminsGroup.Keys
         $settingvalue = [string]$stigsettings.esxAdminsGroup.Values
@@ -3735,13 +3740,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000041
+## ESXI-67-000041
 Try{
-    $VULID = "V-94029"
-    $STIGID = "ESXI-65-000041"
+    $VULID = "V-239296"
+    $STIGID = "ESXI-67-000041"
     $Title = "The ESXi host must set a timeout to automatically disable idle sessions after 10 minutes."
     $Severity = "CAT II"
-    If($V94029){
+    If($V239296){
         $esxititle41 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.shellIntTimeout.Keys
         $settingvalue = [string]$stigsettings.shellIntTimeout.Values
@@ -3798,13 +3803,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000042
+## ESXI-67-000042
 Try{
-    $VULID = "V-94031"
-    $STIGID = "ESXI-65-000042"
+    $VULID = "V-239297"
+    $STIGID = "ESXI-67-000042"
     $Title = "The ESXi host must terminate shell services after 10 minutes."
     $Severity = "CAT II"
-    If($V94031){
+    If($V239297){
         $esxititle42 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.shellTimeout.Keys
         $settingvalue = [string]$stigsettings.shellTimeout.Values
@@ -3861,13 +3866,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000043
+## ESXI-67-000043
 Try{
-    $VULID = "V-94033"
-    $STIGID = "ESXI-65-000043"
+    $VULID = "V-239298"
+    $STIGID = "ESXI-67-000043"
     $Title = "The ESXi host must logout of the console UI after 10 minutes."
     $Severity = "CAT II"
-    If($V94033){
+    If($V239298){
         $esxititle43 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.DcuiTimeOut.Keys
         $settingvalue = [string]$stigsettings.DcuiTimeOut.Values
@@ -3924,13 +3929,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000044
+## ESXI-67-000044
 Try{
-    $VULID = "V-94035"
-    $STIGID = "ESXI-65-000044"
+    $VULID = "V-239299"
+    $STIGID = "ESXI-67-000044"
     $Title = "The ESXi host must enable kernel core dumps."
     $Severity = "CAT III"
-    If($V94035){
+    If($V239299){
         $esxititle44 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -3973,13 +3978,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000045
+## ESXI-67-000045
 Try{
-    $VULID = "V-94037"
-    $STIGID = "ESXI-65-000045"
+    $VULID = "V-239300"
+    $STIGID = "ESXI-67-000045"
     $Title = "The ESXi host must enable a persistent log location for all locally stored logs."
     $Severity = "CAT II"
-    If($V94037){
+    If($V239300){
         $esxititle45 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.syslogScratch.Keys
         $settingvalue = [string]$stigsettings.syslogScratch.Values
@@ -4036,13 +4041,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000046
+## ESXI-67-000046
 Try{
-    $VULID = "V-94039"
-    $STIGID = "ESXI-65-000046"
+    $VULID = "V-239301"
+    $STIGID = "ESXI-67-000046"
     $Title = "The ESXi host must configure NTP time synchronization."
     $Severity = "CAT II"
-    If($V94039){
+    If($V239301){
         $esxititle46 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -4065,7 +4070,7 @@ Try{
                         "Name" = $vmhost.name
                         "Setting" = "NTP Servers"
                         "Value" = [String]::Join(',',$currentntp)
-                    "Expected" = [String]::Join(',',$stigsettings.ntpServers)
+                        "Expected" = [String]::Join(',',$stigsettings.ntpServers)
                         "Severity" = $Severity
                         "Compliant" = $false
                     })
@@ -4096,13 +4101,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000047
+## ESXI-67-000047
 Try{
-    $VULID = "V-94041"
-    $STIGID = "ESXI-65-000047"
+    $VULID = "V-239302"
+    $STIGID = "ESXI-67-000047"
     $Title = "The ESXi Image Profile and VIB Acceptance Levels must be verified."
     $Severity = "CAT I"
-    If($V94041){
+    If($V239302){
         $esxititle47 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $esxiarray = @()
@@ -4146,13 +4151,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000048
+# ESXI-67-000048
 Try{
-    $VULID = "V-94043"
-    $STIGID = "ESXI-65-000048"
+    $VULID = "V-239303"
+    $STIGID = "ESXI-67-000048"
     $Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by isolating vMotion traffic."
     $Severity = "CAT II"
-    If($V94043){
+    If($V239303){
         $esxititle48 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4196,13 +4201,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000049
+# ESXI-67-000049
 Try{
-    $VULID = "V-94045"
-    $STIGID = "ESXI-65-000049"
+    $VULID = "V-239304"
+    $STIGID = "ESXI-67-000049"
     $Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by protecting ESXi management traffic."
     $Severity = "CAT II"
-    If($V94045){
+    If($V239304){
         $esxititle49 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4224,13 +4229,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000050
+# ESXI-67-000050
 Try{
-    $VULID = "V-94047"
-    $STIGID = "ESXI-65-000050"
+    $VULID = "V-239305"
+    $STIGID = "ESXI-67-000050"
     $Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by protecting IP based management traffic."
     $Severity = "CAT II"
-    If($V94047){
+    If($V239305){
         $esxititle50 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4252,13 +4257,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000052
+# ESXI-67-000052
 Try{
-    $VULID = "V-94051"
-    $STIGID = "ESXI-65-000052"
+    $VULID = "V-239306"
+    $STIGID = "ESXI-67-000052"
     $Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by utilizing different TCP/IP stacks where possible."
     $Severity = "CAT III"
-    If($V94051){
+    If($V239306){
         $esxititle52 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4280,13 +4285,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000053
+# ESXI-67-000053
 Try{
-    $VULID = "V-94053"
-    $STIGID = "ESXI-65-000053"
+    $VULID = "V-239307"
+    $STIGID = "ESXI-67-000053"
     $Title = "SNMP must be configured properly on the ESXi host."
     $Severity = "CAT II"
-    If($V94053){
+    If($V239307){
         $esxititle53 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4341,13 +4346,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000054
+# ESXI-67-000054
 Try{
-    $VULID = "V-94055"
-    $STIGID = "ESXI-65-000054"
+    $VULID = "V-239308"
+    $STIGID = "ESXI-67-000054"
     $Title = "The ESXi host must enable bidirectional CHAP authentication for iSCSI traffic."
     $Severity = "CAT III"
-    If($V94055){
+    If($V239308){
         $esxititle54 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4369,13 +4374,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000055
+## ESXI-67-000055
 Try{
-    $VULID = "V-94057"
-    $STIGID = "ESXI-65-000055"
+    $VULID = "V-239309"
+    $STIGID = "ESXI-67-000055"
     $Title = "The ESXi host must disable Inter-VM transparent page sharing."
     $Severity = "CAT III"
-    If($V94057){
+    If($V239309){
         $esxititle55 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.ShareForceSalting.Keys
         $settingvalue = [string]$stigsettings.ShareForceSalting.Values
@@ -4432,13 +4437,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000056
+# ESXI-67-000056
 Try{
-    $VULID = "V-94059"
-    $STIGID = "ESXI-65-000056"
+    $VULID = "V-239310"
+    $STIGID = "ESXI-67-000056"
     $Title = "The ESXi host must configure the firewall to restrict access to services running on the host."
     $Severity = "CAT II"
-    If($V94059){
+    If($V239310){
         $esxititle56 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4523,13 +4528,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000057
+# ESXI-67-000057
 Try{
-    $VULID = "V-94061"
-    $STIGID = "ESXI-65-000057"
+    $VULID = "V-239311"
+    $STIGID = "ESXI-67-000057"
     $Title = "The ESXi host must configure the firewall to block network traffic by default."
     $Severity = "CAT II"
-    If($V94061){
+    If($V239311){
         $esxititle57 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4573,13 +4578,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000058
+## ESXI-67-000058
 Try{
-    $VULID = "V-94063"
-    $STIGID = "ESXI-65-000058"
+    $VULID = "V-239312"
+    $STIGID = "ESXI-67-000058"
     $Title = "The ESXi host must enable BPDU filter on the host to prevent being locked out of physical switch ports with Portfast and BPDU Guard enabled."
     $Severity = "CAT III"
-    If($V94063){
+    If($V239312){
         $esxititle58 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.BlockGuestBPDU.Keys
         $settingvalue = [string]$stigsettings.BlockGuestBPDU.Values
@@ -4636,13 +4641,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000059
+# ESXI-67-000059
 Try{
-    $VULID = "V-94065"
-    $STIGID = "ESXI-65-000059"
+    $VULID = "V-239313"
+    $STIGID = "ESXI-67-000059"
     $Title = "The virtual switch Forged Transmits policy must be set to reject on the ESXi host."
     $Severity = "CAT II"
-    If($V94065){
+    If($V239313){
         $esxititle59 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4731,13 +4736,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000060
+# ESXI-67-000060
 Try{
-    $VULID = "V-94067"
-    $STIGID = "ESXI-65-000060"
+    $VULID = "V-239314"
+    $STIGID = "ESXI-67-000060"
     $Title = "The virtual switch MAC Address Change policy must be set to reject on the ESXi host."
     $Severity = "CAT I"
-    If($V94067){
+    If($V239314){
         $esxititle60 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4826,13 +4831,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000061
+# ESXI-67-000061
 Try{
-    $VULID = "V-94069"
-    $STIGID = "ESXI-65-000061"
+    $VULID = "V-239315"
+    $STIGID = "ESXI-67-000061"
     $Title = "The virtual switch Promiscuous Mode policy must be set to reject on the ESXi host."
     $Severity = "CAT II"
-    If($V94069){
+    If($V239315){
         $esxititle61 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -4921,13 +4926,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000062
+## ESXI-67-000062
 Try{
-    $VULID = "V-94071"
-    $STIGID = "ESXI-65-000062"
+    $VULID = "V-239316"
+    $STIGID = "ESXI-67-000062"
     $Title = "The ESXi host must prevent unintended use of the dvFilter network APIs."
     $Severity = "CAT II"
-    If($V94071){
+    If($V239316){
         $esxititle62 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.DVFilterBindIpAddress.Keys
         $settingvalue = [string]$stigsettings.DVFilterBindIpAddress.Values
@@ -4984,13 +4989,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000063
+# ESXI-67-000063
 Try{
-    $VULID = "V-94073"
-    $STIGID = "ESXI-65-000063"
+    $VULID = "V-239317"
+    $STIGID = "ESXI-67-000063"
     $Title = "For the ESXi host all port groups must be configured to a value other than that of the native VLAN."
     $Severity = "CAT II"
-    If($V94073){
+    If($V239317){
         $esxititle63 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -5046,13 +5051,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000064
+# ESXI-67-000064
 Try{
-    $VULID = "V-94075"
-    $STIGID = "ESXI-65-000064"
+    $VULID = "V-239318"
+    $STIGID = "ESXI-67-000064"
     $Title = "For the ESXi host all port groups must not be configured to VLAN 4095 unless Virtual Guest Tagging (VGT) is required."
     $Severity = "CAT II"
-    If($V94075){
+    If($V239318){
         $esxititle64 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -5108,13 +5113,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000065
+# ESXI-67-000065
 Try{
-    $VULID = "V-94077"
-    $STIGID = "ESXI-65-000065"
+    $VULID = "V-239319"
+    $STIGID = "ESXI-67-000065"
     $Title = "For the ESXi host all port groups must not be configured to VLAN values reserved by upstream physical switches."
     $Severity = "CAT II"
-    If($V94077){
+    If($V239319){
         $esxititle65 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -5170,13 +5175,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000072
+# ESXI-67-000072
 Try{
-    $VULID = "V-94479"
-    $STIGID = "ESXI-65-000072"
+    $VULID = "V-239325"
+    $STIGID = "ESXI-67-000072"
     $Title = "The ESXi host must have all security patches and updates installed."
     $Severity = "CAT I"
-    If($V94479){
+    If($V239325){
         $esxititle72 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -5216,13 +5221,13 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000074
+## ESXI-67-000074
 Try{
-    $VULID = "V-94483"
-    $STIGID = "ESXI-65-000074"
+    $VULID = "V-239326"
+    $STIGID = "ESXI-67-000074"
     $Title = "The ESXi host must exclusively enable TLS 1.2 for all endpoints."
     $Severity = "CAT II"
-    If($V94483){
+    If($V239326){
         $esxititle74 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = $stigsettings.sslProtocols.Keys
         $settingvalue = [string]$stigsettings.sslProtocols.Values
@@ -5279,13 +5284,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000076
+# ESXI-67-000076
 Try{
-    $VULID = "V-94487"
-    $STIGID = "ESXI-65-000076"
+    $VULID = "V-239327"
+    $STIGID = "ESXI-67-000076"
     $Title = "The ESXi host must enable Secure Boot."
     $Severity = "CAT II"
-    If($V94487){
+    If($V239327){
         $esxititle76 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -5307,13 +5312,13 @@ Catch{
     Exit -1
 }
 
-# ESXI-65-000078
+# ESXI-67-000078
 Try{
-    $VULID = "V-94489"
-    $STIGID = "ESXI-65-000078"
+    $VULID = "V-239328"
+    $STIGID = "ESXI-67-000078"
     $Title = "The ESXi host must use DoD-approved certificates."
     $Severity = "CAT II"
-    If($V94489){
+    If($V239328){
         $esxititle78 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
         Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
         $esxiarray = @()
@@ -5354,6 +5359,181 @@ Try{
 }
 Catch{
     Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
+    Write-Error $_.Exception
+    Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
+    Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
+    Exit -1
+}
+
+# ESXI-67-000079
+Try{
+    $VULID = "V-239329"
+    $STIGID = "ESXI-67-000079"
+    $Title = "The ESXi host must not suppress warnings that the local or remote shell sessions are enabled."
+    $Severity = "CAT II"
+    If($V239329){
+        $esxititle79 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
+        $settingname = [string]$stigsettings.SuppressShellWarning.Keys
+        $settingvalue = [string]$stigsettings.SuppressShellWarning.Values
+        Write-ToConsoleRed "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
+        $esxiarray = @()
+        ForEach($vmhost in $vmhostsv){
+            Write-ToConsole "...Checking ESXi Host $($vmhost.Name) for $settingname"        
+            If($vmhost.Config.option.key -contains "$settingname"){
+                $currentvalue = $vmhost.Config.option | where {$_.key -eq "$settingname"}
+                If($currentvalue.value -ne $settingvalue){
+                    $esxiarray += New-Object PSObject -Property ([ordered]@{
+                        "Name" = $vmhost.name
+                        "Setting" = $currentvalue.key
+                        "Value" = $currentvalue.value
+                        "Expected" = $settingvalue
+                        "Severity" = $Severity
+                        "Compliant" = $false
+                    })
+                }
+                Else{
+                    $esxiarray += New-Object PSObject -Property ([ordered]@{
+                        "Name" = $vmhost.name
+                        "Setting" = $currentvalue.key
+                        "Value" = $currentvalue.value
+                        "Expected" = $settingvalue
+                        "Severity" = $Severity
+                        "Compliant" = $true
+                    })
+                }
+            }
+            If($vmhost.Config.option.key -notcontains "$settingname"){
+                $esxiarray += New-Object PSObject -Property ([ordered]@{
+                    "Name" = $vmhost.name
+                    "Setting" = $settingname
+                    "Value" = "Setting does not exist on ESXi Host"
+                    "Expected" = $settingvalue
+                    "Severity" = $Severity
+                    "Compliant" = $false
+                })
+            }
+        }
+        $esxiarray79 = Set-TableRowColor -ArrayOfObjects $esxiarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmhostsarrayall += $esxiarray
+    }
+    Else{
+        Write-ToConsole "...Skipping disabled control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
+    }
+}
+Catch{
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
+    Write-Error $_.Exception
+    Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
+    Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
+    Exit -1
+}
+
+# ESXI-67-100004
+Try{
+    $VULID = "V-239330"
+    $STIGID = "ESXI-67-100004"
+    $Title = "The ESXi host must centrally review and analyze audit records from multiple components within the system by configuring remote logging."
+    $Severity = "CAT II"
+    If($V239330){
+        $esxititle100004 = "Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity Title: $Title"
+        $settingname = [string]$stigsettings.syslogHost.Keys
+        $settingvalue = [string]$stigsettings.syslogHost.Values
+        Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
+        $esxiarray = @()
+        ForEach($vmhost in $vmhostsv){
+            Write-ToConsole "...Checking ESXi Host $($vmhost.Name) for $settingname"        
+            If($vmhost.Config.option.key -contains "$settingname"){
+                $currentvalue = $vmhost.Config.option | where {$_.key -eq "$settingname"}
+                If($currentvalue.value -ne $settingvalue){
+                    $esxiarray += New-Object PSObject -Property ([ordered]@{
+                        "Name" = $vmhost.name
+                        "Setting" = $currentvalue.key
+                        "Value" = $currentvalue.value
+                        "Expected" = $settingvalue
+                        "Severity" = $Severity
+                        "Compliant" = $false
+                    })
+                }
+                Else{
+                    $esxiarray += New-Object PSObject -Property ([ordered]@{
+                        "Name" = $vmhost.name
+                        "Setting" = $currentvalue.key
+                        "Value" = $currentvalue.value
+                        "Expected" = $settingvalue
+                        "Severity" = $Severity
+                        "Compliant" = $true
+                    })
+                }
+            }
+            If($vmhost.Config.option.key -notcontains "$settingname"){
+                $esxiarray += New-Object PSObject -Property ([ordered]@{
+                    "Name" = $vmhost.name
+                    "Setting" = $settingname
+                    "Value" = "Setting does not exist on ESXi Host"
+                    "Expected" = $settingvalue
+                    "Severity" = $Severity
+                    "Compliant" = $false
+                })
+            }
+        }
+        $esxiarray100004 = Set-TableRowColor -ArrayOfObjects $esxiarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmhostsarrayall += $esxiarray
+    }
+    Else{
+        Write-ToConsole "...Skipping disabled control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title"
+    }
+}
+Catch{
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID Severity:$Severity with Title: $Title on $($vmhost.name)"
+    Write-Error $_.Exception
+    Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
+    Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
+    Exit -1
+}
+
+# ESXI-67-100010
+Try{
+    $VULID = "V-239331"
+    $STIGID = "ESXI-67-100010"
+    $Title = "The ESXi host SSH daemon must be configured to only use FIPS 140-2 approved ciphers."
+    $Severity = "CAT II"
+    If($V239331){
+        $esxititle100010 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+        Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
+        $esxiarray = @()
+        ForEach($vmhost in $vmhosts){
+            Write-ToConsole "...Checking ESXi Host $($vmhost.Name) for $title"        
+            $esxcli = Get-EsxCli -VMHost $vmhost -V2
+            $results = $esxcli.software.vib.list.Invoke() | Where {$_.Name -eq $stigsettings.stigVibRE -or $_.Name -eq $stigsettings.stigVibRD}
+            If($results){
+                $esxiarray += New-Object PSObject -Property ([ordered]@{
+                    "Name" = $vmhost.name
+                    "Setting" = "Ciphers aes128-ctr,aes192-ctr,aes256-ctr"
+                    "Value" = "Set by STIG VIB $($results.name)"
+                    "Expected" = "STIG VIB Installed"
+                    "Severity" = $Severity
+                    "Compliant" = $true
+                })
+            }Else{
+                $esxiarray += New-Object PSObject -Property ([ordered]@{
+                    "Name" = $vmhost.name
+                    "Setting" = "Ciphers aes128-ctr,aes192-ctr,aes256-ctr"
+                    "Value" = "STIG VIB NOT installed"
+                    "Expected" = "STIG VIB Installed"
+                    "Severity" = $Severity
+                    "Compliant" = $false
+                })
+            }
+        }
+        $esxiarray100010 = Set-TableRowColor -ArrayOfObjects $esxiarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmhostsarrayall += $esxiarray
+    }
+    Else{
+        Write-ToConsoleRed "...Skipping disabled control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
+    }
+}
+Catch{
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
     Write-Error $_.Exception
     Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
     Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
@@ -6661,6 +6841,12 @@ $report += Get-HtmlContentTable $esxiarray76
 $report += Get-HtmlContentClose
 $report += Get-HtmlContentOpen -HeaderText $esxititle78
 $report += Get-HtmlContentTable $esxiarray78
+$report += Get-HtmlContentClose
+$report += Get-HtmlContentOpen -HeaderText $esxititle100004
+$report += Get-HtmlContentTable $esxiarray100004
+$report += Get-HtmlContentClose
+$report += Get-HtmlContentOpen -HeaderText $esxititle100010
+$report += Get-HtmlContentTable $esxiarray100010
 $report += Get-HtmlContentClose
 $report += Get-HTMLTabContentClose
 
