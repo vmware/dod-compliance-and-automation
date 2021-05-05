@@ -4041,7 +4041,7 @@ Catch{
     Exit -1
 }
 
-## ESXI-65-000046
+## ESXI-67-000046
 Try{
     $VULID = "V-239301"
     $STIGID = "ESXI-67-000046"
