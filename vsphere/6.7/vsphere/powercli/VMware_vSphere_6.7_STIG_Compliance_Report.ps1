@@ -1,6 +1,6 @@
 <# 
 .SYNOPSIS 
-    Generates HTML Report to audit compliance against the vSphere 6.7 Draft STIG.
+    Generates HTML Report to audit compliance against the vSphere 6.7 Version 1 Release 1 STIG.
 .DESCRIPTION
     -This does not remediate any controls.
     -Not all controls can be checked programatically so this script does not cover those or policy type controls.
@@ -6549,7 +6549,7 @@ $report += Get-HTMLContentClose
 $report += Get-HTMLTabContentClose
 
 #Virtual Machines Tab
-$report += Get-HTMLTabContentopen -TabName $tabarray[1] -TabHeading "vSphere 6.7 Virtual Machine STIG (Draft) Version 1 Release 1"
+$report += Get-HTMLTabContentopen -TabName $tabarray[1] -TabHeading "vSphere 6.7 Virtual Machine STIG (Version 1 Release 1) Version 1 Release 1"
 $report += Get-HtmlContentOpen -HeaderText $vmtitle01
 $report += Get-HtmlContentTable $vmsarray01
 $report += Get-HtmlContentClose
@@ -6619,7 +6619,7 @@ $report += Get-HtmlContentClose
 $report += Get-HTMLTabContentClose
 
 #ESXi Tab
-$report += Get-HTMLTabContentopen -TabName $tabarray[2] -TabHeading "vSphere 6.7 ESXi STIG (Draft) Version 1 Release 1"
+$report += Get-HTMLTabContentopen -TabName $tabarray[2] -TabHeading "vSphere 6.7 ESXi STIG (Version 1 Release 1) Version 1 Release 1"
 $report += Get-HtmlContentOpen -HeaderText $esxititle01
 $report += Get-HtmlContentTable $esxiarray01
 $report += Get-HtmlContentClose
