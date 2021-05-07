@@ -1,6 +1,6 @@
 <# 
 .SYNOPSIS 
-    Generates HTML Report to audit compliance against the vSphere 6.7 Draft STIG.
+    Generates HTML Report to audit compliance against the vSphere 6.7 Version 1 Release 1 STIG.
 .DESCRIPTION
     -This does not remediate any controls.
     -Not all controls can be checked programatically so this script does not cover those or policy type controls.
@@ -121,48 +121,30 @@ $stigsettings = @{
 
 ##### Enable or Disable specific STIG Remediations #####
 #Virtual Machines
-$V94563 = $true #isolation.tools.copy.disable
-$V94565 = $true #isolation.tools.dnd.disable
-#Removed from 6.7 $V94567 = $true #isolation.tools.setGUIOptions.enable
-$V94569 = $true #isolation.tools.paste.disable
-$V94571 = $true #isolation.tools.diskShrink.disable
-$V94573 = $true #isolation.tools.diskWiper.disable
-$V94575 = $true #Independent, non-persistent disks
-$V94577 = $true #isolation.tools.hgfsServerSet.disable
-#Removed from 6.7 $V94579 = $true #isolation.tools.ghi.autologon.disable
-#Removed from 6.7 $V94581 = $true #isolation.tools.ghi.launchmenu.change
-#Removed from 6.7 $V94583 = $true #isolation.tools.memSchedFakeSampleStats.disable
-#Removed from 6.7 $V94585 = $true #isolation.tools.ghi.protocolhandler.info.disable
-#Removed from 6.7 $V94593 = $true #isolation.ghi.host.shellAction.disable
-#Removed from 6.7 $V94595 = $true #isolation.tools.ghi.trayicon.disable
-#Removed from 6.7 $V94597 = $true #isolation.tools.unity.disable
-#Removed from 6.7 $V94599 = $true #isolation.tools.unityInterlockOperation.disable
-#Removed from 6.7 $V94601 = $true #isolation.tools.unity.push.update.disable
-#Removed from 6.7 $V94603 = $true #isolation.tools.unity.taskbar.disable
-#Removed from 6.7 $V94605 = $true #isolation.tools.unityActive.disable
-#Removed from 6.7 $V94607 = $true #isolation.tools.unity.windowContents.disable
-#Removed from 6.7 $V94609 = $true #isolation.tools.vmxDnDVersionGet.disable
-#Removed from 6.7 $V94611 = $true #isolation.tools.guestDnDVersionSet.disable
-$V94613 = $true #Unauthorized floppy devices
-$V94615 = $true #Unauthorized CD/DVD devices
-$V94617 = $true #Unauthorized parallel devices
-$V94619 = $true #Unauthorized serial devices
-$V94621 = $true #Unauthorized USB devices
-$V94623 = $true #Console connection sharing
-$V94625 = $true #Console access through the VNC protocol must be disabled
-$V94627 = $true #tools.setinfo.sizeLimit
-$V94629 = $true #isolation.device.connectable.disable
-$V94631 = $true #tools.guestlib.enableHostInfo
-$V94633 = $true #sched.mem.pshare.salt
-$V94635 = $true #"ethernet*.filter*.name*"
-$V94637 = $true #System administrators must use templates to deploy virtual machines whenever possible.
-$V94639 = $true #Use of the virtual machine console must be minimized.
-$V94641 = $true #tools.guest.desktop.autolock
-$V94643 = $true #mks.enable3d
-$V94645 = $true #vMotion Encryption
-$V94647 = $true #Duplicates
-$V94649 = $true #Duplicates
-$V94651 = $true #Duplicates
+$V239332 = $true #isolation.tools.copy.disable V94563 VMCH-67-000001	
+$V239333 = $true #isolation.tools.dnd.disable V94565 VMCH-67-000002
+$V239334 = $true #isolation.tools.paste.disable V94569 VMCH-67-000003
+$V239335 = $true #isolation.tools.diskShrink.disable V94571 VMCH-67-000004
+$V239336 = $true #isolation.tools.diskWiper.disable V94573 VMCH-67-000005
+$V239337 = $true #Independent, non-persistent disks V94575 VMCH-67-000006	
+$V239338 = $true #isolation.tools.hgfsServerSet.disable V94577 VMCH-67-000007
+$V239339 = $true #Unauthorized floppy devices V94613 VMCH-67-000008
+$V239340 = $true #Unauthorized CD/DVD devices V94615 VMCH-67-000009
+$V239341 = $true #Unauthorized parallel devices V94617 VMCH-67-000010
+$V239342 = $true #Unauthorized serial devices V94619 VMCH-67-000011
+$V239343 = $true #Unauthorized USB devices V94621 VMCH-67-000012
+$V239344 = $true #Console connection sharing V94623 VMCH-67-000013
+$V239345 = $true #Console access through the VNC protocol must be disabled V94625 VMCH-67-000014
+$V239346 = $true #tools.setinfo.sizeLimit V94627 VMCH-67-000015
+$V239347 = $true #isolation.device.connectable.disable V94629 VMCH-67-000016
+$V239348 = $true #tools.guestlib.enableHostInfo V94631 VMCH-67-000017
+$V239349 = $true #sched.mem.pshare.salt V94633 VMCH-67-000018
+$V239350 = $true #"ethernet*.filter*.name*" V94635 VMCH-67-000019
+$V239351 = $true #System administrators must use templates to deploy virtual machines whenever possible. V94637 VMCH-67-000020
+$V239352 = $true #Use of the virtual machine console must be minimized. V94639 VMCH-67-000021
+$V239353 = $true #tools.guest.desktop.autolock V94641 VMCH-67-000022
+$V239354 = $true #mks.enable3d V94643 VMCH-67-000023
+$V242469 = $true #vMotion Encryption V94645 VMCH-67-000024
 
 #ESXi
 $V239258 = $true  #Lockdown Mode V93949 ESXI-67-000001
@@ -455,13 +437,13 @@ Catch
 #Initialize array for all VM report data
 $vmsarrayall = @()
 
-## VMCH-65-000001
+## VMCH-67-000001
 Try{
-    $VULID = "V-94563"
-    $STIGID = "VMCH-65-000001"
+    $VULID = "V-239332"
+    $STIGID = "VMCH-67-000001"
     $Title = "Copy operations must be disabled on the virtual machine."
     $Severity = "CAT III"
-    If($V94563){
+    If($V239332){
         $vmtitle01 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoCopyDisable.Keys
         $settingvalue = [string]$stigSettings.vmIsoCopyDisable.Values
@@ -518,13 +500,13 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000002
+## VMCH-67-000002
 Try{
-    $VULID = "V-94565"
-    $STIGID = "VMCH-65-000002"
+    $VULID = "V-239333"
+    $STIGID = "VMCH-67-000002"
     $Title = "Drag and drop operations must be disabled on the virtual machine."
     $Severity = "CAT III"
-    If($V94565){
+    If($V239333){
         $vmtitle02 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoDndDisable.Keys
         $settingvalue = [string]$stigSettings.vmIsoDndDisable.Values
@@ -581,16 +563,79 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000004
+## VMCH-67-000003
 Try{
-    $VULID = "V-94569"
-    $STIGID = "VMCH-65-000004"
+    $VULID = "V-239334"
+    $STIGID = "VMCH-67-000003"
     $Title = "Paste operations must be disabled on the virtual machine."
     $Severity = "CAT III"
-    If($V94569){
-        $vmtitle04 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239334){
+        $vmtitle03 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoPasteDisable.Keys
         $settingvalue = [string]$stigSettings.vmIsoPasteDisable.Values
+        Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
+        $vmsarray = @()
+        ForEach($vm in $vmsv){
+            Write-ToConsole "...Checking VM $($vm.Name) for $settingname"
+            If($vm.config.extraconfig.key -contains "$settingname"){
+                $currentvalue = $vm.config.extraconfig | where {$_.key -eq "$settingname"}
+                If($currentvalue.value -ne $settingvalue){
+                    $vmsarray += New-Object PSObject -Property ([ordered]@{
+                        "Name" = $vm.name
+                        "Setting" = $currentvalue.key
+                        "Value" = $currentvalue.value
+                        "Expected" = $settingvalue
+                        "Severity" = $Severity
+                        "Compliant" = $false
+                    })
+                }
+                Else{
+                    $vmsarray += New-Object PSObject -Property ([ordered]@{
+                        "Name" = $vm.name
+                        "Setting" = $currentvalue.key
+                        "Value" = $currentvalue.value
+                        "Expected" = $settingvalue
+                        "Severity" = $Severity
+                        "Compliant" = $true
+                    })
+                }
+            }
+            If($vm.config.extraconfig.key -notcontains "$settingname"){
+                $vmsarray += New-Object PSObject -Property ([ordered]@{
+                    "Name" = $vm.name
+                    "Setting" = $settingname
+                    "Value" = "Setting does not exist on VM"
+                    "Expected" = $settingvalue
+                    "Severity" = $Severity
+                    "Compliant" = $false
+                })
+            }
+        }
+        $vmsarray03 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarrayall += $vmsarray
+    }
+    Else{
+        Write-ToConsoleRed "...Skipping disabled control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
+    }
+}
+Catch{
+    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
+    Write-Error $_.Exception
+    Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
+    Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
+    Exit -1
+}
+
+## VMCH-67-000004
+Try{
+    $VULID = "V-239335"
+    $STIGID = "VMCH-67-000004"
+    $Title = "Virtual disk shrinking must be disabled on the virtual machine."
+    $Severity = "CAT II"
+    If($V239335){
+        $vmtitle04 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+        $settingname = [string]$stigSettings.vmIsoDiskShrink.Keys
+        $settingvalue = [string]$stigSettings.vmIsoDiskShrink.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -644,16 +689,16 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000005
+## VMCH-67-000005
 Try{
-    $VULID = "V-94571"
-    $STIGID = "VMCH-65-000005"
-    $Title = "Virtual disk shrinking must be disabled on the virtual machine."
+    $VULID = "V-239336"
+    $STIGID = "VMCH-67-000005"
+    $Title = "Virtual disk erasure must be disabled on the virtual machine."
     $Severity = "CAT II"
-    If($V94571){
+    If($V239336){
         $vmtitle05 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
-        $settingname = [string]$stigSettings.vmIsoDiskShrink.Keys
-        $settingvalue = [string]$stigSettings.vmIsoDiskShrink.Values
+        $settingname = [string]$stigSettings.vmIsoDiskWiper.Keys
+        $settingvalue = [string]$stigSettings.vmIsoDiskWiper.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vmsv){
@@ -707,77 +752,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000006
+## VMCH-67-000006
 Try{
-    $VULID = "V-94573"
-    $STIGID = "VMCH-65-000006"
-    $Title = "Virtual disk erasure must be disabled on the virtual machine."
-    $Severity = "CAT II"
-    If($V94573){
-        $vmtitle06 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
-        $settingname = [string]$stigSettings.vmIsoDiskWiper.Keys
-        $settingvalue = [string]$stigSettings.vmIsoDiskWiper.Values
-        Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
-        $vmsarray = @()
-        ForEach($vm in $vmsv){
-            Write-ToConsole "...Checking VM $($vm.Name) for $settingname"
-            If($vm.config.extraconfig.key -contains "$settingname"){
-                $currentvalue = $vm.config.extraconfig | where {$_.key -eq "$settingname"}
-                If($currentvalue.value -ne $settingvalue){
-                    $vmsarray += New-Object PSObject -Property ([ordered]@{
-                        "Name" = $vm.name
-                        "Setting" = $currentvalue.key
-                        "Value" = $currentvalue.value
-                        "Expected" = $settingvalue
-                        "Severity" = $Severity
-                        "Compliant" = $false
-                    })
-                }
-                Else{
-                    $vmsarray += New-Object PSObject -Property ([ordered]@{
-                        "Name" = $vm.name
-                        "Setting" = $currentvalue.key
-                        "Value" = $currentvalue.value
-                        "Expected" = $settingvalue
-                        "Severity" = $Severity
-                        "Compliant" = $true
-                    })
-                }
-            }
-            If($vm.config.extraconfig.key -notcontains "$settingname"){
-                $vmsarray += New-Object PSObject -Property ([ordered]@{
-                    "Name" = $vm.name
-                    "Setting" = $settingname
-                    "Value" = "Setting does not exist on VM"
-                    "Expected" = $settingvalue
-                    "Severity" = $Severity
-                    "Compliant" = $false
-                })
-            }
-        }
-        $vmsarray06 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
-        $vmsarrayall += $vmsarray
-    }
-    Else{
-        Write-ToConsoleRed "...Skipping disabled control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
-    }
-}
-Catch{
-    Write-Error "Failed to check control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vm.name)"
-    Write-Error $_.Exception
-    Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
-    Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
-    Exit -1
-}
-
-## VMCH-65-000007
-Try{
-    $VULID = "V-94575"
-    $STIGID = "VMCH-65-000007"
+    $VULID = "V-239337"
+    $STIGID = "VMCH-67-000006"
     $Title = "Independent, non-persistent disks must be not be used on the virtual machine."
     $Severity = "CAT II"
-    If($V94575){
-        $vmtitle07 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239337){
+        $vmtitle06 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vms){
@@ -801,7 +783,7 @@ Try{
                 })
             }
         }
-        $vmsarray07 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray06 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -816,14 +798,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000008
+## VMCH-67-000007
 Try{
-    $VULID = "V-94577"
-    $STIGID = "VMCH-65-000008"
+    $VULID = "V-239338"
+    $STIGID = "VMCH-67-000007"
     $Title = "HGFS file transfers must be disabled on the virtual machine."
     $Severity = "CAT II"
-    If($V94577){
-        $vmtitle08 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239338){
+        $vmtitle07 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmIsoHgfsDisable.Keys
         $settingvalue = [string]$stigSettings.vmIsoHgfsDisable.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
@@ -864,7 +846,7 @@ Try{
                 })
             }
         }
-        $vmsarray08 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray07 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -879,14 +861,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000028
+## VMCH-67-000008
 Try{
-    $VULID = "V-94613"
-    $STIGID = "VMCH-65-000028"
+    $VULID = "V-239339"
+    $STIGID = "VMCH-67-000008"
     $Title = "Unauthorized floppy devices must be disconnected on the virtual machine."
     $Severity = "CAT II"
-    If($V94613){
-        $vmtitle28 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239339){
+        $vmtitle08 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vms){
@@ -910,7 +892,7 @@ Try{
                 })
             }
         }
-        $vmsarray28 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray08 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -925,14 +907,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000029
+## VMCH-67-000009
 Try{
-    $VULID = "V-94615"
-    $STIGID = "VMCH-65-000029"
+    $VULID = "V-239340"
+    $STIGID = "VMCH-67-000009"
     $Title = "Unauthorized CD/DVD devices must be disconnected on the virtual machine."
     $Severity = "CAT III"
-    If($V94615){
-        $vmtitle29 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239340){
+        $vmtitle09 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vms){
@@ -956,7 +938,7 @@ Try{
                 })
             }
         }
-        $vmsarray29 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray09 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -971,14 +953,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000030
+## VMCH-67-000010
 Try{
-    $VULID = "V-94617"
-    $STIGID = "VMCH-65-000030"
+    $VULID = "V-239341"
+    $STIGID = "VMCH-67-000010"
     $Title = "Unauthorized parallel devices must be disconnected on the virtual machine."
     $Severity = "CAT II"
-    If($V94617){
-        $vmtitle30 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239341){
+        $vmtitle10 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vms){
@@ -1002,7 +984,7 @@ Try{
                 })
             }
         }
-        $vmsarray30 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray10 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1017,14 +999,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000031
+## VMCH-67-000011
 Try{
-    $VULID = "V-94619"
-    $STIGID = "VMCH-65-000031"
+    $VULID = "V-239342"
+    $STIGID = "VMCH-67-000011"
     $Title = "Unauthorized serial devices must be disconnected on the virtual machine."
     $Severity = "CAT II"
-    If($V94619){
-        $vmtitle31 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239342){
+        $vmtitle11 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vms){
@@ -1048,7 +1030,7 @@ Try{
                 })
             }
         }
-        $vmsarray31 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray11 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1063,14 +1045,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000032
+## VMCH-67-000012
 Try{
-    $VULID = "V-94621"
-    $STIGID = "VMCH-65-000032"
+    $VULID = "V-239343"
+    $STIGID = "VMCH-67-000012"
     $Title = "Unauthorized USB devices must be disconnected on the virtual machine."
     $Severity = "CAT II"
-    If($V94621){
-        $vmtitle32 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239343){
+        $vmtitle12 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vms){
@@ -1094,7 +1076,7 @@ Try{
                 })
             }
         }
-        $vmsarray32 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray12 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1109,14 +1091,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000033
+## VMCH-67-000013
 Try{
-    $VULID = "V-94623"
-    $STIGID = "VMCH-65-000033"
+    $VULID = "V-239344"
+    $STIGID = "VMCH-67-000013"
     $Title = "Console connection sharing must be limited on the virtual machine."
     $Severity = "CAT II"
-    If($V94623){
-        $vmtitle33 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239344){
+        $vmtitle13 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmRemoteMax.Keys
         $settingvalue = [string]$stigSettings.vmRemoteMax.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
@@ -1157,7 +1139,7 @@ Try{
                 })
             }
         }
-        $vmsarray33 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray13 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1172,14 +1154,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000034
+## VMCH-67-000014
 Try{
-    $VULID = "V-94625"
-    $STIGID = "VMCH-65-000034"
+    $VULID = "V-239345"
+    $STIGID = "VMCH-67-000014"
     $Title = "Console access through the VNC protocol must be disabled on the virtual machine."
     $Severity = "CAT II"
-    If($V94625){
-        $vmtitle34 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239345){
+        $vmtitle14 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmRemoteVnc.Keys
         $settingvalue = [string]$stigSettings.vmRemoteVnc.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
@@ -1220,7 +1202,7 @@ Try{
                 })
             }
         }
-        $vmsarray34 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray14 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1235,14 +1217,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000036
+## VMCH-67-000015
 Try{
-    $VULID = "V-94627"
-    $STIGID = "VMCH-65-000036"
+    $VULID = "V-239346"
+    $STIGID = "VMCH-67-000015"
     $Title = "Informational messages from the virtual machine to the VMX file must be limited on the virtual machine."
     $Severity = "CAT III"
-    If($V94627){
-        $vmtitle36 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239346){
+        $vmtitle15 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmToolsInfoSize.Keys
         $settingvalue = [string]$stigSettings.vmToolsInfoSize.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
@@ -1283,7 +1265,7 @@ Try{
                 })
             }
         }
-        $vmsarray36 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray15 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1298,14 +1280,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000037
+## VMCH-67-000016
 Try{
-    $VULID = "V-94629"
-    $STIGID = "VMCH-65-000037"
+    $VULID = "V-239347"
+    $STIGID = "VMCH-67-000016"
     $Title = "Unauthorized removal, connection and modification of devices must be prevented on the virtual machine."
     $Severity = "CAT II"
-    If($V94629){
-        $vmtitle37 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239347){
+        $vmtitle16 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmDevConnDisable.Keys
         $settingvalue = [string]$stigSettings.vmDevConnDisable.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
@@ -1346,7 +1328,7 @@ Try{
                 })
             }
         }
-        $vmsarray37 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray16 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1361,14 +1343,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000039
+## VMCH-67-000017
 Try{
-    $VULID = "V-94631"
-    $STIGID = "VMCH-65-000039"
+    $VULID = "V-239348"
+    $STIGID = "VMCH-67-000017"
     $Title = "The virtual machine must not be able to obtain host information from the hypervisor."
     $Severity = "CAT II"
-    If($V94631){
-        $vmtitle39 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239348){
+        $vmtitle17 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmEnableHostInfo.Keys
         $settingvalue = [string]$stigSettings.vmEnableHostInfo.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
@@ -1409,7 +1391,7 @@ Try{
                 })
             }
         }
-        $vmsarray39 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray17 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1424,14 +1406,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000040
+## VMCH-67-000018
 Try{
-    $VULID = "V-94633"
-    $STIGID = "VMCH-65-000040"
+    $VULID = "V-239349"
+    $STIGID = "VMCH-67-000018"
     $Title = "Shared salt values must be disabled on the virtual machine."
     $Severity = "CAT III"
-    If($V94633){
-        $vmtitle40 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239349){
+        $vmtitle18 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = "sched.mem.pshare.salt"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
@@ -1459,7 +1441,7 @@ Try{
                 })
             }
         }
-        $vmsarray40 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray18 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1474,14 +1456,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000041
+## VMCH-67-000019
 Try{
-    $VULID = "V-94635"
-    $STIGID = "VMCH-65-000041"
+    $VULID = "V-239350"
+    $STIGID = "VMCH-67-000019"
     $Title = "Access to virtual machines through the dvfilter network APIs must be controlled."
     $Severity = "CAT III"
-    If($V94635){
-        $vmtitle41 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239350){
+        $vmtitle19 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = "ethernet*.filter*.name"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
@@ -1509,7 +1491,7 @@ Try{
                 })
             }
         }
-        $vmsarray41 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray19 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1524,14 +1506,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000044
+## VMCH-67-000022
 Try{
-    $VULID = "V-94641"
-    $STIGID = "VMCH-65-000044"
+    $VULID = "V-239353"
+    $STIGID = "VMCH-67-000022"
     $Title = "The virtual machine guest operating system must be locked when the last console connection is closed."
     $Severity = "CAT II"
-    If($V94641){
-        $vmtitle44 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239353){
+        $vmtitle22 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmGuestLock.Keys
         $settingvalue = [string]$stigSettings.vmGuestLock.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
@@ -1571,7 +1553,7 @@ Try{
                 })
             }
         }
-        $vmsarray44 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray22 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1586,14 +1568,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000045
+## VMCH-67-000023
 Try{
-    $VULID = "V-94643"
-    $STIGID = "VMCH-65-000045"
+    $VULID = "V-239354"
+    $STIGID = "VMCH-67-000023"
     $Title = "3D features on the virtual machine must be disabled when not required."
     $Severity = "CAT III"
-    If($V94643){
-        $vmtitle45 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V239354){
+        $vmtitle23 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         $settingname = [string]$stigSettings.vmMks3D.Keys
         $settingvalue = [string]$stigSettings.vmMks3D.Values
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
@@ -1634,7 +1616,7 @@ Try{
                 })
             }
         }
-        $vmsarray45 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray23 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -1649,14 +1631,14 @@ Catch{
     Exit -1
 }
 
-## VMCH-65-000046
+## VMCH-67-000024
 Try{
-    $VULID = "V-94645"
-    $STIGID = "VMCH-65-000046"
+    $VULID = "V-242469"
+    $STIGID = "VMCH-67-000024"
     $Title = "Encryption must be enabled for vMotion on the virtual machine."
     $Severity = "CAT II"
-    If($V94645){
-        $vmtitle46 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
+    If($V242469){
+        $vmtitle24 = "Vulnerability ID:$VULID STIG ID:$STIGID Title: $Title"
         Write-ToConsole "...Checking STIG Control with Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $vmsarray = @()
         ForEach($vm in $vms){
@@ -1681,7 +1663,7 @@ Try{
                 })
             }
         }
-        $vmsarray46 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
+        $vmsarray24 = Set-TableRowColor -ArrayOfObjects $vmsarray -Red '$this.Compliant -eq $false' | Sort-Object -Property @{Expression = {$_.RowColor}; Ascending = $false},Name
         $vmsarrayall += $vmsarray
     }
     Else{
@@ -6567,12 +6549,15 @@ $report += Get-HTMLContentClose
 $report += Get-HTMLTabContentClose
 
 #Virtual Machines Tab
-$report += Get-HTMLTabContentopen -TabName $tabarray[1] -TabHeading "vSphere 6.7 Virtual Machine STIG (Draft) Version 1 Release 1"
+$report += Get-HTMLTabContentopen -TabName $tabarray[1] -TabHeading "vSphere 6.7 Virtual Machine STIG (Version 1 Release 1) Version 1 Release 1"
 $report += Get-HtmlContentOpen -HeaderText $vmtitle01
 $report += Get-HtmlContentTable $vmsarray01
 $report += Get-HtmlContentClose
 $report += Get-HtmlContentOpen -HeaderText $vmtitle02
 $report += Get-HtmlContentTable $vmsarray02
+$report += Get-HtmlContentClose
+$report += Get-HtmlContentOpen -HeaderText $vmtitle03
+$report += Get-HtmlContentTable $vmsarray03
 $report += Get-HtmlContentClose
 $report += Get-HtmlContentOpen -HeaderText $vmtitle04
 $report += Get-HtmlContentTable $vmsarray04
@@ -6589,55 +6574,52 @@ $report += Get-HtmlContentClose
 $report += Get-HtmlContentOpen -HeaderText $vmtitle08
 $report += Get-HtmlContentTable $vmsarray08
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle28
-$report += Get-HtmlContentTable $vmsarray28
+$report += Get-HtmlContentOpen -HeaderText $vmtitle09
+$report += Get-HtmlContentTable $vmsarray09
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle29
-$report += Get-HtmlContentTable $vmsarray29
+$report += Get-HtmlContentOpen -HeaderText $vmtitle10
+$report += Get-HtmlContentTable $vmsarray10
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle30
-$report += Get-HtmlContentTable $vmsarray30
+$report += Get-HtmlContentOpen -HeaderText $vmtitle11
+$report += Get-HtmlContentTable $vmsarray11
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle31
-$report += Get-HtmlContentTable $vmsarray31
+$report += Get-HtmlContentOpen -HeaderText $vmtitle12
+$report += Get-HtmlContentTable $vmsarray12
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle32
-$report += Get-HtmlContentTable $vmsarray32
+$report += Get-HtmlContentOpen -HeaderText $vmtitle13
+$report += Get-HtmlContentTable $vmsarray13
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle33
-$report += Get-HtmlContentTable $vmsarray33
+$report += Get-HtmlContentOpen -HeaderText $vmtitle14
+$report += Get-HtmlContentTable $vmsarray14
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle34
-$report += Get-HtmlContentTable $vmsarray34
+$report += Get-HtmlContentOpen -HeaderText $vmtitle15
+$report += Get-HtmlContentTable $vmsarray15
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle36
-$report += Get-HtmlContentTable $vmsarray36
+$report += Get-HtmlContentOpen -HeaderText $vmtitle16
+$report += Get-HtmlContentTable $vmsarray16
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle37
-$report += Get-HtmlContentTable $vmsarray37
+$report += Get-HtmlContentOpen -HeaderText $vmtitle17
+$report += Get-HtmlContentTable $vmsarray17
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle39
-$report += Get-HtmlContentTable $vmsarray39
+$report += Get-HtmlContentOpen -HeaderText $vmtitle18
+$report += Get-HtmlContentTable $vmsarray18
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle40
-$report += Get-HtmlContentTable $vmsarray40
+$report += Get-HtmlContentOpen -HeaderText $vmtitle19
+$report += Get-HtmlContentTable $vmsarray19
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle41
-$report += Get-HtmlContentTable $vmsarray41
+$report += Get-HtmlContentOpen -HeaderText $vmtitle22
+$report += Get-HtmlContentTable $vmsarray22
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle44
-$report += Get-HtmlContentTable $vmsarray44
+$report += Get-HtmlContentOpen -HeaderText $vmtitle23
+$report += Get-HtmlContentTable $vmsarray23
 $report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle45
-$report += Get-HtmlContentTable $vmsarray45
-$report += Get-HtmlContentClose
-$report += Get-HtmlContentOpen -HeaderText $vmtitle46
-$report += Get-HtmlContentTable $vmsarray46
+$report += Get-HtmlContentOpen -HeaderText $vmtitle24
+$report += Get-HtmlContentTable $vmsarray24
 $report += Get-HtmlContentClose
 $report += Get-HTMLTabContentClose
 
 #ESXi Tab
-$report += Get-HTMLTabContentopen -TabName $tabarray[2] -TabHeading "vSphere 6.7 ESXi STIG (Draft) Version 1 Release 1"
+$report += Get-HTMLTabContentopen -TabName $tabarray[2] -TabHeading "vSphere 6.7 ESXi STIG (Version 1 Release 1) Version 1 Release 1"
 $report += Get-HtmlContentOpen -HeaderText $esxititle01
 $report += Get-HtmlContentTable $esxiarray01
 $report += Get-HtmlContentClose
@@ -6841,6 +6823,9 @@ $report += Get-HtmlContentTable $esxiarray76
 $report += Get-HtmlContentClose
 $report += Get-HtmlContentOpen -HeaderText $esxititle78
 $report += Get-HtmlContentTable $esxiarray78
+$report += Get-HtmlContentClose
+$report += Get-HtmlContentOpen -HeaderText $esxititle79
+$report += Get-HtmlContentTable $esxiarray79
 $report += Get-HtmlContentClose
 $report += Get-HtmlContentOpen -HeaderText $esxititle100004
 $report += Get-HtmlContentTable $esxiarray100004
