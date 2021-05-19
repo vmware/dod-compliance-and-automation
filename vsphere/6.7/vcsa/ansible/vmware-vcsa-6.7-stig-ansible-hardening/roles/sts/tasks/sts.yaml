@@ -542,7 +542,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]/x:url-pattern'
-    value: '*'
+    value: '/*'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee

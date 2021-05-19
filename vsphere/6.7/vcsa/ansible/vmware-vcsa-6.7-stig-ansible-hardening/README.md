@@ -1,10 +1,10 @@
 # vmware-vcsa-6.7-stig-ansible-hardening
-An ansible playbook to harden VMware vCenter Server Appliance 6.7 against the draft DISA vSphere 6.7 STIG
+An ansible playbook to harden VMware vCenter Server Appliance 6.7 against the DISA vSphere 6.7 STIG
 
 ## Requirements
-- Draft vSphere 6.7 DISA STIG
-- Tested with Ansible 2.8.5
-- Tested with vCenter 6.7 U3
+- VMware vSphere 6.7 DISA STIG Release 1 Version 1
+- Tested with Ansible 2.9.6
+- Tested with vCenter 6.7 U3m
 - Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 10 to run an Unbuntu box for example
 
 ## Status
