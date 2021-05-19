@@ -2,14 +2,14 @@
 
 ---
 
- #---------- Ansible version 2.8.5 --------#
+ #---------- Ansible version 2.9.6 --------#
 
 
 ############################################
 
 # Title: ESX Agent Manager must limit the amount of time that each TCP connection is kept alive
 
-- name: VCEM-67-000001 - ESX Agent Manager must limit the amount of time that each TCP connection is kept alive
+- name: VCEM-67-000001 - ESX Agent Manager must limit the amount of time that each TCP connection is kept alive.
   xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
@@ -452,7 +452,7 @@
   xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]/x:url-pattern'
-    value: '*'
+    value: '/*'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee

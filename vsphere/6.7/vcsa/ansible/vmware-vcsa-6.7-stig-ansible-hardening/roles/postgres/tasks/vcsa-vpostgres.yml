@@ -9,22 +9,7 @@
 ############################################
 
 # Title: vPostgres must limit the number of connections.
-
-- name: VCPG-67-000001 - vPostgres must limit the number of connections.
-  lineinfile:
-    path: /storage/db/vpostgres/postgresql.conf
-    state: present
-    regexp: '^max_connections.*$'
-    line: "max_connections = {{ var_postgres_conf_max_connections }}                   # (change requires restart)"
-    firstmatch: yes
-  tags:
-  - VCPG-67-000001
-  - conf
-  - vpostgres
-  notify:
-  - restart vpostgres
-  when:
-  - run_postgres_conf_max_connections | bool
+# VCPG-67-000001 requires manual remediation
 
 ############################################
 
@@ -426,43 +411,3 @@
   - reload vpostgres config
   when:
   - run_postgres_conf_client_encoding | bool
-
-############################################
-
-# Title: The vPostgres database must set log_connections to on.
-
-- name: VCPG-67-000026 - The vPostgres database must set log_connections to on.
-  lineinfile:
-    path: /storage/db/vpostgres/postgresql.conf
-    state: present
-    regexp: '^log_connections.*$'
-    line: log_connections = {{ var_postgres_conf_log_connections }}
-    firstmatch: yes
-  tags:
-  - VCPG-67-000026
-  - conf
-  - vpostgres
-  notify:
-  - reload vpostgres config
-  when:
-  - run_postgres_conf_log_connections | bool
-
-############################################
-
-# Title: The vPostgres database must set log_disconnections to on.
-
-- name: VCPG-67-000027 - The vPostgres database must set log_disconnections to on.
-  lineinfile:
-    path: /storage/db/vpostgres/postgresql.conf
-    state: present
-    regexp: '^log_disconnections.*$'
-    line: log_disconnections = {{ var_postgres_conf_log_disconnections }}
-    firstmatch: yes
-  tags:
-  - VCPG-67-000027
-  - conf
-  - vpostgres
-  notify:
-  - reload vpostgres config
-  when:
-  - run_postgres_conf_log_disconnections | bool

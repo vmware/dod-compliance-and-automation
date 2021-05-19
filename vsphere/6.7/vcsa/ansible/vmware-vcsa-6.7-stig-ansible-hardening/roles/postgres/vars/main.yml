@@ -1,7 +1,6 @@
 # vPostgres
 # /storage/db/vpostgres/postgresql.conf
-var_postgres_conf_max_connections: 100
-var_postgres_conf_log_line_prefix: "'%m %d %u %r %p %l %c '"
+var_postgres_conf_log_line_prefix: "'%m %c %x %d %u %r %p %l '"
 var_postgres_conf_log_truncate_on_rotation: "on"
 var_postgres_conf_port: 5432
 var_postgres_conf_ssl: "on"
