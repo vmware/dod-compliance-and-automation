@@ -11,10 +11,11 @@ application.
 
     An attacker can also enter Unicode characters into hosted applications in
 an effort to break out of the document home or root home directory or to bypass
-security checks. VMware utilizes the standard Tomcat SetCharacterEncodingFilter
-to provide a layer of defense against character encoding attacks. Filters are
-Java objects that performs filtering tasks on either the request to a resource
-(a servlet or static content), or on the response from a resource, or both.
+security checks. VMware utilizes the standard Tomcat
+\"SetCharacterEncodingFilter\" to provide a layer of defense against character
+encoding attacks. Filters are Java objects that perform filtering tasks on the
+request to a resource (a servlet or static content), or on the response from a
+resource, or both.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -61,9 +62,11 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     If the output is does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
+    Navigate to and open:
 
-    Configure the <web-app> node with the child nodes listed below.
+    /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
+
+    Configure the <web-app> node with the child nodes listed below:
 
     <filter-mapping>
         <filter-name>setCharacterEncodingFilter</filter-name>
@@ -82,7 +85,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
           <param-name>ignore</param-name>
           <param-value>true</param-value>
         </init-param>
-    \t<async-supported>true</async-supported>
+        <async-supported>true</async-supported>
     </filter>
   "
   impact 0.5

@@ -3,11 +3,11 @@
 control 'VCEM-70-000001' do
   title "ESX Agent Manager must limit the amount of time that each TCP
 connection is kept alive."
-  desc  "Denial of Service is one threat against web servers.  Many DoS attacks
+  desc  "Denial of service is one threat against web servers.  Many DoS attacks
 attempt to consume web server resources in such a way that no more resources
 are available to satisfy legitimate requests.
 
-    In Tomcat, the 'connectionTimeout' attribute sets the number of
+    In Tomcat, the \"connectionTimeout\" attribute sets the number of
 milliseconds the server will wait after accepting a connection for the request
 URI line to be presented. This timeout will also be used when reading the
 request body (if any). This prevents idle sockets that are not sending HTTP
@@ -28,7 +28,9 @@ connections.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-eam/web/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-eam/web/conf/server.xml
 
     Configure the <Connector> node with the value:
 

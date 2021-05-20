@@ -3,13 +3,15 @@
 control 'VCEM-70-000011' do
   title "ESX Agent Manager must be configured to limit access to internal
 packages."
-  desc  "The 'package.access' entry in the catalina.properties file implements
-access control at the package level. When properly configured, a Security
-Exception will be reported should an errant or malicious webapp attempt to
-access the listed internal classes directly, or if a new class is defined under
-the protected packages. The ESX Agent Manager comes pre-configured with the
-appropriate packages defined in 'package.access' and this configuration must be
-maintained. "
+  desc  "The \"package.access\" entry in the \"catalina.properties\" file
+implements access control at the package level. When properly configured, a
+Security Exception will be reported should an errant or malicious webapp
+attempt to access the listed internal classes directly, or if a new class is
+defined under the protected packages.
+
+    The ESX Agent Manager comes pre-configured with the appropriate packages
+defined in \"package.access\" and this configuration must be maintained.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -29,8 +31,11 @@ maintained. "
 finding.
   "
   desc  'fix', "
-    Navigate to and open  /etc/vmware-eam/catalina.properties and ensure that
-the 'package.access' line is configured as follows:
+    Navigate to and open:
+
+    /etc/vmware-eam/catalina.properties
+
+    Ensure that the 'package.access' line is configured as follows:
 
     package.access=\\
     sun.,\\

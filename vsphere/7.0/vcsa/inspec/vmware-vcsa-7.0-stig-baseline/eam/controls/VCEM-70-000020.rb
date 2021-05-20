@@ -12,7 +12,7 @@ application.
     An attacker can also enter Unicode characters into hosted applications in
 an effort to break out of the document home or root home directory or to bypass
 security checks. ESX Agent Manager must be configured to use a consistent
-character set via the URIEncoding attribute on the Connector nodes.
+character set via the \"URIEncoding\" attribute on the Connector nodes.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -28,7 +28,9 @@ character set via the URIEncoding attribute on the Connector nodes.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-eam/web/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-eam/web/conf/server.xml
 
     Configure the <Connector> node with the value:
 

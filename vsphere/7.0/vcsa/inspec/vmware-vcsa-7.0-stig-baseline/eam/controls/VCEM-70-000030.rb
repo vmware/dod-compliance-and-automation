@@ -5,10 +5,13 @@ control 'VCEM-70-000030' do
   desc  "The secure flag is an option that can be set by the application server
 when sending a new cookie to the user within an HTTP Response. The purpose of
 the secure flag is to prevent cookies from being observed by unauthorized
-parties due to the transmission of a the cookie in clear text. By setting the
-secure flag, the browser will prevent the transmission of a cookie over an
-unencrypted channel. The ESX Agent Manager is configured to only be accessible
-over a TLS tunnel but this cookie flag is still a recommended best practice."
+parties due to the transmission of a cookie in clear text.
+
+    By setting the secure flag, the browser will prevent the transmission of a
+cookie over an unencrypted channel. The ESX Agent Manager is configured to only
+be accessible over a TLS tunnel, but this cookie flag is still a recommended
+best practice.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -25,10 +28,12 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
 
     Navigate to the /<web-apps>/<session-config>/<cookie-config> node and
-configure it as follows.
+configure it as follows:
 
         <cookie-config>
           <http-only>true</http-only>

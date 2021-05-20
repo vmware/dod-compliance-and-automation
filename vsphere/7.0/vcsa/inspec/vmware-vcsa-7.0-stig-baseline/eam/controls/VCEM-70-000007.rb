@@ -5,10 +5,10 @@ control 'VCEM-70-000007' do
 users."
   desc  "Log data is essential in the investigation of events. The accuracy of
 the information is always pertinent. One of the first steps an attacker will
-undertake is the modification or deletion of log records to cover his tracks
-and prolong discovery. The web server must protect the log data from
-unauthorized modification. ESX Agent Manager restricts all modification of log
-files by default but this configuration must be verified."
+undertake is the modification or deletion of log records to cover tracks and
+prolong discovery. The web server must protect the log data from unauthorized
+modification. ESX Agent Manager restricts all modification of log files by
+default but this configuration must be verified."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -24,7 +24,7 @@ files by default but this configuration must be verified."
     # chmod o-w <file>
     # chown eam:users <file>
 
-    Note: Subsitute <file> with the listed file.
+    Note: Substitute <file> with the listed file.
   "
   impact 0.5
   tag severity: 'medium'

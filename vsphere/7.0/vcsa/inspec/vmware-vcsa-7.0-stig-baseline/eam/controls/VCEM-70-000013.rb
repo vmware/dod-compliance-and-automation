@@ -6,11 +6,11 @@ control 'VCEM-70-000013' do
 process in the web server that can serve that type of file to a requesting
 client and to identify which file types are not to be delivered to a client.
 
-    By not specifying which files can and which files cannot be served to a
-user, the web server could deliver to a user web server configuration files,
-log files, password files, etc.
+    By not specifying which files can and cannot be served to a user, the web
+server could deliver to a user web server configuration files, log files,
+password files, etc.
 
-    As Tomcat is a java-based web server, the main file extension used is
+    Because Tomcat is a java-based web server, the main file extension used is
 *.jsp.  This check ensures that the *.jsp file type has been properly mapped to
 servlets.
   "
@@ -34,12 +34,14 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
 
     Navigate to and locate the mapping for the JSP servlet. It is the
-<servlet-mapping> node that contains <servlet-name>JspServlet</servlet-name>
+<servlet-mapping> node that contains <servlet-name>JspServlet</servlet-name>.
 
-    Configure the <servlet-mapping> node to look like the code snippet below
+    Configure the <servlet-mapping> node to look like the code snippet below:
 
     <servlet-mapping>
         <servlet-name>JspServlet</servlet-name>
