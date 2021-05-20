@@ -4,9 +4,9 @@ control 'VCLU-70-000018' do
   title "Lookup Service must fail to a known safe state if system
 initialization fails, shutdown fails, or aborts fail."
   desc  "Determining a safe state for failure and weighing that against a
-potential DoS for users depends on what type of application the web server is
-hosting. For the Security Token Service, it is preferable that the service
-abort startup on any initialization failure rather than continuing in a
+potential denial of service for users depends on what type of application the
+web server is hosting. For the Lookup Service, it is preferable that the
+service abort startup on any initialization failure rather than continuing in a
 degraded, and potentailly insecure, state."
   desc  'rationale', ''
   desc  'check', "
@@ -23,7 +23,9 @@ degraded, and potentailly insecure, state."
 finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/vmware-eam/catalina.properties
+    Navigate to and open:
+
+    /etc/vmware-eam/catalina.properties
 
     Add or change the following line:
 

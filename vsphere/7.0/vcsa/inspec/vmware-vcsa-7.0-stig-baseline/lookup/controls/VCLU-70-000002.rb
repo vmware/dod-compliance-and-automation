@@ -4,7 +4,7 @@ control 'VCLU-70-000002' do
   title "Lookup Service must limit the number of concurrent connections
 permitted."
   desc  "Resource exhaustion can occur when an unlimited number of concurrent
-requests are allowed on a web site, facilitating a denial of service attack.
+requests are allowed on a website, facilitating a denial-of-service attack.
 Unless the number of requests is controlled, the web server can consume enough
 system resources to cause a system crash.
 
@@ -12,7 +12,7 @@ system resources to cause a system crash.
 concurrent HTTP/HTTPS requests. Each incoming request requires a thread for the
 duration of that request. If more simultaneous requests are received than can
 be handled by the currently available request processing threads, additional
-threads will be created up to the value of the 'maxThreads' attribute.
+threads will be created up to the value of the \"maxThreads\" attribute.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -26,10 +26,12 @@ threads will be created up to the value of the 'maxThreads' attribute.
 
     XPath set is empty
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-lookupsvc/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-lookupsvc/conf/server.xml
 
     In each <Connector> node, remove the \"maxThreads\" key/value pair.
   "

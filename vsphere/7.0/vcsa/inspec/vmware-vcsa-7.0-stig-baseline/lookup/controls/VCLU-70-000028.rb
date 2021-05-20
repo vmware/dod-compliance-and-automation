@@ -4,9 +4,9 @@ control 'VCLU-70-000028' do
   title "Lookup Service log files must be be offloaded to a central log server
 in real time."
   desc  "Lookup Service produces a handful of logs that must be offloaded from
-the originating system. This information can then be used for diagnostic
-purposes, forensics purposes, or other purposes relevant to ensuring the
-availability and integrity of the hosted application."
+the originating system. This information can then be used for diagnostic,
+forensics, or other purposes relevant to ensuring the availability and
+integrity of the hosted application."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -16,8 +16,11 @@ availability and integrity of the hosted application."
     If the above command returns any output, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/vmware-syslog/vmware-services-lookupsvc.conf ,
-creating the file if it does not exist.
+    Navigate to and open:
+
+    /etc/vmware-syslog/vmware-services-lookupsvc.conf
+
+    Create the file if it does not exist.
 
     Set the contents of the file as follows:
 

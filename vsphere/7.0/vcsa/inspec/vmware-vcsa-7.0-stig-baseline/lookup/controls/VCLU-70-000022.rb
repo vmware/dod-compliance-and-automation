@@ -2,12 +2,17 @@
 
 control 'VCLU-70-000022' do
   title 'The Lookup Service must not show directory listings.'
-  desc  "Enumeration techniques, such as URL parameter manipulation, rely upon
+  desc  "Enumeration techniques, such as URL parameter manipulation, rely on
 being able to obtain information about the web server's directory structure by
-locating directories without default pages. In the scenario, the web server
+locating directories without default pages. In this scenario, the web server
 will display to the user a listing of the files in the directory being
 accessed. Ensuring that directory listing is disabled is one approach to
-mitigating the vulnerability."
+mitigating the vulnerability.
+
+    In Tomcat, directory listing is disabled by default but can be enabled via
+the \"listings\" parameter. Ensure that this node is not present in order to
+have the default effect.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -20,18 +25,20 @@ mitigating the vulnerability."
     <init-param>
           <param-name>listings</param-name>
           <param-value>false</param-value>
-        </init-param>
+    </init-param>
 
     If the output of the command does not match the expected result, this is a
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-lookupsvc/conf/web.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-lookupsvc/conf/web.xml
 
     Set the <param-value> to \"false\" in all <param-name>listing</param-name>
 nodes.
 
-    Note: The setting should look like the below:
+    The setting should look like the below:
 
     <init-param>
           <param-name>listings</param-name>

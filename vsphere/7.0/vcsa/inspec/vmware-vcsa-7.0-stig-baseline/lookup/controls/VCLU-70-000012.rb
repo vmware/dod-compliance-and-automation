@@ -1,11 +1,11 @@
 # encoding: UTF-8
 
 control 'VCLU-70-000012' do
-  title "Lookup Service must have Multipurpose Internet Mail Extensions (MIME)
-that invoke OS shell programs disabled."
+  title "Lookup Service must have Multipurpose Internet Mail Extensions (MIMEs)
+that invoke operating system shell programs disabled."
   desc  "MIME mappings tell the Lookup Service what type of program various
 file types and extensions are and what external utilities or programs are
-needed to execute the file type.\xC2\xA0By ensuring that various shell script
+needed to execute the file type. By ensuring that various shell script
 MIME types are not included in web.xml, the server is protected against
 malicious users tricking the server into executing shell command files."
   desc  'rationale', ''
@@ -18,8 +18,11 @@ malicious users tricking the server into executing shell command files."
     If the command produces any output, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-lookupsvc/conf/web.xml . Remove any
-and all of the following nodes lines.
+    Navigate to and open:
+
+    /usr/lib/vmware-lookupsvc/conf/web.xml
+
+    Remove any and all of the following nodes lines:
 
     <mime-type>application/x-csh</mime-type>
     <mime-type>application/x-shar</mime-type>

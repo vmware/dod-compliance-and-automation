@@ -5,11 +5,14 @@ control 'VCLU-70-000007' do
   desc  "Log data is essential in the investigation of events. If log data were
 to become compromised, then competent forensic analysis and discovery of the
 true source of potentially malicious system activity would be difficult, if not
-impossible, to achieve. In addition, access to log records provides information
-an attacker could potentially use to their advantage since each event record
-might contain communication ports, protocols, services, trust relationships,
-user names, etc. The Lookup Service restricts all access to log file by default
-but this configuration must be verified."
+impossible, to achieve.
+
+    In addition, access to log records provides information an attacker could
+potentially use to their advantage since each event record might contain
+communication ports, protocols, services, trust relationships, user names, etc.
+The Lookup Service restricts all access to log file by default but this
+configuration must be verified.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -20,17 +23,12 @@ but this configuration must be verified."
     If any files are returned, this is a finding.
   "
   desc  'fix', "
-    At the command prompt, execute the following commands:
-
-
+    At the command prompt, execute the following command(s):
 
     # chmod 600 /storage/log/vmware/vsphere-ui/logs/<file>
-
     # chown vsphere-ui:users /storage/log/vmware/vsphere-ui/logs/<file>
 
-
-
-    Note: Subsitute <file> with the listed file
+    Note: Subsitute <file> with the listed file.
   "
   impact 0.5
   tag severity: 'medium'
