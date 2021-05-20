@@ -1,9 +1,9 @@
 # encoding: UTF-8
 
 control 'VCPF-70-000017' do
-  title "Performance Charts directory tree must have permissions in an \"out of
-the box\" state."
-  desc  "As a rule, accounts on a web server are to be kept to a minimum. Only
+  title "Performance Charts directory tree must have permissions in an
+\"out-of-the-box\" state."
+  desc  "Accounts on a web server are to be kept to a minimum. Only
 administrators, web managers, developers, auditors, and web authors require
 accounts on the machine hosting the web server. The resources to which these
 accounts have access must also be closely monitored and controlled. Performance
@@ -23,10 +23,9 @@ Charts files must be adequately protected with correct permissions as applied
 
     # chown perfcharts:cis <file_name>
 
-    Repeat the command for each file that was returned
+    Repeat the command for each file that was returned.
 
     Note: Replace <file_name> for the name of the file that was returned.
-
   "
   impact 0.5
   tag severity: 'medium'

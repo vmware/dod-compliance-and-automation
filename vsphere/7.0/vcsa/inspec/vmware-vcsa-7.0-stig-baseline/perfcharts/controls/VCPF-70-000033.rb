@@ -5,10 +5,13 @@ control 'VCPF-70-000033' do
   desc  "The secure flag is an option that can be set by the application server
 when sending a new cookie to the user within an HTTP Response. The purpose of
 the secure flag is to prevent cookies from being observed by unauthorized
-parties due to the transmission of a the cookie in clear text. By setting the
-secure flag, the browser will prevent the transmission of a cookie over an
-unencrypted channel. The Performance Charts is configured to only be accessible
-over a TLS tunnel but this cookie flag is still a recommended best practice."
+parties due to the transmission of a the cookie in clear text.
+
+    By setting the secure flag, the browser will prevent the transmission of a
+cookie over an unencrypted channel. The Performance Charts is configured to
+only be accessible over a TLS tunnel but this cookie flag is still a
+recommended best practice.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -26,10 +29,11 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
 finding.
   "
   desc  'fix', "
-    Navigate to and open
-/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml
+    Navigate to and open:
 
-    Navigate to the <session-config> node and configure it as follows.
+    /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml
+
+    Navigate to the <session-config> node and configure it as follows:
 
     <session-config>
         <cookie-config>
@@ -37,7 +41,7 @@ finding.
           <secure>true</secure>
         </cookie-config>
         <session-timeout>6</session-timeout>
-      </session-config>
+    </session-config>
   "
   impact 0.5
   tag severity: 'medium'

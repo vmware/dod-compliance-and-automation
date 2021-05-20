@@ -3,10 +3,13 @@
 control 'VCPF-70-000032' do
   title 'Performance Charts must disable the shutdown port.'
   desc  "An attacker has at least two reasons to stop a web server. The first
-is to cause a DoS, and the second is to put in place changes the attacker made
-to the web server configuration. If the Tomcat shutdown port feature is
-enabled, a shutdown signal can be sent to Performance Chart through this port.
-To ensure availability, the shutdown port must be disabled."
+is to cause a denial of service, and the second is to put in place changes the
+attacker made to the web server configuration.
+
+    If the Tomcat shutdown port feature is enabled, a shutdown signal can be
+sent to Performance Charts through this port. To ensure availability, the
+shutdown port must be disabled.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -22,7 +25,9 @@ To ensure availability, the shutdown port must be disabled."
 finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/vmware-eam/catalina.properties
+    Navigate to and open:
+
+    /etc/vmware-eam/catalina.properties
 
     Navigate to the ports specification section.
 

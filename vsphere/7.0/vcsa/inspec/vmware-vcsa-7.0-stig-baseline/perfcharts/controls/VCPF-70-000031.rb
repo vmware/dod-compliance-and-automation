@@ -1,11 +1,11 @@
 # encoding: UTF-8
 
 control 'VCPF-70-000031' do
-  title 'Performance Charts must must be configured with the appropriate ports.'
+  title 'Performance Charts must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
-that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or
-too unsecure to run on a production system. The ports that the Performance
-Charts listens on are configured in the catalina.properties file and must be
+that use TCP/IP ports. Some of these processes may be deemed unnecessary or too
+unsecure to run on a production system. The ports that the Performance Charts
+listens on are configured in the \"catalina.properties\" file and must be
 veriified as accurate to their shipping state."
   desc  'rationale', ''
   desc  'check', "
@@ -22,14 +22,15 @@ veriified as accurate to their shipping state."
 finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/vmware-eam/catalina.properties
+    Navigate to and open:
+
+    /etc/vmware-eam/catalina.properties
 
     Navigate to the ports specification section.
 
     Add or modify the following lines:
 
     bio.http.port=13080
-
   "
   impact 0.5
   tag severity: 'medium'

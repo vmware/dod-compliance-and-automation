@@ -2,14 +2,16 @@
 
 control 'VCPF-70-000026' do
   title 'Performance Charts must hide the server version.'
-  desc  "Web servers will often display error messages to client users
-displaying enough information to aid in the debugging of the error. The
+  desc  "Web servers will often display error messages to client users,
+including enough information to aid in the debugging of the error. The
 information given back in error messages may display the web server type,
 version, patches installed, plug-ins and modules installed, type of code being
 used by the hosted application, and any backends being used for data storage.
-This information could be used by an attacker to blueprint what type of attacks
-might be successful. As such, Performance Charts must be configured with a
-catch-all error handler that redirects to a standard error.jsp."
+
+    This information could be used by an attacker to blueprint what type of
+attacks might be successful. Therefore, Performance Charts must be configured
+with a catch-all error handler that redirects to a standard \"error.jsp\".
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -25,11 +27,11 @@ catch-all error handler that redirects to a standard error.jsp."
 finding.
   "
   desc  'fix', "
-    Navigate to and open
-/usr/lib/vmware-perfcharts/tc-instance/conf/server.xml. Configure the
-<Connector> node with the following value:
+    Navigate to and open:
 
+    /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
 
+    Configure the <Connector> node with the following value:
 
     server=\"Anonymous\"
   "

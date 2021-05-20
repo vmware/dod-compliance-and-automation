@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 control 'VCPF-70-000021' do
-  title 'Performance Charts must use the setCharacterEncodingFilter filter.'
+  title 'Performance Charts must use the "setCharacterEncodingFilter" filter.'
   desc  "Invalid user input occurs when a user inserts data or characters into
 a hosted application's data entry field and the hosted application is
 unprepared to process that data. This results in unanticipated application
@@ -11,16 +11,19 @@ application.
 
     An attacker can also enter Unicode characters into hosted applications in
 an effort to break out of the document home or root home directory or to bypass
-security checks. VMware utilizes the standard Tomcat SetCharacterEncodingFilter
-to provide a layer of defense against character encoding attacks. Filters are
-Java objects that performs filtering tasks on either the request to a resource
-(a servlet or static content), or on the response from a resource, or both.
+security checks.
+
+    VMware uses the standard Tomcat \"SetCharacterEncodingFilter\" to provide a
+layer of defense against character encoding attacks. Filters are Java objects
+that performs filtering tasks on either the request to a resource (a servlet or
+static content), or on the response from a resource, or both.
   "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
 
-    #  xmllint --format /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml |
+    #  xmllint --format
+/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml |
 sed 's/xmlns=\".*\"//g' | xmllint --xpath
 '/web-app/filter-mapping/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter-mapping'
 -
@@ -36,33 +39,36 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
 
     At the command prompt, execute the following command:
 
-    # xmllint --format /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml |
+    # xmllint --format
+/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml |
 sed 's/xmlns=\".*\"//g' | xmllint --xpath
 '/web-app/filter/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter'
 -
 
     Expected result:
 
-    <filter>
-      <filter-name>setCharacterEncodingFilter</filter-name>
-      <filter-class>
-         org.apache.catalina.filters.SetCharacterEncodingFilter
-      </filter-class>
-      <init-param>
-         <param-name>encoding</param-name>
-         <param-value>UTF-8</param-value>
-      </init-param>
-      <init-param>
-         <param-name>ignore</param-name>
-         <param-value>true</param-value>
-      </init-param>
-      <async-supported>true</async-supported>
-   </filter>
+       <filter>
+          <filter-name>setCharacterEncodingFilter</filter-name>
+          <filter-class>
+             org.apache.catalina.filters.SetCharacterEncodingFilter
+          </filter-class>
+          <init-param>
+             <param-name>encoding</param-name>
+             <param-value>UTF-8</param-value>
+          </init-param>
+          <init-param>
+             <param-name>ignore</param-name>
+             <param-value>true</param-value>
+          </init-param>
+          <async-supported>true</async-supported>
+       </filter>
 
     If the output is does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml in a text editor.
+    Navigate to and open:
+
+    /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml
 
     Configure the <web-app> node with the child nodes listed below.
 
@@ -72,20 +78,17 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     </filter-mapping>
 
     <filter>
-      <filter-name>setCharacterEncodingFilter</filter-name>
-      <filter-class>
-         org.apache.catalina.filters.SetCharacterEncodingFilter
-      </filter-class>
-      <init-param>
-         <param-name>encoding</param-name>
-         <param-value>UTF-8</param-value>
-      </init-param>
-      <init-param>
-         <param-name>ignore</param-name>
-         <param-value>true</param-value>
-      </init-param>
-      <async-supported>true</async-supported>
-   </filter>
+        <filter-name>setCharacterEncodingFilter</filter-name>
+
+<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+        <init-param>
+          <param-name>encoding</param-name>
+          <param-value>UTF-8</param-value>
+          <param-name>ignore</param-name>
+          <param-value>false</param-value>
+        </init-param>
+        <async-supported>true</async-supported>
+    </filter>
   "
   impact 0.5
   tag severity: 'medium'

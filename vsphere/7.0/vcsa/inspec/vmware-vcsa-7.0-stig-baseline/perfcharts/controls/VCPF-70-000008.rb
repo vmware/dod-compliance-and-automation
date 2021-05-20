@@ -5,8 +5,8 @@ control 'VCPF-70-000008' do
 integrity."
   desc  "Verifying that the Security Token Service application code is
 unchanged from it's shipping state is essential for file validation and
-non-repudiation of Performance Charts itself. There is no reason that the MD5
-hash of the rpm original files should be changed after installation, excluding
+nonrepudiation of Performance Charts. There is no reason that the MD5 hash of
+the rpm original files should be changed after installation, excluding
 configuration files."
   desc  'rationale', ''
   desc  'check', "
@@ -17,7 +17,7 @@ configuration files."
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "Re-install the VCSA or roll back to a snapshot. Modifying the
+  desc  'fix', "Reinstall the VCSA or roll back to a backup. Modifying the
 Performance Charts installation files manually is not supported by VMware."
   impact 0.5
   tag severity: 'medium'

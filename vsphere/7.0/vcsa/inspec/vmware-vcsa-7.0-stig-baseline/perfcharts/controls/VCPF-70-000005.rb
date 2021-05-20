@@ -4,15 +4,15 @@ control 'VCPF-70-000005' do
   title "Performance Charts must record user access in a format that enables
 monitoring of remote access."
   desc  "Remote access can be exploited by an attacker to compromise the
-server.  By recording all remote access activities, it will be possible to
+server. By recording all remote access activities, it will be possible to
 determine the attacker's location, intent, and degree of success.
 
-    Tomcat can be configured with an AccessLogValve, a component that can be
-inserted into the request processing pipeline to provide robust access logging.
-The Access Log Valve creates log files in the same format as those created by
-standard web servers. When AccessLogValve is properly configured, log files
-will contain all the forensic information necessary in the case of a security
-incident.
+    Tomcat can be configured with an \"AccessLogValve\", a component that can
+be inserted into the request processing pipeline to provide robust access
+logging. The AccessLogValve creates log files in the same format as those
+created by standard web servers. When AccessLogValve is properly configured,
+log files will contain all the forensic information necessary in the case of a
+security incident.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -29,11 +29,12 @@ sed '2 s/xmlns=\".*\"//g' |  xmllint --xpath
 &quot;%{User-Agent}i&quot;\"
 
     If the output does not match the expected result, this is a finding.
-
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
-    
+    Navigate to and open:
+
+    /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
+
     Inside the <Host> node, find the \"AccessLogValve\" <Valve> node and
 replace the \"pattern\" element as follows:
 

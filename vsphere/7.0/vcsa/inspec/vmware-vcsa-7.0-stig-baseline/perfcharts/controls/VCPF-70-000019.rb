@@ -1,11 +1,11 @@
 # encoding: UTF-8
 
 control 'VCPF-70-000019' do
-  title 'Performance Charts must to limit the number of allowed connections.'
+  title 'Performance Charts must limit the number of allowed connections.'
   desc  "Limiting the number of established connections to Performance Charts
-is a basic DoS protection. Servers where the limit is too high or unlimited can
-potentially run out of system resources and negatively affect system
-availability."
+is a basic denial-of-service protection. Servers where the limit is too high or
+unlimited can potentially run out of system resources and negatively affect
+system availability."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -17,10 +17,12 @@ availability."
 
     acceptCount=\"300\"
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
 
     Configure the <Connector> node with the value:
 
