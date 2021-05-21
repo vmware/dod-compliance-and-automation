@@ -12,10 +12,10 @@ must be configured to start automatically and be running at all times."
 
     # systemctl status auditd
 
-    If the service is not running this is a finding.
+    If the service is not running, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following command:
+    At the command line, execute the following command(s):
 
     # systemctl enable auditd
     # systemctl start auditd
@@ -23,7 +23,10 @@ must be configured to start automatically and be running at all times."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000042-GPOS-00021'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000013'
+  tag fix_id: nil
   tag cci: 'CCI-000135'
   tag nist: ['AU-3 (1)']
 

@@ -4,7 +4,7 @@ control 'PHTN-30-000053' do
   title "The Photon operating system must configure sshd with a specific
 ListenAddress."
   desc  "Without specifying a ListenAddress, sshd will listen on all
-interfaces. In situations with multiple interfaces this may not be intended
+interfaces. In situations with multiple interfaces, this may not be intended
 behavior and could lead to offering remote access on an unapproved network."
   desc  'rationale', ''
   desc  'check', "
@@ -12,12 +12,16 @@ behavior and could lead to offering remote access on an unapproved network."
 
     # sshd -T|&grep -i ListenAddress
 
-    If the ListenAddress is not configured to the Photon management IP, this is a
-finding.
+    If the \"ListenAddress\" is not configured to the Photon management IP,
+this is a finding.
   "
   desc  'fix', "
-    Open /etc/ssh/sshd_config with a text editor and ensure that the
-\"ListenAddress\" line is uncommented and set to a valid local IP:
+    Navigate to and open:
+
+    /etc/ssh/sshd_config
+
+    Ensure that the \"ListenAddress\" line is uncommented and set to a valid
+local IP:
 
     Example:
 
@@ -32,7 +36,10 @@ finding.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000297-GPOS-00115'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000053'
+  tag fix_id: nil
   tag cci: 'CCI-002314'
   tag nist: ['AC-17 (1)']
 

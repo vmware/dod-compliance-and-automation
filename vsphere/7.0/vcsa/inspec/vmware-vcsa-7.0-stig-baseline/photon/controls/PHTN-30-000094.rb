@@ -3,8 +3,8 @@
 control 'PHTN-30-000094' do
   title "The Photon operating system must be configured so that all files have
 a valid owner and group owner."
-  desc  "If files do not have valid user and group owners then unintended
-access to files could occur."
+  desc  "If files do not have valid user and group owners, unintended access to
+files could occur."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
@@ -14,14 +14,17 @@ access to files could occur."
     If any files are returned, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following commands for each returned file:
+    At the command line, execute the following command for each returned file:
 
     # chown root:root <file>
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000094'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

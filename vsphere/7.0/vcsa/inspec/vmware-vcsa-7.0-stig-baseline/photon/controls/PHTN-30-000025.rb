@@ -21,15 +21,21 @@ those password are much more vulnerability to offline bute forcing attacks"
 is a finding.
   "
   desc  'fix', "
-    Open /etc/login.defs with a text editor. Add or replace the ENCRYPT_METHOD
-line as follows:
+    Navigate to and open:
+
+    /etc/login.defs
+
+    Add or replace the ENCRYPT_METHOD line as follows:
 
     ENCRYPT_METHOD SHA512
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000073-GPOS-00041'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000025'
+  tag fix_id: nil
   tag cci: 'CCI-000196'
   tag nist: ['IA-5 (1) (c)']
 

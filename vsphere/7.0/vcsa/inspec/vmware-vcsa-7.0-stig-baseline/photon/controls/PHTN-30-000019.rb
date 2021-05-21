@@ -4,7 +4,7 @@ control 'PHTN-30-000019' do
   title "The Photon operating system must allow only the ISSM (or individuals
 or roles appointed by the ISSM) to select which auditable events are to be
 audited."
-  desc  "Without the capability to restrict which roles and individuals can
+  desc  "Without the capability to restrict the roles and individuals that can
 select which events are audited, unauthorized personnel may be able to prevent
 the auditing of critical events. Misconfigured audits may degrade the system's
 performance by overwhelming the audit log. Misconfigured audits may also make
@@ -29,7 +29,10 @@ a finding.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000063-GPOS-00032'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000019'
+  tag fix_id: nil
   tag cci: 'CCI-000171'
   tag nist: ['AU-12 b']
 

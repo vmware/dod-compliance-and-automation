@@ -13,11 +13,11 @@ state and can provide sensitive information to an unprivileged attacker."
     # stat -c \"%n is owned by %U and group owned by %G with %a permissions\"
 /var/log/messages
 
-    If the /var/log/vmware/messages is not owned by root or not group owned by
-root or the file permissions are more permission than 640, this is a finding.
+    If the /var/log/messages directory is not owned by root or not group owned
+by root or the file permissions are more permission than 640, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following command:
+    At the command line, execute the following command(s):
 
     # chown root:root /var/log/messages
 
@@ -26,7 +26,10 @@ root or the file permissions are more permission than 640, this is a finding.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000206-GPOS-00084'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000041'
+  tag fix_id: nil
   tag cci: 'CCI-001314'
   tag nist: ['SI-11 b']
 

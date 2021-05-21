@@ -21,21 +21,27 @@ creation actions provides logging that can be used for forensic purposes."
 at least 'x', this is a finding.
   "
   desc  'fix', "
-    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
-following lines:
+    Navigate to and open:
+
+    /etc/audit/rules.d/audit.STIG.rules
+
+    Add or update the following lines:
 
     -w /usr/sbin/useradd -p x -k useradd
     -w /usr/sbin/groupadd -p x -k groupadd
 
     At the command line, execute the following command to load the new audit
-rules.
+rules:
 
     # /sbin/augenrules --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000004-GPOS-00004'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000001'
+  tag fix_id: nil
   tag cci: 'CCI-000018'
   tag nist: ['AC-2 (4)']
 

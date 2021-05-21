@@ -5,7 +5,7 @@ control 'PHTN-30-000092' do
 initialization scripts are protected from unauthorized modification."
   desc  "Local initialization files are used to configure the user's shell
 environment upon login. Malicious modification of these files could compromise
-accounts upon logon."
+accounts upon login."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
@@ -24,7 +24,10 @@ accounts upon logon."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000092'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

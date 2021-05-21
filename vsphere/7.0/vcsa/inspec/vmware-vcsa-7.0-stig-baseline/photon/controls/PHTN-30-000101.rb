@@ -22,8 +22,8 @@ could result in a man-in-the-middle attack."
 
     If the output does not match the expected result, this is a finding.
 
-    Note: The number of ethx lines returned is dependant on the number of
-interfaces. Every ethx entry must be set to 0.
+    Note: The number of \"ethx\" lines returned is dependant on the number of
+interfaces. Every \"ethx\" entry must be set to \"0\".
   "
   desc  'fix', "
     At the command line, execute the following command:
@@ -35,7 +35,10 @@ interfaces. Every ethx entry must be set to 0.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000101'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

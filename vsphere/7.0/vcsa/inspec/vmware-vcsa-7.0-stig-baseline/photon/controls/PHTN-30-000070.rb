@@ -17,24 +17,29 @@ information system (e.g., module or policy filter).
 
     # auditctl -l | grep -E /etc/security/opasswd
 
-    If any of these are not listed with a permissions filter of at least 'w',
+    If any of these are not listed with a permissions filter of at least \"w\",
 this is a finding.
   "
   desc  'fix', "
-    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
-following lines:
+    Navigate to and open:
+
+    /etc/audit/rules.d/audit.STIG.rules
+
+    Add the following line:
 
     -w /etc/security/opasswd -p wa -k opasswd
 
-    At the command line, execute the following command to load the new audit
-rules.
+    Execute the following command to load the new audit rules:
 
     # /sbin/augenrules --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000476-GPOS-00221'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000070'
+  tag fix_id: nil
   tag cci: 'CCI-000172'
   tag nist: ['AU-12 c']
 

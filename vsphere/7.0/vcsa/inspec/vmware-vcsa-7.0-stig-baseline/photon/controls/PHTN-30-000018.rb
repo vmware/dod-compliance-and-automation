@@ -31,7 +31,10 @@ in \"${audit_log_file%/*}\":\
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000059-GPOS-00029'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000018'
+  tag fix_id: nil
   tag cci: 'CCI-000164'
   tag nist: ['AU-9']
 

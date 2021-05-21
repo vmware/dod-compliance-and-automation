@@ -19,8 +19,10 @@ Executive Orders, directives, policies, regulations, standards, and guidance."
 
     If the output does not match the expected result, this is a finding.
 
-    Next, open /etc/issue with a text editor. If the file does not contain the
-Standard Mandatory DoD Notice and Consent Banner, this is a finding.
+    Next, open /etc/issue with a text editor.
+
+    If the file does not contain the Standard Mandatory DoD Notice and Consent
+Banner, this is a finding.
 
     Standard Mandatory DoD Notice and Consent Banner:
 
@@ -45,12 +47,17 @@ communications and work product are private and confidential. See User
 Agreement for details.\"
   "
   desc  'fix', "
-    Open /etc/ssh/sshd_config with a text editor and ensure that the \"Banner\"
-line is uncommented and set to the following:
+    Navigate to and open:
+
+    /etc/ssh/sshd_config
+
+    Ensure that the \"Banner\" line is uncommented and set to the following:
 
     Banner /etc/issue
 
-    Open /etc/issue with a text editor.
+    Navigate to and open:
+
+    /etc/issue
 
     Ensure that the file contains the Standard Mandatory DoD Notice and Consent
 Banner.
@@ -82,7 +89,10 @@ Agreement for details.\"
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000023-GPOS-00006'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000003'
+  tag fix_id: nil
   tag cci: 'CCI-000048'
   tag nist: ['AC-8 a']
 

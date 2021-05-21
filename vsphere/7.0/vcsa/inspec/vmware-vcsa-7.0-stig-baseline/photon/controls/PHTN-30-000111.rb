@@ -3,9 +3,9 @@
 control 'PHTN-30-000111' do
   title "The Photon operating system must protect all boot configuration files
 from unauthorized access."
-  desc  "Boot configuration files control how the system boots including
+  desc  "Boot configuration files control how the system boots, including
 single-user mode, auditing, log levels, etc. Improper or malicious
-configurations can netagively affect system security and availability."
+configurations can negatively affect system security and availability."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
@@ -16,7 +16,8 @@ configurations can netagively affect system security and availability."
     If any files are returned, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following commands for each returned file:
+    At the command line, execute the following command(s) for each returned
+file:
 
     # chmod 600 <file>
     # chown root:root <file>
@@ -24,7 +25,10 @@ configurations can netagively affect system security and availability."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000111'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

@@ -5,7 +5,7 @@ control 'PHTN-30-000048' do
 modification and deletion."
   desc  "Protecting audit information also includes identifying and protecting
 the tools used to view and manipulate log data. Therefore, protecting audit
-tools is necessary to prevent unauthorized operation on audit information."
+tools is necessary to prevent unauthorized operations on audit information."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
@@ -31,7 +31,10 @@ for file permissions:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000257-GPOS-00098'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000048'
+  tag fix_id: nil
   tag cci: 'CCI-001494'
   tag nist: ['AU-9']
 

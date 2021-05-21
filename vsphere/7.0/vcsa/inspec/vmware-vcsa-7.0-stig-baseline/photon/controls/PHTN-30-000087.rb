@@ -20,8 +20,12 @@ disabling host-based authentication generally."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/ssh/sshd_config with a text editor and ensure that the
-\"IgnoreUserKnownHosts\" line is uncommented and set to the following:
+    Navigate to and open:
+
+    /etc/ssh/sshd_config
+
+    Ensure that the \"IgnoreUserKnownHosts\" line is uncommented and set to the
+following:
 
     IgnoreUserKnownHosts yes
 
@@ -32,7 +36,10 @@ disabling host-based authentication generally."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000087'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

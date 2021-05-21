@@ -19,7 +19,7 @@ likely patch levels for vulnerabilities."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following commands:
+    At the command line, execute the following command(s):
 
     # sed -i -e \"/^net.ipv4.tcp_timestamps/d\" /etc/sysctl.conf
     # echo net.ipv4.tcp_timestamps=1>>/etc/sysctl.conf
@@ -27,7 +27,10 @@ likely patch levels for vulnerabilities."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000107'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

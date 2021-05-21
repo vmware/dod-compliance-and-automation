@@ -24,8 +24,11 @@ purposes."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
-following lines:
+    Navigate to and open:
+
+    /etc/audit/rules.d/audit.STIG.rules
+
+    Add the following lines:
 
     -w /etc/passwd -p wa -k passwd
     -w /etc/shadow -p wa -k shadow
@@ -40,7 +43,10 @@ rules.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000239-GPOS-00089'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000043'
+  tag fix_id: nil
   tag cci: 'CCI-001403'
   tag nist: ['AC-2 (4)']
 

@@ -3,11 +3,11 @@
 control 'PHTN-30-000046' do
   title "The Photon operating system must initiate auditing as part of the boot
 process."
-  desc  "Each process on the system carries an \"auditable\" flag which
+  desc  "Each process on the system carries an \"auditable\" flag, which
 indicates whether its activities can be audited. Although auditd takes care of
 enabling this for all processes that launch after it starts, adding the kernel
 argument ensures the flag is set at boot for every process on the system. This
-includes processes created before auditd starts. "
+includes processes created before auditd starts."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
@@ -17,12 +17,15 @@ includes processes created before auditd starts. "
     If no results are returned, this is a finding.
   "
   desc  'fix', "
-    Open /boot/grub2/grub.cfg with a text editor and locate the boot command
-line arguments. An example is below:
+    Navigate to and open:
+
+    /boot/grub2/grub.cfg
+
+    Locate the boot command line arguments. An example follows:
 
     linux /$photon_linux root=$rootpartition $photon_cmdline $systemd_cmdline
 
-    Add \"audit=1\" to the end of the line so it reads as follows):
+    Add \"audit=1\" to the end of the line so it reads as follows:
 
     linux /$photon_linux root=$rootpartition $photon_cmdline $systemd_cmdline
 audit=1
@@ -35,7 +38,10 @@ future releases. Find the similar line and append \"audit=1\" to it.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000254-GPOS-00095'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000046'
+  tag fix_id: nil
   tag cci: 'CCI-001464'
   tag nist: ['AU-14 (1)']
 

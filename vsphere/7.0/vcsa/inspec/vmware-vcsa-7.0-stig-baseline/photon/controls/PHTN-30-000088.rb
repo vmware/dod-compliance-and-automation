@@ -4,8 +4,8 @@ control 'PHTN-30-000088' do
   title "The Photon operating system must configure sshd to limit the number of
 allowed login attempts per connection."
   desc  "By setting the login attempt limit to a low value, an attacker will be
-forced to reconnect frequently which severely limits the speed and
-effectiveness of brute-force attacks. "
+forced to reconnect frequently, which severely limits the speed and
+effectiveness of brute-force attacks."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
@@ -19,8 +19,12 @@ effectiveness of brute-force attacks. "
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/ssh/sshd_config with a text editor and ensure that the
-\"MaxAuthTries\" line is uncommented and set to the following:
+    Navigate to and open:
+
+    /etc/ssh/sshd_config
+
+    Ensure that the \"MaxAuthTries\" line is uncommented and set to the
+following:
 
     MaxAuthTries 2
 
@@ -31,7 +35,10 @@ effectiveness of brute-force attacks. "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000088'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

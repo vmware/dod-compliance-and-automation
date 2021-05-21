@@ -8,39 +8,53 @@ unauthorized system access via user password guessing, otherwise known as
 brute-force attacks, is reduced. Limits are imposed by locking the account."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following commands:
+    At the command line, execute the following command(s):
 
     # grep pam_tally2 /etc/pam.d/system-auth
 
     Expected result:
 
-    auth    required        pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
+    auth required pam_tally2.so deny=3 onerr=fail
+audit even_deny_root unlock_time=900 root_unlock_time=300
 
     # grep pam_tally2 /etc/pam.d/system-account
 
     Expected result:
 
-    account    required        pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
+    account required pam_tally2.so deny=3
+onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
 
-    If the output does not list the pam_tally2 options as configured in the expected results, this is a finding.
+    If the output does not list the pam_tally2 options as configured in the
+expected results, this is a finding.
   "
   desc  'fix', "
-    Open /etc/pam.d/system-auth with a text editor
+    Navigate to and open:
 
-    Add the following line after the pam_unix.so statement:
+    /etc/pam.d/system-auth
 
-    auth    required        pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
+    Remove any existing \"pam_tally2.so\" line and add the following line after
+the pam_unix.so statement:
 
-    Open /etc/pam.d/system-account with a text editor
+    auth required pam_tally2.so deny=3 onerr=fail
+audit even_deny_root unlock_time=900 root_unlock_time=300
 
-    Add the following line after the pam_unix.so statement:
+    Navigate to and open:
 
-    account    required        pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
+    /etc/pam.d/system-account
+
+    Remove any existing \"pam_tally2.so\" line and add the following line after
+the pam_unix.so statement:
+
+    account required pam_tally2.so deny=3
+onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000021-GPOS-00005'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000002'
+  tag fix_id: nil
   tag cci: 'CCI-000044'
   tag nist: ['AC-7 a']
 
