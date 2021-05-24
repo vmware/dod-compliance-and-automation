@@ -3,14 +3,15 @@
 control 'VCST-70-000024' do
   title "The Security Token Service must be configured to not show error
 reports."
-  desc  "Web servers will often display error messages to client users
-displaying enough information to aid in the debugging of the error. The
-information given back in error messages may display the web server type,
-version, patches installed, plug-ins and modules installed, type of code being
-used by the hosted application, and any backends being used for data storage.
-This information could be used by an attacker to blueprint what type of attacks
-might be successful. As such, the Security Token Service must be configured to
-not show server version information in error messages."
+  desc  "\"TRACE\" is a technique for a user to request internal information
+about Tomcat. This is useful during product development, but should not be
+enabled in production.  Allowing a attacker to conduct a TRACE operation
+against the Security Token Service will expose information that would be useful
+to perform a more targeted attack.
+
+    The Security Token Service provides the \"allowTrace\" parameter as means
+to disable responding to TRACE requests.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -27,8 +28,11 @@ showReport=\"false\" showServerInfo=\"false\"/>
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml .
-Locate the following Host block:
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/server.xml
+
+    Locate the following Host block:
 
     <Host ...>
     ...

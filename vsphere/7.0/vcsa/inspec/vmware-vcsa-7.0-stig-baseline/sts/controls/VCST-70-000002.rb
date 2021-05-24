@@ -3,17 +3,13 @@
 control 'VCST-70-000002' do
   title "The Security Token Service must limit the number of concurrent
 connections permitted."
-  desc  "Resource exhaustion can occur when an unlimited number of concurrent
-requests are allowed on a web site, facilitating a denial of service attack.
-Unless the number of requests is controlled, the web server can consume enough
-system resources to cause a system crash.
+  desc  "The \"maxPostSize\" value is the maximum size in bytes of the POST
+which will be handled by the container FORM URL parameter parsing. Limit its
+size to reduce exposure to a DOS attack.
 
-    Mitigating this kind of attack will include limiting the number of
-concurrent HTTP/HTTPS requests. In Tomcat, each incoming request requires a
-thread for the duration of that request. If more simultaneous requests are
-received than can be handled by the currently available request processing
-threads, additional threads will be created up to the value of the maxThreads
-attribute.
+    If \"maxPostSize\" is not set, the default value of 2097152 (2MB) is used.
+Security Token Service is configured in it's shipping state to not set a value
+for \"maxPostSize\".
   "
   desc  'rationale', ''
   desc  'check', "
@@ -30,16 +26,15 @@ attribute.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml
+    Navigate to and open:
 
-    Navigate to the <Executor> mode with the name of tomcatThreadPool and
-configure with the value 'maxThreads=\"150\"'
+    /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
-    Note: The <Executor> node should be configured per the below:
+    Navigate to the <Executor> mode with the name of \"tomcatThreadPool\" and
+configure with the value 'maxThreads=\"150\"' as follows:
 
     <Executor maxThreads=\"150\" minSpareThreads=\"50\"
 name=\"tomcatThreadPool\" namePrefix=\"tomcat-http--\" />
-
   "
   impact 0.5
   tag severity: 'medium'

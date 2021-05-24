@@ -2,14 +2,17 @@
 
 control 'VCST-70-000030' do
   title 'The Security Token Service must set the secure flag for cookies.'
-  desc  "The secure flag is an option that can be set by the application server
-when sending a new cookie to the user within an HTTP Response. The purpose of
-the secure flag is to prevent cookies from being observed by unauthorized
-parties due to the transmission of a the cookie in clear text. By setting the
-secure flag, the browser will prevent the transmission of a cookie over an
-unencrypted channel. The Security Token Service is configured to only be
-accessible over a TLS tunnel but this cookie flag is still a recommended best
-practice."
+  desc  "The default servlet (or DefaultServlet) is a special servlet provided
+with Tomcat which is called when no other suitable page is found in a
+particular folder. The DefaultServlet serves static resources as well as
+directory listings.
+
+    The DefaultServlet is configured by default with the \"readonly\" parameter
+set to \"true\" where HTTP commands like PUT and DELETE are rejected. Changing
+this to false allows clients to delete or modify static resources on the server
+and to upload new resources. DefaultServlet readonly must be set to true,
+either literally or by absence (default).
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -26,7 +29,9 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/web.xml
 
     Navigate to the /<web-apps>/<session-config>/<cookie-config> node and
 configure it as follows.

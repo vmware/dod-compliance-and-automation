@@ -3,18 +3,15 @@
 control 'VCST-70-000015' do
   title "The Security Token Service must be configured with memory leak
 protection."
-  desc  "The Java Runtime environment can cause a memory leak or lock files
-under certain conditions. Without memory leak protection, the Security Token
-Service can continue to consume system resources which will lead to
-OutOfMemoryErrors when re-loading web applications.
+  desc  "A web server is designed to deliver content and execute scripts or
+applications on the request of a client or user. Containing user requests to
+files in the directory tree of the hosted web application and limiting the
+execution of scripts and applications guarantees that the user is not accessing
+information protected outside the application's realm.
 
-    Memory leaks occur when JRE code uses the context class loader to load a
-singleton as this will cause a memory leak if a web application class loader
-happens to be the context class loader at the time. The
-JreMemoryLeakPreventionListener class is designed to initialise these
-singletons when Tomcat's common class loader is the context class loader.
-Proper use of JRE memory leak protection will ensure that the hosted
-application does not consume system resources and cause an unstable environment.
+    By checking that no symbolic links exist in the document root, the web
+server is protected from users jumping outside the hosted application directory
+tree and gaining access to the other directories, including the system root.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -30,11 +27,11 @@ className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>
 
     If the output of the command does not match the expected result, this is a
 finding.
-
-
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
     Navigate to the <Server> node.
 

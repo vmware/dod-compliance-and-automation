@@ -2,8 +2,10 @@
 
 control 'VCST-70-000009' do
   title 'The Security Token Service must only run one webapp.'
-  desc  "VMware ships the Security Token Service on the VCSA with one webapp,
-in ROOT.war. Any other .war file is potentially malicious and must be removed."
+  desc  "The Security Token Service performs user authentication at the
+application level and not through Tomcat. To eliminate unnecessary features and
+to ensure that the Security Token Service remains in it's shipping state, the
+lack of a \"UserDatabaseRealm\" configuration must be confirmed."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:

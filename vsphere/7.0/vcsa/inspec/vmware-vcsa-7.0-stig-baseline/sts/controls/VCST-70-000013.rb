@@ -3,17 +3,16 @@
 control 'VCST-70-000013' do
   title "The Security Token Service must have mappings set for Java servlet
 pages."
-  desc  "Resource mapping is the process of tying a particular file type to a
-process in the web server that can serve that type of file to a requesting
-client and to identify which file types are not to be delivered to a client.
+  desc  "WebDAV is an extension to the HTTP protocol that, when developed, was
+meant to allow users to create, change, and move documents on a server,
+typically a web server or web share. WebDAV is not widely used and has serious
+security concerns because it may allow clients to modify unauthorized files on
+the web server and must therefore be disabled.
 
-    By not specifying which files can and which files cannot be served to a
-user, the web server could deliver to a user web server configuration files,
-log files, password files, etc.
-
-    As Tomcat is a java-based web server, the main file extension used is
-*.jsp.  This check ensures that the *.jsp and *.jspx file types has been
-properly mapped to servlets.
+    Tomcat uses the \"org.apache.catalina.servlets.WebdavServlet\" servlet to
+provide WebDAV services. Because the WebDAV service has been found to have an
+excessive number of vulnerabilities, this servlet must not be installed. The
+Security Token Service does not configure WebDAV by default.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -36,7 +35,9 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/web.xml
 
     Inside the <web-app> parent node, add the following:
 
@@ -45,7 +46,6 @@ finding.
         <url-pattern>*.jsp</url-pattern>
         <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
-
   "
   impact 0.5
   tag severity: 'medium'

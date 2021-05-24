@@ -3,12 +3,11 @@
 control 'VCST-70-000007' do
   title "Security Token Service log files must only be modifiable by privileged
 users."
-  desc  "Log data is essential in the investigation of events. The accuracy of
-the information is always pertinent. One of the first steps an attacker will
-undertake is the modification or deletion of log records to cover his tracks
-and prolong discovery. The web server must protect the log data from
-unauthorized modification. Security Token Service restricts all modification of
-log files by default but this configuration must be verified."
+  desc  "Verifying that the Security Token Service application code is
+unchanged from it's shipping state is essential for file validation and
+non-repudiation of the Security Token Service. There is no reason that the MD5
+hash of the rpm original files should be changed after installation, excluding
+configuration files."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -19,12 +18,12 @@ log files by default but this configuration must be verified."
     If any files are returned, this is a finding.
   "
   desc  'fix', "
-    At the command prompt, execute the following commands:
+    At the command prompt, execute the following command(s):
 
     # chmod o-w <file>
     # chown root:root <file>
 
-    Note: Subsitute <file> with the listed file.
+    Note: Substitute <file> with the listed file.
   "
   impact 0.5
   tag severity: 'medium'

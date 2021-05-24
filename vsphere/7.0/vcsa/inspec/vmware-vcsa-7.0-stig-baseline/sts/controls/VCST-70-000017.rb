@@ -2,13 +2,12 @@
 
 control 'VCST-70-000017' do
   title "The Security Token Service directory tree must have permissions in an
-\"out of the box\" state."
-  desc  "As a rule, accounts on a web server are to be kept to a minimum. Only
-administrators, web managers, developers, auditors, and web authors require
-accounts on the machine hosting the web server. The resources to which these
-accounts have access must also be closely monitored and controlled. The
-Security Token Service files must be adequately protected with correct
-permissions as applied \"out of the box\"."
+out-of-the-box state."
+  desc  "Determining a safe state for failure and weighing that against a
+potential denial of service for users depends on what type of application the
+web server is hosting. For the Security Token Service, it is preferable that
+the service abort startup on any initialization failure rather than continuing
+in a degraded, and potentailly insecure state."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -23,10 +22,9 @@ permissions as applied \"out of the box\"."
 
     # chown root:root <file_name>
 
-    Repeat the command for each file that was returned
+    Repeat the command for each file that was returned.
 
     Note: Replace <file_name> for the name of the file that was returned.
-
   "
   impact 0.5
   tag severity: 'medium'

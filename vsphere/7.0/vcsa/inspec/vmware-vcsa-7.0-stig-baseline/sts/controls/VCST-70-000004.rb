@@ -2,12 +2,17 @@
 
 control 'VCST-70-000004' do
   title 'The Security Token Service must protect cookies from XSS.'
-  desc  "Cookies are a common way to save session state over the HTTP(S)
-protocol. If an attacker can compromise session data stored in a cookie, they
-are better able to launch an attack against the server and its applications.
-When you tag a cookie with the HttpOnly flag, it tells the browser that this
-particular cookie should only be accessed by the originating server. Any
-attempt to access the cookie from client script is strictly forbidden."
+  desc  "Remote access can be exploited by an attacker to compromise the
+server. By recording all remote access activities, it will be possible to
+determine the attacker's location, intent, and degree of success.
+
+    Tomcat can be configured with an \"AccessLogValve\", a component that can
+be inserted into the request processing pipeline to provide robust access
+logging. The AccessLogValve creates log files in the same format as those
+created by standard web servers. When AccessLogValve is properly configured,
+log files will contain all the forensic information necessary in the case of a
+security incident.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -23,18 +28,19 @@ s/xmlns=\".*\"//g' | xmllint --xpath
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml
+    Navigate to and open:
 
-    Navigate to the <session-config> node and configure it as follows.
+    /usr/lib/vmware-sso/vmware-sts/conf/web.xml
+
+    Navigate to the <session-config> node and configure it as follows:
 
     <session-config>
             <session-timeout>30</session-timeout>
             <cookie-config>
                 <http-only>true</http-only>
                 <secure>true</secure>
-            </cookie-config>
-        </session-config>
-
+           </cookie-config>
+    </session-config>
   "
   impact 0.5
   tag severity: 'medium'

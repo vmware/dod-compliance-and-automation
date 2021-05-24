@@ -1,22 +1,17 @@
 # encoding: UTF-8
 
 control 'VCST-70-000021' do
-  title "The Security Token Service must use the setCharacterEncodingFilter
+  title "The Security Token Service must use the \"setCharacterEncodingFilter\"
 filter."
-  desc  "Invalid user input occurs when a user inserts data or characters into
-a hosted application's data entry field and the hosted application is
-unprepared to process that data. This results in unanticipated application
-behavior, potentially leading to an application compromise. Invalid user input
-is one of the primary methods employed when attempting to compromise an
-application.
-
-    An attacker can also enter Unicode characters into hosted applications in
-an effort to break out of the document home or root home directory or to bypass
-security checks. VMware utilizes the standard Tomcat SetCharacterEncodingFilter
-to provide a layer of defense against character encoding attacks. Filters are
-Java objects that performs filtering tasks on either the request to a resource
-(a servlet or static content), or on the response from a resource, or both.
-  "
+  desc  "Enumeration techniques, such as URL parameter manipulation, rely on
+being able to obtain information about the web server's directory structure by
+locating directories without default pages. In this scenario, the web server
+will display to the user a listing of the files in the directory being
+accessed. By having a default hosted application web page, the anonymous web
+user will not obtain directory browsing information or an error message that
+reveals the server type and version. Ensuring that every document directory has
+an \"index.jsp\" (or equivalent) file is one approach to mitigating the
+vulnerability."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -44,49 +39,51 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 
     Expected result:
 
-   <filter>
-      <filter-name>setCharacterEncodingFilter</filter-name>
-      <filter-class>
-         org.apache.catalina.filters.SetCharacterEncodingFilter
-      </filter-class>
-      <init-param>
-         <param-name>encoding</param-name>
-         <param-value>UTF-8</param-value>
-      </init-param>
-      <init-param>
-         <param-name>ignore</param-name>
-         <param-value>true</param-value>
-      </init-param>
-      <async-supported>true</async-supported>
-   </filter>
+       <filter>
+          <filter-name>setCharacterEncodingFilter</filter-name>
+          <filter-class>
+             org.apache.catalina.filters.SetCharacterEncodingFilter
+          </filter-class>
+          <init-param>
+             <param-name>encoding</param-name>
+             <param-value>UTF-8</param-value>
+          </init-param>
+          <init-param>
+             <param-name>ignore</param-name>
+             <param-value>true</param-value>
+          </init-param>
+          <async-supported>true</async-supported>
+       </filter>
 
     If the output is does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml
+    Navigate to and open:
 
-    Configure the <web-app> node with the child nodes listed below.
+    /usr/lib/vmware-sso/vmware-sts/conf/web.xml
+
+    Configure the <web-app> node with the child nodes listed below:
 
     <filter-mapping>
         <filter-name>setCharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-   <filter>
-      <filter-name>setCharacterEncodingFilter</filter-name>
-      <filter-class>
-         org.apache.catalina.filters.SetCharacterEncodingFilter
-      </filter-class>
-      <init-param>
-         <param-name>encoding</param-name>
-         <param-value>UTF-8</param-value>
-      </init-param>
-      <init-param>
-         <param-name>ignore</param-name>
-         <param-value>true</param-value>
-      </init-param>
-      <async-supported>true</async-supported>
-   </filter>
+       <filter>
+          <filter-name>setCharacterEncodingFilter</filter-name>
+          <filter-class>
+             org.apache.catalina.filters.SetCharacterEncodingFilter
+          </filter-class>
+          <init-param>
+             <param-name>encoding</param-name>
+             <param-value>UTF-8</param-value>
+          </init-param>
+          <init-param>
+             <param-name>ignore</param-name>
+             <param-value>true</param-value>
+          </init-param>
+          <async-supported>true</async-supported>
+       </filter>
   "
   impact 0.5
   tag severity: 'medium'

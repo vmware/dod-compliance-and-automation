@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 control 'VCST-70-000020' do
-  title 'The Security Token Service must set URIEncoding to UTF-8.'
+  title 'The Security Token Service must set "URIEncoding" to UTF-8.'
   desc  "Invalid user input occurs when a user inserts data or characters into
 a hosted application's data entry field and the hosted application is
 unprepared to process that data. This results in unanticipated application
@@ -11,8 +11,10 @@ application.
 
     An attacker can also enter Unicode characters into hosted applications in
 an effort to break out of the document home or root home directory or to bypass
-security checks. The Security Token Service must be configured to use a
-consistent character set via the URIEncoding attribute on the Connector nodes.
+security checks. VMware uses the standard Tomcat \"SetCharacterEncodingFilter\"
+to provide a layer of defense against character encoding attacks. Filters are
+Java objects that perform filtering tasks on either the request to a resource
+(a servlet or static content), or on the response from a resource, or both.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -26,10 +28,12 @@ consistent character set via the URIEncoding attribute on the Connector nodes.
 
     URIEncoding=\"UTF-8\"
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
     Navigate to each of the <Connector> nodes.
 

@@ -2,11 +2,16 @@
 
 control 'VCST-70-000029' do
   title 'The Security Token Service must disable the shutdown port.'
-  desc  "An attacker has at least two reasons to stop a web server. The first
-is to cause a DoS, and the second is to put in place changes the attacker made
-to the web server configuration. If the Tomcat shutdown port feature is
-enabled, a shutdown signal can be sent to the Security Token Service through
-this port. To ensure availability, the shutdown port must be disabled."
+  desc  "The secure flag is an option that can be set by the application server
+when sending a new cookie to the user within an HTTP Response. The purpose of
+the secure flag is to prevent cookies from being observed by unauthorized
+parties due to the transmission of the cookie in clear text.
+
+    By setting the secure flag, the browser will prevent the transmission of a
+cookie over an unencrypted channel. The Security Token Service is configured to
+only be accessible over a TLS tunnel, but this cookie flag is still a
+recommended best practice.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -22,8 +27,9 @@ this port. To ensure availability, the shutdown port must be disabled."
 finding.
   "
   desc  'fix', "
-    Open /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties in a text
-editor.
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties
 
     Add or modify the following setting:
 

@@ -2,12 +2,19 @@
 
 control 'VCST-70-000012' do
   title "The Security Token Service must have Multipurpose Internet Mail
-Extensions (MIME) that invoke OS shell programs disabled."
-  desc  "MIME mappings tell the Security Token Service what type of program
-various file types and extensions are and what external utilities or programs
-are needed to execute the file type. By ensuring that various shell script
-MIME types are not included in web.xml, the server is protected against
-malicious users tricking the server into executing shell command files."
+Extensions (MIME) that invoke operating system shell programs disabled."
+  desc  "Resource mapping is the process of tying a particular file type to a
+process in the web server that can serve that type of file to a requesting
+client and identify which file types are not to be delivered to a client.
+
+    By not specifying which files can and cannot be served to a user, the web
+server could deliver to a user web server configuration files, log files,
+password files, etc.
+
+    As Tomcat is a Java-based web server, the main file extension used is
+*.jsp.  This check ensures that the *.jsp and *.jspx file types have been
+properly mapped to servlets.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -18,8 +25,11 @@ malicious users tricking the server into executing shell command files."
     If the command produces any output, this is a finding.
   "
   desc  'fix', "
-    Open /usr/lib/vmware-sso/vmware-sts/conf/web.xml in a text editor. Remove
-any and all of the following nodes lines.
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/web.xml
+
+    Remove any and all of the following nodes lines.
 
     <mime-type>application/x-csh</mime-type>
     <mime-type>application/x-shar</mime-type>

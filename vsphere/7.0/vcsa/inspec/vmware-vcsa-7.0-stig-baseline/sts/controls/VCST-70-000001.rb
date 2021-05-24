@@ -3,17 +3,17 @@
 control 'VCST-70-000001' do
   title "The Security Token Service must limit the amount of time that each TCP
 connection is kept alive."
-  desc  "Denial of Service is one threat against web servers.  Many DoS attacks
-attempt to consume web server resources in such a way that no more resources
-are available to satisfy legitimate requests.
+  desc  "Resource exhaustion can occur when an unlimited number of concurrent
+requests are allowed on a website, facilitating a denial of service attack.
+Unless the number of requests is controlled, the web server can consume enough
+system resources to cause a system crash.
 
-    In Tomcat, the 'connectionTimeout' attribute sets the number of
-milliseconds the server will wait after accepting a connection for the request
-URI line to be presented. This timeout will also be used when reading the
-request body (if any). This prevents idle sockets that are not sending HTTP
-requests from consuming system resources and potentially denying new
-connections.
-
+    Mitigating this kind of attack will include limiting the number of
+concurrent HTTP/HTTPS requests. In Tomcat, each incoming request requires a
+thread for the duration of that request. If more simultaneous requests are
+received than can be handled by the currently available request processing
+threads, additional threads will be created up to the value of the
+\"maxThreads\" attribute.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -27,10 +27,12 @@ connections.
 
     connectionTimeout=\"60000\"
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
     Navigate to each of the <Connector> nodes.
 
