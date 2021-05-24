@@ -1,8 +1,8 @@
 # encoding: UTF-8
 
 control 'VCPG-70-000009' do
-  title 'VMware Postgres must be require authentication on all connections.'
-  desc  "To assure accountability and prevent unauthenticated access,
+  title 'VMware Postgres must require authentication on all connections.'
+  desc  "To ensure accountability and prevent unauthenticated access,
 organizational users must be identified and authenticated to prevent potential
 misuse and compromise of the system.
 
@@ -26,16 +26,17 @@ Postgres requires standard password authentication for all connections.
   desc  'fix', "
     Navigate to and open /storage/db/pgdata/pg_hba.conf.
 
-    Find and remove the line that has a method of \"trust\", in the far right
+    Find and remove the line that has a method of \"trust\" in the far right
 column.
 
-    A correct, typical line will look like the below:
+    A correct, typical line will look like the following:
+
     # TYPE  DATABASE        USER            ADDRESS                 METHOD
     host       all                        all                 127.0.0.1/32
      md5
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000148-DB-000103'
   tag gid: nil
   tag rid: nil

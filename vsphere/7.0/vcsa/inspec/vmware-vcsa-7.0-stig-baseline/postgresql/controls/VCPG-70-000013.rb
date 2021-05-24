@@ -40,8 +40,8 @@ ssl_ciphers TO '!aNULL:kECDH+AES:ECDH+AES:RSA+AES:@STRENGTH';\"
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
 pg_reload_conf();\"
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000179-DB-000114'
   tag gid: nil
   tag rid: nil

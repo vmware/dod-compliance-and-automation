@@ -30,7 +30,7 @@ name,setting FROM pg_settings WHERE name IN
     full_page_writes   | on
     synchronous_commit | on
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
     At the command prompt, execute the following commands for each setting
@@ -44,7 +44,6 @@ pg_reload_conf();\"
 
     Note: Substitute <name> with the incorrectly set parameter (fsync,
 full_page_writes, synchronous_commit)
-
   "
   impact 0.5
   tag severity: 'medium'

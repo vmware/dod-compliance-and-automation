@@ -19,7 +19,7 @@ This configuration must be verified and maintained.
     # /opt/vmware/vpostgres/current/bin/psql -d VCDB -x -U postgres -c
 \"\\dt;\"|grep Owner|grep -v vc
 
-    If any tables are returned, this is a finding.
+    If any tables are returned, this is a finding.\xC2\xA0
   "
   desc  'fix', "
     At the command prompt, execute the following command:
@@ -28,7 +28,6 @@ This configuration must be verified and maintained.
 <tablename> OWNER TO vc;\"
 
     Replace <tablename> with the name of the table discovered during the check.
-
   "
   impact 0.5
   tag severity: 'medium'

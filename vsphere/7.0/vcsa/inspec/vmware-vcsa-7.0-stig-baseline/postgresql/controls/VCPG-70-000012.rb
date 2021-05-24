@@ -35,8 +35,8 @@ authorized and authenticated users.
     # chmod 600 /storage/db/vpostgres_ssl/server.key
     # chown vpostgres:users /storage/db/vpostgres_ssl/server.key
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000176-DB-000068'
   tag gid: nil
   tag rid: nil
