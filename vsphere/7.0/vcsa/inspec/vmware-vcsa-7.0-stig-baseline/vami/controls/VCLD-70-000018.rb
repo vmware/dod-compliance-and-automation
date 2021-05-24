@@ -1,17 +1,17 @@
 # encoding: UTF-8
 
 control 'VCLD-70-000018' do
-  title "VAMI must protect against or limit the effects of HTTP types of Denial
-of Service (DoS) attacks."
+  title "VAMI must protect against or limit the effects of HTTP types of
+denial-of-service (DoS) attacks."
   desc  "In UNIX and related computer operating systems, a file descriptor is
 an indicator used to access a file or other input/output resource, such as a
 pipe or network connection. File descriptors index into a per-process file
-descriptor table maintained by the kernel, that in turn indexes into a
+descriptor table maintained by the kernel, which in turn indexes into a
 system-wide table of files opened by all processes, called the file table.
 
     As a single-threaded server, Lighttpd must be limited in the number of file
-descriptors that can be allocated.  This will prevent Lighttpd from being used
-in a form of DoS attack against the Operating System.
+descriptors that can be allocated. This will prevent Lighttpd from being used
+in a form of DoS attack against the operating system.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -28,7 +28,9 @@ in a form of DoS attack against the Operating System.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Add or reconfigure the following value:
 

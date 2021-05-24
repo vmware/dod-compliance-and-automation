@@ -6,8 +6,8 @@ control 'VCLD-70-000004' do
 server. By recording all remote access activities, it will be possible to
 determine the attacker's location, intent, and degree of success.
 
-    VAMI uses the mod_accesslog module to log information relating to remote
-requests. These logs can then be piped to external monitoring systems.
+    VAMI uses the \"mod_accesslog\" module to log information relating to
+remote requests. These logs can then be piped to external monitoring systems.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -24,7 +24,9 @@ requests. These logs can then be piped to external monitoring systems.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Add the following value in the \"server.modules\" section:
 

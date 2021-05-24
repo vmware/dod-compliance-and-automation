@@ -9,7 +9,6 @@ client and to identify which file types are not to be delivered to a client.
 
     By not specifying which files can and which files cannot be served to a
 user, VAMI could potentially deliver sensitive files.
-
   "
   desc  'rationale', ''
   desc  'check', "
@@ -27,7 +26,9 @@ user, VAMI could potentially deliver sensitive files.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Add or reconfigure the following value:
 

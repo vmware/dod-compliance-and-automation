@@ -5,10 +5,10 @@ control 'VCLD-70-000024' do
   desc  "Transport Layer Security (TLS) is a required transmission protocol for
 a web server hosting controlled information. The use of TLS provides
 confidentiality of data in transit between the web server and client. FIPS
-140-2 approved TLS versions must be enabled and non-FIPS-approved SSL versions
+140-2 approved TLS versions must be enabled, and non-FIPS-approved SSL versions
 must be disabled.
 
-    VAMI comes configured to use only TLS1.2. This configuration mus be
+    VAMI comes configured to use only TLS 1.2. This configuration mus be
 verified and maintained.
   "
   desc  'rationale', ''
@@ -29,7 +29,9 @@ verified and maintained.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Replace any and all \"ssl.use-*\" lines with following:
 

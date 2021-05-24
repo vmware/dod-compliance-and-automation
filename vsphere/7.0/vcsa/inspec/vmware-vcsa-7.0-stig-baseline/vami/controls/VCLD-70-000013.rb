@@ -2,7 +2,7 @@
 
 control 'VCLD-70-000013' do
   title 'VAMI must remove all mappings to unused scripts.'
-  desc  "Scripts allow server side processing on behalf of the hosted
+  desc  "Scripts allow server-side processing on behalf of the hosted
 application user or as processes needed in the implementation of hosted
 applications. Removing scripts not needed for application operation or deemed
 vulnerable helps to secure the web server. To assure scripts are not added to
@@ -30,7 +30,9 @@ or used by the web server for hosted application operation must be removed."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Configure the \"cgi.assign\" section to the following:
 

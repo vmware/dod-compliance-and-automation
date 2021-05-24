@@ -8,9 +8,12 @@ and plug-ins or modules being used. When debugging or trace information is
 enabled in a production web server, information about the web server, such as
 web server type, version, patches installed, plug-ins and modules installed,
 type of code being used by the hosted application, and any backends being used
-for data storage may be displayed. Since this information may be placed in logs
-and general messages during normal operation of the web server, an attacker
-does not need to cause an error condition to gain this information."
+for data storage may be displayed.
+
+    Since this information may be placed in logs and general messages during
+normal operation of the web server, an attacker does not need to cause an error
+condition to gain this information.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -26,7 +29,9 @@ does not need to cause an error condition to gain this information."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Add or reconfigure the following value:
 

@@ -3,13 +3,13 @@
 control 'VCLD-70-000016' do
   title "VAMI must prevent hosted applications from exhausting system
 resources."
-  desc  "When it comes to DoS attacks, most of the attention is paid to
-ensuring that systems and applications are not victims of these attacks. While
-it is true that those accountable for systems want to ensure they are not
-affected by a DoS attack, they also need to ensure their systems and
-applications are not used to launch such an attack against others. To that
-extent, a variety of technologies exist to limit, or in some cases, eliminate
-the effects of DoS attacks. Limiting system resources that are allocated to any
+  desc  "Most of the attention to denial-of-service (DoS) attacks focuses on
+ensuring that systems and applications are not victims of these attacks.
+However, these systems and applications must also be secured against use to
+launch such an attack against others.
+
+    A variety of technologies exist to limit or, in some cases, eliminate the
+effects of DoS attacks. Limiting system resources that are allocated to any
 user to a bare minimum may also reduce the ability of users to launch some DoS
 attacks.
 
@@ -31,7 +31,9 @@ for too long.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf file.
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf file.
 
     Add or reconfigure the following value:
 

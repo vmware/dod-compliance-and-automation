@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 control 'VCLD-70-000017' do
-  title 'VAMI protect the keystore from unauthorized access.'
+  title 'VAMI must protect the keystore from unauthorized access.'
   desc  "The web server's private key is used to prove the identity of the
 server to clients and securely exchange the shared secret key used to encrypt
 communications between the web server and clients. By gaining access to the
@@ -22,7 +22,7 @@ root:root
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    At the command prompt, execute the following commands:
+    At the command prompt, execute the following command(s):
 
     # chown root:root /etc/applmgmt/appliance/server.pem
     # chmod 600 /etc/applmgmt/appliance/server.pem

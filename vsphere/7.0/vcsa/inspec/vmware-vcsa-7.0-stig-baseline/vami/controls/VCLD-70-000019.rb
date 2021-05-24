@@ -26,37 +26,28 @@ checks.
     If the command returns any value, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
 
-    Navigate to the \"mimetype.assign\" block. Replace all the mappings whose
-assigned type is \"text/*\" with mappings for utf-8 encoding, as follows:
+    /opt/vmware/etc/lighttpd/lighttpd.conf
+
+    Navigate to the \"mimetype.assign\" block.
+
+    Replace all the mappings whose assigned type is \"text/*\" with mappings
+for UTF-8 encoding, as follows:
 
     \".css\"     => \"text/css\",
-
     \".html\"    => \"text/html\",
-
     \".htm\"     => \"text/html\",
-
     \".js\"      => \"text/javascript\",
-
     \".asc\"     => \"text/plain\",
-
     \".c\"       => \"text/plain\",
-
     \".cpp\"     => \"text/plain\",
-
     \".log\"     => \"text/plain\",
-
     \".conf\"    => \"text/plain\",
-
     \".text\"    => \"text/plain\",
-
     \".txt\"     => \"text/plain\",
-
     \".spec\"    => \"text/plain\",
-
     \".dtd\"     => \"text/xml\",
-
     \".xml\"     => \"text/xml\",
       \".log\"          =>      \"text/plain; charset=utf-8\",
       \".conf\"         =>      \"text/plain; charset=utf-8\",

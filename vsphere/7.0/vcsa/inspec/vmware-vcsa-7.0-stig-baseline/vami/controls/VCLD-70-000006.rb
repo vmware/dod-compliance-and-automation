@@ -5,24 +5,24 @@ control 'VCLD-70-000006' do
 establish what type of events occurred."
   desc  "After a security incident has occurred, investigators will often
 review log files to determine what happened.  Understanding what type of event
-occurred is critical for investigation of a susipicous event.
-
-  "
+occurred is critical for investigation of a susipicous event."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
 
     # grep \"^accesslog.format\" /opt/vmware/etc/lighttpd/lighttpd.conf
 
-    The default, commented, accesslog format is acceptable for this
-requirement. No output should be returned.
+    The default commented, accesslog format is acceptable for this requirement.
+No output should be returned.
 
     If the command returns any output, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
 
-    Comment any existing accesslog.format lines by adding a '#' at the
+    /opt/vmware/etc/lighttpd/lighttpd.conf
+
+    Comment any existing accesslog.format lines by adding a \"#\" at the
 beginning of the line.
   "
   impact 0.5

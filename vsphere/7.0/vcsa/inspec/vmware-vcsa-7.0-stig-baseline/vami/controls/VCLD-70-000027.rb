@@ -8,9 +8,11 @@ displaying enough information to aid in the debugging of the error. The
 information given back in error messages may display the web server type,
 version, patches installed, plug-ins and modules installed, type of code being
 used by the hosted application, and any backends being used for data storage.
-This information could be used by an attacker to blueprint what type of attacks
-might be successful. As such, VAMI must be configured to hide the server
-version at all times."
+
+    This information could be used by an attacker to blueprint what type of
+attacks might be successful. As such, VAMI must be configured to hide the
+server version at all times.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -26,7 +28,9 @@ version at all times."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/applmgmt/appliance/lighttpd.conf
+    Navigate to and open:
+
+    /etc/applmgmt/appliance/lighttpd.conf
 
     Add or reconfigure the following value:
 

@@ -4,17 +4,16 @@ control 'VCLD-70-000020' do
   title 'VAMI must disable directory browsing.'
   desc  "The goal is to completely control the web user's experience in
 navigating any portion of the web document root directories. Ensuring all web
-content directories have at least the equivalent of an index.html file is a
+content directories have at least the equivalent of an \"index.html\" file is a
 significant factor to accomplish this end.
 
-    Enumeration techniques, such as URL parameter manipulation, rely upon being
+    Enumeration techniques, such as URL parameter manipulation, rely on being
 able to obtain information about the web server's directory structure by
-locating directories without default pages. In the scenario, the web server
+locating directories without default pages. In this scenario, the web server
 will display to the user a listing of the files in the directory being
 accessed. By having a default hosted application web page, the anonymous web
 user will not obtain directory browsing information or an error message that
 reveals the server type and version.
-
   "
   desc  'rationale', ''
   desc  'check', "
@@ -31,7 +30,9 @@ reveals the server type and version.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Add or reconfigure the following value:
 
