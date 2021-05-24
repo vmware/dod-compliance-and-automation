@@ -68,7 +68,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
   desc  'fix', "
     Navigate to and open:
 
-    /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml
+    /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml
 
     Configure the <web-app> node with the child nodes listed below.
 
@@ -77,18 +77,19 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter>
-        <filter-name>setCharacterEncodingFilter</filter-name>
-
-<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
-        <init-param>
-          <param-name>encoding</param-name>
-          <param-value>UTF-8</param-value>
-          <param-name>ignore</param-name>
-          <param-value>false</param-value>
-        </init-param>
-        <async-supported>true</async-supported>
-    </filter>
+   <filter>
+      <filter-name>setCharacterEncodingFilter</filter-name>
+      <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+      <init-param>
+         <param-name>encoding</param-name>
+         <param-value>UTF-8</param-value>
+      </init-param>
+      <init-param>
+         <param-name>ignore</param-name>
+         <param-value>true</param-value>
+      </init-param>
+      <async-supported>true</async-supported>
+   </filter>
   "
   impact 0.5
   tag severity: 'medium'
