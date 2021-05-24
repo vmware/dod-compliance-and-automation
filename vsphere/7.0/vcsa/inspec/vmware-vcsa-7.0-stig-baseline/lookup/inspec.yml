@@ -103,4 +103,4 @@ inputs:
 - name: shutdownPortVariable
   description: "VCLU-70-000030"
   type: string
-  value: "${shutdown.port}"
+  value: "${base.shutdown.port}"
