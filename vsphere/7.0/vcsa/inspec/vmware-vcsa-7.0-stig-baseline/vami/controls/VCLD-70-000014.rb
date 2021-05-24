@@ -45,7 +45,15 @@ user, VAMI could potentially deliver sensitive files.
   tag cci: 'CCI-000381'
   tag nist: ['CM-7 a']
 
+  runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout
 
+  options = {
+    multiple_values: true
+  }
+
+  describe parse_config(runtime, options).params['url.access-deny'] do
+    it { should cmp ["(\"~\", \".inc\")", "(\"\")"] }
+  end
 
 end
 

@@ -43,7 +43,9 @@ configuration must be verified and maintained.
   tag cci: 'CCI-002385'
   tag nist: ['SC-5']
 
-
+  describe command("ps -f -U root | awk '$0 ~ /vami-lighttpd/ && $0 !~ /awk/ {print $1}'") do
+    its ('stdout.strip') { should cmp "root" }
+  end
   
 end
 

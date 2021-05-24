@@ -67,7 +67,9 @@ for UTF-8 encoding, as follows:
   tag cci: 'CCI-001310'
   tag nist: ['SI-10']
 
-
+  describe command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/mimetype\.assign/,/\)/'|grep \"text/\"|grep -v "'charset=utf-8'"|sed -e 's/^[ ]*//'") do
+    its ('stdout') { should cmp "" }
+  end
   
 end
 

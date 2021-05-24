@@ -54,5 +54,10 @@ or used by the web server for hosted application operation must be removed."
   tag fix_id: nil
   tag cci: 'CCI-000381'
   tag nist: ['CM-7 a']
+
+  describe command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/cgi\.assign/,/\)/'|sed -e 's/^[ ]*//'") do
+    its ('stdout') { should match "cgi.assign                        = (\n\".py\"  => \"/usr/bin/python\",\n\".cgi\" => \"/usr/bin/python\",\n# 2\n)\n"}
+  end
+
 end
 

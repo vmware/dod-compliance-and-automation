@@ -40,5 +40,12 @@ allow clients to modify unauthorized files on the web server.
   tag fix_id: nil
   tag cci: 'CCI-000381'
   tag nist: ['CM-7 a']
+
+  command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/server\.modules/,/\)/'|sed -e 's/^[ ]*//'|grep mod_").stdout.split.each do | result |
+    describe result do
+      it { should_not cmp "mod_webdav" }
+    end
+  end
+
 end
 
