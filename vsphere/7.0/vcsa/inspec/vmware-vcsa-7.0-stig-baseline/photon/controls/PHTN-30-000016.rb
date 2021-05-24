@@ -32,7 +32,10 @@ is a finding.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000057-GPOS-00027'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000016'
+  tag fix_id: nil
   tag cci: 'CCI-000162'
   tag nist: ['AU-9']
 

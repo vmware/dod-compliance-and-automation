@@ -2,16 +2,16 @@
 
 control 'VCEM-70-000023' do
   title 'ESX Agent Manager must not show directory listings.'
-  desc  "Enumeration techniques, such as URL parameter manipulation, rely upon
+  desc  "Enumeration techniques, such as URL parameter manipulation, rely on
 being able to obtain information about the web server's directory structure by
-locating directories without default pages. In the scenario, the web server
+locating directories without default pages. In this scenario, the web server
 will display to the user a listing of the files in the directory being
 accessed. Ensuring that directory listing is disabled is one approach to
 mitigating the vulnerability.
 
     In Tomcat, directory listing is disabled by default but can be enabled via
-the 'listings' parameter. Ensure that this node is not present in order to have
-the default effect.
+the \"listings\" parameter. Ensure that this node is not present in order to
+have the default effect.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -29,7 +29,9 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
 
     Find and remove the entire block returned in the check.
 

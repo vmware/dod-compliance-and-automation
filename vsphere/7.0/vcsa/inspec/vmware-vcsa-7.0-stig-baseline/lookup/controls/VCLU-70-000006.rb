@@ -7,12 +7,12 @@ shutdown."
 when a service is stopped. Many forms of suspicious actions can be detected by
 analyzing logs for unexpected service starts and stops. Also, by starting to
 log immediately after a service starts, it becomes more difficult for suspicous
-activity to go un-logged.
+activity to go unlogged.
 
-    On the VCSA, the vmware-vmon service starts up the JVMs for various vCenter
-processes, including Lookup Service, and the individual json config files
-control the early jvm logging. Ensuring these json files are configured
-correctly enables early java stdout and stderr logging.
+    On the VCSA, the \"vmware-vmon\" service starts up the JVMs for various
+vCenter processes, including Lookup Service, and the individual json config
+files control the early jvm logging. Ensuring these json files are configured
+correctly enables early java \"stdout\" and \"stderr\" logging.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -29,9 +29,12 @@ correctly enables early java stdout and stderr logging.
 is a finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/vmware/vmware-vmon/svcCfgfiles/lookupsvc.json .
-Below the last line of the 'PreStartCommandArg' block add or re-configure the
-following line:
+    Navigate to and open:
+
+    /etc/vmware/vmware-vmon/svcCfgfiles/lookupsvc.json
+
+    Below the last line of the \"PreStartCommandArg\" block add or re-configure
+the following line:
 
     \"StreamRedirectFile\":
 \"%VMWARE_LOG_DIR%/vmware/lookupsvc/lookupsvc_stream.log\",

@@ -2,11 +2,11 @@
 
 control 'VCLD-70-000001' do
   title 'VAMI must limit the number of simultaneous requests.'
-  desc  "Denial of Service is one threat against web servers.  Many DoS attacks
-attempt to consume web server resources in such a way that no more resources
-are available to satisfy legitimate requests.  Mitigation against these threats
-is to take steps to  limit the number of resources that can be consumed in
-certain ways.
+  desc  "Denial of service (DoS) is one threat against web servers.  Many DoS
+attacks attempt to consume web server resources in such a way that no more
+resources are available to satisfy legitimate requests.  Mitigation against
+these threats is to take steps to  limit the number of resources that can be
+consumed in certain ways.
 
     VAMI provides the maxConnections attribute of the <Connector Elements> to
 limit the number of concurrent TCP connections. This comes per-configured with
@@ -26,7 +26,9 @@ a tested, supported value that must be verified and maintained.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Add or reconfigure the following value:
 

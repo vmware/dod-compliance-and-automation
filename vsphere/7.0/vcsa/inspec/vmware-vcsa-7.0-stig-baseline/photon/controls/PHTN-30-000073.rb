@@ -1,8 +1,8 @@
 # encoding: UTF-8
 
 control 'PHTN-30-000073' do
-  title "The Photon operating system must enforce a delay of at least 4 seconds
-between logon prompts following a failed logon attempt."
+  title "The Photon operating system must enforce a delay of at least four
+seconds between logon prompts following a failed logon attempt."
   desc  "Limiting the number of logon attempts over a certain time interval
 reduces the chances that an unauthorized user may gain access to an account."
   desc  'rationale', ''
@@ -18,10 +18,12 @@ reduces the chances that an unauthorized user may gain access to an account."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/pam.d/system-auth with a text editor.
+    Navigate to and open:
 
-    Remove any existing pam_faildelay line and add the follwing line at the end
-of the file:
+    /etc/pam.d/system-auth
+
+    Remove any existing \"pam_faildelay\" line and add the follwing line at the
+end of the file:
 
     auth optional pam_faildelay.so delay=4000000
   "

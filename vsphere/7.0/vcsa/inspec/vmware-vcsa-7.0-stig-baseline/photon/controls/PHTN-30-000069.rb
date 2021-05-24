@@ -23,20 +23,25 @@ information system (e.g., module or policy filter).
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
-following lines:
+    Navigate to and open:
+
+    /etc/audit/rules.d/audit.STIG.rules
+
+    Add the following lines:
 
     -w /sbin/insmod -p x
 
-    At the command line, execute the following command to load the new audit
-rules.
+    Execute the following command to load the new audit rules:
 
     # /sbin/augenrules --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000471-GPOS-00216'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000069'
+  tag fix_id: nil
   tag cci: 'CCI-000172'
   tag nist: ['AU-12 c']
 

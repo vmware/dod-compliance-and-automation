@@ -26,7 +26,7 @@ must be verified and maintained.
 
     on
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
     At the command prompt, execute the following commands:
@@ -37,8 +37,8 @@ ssl TO 'on';\"
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"SELECT
 pg_reload_conf();\"
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000172-DB-000075'
   tag gid: nil
   tag rid: nil

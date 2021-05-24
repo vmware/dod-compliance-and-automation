@@ -2,8 +2,8 @@
 
 control 'VCUI-70-000020' do
   title 'vSphere UI must limit the number of allowed connections.'
-  desc  "Limiting the number of established connections is a basic DoS
-protection and a best practice. Servers where the limit is too high or
+  desc  "Limiting the number of established connections is a basic denial of
+service protection and a best practice. Servers where the limit is too high or
 unlimited can potentiall run out of system resources and negatively affect
 system availability."
   desc  'rationale', ''
@@ -18,13 +18,16 @@ system availability."
 
     acceptCount=\"300\"
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml
+    Navigate to and open:
 
-    Navigate to the <Connector> configured with port=\"${http.port}\". Add or
-change the folllowing value:
+    /usr/lib/vmware-vsphere-ui/server/conf/server.xml
+
+    Navigate to the <Connector> configured with port=\"${http.port}\".
+
+    Add or change the folllowing value:
 
     acceptCount=\"300\"
   "

@@ -32,11 +32,13 @@ ensure availability, the shutdown port must be disabled.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-vsphere-ui/server/conf/server.xml
 
     Make sure that the server port is disabled:
 
-    <Server port=\"${shutdown.port}\">
+    <Server port=\"${shutdown.port}\" >
   "
   impact 0.5
   tag severity: 'medium'

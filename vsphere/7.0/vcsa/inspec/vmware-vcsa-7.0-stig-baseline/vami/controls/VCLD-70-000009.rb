@@ -24,10 +24,14 @@ modified on first boot and thus are excluded from the check.
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "If the VAMI binaries have been modified from the default state
-when deployed as part of the VCSA then the system must be wiped and redeployed
-or restored from backup. VMware does not recommend or support recovering from
-such a state by reinstalling RPMs or similar efforts."
+  desc  'fix', "
+    If the VAMI binaries have been modified from the default state when
+deployed as part of the VCSA then the system must be wiped and redeployed or
+restored from backup.
+
+    VMware does not recommend or support recovering from such a state by
+reinstalling RPMs or similar efforts.
+  "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000131-WSR-000051'

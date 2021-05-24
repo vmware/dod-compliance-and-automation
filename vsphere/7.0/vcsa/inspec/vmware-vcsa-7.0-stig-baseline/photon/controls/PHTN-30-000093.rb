@@ -3,7 +3,7 @@
 control 'PHTN-30-000093' do
   title "The Photon operating system must be configured so that all system
 startup scripts are protected from unauthorized modification."
-  desc  "If system startup scripts are accessible to unauthorized modification
+  desc  "If system startup scripts are accessible to unauthorized modification,
 this could compromise the system on startup."
   desc  'rationale', ''
   desc  'check', "
@@ -23,7 +23,10 @@ this could compromise the system on startup."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000093'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

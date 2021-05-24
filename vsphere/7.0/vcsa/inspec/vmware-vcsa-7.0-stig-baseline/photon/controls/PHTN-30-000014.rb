@@ -20,12 +20,16 @@ the audit capability, and system operation may be adversely affected."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/audit/auditd.conf with a text editor and ensure that the
-\"space_left_action\" line is uncommented and set to the following:
+    Navigate to and open:
+
+    /etc/audit/auditd.conf
+
+    Ensure that the \"space_left_action\" line is uncommented and set to the
+following:
 
     space_left_action = SYSLOG
 
-    At the command line, execute the following command:
+    At the command line, execute the following command(s):
 
     # killproc auditd -TERM
     # systemctl start auditd
@@ -33,7 +37,10 @@ the audit capability, and system operation may be adversely affected."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000046-GPOS-00022'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000014'
+  tag fix_id: nil
   tag cci: 'CCI-000139'
   tag nist: ['AU-5 a']
 

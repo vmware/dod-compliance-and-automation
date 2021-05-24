@@ -3,10 +3,10 @@
 control 'VCLU-70-000029' do
   title 'Lookup Service must must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
-that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or
-too unsecure to run on a production system. The ports that Lookup Service
-listens on are configured in the catalina.properties file and must be veriified
-as accurate to their shipping state."
+that use TCP/IP ports. Some of these processes may be deemed unnecessary or too
+unsecure to run on a production system. The ports that Lookup Service listens
+on are configured in the \"catalina.properties\" file and must be veriified as
+accurate to their shipping state."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -24,7 +24,9 @@ as accurate to their shipping state."
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-lookupsvc/conf/catalina.properties
+    Navigate to and open:
+
+    /usr/lib/vmware-lookupsvc/conf/catalina.properties
 
     Navigate to the ports specification section.
 

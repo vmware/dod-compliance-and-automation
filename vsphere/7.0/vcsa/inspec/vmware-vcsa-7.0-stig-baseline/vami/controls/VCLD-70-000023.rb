@@ -3,11 +3,11 @@
 control 'VCLD-70-000023' do
   title 'VAMI must be protected from being stopped by a non-privileged user.'
   desc  "An attacker has at least two reasons to stop a web server. The first
-is to cause a DoS, and the second is to put in place changes the attacker made
-to the web server configuration. As such, only administrators should ever be
-able to stop VAMI.
+is to cause a denial of service, and the second is to put in place changes the
+attacker made to the web server configuration. As such, only administrators
+should ever be able to stop VAMI.
 
-    The VAMI process of configured out of the box to be owned by root. This
+    The VAMI process is configured out of the box to be owned by root. This
 configuration must be verified and maintained.
   "
   desc  'rationale', ''
@@ -23,8 +23,9 @@ configuration must be verified and maintained.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/systemd/system/vami-lighttp.service in a text
-editor.
+    Navigate to and open:
+
+    /usr/lib/systemd/system/vami-lighttp.service
 
     Under the \"[Service]\" section, remove the line that beings with \"User=\".
 
@@ -42,7 +43,9 @@ editor.
   tag cci: 'CCI-002385'
   tag nist: ['SC-5']
 
-
+  describe command("ps -f -U root | awk '$0 ~ /vami-lighttpd/ && $0 !~ /awk/ {print $1}'") do
+    its ('stdout.strip') { should cmp "root" }
+  end
   
 end
 

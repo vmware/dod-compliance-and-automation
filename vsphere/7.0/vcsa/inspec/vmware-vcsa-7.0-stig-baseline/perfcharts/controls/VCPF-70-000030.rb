@@ -17,57 +17,37 @@ the availability and integrity of the hosted application."
     If the command returns any output, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/vmware-syslog/vmware-services-perfcharts.conf ,
-creating the file if it does not exist.
+    Navigate to and open
+
+    /etc/vmware-syslog/vmware-services-perfcharts.conf
+
+    Create the file if it does not exist.
 
     Set the contents of the file as follows:
 
     #stats
-
     input(type=\"imfile\"
-
           File=\"/var/log/vmware/perfcharts/stats.log\"
-
           Tag=\"perfcharts-stats\"
-
           Severity=\"info\"
-
           Facility=\"local0\")
-
     #localhost_access_log
-
     input(type=\"imfile\"
-
           File=\"/var/log/vmware/perfcharts/localhost_access_log.txt\"
-
           Tag=\"perfcharts-localhost_access\"
-
           Severity=\"info\"
-
           Facility=\"local0\")
-
     #vmware-perfcharts-gc.log
-
     input(type=\"imfile\"
-
           File=\"/var/log/vmware/perfcharts/vmware-perfcharts-gc.log.*.current\"
-
           Tag=\"perfcharts-gc\"
-
           Severity=\"info\"
-
           Facility=\"local0\")
-
     #vmware-perfcharts-runtime.log
-
     input(type=\"imfile\"
-
           File=\"/var/log/vmware/perfcharts/vmware-perfcharts-runtime.log.std*\"
-
           Tag=\"perfcharts-runtime\"
-
           Severity=\"info\"
-
           Facility=\"local0\")
   "
   impact 0.5

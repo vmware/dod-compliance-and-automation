@@ -6,7 +6,7 @@ control 'VCLD-70-000010' do
 of these may be deemed unnecessary or too unsecure to run on a production DoD
 system.
 
-    VAMI can be configured to load any number of external modules but only a
+    VAMI can be configured to load any number of external modules, but only a
 specific few are provided and supported by VMware. Additional, unexpected
 modules must be removed.
   "
@@ -34,7 +34,9 @@ modules must be removed.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Configure the \"server.modules\" section to the following:
 

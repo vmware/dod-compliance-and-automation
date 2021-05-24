@@ -3,18 +3,18 @@
 control 'VCLD-70-000002' do
   title "VAMI must be configured with FIPS 140-2 compliant ciphers for HTTPS
 connections."
-  desc  "Encryption of data-in-flight is an essential element of protecting
-information confidentiality.  If a web server uses weak or outdated encryption
+  desc  "Encryption of data in flight is an essential element of protecting
+information confidentiality. If a web server uses weak or outdated encryption
 algorithms, then the server's communications can potentially be compromised.
 
     The US Federal Information Processing Standards (FIPS) publication 140-2,
-Security Requirements for Cryptographic Modules (FIPS 140-2) identifies eleven
+Security Requirements for Cryptographic Modules (FIPS 140-2), identifies eleven
 areas for a cryptographic module used inside a security system that protects
-information.  FIPS 140-2 approved ciphers provide the maximum level of
+information. FIPS 140-2 approved ciphers provide the maximum level of
 encryption possible for a private web server.
 
     VAMI is compiled to use VMware's FIPS validated OpenSSL module and cannot
-be configured otherwise. Ciphers may still be specified in order of preference
+be configured otherwise. Ciphers may still be specified in order of preference,
 but no non-FIPS approved ciphers will be implemented.
   "
   desc  'rationale', ''
@@ -33,15 +33,17 @@ but no non-FIPS approved ciphers will be implemented.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/applmgmt/appliance/lighttpd.conf
+    Navigate to and open:
+
+    /etc/applmgmt/appliance/lighttpd.conf
 
     Add or reconfigure the following value:
 
     ssl.cipher-list                   =
 \"!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES\"
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000014-WSR-000006'
   tag gid: nil
   tag rid: nil

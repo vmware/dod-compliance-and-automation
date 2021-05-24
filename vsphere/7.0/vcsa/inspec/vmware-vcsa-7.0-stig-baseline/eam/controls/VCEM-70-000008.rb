@@ -4,7 +4,7 @@ control 'VCEM-70-000008' do
   title "ESX Agent Manager application files must be verified for their
 integrity."
   desc  "Verifying that ESX Agent Manager application code is unchanged from
-it's shipping state is essential for file validation and non-repudiation of the
+its shipping state is essential for file validation and non-repudiation of the
 ESX Agent Manager itself. There is no reason that the MD5 hash of the rpm
 original files should be changed after installation, excluding configuration
 files."
@@ -15,10 +15,10 @@ files."
     # rpm -V vmware-eam|grep \"^..5......\"|grep -v -E
 \"\\.installer|\\.properties\"
 
-    If is any output, this is a finding.
+    If there is any output, this is a finding.
   "
-  desc  'fix', "Re-install the VCSA or roll back to a snapshot. Modifying the
-EAM installation files manually is not supported by VMware."
+  desc  'fix', "Reinstall the VCSA or roll back to a backup. Modifying the EAM
+installation files manually is not supported by VMware."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000131-WSR-000051'

@@ -30,8 +30,8 @@ configuration can lead to unauthorized or compromised installations.
      vlcmuser   | Create DB                                                  |
 {}
 
-    If the accounts other than \"postgres\" and \"vc\" have any \"Create\"
-privileges, this is a finding.
+    If the accounts other than \"postgres\",\"vc\", and \"vlcmuser\" have any
+\"Create\" privileges, this is a finding.
   "
   desc  'fix', "
     At the command prompt, execute the following command:

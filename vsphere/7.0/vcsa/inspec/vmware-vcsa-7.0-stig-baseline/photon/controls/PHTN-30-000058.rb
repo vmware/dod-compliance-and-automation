@@ -26,12 +26,15 @@ endpoints).
     Confirm the servers and peers or multicastclient (as applicable) are local
 or an authoritative U.S. DoD source.
 
-    If no lines are returned or a non-local/non-authoritative time-server is
+    If no lines are returned or a non-local/non-authoritative time server is
 used, this is a finding.
   "
   desc  'fix', "
-    Open /etc/ntp.conf with a text editor and set it's contents to the
-following:
+    Navigate to and open:
+
+    /etc/ntp.conf
+
+    Set its contents to the following:
 
     tinker panic 0
     restrict default kod nomodify notrap nopeer
@@ -40,7 +43,7 @@ following:
     driftfile /var/lib/ntp/drift/ntp.drift
     server <site-specific-time-source-IP>
 
-    At the command line, execute the following commands:
+    At the command line, execute the following command(s):
 
     # chkconfig ntpd on
     # systemctl start ntp.service
@@ -48,7 +51,10 @@ following:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000355-GPOS-00143'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000058'
+  tag fix_id: nil
   tag cci: 'CCI-001891'
   tag nist: ['AU-8 (1) (a)']
 

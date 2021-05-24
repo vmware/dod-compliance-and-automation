@@ -31,7 +31,10 @@ log file(s) not found\
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000058-GPOS-00028'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000017'
+  tag fix_id: nil
   tag cci: 'CCI-000163'
   tag nist: ['AU-9']
 

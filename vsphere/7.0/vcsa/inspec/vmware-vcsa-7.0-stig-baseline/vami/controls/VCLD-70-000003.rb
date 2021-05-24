@@ -4,14 +4,14 @@ control 'VCLD-70-000003' do
   title "VAMI must use cryptography to protect the integrity of remote
 sessions."
   desc  "Data exchanged between the user and the web server can range from
-static display data to credentials used to log into the hosted application.
-Even when data appears to be static, the non-displayed logic in a web page may
+static display data to credentials used to log in the hosted application. Even
+when data appears to be static, the non-displayed logic in a web page may
 expose business logic or trusted system relationships. The integrity of all the
 data being exchanged between the user and web server must always be trusted. To
 protect the integrity and trust, encryption methods should be used to protect
 the complete communication session.
 
-    In order to protect the integrity and confidentiality of the remote
+    To order to protect the integrity and confidentiality of the remote
 sessions, VAMI uses SSL/TLS.
   "
   desc  'rationale', ''
@@ -29,7 +29,9 @@ sessions, VAMI uses SSL/TLS.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Add or reconfigure the following value:
 

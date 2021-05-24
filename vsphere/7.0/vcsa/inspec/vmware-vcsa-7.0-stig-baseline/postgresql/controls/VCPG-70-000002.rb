@@ -22,7 +22,7 @@ log_line_prefix;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
     %m %c %x %d %u %r %p %l
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
     At the command prompt, execute the following commands:

@@ -2,7 +2,7 @@
 
 control 'PHTN-30-000085' do
   title "The Photon operating system must configure sshd to display the last
-login immeidately after authentication."
+login immediately after authentication."
   desc  "Providing users with feedback on the alst time they logged on via SSH
 facilitates user recognition and reporting of unauthorized account use."
   desc  'rationale', ''
@@ -18,8 +18,12 @@ facilitates user recognition and reporting of unauthorized account use."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/ssh/sshd_config with a text editor and ensure that the
-\"PrintLastLog\" line is uncommented and set to the following:
+    Navigate to and open:
+
+    /etc/ssh/sshd_config
+
+    Ensure that the \"PrintLastLog\" line is uncommented and set to the
+following:
 
     PrintLastLog yes
 
@@ -30,7 +34,10 @@ facilitates user recognition and reporting of unauthorized account use."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000085'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

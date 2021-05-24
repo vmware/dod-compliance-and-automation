@@ -3,7 +3,7 @@
 control 'VCLU-70-000008' do
   title 'Lookup Service application files must be verified for their integrity.'
   desc  "Verifying that the Lookup Service application code is unchanged from
-it's shipping state is essential for file validation and non-repudiation of the
+it's shipping state is essential for file validation and nonrepudiation of the
 Lookup Service itself. There is no reason that the MD5 hash of the rpm original
 files should be changed after installation, excluding configuration files."
   desc  'rationale', ''
@@ -13,9 +13,9 @@ files should be changed after installation, excluding configuration files."
     # rpm -V vmware-lookupsvc|grep \"^..5......\"|grep -E
 \"\\.war|\\.jar|\\.sh|\\.py\"
 
-    If is any output, this is a finding.
+    If there is any output, this is a finding.
   "
-  desc  'fix', "Re-install the VCSA or roll back to a snapshot. Modifying the
+  desc  'fix', "Reinstall the VCSA or roll back to a backup. Modifying the
 Lookup Service installation files manually is not supported by VMware."
   impact 0.5
   tag severity: 'medium'

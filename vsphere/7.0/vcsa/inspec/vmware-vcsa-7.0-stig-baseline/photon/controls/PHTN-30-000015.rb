@@ -9,7 +9,7 @@ notification, the security personnel may be unaware of an impending failure of
 the audit capability, and system operation may be adversely affected."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following commands:
+    At the command line, execute the following command:
 
     # grep -E \"^disk_full_action|^disk_error_action|^admin_space_left_action\"
 /etc/audit/auditd.conf
@@ -18,14 +18,18 @@ the audit capability, and system operation may be adversely affected."
 is a finding.
   "
   desc  'fix', "
-    Open /etc/audit/auditd.conf with a text editor and ensure that the
-following lines are present, not duplicated and not commented:
+    Navigate to and open:
+
+    /etc/audit/auditd.conf
+
+    Ensure that the following lines are present, not duplicated, and not
+commented:
 
     disk_full_action = SYSLOG
     disk_error_action = SYSLOG
     admin_space_left_action = SYSLOG
 
-    At the command line, execute the following command:
+    At the command line, execute the following command(s):
 
     # killproc auditd -TERM
     # systemctl start auditd
@@ -33,7 +37,10 @@ following lines are present, not duplicated and not commented:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000047-GPOS-00023'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000015'
+  tag fix_id: nil
   tag cci: 'CCI-000140'
   tag nist: ['AU-5 b']
 

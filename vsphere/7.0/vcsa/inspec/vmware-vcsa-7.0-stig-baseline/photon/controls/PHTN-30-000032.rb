@@ -38,8 +38,11 @@ functioning of the product."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open  /etc/modprobe.d/modprobe.conf with a text editor and set the contents
-as follows:
+    Navigate to and open:
+
+    /etc/modprobe.d/modprobe.conf
+
+    Set the contents as follows:
 
     install sctp /bin/false
     install dccp /bin/false
@@ -64,7 +67,10 @@ as follows:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000096-GPOS-00050'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000032'
+  tag fix_id: nil
   tag cci: 'CCI-000382'
   tag nist: ['CM-7 b']
 

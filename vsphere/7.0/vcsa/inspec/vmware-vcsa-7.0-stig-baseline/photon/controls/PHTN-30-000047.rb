@@ -5,7 +5,7 @@ control 'PHTN-30-000047' do
 correct permissions."
   desc  "Protecting audit information also includes identifying and protecting
 the tools used to view and manipulate log data. Therefore, protecting audit
-tools is necessary to prevent unauthorized operation on audit information."
+tools is necessary to prevent unauthorized operations on audit information."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:

@@ -3,9 +3,9 @@
 control 'VCEM-70-000031' do
   title 'ESX Agent Manager must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
-that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or
-too unsecure to run on a production system. The ports that the ESX Agent
-Manager listens on are configured in the catalina.properties file and must be
+that use TCP/IP ports. Some of these processes may be deemed unnecessary or too
+unsecure to run on a production system. The ports that the ESX Agent Manager
+listens on are configured in the \"catalina.properties\" file and must be
 veriified as accurate to their shipping state."
   desc  'rationale', ''
   desc  'check', "
@@ -22,14 +22,15 @@ finding.
 
   "
   desc  'fix', "
-    Navigate to and open /etc/vmware-eam/catalina.properties
+    Navigate to and open:
+
+    /etc/vmware-eam/catalina.properties
 
     Navigate to the ports specification section.
 
-    Set the ESX Agent Manager port specifications according to the below list:
+    Set the ESX Agent Manager port specifications according to the following:
 
     bio.http.port=15005
-
   "
   impact 0.5
   tag severity: 'medium'

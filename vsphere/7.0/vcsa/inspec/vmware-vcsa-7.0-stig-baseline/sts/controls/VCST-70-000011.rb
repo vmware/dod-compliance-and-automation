@@ -3,13 +3,14 @@
 control 'VCST-70-000011' do
   title "The Security Token Service must be configured to limit access to
 internal packages."
-  desc  "The 'package.access' entry in the catalina.properties file implements
-access control at the package level. When properly configured, a Security
-Exception will be reported should an errant or malicious webapp attempt to
-access the listed internal classes directly, or if a new class is defined under
-the protected packages. The Security Token Service comes pre-configured with
-the appropriate packages defined in 'package.access' and this configuration
-must be maintained. "
+  desc  "MIME mappings tell the Security Token Service what type of program
+various file types and extensions are and what external utilities or programs
+are needed to execute the file type.
+
+    By ensuring that various shell script MIME types are not included in
+\"web.xml\", the server is protected against malicious users tricking the
+server into executing shell command files.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -26,13 +27,14 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,o
 finding.
   "
   desc  'fix', "
-    Navigate to and open
-/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties and ensure that the
-'package.access' line is configured as follows:
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties
+
+    Ensure that the \"package.access\" line is configured as follows:
 
 
 package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.
-
   "
   impact 0.5
   tag severity: 'medium'

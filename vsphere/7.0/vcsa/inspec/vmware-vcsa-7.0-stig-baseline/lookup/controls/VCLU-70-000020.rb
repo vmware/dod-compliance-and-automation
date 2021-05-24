@@ -12,7 +12,7 @@ application.
     An attacker can also enter Unicode characters into hosted applications in
 an effort to break out of the document home or root home directory or to bypass
 security checks. Lookup Service must be configured to use a consistent
-character set via the URIEncoding attribute on the Connector nodes.
+character set via the \"URIEncoding\" attribute on the Connector nodes.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -26,16 +26,14 @@ character set via the URIEncoding attribute on the Connector nodes.
 
     URIEncoding=\"UTF-8\"
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-lookupsvc/conf/server.xml
+    Navigate to and open:
 
-
+    /usr/lib/vmware-lookupsvc/conf/server.xml
 
     Navigate to each of the <Connector> nodes.
-
-
 
     Configure each <Connector> node with the value 'URIEncoding=\"UTF-8\"'.
   "

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 control 'PHTN-30-000076' do
-  title 'The Photon operating system must disabled the debug-shell service.'
+  title 'The Photon operating system must disable the debug-shell service.'
   desc  "The debug-shell service is intended to diagnose systemd related boot
 issues with various systemctl commands. Once enabled and following a system
 reboot, the root shell will be available on tty9. This service must remain
@@ -15,7 +15,7 @@ disabled until and unless otherwise directed by VMware support."
     If the debug-shell service is not disabled, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following commands:
+    At the command line, execute the following command(s):
 
     # systemctl stop debug-shell.service
     # systemctl disable debug-shell.service
@@ -25,7 +25,10 @@ disabled until and unless otherwise directed by VMware support."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000076'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

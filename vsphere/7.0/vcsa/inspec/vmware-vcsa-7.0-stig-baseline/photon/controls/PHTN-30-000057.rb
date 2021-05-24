@@ -19,12 +19,15 @@ capacity expansion."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/audit/auditd.conf with a text editor and ensure that the
-\"space_left\" line is uncommented and set to the following:
+    Navigate to and open:
+
+    /etc/audit/auditd.conf
+
+    Ensure that the \"space_left\" line is uncommented and set to the following:
 
     space_left = 75
 
-    At the command line, execute the following command:
+    At the command line, execute the following command(s):
 
     # killproc auditd -TERM
     # systemctl start auditd
@@ -32,7 +35,10 @@ capacity expansion."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000343-GPOS-00134'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000057'
+  tag fix_id: nil
   tag cci: 'CCI-001855'
   tag nist: ['AU-5 (1)']
 

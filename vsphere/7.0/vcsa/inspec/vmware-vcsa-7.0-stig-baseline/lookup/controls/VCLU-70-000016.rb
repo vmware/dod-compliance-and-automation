@@ -7,10 +7,12 @@ directory tree."
 applications on the request of a client or user. Containing user requests to
 files in the directory tree of the hosted web application and limiting the
 execution of scripts and applications guarantees that the user is not accessing
-information protected outside the application's realm. By checking that no
-symbolic links exist in the document root, the web server is protected from
-users jumping outside the hosted application directory tree and gaining access
-to the other directories, including the system root."
+information protected outside the application's realm.
+
+    By checking that no symbolic links exist in the document root, the web
+server is protected from users jumping outside the hosted application directory
+tree and gaining access to the other directories, including the system root.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -20,7 +22,7 @@ to the other directories, including the system root."
     If the command produces any output, this is a finding.
   "
   desc  'fix', "
-    At the command prompt, execute the following commands:
+    At the command prompt, execute the following command(s):
 
     Note: Replace <file_name> for the name of any files that were returned.
 

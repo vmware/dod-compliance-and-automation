@@ -32,13 +32,22 @@ chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremov
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
-following lines:
+    Navigate to and open:
 
-    -a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
-    -a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
-    -a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
-    -a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
+    /etc/audit/rules.d/audit.STIG.rules
+
+    Add the following lines:
+
+    -a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat
+-F auid>=1000 -F auid!=4294967295 -F key=perm_mod
+    -a always,exit -F arch=b64 -S
+chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat
+-F key=perm_mod
+    -a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat
+-F auid>=1000 -F auid!=4294967295 -F key=perm_mod
+    -a always,exit -F arch=b32 -S
+chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat
+-F key=perm_mod
 
     At the command line, execute the following command to load the new audit
 rules.

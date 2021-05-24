@@ -25,18 +25,15 @@ xmllint --xpath '/Context/@sessionCookiePath' -
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/context.xml .
-Add the following configuration to the <Context> node:
+    Navigate to and open:
 
+    /usr/lib/vmware-vsphere-ui/server/conf/context.xml
 
+    Add the following configuration to the <Context> node:
 
     sessionCookiePath=\"/ui\"
 
-
-
-    Ex:
-
-
+    Example:
 
     <Context useHttpOnly=\"true\" sessionCookieName=\"VSPHERE-UI-JSESSIONID\"
 sessionCookiePath=\"/ui\">

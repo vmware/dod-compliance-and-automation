@@ -4,9 +4,9 @@ control 'VCUI-70-000010' do
   title 'vSphere UI must not be configured with the UserDatabaseRealm enabled.'
   desc  "The vSphere UI performs user authentication at the application level
 and not through Tomcat. By default, there is no configuration for the
-UserDatabaseRealm Tomcat authentication mechanism. In the name of eliminating
-unnecessary features and to ensure that the vSphere UI remains in it's shipping
-state, the lack of a UserDatabaseRealm configuration must be confirmed."
+UserDatabaseRealm Tomcat authentication mechanism. To eliminate unnecessary
+features and to ensure that the vSphere UI remains in it's shipping state, the
+lack of a UserDatabaseRealm configuration must be confirmed."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -15,9 +15,13 @@ state, the lack of a UserDatabaseRealm configuration must be confirmed."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "Navigate to and open
-/usr/lib/vmware-vsphere-ui/server/conf/server.xml . Remove any and all <Realm>
-nodes."
+  desc  'fix', "
+    Navigate to and open:
+
+    /usr/lib/vmware-vsphere-ui/server/conf/server.xml
+
+    Remove any and all <Realm> nodes.
+  "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000015'

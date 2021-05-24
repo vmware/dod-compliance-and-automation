@@ -4,17 +4,17 @@ control 'VCEM-70-000018' do
   title "ESX Agent Manager must fail to a known safe state if system
 initialization fails, shutdown fails, or aborts fail."
   desc  "Determining a safe state for failure and weighing that against a
-potential DoS for users depends on what type of application the web server is
-hosting. For the ESX Agent Manager, it is preferable that the service abort
-startup on any initialization failure rather than continuing in a degraded, and
-potentailly insecure, state."
+potential denial of service for users depends on what type of application the
+web server is hosting. For the ESX Agent Manager, it is preferable that the
+service abort startup on any initialization failure rather than continuing in a
+degraded, and potentailly insecure, state."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
 
     # grep EXIT_ON_INIT_FAILURE /etc/vmware-eam/catalina.properties
 
-    Expected result :
+    Expected result:
 
     org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true
 
@@ -22,7 +22,9 @@ potentailly insecure, state."
 finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/vmware-eam/catalina.properties
+    Navigate to and open:
+
+    /etc/vmware-eam/catalina.properties
 
     Add or change the following line:
 

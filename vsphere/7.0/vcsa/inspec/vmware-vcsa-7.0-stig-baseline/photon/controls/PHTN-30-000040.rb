@@ -11,7 +11,7 @@ state and can provide sensitive information to an unprivileged attacker."
 
     # stat -c \"%n is owned by %U and group owned by %G\" /var/log
 
-    If the /var/log is not owned by root, this is a finding.
+    If the /var/log directory is not owned by root, this is a finding.
   "
   desc  'fix', "
     At the command line, execute the following command:
@@ -21,7 +21,10 @@ state and can provide sensitive information to an unprivileged attacker."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000206-GPOS-00084'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000040'
+  tag fix_id: nil
   tag cci: 'CCI-001314'
   tag nist: ['SI-11 b']
 

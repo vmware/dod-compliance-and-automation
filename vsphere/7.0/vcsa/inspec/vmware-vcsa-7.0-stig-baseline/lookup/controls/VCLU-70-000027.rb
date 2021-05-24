@@ -8,9 +8,12 @@ requirements of the web server."
 server has sufficient storage capacity in which to write the logs, the logging
 mechanism needs to be able to allocate log record storage capacity. Lookup
 Service configures log sizes and roation appropriately as part of it's
-installation routine. Verifying that the logging configuration file
-(logging.properties) has not been modified is sufficient to determine if the
-logging configuration has been modified from the default."
+installation routine.
+
+    Verifying that the logging configuration file (logging.properties) has not
+been modified is sufficient to determine if the logging configuration has been
+modified from the default.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -19,7 +22,7 @@ logging configuration has been modified from the default."
 
     If the above command returns any output, this is a finding.
   "
-  desc  'fix', "Re-install the VCSA or roll back to a snapshot. Modifying the
+  desc  'fix', "Reinstall the VCSA or roll back to a backup. Modifying the
 Lookup Service installation files manually is not supported by VMware."
   impact 0.5
   tag severity: 'medium'

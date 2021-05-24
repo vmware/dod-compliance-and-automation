@@ -7,11 +7,13 @@ TLS/1.2) are vulnerable to a Man-in-the-Middle attack (CVE-2009-3555) during a
 renegotiation. This vulnerability allowed an attacker to \"prefix\" a chosen
 plaintext to the HTTP request as seen by the web server. The protocols have
 since been ammended by RFC5746 but the fix must be supported by both client and
-server to be effective. While lighttpd and the underlying openssl libraries are
-no longer vulnerable, steps must be taken to account for older clients that do
-not support RFC5746. To this end, lighttpd disables client initiated
-renegotiation entirely by default. This configuration must be validated and
-maintained."
+server to be effective.
+
+    While lighttpd and the underlying openssl libraries are no longer
+vulnerable, steps must be taken to account for older clients that do not
+support RFC5746. To this end, lighttpd disables client initiated renegotiation
+entirely by default. This configuration must be validated and maintained.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -20,11 +22,15 @@ maintained."
 /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|grep
 \"ssl\\.disable-client-renegotiation\"|sed 's: ::g'
 
-    If no line is returned, this is NOT a finding. If
-\"ssl.disable-client-renegotiation\" is set to \"disabled\", this is a finding.
+    If no line is returned, this is NOT a finding.
+
+    If \"ssl.disable-client-renegotiation\" is set to \"disabled\", this is a
+finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Remove any setting for \"ssl.disable-client-renegotiation\".
   "

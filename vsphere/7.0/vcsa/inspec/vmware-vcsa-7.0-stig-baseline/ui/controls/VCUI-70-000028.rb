@@ -19,8 +19,12 @@ been modified from the default."
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "Re-install the VCSA or roll back to a snapshot. Modifying the
-vSphere UI installation files manually is not supported by VMware."
+  desc  'fix', "
+    Reinstall the VCSA or roll back to a snapshot.
+
+    Modifying the vSphere UI installation files manually is not supported by
+VMware.
+  "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000357-WSR-000150'

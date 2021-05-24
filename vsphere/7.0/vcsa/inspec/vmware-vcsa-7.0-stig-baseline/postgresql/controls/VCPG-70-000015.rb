@@ -19,9 +19,9 @@ configuration must be verified and maintained.
   desc  'check', "
     At the command prompt, execute the following command:
 
-    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"\\dp .*.;\" 
-    |grep -E \"information_schema|pg_catalog\"|awk -F '|' '{print $4}'
-    |awk -F '/' '{print $1}'|grep -v \"=r\" | grep -v \"^[[:space:]]*$\" | grep -v \"postgres\"
+    # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"\\dp .*.;\" |grep
+-E \"information_schema|pg_catalog\"|awk -F '|' '{print $4}'|awk -F '/' '{print
+$1}'|grep -v \"=r\" | grep -v \"^[[:space:]]*$\" | grep -v \"postgres\"
 
     If any lines are returned, this is a finding.
   "

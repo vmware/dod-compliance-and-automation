@@ -3,11 +3,10 @@
 control 'VCST-70-000018' do
   title "The Security Token Service must fail to a known safe state if system
 initialization fails, shutdown fails, or aborts fail."
-  desc  "Determining a safe state for failure and weighing that against a
-potential DoS for users depends on what type of application the web server is
-hosting. For the Security Token Service, it is preferable that the service
-abort startup on any initialization failure rather than continuing in a
-degraded, and potentailly insecure, state."
+  desc  "Limiting the number of established connections to the Security Token
+Service is a basic denal of service protection. Servers where the limit is too
+high or unlimited can potentially run out of system resources and negatively
+affect system availability."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
@@ -23,7 +22,9 @@ degraded, and potentailly insecure, state."
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties
 
     Add or change the following line:
 

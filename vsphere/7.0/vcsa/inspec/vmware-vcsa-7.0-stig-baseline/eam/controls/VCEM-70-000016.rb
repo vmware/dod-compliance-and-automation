@@ -4,13 +4,15 @@ control 'VCEM-70-000016' do
   title "ESX Agent Manager must not have any symbolic links in the web content
 directory tree."
   desc  "A web server is designed to deliver content and execute scripts or
-applications on the request of a client or user. Containing user requests to
+applications at the request of a client or user. Containing user requests to
 files in the directory tree of the hosted web application and limiting the
 execution of scripts and applications guarantees that the user is not accessing
-information protected outside the application's realm. By checking that no
-symbolic links exist in the document root, the web server is protected from
-users jumping outside the hosted application directory tree and gaining access
-to the other directories, including the system root."
+information protected outside the application's realm.
+
+    By checking that no symbolic links exist in the document root, the web
+server is protected from users jumping outside the hosted application directory
+tree and gaining access to the other directories, including the system root.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:

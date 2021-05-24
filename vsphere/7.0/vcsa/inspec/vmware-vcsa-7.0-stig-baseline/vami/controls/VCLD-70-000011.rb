@@ -2,7 +2,7 @@
 
 control 'VCLD-70-000011' do
   title "VAMI must have Multipurpose Internet Mail Extensions (MIME) that
-invoke OS shell programs disabled."
+invoke operating system shell programs disabled."
   desc  "Controlling what a user of a hosted application can access is part of
 the security posture of the web server. Any time a user can access more
 functionality than is needed for the operation of the hosted application poses
@@ -26,10 +26,12 @@ shell scripts.
     If the command returns any value, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Remove any lines that reference \".sh\" or \".csh\" from the
-mimetype.assign section.
+\"mimetype.assign\" section.
   "
   impact 0.5
   tag severity: 'medium'

@@ -18,8 +18,8 @@ is set to the environments approved syslog server:
 
      *.* @<syslog server:port>;RSYSLOG_syslogProtocol23Format
 
-     If no line is returned, if the line is commented or no valid syslog server
-is specified, this is a finding.
+     If no line is returned or if the line is commented or no valid syslog
+server is specified, this is a finding.
   "
   desc  'fix', "
     Examples are provided for UDP, TCP, and TLS configurations.  Substitute the
@@ -30,8 +30,12 @@ of choice.
 
     *.* @mysyslog.domain.local:514;RSYSLOG_syslogProtocol23Format
 
-    Open /etc/rsyslog.conf with a text editor. Remove any existing content and
-create a new remote server configuration line:
+    Navigate to and open:
+
+    /etc/rsyslog.conf
+
+    Remove any existing content and create a new remote server configuration
+line:
 
      For UDP
 
@@ -45,12 +49,17 @@ create a new remote server configuration line:
 
      *.* @@(o)<syslog server:port>;RSYSLOG_syslogProtocol23Format
 
+    At the command line, execute the following command:
+
      # systemctl restart rsyslog.service
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000205-GPOS-00083'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000039'
+  tag fix_id: nil
   tag cci: 'CCI-001312'
   tag nist: ['SI-11 a']
 

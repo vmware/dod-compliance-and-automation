@@ -3,7 +3,7 @@
 control 'PHTN-30-000095' do
   title "The Photon operating system must be configured so that the
 /etc/cron.allow file is protected from unauthorized modification."
-  desc  "If cron files and folders are accessible to unauthorized users then
+  desc  "If cron files and folders are accessible to unauthorized users,
 malicious jobs may be created."
   desc  'rationale', ''
   desc  'check', "
@@ -18,7 +18,7 @@ malicious jobs may be created."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following commands:
+    At the command line, execute the following command(s):
 
     # chmod 600 /etc/cron.allow
     # chown root:root /etc/cron.allow
@@ -26,7 +26,10 @@ malicious jobs may be created."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000095'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

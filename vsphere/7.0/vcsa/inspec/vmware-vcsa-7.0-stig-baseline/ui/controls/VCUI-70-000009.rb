@@ -15,12 +15,13 @@ must be approved and documented by the ISSO before deployment."
 \"/usr/lib/vmware-vsphere-ui/plugin-packages/vsphere-client/plugins/\"|sort)
 
     If there is any output, this indicates a vSphere UI plugin is present that
-does not ship with the VCSA. If this plugin is not know and approved, this is a
-finding.
+does not ship with the VCSA.
+
+    If this plugin is not known and approved, this is a finding.
   "
   desc  'fix', "
     For every unauthorized plugin returned by the check, run the following
-command.
+command:
 
     # rm <file>
   "

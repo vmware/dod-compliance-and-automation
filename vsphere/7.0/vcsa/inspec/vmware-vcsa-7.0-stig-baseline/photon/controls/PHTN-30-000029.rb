@@ -12,25 +12,34 @@ is a password that is not changed as per policy requirements."
   desc  'check', "
     At the command line, execute the following command:
 
-    # grep pam_pwhistory /etc/pam.d/system-password
+    # grep pam_pwhistory /etc/pam.d/system-password|grep --color=always
+\"remember=.\"
 
     Expected result:
 
-    password requisite pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
+    password requisite pam_pwhistory.so enforce_for_root use_authtok remember=5
+retry=3
 
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/pam.d/system-password with a text editor.
+    Navigate to and open:
 
-    Add the following line after the password requisite pam_cracklib.so statement:
+    /etc/pam.d/system-password
 
-    password requisite pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
+    Add the following line after the \"password requisite pam_cracklib.so\"
+statement:
+
+    password requisite pam_pwhistory.so enforce_for_root use_authtok remember=5
+retry=3
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000077-GPOS-00045'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000029'
+  tag fix_id: nil
   tag cci: 'CCI-000200'
   tag nist: ['IA-5 (1) (e)']
 

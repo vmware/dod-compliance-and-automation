@@ -25,8 +25,11 @@ insider threats and the advanced persistent threat."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
-following lines:
+    Navigate to and open:
+
+    /etc/audit/rules.d/audit.STIG.rules
+
+    Add the following lines:
 
     -a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F key=execpriv
     -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -F key=execpriv
@@ -41,7 +44,10 @@ rules.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000042-GPOS-00020'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000012'
+  tag fix_id: nil
   tag cci: 'CCI-000135'
   tag nist: ['AU-3 (1)']
 

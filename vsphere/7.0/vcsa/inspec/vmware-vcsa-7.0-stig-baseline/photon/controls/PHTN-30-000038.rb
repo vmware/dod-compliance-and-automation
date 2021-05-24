@@ -20,8 +20,12 @@ unattended."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/ssh/sshd_config with a text editor and ensure that the
-\"ClientAliveCountMax\" line is uncommented and set to the following:
+    Navigate to and open:
+
+    /etc/ssh/sshd_config
+
+    Ensure that the \"ClientAliveCountMax\" line is uncommented and set to the
+following:
 
     ClientAliveCountMax 0
 
@@ -32,7 +36,10 @@ unattended."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000163-GPOS-00072'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000038'
+  tag fix_id: nil
   tag cci: 'CCI-001133'
   tag nist: ['SC-10']
 

@@ -2,12 +2,16 @@
 
 control 'VCST-70-000023' do
   title 'The Security Token Service must not show directory listings.'
-  desc  "Enumeration techniques, such as URL parameter manipulation, rely upon
-being able to obtain information about the web server's directory structure by
-locating directories without default pages. In the scenario, the web server
-will display to the user a listing of the files in the directory being
-accessed. Ensuring that directory listing is disabled is one approach to
-mitigating the vulnerability."
+  desc  "Web servers will often display error messages to client users,
+displaying enough information to aid in the debugging of the error. The
+information given back in error messages may display the web server type,
+version, patches installed, plug-ins and modules installed, type of code being
+used by the hosted application, and any backends being used for data storage.
+
+    This information could be used by an attacker to blueprint what type of
+attacks might be successful. As such, the Security Token Service must be
+configured to not show server version information in error messages.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -27,12 +31,14 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/web.xml
 
     Set the <param-value> to \"false\" in all <param-name>listing</param-name>
 nodes.
 
-    Note: The setting should look like the below:
+    Note: The setting should look like the following:
 
     <init-param>
           <param-name>listings</param-name>

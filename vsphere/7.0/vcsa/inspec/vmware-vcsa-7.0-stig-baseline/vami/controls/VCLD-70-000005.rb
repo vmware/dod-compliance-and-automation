@@ -3,10 +3,10 @@
 control 'VCLD-70-000005' do
   title 'VAMI must generate log records for system startup and shutdown.'
   desc  "Logging must be started as soon as possible when a service starts and
-when a service is stopped. \xC2\xA0Many forms of suspicious actions can be
+when a service is stopped. Many forms of suspicious actions can be
 detected by analyzing logs for unexpected service starts and stops.
-\xC2\xA0Also, by starting to log immediately after a service starts, it becomes
-more difficult for suspicous activity to go un-logged."
+Also, by starting to log immediately after a service starts, it becomes
+more difficult for suspicous activity to go unlogged."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -14,7 +14,6 @@ more difficult for suspicous activity to go un-logged."
     # /opt/vmware/sbin/vami-lighttpd -p -f
 /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|grep \"server.errorlog\"|sed
 -e 's/^[ ]*//'
-
 
     Expected result:
 
@@ -24,7 +23,9 @@ more difficult for suspicous activity to go un-logged."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Add or reconfigure the following value:
 

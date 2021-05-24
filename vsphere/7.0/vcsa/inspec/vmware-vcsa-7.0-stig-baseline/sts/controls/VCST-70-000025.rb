@@ -2,23 +2,36 @@
 
 control 'VCST-70-000025' do
   title 'The Security Token Service must not enable support for TRACE requests.'
-  desc  "\"Trace\" is a technique for a user to request internal information
-about Tomcat. This is useful during product development, but should not be
-enabled in production.  Allowing a attacker to conduct a Trace operation
-against the Security Token Service will expose information that would be useful
-to perform a more targeted attack. The Security Token Service provides the
-allowTrace parameter as means to disable responding to Trace requests."
+  desc  "Information needed by an attacker to begin looking for possible
+vulnerabilities in a web server includes any information about the web server
+and plug-ins or modules being used. When debugging or trace information is
+enabled in a production web server, information about the web server, such as
+web server type, version, patches installed, plug-ins and modules installed,
+type of code being used by the hosted application, and any backends being used
+for data storage may be displayed.
+
+    Since this information may be placed in logs and general messages during
+normal operation of the web server, an attacker does not need to cause an error
+condition to gain this information.
+
+    The Security Token Service can be configured to set the debugging level. By
+setting the debugging level to zero, no debugging information will be provided
+to a malicious user.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
 
     # grep allowTrace /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
-    If allowTrace is set to \"true\", this is a finding. If no line is returned
-this is NOT a finding.
+    If \"allowTrace\" is set to \"true\", this is a finding.
+
+    If no line is returned, this is NOT a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
     Locate and remove the 'allowTrace=\"true\"' setting.
   "

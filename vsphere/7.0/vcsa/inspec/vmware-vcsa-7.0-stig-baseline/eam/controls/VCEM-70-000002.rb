@@ -4,7 +4,7 @@ control 'VCEM-70-000002' do
   title "ESX Agent Manager must limit the number of concurrent connections
 permitted."
   desc  "Resource exhaustion can occur when an unlimited number of concurrent
-requests are allowed on a web site, facilitating a denial of service attack.
+requests are allowed on a website, facilitating a denial-of-service attack.
 Unless the number of requests is controlled, the web server can consume enough
 system resources to cause a system crash.
 
@@ -30,12 +30,14 @@ attribute.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-eam/web/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-eam/web/conf/server.xml
 
     Navigate to the <Executor> mode with the name of tomcatThreadPool and
 configure with the value 'maxThreads=\"300\"'
 
-    Note: The <Executor> node should be configured per the below:
+    Note: The <Executor> node should be configured as follows:
 
     <Executor maxThreads=\"300\"
                     minSpareThreads=\"50\"

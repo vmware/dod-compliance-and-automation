@@ -5,7 +5,7 @@ control 'PHTN-30-000112' do
 unauthorized access."
   desc  "The sshd_config file contains all the configuration items for sshd.
 Incorrect or malicious configuration of sshd can allow unauthorized access to
-the system, insecure communication, limited forensic trail, etc. "
+the system, insecure communication, limited forensic trail, etc."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
@@ -19,7 +19,7 @@ the system, insecure communication, limited forensic trail, etc. "
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following commands:
+    At the command line, execute the following command(s):
 
     # chmod 600 /etc/ssh/sshd_config
     # chown root:root /etc/ssh/sshd_config
@@ -27,7 +27,10 @@ the system, insecure communication, limited forensic trail, etc. "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000112'
+  tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 

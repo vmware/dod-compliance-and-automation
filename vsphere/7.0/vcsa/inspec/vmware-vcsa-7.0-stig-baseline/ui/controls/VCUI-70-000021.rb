@@ -26,10 +26,12 @@ set via the URIEncoding attribute on the Connector nodes.
 
     URIEncoding=\"UTF-8\"
 
-    If the output does not match the expected result, this is a finding
+    If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-vsphere-ui/server/conf/server.xml
 
     Navigate to each of the <Connector> nodes.
 

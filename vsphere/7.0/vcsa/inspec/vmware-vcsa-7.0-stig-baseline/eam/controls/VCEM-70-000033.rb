@@ -7,9 +7,12 @@ with Tomcat which is called when no other suitable page is found in a
 particular folder. The DefaultServlet serves static resources as well as
 directory listings. The DefaultServlet is configured by default with the
 \"readonly\" parameter set to \"true\" where HTTP commands like PUT and DELETE
-are rejected. Changing this to false allows clients to delete or modify static
-resources on the server and to upload new resources. DefaultServlet readonly
-must be set to true, either literally or by absence (default)."
+are rejected.
+
+    Changing this to false allows clients to delete or modify static resources
+on the server and to upload new resources. DefaultServlet readonly must be set
+to true, either literally or by absence (default).
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -27,7 +30,9 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
 
     Navigate to the /<web-apps>/<servlet>/<servlet-name>default</servlet-name>/
 node and remove the following node:

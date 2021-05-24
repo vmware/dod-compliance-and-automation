@@ -14,12 +14,15 @@ can be plainly read (i.e., clear text) and easily compromised."
 
     If there is no output or openssh is not >=  version 7.6, this is a finding.
   "
-  desc  'fix', "Installing openssh manually is not supported by VMware. Revert
-to a previous backup or redeploy the appliance."
+  desc  'fix', "Installing openssh manually is not supported by VMware for
+appliances. Revert to a previous backup or redeploy the appliance."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000074-GPOS-00042'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000026'
+  tag fix_id: nil
   tag cci: 'CCI-000197'
   tag nist: ['IA-5 (1) (c)']
 

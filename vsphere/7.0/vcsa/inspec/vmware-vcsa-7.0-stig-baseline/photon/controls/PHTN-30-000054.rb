@@ -11,12 +11,12 @@ privileged functions is one way to detect such misuse and identify the risk
 from insider threats and the advanced persistent threat."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command to see a list of setuid
-files:
+    At the command line, execute the following command to obtain a list of
+setuid files:
 
     # find / -xdev -perm -4000 -type f -o -perm -2000 -type f | sort
 
-    Then, execute the following command for each setuid file found in the first
+    Execute the following command for each setuid file found in the first
 command:
 
     # auditctl -l | grep <setuid_path>
@@ -32,29 +32,34 @@ rules, this is a finding.
 auid!=4294967295 -F key=privileged
   "
   desc  'fix', "
-    At the command line, execute the following command to see a list of setuid
-files:
+    At the command line, execute the following command to obtain a list of
+setuid files:
 
     # find / -xdev -perm -4000 -type f -o -perm -2000 -type f | sort
 
-    Then, execute the following for each setuid file found in the first command
-that does not have a corresponding line in the audit rules:
+    Execute the following for each setuid file found in the first command that
+does not have a corresponding line in the audit rules:
 
-    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
-following lines:
+    Navigate to and open:
+
+    /etc/audit/rules.d/audit.STIG.rules
+
+    Add the following line:
 
     -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F
 auid!=4294967295 -F key=privileged
 
-    At the command line, execute the following command to load the new audit
-rules.
+    Execute the following command to load the new audit rules:
 
     # /sbin/augenrules --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000327-GPOS-00127'
+  tag gid: nil
+  tag rid: nil
   tag stig_id: 'PHTN-30-000054'
+  tag fix_id: nil
   tag cci: 'CCI-002234'
   tag nist: ['AC-6 (9)']
 

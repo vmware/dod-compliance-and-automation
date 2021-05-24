@@ -6,9 +6,11 @@ control 'VCLD-70-000025' do
 handshake, normally the client's preference is used. This is potentially
 problematic as a malicious, dated or pooly configured client could select the
 most insecure cipher offered by the server, even if it supports stronger ones.
-If \"ssl.honor-cipher-order\" is enabled, then the \"ssl.cipher-list\" setting
-will be treated as an ordered list of cipher values from most preferred to
-least, left to right."
+
+    If \"ssl.honor-cipher-order\" is enabled, then the \"ssl.cipher-list\"
+setting will be treated as an ordered list of cipher values from most preferred
+to least, left to right.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -24,7 +26,9 @@ least, left to right."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf
+    Navigate to and open:
+
+    /opt/vmware/etc/lighttpd/lighttpd.conf
 
     Add or reconfigure the following setting:
 

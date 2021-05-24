@@ -5,10 +5,12 @@ control 'VCLD-70-000007' do
   desc  "Log data is essential in the investigation of events. If log data were
 to become compromised, then competent forensic analysis and discovery of the
 true source of potentially malicious system activity would be difficult, if not
-impossible, to achieve. In addition, access to log records provides information
-an attacker could potentially use to their advantage since each event record
-might contain communication ports, protocols, services, trust relationships,
-user names, etc."
+impossible, to achieve.
+
+    In addition, access to log records provides information an attacker could
+potentially use to their advantage since each event record might contain
+communication ports, protocols, services, trust relationships, user names, etc.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -26,7 +28,7 @@ root:root
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    At the command prompt, enter the following command:
+    At the command prompt, execute the following command(s):
 
     # chown root:root /opt/vmware/var/log/lighttpd/*.log
     # chmod 640 /opt/vmware/var/log/lighttpd/*.log

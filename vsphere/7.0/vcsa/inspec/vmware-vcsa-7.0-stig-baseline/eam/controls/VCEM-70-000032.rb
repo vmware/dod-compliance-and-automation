@@ -3,10 +3,10 @@
 control 'VCEM-70-000032' do
   title 'ESX Agent Manager must disable the shutdown port.'
   desc  "An attacker has at least two reasons to stop a web server. The first
-is to cause a DoS, and the second is to put in place changes the attacker made
-to the web server configuration. If the Tomcat shutdown port feature is
-enabled, a shutdown signal can be sent to the ESX Agent Manager through this
-port. To ensure availability, the shutdown port must be disabled."
+is to cause a denial of service, and the second is to put in place changes the
+attacker made to the web server configuration. If the Tomcat shutdown port
+feature is enabled, a shutdown signal can be sent to the ESX Agent Manager
+through this port. To ensure availability, the shutdown port must be disabled."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -21,10 +21,12 @@ port. To ensure availability, the shutdown port must be disabled."
 finding.
   "
   desc  'fix', "
-    Open /etc/vmware-eam/catalina.properties in a text editor.
+    Navigate to and open:
 
-    Add or modify the setting 'base.shutdown.port=-1' in the
-catalina.properties file.
+    /etc/vmware-eam/catalina.properties
+
+    Add or modify the setting \"base.shutdown.port=-1\" in the
+\"catalina.properties\" file.
   "
   impact 0.5
   tag severity: 'medium'
