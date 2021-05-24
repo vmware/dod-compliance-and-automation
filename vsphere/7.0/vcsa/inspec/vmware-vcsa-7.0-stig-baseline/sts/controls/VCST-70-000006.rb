@@ -68,7 +68,37 @@ java.util.logging.SimpleFormatter
   tag cci: 'CCI-000169'
   tag nist: ['AU-12 a']
 
+  describe parse_config_file("#{input('loggingProperties')}").params['handlers'] do
+    it { should eq '1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler' }
+  end
 
+  describe parse_config_file("#{input('loggingProperties')}").params['.handlers'] do
+    it { should eq '1catalina.org.apache.juli.FileHandler' }
+  end
+
+  describe parse_config_file("#{input('loggingProperties')}").params['1catalina.org.apache.juli.FileHandler.level'] do
+    it { should eq 'FINE' }
+  end
+
+  describe parse_config_file("#{input('loggingProperties')}").params['1catalina.org.apache.juli.FileHandler.directory'] do
+    it { should eq '${catalina.base}/logs/tomcat' }
+  end
+
+  describe parse_config_file("#{input('loggingProperties')}").params['1catalina.org.apache.juli.FileHandler.prefix'] do
+    it { should eq 'catalina.' }
+  end
+
+  describe parse_config_file("#{input('loggingProperties')}").params['1catalina.org.apache.juli.FileHandler.bufferSize'] do
+    it { should eq '-1' }
+  end
+
+  describe parse_config_file("#{input('loggingProperties')}").params['1catalina.org.apache.juli.FileHandler.formatter'] do
+    it { should eq 'java.util.logging.SimpleFormatter' }
+  end
+
+  describe parse_config_file("#{input('loggingProperties')}").params['org.apache.catalina.startup.Catalina.handlers'] do
+    it { should eq '1catalina.org.apache.juli.FileHandler' }
+  end
   
 end
 
