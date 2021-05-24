@@ -19,12 +19,9 @@ or used by the web server for hosted application operation must be removed."
     Expected result:
 
     cgi.assign=(
-    \".pl\"=>\"/usr/bin/perl\",
-    \".cgi\"=>\"/usr/bin/perl\",
-    \".rb\"=>\"/usr/bin/ruby\",
-    \".erb\"=>\"/usr/bin/eruby\",
-    \".py\"=>\"/usr/bin/python\",
-    #5
+      \".py\"  => \"/usr/bin/python\",
+      \".cgi\" => \"/usr/bin/python\",
+    #2
     )
 
     If the output does not match the expected result, this is a finding.
@@ -36,14 +33,10 @@ or used by the web server for hosted application operation must be removed."
 
     Configure the \"cgi.assign\" section to the following:
 
-        cgi.assign                        = (
-            \".pl\"  => \"/usr/bin/perl\",
-            \".cgi\" => \"/usr/bin/perl\",
-            \".rb\"  => \"/usr/bin/ruby\",
-            \".erb\" => \"/usr/bin/eruby\",
-            \".py\"  => \"/usr/bin/python\",
-            # 5
-        )
+    cgi.assign=(
+      \".py\"  => \"/usr/bin/python\",
+      \".cgi\" => \"/usr/bin/python\",
+    )
   "
   impact 0.5
   tag severity: 'medium'
