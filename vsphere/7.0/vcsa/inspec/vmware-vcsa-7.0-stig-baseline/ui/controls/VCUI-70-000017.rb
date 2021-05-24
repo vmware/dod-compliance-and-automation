@@ -1,8 +1,8 @@
 # encoding: UTF-8
 
 control 'VCUI-70-000017' do
-  title "vSphere UI directory tree must have permissions in an \"out of the
-box\" state."
+  title "vSphere UI directory tree must have permissions in an
+\"out-of-the-box\" state."
   desc  "As a rule, accounts on a web server are to be kept to a minimum. Only
 administrators, web managers, developers, auditors, and web authors require
 accounts on the machine hosting the web server. The resources to which these
@@ -20,13 +20,12 @@ of the box\"."
     If the command produces any output, this is a finding.
   "
   desc  'fix', "
-    At the command prompt, execute the following command:
+    At the command prompt, execute the following command(s):
 
     # chmod o-w <file>
     # chown vsphere-ui:root <file>
 
-    Repeat the command for each file that was returned
-
+    Repeat the commands for each file that was returned.
   "
   impact 0.5
   tag severity: 'medium'

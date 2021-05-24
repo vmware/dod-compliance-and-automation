@@ -3,7 +3,7 @@
 control 'VCUI-70-000002' do
   title 'vSphere UI must limit the number of concurrent connections permitted.'
   desc  "Resource exhaustion can occur when an unlimited number of concurrent
-requests are allowed on a web site, facilitating a denial of service attack.
+requests are allowed on a website, facilitating a denial-of-service attack.
 Unless the number of requests is controlled, the web server can consume enough
 system resources to cause a system crash.
 
@@ -11,7 +11,7 @@ system resources to cause a system crash.
 concurrent HTTP/HTTPS requests. Each incoming request requires a thread for the
 duration of that request. If more simultaneous requests are received than can
 be handled by the currently available request processing threads, additional
-threads will be created up to the value of the 'maxThreads' attribute.
+threads will be created up to the value of the \"maxThreads\" attribute.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -28,11 +28,15 @@ threads will be created up to the value of the 'maxThreads' attribute.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml
+    Navigate to and open:
 
-    Configure each <Connector> node with the value 'maxThreads=\"800\"'
+    /usr/lib/vmware-vsphere-ui/server/conf/server.xml
 
-    Ex:
+    Configure each <Connector> node with the value:
+
+    maxThreads=\"800\"
+
+    Example:
 
     <Connector .. maxThreads=\"800\" ..>
   "

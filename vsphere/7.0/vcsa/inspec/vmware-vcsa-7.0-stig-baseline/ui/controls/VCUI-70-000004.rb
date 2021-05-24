@@ -5,8 +5,8 @@ control 'VCUI-70-000004' do
   desc  "Cookies are a common way to save session state over the HTTP(S)
 protocol. If an attacker can compromise session data stored in a cookie, they
 are better able to launch an attack against the server and its applications.
-When you tag a cookie with the HttpOnly flag, it tells the browser that this
-particular cookie should only be accessed by the originating server. Any
+When you tag a cookie with the \"HttpOnly\" flag, it tells the browser that
+this particular cookie should only be accessed by the originating server. Any
 attempt to access the cookie from client script is strictly forbidden."
   desc  'rationale', ''
   desc  'check', "
@@ -22,12 +22,15 @@ xmllint --xpath '/Context/@useHttpOnly' -
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/context.xml .
-Add the following configuration to the <Context> node:
+    Navigate to and open:
+
+    /usr/lib/vmware-vsphere-ui/server/conf/context.xml
+
+    Add the following configuration to the <Context> node:
 
     useHttpOnly=\"true\"
 
-    Ex:
+    Example:
 
     <Context useHttpOnly=\"true\" sessionCookieName=\"VSPHERE-UI-JSESSIONID\"
 sessionCookiePath=\"/ui\">

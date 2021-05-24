@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 control 'VCUI-70-000030' do
-  title 'vSphere UI must must be configured with the appropriate ports.'
+  title 'vSphere UI must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
 that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or
 too unsecure to run on a production system. The ports that vSphere UI listens
@@ -22,16 +22,16 @@ accurate to their shipping state."
 finding.
   "
   desc  'fix', "
-    Navigate to and open
-/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties
+    Navigate to and open:
+
+    /usr/lib/vmware-vsphere-ui/server/conf/catalina.properties
 
     Navigate to the ports specification section.
 
     Set the vSphere UI port specifications according to the shipping
-configuration below:
+configuration as follows:
 
     http.port=5090
-
     proxy.port=443
   "
   impact 0.5

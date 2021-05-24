@@ -8,12 +8,12 @@ and plug-ins or modules being used. When debugging or trace information is
 enabled in a production web server, information about the web server, such as
 web server type, version, patches installed, plug-ins and modules installed,
 type of code being used by the hosted application, and any backends being used
-for data storage may be displayed. Since this information may be placed in logs
-and general messages during normal operation of the web server, an attacker
-does not need to cause an error condition to gain this information.
+for data storage, may be displayed. Since this information may be placed in
+logs and general messages during normal operation of the web server, an
+attacker does not need to cause an error condition to gain this information.
 
-    vSphere UI can be configured to set the debugging level.  By setting the
-debugging level to zero (0), no debugging information will be provided to a
+    vSphere UI can be configured to set the debugging level. By setting the
+debugging level to zero, no debugging information will be provided to a
 malicious user.
   "
   desc  'rationale', ''
@@ -29,24 +29,26 @@ malicious user.
     <init-param>
           <param-name>debug</param-name>
           <param-value>0</param-value>
-        </init-param>
+    </init-param>
 
     If the output of the command does not match the expected result, this is a
 finding.
   "
   desc  'fix', "
-    Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/web.xml
+    Navigate to and open:
+
+    /usr/lib/vmware-vsphere-ui/server/conf/web.xml
 
     Navigate to all <debug> nodes that are not set to \"0\".
 
     Set the <param-value> to \"0\" in all <param-name>debug</param-name> nodes.
 
-    Note: The debug setting should look like the below:
+    Note: The debug setting should look like the following:
 
-     <init-param>
-     <param-name>debug</param-name>
-     <param-value>0</param-value>
-     </init-param>
+    <init-param>
+          <param-name>debug</param-name>
+          <param-value>0</param-value>
+    </init-param>
   "
   impact 0.5
   tag severity: 'medium'
