@@ -1,9 +1,20 @@
 <# 
 .SYNOPSIS 
-    Remediates virtual machines against the vSphere ESXi 6.7 STIG.
+    Remediates virtual machines against the vSphere Virtual Machine 6.7 STIG Version 1 Release 1.
 .DESCRIPTION
     -This script assumes there is a vCenter server managing the virtual machines.
     -Please review the $vmsettings below and update as appropriate for your environment
+    -This script will NOT remediate the following STIG IDs as they may require the VM to be powered off
+     or other environment specific considerations before implementing:
+        -VMCH-67-000006
+        -VMCH-67-000008
+        -VMCH-67-000009
+        -VMCH-67-000010
+        -VMCH-67-000011
+        -VMCH-67-000012
+        -VMCH-67-000019
+        -VMCH-67-000020
+        -VMCH-67-000021
 .NOTES 
     File Name  : VMware_vSphere_6.7_VM_STIG_Remediation.ps1 
     Author     : Ryan Lakey
@@ -11,7 +22,7 @@
     License    : Apache-2.0
 
     Tested against
-    -PowerCLI 11.3
+    -PowerCLI 12.3
     -Powershell 5
     -vCenter/ESXi 6.7 U3+
 
@@ -45,22 +56,22 @@ param (
 $vmconfig = @{
     #Hardening/STIG Settings
     vmAdvSettings = @{
-        "isolation.tools.copy.disable" = $true
-        "isolation.tools.dnd.disable" = $true
-        "isolation.tools.paste.disable" = $true
-        "isolation.tools.diskShrink.disable" = $true
-        "isolation.tools.diskWiper.disable" = $true
-        "isolation.tools.hgfsServerSet.disable" = $true
-        "RemoteDisplay.maxConnections" = "1"
-        "RemoteDisplay.vnc.enabled" = $false
-        "tools.setinfo.sizeLimit" = "1048576"
-        "isolation.device.connectable.disable" = $true
-        "tools.guestlib.enableHostInfo" = $false
-        "tools.guest.desktop.autolock" = $true
-        "mks.enable3d" = $false
+        "isolation.tools.copy.disable" = $true              #VMCH-67-000001
+        "isolation.tools.dnd.disable" = $true               #VMCH-67-000002
+        "isolation.tools.paste.disable" = $true             #VMCH-67-000003
+        "isolation.tools.diskShrink.disable" = $true        #VMCH-67-000004
+        "isolation.tools.diskWiper.disable" = $true         #VMCH-67-000005
+        "isolation.tools.hgfsServerSet.disable" = $true     #VMCH-67-000007
+        "RemoteDisplay.maxConnections" = "1"                #VMCH-67-000013
+        "RemoteDisplay.vnc.enabled" = $false                #VMCH-67-000014
+        "tools.setinfo.sizeLimit" = "1048576"               #VMCH-67-000015
+        "isolation.device.connectable.disable" = $true      #VMCH-67-000016
+        "tools.guestlib.enableHostInfo" = $false            #VMCH-67-000017
+        "tools.guest.desktop.autolock" = $true              #VMCH-67-000022
+        "mks.enable3d" = $false                             #VMCH-67-000023
     }
-    vmAdvSettingsRemove = ("sched.mem.pshare.salt")
-    vmotionEncryption = "opportunistic" #disabled, required, opportunistic
+    vmAdvSettingsRemove = ("sched.mem.pshare.salt")         #VMCH-67-000018
+    vmotionEncryption = "opportunistic"                     #VMCH-67-000024 disabled, required, opportunistic
 }
 
 #Modules needed to run script and load
