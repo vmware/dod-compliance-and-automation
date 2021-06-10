@@ -50,10 +50,12 @@ effect. This configuration must be verified and maintained.
   tag cci: 'CCI-000054'
   tag nist: ['AC-10']
 
+  value = input('tcpKeepAliveTimeSec')
+
   describe.one do
 
     describe xml("#{input('configXmlPath')}") do
-      its(['/config/envoy/L4Filter/tcpKeepAliveTimeSec']) { should cmp "#{input('tcpKeepAliveTimeSec')}" }
+      its(['/config/envoy/L4Filter/tcpKeepAliveTimeSec']) { should cmp value }
     end
 
     describe xml("#{input('configXmlPath')}") do

@@ -50,10 +50,12 @@ consumed.
   tag cci: 'CCI-000054'
   tag nist: ['AC-10']
 
+  value = input('maxHttpsConnections')
+
   describe.one do
 
     describe xml("#{input('configXmlPath')}") do
-      its(['/config/envoy/L4Filter/maxHttpsConnections']) { should cmp "#{input('maxHttpsConnections')}" }
+      its(['/config/envoy/L4Filter/maxHttpsConnections']) { should cmp value }
     end
 
     describe xml("#{input('configXmlPath')}") do
