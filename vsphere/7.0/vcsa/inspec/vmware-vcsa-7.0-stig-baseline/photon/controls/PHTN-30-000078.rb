@@ -5,7 +5,7 @@ control 'PHTN-30-000078' do
 Security Service Application Program Interface (GSSAPI) authentication."
   desc  "GSSAPI authentication is used to provide additional authentication
 mechanisms to applications. Allowing GSSAPI authentication through SSH exposes
-the system\x92s GSSAPI to remote hosts, increasing the attack surface of the
+the systems GSSAPI to remote hosts, increasing the attack surface of the
 system."
   desc  'rationale', ''
   desc  'check', "

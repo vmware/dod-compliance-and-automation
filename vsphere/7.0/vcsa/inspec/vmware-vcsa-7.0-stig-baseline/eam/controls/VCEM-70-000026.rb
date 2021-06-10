@@ -49,14 +49,14 @@ finding.
   begin
     xmlconf = xml("#{input('serverXmlPath')}")
 
-      if xmlconf['Server/Service/Connector/attribute::server'].is_a?(Array)
+      if xmlconf['Server/Service/Connector/attribute::server'].count > 1
         xmlconf['Server/Service/Connector/attribute::server'].each do |x|
           describe x do
             it { should eq "#{input('server')}" }
           end
         end
       else
-        describe xml(xmlconf['Server/Service/Connector/attribute::server']) do
+        describe xmlconf['Server/Service/Connector/attribute::server'] do
           it { should eq "#{input('server')}" }
         end
       end
