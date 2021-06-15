@@ -53,7 +53,7 @@ follows:
   describe.one do
 
     describe xml("#{input('configXmlPath')}") do
-      its(['/config/vmacore/ssl/protocols']) { should cmp protocols }
+      its(['/config/vmacore/ssl/protocols']) { should cmp value }
     end
 
     describe xml("#{input('configXmlPath')}") do
