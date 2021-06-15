@@ -63,11 +63,8 @@ configs are loaded, the log file monitoring and shipping will not be effective."
   tag cci: 'CCI-001855'
   tag nist: ['AU-5 (1)']
 
-  describe file('/etc/vmware-syslog/stig-services-vpostgres.conf') do
-    it { should exist }
-  end
-  describe command('grep -v "^#" /etc/vmware-syslog/stig-services-vpostgres.conf') do
-    its ('stdout') { should match "input(type=\"imfile\"\nFile=\"/var/log/vmware/vpostgres/serverlog.std*\"\nTag=\"vpostgres-first\"\nSeverity=\"info\"\nFacility=\"local0\")\n\ninput(type=\"imfile\"\nFile=\"/var/log/vmware/vpostgres/postgresql-*.log\"\nTag=\"vpostgres\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
+  describe command('rpm -V VMware-Postgres-cis-visl-scripts|grep -E "vmware-services-vmware-vpostgres.conf|vmware-services-vmware-postgres-archiver.conf" | grep "^..5......"') do
+    its ('stdout.strip') {should cmp ""}
   end
 
 end
