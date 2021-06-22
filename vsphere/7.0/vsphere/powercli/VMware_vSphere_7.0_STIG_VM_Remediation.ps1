@@ -1,10 +1,20 @@
 <# 
 .SYNOPSIS 
-    Remediates virtual machines against the vSphere ESXi 7.0 STIG.
+    Remediates virtual machines against the draft vSphere ESXi 7.0 STIG.
 .DESCRIPTION
     -This script assumes there is a vCenter server managing the virtual machines.
     -Please review the $vmsettings below and update as appropriate for your environment
-    -This script will NOT remediate attached devices such as floppies, serial/parrallel ports, USB, etc.
+    -This script will NOT remediate the following STIG IDs as they may require the VM to be powered off
+     or other environment specific considerations before implementing:
+        -VMCH-70-000006
+        -VMCH-70-000008
+        -VMCH-70-000009
+        -VMCH-70-000010
+        -VMCH-70-000011
+        -VMCH-70-000012
+        -VMCH-70-000019
+        -VMCH-70-000020
+        -VMCH-70-000021
 .NOTES 
     File Name  : VMware_vSphere_7.0_VM_STIG_Remediation.ps1 
     Author     : Ryan Lakey
