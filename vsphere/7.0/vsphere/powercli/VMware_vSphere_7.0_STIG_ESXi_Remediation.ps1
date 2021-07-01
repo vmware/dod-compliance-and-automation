@@ -1684,7 +1684,8 @@ Try{
         $Title = "The ESXi host must configure the firewall to restrict access to services running on the host."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
-            $fwservices = $vmhost | Get-VMHostFirewallException | Where-Object {$_.Enabled -eq $True -and $_.extensiondata.allowedhosts.allip -eq "enabled" -and $_.Name -ne "vSphere Web Client"}
+            #vSphere Web Client and the Dell VxRail services are excluded from the script due to the order PowerCLI does firewall rules which removes all allowed IPs briefly before setting new allowed ranges which breaks connectivity from vCenter to ESXi so these must be manually done.
+            $fwservices = $vmhost | Get-VMHostFirewallException | Where-Object {$_.Enabled -eq $True -and $_.extensiondata.allowedhosts.allip -eq "enabled" -and ($_.Name -ne "vSphere Web Client" -or $_.Name -ne "dellptagenttcp" -or $_.Name -ne "dellsshServer")}
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
             ForEach($fwservice in $fwservices){
                 $fwsvcname = $fwservice.extensiondata.key
