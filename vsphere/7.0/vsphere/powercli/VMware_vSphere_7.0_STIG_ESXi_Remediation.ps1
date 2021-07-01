@@ -234,14 +234,14 @@ Try
 {
     Write-ToConsole "...Gathering info on target hosts in $vcenter"
     If($hostname){
-        $vmhosts = Get-VMHost -Name $hostname | Where-Object {$_.version -match "^6.7*"} | Sort-Object Name
+        $vmhosts = Get-VMHost -Name $hostname | Where-Object {$_.version -match "^7.0*"} | Sort-Object Name
         $vmhostsv = $vmhosts | Get-View | Sort-Object Name
         ForEach($vmhost in $vmhosts){
             Write-ToConsole "...Found host $vmhost"
         }
     }
     If($cluster){
-        $vmhosts = Get-Cluster -Name $cluster | Get-VMHost | Where-Object {$_.version -match "^6.7*"} | Sort-Object Name
+        $vmhosts = Get-Cluster -Name $cluster | Get-VMHost | Where-Object {$_.version -match "^7.0*"} | Sort-Object Name
         $vmhostsv = $vmhosts | Get-View | Sort-Object Name
         ForEach($vmhost in $vmhosts){
             Write-ToConsole "...Found host $vmhost"
