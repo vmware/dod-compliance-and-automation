@@ -54,8 +54,15 @@ session locks with the following command:
   tag cci: ['V-100827', 'SV-109931', 'CCI-000056']
   tag nist: ['AC-11 b']
 
-  describe command('gsettings get org.gnome.desktop.screensaver lock-enabled').stdout.strip do
-    it { should match /^true$/ }
+  gnome_installed = (package('ubuntu-gnome-desktop').installed? || package('ubuntu-desktop').installed? || package('gdm3').installed?)
+  if !gnome_installed
+    describe "The GUI is not installed on the system" do
+      skip "This control is Not Appliciable without GUI Package installed."
+    end
+  else
+    describe command('gsettings get org.gnome.desktop.screensaver lock-enabled').stdout.strip do
+      it { should match /^true$/ }
+    end
   end
 end
 
