@@ -42,12 +42,6 @@ inputs:
     type: String
     value: 'VMware'
 
-#V-219301
-  - name: maxlogins
-    description: Maximum number of concurrent sessions
-    type: Numeric
-    value: 10
-
 #V-219172
   - name: min_num_uppercase_char
     description: Minimum number of upper case characters needed in a password (Denoted in negative numbers)
