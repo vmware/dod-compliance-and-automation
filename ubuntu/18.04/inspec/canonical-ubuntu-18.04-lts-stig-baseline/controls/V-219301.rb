@@ -46,8 +46,8 @@ sessions to ten for all accounts and/or account types.
   tag cci: ['V-100825', 'SV-109929', 'CCI-000054']
   tag nist: ['AC-10']
 
-  describe limits_conf do
-    its('*') { should include ['hard', 'maxlogins', input('maxlogins').to_s] }
+  describe file('/etc/security/limits.conf') do
+    its('content') { should match "^\*\s+hard\s+maxlogins\s+(\\d|10)$" }
   end
 end
 

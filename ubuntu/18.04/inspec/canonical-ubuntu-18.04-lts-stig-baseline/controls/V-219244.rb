@@ -60,22 +60,28 @@ required.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000064-GPOS-00033'
+  tag satisfies: ['SRG-OS-000462-GPOS-00206']
   tag gid: 'V-219244'
-  tag rid: 'SV-219244r508662_rule'
+  tag rid: 'SV-219244r648689_rule'
   tag stig_id: 'UBTU-18-010321'
   tag fix_id: 'F-20968r305061_fix'
-  tag cci: ['SV-109819', 'V-100715', 'CCI-000172']
+  tag cci: ['CCI-000172']
+  tag legacy: ['V-100715', 'SV-109819']
   tag nist: ['AU-12 c']
 
   if os.arch == "x86_64"
     describe auditd.syscall("setxattr").where { arch == "b64" } do
       its("action.uniq") { should eq ["always"] }
       its("list.uniq") { should eq ["exit"] }
+      its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
+      its('fields.flatten.uniq') {  should include "auid=0" }
     end
   end
   describe auditd.syscall("setxattr").where { arch == "b32" } do
     its("action.uniq") { should eq ["always"] }
     its("list.uniq") { should eq ["exit"] }
+    its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
+    its('fields.flatten.uniq') {  should include "auid=0" }
   end
 end
 

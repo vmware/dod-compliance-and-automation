@@ -29,7 +29,7 @@ group-owned by root:
 
     Run the check with the following command:
 
-    # sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
+    $ sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
 ! -group root -type f -exec stat -c \"%n %G\" '{}' \\;
 
     If any system commands are returned that are not Set Group ID up on
@@ -39,20 +39,21 @@ execution (SGID) files and owned by a privileged account, this is a finding.
     Configure the system commands to be protected from unauthorized access. Run
 the following command:
 
-    # sudo find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin
-! -group root -type f -exec chgrp root '{}' \\;
+    $ sudo find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin !
+-group root -type f ! -perm /2000 -exec chgrp root '{}' \\;
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000259-GPOS-00100'
   tag gid: 'V-219208'
-  tag rid: 'SV-219208r508662_rule'
+  tag rid: 'SV-219208r648688_rule'
   tag stig_id: 'UBTU-18-010143'
-  tag fix_id: 'F-20932r304953_fix'
-  tag cci: ['V-100643', 'SV-109747', 'CCI-001499']
+  tag fix_id: 'F-20932r648687_fix'
+  tag cci: ['CCI-001499']
+  tag legacy: ['V-100643', 'SV-109747']
   tag nist: ['CM-5 (6)']
 
-  system_commands = command("find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -type f").stdout.strip.split("\n").entries
+  system_commands = command("find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root ! -perm /2000  -type f").stdout.strip.split("\n").entries
   valid_system_commands = Set[]
 
   if system_commands.count > 0

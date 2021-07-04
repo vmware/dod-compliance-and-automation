@@ -119,14 +119,21 @@ line and the newline characters have been replaced with \
   tag cci: ['V-100561', 'SV-109665', 'CCI-000050']
   tag nist: ['AC-8 b']
   
-  describe command('/usr/lib/update-notifier/apt-check --human-readable') do
-    its('exit_status') { should cmp 0 }
-    its('stdout') { should match '^0 updates are security updates.$' }
-  end
+  gnome_installed = (package('ubuntu-gnome-desktop').installed? || package('ubuntu-desktop').installed? || package('gdm3').installed?)
+  if !gnome_installed
+    describe "The GUI is not installed on the system" do
+      skip "This control is Not Appliciable without GUI Package installed."
+    end
+  else
+    describe command('/usr/lib/update-notifier/apt-check --human-readable') do
+        its('exit_status') { should cmp 0 }
+        its('stdout') { should match '^0 updates are security updates.$' }
+    end
 
-  describe 'banner-message-enable must be set to true' do
-    subject { command('grep banner-message-enable /etc/dconf/db/local.d/*') }
-    its('stdout') { should match /(banner-message-enable).+=.+(true)/ }
-  end
+    describe 'banner-message-enable must be set to true' do
+        subject { command('grep banner-message-enable /etc/dconf/db/local.d/*') }
+        its('stdout') { should match /(banner-message-enable).+=.+(true)/ }
+    end
+  end 
 end
 

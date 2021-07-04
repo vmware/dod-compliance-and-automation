@@ -18,7 +18,7 @@ successful/unsuccessful attempts to use the \"removexattr\" system call.
 
     Check the currently configured audit rules with the following command:
 
-    # sudo auditctl -l | grep perm_mod
+    # sudo auditctl -l | grep removexattr
 
     -a always,exit -F arch=b32 -S removexattr -F auid>=1000 -F auid!=-1 -k
 perm_mod
@@ -73,11 +73,15 @@ required.
     describe auditd.syscall("removexattr").where { arch == "b64" } do
       its("action.uniq") { should eq ["always"] }
       its("list.uniq") { should eq ["exit"] }
+      its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
+      its('fields.flatten.uniq') {  should include "auid=0" }
     end
   end
   describe auditd.syscall("removexattr").where { arch == "b32" } do
     its("action.uniq") { should eq ["always"] }
     its("list.uniq") { should eq ["exit"] }
+    its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
+    its('fields.flatten.uniq') {  should include "auid=0" }
   end
 end
 

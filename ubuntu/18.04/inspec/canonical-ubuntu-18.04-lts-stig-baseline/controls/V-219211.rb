@@ -49,8 +49,15 @@ user interface:
   tag cci: ['V-100649', 'SV-109753', 'CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe command("grep -R logout='' /etc/dconf/db/local.d/").stdout.strip.split("\n").entries do
-    its('count') { should_not eq 0 }
+  gnome_installed = (package('ubuntu-gnome-desktop').installed? || package('ubuntu-desktop').installed? || package('gdm3').installed?)
+  if !gnome_installed
+    describe "The GUI is not installed on the system" do
+      skip "This control is Not Appliciable without GUI Package installed."
+    end
+  else
+    describe command("grep -R logout='' /etc/dconf/db/local.d/").stdout.strip.split("\n").entries do
+      its('count') { should_not eq 0 }
+    end
   end
 end
 

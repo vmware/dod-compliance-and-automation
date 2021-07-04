@@ -78,15 +78,23 @@ to the protocol or service allowed.
   tag cci: ['V-100891', 'SV-109995', 'CCI-000382']
   tag nist: ['CM-7 b']
 
-  ufw_status = command('ufw status').stdout.strip.lines.first
-  value = ufw_status.split(':')[1].strip
+  ufw_installed = package('ufw').installed?
+  if ufw_installed
+    ufw_status = command('ufw status').stdout.strip.lines.first
+    value = ufw_status.split(':')[1].strip
 
-  describe 'UFW status' do
-    subject { value }
-    it { should cmp 'active' }
-  end
-  describe 'Status listings for any allowed services, ports, or applications must be documented with the organization' do
-    skip 'Status listings checks must be preformed manually'
+    describe 'UFW status' do
+      subject { value }
+      it { should cmp 'active' }
+    end
+    describe 'Status listings for any allowed services, ports, or applications must be documented with the organization' do
+      skip 'Status listings checks must be preformed manually'
+    end
+  else
+    describe 'UFW is installed' do
+      subject { ufw_installed }
+      it {  should be true }
+    end
   end
 end
 
