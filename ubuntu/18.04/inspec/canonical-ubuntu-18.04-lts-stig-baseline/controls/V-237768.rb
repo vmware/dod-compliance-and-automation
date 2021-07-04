@@ -58,10 +58,10 @@ of \"users assigned\" in \"/etc/passwd\".
   tag legacy: []
   tag nist: ['CM-6 b']
 
-  local_user_home_dirs=command('awk -F: \'($3>=1000)&&($7 !~ /nologin/){print $6}\' /etc/passwd').stdout.strip.split("\n").entries
+  interactive_users = passwd.where { uid.to_i >= 1000 && home !~ /nonexistent/ && shell !~ /nologin/ }
   pwck_output=command('pwck -r').stdout
-
-  local_user_home_dirs.each do |dir|
+  
+  interactive_users.homes.each do |dir|
     describe(pwck_output) do
       it { should_not include dir }
     end

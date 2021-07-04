@@ -42,10 +42,9 @@ command:
   tag legacy: []
   tag nist: ['CM-6 b']
 
-  local_user_home_dirs=command('awk -F: \'($3>=1000)&&($7 !~ /nologin/){print $6}\' /etc/passwd').stdout.strip.split("\n").entries
-  pwck_output=command('pwck -r').stdout
-
-  local_user_home_dirs.each do |dir|
+  interactive_users = passwd.where { uid.to_i >= 1000 && home !~ /nonexistent/ && shell !~ /nologin/ }
+  
+  interactive_users.homes.each do |dir|
     describe directory(dir) do
       it { should_not be_more_permissive_than("0750") }
     end
