@@ -55,7 +55,8 @@ storage devices.
   tag cci: ['V-100919', 'SV-110023', 'CCI-001958']
   tag nist: ['IA-3']
 
-  describe kernel_module('usb-storage') do
+  #usb_storage instead of usb-storage https://github.com/inspec/inspec/issues/5190
+  describe kernel_module('usb_storage') do
     it { should_not be_loaded }
     it { should be_disabled }
   end
