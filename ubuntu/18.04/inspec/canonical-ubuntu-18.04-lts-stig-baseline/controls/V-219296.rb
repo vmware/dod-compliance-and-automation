@@ -10,6 +10,8 @@ responsible for one.
 
     Audit records can be generated from various components within the
 information system (e.g., module or policy filter).
+
+
   "
   desc  'rationale', ''
   desc  'check', "
@@ -52,22 +54,33 @@ required.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000477-GPOS-00222'
+  tag satisfies: ['SRG-OS-000064-GPOS-00033']
   tag gid: 'V-219296'
-  tag rid: 'SV-219296r508662_rule'
+  tag rid: 'SV-219296r648693_rule'
   tag stig_id: 'UBTU-18-010387'
   tag fix_id: 'F-21020r305217_fix'
-  tag cci: ['V-100815', 'SV-109919', 'CCI-000172']
+  tag cci: ['CCI-000172']
+  tag legacy: ['SV-109919', 'V-100815']
   tag nist: ['AU-12 c']
 
-  if os.arch == 'x86_64'
-    describe auditd.syscall('init_module').where { arch == 'b64' } do
+  syscalls=[
+    'init_module',
+    'finit_module'
+  ]
+
+  syscalls.each do |call|
+    if os.arch == 'x86_64'
+      describe auditd.syscall(call).where { arch == 'b64' } do
+        its('action.uniq') { should eq ['always'] }
+        its('list.uniq') { should eq ['exit'] }
+        its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
+      end
+    end
+    describe auditd.syscall(call).where { arch == 'b32' } do
       its('action.uniq') { should eq ['always'] }
       its('list.uniq') { should eq ['exit'] }
+      its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
     end
-  end
-  describe auditd.syscall('init_module').where { arch == 'b32' } do
-    its('action.uniq') { should eq ['always'] }
-    its('list.uniq') { should eq ['exit'] }
   end
 end
 
