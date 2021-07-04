@@ -62,17 +62,25 @@ rate-limit on the eth0 interface:
   tag cci: ['SV-110005', 'V-100901', 'CCI-002385']
   tag nist: ['SC-5']
 
-  ufw_status_output = command('ufw status').stdout.strip
-  is_ufw_active = !ufw_status_output.lines.first.include?('inactive')
+  ufw_installed = package('ufw').installed?
+  if ufw_installed
+    ufw_status_output = command('ufw status').stdout.strip
+    is_ufw_active = !ufw_status_output.lines.first.include?('inactive')
 
-  if is_ufw_active
-    describe ufw_status_output do
-      it { should match /(LIMIT)/ }
+    if is_ufw_active
+      describe ufw_status_output do
+        it { should match /(LIMIT)/ }
+      end
+    else
+      describe 'UFW status is active' do
+        subject { is_ufw_active }
+        it { should be true }
+      end
     end
   else
-    describe 'UFW status is active' do
-      subject { is_ufw_active }
-      it { should be true }
+    describe 'UFW is installed' do
+      subject { ufw_installed }
+      it {  should be true }
     end
   end
 end
