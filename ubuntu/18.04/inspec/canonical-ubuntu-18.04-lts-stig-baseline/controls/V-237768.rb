@@ -58,7 +58,7 @@ of \"users assigned\" in \"/etc/passwd\".
   tag legacy: []
   tag nist: ['CM-6 b']
 
-  interactive_users = passwd.where { uid.to_i >= 1000 && home !~ /nonexistent/ && shell !~ /nologin/ }
+  interactive_users = passwd.where { uid.to_i >= 1000 && shell !~ /nologin/ }
   pwck_output=command('pwck -r').stdout
   
   interactive_users.homes.each do |dir|

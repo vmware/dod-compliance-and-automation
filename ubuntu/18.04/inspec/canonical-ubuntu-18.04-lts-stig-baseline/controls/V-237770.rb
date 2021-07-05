@@ -56,9 +56,9 @@ of \"/home/smithj\", and has a primary group of users.
   tag legacy: []
   tag nist: ['CM-6 b']
 
-  local_user_home_dirs=passwd.where { uid.to_i >= 1000 && home !~ /nonexistent/ && shell !~ /nologin/ }
+  local_user=passwd.where { uid.to_i >= 1000 && shell !~ /nologin/ }
 
-  local_user_home_dirs.each do |dir|
+  local_user.homes.each do |dir|
     primary_group = command("id -gn #{directory(dir).owner}").stdout.strip
     describe directory(dir) do
       its('group') { should cmp primary_group }
