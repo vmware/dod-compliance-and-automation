@@ -56,7 +56,7 @@ of \"/home/smithj\", and has a primary group of users.
   tag legacy: []
   tag nist: ['CM-6 b']
 
-  local_user_home_dirs=command('awk -F: \'($3>=1000)&&($7 !~ /nologin/){print $6}\' /etc/passwd').stdout.strip.split("\n").entries
+  local_user_home_dirs=passwd.where { uid.to_i >= 1000 && home !~ /nonexistent/ && shell !~ /nologin/ }
 
   local_user_home_dirs.each do |dir|
     primary_group = command("id -gn #{directory(dir).owner}").stdout.strip
