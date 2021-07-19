@@ -1,0 +1,131 @@
+# syslog variables
+# enter fqdn or ip here
+var_syslog_server_name: ''
+var_syslog_server_port: ''
+# udp, tcp, or tls
+var_syslog_server_protocol: 'tcp'
+var_syslog_authpriv_log: '/var/log/audit/auth.log'
+var_syslog_conf_path: '/etc/rsyslog.conf'
+
+# ntp variables
+var_ntp_conf_file: '/etc/ntp.conf'
+var_ntp_servers:
+  - ""
+  - ""
+
+# limits.conf variables
+var_limits_conf_file: '/etc/security/limits.conf'
+var_limits_maxlogins: 10
+
+# tmout.sh variables
+var_tmout_sh: 900
+
+# auditd variables
+var_auditd_rule_file: '/etc/audit/rules.d/audit.STIG.rules'
+var_auditd_conf_file: '/etc/audit/auditd.conf'
+var_auditd_num_logs: 5
+var_auditd_write_logs: 'yes'
+var_auditd_log_format: 'RAW'
+var_auditd_space_left_action: 'SYSLOG'
+var_auditd_disk_full_action: 'SYSLOG'
+var_auditd_disk_error_action: 'SYSLOG'
+var_auditd_admin_space_left_action: 'SYSLOG'
+var_auditd_max_log_file_action: 'IGNORE'
+var_auditd_space_left: 75
+var_auditd_flush: 'INCREMENTAL_ASYNC'
+var_auditd_freq: 50
+
+# sshd variables
+var_sshd_config_file: '/etc/ssh/sshd_config'
+var_sshd_banner: /etc/issue
+var_sshd_syslogfacility: AUTHPRIV
+var_sshd_loglevel: INFO
+var_sshd_fipsmode: 'yes'
+var_sshd_clientalivecountmax: 0
+var_sshd_clientaliveinterval: 900
+var_sshd_ciphers: 'aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
+var_sshd_gssapiauthentication: 'no'
+var_sshd_permituserenvironment: 'no'
+var_sshd_x11forwarding: 'no'
+var_sshd_strictmodes: 'yes'
+var_sshd_kerberosauth: 'no'
+var_sshd_useprivsep: 'yes'
+var_sshd_permitemptypasswords: 'no'
+var_sshd_compression: 'no'
+var_sshd_printlastlog: 'yes'
+var_sshd_ignorerhosts: 'yes'
+var_sshd_ignoreuserknownhosts: 'yes'
+var_sshd_maxauthtries: 6
+var_sshd_hostbasedauth: 'no'
+var_sshd_allowtcpforwarding: 'no'
+var_sshd_logingracetime: 30
+
+# pamd variables
+var_pamd_systemauth_file: '/etc/pam.d/system-auth'
+var_pamd_systemaccount_file: '/etc/pam.d/system-account'
+var_pamd_systempassword_file: '/etc/pam.d/system-password'
+var_pamd_lock: 3
+var_pamd_unlock_time: 900
+var_pamd_root_unlock_time: 300
+var_pamd_upperchars: -1
+var_pamd_lowerchars: -1
+var_pamd_numberchars: -1
+var_pamd_diffchars: 4
+var_pamd_pwremember: 5
+var_pamd_complexchars: -1
+var_pamd_minlength: 8
+var_pamd_faildelay: 4000000
+
+# login defs
+var_login_defs_file: '/etc/login.defs'
+var_login_encrypt_method: 'SHA512'
+var_login_pass_min_days: 1
+var_login_pass_max_days: 90
+var_login_fail_delay: 4
+var_login_createhome: 'yes'
+var_login_umask: '077'
+
+# sysctl kernel parameters
+var_sysctl_conf_file: '/etc/sysctl.conf'
+var_sysctl_tcp_syncookies: '1'
+var_sysctl_randomize_va_space: '2'
+var_sysctl_net_ipv4_conf_all_accept_source_route: '0'
+var_sysctl_net_ipv4_conf_default_accept_source_route: '0'
+var_sysctl_net_ipv4_conf_eth0_accept_source_route: '0'
+var_sysctl_net_ipv6_conf_all_accept_source_route: '0'
+var_sysctl_net_ipv6_conf_default_accept_source_route: '0'
+var_sysctl_net_ipv6_conf_eth0_accept_source_route: '0'
+var_sysctl_net_ipv4_icmp_echo_ignore_broadcasts: '1'
+var_sysctl_net_ipv4_conf_all_accept_redirects: '0'
+var_sysctl_net_ipv4_conf_default_accept_redirects: '0'
+var_sysctl_net_ipv4_conf_eth0_accept_redirects: '0'
+var_sysctl_net_ipv4_conf_all_secure_redirects: '0'
+var_sysctl_net_ipv4_conf_default_secure_redirects: '0'
+var_sysctl_net_ipv4_conf_eth0_secure_redirects: '0'
+var_sysctl_net_ipv4_conf_all_send_redirects: '0'
+var_sysctl_net_ipv4_conf_default_send_redirects: '0'
+var_sysctl_net_ipv4_conf_eth0_send_redirects: '0'
+var_sysctl_net_ipv4_conf_all_log_martians: '1'
+var_sysctl_net_ipv4_conf_default_log_martians: '1'
+var_sysctl_net_ipv4_conf_eth0_log_martians: '1'
+var_sysctl_net_ipv4_conf_all_rp_filter: '1'
+var_sysctl_net_ipv4_conf_default_rp_filter: '1'
+var_sysctl_net_ipv4_conf_eth0_rp_filter: '1'
+var_sysctl_net_ipv4_conf_all_mc_forwarding: '0'
+var_sysctl_net_ipv4_conf_default_mc_forwarding: '0'
+var_sysctl_net_ipv4_conf_eth0_mc_forwarding: '0'
+var_sysctl_net_ipv6_conf_all_mc_forwarding: '0'
+var_sysctl_net_ipv6_conf_default_mc_forwarding: '0'
+var_sysctl_net_ipv6_conf_eth0_mc_forwarding: '0'
+var_sysctl_net_ipv4_ip_forward: '0'
+var_sysctl_tcp_timestamps: '1'
+
+# misc variables
+var_useradd_inactive: 0
+var_lw_cache_entry_expiry: '14400'
+var_modprobe_conf_file: '/etc/modprobe.d/modprobe.conf'
+var_useradd_file: '/etc/default/useradd'
+var_grub_conf_file: '/boot/grub2/grub.cfg'
+var_bashrc_file: '/etc/bash.bashrc'
+var_tdnf_conf_file: '/etc/tdnf/tdnf.conf'
+var_umask_file: '/etc/profile.d/umask.sh'
