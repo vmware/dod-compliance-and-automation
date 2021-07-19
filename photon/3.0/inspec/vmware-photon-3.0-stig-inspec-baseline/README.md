@@ -1,6 +1,6 @@
 # vmware-photon-3.0-stig-inspec-baseline
 An InSpec Compliance Profile for Photon 3.0 VMware Appliance based deployments
-Version: 3.0 Release 1 Version 2
+Version: 3.0 Release 1 Version 2 STIG Readiness Guide
 
 This content can be adapted to an open source Photon installation if the necessary packages are installed that the controls need.
 
