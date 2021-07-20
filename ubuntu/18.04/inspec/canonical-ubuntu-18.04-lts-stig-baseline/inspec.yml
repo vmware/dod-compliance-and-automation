@@ -261,10 +261,18 @@ inputs:
   - name: allowed_network_interfaces
     description: Array of allowed network interfaces (wired & wireless)
     type: Array
-    value: [
-      'lo',
-      'eth0'
-    ]
+    value:
+    - antrea-g
+    - cert-man
+    - contour-
+    - ens3
+    - envoy-jk
+    - eth0
+    - falcosid
+    - genev_sy
+    - lo
+    - metrics-
+
 
 #V-219152
   - name: action_mail_acct
