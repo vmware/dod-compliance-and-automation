@@ -265,6 +265,7 @@ inputs:
     - antrea-g
     - cert-man
     - contour-
+    - coredns-
     - ens3
     - envoy-jk
     - eth0
