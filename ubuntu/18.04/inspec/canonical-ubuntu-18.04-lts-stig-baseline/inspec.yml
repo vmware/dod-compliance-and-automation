@@ -282,7 +282,7 @@ inputs:
   - name: dod_ca_path
     description: Path to DoD CA cert.
     type: String
-    value: '/etc/ssl/certs/CA.pem'
+    value: '/etc/ssl/certs/dod.pem'
 
   #V-219301
   - name: limits_conf_path
