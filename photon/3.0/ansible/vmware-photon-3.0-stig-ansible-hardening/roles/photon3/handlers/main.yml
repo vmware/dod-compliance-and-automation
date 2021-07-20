@@ -1,0 +1,17 @@
+---
+# handlers file for photon3
+
+- name: restart sshd
+  service: name=sshd state=restarted
+
+- name: restart auditd
+  shell: killproc auditd -TERM && systemctl start auditd
+
+- name: reload auditd
+  shell: /sbin/augenrules --load
+
+- name: restart syslog
+  service: name=syslog state=restarted
+
+- name: restart ntp
+  service: name=ntpd state=restarted
