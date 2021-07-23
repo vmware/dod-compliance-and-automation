@@ -1,0 +1,18 @@
+# This is the main launching playbook for the vSphere 7.0 STIG
+
+- name: vSphere 7.0 STIG Playbook
+#  gather_facts: no
+  hosts: localhost
+  strategy: free
+  roles:
+    - esxi
+    - vcenter
+    - vm
+  vars:
+    vcenter_hostname: "10.168.245.230"
+    vcenter_username: "administrator@vsphere.local"
+    validate_certs: false
+  vars_prompt:
+    - name: vcenter_password
+      prompt: "Enter the password for {{ vcenter_username }}"
+      private: yes

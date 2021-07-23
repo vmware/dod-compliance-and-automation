@@ -1,0 +1,2 @@
+- include: vm.yml
+  tags: vm

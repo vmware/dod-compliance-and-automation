@@ -1,0 +1,62 @@
+---
+
+# Turn specific controls on/off by setting the value to true or false
+
+#VMCH-70-000001
+run_isolation_tools_copy_disable: true
+#VMCH-70-000002
+run_isolation_tools_dnd_disable: true
+#VMCH-70-000003
+run_isolation_tools_paste_disable: true
+#VMCH-70-000004
+run_isolation_tools_diskshrink_disable: true
+#VMCH-70-000005
+run_isolation_tools_diskwiper_disable: true
+#VMCH-70-000006
+run_ind_non_persistent_disks: true
+#VMCH-70-000007
+run_isolation_tools_hgfs_disable: true
+#VMCH-70-000008
+run_floppy_disks: true
+#VMCH-70-000009
+run_cddvd_disks: true
+#VMCH-70-000010
+run_parallel_devices: true
+#VMCH-70-000011
+run_serial_devices: true
+#VMCH-70-000012
+run_usb_devices: true
+#VMCH-70-000013
+run_remote_display_max_connections: true
+#VMCH-70-000014
+run_remote_vnc_enabled: true
+#VMCH-70-000015
+run_tools_setinto_sizelimit: true
+#VMCH-70-000016
+run_isolation_device_connectable_disable: true
+#VMCH-70-000017
+run_tools_guestlib_enablehostinfo: true
+#VMCH-70-000018
+run_sched_mem_pshare_salt: true
+#VMCH-70-000019
+run_ethernet_filter: true
+#VMCH-70-000020
+run_deploy_template: true
+#VMCH-70-000021
+run_console_minimize: true
+#VMCH-70-000022
+run_tools_guest_desktop_autolock: true
+#VMCH-70-000023
+run_mks_enable3d: true
+#VMCH-70-000024
+run_encrypt_vmotion: true
+#VMCH-70-000025
+run_enable_logging: true
+#VMCH-70-000026
+run_log_rotatesize: true
+#VMCH-70-000027
+run_log_keepold: true
+#VMCH-70-000028
+run_pcipassthru_present: true
+#VMCH-70-000029
+run_ft_encryption: true

@@ -1,0 +1,436 @@
+# VMware vSphere 7.0 Virtual Machine Ansible Role
+
+---
+
+ #---------- Ansible version 2.10 --------#
+
+############################################
+
+- name: VMCH-70-000001 - Copy operations must be disabled on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'isolation.tools.copy.disable'
+        value: '{{ var_isolation_tools_copy_disable }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000001
+  when:
+  - run_isolation_tools_copy_disable | bool
+
+############################################
+
+- name: VMCH-70-000002 - Drag and drop operations must be disabled on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'isolation.tools.dnd.disable'
+        value: '{{ var_isolation_tools_dnd_disable }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000002
+  when:
+  - run_isolation_tools_dnd_disable | bool
+
+############################################
+
+- name: VMCH-70-000003 - Paste operations must be disabled on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'isolation.tools.paste.disable'
+        value: '{{ var_isolation_tools_paste_disable }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000003
+  when:
+  - run_isolation_tools_paste_disable | bool
+
+############################################
+
+- name: VMCH-70-000004 - Virtual disk shrinking must be disabled on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'isolation.tools.diskShrink.disable'
+        value: '{{ var_isolation_tools_diskshrink_disable }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000004
+  when:
+  - run_isolation_tools_diskshrink_disable | bool
+
+############################################
+
+- name: VMCH-70-000005 - Virtual disk wiping must be disabled on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'isolation.tools.diskWiper.disable'
+        value: '{{ var_isolation_tools_diskwiper_disable }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000005
+  when:
+  - run_isolation_tools_diskwiper_disable | bool
+
+############################################
+
+- name: ESXI-70-000006 - Independent, non-persistent disks must be not be used on the virtual machine.
+  debug:
+    msg: Investigate and remove any unauthorized independent non-persistent disks as required manually.
+  tags:
+  - ESXI-70-000006
+  when:
+  - run_ind_non_persistent_disks | bool
+
+############################################
+
+- name: VMCH-70-000007 - HGFS file transfers must be disabled on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'isolation.tools.hgfsServerSet.disable'
+        value: '{{ var_isolation_tools_hgfs_disable }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000007
+  when:
+  - run_isolation_tools_hgfs_disable | bool
+
+############################################
+
+- name: ESXI-70-000008 - Unauthorized floppy devices must be disconnected on the virtual machine.
+  debug:
+    msg: Investigate and remove any unauthorized floppy disks as required manually.
+  tags:
+  - ESXI-70-000008
+  when:
+  - run_floppy_disks | bool
+
+############################################
+
+- name: ESXI-70-000009 - Unauthorized CD/DVD devices must be disconnected on the virtual machine.
+  debug:
+    msg: Investigate and remove any unauthorized connected CD/DVD media as required manually.
+  tags:
+  - ESXI-70-000009
+  when:
+  - run_cddvd_disks | bool
+
+############################################
+
+- name: ESXI-70-000010 - Unauthorized parallel devices must be disconnected on the virtual machine.
+  debug:
+    msg: Investigate and remove any unauthorized parallel devices as required manually.
+  tags:
+  - ESXI-70-000010
+  when:
+  - run_parallel_devices | bool
+
+############################################
+
+- name: ESXI-70-000011 - Unauthorized serial devices must be disconnected on the virtual machine.
+  debug:
+    msg: Investigate and remove any unauthorized parallel devices as required manually.
+  tags:
+  - ESXI-70-000011
+  when:
+  - run_serial_devices | bool
+
+############################################
+
+- name: ESXI-70-000012 - Unauthorized USB devices must be disconnected on the virtual machine.
+  debug:
+    msg: Investigate and remove any unauthorized USB devices as required manually.
+  tags:
+  - ESXI-70-000012
+  when:
+  - run_usb_devices | bool
+
+############################################
+
+- name: VMCH-70-000013 - Console connection sharing must be limited on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'RemoteDisplay.maxConnections'
+        value: '{{ var_remote_display_max_connections }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000013
+  when:
+  - run_remote_display_max_connections | bool
+
+############################################
+
+- name: VMCH-70-000014 - Console access through the VNC protocol must be disabled on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'RemoteDisplay.vnc.enabled'
+        value: '{{ var_remote_vnc_enabled }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000014
+  when:
+  - run_remote_vnc_enabled | bool
+
+############################################
+
+- name: VMCH-70-000015 - Informational messages from the virtual machine to the VMX file must be limited on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'tools.setinfo.sizeLimit'
+        value: '{{ var_tools_setinto_sizelimit }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000015
+  when:
+  - run_tools_setinto_sizelimit | bool
+
+############################################
+
+- name: VMCH-70-000016 - Unauthorized removal, connection and modification of devices must be prevented on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'isolation.device.connectable.disable'
+        value: '{{ var_isolation_device_connectable_disable }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000016
+  when:
+  - run_isolation_device_connectable_disable | bool
+
+############################################
+
+- name: VMCH-70-000017 - The virtual machine must not be able to obtain host information from the hypervisor.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'tools.guestlib.enableHostInfo'
+        value: '{{ var_tools_guestlib_enablehostinfo }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000017
+  when:
+  - run_tools_guestlib_enablehostinfo | bool
+
+############################################
+#No option to remove a setting in Ansible
+
+- name: VMCH-70-000018 - Shared salt values must be disabled on the virtual machine.
+  debug:
+    msg: Investigate and remove any settings as required manually.
+  tags:
+  - ESXI-70-000018
+  when:
+  - run_sched_mem_pshare_salt | bool
+
+############################################
+#No option to remove a setting in Ansible
+
+- name: VMCH-70-000019 - Access to virtual machines through the dvfilter network APIs must be controlled.
+  debug:
+    msg: Investigate and remove any settings as required manually.
+  tags:
+  - ESXI-70-000019
+  when:
+  - run_ethernet_filter | bool
+
+############################################
+
+- name: VMCH-70-000020 - System administrators must use templates to deploy virtual machines whenever possible.
+  debug:
+    msg: This is a policy item and cannot be remediated programmatically.
+  tags:
+  - ESXI-70-000020
+  when:
+  - run_deploy_template | bool
+
+############################################
+
+- name: VMCH-70-000021 - Use of the virtual machine console must be minimized.
+  debug:
+    msg: This is a policy item and cannot be remediated programmatically.
+  tags:
+  - ESXI-70-000021
+  when:
+  - run_console_minimize | bool
+
+############################################
+
+- name: VMCH-70-000022 - The virtual machine guest operating system must be locked when the last console connection is closed.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'tools.guest.desktop.autolock'
+        value: '{{ var_tools_guest_desktop_autolock }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000022
+  when:
+  - run_tools_guest_desktop_autolock | bool
+
+############################################
+
+- name: VMCH-70-000023 - 3D features on the virtual machine must be disabled when not required.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'mks.enable3d'
+        value: '{{ var_mks_enable3d }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000023
+  when:
+  - run_mks_enable3d | bool
+
+############################################
+#No module in Ansible to perform this operation
+
+- name: VMCH-70-000024 - Encryption must be enabled for vMotion on the virtual machine.
+  debug:
+    msg: Investigate and configure any VMs as required manually.
+  tags:
+  - ESXI-70-000024
+  when:
+  - run_encrypt_vmotion | bool
+
+############################################
+#No module in Ansible to perform this operation
+
+- name: VMCH-70-000025 - Logging must be enabled on the virtual machine.
+  debug:
+    msg: Investigate and configure any VMs as required manually.
+  tags:
+  - ESXI-70-000025
+  when:
+  - run_enable_logging | bool
+
+############################################
+
+- name: VMCH-70-000026 - Log size must be properly configured on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'log.rotateSize'
+        value: '{{ var_log_rotatesize }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000026
+  when:
+  - run_log_rotatesize | bool
+
+############################################
+
+- name: VMCH-70-000027 - Log retention must be properly configured on the virtual machine.
+  community.vmware.vmware_guest:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    name: '{{ item }}'
+    validate_certs: '{{ validate_certs }}'
+    advanced_settings:
+      - key: 'log.keepOld'
+        value: '{{ var_log_keepold }}'
+  loop: "{{ groups['vms'] }}"
+  delegate_to: localhost
+  tags:
+  - VMCH-70-000027
+  when:
+  - run_log_keepold | bool
+
+############################################
+#No option to remove a setting in Ansible
+
+- name: VMCH-70-000028 - DirectPath I/O must be disabled on the virtual machine when not required.
+  debug:
+    msg: Investigate and remove any settings as required manually.
+  tags:
+  - ESXI-70-000028
+  when:
+  - run_pcipassthru_present | bool
+
+############################################
+#No option to configure FT encryption in Ansible
+
+- name: VMCH-70-000029 - Encryption must be enabled for Fault Tolerance on the virtual machine.
+  debug:
+    msg: Investigate and configure any settings as required manually.
+  tags:
+  - ESXI-70-000029
+  when:
+  - run_ft_encryption | bool
