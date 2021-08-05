@@ -1,7 +1,0 @@
-# vcenter variables
-var_vim_pass_expiration_days: '30'
-var_vpxd_host_pass_length: '32'
-var_log_level: 'info'
-var_vpxd_event_syslog_enabled: 'true'
-var_db_event_retention: '30'
-var_db_task_retention: '30'
