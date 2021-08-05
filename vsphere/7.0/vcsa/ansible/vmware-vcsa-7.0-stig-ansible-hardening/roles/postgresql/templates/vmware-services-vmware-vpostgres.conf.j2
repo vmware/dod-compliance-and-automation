@@ -1,0 +1,12 @@
+# vmware-vpostgres first logs, before loading configuration
+input(type="imfile"
+      File="/var/log/vmware/vpostgres/serverlog.std*"
+      Tag="vpostgres-first"
+      Severity="info"
+      Facility="local0")
+# vmware-vpostgres logs
+input(type="imfile"
+      File="/var/log/vmware/vpostgres/postgresql-*.log"
+      Tag="vpostgres"
+      Severity="info"
+      Facility="local0")

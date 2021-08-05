@@ -1,0 +1,12 @@
+# This is the main launching playbook for the vSphere VCSA 7.0 STIG
+
+- hosts: all
+  roles:
+    - eam
+    - lookup
+    - perfcharts
+    - postgresql
+    - rhttpproxy
+    - sts
+    - vami
+    - vsphere-ui

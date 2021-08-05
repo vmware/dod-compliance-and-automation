@@ -1,0 +1,733 @@
+# VMware vSphere 7.0 vCenter Server Appliance vSphere UI Ansible Role
+
+---
+
+ #---------- Ansible version 2.9.6 --------#
+
+############################################
+
+# Backup files that may be modified in case restoration is needed
+
+- name: Create time stamp
+  set_fact:
+    backup_timestamp: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+  tags:
+  - perfcharts
+  when:
+  - create_backups | bool
+
+- name: Backup files...if restoring be sure to restore permissions that original file had!!
+  copy:
+    remote_src: yes
+    src: "{{ item }}"
+    dest: "{{ item }}_{{ backup_timestamp }}.bak"
+  with_items:
+    - '{{ var_server_xml_path }}'
+    - '{{ var_web_xml_path }}'
+    - '{{ var_context_xml_path }}'
+    - '{{ var_json_path }}'
+    - '{{ var_catalina_props_path }}'
+  tags:
+  - vsphere-ui
+  when:
+  - create_backups | bool
+
+############################################
+
+# Title: vSphere UI must limit the amount of time that each TCP connection is kept alive
+
+- name: VCUI-70-000001 - vSphere UI must limit the amount of time that each TCP connection is kept alive
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${http.port}"]'
+    attribute: 'connectionTimeout'
+    value: '{{ var_server_xml_connectiontimeout }}'
+  tags:
+  - VCUI-70-000001
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_connection_timeout | bool
+  
+############################################
+
+# Title: vSphere UI must limit the number of concurrent connections permitted
+
+- name: VCUI-70-000002 - vSphere UI must limit the number of concurrent connections permitted
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${http.port}"]'
+    attribute: 'maxThreads'
+    value: '{{ var_server_xml_maxthreads }}'
+  tags:
+  - VCUI-70-000002
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_max_threads | bool
+
+############################################
+
+# Title: vSphere UI must limit the maximum size of a POST request
+
+- name: VCUI-70-000003 - vSphere UI must limit the maximum size of a POST request
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${http.port}"]/@maxPostSize'
+    state: absent
+  tags:
+  - VCUI-70-000003
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_max_post_size | bool
+
+############################################
+
+# Title: vSphere UI must protect cookies from XSS
+
+- name: VCUI-70-000004 - vSphere UI must protect cookies from XSS
+  xml:
+    path: '{{ var_context_xml_path }}'
+    xpath: '/Context'
+    attribute: 'useHttpOnly'
+    value: '{{ var_context_xml_http_only }}'
+  tags:
+  - VCUI-70-000004
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_http_only | bool
+
+############################################
+
+# Title: vSphere UI must record user access in a format that enables monitoring of remote access
+
+- name: VCUI-70-000005 - vSphere UI must record user access in a format that enables monitoring of remote access
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
+    attribute: 'pattern'
+    value: '{{ var_server_xml_access_log_valve_pattern }}'
+  tags:
+  - VCUI-70-000005
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_access_valve_pattern | bool
+
+############################################
+
+# Title: vSphere UI must generate log records for system startup and shutdown
+
+- name: VCUI-70-000006 - vSphere UI must generate log records for system startup and shutdown
+  lineinfile:
+    path: '{{ var_json_path }}'
+    state: present
+    regexp: '^.*"StreamRedirectFile".*$'
+    line: '    "StreamRedirectFile": "{{ var_json_stream_redirect_file }}",'
+    insertbefore: ^.*WorkingDir.*$
+    firstmatch: yes
+  tags:
+  - VCUI-70-000006
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_json_stream_redirect_file | bool
+
+############################################
+
+# Title: vSphere UI log files must only be modifiable by privileged users
+
+- name: VCUI-70-000007 - Find vSphere UI log files
+  find:
+    paths: '{{ var_logs_path }}'
+    file_type: file
+  register: vspherelogs
+  tags:
+  - VCUI-70-000007
+  - vsphere-ui  
+  when:
+  - run_logs_permissions | bool
+
+- name: VCUI-70-000007 - Set vSphere UI log permissions
+  file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "0600"
+    owner: "vsphere-ui"
+    group: "users"
+  with_items: " {{ vspherelogs.files }}"
+  tags:
+  - VCUI-70-000007
+  - vsphere-ui  
+  when:
+  - run_logs_permissions | bool
+
+############################################
+
+# Title: vSphere UI application files must be verified for their integrity
+# VCUI-70-000008 requires manual remediation
+
+############################################
+
+# Title: vSphere UI plugins must be authorized before use.
+# VCUI-70-000009 requires manual remediation
+
+############################################
+
+# Title: vSphere UI must not be configured with the UserDatabaseRealm enabled.
+
+# - name: VCUI-70-000010 - Remove GlobalNamingResources
+#   xml:
+#     path: '{{ var_server_xml_path }}'
+#     xpath: '/Server/GlobalNamingResources'
+#     state: absent
+#   tags:
+#   - VCUI-70-000010
+#   - vsphere-ui
+#   notify:
+#   - restart vsphere-ui
+#   when:
+#   - run_user_database_realm | bool
+
+- name: VCUI-70-000010 - vSphere UI must not be configured with the UserDatabaseRealm enabled.
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Realm'
+    state: absent
+  tags:
+  - VCUI-70-000010
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_user_database_realm | bool
+
+############################################
+
+# Title: vSphere UI must be configured to limit access to internal packages.
+
+- name: VCUI-70-000011 - vSphere UI must be configured to limit access to internal packages.
+  template:
+    src: catalina.properties.j2
+    dest: '{{ var_catalina_props_path }}'
+    owner: vsphere-ui
+    group: root
+    mode: '0640'
+    force: yes
+  tags:
+  - VCUI-70-000011
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_catalina_props_package_access | bool
+
+############################################
+
+# Title: vSphere UI must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled
+
+- name: VCUI-70-000012 - vSphere UI must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled CSH
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="csh"]/..'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCUI-70-000012
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_removed_mime_mappings | bool
+
+- name: VCUI-70-000012 - vSphere UI must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled SH
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="sh"]/..'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCUI-70-000012
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_removed_mime_mappings | bool
+
+- name: VCUI-70-000012 - vSphere UI must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled SHAR
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="shar"]/..'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCUI-70-000012
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_removed_mime_mappings | bool
+
+- name: VCUI-70-000012 - vSphere UI must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled KSH
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="ksh"]/..'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+  - VCUI-70-000012
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_removed_mime_mappings | bool
+
+############################################
+
+# Title: vSphere UI must have mappings set for Java servlet pages.
+
+- name: VCUI-70-000013 - vSphere UI must have mappings set for Java servlet pages. jsp
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="jsp"]/x:url-pattern[1]'
+    value: '{{ var_web_xml_servlet_jsp_url_pattern1 }}'
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000013
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_java_servlet | bool
+
+- name: VCUI-70-000013 - vSphere UI must have mappings set for Java servlet pages. jspx
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="jsp"]/x:url-pattern[2]'
+    value: '{{ var_web_xml_servlet_jsp_url_pattern2 }}'
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000013
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_java_servlet | bool
+
+############################################
+
+# Title: vSphere UI must not have the Web Distributed Authoring (WebDAV) servlet installed.
+
+- name: VCUI-70-000014 - vSphere UI must not have the Web Distributed Authoring (WebDAV) servlet installed.
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="webdav"]/..'
+    state: absent
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000014
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_remove_webdav | bool
+
+############################################
+
+# Title: vSphere UI must be configured with memory leak protection.
+
+- name: VCUI-70-000015 - vSphere UI must be configured with memory leak protection.
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Listener[@className="org.apache.catalina.core.JreMemoryLeakPreventionListener"]'
+    state: present
+  tags:
+  - VCUI-70-000015
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_mem_leak_prevention | bool
+
+############################################
+
+# Title: vSphere UI must not have any symbolic links in the web content directory tree.
+# VCUI-70-000016 requires manual remediation
+
+############################################
+
+# Title: vSphere UI directory tree must have permissions in an "out of the box" state.
+
+- name: VCUI-70-000017 - Find vSphere UI web files
+  shell: find {{ var_files_web_path }} -xdev -type f -a '(' -perm -o+w -o -not -user vsphere-ui -o -not -group root ')';
+  register: files
+  tags:
+  - VCUI-70-000017
+  - vsphere-ui
+  changed_when: files.stdout!=""
+  when:
+  - run_web_files_permissions | bool
+
+- name: VCUI-70-000017 - Set vSphere UI web files owner and group
+  file:
+    path: "{{ item }}"
+    state: file
+    mode: o-w
+    owner: "vsphere-ui"
+    group: "root"
+  with_items: "{{ files.stdout_lines }}"
+  tags:
+  - VCUI-70-000017
+  - vsphere-ui  
+  when:
+  - run_web_files_permissions | bool
+  - files.stdout != ""
+
+############################################
+
+# Title: vSphere UI must restrict it's cookie path.
+
+- name: VCUI-70-000018 - vSphere UI must restrict it's cookie path.
+  xml:
+    path: '{{ var_context_xml_path }}'
+    xpath: '/Context'
+    attribute: 'sessionCookiePath'
+    value: '{{ var_context_xml_session_cookie_path }}'
+  tags:
+  - VCUI-70-000018
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_session_cookies | bool
+
+############################################
+
+# Title: vSphere UI must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+
+- name: VCUI-70-000019 - vSphere UI must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+  template:
+    src: catalina.properties.j2
+    dest: '{{ var_catalina_props_path }}'
+    owner: vsphere-ui
+    group: root
+    mode: '0640'
+    force: yes
+  tags:
+  - VCUI-70-000019
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_catalina_props_init_failure | bool
+
+############################################
+
+# Title: vSphere UI must limit the number of allowed connections.
+
+- name: VCUI-70-000020 - vSphere UI must limit the number of allowed connections.
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${http.port}"]'
+    attribute: 'acceptCount'
+    value: '{{ var_server_xml_acceptcount }}'
+  tags:
+  - VCUI-70-000020
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_accept_count | bool
+
+############################################
+
+# Title: vSphere UI must set URIEncoding to UTF-8.
+
+- name: VCUI-70-000021 - vSphere UI must set URIEncoding to UTF-8.
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${http.port}"]'
+    attribute: 'URIEncoding'
+    value: '{{ var_server_xml_uriencoding }}'
+  tags:
+  - VCUI-70-000021
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_uri_encoding | bool
+
+############################################
+
+# Title: vSphere UI must set the welcome-file node to a default web page.
+
+- name: VCUI-70-000022 - vSphere UI must set the welcome-file node to a default web page. html
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[1]'
+    value: '{{ var_web_xml_welcome_file_list1 }}'
+    state: present
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000022
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_web_welcome_file | bool
+
+- name: VCUI-70-000022 - vSphere UI must set the welcome-file node to a default web page. htm
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[2]'
+    value: '{{ var_web_xml_welcome_file_list2 }}'
+    state: present
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000022
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_web_welcome_file | bool
+
+- name: VCUI-70-000022 - vSphere UI must set the welcome-file node to a default web page. jsp
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[3]'
+    value: '{{ var_web_xml_welcome_file_list3 }}'
+    state: present
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000022
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_web_welcome_file | bool
+
+############################################
+
+# Title: vSphere UI must not show directory listings.
+
+- name: VCUI-70-000023 - vSphere UI must not show directory listings.
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet[x:servlet-name="default"]/x:init-param[x:param-name="listings"]/x:param-value'
+    value: 'false'
+    state: present
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000023
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_web_remove_listings | bool
+
+############################################
+
+# Title: vSphere UI must be configured to hide the server version.
+
+- name: VCUI-70-000024 - vSphere UI must be configured to hide the server version.
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${http.port}"]'
+    attribute: 'server'
+    value: '{{ var_server_xml_server }}'
+  tags:
+  - VCUI-70-000024
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_min_info | bool
+
+############################################
+
+# Title: vSphere UI must be configured to show error pages with minimal information.
+
+- name: VCUI-70-000025 - vSphere UI must be configured to show error pages with minimal information. showserverinfo
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+    attribute: 'showServerInfo'
+    value: '{{ var_server_xml_show_server_info }}'
+  tags:
+  - VCUI-70-000025
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_show_server_info | bool
+
+- name: VCUI-70-000025 - vSphere UI must be configured to show error pages with minimal information. showreport
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+    attribute: 'showReport'
+    value: '{{ var_server_xml_show_server_report }}'
+  tags:
+  - VCUI-70-000025
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_show_server_info | bool
+
+############################################
+
+# Title: vSphere UI must not enable support for TRACE requests.
+
+- name: VCUI-70-000026 - vSphere UI must not enable support for TRACE requests.
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector/@allowTrace'
+    state: absent
+  tags:
+  - VCUI-70-000026
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_allow_trace | bool
+
+############################################
+
+# Title: vSphere UI must have the debug option turned off.
+
+- name: VCUI-70-000027 - vSphere UI must have the debug option turned off.
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet[x:servlet-name="default"]/x:init-param[x:param-name="debug"]/x:param-value'
+    value: '0'
+    state: present
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000027
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_web_remove_debug | bool
+
+############################################
+
+# Title: vSphere UI must use a logging mechanism that is configured to allocate log record storage capacity large enough to accommodate the logging requirements of the web server.
+# VCUI-70-000028 requires manual remediation
+
+############################################
+
+# Title: Rsyslog must be configured to monitor and ship vSphere UI log files.
+
+- name: VCUI-70-000029 - Rsyslog must be configured to monitor and ship vSphere UI log files.
+  template:
+    src: vmware-services-vsphere-ui.conf.j2
+    dest: /etc/vmware-syslog/vmware-services-vsphere-ui.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: yes
+  tags:
+  - VCUI-70-000029
+  - vsphere-ui
+  notify:
+  - restart syslog
+  when:
+  - run_syslog_config | bool
+
+############################################
+
+# Title: vSphere UI must must be configured with the appropriate ports.
+
+- name: VCUI-70-000030 - vSphere UI must must be configured with the appropriate ports.
+  template:
+    src: catalina.properties.j2
+    dest: '{{ var_catalina_props_path }}'
+    owner: vsphere-ui
+    group: root
+    mode: '0640'
+    force: yes
+  tags:
+  - VCUI-70-000030
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_catalina_props_ports | bool
+
+############################################
+
+# Title: vSphere UI must disable the shutdown port.
+
+- name: VCUI-70-000031 - vSphere UI must disable the shutdown port.
+  xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server'
+    attribute: 'port'
+    value: '{{ var_server_xml_shutdown_port }}'
+  tags:
+  - VCUI-70-000031
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_server_shutdownport | bool
+
+############################################
+
+# Title: vSphere UI must set the secure flag for cookies.
+
+- name: VCUI-70-000032 - vSphere UI must set the secure flag for cookies.
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
+    value: '{{ var_web_xml_cookie_secure }}'
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000032
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_web_cookie_secure | bool
+
+############################################
+
+# Title: vSphere UI default servlet must be set to readonly.
+
+- name: VCUI-70-000033 - vSphere UI default servlet must be set to readonly.
+  xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/param-name[text()="readonly"]'
+    state: absent
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+  - VCUI-70-000033
+  - vsphere-ui
+  notify:
+  - restart vsphere-ui
+  when:
+  - run_web_remove_readonly | bool

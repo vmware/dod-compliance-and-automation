@@ -1,0 +1,14 @@
+# rhttpproxy variables
+
+# config.xml variables
+var_config_xml_path: '/etc/vmware-rhttpproxy/config.xml'
+var_config_xml_tcpkeepalivetimesec: '180'
+var_config_xml_maxhttpsconnections: '2048'
+var_config_xml_fips: 'true'
+var_config_xml_tls: 'tls1.2'
+var_config_xml_ssl_private_key: '/etc/vmware-rhttpproxy/ssl/rui.key'
+var_config_xml_ssl_cert: '/etc/vmware-rhttpproxy/ssl/rui.crt'
+var_config_xml_ssl_vecs: 'localhost'
+
+# misc variables
+var_key_path: '/etc/vmware-rhttpproxy/ssl/rui.key'
