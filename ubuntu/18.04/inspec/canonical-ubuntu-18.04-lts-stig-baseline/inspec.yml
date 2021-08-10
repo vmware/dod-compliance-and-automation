@@ -5,28 +5,13 @@ copyright: The Authors
 copyright_email: you@example.com
 license: Apache-2.0
 summary: "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
-version: 0.2.0
+version: V2R3
 
 supports:
   - platform-name: ubuntu
     release: 18.04
 
 inputs:
-  - name: platform_name
-    description: Name of the OS/Platform
-    type: String
-    value: 'ubuntu'
-
-  - name: platform_release
-    description: Release number of the OS/Platform
-    type: Numeric
-    value: 18.04
-
-  - name: supported_until
-    description: Support end date for OS/Platform security updates
-    type: String
-    value: '2023-04-30'
-
   - name: log_file_path
     description: Audit log file path
     type: String
@@ -36,11 +21,6 @@ inputs:
     description: Audit log file directory
     type: String
     value: '/var/log/audit/'
-
-  - name: org_name
-    description: Organization Name
-    type: String
-    value: 'VMware'
 
 #V-219172
   - name: min_num_uppercase_char
@@ -90,107 +70,6 @@ inputs:
     type: Array
     value: []
 
-  - name: known_system_accounts
-    description: System accounts that support approved system activities
-    type: Array
-    value: [
-      'root',
-      'bin',
-      'daemon',
-      'adm',
-      'lp',
-      'sync',
-      'shutdown',
-      'halt',
-      'mail',
-      'operator',
-      'nobody',
-      'systemd-bus-proxy',
-      'systemd-network',
-      'dbus',
-      'polkitd',
-      'tss',
-      'postfix',
-      'chrony',
-      'sshd',
-      'sssd',
-      'rpc',
-      'ntp',
-      'vboxadd',
-      'nfsnobody',
-      'vagrant',
-      'rpcuser',
-      'sys',
-      'man',
-      'news',
-      'uucp',
-      'proxy',
-      'www-data',
-      'backup',
-      'list',
-      'irc',
-      'gnats',
-      'systemd-timesync',
-      'systemd-resolve',
-      'syslog',
-      '_apt',
-      'lxd',
-      'messagebus',
-      'uuidd',
-      'dnsmasq',
-      'statd',
-      'landscape',
-      'pollinate',
-      'ubuntu',
-      'clamav',
-      '_chrony'
-    ]
-
-  - name: disallowed_accounts
-    description: Accounts that are not allowed on the system
-    type: Array
-    value: [
-      'games',
-      'gopher',
-      'ftp',
-    ]
-
-  - name: user_accounts
-    description: Accounts of known managed users
-    type: Array
-    value: []
-
-  - name: exempt_home_users
-    description: These are `home dir` exempt interactive accounts
-    type: Array
-    value: []
-
-  - name: non_interactive_shells
-    description: These shells do not allow a user to login
-    type: Array
-    value: [
-      '/sbin/nologin',
-      '/sbin/halt',
-      '/sbin/shutdown',
-      '/bin/false',
-      '/bin/sync',
-      '/bin/true'
-    ]
-
-  - name: disable_slow_controls
-    description: This attribute disables controls that consistently take a long time to complete
-    type: Boolean
-    value: false
-
-  - name: known_system_mount_points
-    description: Known System Mount Points
-    type: Array
-    value: [
-      '/',
-      '/boot',
-      'none'
-    ]
-
 #V-219335
   - name: is_kdump_required
     description: Is kdump service required? (check with SA and documented with ISSO)
@@ -234,12 +113,6 @@ inputs:
 
     -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.'
 
-#V-219346
-  - name: is_wireless_available
-    description: Set to true if the system has a wireless network radio available (default:false)
-    type: Boolean
-    value: false
-
 #V-219237
   - name: standard_audit_log_size
     description: Set audit log size in bytes (default:1073741824 per control specification)
@@ -261,10 +134,22 @@ inputs:
   - name: allowed_network_interfaces
     description: Array of allowed network interfaces (wired & wireless)
     type: Array
-    value: [
-      'lo',
-      'eth0'
-    ]
+    value:
+    - antrea-g
+    - cert-man
+    - contour-
+    - coredns-
+    - ens3
+    - envoy-jk
+    - eth0
+    - falcosid
+    - genev_sy
+    - lo
+    - metrics-
+    - capa-con
+    - capi-kub
+    - tkr-cont
+
 
 #V-219152
   - name: action_mail_acct
@@ -282,13 +167,7 @@ inputs:
   - name: dod_ca_path
     description: Path to DoD CA cert.
     type: String
-    value: '/etc/ssl/certs/CA.pem'
-
-  #V-219301
-  - name: limits_conf_path
-    description: Path to limits.conf
-    type: String
-    value: '/etc/security/limits.conf'
+    value: '/etc/ssl/certs/dod.pem'
 
   #V-219336
   - name: aide_conf_path
