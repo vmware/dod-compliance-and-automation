@@ -1,0 +1,36 @@
+#localhost_access_log
+input(type="imfile"
+      File="/var/log/vmware/lookupsvc/tomcat/localhost_access.log"
+      Tag="lookupsvc-localhost_access"
+      Severity="info"
+      Facility="local0")
+#lookupsvc_stream.log.std
+input(type="imfile"
+      File="/var/log/vmware/lookupsvc/lookupsvc_stream.log.std*"
+      Tag="lookupsvc-std"
+      Severity="info"
+      Facility="local0")
+#lookupserver-default
+input(type="imfile"
+      File="/var/log/vmware/lookupsvc/lookupserver-default.log"
+      Tag="lookupsvc-lookupserver-default"
+      Severity="info"
+      Facility="local0")
+#lookupServer
+input(type="imfile"
+      File="/var/log/vmware/lookupsvc/lookupServer.log"
+      Tag="lookupsvc-lookupServer"
+      Severity="info"
+      Facility="local0")
+#ls-perflogs
+input(type="imfile"
+      File="/var/log/vmware/lookupsvc/vmware-lookupservice-perf.log"
+      Tag="lookupsvc-perf"
+      Severity="info"
+      Facility="local0")
+#ls-gc
+input(type="imfile"
+      File="/var/log/vmware/lookupsvc/vmware-lookupsvc-gc.log.*.current"
+      Tag="lookupsvc-gc"
+      Severity="info"
+      Facility="local0")

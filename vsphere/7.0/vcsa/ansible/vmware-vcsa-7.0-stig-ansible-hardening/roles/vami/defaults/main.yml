@@ -1,0 +1,60 @@
+---
+
+# Turn specific controls on/off by setting the value to true or false
+
+#Create backups of files?
+create_backups: true
+
+#Lighttpd
+#VCLD-70-000001
+run_conf_server_max_connections: true
+#VCLD-70-000002
+run_conf_ssl_ciphers: true
+#VCLD-70-000003
+run_conf_ssl_engine: true
+#VCLD-70-000004
+run_conf_server_mod_accesslog: true
+#VCLD-70-000005
+run_conf_server_error_log: true
+#VCLD-70-000006
+run_conf_comment_accesslog_format: true
+#VCLD-70-000007
+run_vami_logs: true
+#VCLD-70-000008
+run_vami_syslog_config: true
+#VCLD-70-000010
+run_conf_set_server_modules: true
+#VCLD-70-000011
+run_conf_remove_shell_mimetypes: true
+#VCLD-70-000012
+run_conf_mimetype_xattr: true
+#VCLD-70-000013
+run_conf_set_cgi_assign: false #Set to false until we can work out a better method since this block of text has changed between vcenter versions and the current method prevents vami some starting in some instances
+#VCLD-70-000014
+run_conf_url_access_deny: true
+#VCLD-70-000015
+run_conf_remove_mod_webdav: true
+#VCLD-70-000016
+run_conf_server_max_keep_alive_idle: true
+#VCLD-70-000017
+run_key_permissions: true
+#VCLD-70-000018
+run_conf_server_max_fds: true
+#VCLD-70-000019
+run_conf_text_mime_utf8: true
+#VCLD-70-000020
+run_conf_dir_listing_activate: true
+#VCLD-70-000021
+run_conf_remove_mod_status: true
+#VCLD-70-000022
+run_conf_debug_log_request_handling: true
+#VCLD-70-000023
+run_service_remove_user: true
+#VCLD-70-000024
+run_conf_ssl_disabled_versions: true
+#VCLD-70-000025
+run_conf_ssl_honor_cipher_order: true
+#VCLD-70-000026
+run_conf_ssl_disable_client_renegotiation: true
+#VCLD-70-000027
+run_conf_server_tag: true
