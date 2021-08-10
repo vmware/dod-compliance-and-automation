@@ -273,6 +273,7 @@ inputs:
     - genev_sy
     - lo
     - metrics-
+    - capa-con
 
 
 #V-219152
