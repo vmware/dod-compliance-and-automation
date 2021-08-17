@@ -161,7 +161,7 @@ inputs:
   - name: sudo_accounts
     description: Array of users who need access to security functions are part of the sudo group.
     type: Array
-    value: []
+    value: [ "ubuntu" ]
   
   #V-219321
   - name: dod_ca_path
