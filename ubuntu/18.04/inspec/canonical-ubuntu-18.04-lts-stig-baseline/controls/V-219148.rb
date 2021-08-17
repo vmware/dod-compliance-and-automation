@@ -70,7 +70,7 @@ following command:
   tag fix_id: 'F-20872r304773_fix'
   tag cci: ['V-100521', 'SV-109625', 'CCI-000213']
   tag nist: ['AC-3']
-  efi_grub_file_exists = file('/boot/efi/EFI/grub.cfg').exists
+  efi_grub_file_exists = file('/boot/efi/EFI/grub.cfg').exist?
   if efi_grub_file_exists
     describe file('/boot/efi/EFI/grub.cfg') do
       its('content') { should match '^password_pbkdf2' }
