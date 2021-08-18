@@ -52,7 +52,8 @@ user interface:
   gnome_installed = (package('ubuntu-gnome-desktop').installed? || package('ubuntu-desktop').installed? || package('gdm3').installed?)
   if !gnome_installed
     describe "The GUI is not installed on the system" do
-      skip "This control is Not Appliciable without GUI Package installed."
+      subject { gnome_installed }
+      it { should be false }
     end
   else
     describe command("grep -R logout='' /etc/dconf/db/local.d/").stdout.strip.split("\n").entries do
