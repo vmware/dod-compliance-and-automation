@@ -130,27 +130,6 @@ inputs:
     type: Numeric
     value: 1
 
-#V-219346
-  - name: allowed_network_interfaces
-    description: Array of allowed network interfaces (wired & wireless)
-    type: Array
-    value:
-    - antrea-g
-    - cert-man
-    - contour-
-    - coredns-
-    - ens3
-    - envoy-jk
-    - eth0
-    - falcosid
-    - genev_sy
-    - lo
-    - metrics-
-    - capa-con
-    - capi-kub
-    - tkr-cont
-
-
 #V-219152
   - name: action_mail_acct
     description: Email to be notified when allocated audit record storage volume reaches 

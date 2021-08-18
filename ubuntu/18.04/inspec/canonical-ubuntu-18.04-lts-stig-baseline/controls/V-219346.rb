@@ -73,24 +73,8 @@ following command:
   tag cci: ['SV-110017', 'V-100913', 'CCI-002418']
   tag nist: ['SC-8']
 
-  allowed_network_interfaces = input('allowed_network_interfaces')
-  ifconfig_output = command('ifconfig -s | cut -d " " -f 1').stdout.split("\n")
-  system_network_interfaces = ifconfig_output.drop(1)
-
-  other_network_interfaces = system_network_interfaces - allowed_network_interfaces
-
-  if other_network_interfaces.count > 0
-    other_network_interfaces.each do |net_int|
-      describe ('Interface: ' + net_int + ' not permitted') do
-        subject { net_int }
-        it { should be_empty }
-      end
-    end
-  else
-    describe 'Number of wireless network interfaces found' do
-      subject { other_network_interfaces }
-      its('count') { should eq 0 }
-    end
+  describe command('lshw -C network') do
+   its('stdout') should not match /description:\s+Wireless\s+Interface/i
   end
 end
 
