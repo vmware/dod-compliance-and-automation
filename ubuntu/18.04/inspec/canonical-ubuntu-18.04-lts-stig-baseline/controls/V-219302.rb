@@ -56,7 +56,7 @@ session locks with the following command:
 
   gnome_installed = (package('ubuntu-gnome-desktop').installed? || package('ubuntu-desktop').installed? || package('gdm3').installed?)
   if !gnome_installed
-    describe "The GUI is not installed on the system" do
+    describe "The GUI is installed on the system" do
       subject { gnome_installed }
       it { should be false }
     end
