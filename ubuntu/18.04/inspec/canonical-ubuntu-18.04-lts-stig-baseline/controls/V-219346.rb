@@ -74,7 +74,7 @@ following command:
   tag nist: ['SC-8']
 
   describe command('lshw -C network') do
-   its('stdout') should not match /description:\s+Wireless\s+Interface/i
+   its('stdout') { should_not match /description:\s+Wireless\s+Interface/i }
   end
 end
 
