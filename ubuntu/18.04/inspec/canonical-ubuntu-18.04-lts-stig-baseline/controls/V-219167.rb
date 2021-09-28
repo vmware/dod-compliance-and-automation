@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219167' do
   title "The Ubuntu operating system must display the Standard Mandatory DoD
 Notice and Consent Banner before granting local access to the system via a
@@ -58,7 +56,7 @@ Agreement for details.\"
 match the Standard Mandatory DoD Notice and Consent Banner exactly, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Edit the /etc/gdm3/greeter.dconf-defaults file.
 
     Uncomment (remove the leading '#' characters) the following 3 configuration
@@ -116,24 +114,24 @@ line and the newline characters have been replaced with \
   tag rid: 'SV-219167r508662_rule'
   tag stig_id: 'UBTU-18-010035'
   tag fix_id: 'F-20891r304830_fix'
-  tag cci: ['V-100561', 'SV-109665', 'CCI-000050']
+  tag cci: %w[V-100561 SV-109665 CCI-000050]
   tag nist: ['AC-8 b']
-  
+
   gnome_installed = (package('ubuntu-gnome-desktop').installed? || package('ubuntu-desktop').installed? || package('gdm3').installed?)
   if !gnome_installed
-    describe "The GUI is not installed on the system" do
-      skip "This control is Not Appliciable without GUI Package installed."
+    describe 'The GUI is installed on the system' do
+      subject { gnome_installed }
+      it { should be false }
     end
   else
     describe command('/usr/lib/update-notifier/apt-check --human-readable') do
-        its('exit_status') { should cmp 0 }
-        its('stdout') { should match '^0 updates are security updates.$' }
+      its('exit_status') { should cmp 0 }
+      its('stdout') { should match '^0 updates are security updates.$' }
     end
 
     describe 'banner-message-enable must be set to true' do
-        subject { command('grep banner-message-enable /etc/dconf/db/local.d/*') }
-        its('stdout') { should match /(banner-message-enable).+=.+(true)/ }
+      subject { command('grep banner-message-enable /etc/dconf/db/local.d/*') }
+      its('stdout') { should match(/(banner-message-enable).+=.+(true)/) }
     end
-  end 
+  end
 end
-

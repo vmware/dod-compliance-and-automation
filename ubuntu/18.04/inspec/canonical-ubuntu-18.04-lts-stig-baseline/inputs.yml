@@ -1,3 +1,2 @@
 sudo_accounts: [ "ubuntu" ]
 standard_audit_log_size: 2187740
-allowed_network_interfaces: ['lo','eth0','ens5']
