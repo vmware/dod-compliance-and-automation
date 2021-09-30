@@ -5,7 +5,7 @@ control 'VCLU-70-000012' do
 that invoke operating system shell programs disabled."
   desc  "MIME mappings tell the Lookup Service what type of program various
 file types and extensions are and what external utilities or programs are
-needed to execute the file type. By ensuring that various shell script
+needed to execute the file type.\xC2\xA0By ensuring that various shell script
 MIME types are not included in web.xml, the server is protected against
 malicious users tricking the server into executing shell command files."
   desc  'rationale', ''
@@ -28,6 +28,19 @@ malicious users tricking the server into executing shell command files."
     <mime-type>application/x-shar</mime-type>
     <mime-type>application/x-sh</mime-type>
     <mime-type>application/x-ksh</mime-type>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
+
+    Note: Delete the entire mime-mapping node for the target mime-type.
+
+    Example:
+
+    <mime-mapping>
+        <extension>sh</extension>
+        <mime-type>application/x-sh</mime-type>
+    </mime-mapping>
   "
   impact 0.5
   tag severity: 'medium'
@@ -36,7 +49,7 @@ malicious users tricking the server into executing shell command files."
   tag rid: nil
   tag stig_id: 'VCLU-70-000012'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' '#{input('webXmlPath')}'") do

@@ -32,6 +32,10 @@ The vSphere UI is configured in it's shipping state to not set a value for
     Navigate to each of the <Connector> nodes.
 
     Remove any configuration for \"maxPostSize\".
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -40,7 +44,7 @@ The vSphere UI is configured in it's shipping state to not set a value for
   tag rid: nil
   tag stig_id: 'VCUI-70-000003'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe xml("#{input('serverXmlPath')}") do

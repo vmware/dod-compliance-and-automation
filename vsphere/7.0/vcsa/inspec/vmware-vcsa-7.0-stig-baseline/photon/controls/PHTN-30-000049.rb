@@ -35,11 +35,12 @@ for file permissions:
   tag rid: nil
   tag stig_id: 'PHTN-30-000049'
   tag fix_id: nil
-  tag cci: 'CCI-001499'
+  tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  describe command("find /usr/lib/ -type f \"(\" ! -user root -o ! -group root -o -perm /022\")\" -printf '%p, %u:%g:%m\n'") do
-      its ('stdout') { should eq '' }
+  describe command("find /usr/lib/ -type f \"(\" ! -user root -o ! -group root -o -perm /022 \")\" -printf '%p, %u:%g:%m\\n'") do
+      its ('stdout') { should cmp "" }
+      #its ('stderr') { should cmp "" }
   end
 
 end

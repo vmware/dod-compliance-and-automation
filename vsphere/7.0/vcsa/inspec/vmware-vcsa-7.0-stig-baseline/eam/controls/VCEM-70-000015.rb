@@ -39,7 +39,11 @@ finding.
 
     Add '<Listener
 className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>' to
-the <Server> node..
+the <Server> node.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -48,7 +52,7 @@ the <Server> node..
   tag rid: nil
   tag stig_id: 'VCEM-70-000015'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe xml("#{input('serverXmlPath')}") do

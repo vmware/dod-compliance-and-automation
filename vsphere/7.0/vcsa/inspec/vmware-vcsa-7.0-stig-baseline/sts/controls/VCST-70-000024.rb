@@ -3,14 +3,15 @@
 control 'VCST-70-000024' do
   title "The Security Token Service must be configured to not show error
 reports."
-  desc  "\"TRACE\" is a technique for a user to request internal information
-about Tomcat. This is useful during product development, but should not be
-enabled in production.  Allowing a attacker to conduct a TRACE operation
-against the Security Token Service will expose information that would be useful
-to perform a more targeted attack.
+  desc  "Web servers will often display error messages to client users,
+displaying enough information to aid in the debugging of the error. The
+information given back in error messages may display the web server type,
+version, patches installed, plug-ins and modules installed, type of code being
+used by the hosted application, and any backends being used for data storage.
 
-    The Security Token Service provides the \"allowTrace\" parameter as means
-to disable responding to TRACE requests.
+    This information could be used by an attacker to blueprint what type of
+attacks might be successful. As such, the Security Token Service must be
+configured to not show server version information in error messages.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -43,6 +44,10 @@ className=\"org.apache.catalina.valves.ErrorReportValve\" and add the following:
 
     <Valve className=\"org.apache.catalina.valves.ErrorReportValve\"
 showServerInfo=\"false\" showReport=\"false\"/>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -51,7 +56,7 @@ showServerInfo=\"false\" showReport=\"false\"/>
   tag rid: nil
   tag stig_id: 'VCST-70-000024'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe xml("#{input('serverXmlPath')}") do

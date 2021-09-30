@@ -36,6 +36,10 @@ set via the URIEncoding attribute on the Connector nodes.
     Navigate to each of the <Connector> nodes.
 
     Configure each <Connector> node with the value 'URIEncoding=\"UTF-8\"'.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -44,7 +48,7 @@ set via the URIEncoding attribute on the Connector nodes.
   tag rid: nil
   tag stig_id: 'VCUI-70-000021'
   tag fix_id: nil
-  tag cci: 'CCI-001310'
+  tag cci: ['CCI-001310']
   tag nist: ['SI-10']
 
   describe xml("#{input('serverXmlPath')}") do

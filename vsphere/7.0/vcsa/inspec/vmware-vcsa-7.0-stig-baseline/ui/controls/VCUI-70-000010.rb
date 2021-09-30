@@ -21,6 +21,10 @@ lack of a UserDatabaseRealm configuration must be confirmed."
     /usr/lib/vmware-vsphere-ui/server/conf/server.xml
 
     Remove any and all <Realm> nodes.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -29,7 +33,7 @@ lack of a UserDatabaseRealm configuration must be confirmed."
   tag rid: nil
   tag stig_id: 'VCUI-70-000010'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabaseRealm '#{input('serverXmlPath')}'") do

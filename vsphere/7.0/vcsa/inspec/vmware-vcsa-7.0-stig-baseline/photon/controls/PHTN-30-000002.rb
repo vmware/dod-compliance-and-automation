@@ -55,7 +55,7 @@ onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
   tag rid: nil
   tag stig_id: 'PHTN-30-000002'
   tag fix_id: nil
-  tag cci: 'CCI-000044'
+  tag cci: ['CCI-000044']
   tag nist: ['AC-7 a']
 
   describe file ('/etc/pam.d/system-auth') do

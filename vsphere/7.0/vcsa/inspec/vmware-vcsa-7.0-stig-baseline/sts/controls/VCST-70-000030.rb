@@ -2,16 +2,15 @@
 
 control 'VCST-70-000030' do
   title 'The Security Token Service must set the secure flag for cookies.'
-  desc  "The default servlet (or DefaultServlet) is a special servlet provided
-with Tomcat which is called when no other suitable page is found in a
-particular folder. The DefaultServlet serves static resources as well as
-directory listings.
+  desc  "The secure flag is an option that can be set by the application server
+when sending a new cookie to the user within an HTTP Response. The purpose of
+the secure flag is to prevent cookies from being observed by unauthorized
+parties due to the transmission of the cookie in clear text.
 
-    The DefaultServlet is configured by default with the \"readonly\" parameter
-set to \"true\" where HTTP commands like PUT and DELETE are rejected. Changing
-this to false allows clients to delete or modify static resources on the server
-and to upload new resources. DefaultServlet readonly must be set to true,
-either literally or by absence (default).
+    By setting the secure flag, the browser will prevent the transmission of a
+cookie over an unencrypted channel. The Security Token Service is configured to
+only be accessible over a TLS tunnel, but this cookie flag is still a
+recommended best practice.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -40,6 +39,10 @@ configure it as follows.
           <http-only>true</http-only>
           <secure>true</secure>
         </cookie-config>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -48,7 +51,7 @@ configure it as follows.
   tag rid: nil
   tag stig_id: 'VCST-70-000030'
   tag fix_id: nil
-  tag cci: 'CCI-002418'
+  tag cci: ['CCI-002418']
   tag nist: ['SC-8']
 
   describe xml("#{input('webXmlPath')}") do

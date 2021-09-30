@@ -7,8 +7,11 @@ web page."
 being able to obtain information about the web server's directory structure by
 locating directories without default pages. In this scenario, the web server
 will display to the user a listing of the files in the directory being
-accessed. Ensuring that directory listing is disabled is one approach to
-mitigating the vulnerability."
+accessed. By having a default hosted application web page, the anonymous web
+user will not obtain directory browsing information or an error message that
+reveals the server type and version. Ensuring that every document directory has
+an \"index.jsp\" (or equivalent) file is one approach to mitigating the
+vulnerability."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -39,6 +42,10 @@ finding.
         <welcome-file>index.htm</welcome-file>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -47,7 +54,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCST-70-000022'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   list = ["index.jsp","index.html","index.htm"]

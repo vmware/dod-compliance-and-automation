@@ -10,11 +10,10 @@ is one of the primary methods employed when attempting to compromise an
 application.
 
     An attacker can also enter Unicode characters into hosted applications in
-an effort to break out of the document home or root home directory or to bypass
-security checks. VMware uses the standard Tomcat \"SetCharacterEncodingFilter\"
-to provide a layer of defense against character encoding attacks. Filters are
-Java objects that perform filtering tasks on either the request to a resource
-(a servlet or static content), or on the response from a resource, or both.
+an effort to break out of the document home or root home directory or bypass
+security checks. The Security Token Service must be configured to use a
+consistent character set via the \"URIEncoding\" attribute on the Connector
+nodes.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -38,6 +37,10 @@ Java objects that perform filtering tasks on either the request to a resource
     Navigate to each of the <Connector> nodes.
 
     Configure each <Connector> node with the value 'URIEncoding=\"UTF-8\"'.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -46,7 +49,7 @@ Java objects that perform filtering tasks on either the request to a resource
   tag rid: nil
   tag stig_id: 'VCST-70-000020'
   tag fix_id: nil
-  tag cci: 'CCI-001310'
+  tag cci: ['CCI-001310']
   tag nist: ['SI-10']
 
   describe xml("#{input('serverXmlPath')}") do

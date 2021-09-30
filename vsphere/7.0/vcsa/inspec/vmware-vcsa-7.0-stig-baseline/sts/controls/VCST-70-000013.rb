@@ -3,16 +3,17 @@
 control 'VCST-70-000013' do
   title "The Security Token Service must have mappings set for Java servlet
 pages."
-  desc  "WebDAV is an extension to the HTTP protocol that, when developed, was
-meant to allow users to create, change, and move documents on a server,
-typically a web server or web share. WebDAV is not widely used and has serious
-security concerns because it may allow clients to modify unauthorized files on
-the web server and must therefore be disabled.
+  desc  "Resource mapping is the process of tying a particular file type to a
+process in the web server that can serve that type of file to a requesting
+client and identify which file types are not to be delivered to a client.
 
-    Tomcat uses the \"org.apache.catalina.servlets.WebdavServlet\" servlet to
-provide WebDAV services. Because the WebDAV service has been found to have an
-excessive number of vulnerabilities, this servlet must not be installed. The
-Security Token Service does not configure WebDAV by default.
+    By not specifying which files can and cannot be served to a user, the web
+server could deliver to a user web server configuration files, log files,
+password files, etc.
+
+    As Tomcat is a Java-based web server, the main file extension used is
+*.jsp.  This check ensures that the *.jsp and *.jspx file types have been
+properly mapped to servlets.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -46,6 +47,10 @@ finding.
         <url-pattern>*.jsp</url-pattern>
         <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -54,7 +59,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCST-70-000013'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   list = ["*.jsp", "*.jspx"]

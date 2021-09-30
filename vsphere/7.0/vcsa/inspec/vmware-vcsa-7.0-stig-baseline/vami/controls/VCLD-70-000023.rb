@@ -29,9 +29,9 @@ configuration must be verified and maintained.
 
     Under the \"[Service]\" section, remove the line that beings with \"User=\".
 
-    At the command prompt, execute the following command:
+    Restart the service with the following command:
 
-    # service vami-lighttp restart
+    # vmon-cli --restart applmgmt
   "
   impact 0.5
   tag severity: 'medium'
@@ -40,7 +40,7 @@ configuration must be verified and maintained.
   tag rid: nil
   tag stig_id: 'VCLD-70-000023'
   tag fix_id: nil
-  tag cci: 'CCI-002385'
+  tag cci: ['CCI-002385']
   tag nist: ['SC-5']
 
   describe command("ps -f -U root | awk '$0 ~ /vami-lighttpd/ && $0 !~ /awk/ {print $1}'") do

@@ -46,6 +46,10 @@ className=\"org.apache.catalina.valves.ErrorReportValve\" and add the following:
 
     <Valve className=\"org.apache.catalina.valves.ErrorReportValve\"
 showServerInfo=\"false\" showReport=\"false\"/>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -54,7 +58,7 @@ showServerInfo=\"false\" showReport=\"false\"/>
   tag rid: nil
   tag stig_id: 'VCUI-70-000025'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe xml("#{input('serverXmlPath')}") do

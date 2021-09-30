@@ -35,7 +35,9 @@ functioning of the product."
     install squashfs /bin/false
     install udf /bin/false
 
-    If the output does not match the expected result, this is a finding.
+    The output may include other statements outside of the expected result.
+
+    If the output does not include at least every statement in the expected result, this is a finding.
   "
   desc  'fix', "
     Navigate to and open:
@@ -71,7 +73,7 @@ functioning of the product."
   tag rid: nil
   tag stig_id: 'PHTN-30-000032'
   tag fix_id: nil
-  tag cci: 'CCI-000382'
+  tag cci: ['CCI-000382']
   tag nist: ['CM-7 b']
 
   disabled_modules = input('disabled_modules')

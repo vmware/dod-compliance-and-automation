@@ -93,7 +93,7 @@ Agreement for details.\"
   tag rid: nil
   tag stig_id: 'PHTN-30-000003'
   tag fix_id: nil
-  tag cci: 'CCI-000048'
+  tag cci: ['CCI-000048']
   tag nist: ['AC-8 a']
 
   describe command('sshd -T|&grep -i Banner') do

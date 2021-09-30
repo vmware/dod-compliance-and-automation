@@ -42,7 +42,7 @@ authorized and authenticated users.
   tag rid: nil
   tag stig_id: 'VCPG-70-000012'
   tag fix_id: nil
-  tag cci: 'CCI-000186'
+  tag cci: ['CCI-000186']
   tag nist: ['IA-5 (2) (b)']
 
   describe file("#{input('pg_ssl_key')}") do

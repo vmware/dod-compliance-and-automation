@@ -32,7 +32,7 @@ compromised."
   tag rid: nil
   tag stig_id: 'PHTN-30-000028'
   tag fix_id: nil
-  tag cci: 'CCI-000199'
+  tag cci: ['CCI-000199']
   tag nist: ['IA-5 (1) (d)']
 
   describe login_defs do

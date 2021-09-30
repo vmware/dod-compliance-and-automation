@@ -37,6 +37,10 @@ connections.
     Configure each <Connector> node with the value:
 
     connectionTimeout=\"20000\"
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -45,7 +49,7 @@ connections.
   tag rid: nil
   tag stig_id: 'VCPF-70-000001'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   begin

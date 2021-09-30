@@ -36,7 +36,7 @@ following line is present:
   tag rid: nil
   tag stig_id: 'PHTN-30-000066'
   tag fix_id: nil
-  tag cci: 'CCI-002617'
+  tag cci: ['CCI-002617']
   tag nist: ['SI-2 (6)']
 
   describe command('grep -i "^clean_requirements_on_remove" /etc/tdnf/tdnf.conf') do

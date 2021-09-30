@@ -2,10 +2,22 @@
 
 control 'VCST-70-000026' do
   title 'The Security Token Service must have the debug option disabled.'
-  desc  "The Security Token Service produces a number of logs that must be
-offloaded from the originating system. This information can then be used for
-diagnostic, forensics, or other purposes relevant to ensuring the availability
-and integrity of the hosted application."
+  desc  "Information needed by an attacker to begin looking for possible
+vulnerabilities in a web server includes any information about the web server
+and plug-ins or modules being used. When debugging or trace information is
+enabled in a production web server, information about the web server, such as
+web server type, version, patches installed, plug-ins and modules installed,
+type of code being used by the hosted application, and any backends being used
+for data storage may be displayed.
+
+    Since this information may be placed in logs and general messages during
+normal operation of the web server, an attacker does not need to cause an error
+condition to gain this information.
+
+    The Security Token Service can be configured to set the debugging level. By
+setting the debugging level to zero, no debugging information will be provided
+to a malicious user.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -41,6 +53,10 @@ finding.
         <param-name>debug</param-name>
         <param-value>0</param-value>
     </init-param>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -49,7 +65,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCST-70-000026'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe.one do

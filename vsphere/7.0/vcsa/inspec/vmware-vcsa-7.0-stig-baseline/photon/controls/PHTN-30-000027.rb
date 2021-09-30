@@ -32,7 +32,7 @@ defeat the organization's policy regarding password reuse."
   tag rid: nil
   tag stig_id: 'PHTN-30-000027'
   tag fix_id: nil
-  tag cci: 'CCI-000198'
+  tag cci: ['CCI-000198']
   tag nist: ['IA-5 (1) (d)']
 
   describe login_defs do

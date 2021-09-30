@@ -3,18 +3,16 @@
 control 'VCST-70-000014' do
   title "The Security Token Service must not have the Web Distributed Authoring
 (WebDAV) servlet installed."
-  desc  "The Java Runtime environment can cause a memory leak or lock files
-under certain conditions. Without memory leak protection, the Security Token
-Service can continue to consume system resources which will lead to
-\"OutOfMemoryErrors\" when reloading web applications.
+  desc  "WebDAV is an extension to the HTTP protocol that, when developed, was
+meant to allow users to create, change, and move documents on a server,
+typically a web server or web share. WebDAV is not widely used and has serious
+security concerns because it may allow clients to modify unauthorized files on
+the web server and must therefore be disabled.
 
-    Memory leaks occur when JRE code uses the context class loader to load a
-singleton. This this will cause a memory leak if a web application class loader
-happens to be the context class loader at the time. The
-\"JreMemoryLeakPreventionListener\" class is designed to initialise these
-singletons when Tomcat's common class loader is the context class loader.
-Proper use of JRE memory leak protection will ensure that the hosted
-application does not consume system resources and cause an unstable environment.
+    Tomcat uses the \"org.apache.catalina.servlets.WebdavServlet\" servlet to
+provide WebDAV services. Because the WebDAV service has been found to have an
+excessive number of vulnerabilities, this servlet must not be installed. The
+Security Token Service does not configure WebDAV by default.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -31,6 +29,10 @@ application does not consume system resources and cause an unstable environment.
 
     Find the <servlet-name>webdav</servlet-name> node and remove the entire
 parent <servlet> block.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -39,7 +41,7 @@ parent <servlet> block.
   tag rid: nil
   tag stig_id: 'VCST-70-000014'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe xml("#{input('webXmlPath')}") do

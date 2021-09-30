@@ -25,7 +25,7 @@ state and can provide sensitive information to an unprivileged attacker."
   tag rid: nil
   tag stig_id: 'PHTN-30-000040'
   tag fix_id: nil
-  tag cci: 'CCI-001314'
+  tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
 
   describe directory('/var/log') do

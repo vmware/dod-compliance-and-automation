@@ -22,7 +22,7 @@ default, but this configuration must be verified."
     At the command prompt, execute the following command(s):
 
     # chmod o-w <file>
-    # chown root:root <file>
+    # chown perfcharts:users <file>
 
     Note: Subsitute <file> with the listed file.
   "
@@ -33,7 +33,7 @@ default, but this configuration must be verified."
   tag rid: nil
   tag stig_id: 'VCPF-70-000007'
   tag fix_id: nil
-  tag cci: 'CCI-000163'
+  tag cci: ['CCI-000163']
   tag nist: ['AU-9']
 
   command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |

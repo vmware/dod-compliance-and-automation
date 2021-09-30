@@ -31,7 +31,7 @@ end of the file:
   tag rid: nil
   tag stig_id: 'PHTN-30-000061'
   tag fix_id: nil
-  tag cci: 'CCI-001749'
+  tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
   command('find /etc/yum.repos.d/ -type f').stdout.split.each do | repofile |

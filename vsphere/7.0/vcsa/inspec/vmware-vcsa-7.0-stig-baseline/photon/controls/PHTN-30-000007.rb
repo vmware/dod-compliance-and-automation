@@ -44,7 +44,7 @@ their log aggregators to correlate forensic activities among multiple systems.
   tag rid: nil
   tag stig_id: 'PHTN-30-000007'
   tag fix_id: nil
-  tag cci: 'CCI-000067'
+  tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
   describe command('grep "^authpriv" /etc/rsyslog.conf') do

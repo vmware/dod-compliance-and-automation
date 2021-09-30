@@ -20,7 +20,7 @@ is a password that is not changed as per policy requirements."
     password requisite pam_pwhistory.so enforce_for_root use_authtok remember=5
 retry=3
 
-    If the output does not match the expected result, this is a finding.
+    If the output does include the \"remember=5\" setting as shown in the expected result, this is a finding.
   "
   desc  'fix', "
     Navigate to and open:
@@ -40,7 +40,7 @@ retry=3
   tag rid: nil
   tag stig_id: 'PHTN-30-000029'
   tag fix_id: nil
-  tag cci: 'CCI-000200'
+  tag cci: ['CCI-000200']
   tag nist: ['IA-5 (1) (e)']
 
   describe.one do
@@ -51,6 +51,18 @@ retry=3
 
     describe file ('/etc/pam.d/system-password') do
         its ('content'){should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\benforce_for_root use_authtok retry=3 remember=5\b).*$/}
+    end
+
+    describe file ('/etc/pam.d/system-password') do
+        its ('content'){should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\buse_authtok enforce_for_root retry=3 remember=5\b).*$/}
+    end
+
+    describe file ('/etc/pam.d/system-password') do
+        its ('content'){should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\buse_authtok enforce_for_root remember=5 retry=3\b).*$/}
+    end
+
+    describe file ('/etc/pam.d/system-password') do
+        its ('content'){should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\bretry=3 remember=5 enforce_for_root use_authtok\b).*$/}
     end
 
   end

@@ -26,6 +26,10 @@ configured in its shipping state to not set a value for \"maxPostSize\"."
     /usr/lib/vmware-eam/web/conf/server.xml
 
     Remove any configuration for \"maxPostSize\" from the <Connector> node.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -34,7 +38,7 @@ configured in its shipping state to not set a value for \"maxPostSize\"."
   tag rid: nil
   tag stig_id: 'VCEM-70-000003'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe xml("#{input('serverXmlPath')}") do

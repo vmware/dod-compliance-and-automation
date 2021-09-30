@@ -41,7 +41,7 @@ commented:
   tag rid: nil
   tag stig_id: 'PHTN-30-000015'
   tag fix_id: nil
-  tag cci: 'CCI-000140'
+  tag cci: ['CCI-000140']
   tag nist: ['AU-5 b']
 
   describe auditd_conf do

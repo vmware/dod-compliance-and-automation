@@ -27,6 +27,10 @@ this port. To ensure availability, the shutdown port must be disabled."
     Make sure that the server port is set as follows:
 
     <Server port=\"${base.shutdown.port}\" >
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -35,7 +39,7 @@ this port. To ensure availability, the shutdown port must be disabled."
   tag rid: nil
   tag stig_id: 'VCLU-70-000030'
   tag fix_id: nil
-  tag cci: 'CCI-002385'
+  tag cci: ['CCI-002385']
   tag nist: ['SC-5']
 
   describe xml("#{input('serverXmlPath')}") do

@@ -39,6 +39,10 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/welcome-file-list' -
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -47,7 +51,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/welcome-file-list' -
   tag rid: nil
   tag stig_id: 'VCEM-70-000022'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   list = ["index.jsp"]

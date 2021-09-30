@@ -19,6 +19,9 @@ purposes."
     -w /usr/sbin/groupmod -p x -k groupmod
 
     If the output does not match the expected result, this is a finding.
+
+    Note: This check depends on the auditd service to be in a running state for 
+    accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
   desc  'fix', "
     Navigate to and open:
@@ -34,6 +37,10 @@ purposes."
 rules.
 
     # /sbin/augenrules --load
+
+    Note: An older audit.STIG.rules may exist if the file exists and references 
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    with an updated one.
   "
   impact 0.5
   tag severity: 'medium'
@@ -42,7 +49,7 @@ rules.
   tag rid: nil
   tag stig_id: 'PHTN-30-000042'
   tag fix_id: nil
-  tag cci: 'CCI-001403'
+  tag cci: ['CCI-001403']
   tag nist: ['AC-2 (4)']
 
   describe auditd do

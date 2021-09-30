@@ -23,6 +23,9 @@ insider threats and the advanced persistent threat."
     -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -F key=execpriv
 
     If the output does not match the expected result, this is a finding.
+
+    Note: This check depends on the auditd service to be in a running state for 
+    accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
   desc  'fix', "
     Navigate to and open:
@@ -40,6 +43,10 @@ insider threats and the advanced persistent threat."
 rules.
 
     # /sbin/augenrules --load
+
+    Note: An older audit.STIG.rules may exist if the file exists and references 
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    with an updated one.
   "
   impact 0.5
   tag severity: 'medium'
@@ -48,7 +55,7 @@ rules.
   tag rid: nil
   tag stig_id: 'PHTN-30-000012'
   tag fix_id: nil
-  tag cci: 'CCI-000135'
+  tag cci: ['CCI-000135']
   tag nist: ['AU-3 (1)']
 
   describe auditd do

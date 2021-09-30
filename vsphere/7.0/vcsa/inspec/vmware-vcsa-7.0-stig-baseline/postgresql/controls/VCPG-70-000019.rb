@@ -60,7 +60,7 @@ configs are loaded, the log file monitoring and shipping will not be effective."
   tag rid: nil
   tag stig_id: 'VCPG-70-000019'
   tag fix_id: nil
-  tag cci: 'CCI-001855'
+  tag cci: ['CCI-001855']
   tag nist: ['AU-5 (1)']
 
   describe command('rpm -V VMware-Postgres-cis-visl-scripts|grep -E "vmware-services-vmware-vpostgres.conf|vmware-services-vmware-postgres-archiver.conf" | grep "^..5......"') do

@@ -20,6 +20,7 @@ in \"package.access\" and this configuration must be maintained.
 
     Expected result:
 
+
 package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat.
 
     If the output of the command does not match the expected result, this is a
@@ -32,7 +33,12 @@ finding.
 
     Ensure that the \"package.access\" line is configured as follows:
 
+
 package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -41,7 +47,7 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,o
   tag rid: nil
   tag stig_id: 'VCUI-70-000011'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep 'package.access' '#{input('catalinaPropertiesPath')}'") do

@@ -42,6 +42,10 @@ finding.
         </cookie-config>
         <session-timeout>6</session-timeout>
     </session-config>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -50,7 +54,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCPF-70-000033'
   tag fix_id: nil
-  tag cci: 'CCI-002418'
+  tag cci: ['CCI-002418']
   tag nist: ['SC-8']
 
   describe xml("#{input('statswebXmlPath')}") do

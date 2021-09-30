@@ -34,6 +34,10 @@ the server version at all times.
     Navigate to each of the <Connector> nodes.
 
     Configure each <Connector> node with 'server=\"Anonymous\"'.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -42,20 +46,20 @@ the server version at all times.
   tag rid: nil
   tag stig_id: 'VCLU-70-000023'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   begin
     xmlconf = xml("#{input('serverXmlPath')}")
 
-      if xmlconf['Server/Service/Connector/attribute::server'].count > 1
+      if xmlconf['Server/Service/Connector/attribute::server'].is_a?(Array)
         xmlconf['Server/Service/Connector/attribute::server'].each do |x|
           describe x do
             it { should eq "#{input('server')}" }
           end
         end
       else
-        describe xmlconf['Server/Service/Connector/attribute::server'] do
+        describe xml(xmlconf['Server/Service/Connector/attribute::server']) do
           it { should eq "#{input('server')}" }
         end
       end

@@ -40,6 +40,10 @@ replace the \"pattern\" element as follows:
 
     pattern=\"%h %{X-Forwarded-For}i %l %u %t [%I] &quot;%r&quot; %s %b
 [Processing time %D msec] &quot;%{User-Agent}i&quot;\"
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -48,7 +52,7 @@ replace the \"pattern\" element as follows:
   tag rid: nil
   tag stig_id: 'VCEM-70-000005'
   tag fix_id: nil
-  tag cci: 'CCI-000067'
+  tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
   describe xml("#{input('serverXmlPath')}") do

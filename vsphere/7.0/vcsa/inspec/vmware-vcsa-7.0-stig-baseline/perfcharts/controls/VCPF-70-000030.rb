@@ -57,7 +57,7 @@ the availability and integrity of the hosted application."
   tag rid: nil
   tag stig_id: 'VCPF-70-000030'
   tag fix_id: nil
-  tag cci: 'CCI-001851'
+  tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-perfcharts.conf|grep "^..5......"') do

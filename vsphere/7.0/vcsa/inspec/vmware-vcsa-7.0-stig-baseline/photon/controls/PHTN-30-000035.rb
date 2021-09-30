@@ -40,7 +40,7 @@ their credentials.
   tag rid: nil
   tag stig_id: 'PHTN-30-000035'
   tag fix_id: nil
-  tag cci: 'CCI-000795'
+  tag cci: ['CCI-000795']
   tag nist: ['IA-4 e']
 
   describe parse_config_file("/etc/default/useradd") do

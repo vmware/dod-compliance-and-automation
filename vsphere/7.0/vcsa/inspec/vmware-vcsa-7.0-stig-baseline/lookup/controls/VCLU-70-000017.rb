@@ -34,7 +34,7 @@ out-of-the-box."
   tag rid: nil
   tag stig_id: 'VCLU-70-000017'
   tag fix_id: nil
-  tag cci: 'CCI-001082'
+  tag cci: ['CCI-001082']
   tag nist: ['SC-2']
 
   describe command("find '#{input('rootPath')}' /usr/lib/vmware-lookupsvc/conf -xdev -type f -a \'(\' -perm -o+w -o -not -user root -o -not -group root \')\' -exec ls -ld {} \;") do

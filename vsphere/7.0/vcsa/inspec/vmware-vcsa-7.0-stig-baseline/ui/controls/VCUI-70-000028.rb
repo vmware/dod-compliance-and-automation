@@ -32,7 +32,7 @@ VMware.
   tag rid: nil
   tag stig_id: 'VCUI-70-000028'
   tag fix_id: nil
-  tag cci: 'CCI-001849'
+  tag cci: ['CCI-001849']
   tag nist: ['AU-4']
 
   describe command('rpm -V vsphere-ui|grep serviceability.xml|grep "^..5......"') do

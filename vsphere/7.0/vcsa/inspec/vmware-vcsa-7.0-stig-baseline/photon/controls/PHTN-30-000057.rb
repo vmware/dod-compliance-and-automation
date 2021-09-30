@@ -39,7 +39,7 @@ capacity expansion."
   tag rid: nil
   tag stig_id: 'PHTN-30-000057'
   tag fix_id: nil
-  tag cci: 'CCI-001855'
+  tag cci: ['CCI-001855']
   tag nist: ['AU-5 (1)']
 
   describe auditd_conf do

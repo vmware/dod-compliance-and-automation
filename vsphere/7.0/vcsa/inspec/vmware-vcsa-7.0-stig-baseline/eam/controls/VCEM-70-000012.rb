@@ -28,6 +28,19 @@ tricking the server into executing shell command files."
     <mime-type>application/x-shar</mime-type>
     <mime-type>application/x-sh</mime-type>
     <mime-type>application/x-ksh</mime-type>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
+
+    Note: Delete the entire mime-mapping node for the target mime-type.
+
+    Example:
+
+    <mime-mapping>
+        <extension>sh</extension>
+        <mime-type>application/x-sh</mime-type>
+    </mime-mapping>
   "
   impact 0.5
   tag severity: 'medium'
@@ -36,7 +49,7 @@ tricking the server into executing shell command files."
   tag rid: nil
   tag stig_id: 'VCEM-70-000012'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' '#{input('webXmlPath')}'") do

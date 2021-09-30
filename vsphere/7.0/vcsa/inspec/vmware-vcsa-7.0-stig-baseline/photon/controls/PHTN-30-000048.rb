@@ -35,7 +35,7 @@ for file permissions:
   tag rid: nil
   tag stig_id: 'PHTN-30-000048'
   tag fix_id: nil
-  tag cci: 'CCI-001494'
+  tag cci: ['CCI-001494']
   tag nist: ['AU-9']
 
   describe file('/usr/sbin/auditctl') do

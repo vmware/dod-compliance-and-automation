@@ -45,7 +45,7 @@ follows:
   tag rid: nil
   tag stig_id: 'VCRP-70-000004'
   tag fix_id: nil
-  tag cci: 'CCI-001453'
+  tag cci: ['CCI-001453']
   tag nist: ['AC-17 (2)']
 
   value = input('protocols')

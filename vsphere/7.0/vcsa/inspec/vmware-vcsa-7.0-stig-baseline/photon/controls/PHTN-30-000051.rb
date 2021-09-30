@@ -35,7 +35,7 @@ restored from a backup or redeployed once the root cause is remediated.
   tag rid: nil
   tag stig_id: 'PHTN-30-000051'
   tag fix_id: nil
-  tag cci: 'CCI-001496'
+  tag cci: ['CCI-001496']
   tag nist: ['AU-9 (3)']
 
   describe command('rpm -V audit | grep "^..5" | grep -v "^...........c"') do

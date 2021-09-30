@@ -39,6 +39,10 @@ threads will be created up to the value of the \"maxThreads\" attribute.
     Example:
 
     <Connector .. maxThreads=\"800\" ..>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -47,7 +51,7 @@ threads will be created up to the value of the \"maxThreads\" attribute.
   tag rid: nil
   tag stig_id: 'VCUI-70-000002'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe xml("#{input('serverXmlPath')}") do

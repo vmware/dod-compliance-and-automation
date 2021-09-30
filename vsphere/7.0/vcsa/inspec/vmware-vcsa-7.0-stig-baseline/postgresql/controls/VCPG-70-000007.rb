@@ -48,7 +48,7 @@ PRIVILEGES FROM <user>;\"
   tag rid: nil
   tag stig_id: 'VCPG-70-000007'
   tag fix_id: nil
-  tag cci: 'CCI-001499'
+  tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
   list = ["postgres","vc","vlcmuser"]

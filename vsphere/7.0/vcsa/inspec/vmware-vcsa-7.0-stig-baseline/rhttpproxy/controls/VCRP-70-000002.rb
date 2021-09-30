@@ -47,7 +47,7 @@ consumed.
   tag rid: nil
   tag stig_id: 'VCRP-70-000002'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   value = input('maxHttpsConnections')

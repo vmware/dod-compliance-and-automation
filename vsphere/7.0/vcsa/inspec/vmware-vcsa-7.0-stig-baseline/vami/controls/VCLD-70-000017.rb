@@ -34,7 +34,7 @@ root:root
   tag rid: nil
   tag stig_id: 'VCLD-70-000017'
   tag fix_id: nil
-  tag cci: 'CCI-000186'
+  tag cci: ['CCI-000186']
   tag nist: ['IA-5 (2) (b)']
 
   describe file("#{input('serverCert')}") do

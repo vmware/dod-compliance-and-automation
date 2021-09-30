@@ -33,6 +33,10 @@ configuration as follows:
 
     http.port=5090
     proxy.port=443
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -41,7 +45,7 @@ configuration as follows:
   tag rid: nil
   tag stig_id: 'VCUI-70-000030'
   tag fix_id: nil
-  tag cci: 'CCI-001762'
+  tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']
 
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['http.port'] do

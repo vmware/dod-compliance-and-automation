@@ -42,7 +42,7 @@ finding.
   tag rid: nil
   tag stig_id: 'PHTN-30-000055'
   tag fix_id: nil
-  tag cci: 'CCI-001849'
+  tag cci: ['CCI-001849']
   tag nist: ['AU-4']
 
   describe auditd_conf do

@@ -3,12 +3,16 @@
 control 'VCST-70-000016' do
   title "The Security Token Service must not have any symbolic links in the web
 content directory tree."
-  desc  "As a rule, accounts on a web server are to be kept to a minimum. Only
-administrators, web managers, developers, auditors, and web authors require
-accounts on the machine hosting the web server. The resources to which these
-accounts have access must also be closely monitored and controlled. The
-Security Token Service files must be adequately protected with correct
-permissions as applied out of the box."
+  desc  "A web server is designed to deliver content and execute scripts or
+applications on the request of a client or user. Containing user requests to
+files in the directory tree of the hosted web application and limiting the
+execution of scripts and applications guarantees that the user is not accessing
+information protected outside the application's realm.
+
+    By checking that no symbolic links exist in the document root, the web
+server is protected from users jumping outside the hosted application directory
+tree and gaining access to the other directories, including the system root.
+  "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -33,7 +37,7 @@ permissions as applied out of the box."
   tag rid: nil
   tag stig_id: 'VCST-70-000016'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("find '#{input('appPath')}' -type l -ls") do

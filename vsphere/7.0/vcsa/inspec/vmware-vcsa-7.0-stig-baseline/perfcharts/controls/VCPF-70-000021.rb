@@ -90,6 +90,10 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
       </init-param>
       <async-supported>true</async-supported>
    </filter>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -98,7 +102,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
   tag rid: nil
   tag stig_id: 'VCPF-70-000021'
   tag fix_id: nil
-  tag cci: 'CCI-001310'
+  tag cci: ['CCI-001310']
   tag nist: ['SI-10']
 
   describe xml("#{input('statswebXmlPath')}") do

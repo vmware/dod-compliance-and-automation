@@ -2,21 +2,14 @@
 
 control 'VCST-70-000025' do
   title 'The Security Token Service must not enable support for TRACE requests.'
-  desc  "Information needed by an attacker to begin looking for possible
-vulnerabilities in a web server includes any information about the web server
-and plug-ins or modules being used. When debugging or trace information is
-enabled in a production web server, information about the web server, such as
-web server type, version, patches installed, plug-ins and modules installed,
-type of code being used by the hosted application, and any backends being used
-for data storage may be displayed.
+  desc  "\"TRACE\" is a technique for a user to request internal information
+about Tomcat. This is useful during product development, but should not be
+enabled in production.  Allowing a attacker to conduct a TRACE operation
+against the Security Token Service will expose information that would be useful
+to perform a more targeted attack.
 
-    Since this information may be placed in logs and general messages during
-normal operation of the web server, an attacker does not need to cause an error
-condition to gain this information.
-
-    The Security Token Service can be configured to set the debugging level. By
-setting the debugging level to zero, no debugging information will be provided
-to a malicious user.
+    The Security Token Service provides the \"allowTrace\" parameter as means
+to disable responding to TRACE requests.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -34,6 +27,10 @@ to a malicious user.
     /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
     Locate and remove the 'allowTrace=\"true\"' setting.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -42,7 +39,7 @@ to a malicious user.
   tag rid: nil
   tag stig_id: 'VCST-70-000025'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe.one do

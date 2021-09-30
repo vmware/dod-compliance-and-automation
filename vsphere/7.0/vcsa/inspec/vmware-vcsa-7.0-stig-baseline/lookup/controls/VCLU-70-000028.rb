@@ -68,7 +68,7 @@ integrity of the hosted application."
   tag rid: nil
   tag stig_id: 'VCLU-70-000028'
   tag fix_id: nil
-  tag cci: 'CCI-001851'
+  tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-lookupsvc.conf|grep "^..5......"') do

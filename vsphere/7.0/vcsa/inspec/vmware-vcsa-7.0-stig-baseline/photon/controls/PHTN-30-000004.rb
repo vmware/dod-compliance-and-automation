@@ -33,7 +33,7 @@ related to denial-of-service attacks."
   tag rid: nil
   tag stig_id: 'PHTN-30-000004'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe limits_conf('/etc/security/limits.conf') do

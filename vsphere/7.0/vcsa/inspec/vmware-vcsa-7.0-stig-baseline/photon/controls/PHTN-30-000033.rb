@@ -27,7 +27,7 @@ potential misuse and provide for non-repudiation."
   tag rid: nil
   tag stig_id: 'PHTN-30-000033'
   tag fix_id: nil
-  tag cci: 'CCI-000764'
+  tag cci: ['CCI-000764']
   tag nist: ['IA-2']
 
   describe command('awk -F ":" \'list[$3]++{print $1, $3}\' /etc/passwd') do

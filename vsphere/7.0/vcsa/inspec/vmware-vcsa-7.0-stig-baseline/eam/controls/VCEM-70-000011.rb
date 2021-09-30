@@ -43,6 +43,10 @@ finding.
     org.apache.coyote.,\\
     org.apache.tomcat.,\\
     org.apache.jasper.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -51,7 +55,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCEM-70-000011'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep 'package.access' -A 5 '#{input('catalinaPropertiesPath')}'") do

@@ -1,6 +1,6 @@
 # vmware-photon-3.0-stig-inspec-baseline
 An InSpec Compliance Profile for Photon 3.0 Appliance based deployments
-Version: 3.0
+Version: 3.0 Release 1 Version 2
 
 ## Running Inspec
 

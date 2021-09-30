@@ -43,7 +43,7 @@ initialized and used in FIPS 140-2 mode.
   tag rid: nil
   tag stig_id: 'PHTN-30-000009'
   tag fix_id: nil
-  tag cci: 'CCI-000068'
+  tag cci: ['CCI-000068']
   tag nist: ['AC-17 (2)']
 
   describe command('sshd -T|&grep -i FipsMode') do

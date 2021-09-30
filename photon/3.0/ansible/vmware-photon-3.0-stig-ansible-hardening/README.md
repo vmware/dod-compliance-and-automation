@@ -109,7 +109,7 @@ The DoD SSH banner update is disabled by default. Update the run_sshd_banner_iss
 | PHTN-30-000046 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000047 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000048 | :heavy_check_mark: |         :x:        |
-| PHTN-30-000049 | :heavy_check_mark: |         :x:        |
+| PHTN-30-000049 |         :x:        |         :x:        |
 | PHTN-30-000050 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000051 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000052 | :heavy_check_mark: |         :x:        |

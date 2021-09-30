@@ -34,6 +34,10 @@ threads will be created up to the value of the \"maxThreads\" attribute.
     /usr/lib/vmware-lookupsvc/conf/server.xml
 
     In each <Connector> node, remove the \"maxThreads\" key/value pair.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -42,7 +46,7 @@ threads will be created up to the value of the \"maxThreads\" attribute.
   tag rid: nil
   tag stig_id: 'VCLU-70-000002'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe xml("#{input('serverXmlPath')}") do

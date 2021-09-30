@@ -37,7 +37,7 @@ over the client TLS connection."
   tag rid: nil
   tag stig_id: 'VCRP-70-000003'
   tag fix_id: nil
-  tag cci: 'CCI-000068'
+  tag cci: ['CCI-000068']
   tag nist: ['AC-17 (2)']
 
   describe xml("#{input('configXmlPath')}") do

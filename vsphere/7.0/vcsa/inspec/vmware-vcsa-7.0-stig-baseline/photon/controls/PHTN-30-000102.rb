@@ -31,6 +31,7 @@ interfaces. Every \"ethx\" entry must be set to \"0\".
     # for SETTING in $(/sbin/sysctl -aN --pattern
 \"net.ipv4.conf.(all|default|eth.*).send_redirects\"); do sed -i -e
 \"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=0>>/etc/sysctl.conf; done
+    # /sbin/sysctl --load
   "
   impact 0.5
   tag severity: 'medium'
@@ -39,7 +40,7 @@ interfaces. Every \"ethx\" entry must be set to \"0\".
   tag rid: nil
   tag stig_id: 'PHTN-30-000102'
   tag fix_id: nil
-  tag cci: 'CCI-000366'
+  tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
   describe kernel_parameter('net.ipv4.conf.all.send_redirects') do

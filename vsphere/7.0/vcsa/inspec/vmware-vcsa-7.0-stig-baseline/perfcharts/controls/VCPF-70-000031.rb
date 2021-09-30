@@ -31,6 +31,10 @@ finding.
     Add or modify the following lines:
 
     bio.http.port=13080
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -39,7 +43,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCPF-70-000031'
   tag fix_id: nil
-  tag cci: 'CCI-001762'
+  tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']
 
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio.http.port'] do

@@ -30,7 +30,7 @@ by root or the file permissions are more permission than 640, this is a finding.
   tag rid: nil
   tag stig_id: 'PHTN-30-000041'
   tag fix_id: nil
-  tag cci: 'CCI-001314'
+  tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
 
   describe file('/var/log/messages') do

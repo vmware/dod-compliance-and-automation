@@ -43,6 +43,10 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
         <exception-type>java.lang.Throwable</exception-type>
         <location>/http_error.jsp</location>
     </error-page>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -51,7 +55,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
   tag rid: nil
   tag stig_id: 'VCPF-70-000024'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe xml("#{input('statswebXmlPath')}") do

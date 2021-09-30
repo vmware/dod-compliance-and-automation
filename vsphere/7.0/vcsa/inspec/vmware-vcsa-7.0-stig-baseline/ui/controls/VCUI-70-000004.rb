@@ -34,6 +34,10 @@ xmllint --xpath '/Context/@useHttpOnly' -
 
     <Context useHttpOnly=\"true\" sessionCookieName=\"VSPHERE-UI-JSESSIONID\"
 sessionCookiePath=\"/ui\">
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -42,7 +46,7 @@ sessionCookiePath=\"/ui\">
   tag rid: nil
   tag stig_id: 'VCUI-70-000004'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe xml("#{input('contextXmlPath')}") do

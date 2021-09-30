@@ -33,7 +33,7 @@ default but this configuration must be verified."
   tag rid: nil
   tag stig_id: 'VCEM-70-000007'
   tag fix_id: nil
-  tag cci: 'CCI-000163'
+  tag cci: ['CCI-000163']
   tag nist: ['AU-9']
 
   command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |

@@ -24,6 +24,9 @@ information system (e.g., module or policy filter).
     -w /var/log/tallylog -p wa
 
     If the output does not match the expected result, this is a finding.
+
+    Note: This check depends on the auditd service to be in a running state for 
+    accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
   desc  'fix', "
     Navigate to and open:
@@ -39,6 +42,10 @@ information system (e.g., module or policy filter).
     Execute the following command to load the new audit rules:
 
     # /sbin/augenrules --load
+
+    Note: An older audit.STIG.rules may exist if the file exists and references 
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    with an updated one.
   "
   impact 0.5
   tag severity: 'medium'
@@ -47,7 +54,7 @@ information system (e.g., module or policy filter).
   tag rid: nil
   tag stig_id: 'PHTN-30-000068'
   tag fix_id: nil
-  tag cci: 'CCI-000172'
+  tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
 
   describe auditd do

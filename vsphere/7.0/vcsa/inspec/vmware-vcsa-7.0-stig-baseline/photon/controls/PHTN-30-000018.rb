@@ -35,7 +35,7 @@ in \"${audit_log_file%/*}\":\
   tag rid: nil
   tag stig_id: 'PHTN-30-000018'
   tag fix_id: nil
-  tag cci: 'CCI-000164'
+  tag cci: ['CCI-000164']
   tag nist: ['AU-9']
 
   auditlog = command("grep '^log_file\s=\s' /etc/audit/auditd.conf | cut -f3 -d' '").stdout.strip

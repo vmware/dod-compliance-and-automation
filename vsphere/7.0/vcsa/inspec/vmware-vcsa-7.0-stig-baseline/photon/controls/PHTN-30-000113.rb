@@ -29,7 +29,7 @@ file:
   tag rid: nil
   tag stig_id: 'PHTN-30-000113'
   tag fix_id: nil
-  tag cci: 'CCI-000366'
+  tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
   describe command("find /etc/sysctl.conf /etc/sysctl.d/* -xdev -type f -a '(' -not -perm 600 -o -not -user root -o -not -group root ')' -exec ls -ld {} \;") do

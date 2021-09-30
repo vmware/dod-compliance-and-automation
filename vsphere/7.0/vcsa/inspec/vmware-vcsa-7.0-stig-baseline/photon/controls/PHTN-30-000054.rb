@@ -30,6 +30,9 @@ rules, this is a finding.
 
     -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F
 auid!=4294967295 -F key=privileged
+
+    Note: This check depends on the auditd service to be in a running state for 
+    accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
   desc  'fix', "
     At the command line, execute the following command to obtain a list of
@@ -52,6 +55,10 @@ auid!=4294967295 -F key=privileged
     Execute the following command to load the new audit rules:
 
     # /sbin/augenrules --load
+
+    Note: An older audit.STIG.rules may exist if the file exists and references 
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    with an updated one.
   "
   impact 0.5
   tag severity: 'medium'
@@ -60,21 +67,10 @@ auid!=4294967295 -F key=privileged
   tag rid: nil
   tag stig_id: 'PHTN-30-000054'
   tag fix_id: nil
-  tag cci: 'CCI-002234'
+  tag cci: ['CCI-002234']
   tag nist: ['AC-6 (9)']
 
   results = command('find / -xdev -perm -4000 -type f -o -perm -2000 -type f').stdout.split("\n")
-  
-  # results.each do | path |
-  #   describe.one do
-  #     describe command("grep #{path} /etc/audit/audit.rules") do
-  #       its ('stdout.strip') {should match ("-a always,exit -F path=#{path} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged")}
-  #     end
-  #     describe command("grep #{path} /etc/audit/audit.rules") do
-  #       its ('stdout.strip') {should match ("-a exit,always -F path=#{path} -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged")}
-  #     end
-  #   end
-  # end
 
   results.each do | path |
     describe.one do

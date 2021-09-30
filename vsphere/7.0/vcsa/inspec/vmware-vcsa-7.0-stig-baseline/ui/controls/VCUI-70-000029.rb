@@ -133,7 +133,7 @@ must be verified and maintained.
   tag rid: nil
   tag stig_id: 'VCUI-70-000029'
   tag fix_id: nil
-  tag cci: 'CCI-001851'
+  tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-vsphere-ui.conf|grep "^..5......"') do

@@ -38,7 +38,7 @@ the following:
   tag rid: nil
   tag stig_id: 'PHTN-30-000115'
   tag fix_id: nil
-  tag cci: 'CCI-000366'
+  tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i HostbasedAuthentication') do

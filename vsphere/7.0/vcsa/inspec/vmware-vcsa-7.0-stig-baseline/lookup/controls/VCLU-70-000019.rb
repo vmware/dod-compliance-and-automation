@@ -31,6 +31,10 @@ port=\"${bio-custom.http.port}\".
     Add or change the folllowing value:
 
     acceptCount=\"100\"
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -39,7 +43,7 @@ port=\"${bio-custom.http.port}\".
   tag rid: nil
   tag stig_id: 'VCLU-70-000019'
   tag fix_id: nil
-  tag cci: 'CCI-001094'
+  tag cci: ['CCI-001094']
   tag nist: ['SC-5 (1)']
 
   describe xml("#{input('serverXmlPath')}") do

@@ -34,7 +34,7 @@ file:
   tag rid: nil
   tag stig_id: 'PHTN-30-000109'
   tag fix_id: nil
-  tag cci: 'CCI-000366'
+  tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
   command('find /etc/ssh/ -maxdepth 1 -name "*key"').stdout.split.each do | fname |

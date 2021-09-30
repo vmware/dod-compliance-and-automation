@@ -40,7 +40,7 @@ local IP:
   tag rid: nil
   tag stig_id: 'PHTN-30-000053'
   tag fix_id: nil
-  tag cci: 'CCI-002314'
+  tag cci: ['CCI-002314']
   tag nist: ['AC-17 (1)']
 
   photonIp = command("ip -br addr show eth0 |&awk '{print $3}' |&cut -d'/' -f1").stdout.strip

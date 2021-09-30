@@ -35,6 +35,10 @@ attempt to access the cookie from client script is strictly forbidden.
     Example:
 
     <Context useHttpOnly=\"true\">
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -43,7 +47,7 @@ attempt to access the cookie from client script is strictly forbidden.
   tag rid: nil
   tag stig_id: 'VCLU-70-000004'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe xml("#{input('contextXmlPath')}") do

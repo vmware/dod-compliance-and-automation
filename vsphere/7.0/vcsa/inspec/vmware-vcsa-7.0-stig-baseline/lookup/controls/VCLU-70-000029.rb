@@ -37,6 +37,10 @@ configuration below:
     base.jmx.port=-1
     bio-custom.http.port=7090
     bio-custom.https.port=8443
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -45,7 +49,7 @@ configuration below:
   tag rid: nil
   tag stig_id: 'VCLU-70-000029'
   tag fix_id: nil
-  tag cci: 'CCI-001762'
+  tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']
 
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['base.shutdown.port'] do

@@ -40,7 +40,7 @@ following:
   tag rid: nil
   tag stig_id: 'PHTN-30-000065'
   tag fix_id: nil
-  tag cci: 'CCI-002824'
+  tag cci: ['CCI-002824']
   tag nist: ['SI-16']
 
   describe kernel_parameter('kernel.randomize_va_space') do

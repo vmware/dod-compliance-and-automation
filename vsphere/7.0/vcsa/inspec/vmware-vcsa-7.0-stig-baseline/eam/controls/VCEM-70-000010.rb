@@ -20,6 +20,10 @@ configuration must be confirmed."
     /usr/lib/vmware-eam/web/conf/server.xml
 
     Remove the <Realm> node returned in the check.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -28,7 +32,7 @@ configuration must be confirmed."
   tag rid: nil
   tag stig_id: 'VCEM-70-000010'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabaseRealm '#{input('serverXmlPath')}'") do

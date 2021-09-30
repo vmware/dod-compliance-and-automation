@@ -31,7 +31,7 @@ VMware Postgres itself."
   tag rid: nil
   tag stig_id: 'VCPG-70-000003'
   tag fix_id: nil
-  tag cci: 'CCI-000171'
+  tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
 
   command("find #{input('pg_install_dir')} -type f -maxdepth 1 -name '*conf*'").stdout.split.each do | fname |

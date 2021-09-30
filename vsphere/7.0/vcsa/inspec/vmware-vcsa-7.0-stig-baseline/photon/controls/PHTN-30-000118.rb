@@ -28,7 +28,7 @@ is a password that is not changed as per policy requirements."
   tag rid: nil
   tag stig_id: 'PHTN-30-000118'
   tag fix_id: nil
-  tag cci: 'CCI-000200'
+  tag cci: ['CCI-000200']
   tag nist: ['IA-5 (1) (e)']
 
   describe file('/etc/security/opasswd') do

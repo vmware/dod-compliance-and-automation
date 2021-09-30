@@ -14,7 +14,7 @@ effectiveness of brute-force attacks."
 
     Expected result:
 
-    MaxAuthTries 2
+    MaxAuthTries 6
 
     If the output does not match the expected result, this is a finding.
   "
@@ -26,7 +26,7 @@ effectiveness of brute-force attacks."
     Ensure that the \"MaxAuthTries\" line is uncommented and set to the
 following:
 
-    MaxAuthTries 2
+    MaxAuthTries 6
 
     At the command line, execute the following command:
 
@@ -39,11 +39,11 @@ following:
   tag rid: nil
   tag stig_id: 'PHTN-30-000088'
   tag fix_id: nil
-  tag cci: 'CCI-000366'
+  tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i MaxAuthTries') do
-    its ('stdout.strip') { should cmp 'MaxAuthTries 2' }
+    its ('stdout.strip') { should cmp 'MaxAuthTries 6' }
   end
 
 end
