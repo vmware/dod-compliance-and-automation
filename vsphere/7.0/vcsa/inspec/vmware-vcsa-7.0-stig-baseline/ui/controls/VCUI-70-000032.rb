@@ -39,6 +39,10 @@ configure it as follows.
           <http-only>true</http-only>
           <secure>true</secure>
         </cookie-config>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -47,7 +51,7 @@ configure it as follows.
   tag rid: nil
   tag stig_id: 'VCUI-70-000032'
   tag fix_id: nil
-  tag cci: 'CCI-002418'
+  tag cci: ['CCI-002418']
   tag nist: ['SC-8']
 
   describe xml("#{input('webXmlPath')}") do

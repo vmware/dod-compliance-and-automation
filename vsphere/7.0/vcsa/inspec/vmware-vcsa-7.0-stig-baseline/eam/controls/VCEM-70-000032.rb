@@ -27,6 +27,10 @@ finding.
 
     Add or modify the setting \"base.shutdown.port=-1\" in the
 \"catalina.properties\" file.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -35,7 +39,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCEM-70-000032'
   tag fix_id: nil
-  tag cci: 'CCI-002385'
+  tag cci: ['CCI-002385']
   tag nist: ['SC-5']
 
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['base.shutdown.port'] do

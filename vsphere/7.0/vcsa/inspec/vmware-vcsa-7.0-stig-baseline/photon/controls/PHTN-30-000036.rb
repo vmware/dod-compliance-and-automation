@@ -25,6 +25,7 @@ enables the system to continue servicing valid connection requests."
 
     # sed -i -e \"/^net.ipv4.tcp_syncookies/d\" /etc/sysctl.conf
     # echo net.ipv4.tcp_syncookies=1>>/etc/sysctl.conf
+    # /sbin/sysctl --load
   "
   impact 0.5
   tag severity: 'medium'
@@ -33,7 +34,7 @@ enables the system to continue servicing valid connection requests."
   tag rid: nil
   tag stig_id: 'PHTN-30-000036'
   tag fix_id: nil
-  tag cci: 'CCI-001095'
+  tag cci: ['CCI-001095']
   tag nist: ['SC-5 (2)']
 
   describe kernel_parameter('net.ipv4.tcp_syncookies') do

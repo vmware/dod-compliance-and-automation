@@ -27,7 +27,7 @@ must be configured to start automatically and be running at all times."
   tag rid: nil
   tag stig_id: 'PHTN-30-000013'
   tag fix_id: nil
-  tag cci: 'CCI-000135'
+  tag cci: ['CCI-000135']
   tag nist: ['AU-3 (1)']
 
   describe systemd_service('auditd') do

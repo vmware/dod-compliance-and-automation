@@ -34,7 +34,7 @@ Charts files must be adequately protected with correct permissions as applied
   tag rid: nil
   tag stig_id: 'VCPF-70-000017'
   tag fix_id: nil
-  tag cci: 'CCI-001082'
+  tag cci: ['CCI-001082']
   tag nist: ['SC-2']
 
   describe command("find '#{input('rootPath')}' -xdev -type f -a \'(\' -not -user perfcharts -o -not -group cis \')\' -exec ls -A {} \;") do

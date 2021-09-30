@@ -42,7 +42,7 @@ column.
   tag rid: nil
   tag stig_id: 'VCPG-70-000009'
   tag fix_id: nil
-  tag cci: 'CCI-000764'
+  tag cci: ['CCI-000764']
   tag nist: ['IA-2']
 
   describe postgres_hba_conf("#{input('pg_install_dir')}/pg_hba.conf").where {type == 'local'} do

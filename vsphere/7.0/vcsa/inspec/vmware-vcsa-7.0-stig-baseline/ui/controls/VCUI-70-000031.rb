@@ -39,6 +39,10 @@ ensure availability, the shutdown port must be disabled.
     Make sure that the server port is disabled:
 
     <Server port=\"${shutdown.port}\" >
+    
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -47,7 +51,7 @@ ensure availability, the shutdown port must be disabled.
   tag rid: nil
   tag stig_id: 'VCUI-70-000031'
   tag fix_id: nil
-  tag cci: 'CCI-002385'
+  tag cci: ['CCI-002385']
   tag nist: ['SC-5']
 
   describe xml("#{input('serverXmlPath')}") do

@@ -42,7 +42,7 @@ creating the file if it does not exist.
   tag rid: nil
   tag stig_id: 'VCRP-70-000008'
   tag fix_id: nil
-  tag cci: 'CCI-001851'
+  tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-envoy.conf|grep "^..5......"') do

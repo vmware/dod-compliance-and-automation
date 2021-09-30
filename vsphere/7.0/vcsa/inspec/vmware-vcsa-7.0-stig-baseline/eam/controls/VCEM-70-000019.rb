@@ -27,6 +27,10 @@ affect system availability."
     Configure the <Connector> node with the value:
 
     acceptCount=\"300\"
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -35,7 +39,7 @@ affect system availability."
   tag rid: nil
   tag stig_id: 'VCEM-70-000019'
   tag fix_id: nil
-  tag cci: 'CCI-001094'
+  tag cci: ['CCI-001094']
   tag nist: ['SC-5 (1)']
 
   describe xml("#{input('serverXmlPath')}") do

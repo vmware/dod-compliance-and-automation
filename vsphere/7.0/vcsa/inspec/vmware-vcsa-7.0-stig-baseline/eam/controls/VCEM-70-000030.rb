@@ -39,6 +39,10 @@ configure it as follows:
           <http-only>true</http-only>
           <secure>true</secure>
         </cookie-config>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -47,7 +51,7 @@ configure it as follows:
   tag rid: nil
   tag stig_id: 'VCEM-70-000030'
   tag fix_id: nil
-  tag cci: 'CCI-001813'
+  tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1)']
 
   describe xml("#{input('webXmlPath')}") do

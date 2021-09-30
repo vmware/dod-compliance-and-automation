@@ -31,7 +31,7 @@ Lookup Service installation files manually is not supported by VMware."
   tag rid: nil
   tag stig_id: 'VCLU-70-000027'
   tag fix_id: nil
-  tag cci: 'CCI-001849'
+  tag cci: ['CCI-001849']
   tag nist: ['AU-4']
 
   describe command('rpm -V vmware-lookupsvc|grep logging.properties|grep "^..5......"') do

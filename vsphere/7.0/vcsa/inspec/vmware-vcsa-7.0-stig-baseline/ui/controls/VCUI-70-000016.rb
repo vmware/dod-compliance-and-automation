@@ -37,7 +37,7 @@ tree and gaining access to the other directories, including the system root.
   tag rid: nil
   tag stig_id: 'VCUI-70-000016'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("find '#{input('appPath')}' -type l -ls") do

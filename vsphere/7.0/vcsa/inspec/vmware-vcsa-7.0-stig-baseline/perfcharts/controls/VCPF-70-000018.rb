@@ -30,6 +30,10 @@ finding.
     Add or change the following line:
 
     org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -38,7 +42,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCPF-70-000018'
   tag fix_id: nil
-  tag cci: 'CCI-001190'
+  tag cci: ['CCI-001190']
   tag nist: ['SC-24']
 
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['org.apache.catalina.startup.EXIT_ON_INIT_FAILURE'] do

@@ -33,7 +33,7 @@ command:
   tag rid: nil
   tag stig_id: 'VCPF-70-000009'
   tag fix_id: nil
-  tag cci: 'CCI-001749'
+  tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
   describe command("ls -A '#{input('appPath')}'") do

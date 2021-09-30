@@ -3,17 +3,13 @@
 control 'VCST-70-000012' do
   title "The Security Token Service must have Multipurpose Internet Mail
 Extensions (MIME) that invoke operating system shell programs disabled."
-  desc  "Resource mapping is the process of tying a particular file type to a
-process in the web server that can serve that type of file to a requesting
-client and identify which file types are not to be delivered to a client.
+  desc  "MIME mappings tell the Security Token Service what type of program
+various file types and extensions are and what external utilities or programs
+are needed to execute the file type.
 
-    By not specifying which files can and cannot be served to a user, the web
-server could deliver to a user web server configuration files, log files,
-password files, etc.
-
-    As Tomcat is a Java-based web server, the main file extension used is
-*.jsp.  This check ensures that the *.jsp and *.jspx file types have been
-properly mapped to servlets.
+    By ensuring that various shell script MIME types are not included in
+\"web.xml\", the server is protected against malicious users tricking the
+server into executing shell command files.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -35,6 +31,19 @@ properly mapped to servlets.
     <mime-type>application/x-shar</mime-type>
     <mime-type>application/x-sh</mime-type>
     <mime-type>application/x-ksh</mime-type>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
+
+    Note: Delete the entire mime-mapping node for the target mime-type.
+
+    Example:
+
+    <mime-mapping>
+        <extension>sh</extension>
+        <mime-type>application/x-sh</mime-type>
+    </mime-mapping>
   "
   impact 0.5
   tag severity: 'medium'
@@ -43,7 +52,7 @@ properly mapped to servlets.
   tag rid: nil
   tag stig_id: 'VCST-70-000012'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' '#{input('webXmlPath')}'") do

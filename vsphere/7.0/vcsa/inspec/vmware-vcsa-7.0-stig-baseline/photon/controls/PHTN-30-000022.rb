@@ -38,7 +38,7 @@ ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
   tag rid: nil
   tag stig_id: 'PHTN-30-000022'
   tag fix_id: nil
-  tag cci: 'CCI-000193'
+  tag cci: ['CCI-000193']
   tag nist: ['IA-5 (1) (a)']
 
   describe file ('/etc/pam.d/system-password') do

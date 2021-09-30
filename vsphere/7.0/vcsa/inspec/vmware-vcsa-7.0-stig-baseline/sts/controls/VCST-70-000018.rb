@@ -3,10 +3,11 @@
 control 'VCST-70-000018' do
   title "The Security Token Service must fail to a known safe state if system
 initialization fails, shutdown fails, or aborts fail."
-  desc  "Limiting the number of established connections to the Security Token
-Service is a basic denal of service protection. Servers where the limit is too
-high or unlimited can potentially run out of system resources and negatively
-affect system availability."
+  desc  "Determining a safe state for failure and weighing that against a
+potential denial of service for users depends on what type of application the
+web server is hosting. For the Security Token Service, it is preferable that
+the service abort startup on any initialization failure rather than continuing
+in a degraded, and potentailly insecure state."
   desc  'rationale', ''
   desc  'check', "
     At the command line, execute the following command:
@@ -29,6 +30,10 @@ finding.
     Add or change the following line:
 
     org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -37,7 +42,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCST-70-000018'
   tag fix_id: nil
-  tag cci: 'CCI-001190'
+  tag cci: ['CCI-001190']
   tag nist: ['SC-24']
 
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['org.apache.catalina.startup.EXIT_ON_INIT_FAILURE'] do

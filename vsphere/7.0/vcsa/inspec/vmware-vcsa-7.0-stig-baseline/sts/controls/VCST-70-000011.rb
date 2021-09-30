@@ -3,13 +3,15 @@
 control 'VCST-70-000011' do
   title "The Security Token Service must be configured to limit access to
 internal packages."
-  desc  "MIME mappings tell the Security Token Service what type of program
-various file types and extensions are and what external utilities or programs
-are needed to execute the file type.
+  desc  "The \"package.access\" entry in the catalina.properties file
+implements access control at the package level. When properly configured, a
+Security Exception will be reported should an errant or malicious webapp
+attempt to access the listed internal classes directly, or if a new class is
+defined under the protected packages.
 
-    By ensuring that various shell script MIME types are not included in
-\"web.xml\", the server is protected against malicious users tricking the
-server into executing shell command files.
+    The Security Token Service comes pre-configured with the appropriate
+packages defined in \"package.access\" and this configuration must be
+maintained.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -35,6 +37,10 @@ finding.
 
 
 package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -43,7 +49,7 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,o
   tag rid: nil
   tag stig_id: 'VCST-70-000011'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep 'package.access' '#{input('catalinaPropertiesPath')}'") do

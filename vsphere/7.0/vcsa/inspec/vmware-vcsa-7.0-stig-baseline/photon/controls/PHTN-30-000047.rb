@@ -27,7 +27,7 @@ finding.
   tag rid: nil
   tag stig_id: 'PHTN-30-000047'
   tag fix_id: nil
-  tag cci: 'CCI-001493'
+  tag cci: ['CCI-001493']
   tag nist: ['AU-9']
 
   describe file('/etc/audit/auditd.conf') do

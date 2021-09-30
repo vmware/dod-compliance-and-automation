@@ -47,7 +47,7 @@ effect. This configuration must be verified and maintained.
   tag rid: nil
   tag stig_id: 'VCRP-70-000001'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   value = input('tcpKeepAliveTimeSec')

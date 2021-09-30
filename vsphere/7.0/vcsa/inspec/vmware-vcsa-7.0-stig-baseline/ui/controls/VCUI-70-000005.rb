@@ -40,6 +40,10 @@ node is set to the following:
 
     pattern=\"%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b
 %{#hashedSessionId#}s %I %D %S %{set-cookie}o\"
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -48,7 +52,7 @@ node is set to the following:
   tag rid: nil
   tag stig_id: 'VCUI-70-000005'
   tag fix_id: nil
-  tag cci: 'CCI-000067'
+  tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
   describe xml("#{input('serverXmlPath')}") do

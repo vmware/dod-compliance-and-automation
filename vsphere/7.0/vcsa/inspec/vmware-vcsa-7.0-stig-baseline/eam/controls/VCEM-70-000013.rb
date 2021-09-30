@@ -47,6 +47,10 @@ finding.
         <servlet-name>JspServlet</servlet-name>
         <url-pattern>*.jsp</url-pattern>
       </servlet-mapping>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -55,7 +59,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCEM-70-000013'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   list = ["*.jsp", "*.jspx"]

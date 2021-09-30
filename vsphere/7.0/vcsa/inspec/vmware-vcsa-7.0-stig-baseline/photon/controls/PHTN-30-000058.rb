@@ -55,7 +55,7 @@ used, this is a finding.
   tag rid: nil
   tag stig_id: 'PHTN-30-000058'
   tag fix_id: nil
-  tag cci: 'CCI-001891'
+  tag cci: ['CCI-001891']
   tag nist: ['AU-8 (1) (a)']
 
   describe ntp_conf do

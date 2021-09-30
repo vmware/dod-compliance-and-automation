@@ -35,7 +35,7 @@ log file(s) not found\
   tag rid: nil
   tag stig_id: 'PHTN-30-000017'
   tag fix_id: nil
-  tag cci: 'CCI-000163'
+  tag cci: ['CCI-000163']
   tag nist: ['AU-9']
 
   auditlog = command("grep '^log_file\s=\s' /etc/audit/auditd.conf | cut -f3 -d' '").stdout.strip

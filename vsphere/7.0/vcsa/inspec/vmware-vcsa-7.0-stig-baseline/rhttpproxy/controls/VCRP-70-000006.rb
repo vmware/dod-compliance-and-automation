@@ -53,7 +53,7 @@ enable TLS."
   tag rid: nil
   tag stig_id: 'VCRP-70-000006'
   tag fix_id: nil
-  tag cci: 'CCI-002314'
+  tag cci: ['CCI-002314']
   tag nist: ['AC-17 (1)']
 
   describe xml("#{input('configXmlPath')}") do

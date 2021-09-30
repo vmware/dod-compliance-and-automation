@@ -29,6 +29,10 @@ responding to TRACE requests.
     Locate and navigate to 'allowTrace=\"true\"'
 
     Remove the 'allowTrace=\"true\"' setting.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -37,7 +41,7 @@ responding to TRACE requests.
   tag rid: nil
   tag stig_id: 'VCPF-70-000027'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe.one do

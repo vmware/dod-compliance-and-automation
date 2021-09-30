@@ -36,7 +36,7 @@ pg_reload_conf();\"
   tag rid: nil
   tag stig_id: 'VCPG-70-000020'
   tag fix_id: nil
-  tag cci: 'CCI-001890'
+  tag cci: ['CCI-001890']
   tag nist: ['AU-8 b']
 
   sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")

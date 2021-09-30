@@ -14,7 +14,7 @@ configuration must be maintained. "
   desc  'check', "
     At the command prompt, execute the following command:
 
-    # grep -A 6 \"package.access\"
+    # grep \"package.access\"
 /usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties
 
     Expected result:
@@ -32,6 +32,10 @@ finding.
     Ensure that the \"package.access\" line is configured as follows:
 
 package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -40,7 +44,7 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,o
   tag rid: nil
   tag stig_id: 'VCPF-70-000011'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep 'package.access' '#{input('catalinaPropertiesPath')}'") do

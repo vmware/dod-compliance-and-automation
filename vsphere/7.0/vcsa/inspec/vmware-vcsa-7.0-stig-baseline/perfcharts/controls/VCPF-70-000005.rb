@@ -29,6 +29,7 @@ sed '2 s/xmlns=\".*\"//g' |  xmllint --xpath
 &quot;%{User-Agent}i&quot;\"
 
     If the output does not match the expected result, this is a finding.
+
   "
   desc  'fix', "
     Navigate to and open:
@@ -40,6 +41,10 @@ replace the \"pattern\" element as follows:
 
     pattern=\"%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b
 &quot;%{User-Agent}i&quot;\"
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -48,7 +53,7 @@ replace the \"pattern\" element as follows:
   tag rid: nil
   tag stig_id: 'VCPF-70-000005'
   tag fix_id: nil
-  tag cci: 'CCI-000067'
+  tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
   describe xml("#{input('serverXmlPath')}") do

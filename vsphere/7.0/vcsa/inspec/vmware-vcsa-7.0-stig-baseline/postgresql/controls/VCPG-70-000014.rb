@@ -52,7 +52,7 @@ full_page_writes, synchronous_commit)
   tag rid: nil
   tag stig_id: 'VCPG-70-000014'
   tag fix_id: nil
-  tag cci: 'CCI-001665'
+  tag cci: ['CCI-001665']
   tag nist: ['SC-24']
 
   sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")

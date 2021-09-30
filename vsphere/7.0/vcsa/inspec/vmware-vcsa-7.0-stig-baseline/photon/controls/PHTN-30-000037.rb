@@ -40,7 +40,7 @@ following:
   tag rid: nil
   tag stig_id: 'PHTN-30-000037'
   tag fix_id: nil
-  tag cci: 'CCI-001133'
+  tag cci: ['CCI-001133']
   tag nist: ['SC-10']
 
   describe command('sshd -T|&grep -i ClientAliveInterval') do

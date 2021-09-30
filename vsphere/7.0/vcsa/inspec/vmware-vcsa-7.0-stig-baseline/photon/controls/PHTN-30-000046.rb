@@ -42,7 +42,7 @@ future releases. Find the similar line and append \"audit=1\" to it.
   tag rid: nil
   tag stig_id: 'PHTN-30-000046'
   tag fix_id: nil
-  tag cci: 'CCI-001464'
+  tag cci: ['CCI-001464']
   tag nist: ['AU-14 (1)']
 
   describe file ('/boot/grub2/grub.cfg') do

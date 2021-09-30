@@ -46,6 +46,10 @@ finding.
         <url-pattern>*.jsp</url-pattern>
         <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -54,7 +58,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCPF-70-000013'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   list = ["*.jsp", "*.jspx"]

@@ -42,7 +42,7 @@ login events.
   tag rid: nil
   tag stig_id: 'PHTN-30-000008'
   tag fix_id: nil
-  tag cci: 'CCI-000067'
+  tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
   describe command('sshd -T|&grep -i loglevel') do

@@ -26,7 +26,7 @@ remove the option."
   tag rid: nil
   tag stig_id: 'PHTN-30-000059'
   tag fix_id: nil
-  tag cci: 'CCI-001749'
+  tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
   describe command('grep -s nosignature /usr/lib/rpm/rpmrc /etc/rpmrc ~root/.rpmrc') do

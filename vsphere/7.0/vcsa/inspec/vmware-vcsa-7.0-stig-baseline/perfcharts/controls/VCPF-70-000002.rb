@@ -40,6 +40,10 @@ configure with the value 'maxThreads=\"300\"'.
 
     <Executor maxThreads=\"300\" minSpareThreads=\"50\"
 name=\"tomcatThreadPool\" namePrefix=\"tomcat-http--\"/>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -48,7 +52,7 @@ name=\"tomcatThreadPool\" namePrefix=\"tomcat-http--\"/>
   tag rid: nil
   tag stig_id: 'VCPF-70-000002'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe xml("#{input('serverXmlPath')}") do

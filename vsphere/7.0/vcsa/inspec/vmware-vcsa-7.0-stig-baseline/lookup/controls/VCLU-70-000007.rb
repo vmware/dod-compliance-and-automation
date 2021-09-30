@@ -25,8 +25,8 @@ configuration must be verified.
   desc  'fix', "
     At the command prompt, execute the following command(s):
 
-    # chmod 600 /storage/log/vmware/vsphere-ui/logs/<file>
-    # chown vsphere-ui:users /storage/log/vmware/vsphere-ui/logs/<file>
+    # chmod 600 /var/log/vmware/lookupsvc/<file>
+    # chown root:root /var/log/vmware/lookupsvc/<file>
 
     Note: Subsitute <file> with the listed file.
   "
@@ -37,7 +37,7 @@ configuration must be verified.
   tag rid: nil
   tag stig_id: 'VCLU-70-000007'
   tag fix_id: nil
-  tag cci: 'CCI-000162'
+  tag cci: ['CCI-000162']
   tag nist: ['AU-9']
 
   command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |

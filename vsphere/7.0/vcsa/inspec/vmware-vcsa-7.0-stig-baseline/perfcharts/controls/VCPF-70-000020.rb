@@ -33,6 +33,10 @@ character set via the \"URIEncoding\" attribute on the Connector nodes.
     /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
 
     Configure the <Connector> node with the value 'URIEncoding=\"UTF-8\"'.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -41,8 +45,9 @@ character set via the \"URIEncoding\" attribute on the Connector nodes.
   tag rid: nil
   tag stig_id: 'VCPF-70-000020'
   tag fix_id: nil
-  tag cci: 'CCI-001310'
+  tag cci: ['CCI-001310']
   tag nist: ['SI-10']
+
   describe xml("#{input('serverXmlPath')}") do
     its(['Server/Service/Connector/@URIEncoding']) { should cmp "#{input('uriEncoding')}"}
   end

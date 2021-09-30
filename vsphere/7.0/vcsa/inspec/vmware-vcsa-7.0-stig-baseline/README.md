@@ -1,6 +1,6 @@
 # vmware-vcsa-7.0-stig-baseline
 InSpec Profile to validate the secure configuration of VMware vCenter Service Appliance version 7.0 against the draft DISA vSphere 7.0 STIG
-Version: 7.0.0 Draft
+Version: 7.0.0 Draft Version 1 Release 2
 
 ## VCSA InSpec Profiles
 

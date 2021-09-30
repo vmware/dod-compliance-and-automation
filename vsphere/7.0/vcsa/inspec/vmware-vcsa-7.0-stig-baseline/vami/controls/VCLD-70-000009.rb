@@ -39,7 +39,7 @@ reinstalling RPMs or similar efforts.
   tag rid: nil
   tag stig_id: 'VCLD-70-000009'
   tag fix_id: nil
-  tag cci: 'CCI-001749'
+  tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
   describe command('rpm -V vmware-studio-vami-lighttpd|grep "^..5......"|grep -v -E "\.conf|\.service"') do

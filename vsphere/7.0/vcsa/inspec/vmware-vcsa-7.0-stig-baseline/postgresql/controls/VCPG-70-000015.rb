@@ -41,7 +41,7 @@ respectively, discovered during the check.
   tag rid: nil
   tag stig_id: 'VCPG-70-000015'
   tag fix_id: nil
-  tag cci: 'CCI-001084'
+  tag cci: ['CCI-001084']
   tag nist: ['SC-3']
 
   describe command("/opt/vmware/vpostgres/current/bin/psql -U postgres -c \"\\dp .*.;\" |grep -E \"information_schema|pg_catalog\"|awk -F '|' '{print $4}'|awk -F '/' '{print $1}'|grep -v \"=r\" | grep -v \"^[[:space:]]*$\" | grep -v \"postgres\"").stdout do

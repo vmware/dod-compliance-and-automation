@@ -290,7 +290,7 @@ must be verified and maintained.
   tag rid: nil
   tag stig_id: 'VCLD-70-000008'
   tag fix_id: nil
-  tag cci: 'CCI-001348'
+  tag cci: ['CCI-001348']
   tag nist: ['AU-9 (2)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-applmgmt.conf|grep "^..5......"') do

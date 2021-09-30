@@ -33,7 +33,7 @@ a finding.
   tag rid: nil
   tag stig_id: 'PHTN-30-000019'
   tag fix_id: nil
-  tag cci: 'CCI-000171'
+  tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
 
   command(' find /etc/audit/* -maxdepth 1 -type f').stdout.split.each do | fname |

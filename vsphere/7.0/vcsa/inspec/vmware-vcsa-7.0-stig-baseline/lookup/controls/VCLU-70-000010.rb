@@ -23,6 +23,10 @@ confirmed."
     /usr/lib/vmware-lookupsvc/conf/server.xml
 
     Remove any and all <Realm> nodes.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -31,7 +35,7 @@ confirmed."
   tag rid: nil
   tag stig_id: 'VCLU-70-000010'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabaseRealm '#{input('serverXmlPath')}'") do

@@ -33,6 +33,10 @@ finding.
 
 
 package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -41,7 +45,7 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,o
   tag rid: nil
   tag stig_id: 'VCLU-70-000011'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep 'package.access' '#{input('catalinaPropertiesPath')}'") do

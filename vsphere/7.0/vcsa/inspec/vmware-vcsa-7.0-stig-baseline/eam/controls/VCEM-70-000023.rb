@@ -41,6 +41,10 @@ finding.
           <param-name>listings</param-name>
           <param-value>true</param-value>
     </init-param>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart eam
   "
   impact 0.5
   tag severity: 'medium'
@@ -49,7 +53,7 @@ finding.
   tag rid: nil
   tag stig_id: 'VCEM-70-000023'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe.one do

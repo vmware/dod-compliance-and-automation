@@ -36,7 +36,7 @@ is a finding.
   tag rid: nil
   tag stig_id: 'PHTN-30-000025'
   tag fix_id: nil
-  tag cci: 'CCI-000196'
+  tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']
 
   describe login_defs do

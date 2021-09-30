@@ -3,19 +3,10 @@
 control 'VCST-70-000019' do
   title "The Security Token Service must limit the number of allowed
 connections."
-  desc  "Invalid user input occurs when a user inserts data or characters into
-a hosted application's data entry field and the hosted application is
-unprepared to process that data. This results in unanticipated application
-behavior, potentially leading to an application compromise. Invalid user input
-is one of the primary methods employed when attempting to compromise an
-application.
-
-    An attacker can also enter Unicode characters into hosted applications in
-an effort to break out of the document home or root home directory or bypass
-security checks. The Security Token Service must be configured to use a
-consistent character set via the \"URIEncoding\" attribute on the Connector
-nodes.
-  "
+  desc  "Limiting the number of established connections to the Security Token
+Service is a basic denal of service protection. Servers where the limit is too
+high or unlimited can potentially run out of system resources and negatively
+affect system availability."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -41,6 +32,10 @@ port=\"${bio-custom.http.port}\".
     Add or change the folllowing value:
 
     acceptCount=\"100\"
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -49,7 +44,7 @@ port=\"${bio-custom.http.port}\".
   tag rid: nil
   tag stig_id: 'VCST-70-000019'
   tag fix_id: nil
-  tag cci: 'CCI-001094'
+  tag cci: ['CCI-001094']
   tag nist: ['SC-5 (1)']
 
   describe xml("#{input('serverXmlPath')}") do

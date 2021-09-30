@@ -26,6 +26,7 @@ out-of-the-box."
     Repeat the command for each file that was returned.
 
     Note: Replace <file_name> for the name of the file that was returned.
+
   "
   impact 0.5
   tag severity: 'medium'
@@ -34,7 +35,7 @@ out-of-the-box."
   tag rid: nil
   tag stig_id: 'VCEM-70-000017'
   tag fix_id: nil
-  tag cci: 'CCI-001082'
+  tag cci: ['CCI-001082']
   tag nist: ['SC-2']
 
   describe command("find '#{input('rootPath')}' -xdev -type f -a \'(\' -not -user eam -o -not -group cis \')\' -exec ls -ld {} \;") do

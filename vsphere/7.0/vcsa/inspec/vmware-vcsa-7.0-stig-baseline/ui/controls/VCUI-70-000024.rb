@@ -34,6 +34,10 @@ the server version at all times.
     Navigate to each of the <Connector> nodes.
 
     Configure each <Connector> node with 'server=\"Anonymous\"'.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -42,7 +46,7 @@ the server version at all times.
   tag rid: nil
   tag stig_id: 'VCUI-70-000024'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   begin

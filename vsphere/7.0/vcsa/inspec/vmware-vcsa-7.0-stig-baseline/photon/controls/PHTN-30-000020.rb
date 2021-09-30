@@ -30,6 +30,11 @@ chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremov
 -F key=perm_mod
 
     If the output does not match the expected result, this is a finding.
+
+    Note: The auid!= parameter may display as 4294967295 or -1 which are equivalent.
+
+    Note: This check depends on the auditd service to be in a running state for 
+    accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
   desc  'fix', "
     Navigate to and open:
@@ -53,6 +58,10 @@ chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremov
 rules.
 
     # /sbin/augenrules --load
+
+    Note: An older audit.STIG.rules may exist if the file exists and references 
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    with an updated one.
   "
   impact 0.5
   tag severity: 'medium'
@@ -61,7 +70,7 @@ rules.
   tag rid: nil
   tag stig_id: 'PHTN-30-000020'
   tag fix_id: nil
-  tag cci: 'CCI-000172'
+  tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
 
   describe auditd do

@@ -36,7 +36,7 @@ This configuration must be verified and maintained.
   tag rid: nil
   tag stig_id: 'VCPG-70-000006'
   tag fix_id: nil
-  tag cci: 'CCI-001499'
+  tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
   sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")

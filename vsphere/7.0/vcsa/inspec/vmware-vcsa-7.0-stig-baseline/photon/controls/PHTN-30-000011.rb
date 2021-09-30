@@ -41,7 +41,7 @@ of the event in question."
   tag rid: nil
   tag stig_id: 'PHTN-30-000011'
   tag fix_id: nil
-  tag cci: 'CCI-000131'
+  tag cci: ['CCI-000131']
   tag nist: ['AU-3']
 
   describe auditd_conf do

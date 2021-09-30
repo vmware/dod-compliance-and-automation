@@ -2,16 +2,13 @@
 
 control 'VCST-70-000004' do
   title 'The Security Token Service must protect cookies from XSS.'
-  desc  "Remote access can be exploited by an attacker to compromise the
-server. By recording all remote access activities, it will be possible to
-determine the attacker's location, intent, and degree of success.
+  desc  "Cookies are a common way to save session state over the HTTP(S)
+protocol. If an attacker can compromise session data stored in a cookie, they
+are better able to launch an attack against the server and its applications.
 
-    Tomcat can be configured with an \"AccessLogValve\", a component that can
-be inserted into the request processing pipeline to provide robust access
-logging. The AccessLogValve creates log files in the same format as those
-created by standard web servers. When AccessLogValve is properly configured,
-log files will contain all the forensic information necessary in the case of a
-security incident.
+    When a cookie is tagged with the \"HttpOnly\" flag, it tells the browser
+that this particular cookie should only be accessed by the originating server.
+Any attempt to access the cookie from client script is strictly forbidden.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -41,6 +38,10 @@ s/xmlns=\".*\"//g' | xmllint --xpath
                 <secure>true</secure>
            </cookie-config>
     </session-config>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -49,7 +50,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
   tag rid: nil
   tag stig_id: 'VCST-70-000004'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe xml("#{input('webXmlPath')}") do

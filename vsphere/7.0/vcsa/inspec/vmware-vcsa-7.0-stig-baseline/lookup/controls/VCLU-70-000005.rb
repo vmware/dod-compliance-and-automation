@@ -41,6 +41,10 @@ replace the \"pattern\" element as follows:
     pattern=\"%t %I [RemoteIP] %{X-Forwarded-For}i %u [Request] %h:%{remote}p
 to local %{local}p - %H %m %U%q    [Response] %s - %b bytes    [Perf] process
 %Dms / commit %Fms / conn [%X]\"
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -49,7 +53,7 @@ to local %{local}p - %H %m %U%q    [Response] %s - %b bytes    [Perf] process
   tag rid: nil
   tag stig_id: 'VCLU-70-000005'
   tag fix_id: nil
-  tag cci: 'CCI-000067'
+  tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
   describe xml("#{input('serverXmlPath')}") do

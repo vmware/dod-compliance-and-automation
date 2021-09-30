@@ -23,7 +23,7 @@ appliances. Revert to a previous backup or redeploy the appliance."
   tag rid: nil
   tag stig_id: 'PHTN-30-000026'
   tag fix_id: nil
-  tag cci: 'CCI-000197'
+  tag cci: ['CCI-000197']
   tag nist: ['IA-5 (1) (c)']
 
   describe command("rpm -qa | grep 'openssh-server' | cut -f3 -d'-'") do

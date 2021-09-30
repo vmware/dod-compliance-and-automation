@@ -3,14 +3,11 @@
 control 'VCST-70-000028' do
   title "The Security Token Service must be configured with the appropriate
 ports."
-  desc  "An attacker has at least two reasons to stop a web server. The first
-is to cause a denial of service, and the second is to put in place changes the
-attacker made to the web server configuration.
-
-    If the Tomcat shutdown port feature is enabled, a shutdown signal can be
-sent to the Security Token Service through this port. To ensure availability,
-the shutdown port must be disabled.
-  "
+  desc  "Web servers provide numerous processes, features, and functionalities
+that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or
+too unsecure to run on a production system. The ports that the Security Token
+Service listens on are configured in the catalina.properties file and must be
+veriified as accurate to their shipping state."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -39,6 +36,10 @@ following list:
     bio-custom.http.port=7080
     bio-custom.https.port=8443
     bio-ssl-localhost.https.port=7444
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart sts
   "
   impact 0.5
   tag severity: 'medium'
@@ -47,7 +48,7 @@ following list:
   tag rid: nil
   tag stig_id: 'VCST-70-000028'
   tag fix_id: nil
-  tag cci: 'CCI-001762'
+  tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']
 
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-custom.http.port'] do

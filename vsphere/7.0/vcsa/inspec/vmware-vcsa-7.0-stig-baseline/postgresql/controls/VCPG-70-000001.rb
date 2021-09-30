@@ -41,7 +41,7 @@ memory for vCenter.
   tag rid: nil
   tag stig_id: 'VCPG-70-000001'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")

@@ -41,6 +41,10 @@ node and remove the following node:
           <param-name>readonly</param-name>
           <param-value>false</param-value>
     </init-param>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -49,7 +53,7 @@ node and remove the following node:
   tag rid: nil
   tag stig_id: 'VCUI-70-000033'
   tag fix_id: nil
-  tag cci: 'CCI-000366'
+  tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
   describe xml("#{input('webXmlPath')}") do

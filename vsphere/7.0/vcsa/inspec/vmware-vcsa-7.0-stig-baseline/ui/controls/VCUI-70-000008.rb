@@ -10,7 +10,8 @@ should be changed after installation, excluding configuration files."
   desc  'check', "
     At the command prompt, execute the following command:
 
-    # rpm -V vsphere-ui|grep \"^..5......\"|grep -v -E \"\\.prop|\\.pass\"
+    # rpm -V vsphere-ui|grep \"^..5......\"|grep -v -E
+\"\\.prop|\\.pass|\\.xml\"
 
     If is any output, this is a finding.
   "
@@ -27,10 +28,10 @@ VMware.
   tag rid: nil
   tag stig_id: 'VCUI-70-000008'
   tag fix_id: nil
-  tag cci: 'CCI-001749'
+  tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
-  describe command('rpm -V vsphere-ui|grep "^..5......"|grep -v -E "\.prop|\.pass"') do
+  describe command('rpm -V vsphere-ui|grep "^..5......"|grep -v -E "\.prop|\.pass|\.xml"') do
     its ('stdout.strip') { should eq '' }
   end
 

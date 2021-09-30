@@ -42,7 +42,7 @@ the expected result, this is a finding.
   tag rid: nil
   tag stig_id: 'PHTN-30-000005'
   tag fix_id: nil
-  tag cci: 'CCI-000057'
+  tag cci: ['CCI-000057']
   tag nist: ['AC-11 a']
 
   describe file('/etc/profile.d/tmout.sh') do

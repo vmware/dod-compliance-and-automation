@@ -13,7 +13,7 @@ files."
     At the command prompt, execute the following command:
 
     # rpm -V vmware-eam|grep \"^..5......\"|grep -v -E
-\"\\.installer|\\.properties\"
+\"\\.installer|\\.properties|\\.xml\"
 
     If there is any output, this is a finding.
   "
@@ -26,10 +26,10 @@ installation files manually is not supported by VMware."
   tag rid: nil
   tag stig_id: 'VCEM-70-000008'
   tag fix_id: nil
-  tag cci: 'CCI-001749'
+  tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
-  describe command('rpm -V vmware-eam|grep "^..5......"|grep -v -E "\.installer|\.properties"') do
+  describe command('rpm -V vmware-eam|grep "^..5......"|grep -v -E "\.installer|\.properties|\.xml"') do
     its ('stdout.strip') { should eq '' }
   end
 

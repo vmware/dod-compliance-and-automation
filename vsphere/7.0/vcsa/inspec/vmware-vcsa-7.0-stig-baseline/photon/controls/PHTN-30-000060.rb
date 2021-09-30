@@ -32,7 +32,7 @@ has not been tampered with and has been provided by a trusted vendor. "
   tag rid: nil
   tag stig_id: 'PHTN-30-000060'
   tag fix_id: nil
-  tag cci: 'CCI-001749'
+  tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
   describe command('grep "^gpgcheck" /etc/tdnf/tdnf.conf') do

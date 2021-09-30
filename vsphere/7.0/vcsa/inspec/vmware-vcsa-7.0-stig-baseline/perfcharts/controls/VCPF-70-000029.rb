@@ -22,6 +22,7 @@ configuration must be verified."
 
     Ensure that the log4j.appender.LOGFILE is configured as follows:
 
+
 log4j.appender.LOGFILE=com.vmware.log4j.appender.NonAppendingRollingFileAppender
     log4j.appender.LOGFILE.File=${vim.logdir}/stats.log
     log4j.appender.LOGFILE.Append=true
@@ -31,6 +32,8 @@ log4j.appender.LOGFILE=com.vmware.log4j.appender.NonAppendingRollingFileAppender
 
 log4j.appender.LOGFILE.layout.ConversionPattern=%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}
 [%t %x %-5p %c] %m%n
+
+    Note: This fix is currently only applicable to 7.0 versions earlier than U2.
   "
   impact 0.5
   tag severity: 'medium'
@@ -39,7 +42,7 @@ log4j.appender.LOGFILE.layout.ConversionPattern=%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}
   tag rid: nil
   tag stig_id: 'VCPF-70-000029'
   tag fix_id: nil
-  tag cci: 'CCI-001849'
+  tag cci: ['CCI-001849']
   tag nist: ['AU-4']
 
   describe command('rpm -V VMware-perfcharts|grep log4j|grep "^..5......"') do

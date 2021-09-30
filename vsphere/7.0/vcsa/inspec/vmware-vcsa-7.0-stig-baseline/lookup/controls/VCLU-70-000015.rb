@@ -29,6 +29,7 @@ className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>
 
     If the output of the command does not match the expected result, this is a
 finding.
+
   "
   desc  'fix', "
     Navigate to and open:
@@ -40,6 +41,10 @@ finding.
     Add '<Listener
 className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>' to
 the <Server> node.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -48,7 +53,7 @@ the <Server> node.
   tag rid: nil
   tag stig_id: 'VCLU-70-000015'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe xml("#{input('serverXmlPath')}") do

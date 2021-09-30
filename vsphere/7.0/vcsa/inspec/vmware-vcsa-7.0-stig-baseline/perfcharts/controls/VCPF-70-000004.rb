@@ -39,6 +39,10 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
      </cookie-config>
      <session-timeout>30</session-timeout>
     </session-config>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -47,7 +51,7 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
   tag rid: nil
   tag stig_id: 'VCPF-70-000004'
   tag fix_id: nil
-  tag cci: 'CCI-000054'
+  tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
   describe xml("#{input('statswebXmlPath')}") do

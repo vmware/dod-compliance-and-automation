@@ -41,7 +41,7 @@ with a password hash.
   tag rid: nil
   tag stig_id: 'PHTN-30-000062'
   tag fix_id: nil
-  tag cci: 'CCI-002038'
+  tag cci: ['CCI-002038']
   tag nist: ['IA-11']
 
   #Find users in sudoers with NOPASSWD flag and extract username

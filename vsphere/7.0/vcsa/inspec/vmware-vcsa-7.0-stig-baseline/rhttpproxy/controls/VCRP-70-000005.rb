@@ -38,7 +38,7 @@ group owned by root
   tag rid: nil
   tag stig_id: 'VCRP-70-000005'
   tag fix_id: nil
-  tag cci: 'CCI-000186'
+  tag cci: ['CCI-000186']
   tag nist: ['IA-5 (2) (b)']
 
   describe file("#{input('sslKey')}") do

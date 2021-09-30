@@ -48,7 +48,7 @@ the following line:
   tag rid: nil
   tag stig_id: 'VCLU-70-000006'
   tag fix_id: nil
-  tag cci: 'CCI-000169'
+  tag cci: ['CCI-000169']
   tag nist: ['AU-12 a']
 
   describe json("#{input('svcJsonPath')}") do

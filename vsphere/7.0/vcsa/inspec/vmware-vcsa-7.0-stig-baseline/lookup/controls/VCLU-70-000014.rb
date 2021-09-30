@@ -32,6 +32,10 @@ parent <servlet> block.
 
     Find the <servlet-name>webdav</servlet-name> node and remove the entire
 parent <servlet-mapping> block.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
   "
   impact 0.5
   tag severity: 'medium'
@@ -40,7 +44,7 @@ parent <servlet-mapping> block.
   tag rid: nil
   tag stig_id: 'VCLU-70-000014'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe xml("#{input('webXmlPath')}") do

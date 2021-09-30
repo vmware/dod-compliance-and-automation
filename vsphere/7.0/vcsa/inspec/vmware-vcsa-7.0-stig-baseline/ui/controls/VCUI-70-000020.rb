@@ -30,6 +30,10 @@ system availability."
     Add or change the folllowing value:
 
     acceptCount=\"300\"
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -38,7 +42,7 @@ system availability."
   tag rid: nil
   tag stig_id: 'VCUI-70-000020'
   tag fix_id: nil
-  tag cci: 'CCI-001094'
+  tag cci: ['CCI-001094']
   tag nist: ['SC-5 (1)']
 
   describe xml("#{input('serverXmlPath')}") do

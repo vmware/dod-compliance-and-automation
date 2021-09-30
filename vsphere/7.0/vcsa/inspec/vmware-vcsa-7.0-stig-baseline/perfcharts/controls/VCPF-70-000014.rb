@@ -29,6 +29,10 @@ Performance Charts does not configure WebDAV by default.
 
     Find the <servlet-name>webdav</servlet-name> node and remove the entire
 parent <servlet> block.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -37,7 +41,7 @@ parent <servlet> block.
   tag rid: nil
   tag stig_id: 'VCPF-70-000014'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe xml("#{input('webXmlPath')}") do

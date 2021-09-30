@@ -109,7 +109,7 @@ $photon_cmdline coredump_filter=0x37 consoleblank=0
   tag rid: nil
   tag stig_id: 'PHTN-30-000031'
   tag fix_id: nil
-  tag cci: 'CCI-000213'
+  tag cci: ['CCI-000213']
   tag nist: ['AC-3']
 
   describe command('grep -i ^password_pbkdf2 /boot/grub2/grub.cfg') do

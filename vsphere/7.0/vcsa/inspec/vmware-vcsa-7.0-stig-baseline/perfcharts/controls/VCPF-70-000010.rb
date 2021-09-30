@@ -21,6 +21,10 @@ part of eliminating unnecessary features."
     /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
 
     Remove the <Realm> node returned in the check.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -29,7 +33,7 @@ part of eliminating unnecessary features."
   tag rid: nil
   tag stig_id: 'VCPF-70-000010'
   tag fix_id: nil
-  tag cci: 'CCI-000381'
+  tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabaseRealm '#{input('serverXmlPath')}'") do

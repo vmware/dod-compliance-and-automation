@@ -1,11 +1,11 @@
 name: vmware-vcsa-7.0-stig-baseline
-title: InSpec Wrapper Profile for VMware vCenter Service Appliance 7.0 draft DISA STIG
+title: InSpec Wrapper Profile for VMware vCenter Service Appliance 7.0 STIG Readiness Guide Version 1 Release 2
 maintainer: The Authors
 copyright: The Authors
 copyright_email: stigs@vmware.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 7.0.0
+version: 1.0.2
 
 depends:
   - name: eam

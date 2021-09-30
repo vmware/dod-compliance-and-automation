@@ -40,7 +40,7 @@ root:root
   tag rid: nil
   tag stig_id: 'VCLD-70-000007'
   tag fix_id: nil
-  tag cci: 'CCI-000162'
+  tag cci: ['CCI-000162']
   tag nist: ['AU-9']
 
   command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |

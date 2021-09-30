@@ -32,7 +32,7 @@ configuration files."
   tag rid: nil
   tag stig_id: 'VCST-70-000007'
   tag fix_id: nil
-  tag cci: 'CCI-000163'
+  tag cci: ['CCI-000163']
   tag nist: ['AU-9']
 
   command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |

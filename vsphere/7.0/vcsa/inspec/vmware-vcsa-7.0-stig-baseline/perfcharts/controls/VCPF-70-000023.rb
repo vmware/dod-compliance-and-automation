@@ -40,6 +40,10 @@ nodes.
           <param-name>listings</param-name>
           <param-value>false</param-value>
     </init-param>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -48,7 +52,7 @@ nodes.
   tag rid: nil
   tag stig_id: 'VCPF-70-000023'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe.one do

@@ -26,6 +26,10 @@ disable responding to TRACE requests."
     Navigate to and locate 'allowTrace=\"true\"'.
 
     Remove the 'allowTrace=\"true\"' setting.
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart vsphere-ui
   "
   impact 0.5
   tag severity: 'medium'
@@ -34,7 +38,7 @@ disable responding to TRACE requests."
   tag rid: nil
   tag stig_id: 'VCUI-70-000026'
   tag fix_id: nil
-  tag cci: 'CCI-001312'
+  tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe.one do

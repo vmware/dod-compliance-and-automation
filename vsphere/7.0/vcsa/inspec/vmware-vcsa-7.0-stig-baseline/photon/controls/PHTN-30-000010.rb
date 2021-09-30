@@ -44,7 +44,7 @@ also be logged locally.
   tag rid: nil
   tag stig_id: 'PHTN-30-000010'
   tag fix_id: nil
-  tag cci: 'CCI-000130'
+  tag cci: ['CCI-000130']
   tag nist: ['AU-3']
 
   describe.one do
