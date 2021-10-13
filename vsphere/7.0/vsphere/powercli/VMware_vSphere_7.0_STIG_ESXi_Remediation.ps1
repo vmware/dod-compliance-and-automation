@@ -35,9 +35,9 @@ param (
     [string]$vcenter,
     [Parameter(Mandatory=$true)]
     [pscredential]$vccred,
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true,ParameterSetName="hostname")]
     [string]$hostname,
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true,ParameterSetName="cluster")]
     [string]$cluster,
     [Parameter(Mandatory=$true,
     HelpMessage="Enter the Active Directory Admins group to use for administrative access to ESXi")]
