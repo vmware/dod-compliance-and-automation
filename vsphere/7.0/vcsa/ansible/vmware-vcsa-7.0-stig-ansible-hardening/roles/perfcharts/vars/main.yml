@@ -25,6 +25,7 @@ var_web_xml_cookie_secure: 'true'
 # perfcharts.json variables
 var_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/perfcharts.json'
 var_stream_redirect_file: '%VMWARE_LOG_DIR%/vmware/perfcharts/vmware-perfcharts-runtime.log'
+var_json_filename: 'perfcharts.json'
 
 # perfcharts log variables
 var_perf_logs_path: '/storage/log/vmware/perfcharts'

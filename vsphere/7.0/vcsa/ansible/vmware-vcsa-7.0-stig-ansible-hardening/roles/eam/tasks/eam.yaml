@@ -16,6 +16,13 @@
   when:
   - create_backups | bool
 
+- name: Create Backup Directory
+  file:
+    path: "{{ var_backup_svc_cfg_directory }}"
+    state: directory
+  when:
+  - create_backups | bool
+
 - name: Backup files...if restoring be sure to restore permissions that original file had!!
   copy:
     remote_src: yes
@@ -24,12 +31,22 @@
   with_items:
     - '{{ var_server_xml_path }}'
     - '{{ var_web_xml_path }}'
-    - '{{ var_eam_json_path }}'
     - '{{ var_catalina_props_path }}'
   tags:
   - eam
   when:
   - create_backups | bool
+
+- name: "Backing up {{ var_eam_json_filename }}" 
+  copy:
+    remote_src: yes
+    src: "{{ var_eam_json_path }}"
+    dest: "{{ var_backup_svc_cfg_directory }}{{ var_eam_json_filename }}_{{ backup_timestamp }}.bak"
+  tags:
+  - eam
+  when:
+  - create_backups | bool
+
 
 ############################################
 

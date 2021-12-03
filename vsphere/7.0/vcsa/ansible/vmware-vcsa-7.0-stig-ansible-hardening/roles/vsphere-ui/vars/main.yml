@@ -34,6 +34,7 @@ var_web_xml_cookie_secure: 'true'
 # json variables
 var_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json'
 var_json_stream_redirect_file: '%VMWARE_LOG_DIR%/vmware/vsphere-ui/logs/vsphere-ui-runtime.log'
+var_json_filename: 'vsphere-ui.json'
 
 # log variables
 var_logs_path: '/storage/log/vmware/vsphere-ui/logs'

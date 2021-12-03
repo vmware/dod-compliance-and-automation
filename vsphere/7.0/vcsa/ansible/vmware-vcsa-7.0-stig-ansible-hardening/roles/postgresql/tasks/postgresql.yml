@@ -194,16 +194,16 @@
     path: '{{ var_postgres_conf_file }}'
     state: present
     regexp: '^password_encryption.*$'
-    line: port = {{ var_postgres_conf_pw_encryption }}
+    line: password_encryption = {{ var_postgres_conf_pw_encryption }}
     firstmatch: yes
   tags:
-  - VCPG-70-000010
-  - conf
-  - vpostgres
+    - VCPG-70-000010
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
-  when:
-  - run_postgres_conf_ps_encryption | bool
+    - reload vpostgres config
+  when: 
+    - run_postgres_conf_ps_encryption | bool
 
 ############################################
 

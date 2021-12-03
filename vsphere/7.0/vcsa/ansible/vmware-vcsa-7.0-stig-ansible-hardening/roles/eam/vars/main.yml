@@ -25,6 +25,7 @@ var_web_xml_cookie_secure: 'true'
 # eam.json variables
 var_eam_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/eam.json'
 var_stream_redirect_file: '%VMWARE_LOG_DIR%/vmware/eam/jvm.log'
+var_eam_json_filename: 'eam.json'
 
 # eam log variables
 var_eam_logs_path: '/var/log/vmware/eam/web/'

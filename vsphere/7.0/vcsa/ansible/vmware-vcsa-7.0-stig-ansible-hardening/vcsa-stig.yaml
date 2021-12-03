@@ -1,6 +1,8 @@
 # This is the main launching playbook for the vSphere VCSA 7.0 STIG
 
 - hosts: all
+  vars:
+    var_backup_svc_cfg_directory: '/etc/vmware/vmware-vmon/svcCfgfiles/backup_files/'
   roles:
     - eam
     - lookup
