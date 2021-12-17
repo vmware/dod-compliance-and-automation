@@ -57,7 +57,7 @@ available, the ESXi host becomes inaccessible.
   tag cci: 'CCI-000054'
   tag nist: ['AC-10']
 
-  list = ["Normal","Strict"]
+  list = ["lockdownNormal","lockdownStrict"]
   command = "(Get-VMHost -Name #{input('vmhostName')}).Extensiondata.Config.LockdownMode"
   describe powercli_command(command) do
     its ('stdout.strip') { should be_in list }
