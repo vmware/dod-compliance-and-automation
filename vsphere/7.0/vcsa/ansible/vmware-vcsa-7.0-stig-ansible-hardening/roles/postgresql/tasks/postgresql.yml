@@ -194,7 +194,7 @@
     path: '{{ var_postgres_conf_file }}'
     state: present
     regexp: '^password_encryption.*$'
-    line: port = {{ var_postgres_conf_pw_encryption }}
+    line: password_encryption = {{ var_postgres_conf_pw_encryption }}
     firstmatch: yes
   tags:
   - VCPG-70-000010
