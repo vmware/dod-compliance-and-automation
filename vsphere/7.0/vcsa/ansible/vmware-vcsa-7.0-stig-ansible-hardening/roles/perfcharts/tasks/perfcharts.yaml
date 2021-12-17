@@ -25,9 +25,18 @@
     - '{{ var_server_xml_path }}'
     - '{{ var_web_xml_path }}'
     - '{{ var_web_stats_xml_path }}'
-    - '{{ var_json_path }}'
     - '{{ var_catalina_props_path }}'
     - '{{ var_perf_log4j_path }}'
+  tags:
+  - perfcharts
+  when:
+  - create_backups | bool
+
+- name: Backup service files to /tmp...if restoring be sure to restore permissions that original file had!!
+  copy:
+    remote_src: yes
+    src: "{{ var_json_path }}"
+    dest: "/tmp/perfcharts.json_{{ backup_timestamp }}.bak"
   tags:
   - perfcharts
   when:
