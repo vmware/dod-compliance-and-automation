@@ -113,13 +113,10 @@ $ESXI70000013 = $true  #SSH HostbasedAuthentication no
 $ESXI70000014 = $true  #SSH PermitRootLogin no
 $ESXI70000015 = $true  #SSH PermitEmptyPasswords no
 $ESXI70000016 = $true  #SSH PermitUserEnvironment no
-$ESXI70000018 = $true  #SSH GSSAPIAuthentication no
-$ESXI70000019 = $true  #SSH KerberosAuthentication no
 $ESXI70000020 = $true  #SSH StrictModes yes
 $ESXI70000021 = $true  #SSH Compression no
 $ESXI70000022 = $true  #SSH GatewayPorts no
 $ESXI70000023 = $true  #SSH X11Forwarding no
-$ESXI70000024 = $true  #SSH AcceptEnv
 $ESXI70000025 = $true  #SSH PermitTunnel no
 $ESXI70000026 = $true  #SSH ClientAliveCountMax 3
 $ESXI70000027 = $true  #SSH ClientAliveInterval 200
@@ -709,64 +706,6 @@ Catch{
     Exit -1
 }
 
-# SSH GSSAPI
-Try{
-    If($ESXI70000018){
-        $VULID = "V-239273"
-        $STIGID = "ESXI-70-000018"
-        $Title = "The ESXi host SSH daemon must not permit GSSAPI authentication."
-        Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
-        ForEach($vmhost in $vmhosts){
-            $esxcli = Get-EsxCli -VMHost $vmhost -V2
-            $results = $esxcli.software.vib.list.Invoke() | Where-Object {$_.Name -eq $stigsettings.stigVibRE -or $_.Name -eq $stigsettings.stigVibRD}
-            If($results){
-                Write-ToConsoleGreen "...VMware STIG VIB is installed on $($vmhost.name)"
-            }Else{
-                Write-ToConsoleRed "...!!VMware STIG VIB is NOT installed on $($vmhost.name) !!"
-            }
-        }
-    }
-    Else{
-        Write-ToConsole "...Skipping disabled control Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
-    }
-}
-Catch{
-    Write-Error "Failed to Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-    Write-Error $_.Exception
-    Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
-    Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
-    Exit -1
-}
-
-# SSH Kerberos
-Try{
-    If($ESXI70000019){
-        $VULID = "V-239274"
-        $STIGID = "ESXI-70-000019"
-        $Title = "The ESXi host SSH daemon must not permit Kerberos authentication."
-        Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
-        ForEach($vmhost in $vmhosts){
-            $esxcli = Get-EsxCli -VMHost $vmhost -V2
-            $results = $esxcli.software.vib.list.Invoke() | Where-Object {$_.Name -eq $stigsettings.stigVibRE -or $_.Name -eq $stigsettings.stigVibRD}
-            If($results){
-                Write-ToConsoleGreen "...VMware STIG VIB is installed on $($vmhost.name)"
-            }Else{
-                Write-ToConsoleRed "...!!VMware STIG VIB is NOT installed on $($vmhost.name) !!"
-            }
-        }
-    }
-    Else{
-        Write-ToConsole "...Skipping disabled control Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
-    }
-}
-Catch{
-    Write-Error "Failed to Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-    Write-Error $_.Exception
-    Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
-    Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
-    Exit -1
-}
-
 # SSH StrictMode
 Try{
     If($ESXI70000020){
@@ -860,35 +799,6 @@ Try{
         $VULID = "V-239278"
         $STIGID = "ESXI-70-000023"
         $Title = "The ESXi host SSH daemon must be configured to not allow X11 forwarding."
-        Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
-        ForEach($vmhost in $vmhosts){
-            $esxcli = Get-EsxCli -VMHost $vmhost -V2
-            $results = $esxcli.software.vib.list.Invoke() | Where-Object {$_.Name -eq $stigsettings.stigVibRE -or $_.Name -eq $stigsettings.stigVibRD}
-            If($results){
-                Write-ToConsoleGreen "...VMware STIG VIB is installed on $($vmhost.name)"
-            }Else{
-                Write-ToConsoleRed "...!!VMware STIG VIB is NOT installed on $($vmhost.name) !!"
-            }
-        }
-    }
-    Else{
-        Write-ToConsole "...Skipping disabled control Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
-    }
-}
-Catch{
-    Write-Error "Failed to Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-    Write-Error $_.Exception
-    Write-ToConsole "...Disconnecting from vCenter Server $vcenter"
-    Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
-    Exit -1
-}
-
-# SSH AcceptEnv
-Try{
-    If($ESXI70000024){
-        $VULID = "V-239279"
-        $STIGID = "ESXI-70-000024"
-        $Title = "The ESXi host SSH daemon must not accept environment variables from the client."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
