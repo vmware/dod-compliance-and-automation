@@ -263,10 +263,10 @@ Catch
 
 ## DCUI.Access
 Try{
+	$VULID = "V-239259"
+	$STIGID = "ESXI-70-000002"
+	$Title = "The ESXi host must verify the DCUI.Access list."
     If($ESXI70000002){
-        $VULID = "V-239259"
-        $STIGID = "ESXI-70-000002"
-        $Title = "The ESXi host must verify the DCUI.Access list."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.DCUIAccess.Keys
@@ -299,10 +299,10 @@ Catch{
 
 ## Lockdown Exception Users
 Try{
+	$VULID = "V-239260"
+	$STIGID = "ESXI-70-000003"
+	$Title = "The ESXi host must verify the exception users list for lockdown mode."
     If($ESXI70000003){
-        $VULID = "V-239260"
-        $STIGID = "ESXI-70-000003"
-        $Title = "The ESXi host must verify the exception users list for lockdown mode."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhostv in $vmhostsv){
             $lockdown = Get-View $vmhostv.ConfigManager.HostAccessManager
@@ -328,10 +328,10 @@ Catch{
 
 ## Syslog
 Try{
+	$VULID = "V-239261"
+	$STIGID = "ESXI-70-000004"
+	$Title = "Remote logging for ESXi hosts must be configured."
     If($ESXI70000004){
-        $VULID = "V-239261"
-        $STIGID = "ESXI-70-000004"
-        $Title = "Remote logging for ESXi hosts must be configured."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         If($logInsight){
             Write-ToConsole "...Log Insight used to manage syslog skipping this control"
@@ -368,10 +368,10 @@ Catch{
 
 ## Account Lock Failures
 Try{
+	$VULID = "V-239262"
+	$STIGID = "ESXI-70-000005"
+	$Title = "The ESXi host must enforce the limit of three consecutive invalid logon attempts by a user."
     If($ESXI70000005){
-        $VULID = "V-239262"
-        $STIGID = "ESXI-70-000005"
-        $Title = "The ESXi host must enforce the limit of three consecutive invalid logon attempts by a user."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.accountLockFailures.Keys
@@ -404,10 +404,10 @@ Catch{
 
 ## Account Unlock Timeout
 Try{
+	$VULID = "V-239263"
+	$STIGID = "ESXI-70-000006"
+	$Title = "The ESXi host must enforce the unlock timeout of 15 minutes after a user account is locked out."
     If($ESXI70000006){
-        $VULID = "V-239263"
-        $STIGID = "ESXI-70-000006"
-        $Title = "The ESXi host must enforce the unlock timeout of 15 minutes after a user account is locked out."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.accountUnlockTime.Keys
@@ -440,10 +440,10 @@ Catch{
 
 ## Welcome banner
 Try{
+	$VULID = "V-239264"
+	$STIGID = "ESXI-70-000007"
+	$Title = "The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system."
     If($ESXI70000007){
-        $VULID = "V-239264"
-        $STIGID = "ESXI-70-000007"
-        $Title = "The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -469,10 +469,10 @@ Catch{
 
 ## /etc/issue Banner
 Try{
+	$VULID = "V-239265"
+	$STIGID = "ESXI-70-000008"
+	$Title = "The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system."
     If($ESXI70000008){
-        $VULID = "V-239265"
-        $STIGID = "ESXI-70-000008"
-        $Title = "The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -498,10 +498,10 @@ Catch{
 
 ## SSH Banner
 Try{
+	$VULID = "V-239266"
+	$STIGID = "ESXI-70-000009"
+	$Title = "The ESXi host SSH daemon must be configured with the DoD logon banner."
     If($ESXI70000009){
-        $VULID = "V-239266"
-        $STIGID = "ESXI-70-000009"
-        $Title = "The ESXi host SSH daemon must be configured with the DoD logon banner."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -527,10 +527,10 @@ Catch{
 
 ## SSH Ciphers
 Try{
+	$VULID = "V-239267"
+	$STIGID = "ESXI-70-000010"
+	$Title = "The ESXi host SSH daemon must use DoD-approved encryption to protect the confidentiality of remote access sessions."
     If($ESXI70000010){
-        $VULID = "V-239267"
-        $STIGID = "ESXI-70-000010"
-        $Title = "The ESXi host SSH daemon must use DoD-approved encryption to protect the confidentiality of remote access sessions."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -559,10 +559,10 @@ Catch{
 
 ## SSH .rhosts
 Try{
+	$VULID = "V-239268"
+	$STIGID = "ESXI-70-000012"
+	$Title = "The ESXi host SSH daemon must ignore .rhosts files."
     If($ESXI70000012){
-        $VULID = "V-239268"
-        $STIGID = "ESXI-70-000012"
-        $Title = "The ESXi host SSH daemon must ignore .rhosts files."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -588,10 +588,10 @@ Catch{
 
 ## SSH hostbasedauth
 Try{
+	$VULID = "V-239269"
+	$STIGID = "ESXI-70-000013"
+	$Title = "The ESXi host SSH daemon must not allow host-based authentication."
     If($ESXI70000013){
-        $VULID = "V-239269"
-        $STIGID = "ESXI-70-000013"
-        $Title = "The ESXi host SSH daemon must not allow host-based authentication."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -617,10 +617,10 @@ Catch{
 
 ## SSH PermitRootLogin
 Try{
+	$VULID = "V-239270"
+	$STIGID = "ESXI-70-000014"
+	$Title = "The ESXi host SSH daemon must not permit root logins."
     If($ESXI70000014){
-        $VULID = "V-239270"
-        $STIGID = "ESXI-70-000014"
-        $Title = "The ESXi host SSH daemon must not permit root logins."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -650,10 +650,10 @@ Catch{
 
 ## SSH PermitEmptyPasswords
 Try{
+	$VULID = "V-239271"
+	$STIGID = "ESXI-70-000015"
+	$Title = "The ESXi host SSH daemon must not allow authentication using an empty password."
     If($ESXI70000015){
-        $VULID = "V-239271"
-        $STIGID = "ESXI-70-000015"
-        $Title = "The ESXi host SSH daemon must not allow authentication using an empty password."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -679,10 +679,10 @@ Catch{
 
 ## SSH PermitUserEnvironment
 Try{
+	$VULID = "V-239272"
+	$STIGID = "ESXI-70-000016"
+	$Title = "The ESXi host SSH daemon must not permit user environment settings."
     If($ESXI70000016){
-        $VULID = "V-239272"
-        $STIGID = "ESXI-70-000016"
-        $Title = "The ESXi host SSH daemon must not permit user environment settings."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -708,10 +708,10 @@ Catch{
 
 # SSH StrictMode
 Try{
+	$VULID = "V-239275"
+	$STIGID = "ESXI-70-000020"
+	$Title = "The ESXi host SSH daemon must perform strict mode checking of home directory configuration files."
     If($ESXI70000020){
-        $VULID = "V-239275"
-        $STIGID = "ESXI-70-000020"
-        $Title = "The ESXi host SSH daemon must perform strict mode checking of home directory configuration files."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -737,10 +737,10 @@ Catch{
 
 # SSH Compression
 Try{
+	$VULID = "V-239276"
+	$STIGID = "ESXI-70-000021"
+	$Title = "The ESXi host SSH daemon must not allow compression or must only allow compression after successful authentication."
     If($ESXI70000021){
-        $VULID = "V-239276"
-        $STIGID = "ESXI-70-000021"
-        $Title = "The ESXi host SSH daemon must not allow compression or must only allow compression after successful authentication."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -766,10 +766,10 @@ Catch{
 
 # SSH Gateway Ports
 Try{
+	$VULID = "V-239277"
+	$STIGID = "ESXI-70-000022"
+	$Title = "The ESXi host SSH daemon must be configured to not allow gateway ports."
     If($ESXI70000022){
-        $VULID = "V-239277"
-        $STIGID = "ESXI-70-000022"
-        $Title = "The ESXi host SSH daemon must be configured to not allow gateway ports."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -795,10 +795,10 @@ Catch{
 
 # SSH X11
 Try{
+	$VULID = "V-239278"
+	$STIGID = "ESXI-70-000023"
+	$Title = "The ESXi host SSH daemon must be configured to not allow X11 forwarding."
     If($ESXI70000023){
-        $VULID = "V-239278"
-        $STIGID = "ESXI-70-000023"
-        $Title = "The ESXi host SSH daemon must be configured to not allow X11 forwarding."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -824,10 +824,10 @@ Catch{
 
 # SSH PermitTunnel
 Try{
+	$VULID = "V-239280"
+	$STIGID = "ESXI-70-000025"
+	$Title = "The ESXi host SSH daemon must not permit tunnels."
     If($ESXI70000025){
-        $VULID = "V-239280"
-        $STIGID = "ESXI-70-000025"
-        $Title = "The ESXi host SSH daemon must not permit tunnels."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -853,10 +853,10 @@ Catch{
 
 # SSH ClientAliveCount
 Try{
+	$VULID = "V-239281"
+	$STIGID = "ESXI-70-000026"
+	$Title = "The ESXi host SSH daemon must set a timeout count on idle sessions."
     If($ESXI70000026){
-        $VULID = "V-239281"
-        $STIGID = "ESXI-70-000026"
-        $Title = "The ESXi host SSH daemon must set a timeout count on idle sessions."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -882,10 +882,10 @@ Catch{
 
 # SSH ClientAliveInterval
 Try{
+	$VULID = "V-239282"
+	$STIGID = "ESXI-70-000027"
+	$Title = "The ESXi host SSH daemon must set a timeout interval on idle sessions."
     If($ESXI70000027){
-        $VULID = "V-239282"
-        $STIGID = "ESXI-70-000027"
-        $Title = "The ESXi host SSH daemon must set a timeout interval on idle sessions."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -911,10 +911,10 @@ Catch{
 
 ## Log Level
 Try{
+	$VULID = "V-239285"
+	$STIGID = "ESXI-70-000030"
+	$Title = "The ESXi host must produce audit records containing information to establish what type of events occurred."
     If($ESXI70000030){
-        $VULID = "V-239285"
-        $STIGID = "ESXI-70-000030"
-        $Title = "The ESXi host must produce audit records containing information to establish what type of events occurred."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.logLevel.Keys
@@ -947,10 +947,10 @@ Catch{
 
 # Password Complexity
 Try{
+	$VULID = "V-239286"
+	$STIGID = "ESXI-70-000031"
+	$Title = "The ESXi host must enforce password complexity by requiring that at least one upper-case character be used."
     If($ESXI70000031){
-        $VULID = "V-239286"
-        $STIGID = "ESXI-70-000031"
-        $Title = "The ESXi host must enforce password complexity by requiring that at least one upper-case character be used."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.passwordComplexity.Keys
@@ -983,10 +983,10 @@ Catch{
 
 # Password Reuse
 Try{
+	$VULID = "V-239287"
+	$STIGID = "ESXI-70-000032"
+	$Title = "The ESXi host must prohibit the reuse of passwords within five iterations."
     If($ESXI70000032){
-        $VULID = "V-239287"
-        $STIGID = "ESXI-70-000032"
-        $Title = "The ESXi host must prohibit the reuse of passwords within five iterations."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.passwordHistory.Keys
@@ -1019,10 +1019,10 @@ Catch{
 
 # Password Hashes
 Try{
+	$VULID = "V-239288"
+	$STIGID = "ESXI-70-000033"
+	$Title = "The password hashes stored on the ESXi host must have been generated using a FIPS 140-2 approved cryptographic hashing algorithm."
     If($ESXI70000033){
-        $VULID = "V-239288"
-        $STIGID = "ESXI-70-000033"
-        $Title = "The password hashes stored on the ESXi host must have been generated using a FIPS 140-2 approved cryptographic hashing algorithm."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -1048,10 +1048,10 @@ Exit -1
 
 ## MOB
 Try{
+	$VULID = "V-239289"
+	$STIGID = "ESXI-70-000034"
+	$Title = "The ESXi host must disable the Managed Object Browser (MOB)."
     If($ESXI70000034){
-        $VULID = "V-239289"
-        $STIGID = "ESXI-70-000034"
-        $Title = "The ESXi host must disable the Managed Object Browser (MOB)."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.enableMob.Keys
@@ -1084,10 +1084,10 @@ Catch{
 
 ## SSH Disabled
 Try{
+	$VULID = "V-239290"
+	$STIGID = "ESXI-70-000035"
+	$Title = "The ESXi host must be configured to disable non-essential capabilities by disabling SSH."
     If($ESXI70000035){
-        $VULID = "V-239290"
-        $STIGID = "ESXI-70-000035"
-        $Title = "The ESXi host must be configured to disable non-essential capabilities by disabling SSH."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $servicename = "SSH"
         ForEach($vmhost in $vmhosts){
@@ -1119,10 +1119,10 @@ Catch{
 
 ## Shell Disabled
 Try{
+	$VULID = "V-239291"
+	$STIGID = "ESXI-70-000036"
+	$Title = "The ESXi host must disable ESXi Shell unless needed for diagnostics or troubleshooting."
     If($ESXI70000036){
-        $VULID = "V-239291"
-        $STIGID = "ESXI-70-000036"
-        $Title = "The ESXi host must disable ESXi Shell unless needed for diagnostics or troubleshooting."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $servicename = "ESXi Shell"
         ForEach($vmhost in $vmhosts){
@@ -1154,10 +1154,10 @@ Catch{
 
 # Active Directory
 Try{
+	$VULID = "V-239292"
+	$STIGID = "ESXI-70-000037"
+	$Title = "The ESXi host must use Active Directory for local user authentication."
     If($ESXI70000037){
-        $VULID = "V-239292"
-        $STIGID = "ESXI-70-000037"
-        $Title = "The ESXi host must use Active Directory for local user authentication."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -1174,10 +1174,10 @@ Catch{
 
 # Active Directory
 Try{
+	$VULID = "V-239293"
+	$STIGID = "ESXI-70-000038"
+	$Title = "The ESXi host must use the vSphere Authentication Proxy to protect passwords when adding ESXi hosts to Active Directory."
     If($ESXI70000038){
-        $VULID = "V-239293"
-        $STIGID = "ESXI-70-000038"
-        $Title = "The ESXi host must use the vSphere Authentication Proxy to protect passwords when adding ESXi hosts to Active Directory."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -1194,10 +1194,10 @@ Catch{
 
 ## ESXi Admins
 Try{
+	$VULID = "V-239294"
+	$STIGID = "ESXI-70-000039"
+	$Title = "Active Directory ESX Admin group membership must not be used when adding ESXi hosts to Active Directory."
     If($ESXI70000039){
-        $VULID = "V-239294"
-        $STIGID = "ESXI-70-000039"
-        $Title = "Active Directory ESX Admin group membership must not be used when adding ESXi hosts to Active Directory."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.esxAdminsGroup.Keys
@@ -1230,10 +1230,10 @@ Catch{
 
 ## Shell Interactive Timeout
 Try{
+	$VULID = "V-239296"
+	$STIGID = "ESXI-70-000041"
+	$Title = "The ESXi host must set a timeout to automatically disable idle shell sessions after two minutes."
     If($ESXI70000041){
-        $VULID = "V-239296"
-        $STIGID = "ESXI-70-000041"
-        $Title = "The ESXi host must set a timeout to automatically disable idle shell sessions after two minutes."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.shellIntTimeout.Keys
@@ -1266,10 +1266,10 @@ Catch{
 
 ## Shell Timeout
 Try{
+	$VULID = "V-239297"
+	$STIGID = "ESXI-70-000042"
+	$Title = "The ESXi host must terminate shell services after 10 minutes."
     If($ESXI70000042){
-        $VULID = "V-239297"
-        $STIGID = "ESXI-70-000042"
-        $Title = "The ESXi host must terminate shell services after 10 minutes."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.shellTimeout.Keys
@@ -1302,10 +1302,10 @@ Catch{
 
 ## DCUI Timeout
 Try{
+	$VULID = "V-239298"
+	$STIGID = "ESXI-70-000043"
+	$Title = "The ESXi host must log out of the console UI after two minutes."
     If($ESXI70000043){
-        $VULID = "V-239298"
-        $STIGID = "ESXI-70-000043"
-        $Title = "The ESXi host must log out of the console UI after two minutes."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.DcuiTimeOut.Keys
@@ -1338,10 +1338,10 @@ Catch{
 
 # Log Persistent Location
 Try{
+	$VULID = "V-239300"
+	$STIGID = "ESXI-70-000045"
+	$Title = "The ESXi host must enable a persistent log location for all locally stored logs."
     If($ESXI70000045){
-        $VULID = "V-239300"
-        $STIGID = "ESXI-70-000045"
-        $Title = "The ESXi host must enable a persistent log location for all locally stored logs."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.syslogScratch.Keys
@@ -1374,10 +1374,10 @@ Catch{
 
 # NTP
 Try{
+	$VULID = "V-239301"
+	$STIGID = "ESXI-70-000046"
+	$Title = "The ESXi host must configure NTP time synchronization."
     If($ESXI70000046){
-        $VULID = "V-239301"
-        $STIGID = "ESXI-70-000046"
-        $Title = "The ESXi host must configure NTP time synchronization."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $currentntp = $vmhost.ExtensionData.Config.DateTimeInfo.ntpconfig.server
@@ -1416,10 +1416,10 @@ Catch{
 
 # VIB Acceptance
 Try{
+	$VULID = "V-239302"
+	$STIGID = "ESXI-70-000047"
+	$Title = "The ESXi Image Profile and vSphere Installation Bundle (VIB) Acceptance Levels must be verified."
     If($ESXI70000047){
-        $VULID = "V-239302"
-        $STIGID = "ESXI-70-000047"
-        $Title = "The ESXi Image Profile and vSphere Installation Bundle (VIB) Acceptance Levels must be verified."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -1448,10 +1448,10 @@ Catch{
 
 # vMotion Separation
 Try{
+	$VULID = "V-239303"
+	$STIGID = "ESXI-70-000048"
+	$Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by isolating vMotion traffic."
     If($ESXI70000048){
-        $VULID = "V-239303"
-        $STIGID = "ESXI-70-000048"
-        $Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by isolating vMotion traffic."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $vmks = $vmhost | Get-VMHostNetworkAdapter -VMKernel
@@ -1478,10 +1478,10 @@ Catch{
 
 # Management Separation
 Try{
+	$VULID = "V-239304"
+	$STIGID = "ESXI-70-000049"
+	$Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by protecting ESXi management traffic."
     If($ESXI70000049){
-        $VULID = "V-239304"
-        $STIGID = "ESXI-70-000049"
-        $Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by protecting ESXi management traffic."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -1498,10 +1498,10 @@ Catch{
 
 # Storage Separation
 Try{
+	$VULID = "V-239305"
+	$STIGID = "ESXI-70-000050"
+	$Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by protecting IP based management traffic."
     If($ESXI70000050){
-        $VULID = "V-239305"
-        $STIGID = "ESXI-70-000050"
-        $Title = "The ESXi host must protect the confidentiality and integrity of transmitted information by protecting IP based management traffic."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -1518,10 +1518,10 @@ Catch{
 
 # SNMP
 Try{
+	$VULID = "V-239307"
+	$STIGID = "ESXI-70-000053"
+	$Title = "SNMP must be configured properly on the ESXi host."
     If($ESXI70000053){
-        $VULID = "V-239307"
-        $STIGID = "ESXI-70-000053"
-        $Title = "SNMP must be configured properly on the ESXi host."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         #Get/Set-VMhostSnmp only works when connected directly to an ESXi host.
     }
@@ -1539,10 +1539,10 @@ Catch{
 
 # iSCSI CHAP
 Try{
+	$VULID = "V-239308"
+	$STIGID = "ESXI-70-000054"
+	$Title = "The ESXi host must enable bidirectional CHAP authentication for iSCSI traffic."
     If($ESXI70000054){
-        $VULID = "V-239308"
-        $STIGID = "ESXI-70-000054"
-        $Title = "The ESXi host must enable bidirectional CHAP authentication for iSCSI traffic."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -1559,10 +1559,10 @@ Catch{
 
 # Page Sharing
 Try{
+	$VULID = "V-239309"
+	$STIGID = "ESXI-70-000055"
+	$Title = "The ESXi host must disable Inter-VM transparent page sharing."
     If($ESXI70000055){
-        $VULID = "V-239309"
-        $STIGID = "ESXI-70-000055"
-        $Title = "The ESXi host must disable Inter-VM transparent page sharing."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.ShareForceSalting.Keys
@@ -1595,10 +1595,10 @@ Catch{
 
 # Firewall Rules
 Try{
+	$VULID = "V-239310"
+	$STIGID = "ESXI-70-000056"
+	$Title = "The ESXi host must configure the firewall to restrict access to services running on the host."
     If($ESXI70000056){
-        $VULID = "V-239310"
-        $STIGID = "ESXI-70-000056"
-        $Title = "The ESXi host must configure the firewall to restrict access to services running on the host."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             #vSphere Web Client, VMware vCenter Agent, and the Dell VxRail services are excluded from the script due to the order PowerCLI does firewall rules which removes all allowed IPs briefly before setting new allowed ranges which breaks connectivity from vCenter to ESXi so these must be manually done.
@@ -1646,10 +1646,10 @@ Catch{
 
 # Default Firewall Policy
 Try{
+	$VULID = "V-239311"
+	$STIGID = "ESXI-70-000057"
+	$Title = "The ESXi host must configure the firewall to block network traffic by default."
     If($ESXI70000057){
-        $VULID = "V-239311"
-        $STIGID = "ESXI-70-000057"
-        $Title = "The ESXi host must configure the firewall to block network traffic by default."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $results = $vmhost | Get-VMHostFirewallDefaultPolicy
@@ -1675,10 +1675,10 @@ Catch{
 
 # Page Sharing
 Try{
+	$VULID = "V-239312"
+	$STIGID = "ESXI-70-000058"
+	$Title = "The ESXi host must enable BPDU filter on the host to prevent being locked out of physical switch ports with Portfast and BPDU Guard enabled."
     If($ESXI70000058){
-        $VULID = "V-239312"
-        $STIGID = "ESXI-70-000058"
-        $Title = "The ESXi host must enable BPDU filter on the host to prevent being locked out of physical switch ports with Portfast and BPDU Guard enabled."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.BlockGuestBPDU.Keys
@@ -1711,10 +1711,10 @@ Catch{
 
 # Forged Transmits
 Try{
+	$VULID = "V-239313"
+	$STIGID = "ESXI-70-000059"
+	$Title = "The virtual switch Forged Transmits policy must be set to reject on the ESXi host."
     If($ESXI70000059){
-        $VULID = "V-239313"
-        $STIGID = "ESXI-70-000059"
-        $Title = "The virtual switch Forged Transmits policy must be set to reject on the ESXi host."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $switches = Get-VirtualSwitch -VMHost $vmhost -Standard
@@ -1757,10 +1757,10 @@ Catch{
 
 # MAC Changes
 Try{
+	$VULID = "V-239314"
+	$STIGID = "ESXI-70-000060"
+	$Title = "The virtual switch MAC Address Change policy must be set to reject on the ESXi host."
     If($ESXI70000060){
-        $VULID = "V-239314"
-        $STIGID = "ESXI-70-000060"
-        $Title = "The virtual switch MAC Address Change policy must be set to reject on the ESXi host."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $switches = Get-VirtualSwitch -VMHost $vmhost -Standard
@@ -1803,10 +1803,10 @@ Catch{
 
 # Promiscious Mode
 Try{
+	$VULID = "V-239315"
+	$STIGID = "ESXI-70-000061"
+	$Title = "The virtual switch Promiscuous Mode policy must be set to reject on the ESXi host."
     If($ESXI70000061){
-        $VULID = "V-239315"
-        $STIGID = "ESXI-70-000061"
-        $Title = "The virtual switch Promiscuous Mode policy must be set to reject on the ESXi host."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $switches = Get-VirtualSwitch -VMHost $vmhost -Standard
@@ -1849,10 +1849,10 @@ Catch{
 
 # DVFilter IP Addresses
 Try{
+	$VULID = "V-239316"
+	$STIGID = "ESXI-70-000062"
+	$Title = "The ESXi host must prevent unintended use of the dvFilter network APIs."
     If($ESXI70000062){
-        $VULID = "V-239316"
-        $STIGID = "ESXI-70-000062"
-        $Title = "The ESXi host must prevent unintended use of the dvFilter network APIs."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.DVFilterBindIpAddress.Keys
@@ -1885,10 +1885,10 @@ Catch{
 
 # VLAN IDs
 Try{
+	$VULID = "V-239317"
+	$STIGID = "ESXI-70-000063"
+	$Title = "For the ESXi host all port groups must be configured to a value other than that of the native VLAN."
     If($ESXI70000063){
-        $VULID = "V-239317"
-        $STIGID = "ESXI-70-000063"
-        $Title = "For the ESXi host all port groups must be configured to a value other than that of the native VLAN."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $switches = Get-VirtualSwitch -VMHost $vmhost -Standard
@@ -1920,10 +1920,10 @@ Catch{
 
 # VLAN Trunk
 Try{
+	$VULID = "V-239318"
+	$STIGID = "ESXI-70-000064"
+	$Title = "For the ESXi host all port groups must not be configured to VLAN 4095 unless Virtual Guest Tagging (VGT) is required."
     If($ESXI70000064){
-        $VULID = "V-239318"
-        $STIGID = "ESXI-70-000064"
-        $Title = "For the ESXi host all port groups must not be configured to VLAN 4095 unless Virtual Guest Tagging (VGT) is required."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $switches = Get-VirtualSwitch -VMHost $vmhost -Standard
@@ -1955,10 +1955,10 @@ Catch{
 
 # Reserved VLANs
 Try{
+	$VULID = "V-239319"
+	$STIGID = "ESXI-70-000065"
+	$Title = "For the ESXi host all port groups must not be configured to VLAN values reserved by upstream physical switches."
     If($ESXI70000065){
-        $VULID = "V-239319"
-        $STIGID = "ESXI-70-000065"
-        $Title = "For the ESXi host all port groups must not be configured to VLAN values reserved by upstream physical switches."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $switches = Get-VirtualSwitch -VMHost $vmhost -Standard
@@ -1990,10 +1990,10 @@ Catch{
 
 # CIM User
 Try{
+	$VULID = "V-239323"
+	$STIGID = "ESXI-70-000070"
+	$Title = "The ESXi host must not provide root/administrator level access to CIM-based hardware monitoring tools or other third-party applications."
     If($ESXI70000070){
-        $VULID = "V-239323"
-        $STIGID = "ESXI-70-000070"
-        $Title = "The ESXi host must not provide root/administrator level access to CIM-based hardware monitoring tools or other third-party applications."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -2010,10 +2010,10 @@ Catch{
 
 # ESXi Patches
 Try{
+	$VULID = "V-239325"
+	$STIGID = "ESXI-70-000072"
+	$Title = "The ESXi host must have all security patches and updates installed."
     If($ESXI70000072){
-        $VULID = "V-239325"
-        $STIGID = "ESXI-70-000072"
-        $Title = "The ESXi host must have all security patches and updates installed."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $build = $vmhost.ExtensionData.Config.Product.build
@@ -2038,10 +2038,10 @@ Catch{
 
 # TLS 1.2 
 Try{
+	$VULID = "V-239326"
+	$STIGID = "ESXI-70-000074"
+	$Title = "The ESXi host must exclusively enable TLS 1.2 for all endpoints."
     If($ESXI70000074){
-        $VULID = "V-239326"
-        $STIGID = "ESXI-70-000074"
-        $Title = "The ESXi host must exclusively enable TLS 1.2 for all endpoints."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.sslProtocols.Keys
@@ -2074,10 +2074,10 @@ Catch{
 
 # Secure Boot
 Try{
+	$VULID = "V-239327"
+	$STIGID = "ESXI-70-000076"
+	$Title = "The ESXi host must enable Secure Boot."
     If($ESXI70000076){
-        $VULID = "V-239327"
-        $STIGID = "ESXI-70-000076"
-        $Title = "The ESXi host must enable Secure Boot."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -2094,10 +2094,10 @@ Catch{
 
 # Replace Certs
 Try{
+	$VULID = "V-239328"
+	$STIGID = "ESXI-70-000078"
+	$Title = "The ESXi host must use DoD-approved certificates."
     If($ESXI70000078){
-        $VULID = "V-239328"
-        $STIGID = "ESXI-70-000078"
-        $Title = "The ESXi host must use DoD-approved certificates."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -2114,10 +2114,10 @@ Catch{
 
 # Suppress Shell Warning 
 Try{
+	$VULID = "V-239329"
+	$STIGID = "ESXI-70-000079"
+	$Title = "The ESXi host must not suppress warnings that the local or remote shell sessions are enabled."
     If($ESXI70000079){
-        $VULID = "V-239329"
-        $STIGID = "ESXI-70-000079"
-        $Title = "The ESXi host must not suppress warnings that the local or remote shell sessions are enabled."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.suppressShellWarning.Keys
@@ -2150,10 +2150,10 @@ Catch{
 
 ## Execute Approved VIBs
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000080"
+	$Title = "The ESXi host must only run executables from approved VIBs."
     If($ESXI70000080){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000080"
-        $Title = "The ESXi host must only run executables from approved VIBs."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.executeVibs.Keys
@@ -2186,10 +2186,10 @@ Catch{
 
 ## Suppress Hyperthreading Warning
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000081"
+	$Title = "The ESXi host must not suppress warnings about unmitigated hyperthreading vulnerabilities."
     If($ESXI70000081){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000081"
-        $Title = "The ESXi host must not suppress warnings about unmitigated hyperthreading vulnerabilities."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.suppressHyperWarning.Keys
@@ -2222,10 +2222,10 @@ Catch{
 
 # SSH allowtcpforwardning
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000082"
+	$Title = "The ESXi host SSH daemon must disable port forwarding."
     If($ESXI70000082){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000082"
-        $Title = "The ESXi host SSH daemon must disable port forwarding."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -2251,10 +2251,10 @@ Catch{
 
 ## SLPD Disabled
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000083"
+	$Title = "The ESXi host OpenSLP service must be disabled."
     If($ESXI70000083){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000083"
-        $Title = "The ESXi host OpenSLP service must be disabled."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         $servicename = "slpd"
         ForEach($vmhost in $vmhosts){
@@ -2286,10 +2286,10 @@ Catch{
 
 ## Syslog Cert Check
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000086"
+	$Title = "The ESXi host must verify certificates for SSL syslog endpoints."
     If($ESXI70000086){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000086"
-        $Title = "The ESXi host must verify certificates for SSL syslog endpoints."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.syslogCertCheck.Keys
@@ -2322,10 +2322,10 @@ Catch{
 
 ## API timeout
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000088"
+	$Title = "The ESXi host must configure a session timeout for the vSphere API."
     If($ESXI70000088){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000088"
-        $Title = "The ESXi host must configure a session timeout for the vSphere API."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.apiTimeout.Keys
@@ -2358,10 +2358,10 @@ Catch{
 
 ## Host Client timeout
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000089"
+	$Title = "The ESXi Host Client must be configured with a session timeout."
     If($ESXI70000089){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000089"
-        $Title = "The ESXi Host Client must be configured with a session timeout."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.hostClientTimeout.Keys
@@ -2394,10 +2394,10 @@ Catch{
 
 ## Rhttpproxy FIPs
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000090"
+	$Title = "The ESXi host rhttpproxy daemon must use FIPS 140-2 validated cryptographic modules to protect the confidentiality of remote access sessions."
     If($ESXI70000090){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000090"
-        $Title = "The ESXi host rhttpproxy daemon must use FIPS 140-2 validated cryptographic modules to protect the confidentiality of remote access sessions."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $esxcli = Get-EsxCli -VMHost $vmhost -V2
@@ -2426,10 +2426,10 @@ Catch{
 
 # VM Override
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000092"
+	$Title = "The ESXi host must not be configured to override virtual machine configurations."
     If($ESXI70000092){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000092"
-        $Title = "The ESXi host must not be configured to override virtual machine configurations."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -2446,10 +2446,10 @@ Catch{
 
 # VM Override Logs
 Try{
+	$VULID = "N/A"
+	$STIGID = "ESXI-70-000093"
+	$Title = "The ESXi host must not be configured to override virtual machine logger settings."
     If($ESXI70000093){
-        $VULID = "N/A"
-        $STIGID = "ESXI-70-000093"
-        $Title = "The ESXi host must not be configured to override virtual machine logger settings."
         Write-ToConsole "...!!This control must be remediated manually!! Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
     }
     Else{
@@ -2466,10 +2466,10 @@ Catch{
 
 ## Enable lockdown mode
 Try{
+	$VULID = "V-239258"
+	$STIGID = "ESXI-70-000001"
+	$Title = "Access to the ESXi host must be limited by enabling Lockdown Mode."
     If($ESXI70000001){
-        $VULID = "V-239258"
-        $STIGID = "ESXI-70-000001"
-        $Title = "Access to the ESXi host must be limited by enabling Lockdown Mode."
         Write-ToConsole "...Remediating Vulnerability ID:$VULID STIG ID:$STIGID with Title: $Title"
         ForEach($vmhostv in $vmhostsv){
             If($vmhostv.config.LockdownMode -ne $stigsettings.lockdownlevel){
