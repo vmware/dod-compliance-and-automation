@@ -1,4 +1,4 @@
-control "VCST-67-000007" do
+control 'VCST-67-000007' do
   title "Security Token Service log files must only be modifiable by privileged
 users."
   desc  "Log data is essential in the investigation of events. The accuracy of
@@ -12,6 +12,8 @@ default, but this configuration must be verified.
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # find /storage/log/vmware/sso/ -xdev -type f -a '(' -perm -o+w -o -not
@@ -20,6 +22,8 @@ default, but this configuration must be verified.
     If any files are returned, this is a finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following commands:
 
     # chmod o-w <file>
@@ -32,9 +36,9 @@ default, but this configuration must be verified.
   tag gtitle: 'SRG-APP-000119-WSR-000069'
   tag satisfies: ['SRG-APP-000119-WSR-000069', 'SRG-APP-000120-WSR-000070']
   tag gid: 'V-239658'
-  tag rid: 'SV-239658r679046_rule'
+  tag rid: 'SV-239658r816699_rule'
   tag stig_id: 'VCST-67-000007'
-  tag fix_id: 'F-42850r679045_fix'
+  tag fix_id: 'F-42850r816698_fix'
   tag cci: ['CCI-000163', 'CCI-000164']
   tag nist: ['AU-9', 'AU-9']
 

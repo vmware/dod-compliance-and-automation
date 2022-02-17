@@ -1,5 +1,5 @@
-control "VCST-67-000016" do
-   title "The Security Token Service must not have any symbolic links in the web
+control 'VCST-67-000016' do
+  title "The Security Token Service must not have any symbolic links in the web
 content directory tree."
   desc  "A web server is designed to deliver content and execute scripts or
 applications on the request of a client or user. Containing user requests to
@@ -13,6 +13,8 @@ tree and gaining access to the other directories, including the system root.
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # find /usr/lib/vmware-sso/vmware-sts/webapps/ -type l -ls
@@ -20,6 +22,8 @@ tree and gaining access to the other directories, including the system root.
     If the command produces any output, this is a finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following commands:
 
     Note: Replace <file_name> for the name of any files that were returned.
@@ -32,9 +36,9 @@ tree and gaining access to the other directories, including the system root.
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000087'
   tag gid: 'V-239667'
-  tag rid: 'SV-239667r679073_rule'
+  tag rid: 'SV-239667r816726_rule'
   tag stig_id: 'VCST-67-000016'
-  tag fix_id: 'F-42859r679072_fix'
+  tag fix_id: 'F-42859r816725_fix'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 

@@ -1,4 +1,4 @@
-control "VCST-67-000022" do
+control 'VCST-67-000022' do
   title "The Security Token Service must set the welcome-file node to a default
 web page."
   desc  "Enumeration techniques, such as URL parameter manipulation, rely on
@@ -12,6 +12,8 @@ an \"index.jsp\" (or equivalent) file is one approach to mitigating the
 vulnerability."
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
@@ -29,6 +31,8 @@ s/xmlns=\".*\"//g' | xmllint --xpath '/web-app/welcome-file-list' -
 finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
 
     Add the following section under the <web-apps> node:
@@ -43,9 +47,9 @@ finding.
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000142'
   tag gid: 'V-239673'
-  tag rid: 'SV-239673r679091_rule'
+  tag rid: 'SV-239673r816744_rule'
   tag stig_id: 'VCST-67-000022'
-  tag fix_id: 'F-42865r679090_fix'
+  tag fix_id: 'F-42865r816743_fix'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 

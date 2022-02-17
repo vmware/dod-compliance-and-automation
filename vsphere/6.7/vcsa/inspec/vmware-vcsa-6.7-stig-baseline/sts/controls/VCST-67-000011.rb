@@ -1,4 +1,4 @@
-control "VCST-67-000011" do
+control 'VCST-67-000011' do
   title "The Security Token Service must be configured to limit access to
 internal packages."
   desc  "The \"package.access\" entry in the \"catalina.properties\" file
@@ -13,6 +13,8 @@ maintained.
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # grep \"package.access\"
@@ -27,10 +29,13 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,o
 finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open
 /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties.
 
     Ensure that the \"package.access\" line is configured as follows:
+
 
 package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,org.apache.jasper.
   "
@@ -38,9 +43,9 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,o
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000075'
   tag gid: 'V-239662'
-  tag rid: 'SV-239662r679058_rule'
+  tag rid: 'SV-239662r816711_rule'
   tag stig_id: 'VCST-67-000011'
-  tag fix_id: 'F-42854r679057_fix'
+  tag fix_id: 'F-42854r816710_fix'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 

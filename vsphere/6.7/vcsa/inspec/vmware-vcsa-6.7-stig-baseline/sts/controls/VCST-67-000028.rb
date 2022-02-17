@@ -1,4 +1,4 @@
-control "VCST-67-000028" do
+control 'VCST-67-000028' do
   title "The Security Token Service must be configured with the appropriate
 ports."
   desc  "Web servers provide numerous processes, features, and functionalities
@@ -8,6 +8,8 @@ Service listens on are configured in the \"catalina.properties\" file and must
 be verified as accurate to their shipping state."
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # grep 'bio' /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties
@@ -22,6 +24,8 @@ be verified as accurate to their shipping state."
 finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open
 /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties.
 
@@ -38,9 +42,9 @@ following list:
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000383-WSR-000175'
   tag gid: 'V-239679'
-  tag rid: 'SV-239679r679109_rule'
+  tag rid: 'SV-239679r816762_rule'
   tag stig_id: 'VCST-67-000028'
-  tag fix_id: 'F-42871r679108_fix'
+  tag fix_id: 'F-42871r816761_fix'
   tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']
 

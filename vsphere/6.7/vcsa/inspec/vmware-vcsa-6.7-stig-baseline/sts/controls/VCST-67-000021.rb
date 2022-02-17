@@ -1,4 +1,4 @@
-control "VCST-67-000021" do
+control 'VCST-67-000021' do
   title "The Security Token Service must use the \"setCharacterEncodingFilter\"
 filter."
   desc  "Invalid user input occurs when a user inserts data or characters into
@@ -17,6 +17,8 @@ servlet or static content), the response from a resource, or both.
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
@@ -49,15 +51,19 @@ s/xmlns=\".*\"//g' | xmllint --xpath
         <init-param>
           <param-name>encoding</param-name>
           <param-value>UTF-8</param-value>
-          <param-name>ignore</param-name>
-          <param-value>false</param-value>
         </init-param>
-    <async-supported>true</async-supported>
+        <init-param>
+          <param-name>ignore</param-name>
+          <param-value>true</param-value>
+        </init-param>
+        <async-supported>true</async-supported>
     </filter>
 
     If the output is does not match the expected result, this is a finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
 
     Configure the <web-app> node with the child nodes listed below:
@@ -66,6 +72,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
         <filter-name>setCharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
     <filter>
         <filter-name>setCharacterEncodingFilter</filter-name>
 
@@ -73,19 +80,21 @@ s/xmlns=\".*\"//g' | xmllint --xpath
         <init-param>
           <param-name>encoding</param-name>
           <param-value>UTF-8</param-value>
-          <param-name>ignore</param-name>
-          <param-value>false</param-value>
         </init-param>
-    <async-supported>true</async-supported>
+        <init-param>
+          <param-name>ignore</param-name>
+          <param-value>true</param-value>
+        </init-param>
+        <async-supported>true</async-supported>
     </filter>
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000251-WSR-000157'
   tag gid: 'V-239672'
-  tag rid: 'SV-239672r679088_rule'
+  tag rid: 'SV-239672r816741_rule'
   tag stig_id: 'VCST-67-000021'
-  tag fix_id: 'F-42864r679087_fix'
+  tag fix_id: 'F-42864r816740_fix'
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']
 

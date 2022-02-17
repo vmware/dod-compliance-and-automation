@@ -1,4 +1,4 @@
-control "VCST-67-000006" do
+control 'VCST-67-000006' do
   title "The Security Token Service must generate log records during Java
 startup and shutdown."
   desc  "Logging must be started as soon as possible when a service starts and
@@ -8,6 +8,8 @@ Also, by starting to log immediately after a service starts, it becomes more
 difficult for suspicious activity to go unlogged."
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # grep \"1catalina.org.apache.juli.FileHandler\"
@@ -27,6 +29,8 @@ difficult for suspicious activity to go unlogged."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/logging.properties.
 
     Ensure that the \"handlers\" and \".handlers\" lines are configured as
@@ -49,9 +53,9 @@ follows:
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000089-WSR-000047'
   tag gid: 'V-239657'
-  tag rid: 'SV-239657r679043_rule'
+  tag rid: 'SV-239657r816696_rule'
   tag stig_id: 'VCST-67-000006'
-  tag fix_id: 'F-42849r679042_fix'
+  tag fix_id: 'F-42849r816695_fix'
   tag cci: ['CCI-000169']
   tag nist: ['AU-12 a']
 
