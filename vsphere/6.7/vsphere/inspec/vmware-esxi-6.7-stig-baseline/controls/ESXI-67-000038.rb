@@ -1,4 +1,4 @@
-control "ESXI-67-000038' do
+control "ESXI-67-000038"do
   title "ESXi hosts using Host Profiles and/or Auto Deploy must use the vSphere
 Authentication Proxy to protect passwords when adding themselves to Active
 Directory."
