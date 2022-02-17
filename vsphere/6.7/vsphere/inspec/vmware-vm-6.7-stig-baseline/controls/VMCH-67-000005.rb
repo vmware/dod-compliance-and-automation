@@ -13,10 +13,10 @@ capability to wipe (erase) is available to non-administrative users operating
 within the VMs guest OS."
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Web Client right-click the Virtual Machine and go to Edit
+    From the vSphere Web Client, right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Verify the isolation.tools.diskWiper.disable value is set to
-true.
+\"true\".
 
     or
 
@@ -24,16 +24,16 @@ true.
 server, run the following command:
 
     Get-VM \"VM Name\" | Get-AdvancedSetting -Name
-isolation.tools.diskShrink.disable
+isolation.tools.diskWiper.disable
 
     If the virtual machine advanced setting isolation.tools.diskWiper.disable
 does not exist or is not set to true, this is a finding.
   "
   desc  'fix', "
-    From the vSphere Web Client right-click the Virtual Machine and go to Edit
+    From the vSphere Web Client, right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the isolation.tools.diskWiper.disable value and set it to
-true. If the setting does not exist, add the Name and Value setting at the
+\"true\". If the setting does not exist, add the Name and Value setting at the
 bottom of screen.
 
     Note: The VM must be powered off to configure the advanced settings through
@@ -61,9 +61,9 @@ isolation.tools.diskWiper.disable | Set-AdvancedSetting -Value true
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
   tag gid: 'V-239336'
-  tag rid: 'SV-239336r679557_rule'
+  tag rid: 'SV-239336r816834_rule'
   tag stig_id: 'VMCH-67-000005'
-  tag fix_id: 'F-42528r679556_fix'
+  tag fix_id: 'F-42528r816833_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
