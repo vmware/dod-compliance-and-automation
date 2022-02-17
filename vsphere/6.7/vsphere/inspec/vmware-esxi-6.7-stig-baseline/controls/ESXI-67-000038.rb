@@ -7,6 +7,8 @@ Profiles and/or Auto Deploy, the Active Directory credentials are saved in the
 profile and are transmitted over the network. To avoid having to save Active
 Directory credentials in the Host Profile and to avoid transmitting Active
 Directory credentials over the network, use the vSphere Authentication Proxy.
+
+
   "
   desc  'rationale', ''
   desc  'check', "
@@ -22,7 +24,7 @@ Authentication Proxy to add the host to domain\".
 
     or
 
-    From a PowerCLI command prompt while connected to vCenter, run the
+    From a PowerCLI command prompt while connected to the ESXi host, run the
 following command:
 
     Get-VMHost | Select Name, ` @{N=\"HostProfile\";E={$_ |
@@ -56,7 +58,7 @@ the vSphere Authentication Proxy server.
   tag satisfies: ['SRG-OS-000104-VMM-000500', 'SRG-OS-000109-VMM-000550',
 'SRG-OS-000112-VMM-000560', 'SRG-OS-000113-VMM-000570']
   tag gid: 'V-239293'
-  tag rid: 'SV-239293r674808_rule'
+  tag rid: 'SV-239293r816572_rule'
   tag stig_id: 'ESXI-67-000038'
   tag fix_id: 'F-42485r674807_fix'
   tag cci: ['CCI-000764', 'CCI-000770', 'CCI-001941', 'CCI-001942']
@@ -91,4 +93,3 @@ the vSphere Authentication Proxy server.
   end
 
 end
-
