@@ -6,6 +6,8 @@ privileged users must utilize multifactor authentication to prevent potential
 misuse and compromise of the system.
 
     Note: This feature requires an existing PKI and AD integration.
+
+
   "
   desc  'rationale', ''
   desc  'check', "
@@ -14,7 +16,8 @@ misuse and compromise of the system.
 
     If \"Smart Card Mode\" is \"Disabled\", this is a finding.
 
-    For environments that do have PKI or AD available, this is Not Applicable.
+    For environments that do not have PKI or AD available, this is Not
+Applicable.
   "
   desc  'fix', "
     The following are prerequisites to configuration of smart card
@@ -38,7 +41,7 @@ certificate authority certificates and click \"OK\".
   tag satisfies: ['SRG-OS-000107-VMM-000530', 'SRG-OS-000376-VMM-001520',
 'SRG-OS-000377-VMM-001530', 'SRG-OS-000403-VMM-001640']
   tag gid: 'V-239295'
-  tag rid: 'SV-239295r674814_rule'
+  tag rid: 'SV-239295r816574_rule'
   tag stig_id: 'ESXI-67-000040'
   tag fix_id: 'F-42487r674813_fix'
   tag cci: ['CCI-000767', 'CCI-001953', 'CCI-001954', 'CCI-002470']
@@ -49,4 +52,3 @@ certificate authority certificates and click \"OK\".
   end
 
 end
-
