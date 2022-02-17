@@ -26,20 +26,22 @@ ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/pam.d/system-password with a text editor.
+    Open /etc/applmgmt/appliance/system-password with a text editor.
 
-    Add the following, replacing any existing \"pam_cracklib.so\" line:
+    Comment out any existing \"pam_cracklib.so\" line and add the following:
 
     password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1
 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
+
+    Save and close.
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000078-GPOS-00046'
   tag gid: 'V-239103'
-  tag rid: 'SV-239103r675117_rule'
+  tag rid: 'SV-239103r816617_rule'
   tag stig_id: 'PHTN-67-000031'
-  tag fix_id: 'F-42273r675116_fix'
+  tag fix_id: 'F-42273r816616_fix'
   tag cci: ['CCI-000205']
   tag nist: ['IA-5 (1) (a)']
 

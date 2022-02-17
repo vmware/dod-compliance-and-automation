@@ -1,5 +1,5 @@
 control "PHTN-67-000067" do
-  title "The Photon operating system must configure sshd to use preferred
+  title "The Photon operating system must configure sshd to use FIPS 140-2
 ciphers."
   desc  "Privileged access contains control and configuration information and
 is particularly sensitive, so additional protections are necessary. This is
@@ -21,6 +21,8 @@ software implementing the monitoring port of an Ethernet switch).
 
     The operating system can meet this requirement through leveraging a
 cryptographic module.
+
+
   "
   desc  'rationale', ''
   desc  'check', "
@@ -53,7 +55,7 @@ aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
   tag satisfies: ['SRG-OS-000394-GPOS-00174', 'SRG-OS-000424-GPOS-00188',
 'SRG-OS-000478-GPOS-00223']
   tag gid: 'V-239138'
-  tag rid: 'SV-239138r675222_rule'
+  tag rid: 'SV-239138r816640_rule'
   tag stig_id: 'PHTN-67-000067'
   tag fix_id: 'F-42308r675221_fix'
   tag cci: ['CCI-002421', 'CCI-002450', 'CCI-003123']

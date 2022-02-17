@@ -49,7 +49,12 @@ editor.
   tag cci: ['CCI-001851', 'CCI-002702']
   tag nist: ['AU-4 (1)', 'SI-6 d']
 
-
+describe file('/etc/vmware-syslog/stig-services-auditd.conf') do
+    it { should exist }
+  end
+  describe command('grep -v "^#" /etc/vmware-syslog/stig-services-auditd.conf') do
+    its ('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/audit/audit.log\"\n      Tag=\"auditd\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
+  end
   
 end
 

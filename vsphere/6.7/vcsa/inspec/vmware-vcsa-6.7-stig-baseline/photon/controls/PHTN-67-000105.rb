@@ -16,18 +16,23 @@ provides a vector for amplification attacks."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following commands:
+    Open /etc/sysctl.conf with a text editor.
 
-    # sed -i -e \"/^net.ipv4.icmp_echo_ignore_broadcasts/d\" /etc/sysctl.conf
-    # echo net.ipv4.icmp_echo_ignore_broadcasts=1>>/etc/sysctl.conf
+    Add or update the following line:
+
+    net.ipv4.icmp_echo_ignore_broadcasts=1
+
+    Run the following command to load the new setting:
+
+    # /sbin/sysctl --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: 'V-239176'
-  tag rid: 'SV-239176r675336_rule'
+  tag rid: 'SV-239176r816658_rule'
   tag stig_id: 'PHTN-67-000105'
-  tag fix_id: 'F-42346r675335_fix'
+  tag fix_id: 'F-42346r816657_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

@@ -19,18 +19,23 @@ across the network."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following commands:
+    Open /etc/sysctl.conf with a text editor.
 
-    # sed -i -e \"/^net.ipv4.ip_forward/d\" /etc/sysctl.conf
-    # echo net.ipv4.ip_forward=0>>/etc/sysctl.conf
+    Add or update the following line:
+
+    net.ipv4.ip_forward = 0
+
+    Run the following command to load the new setting:
+
+    # /sbin/sysctl --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: 'V-239183'
-  tag rid: 'SV-239183r675357_rule'
+  tag rid: 'SV-239183r816672_rule'
   tag stig_id: 'PHTN-67-000112'
-  tag fix_id: 'F-42353r675356_fix'
+  tag fix_id: 'F-42353r816671_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
