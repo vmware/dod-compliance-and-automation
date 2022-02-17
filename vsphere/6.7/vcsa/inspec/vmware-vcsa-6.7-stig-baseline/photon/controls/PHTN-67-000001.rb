@@ -1,6 +1,4 @@
-control "PHTN-67-000001" do
-
-					 
+control "PHTN-67-000001" do		 
   title 'The Photon operating system must audit all account creations.'
   desc  "Once an attacker establishes access to a system, the attacker often
 attempts to create a persistent method of reestablishing access. One way to
