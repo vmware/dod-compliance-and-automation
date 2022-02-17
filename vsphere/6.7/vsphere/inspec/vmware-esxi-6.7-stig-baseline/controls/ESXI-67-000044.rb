@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-67-000044' do
   title 'The ESXi host must enable kernel core dumps.'
   desc  "In the event of a system failure, the system must preserve any
