@@ -1,4 +1,4 @@
-control "VCUI-67-000025" do
+control 'VCUI-67-000025' do
   title 'vSphere UI must have the debug option turned off.'
   desc  "Information needed by an attacker to begin looking for possible
 vulnerabilities in a web server includes any information about the web server
@@ -27,7 +27,9 @@ malicious user.
     <init-param>
           <param-name>debug</param-name>
           <param-value>0</param-value>
-        </init-param>
+    </init-param>
+
+    If no lines are returned, this is not a finding.
 
     If the output of the command does not match the expected result, this is a
 finding.
@@ -41,18 +43,18 @@ finding.
 
     Note: The debug setting should look like the following:
 
-                   <init-param>
-                      <param-name>debug</param-name>
-                      <param-value>0</param-value>
-                   </init-param>
+    <init-param>
+        <param-name>debug</param-name>
+        <param-value>0</param-value>
+    </init-param>
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000160'
   tag gid: 'V-239706'
-  tag rid: 'SV-239706r679224_rule'
+  tag rid: 'SV-239706r816777_rule'
   tag stig_id: 'VCUI-67-000025'
-  tag fix_id: 'F-42898r679223_fix'
+  tag fix_id: 'F-42898r816776_fix'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
