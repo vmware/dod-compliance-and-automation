@@ -13,7 +13,10 @@ encrypted. If this finding is set to \"Required\" then vMotions to unsupported
 hosts will fail. This setting must be set to \"Opportunistic\" or \"Required\"."
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Web Client select the Virtual Machine, right click and go
+    Note: If the system does not have vCenter installed and utilizes vMotion,
+then this is Not Applicable.
+
+    From the vSphere Web Client, select the Virtual Machine, right-click and go
 to Edit Settings >> VM Options Tab >> Encryption >> Encrypted vMotion.
 
     or
@@ -49,4 +52,3 @@ Set the value to \"Opportunistic\" or \"Required\"."
   end
 
 end
-
