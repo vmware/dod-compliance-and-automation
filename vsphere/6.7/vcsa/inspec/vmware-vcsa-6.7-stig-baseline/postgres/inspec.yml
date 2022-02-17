@@ -72,3 +72,7 @@ inputs:
   description: VCPG-67-000023
   type: array
   value: ["Etc/UTC","UTC"]
+- name: pg_client_encoding
+  description: VCPG-67-000024
+  type: string
+  value: "UTF8"
