@@ -1,5 +1,5 @@
-control "VCPF-67-000023" do
-  title "Performance Charts must configured to show error pages with minimal
+control 'VCPF-67-000023' do
+  title "Performance Charts must be configured to show error pages with minimal
 information."
   desc  "Web servers will often display error messages to client users,
 including enough information to aid in the debugging of the error. The
@@ -25,8 +25,8 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
 
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
-        <location>/error.jsp</location>
-      </error-page>
+        <location>/http_error.jsp</location>
+    </error-page>
 
     If the output does not match the expected result, this is a finding.
   "
@@ -45,14 +45,14 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000159'
   tag gid: 'V-239424'
-  tag rid: 'SV-239424r674995_rule'
+  tag rid: 'SV-239424r816590_rule'
   tag stig_id: 'VCPF-67-000023'
   tag fix_id: 'F-42616r674994_fix'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
   describe xml("#{input('statswebXmlPath')}") do
-    its(['/web-app/error-page[exception-type="java.lang.Throwable"]/location']) { should cmp '/error.jsp' }
+    its(['/web-app/error-page[exception-type="java.lang.Throwable"]/location']) { should cmp '/http_error.jsp' }
   end
 
 end

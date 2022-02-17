@@ -1,4 +1,4 @@
-control "VCPF-67-000028" do
+control 'VCPF-67-000028' do
   title 'Performance Charts must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
 that use TCP/IP ports. Some of these processes may be deemed unnecessary or too
@@ -21,7 +21,8 @@ verified as accurate to their shipping state."
 finding.
   "
   desc  'fix', "
-    Navigate to and open /etc/vmware-eam/catalina.properties.
+    Navigate to and open
+/usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties.
 
     Navigate to the ports specification section.
 
@@ -34,9 +35,9 @@ finding.
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000383-WSR-000175'
   tag gid: 'V-239429'
-  tag rid: 'SV-239429r675010_rule'
+  tag rid: 'SV-239429r816592_rule'
   tag stig_id: 'VCPF-67-000028'
-  tag fix_id: 'F-42621r675009_fix'
+  tag fix_id: 'F-42621r816591_fix'
   tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']
 
