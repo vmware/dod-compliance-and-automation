@@ -7,8 +7,6 @@ Profiles and/or Auto Deploy, the Active Directory credentials are saved in the
 profile and are transmitted over the network. To avoid having to save Active
 Directory credentials in the Host Profile and to avoid transmitting Active
 Directory credentials over the network, use the vSphere Authentication Proxy.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
