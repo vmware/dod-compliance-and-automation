@@ -5,8 +5,6 @@ log files."
 offloaded from the originating system. This information can then be used for
 diagnostic, forensics, or other purposes relevant to ensuring the availability
 and integrity of the hosted application.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
