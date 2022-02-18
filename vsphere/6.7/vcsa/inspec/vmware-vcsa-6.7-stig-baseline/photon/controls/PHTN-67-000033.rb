@@ -5,8 +5,6 @@ kernel modules."
 operating system must provide only essential capabilities and limit the use of
 modules, protocols, and/or services to only those required for the proper
 functioning of the product.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
