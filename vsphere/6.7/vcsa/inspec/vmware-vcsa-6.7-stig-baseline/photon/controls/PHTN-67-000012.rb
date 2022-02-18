@@ -7,8 +7,6 @@ have compromised information system accounts, is a serious and ongoing concern
 and can have significant adverse impacts on organizations. Auditing all actions
 by superusers is one way to detect such misuse and identify the risk from
 insider threats and the advanced persistent threat.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
