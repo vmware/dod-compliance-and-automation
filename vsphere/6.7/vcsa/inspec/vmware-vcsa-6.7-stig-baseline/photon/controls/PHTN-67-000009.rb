@@ -8,8 +8,6 @@ session.
     OpenSSH on the Photon operating system is compiled with a FIPS-validated
 cryptographic module. The \"FipsMode\" setting controls whether this module is
 initialized and used in FIPS 140-2 mode.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
