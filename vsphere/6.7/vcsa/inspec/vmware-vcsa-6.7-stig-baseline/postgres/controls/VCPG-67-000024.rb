@@ -36,12 +36,11 @@ pg_reload_conf();\"
   tag cci: ['CCI-002754']
   tag nist: ['SI-10 (3)']
 
- sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW client_encoding;"
+  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
+   sqlquery = "SHOW client_encoding;"
   
   describe sql.query(sqlquery) do
    its('output') {should be_in "#{input('pg_client_encoding')}" }
   end
 
 end
-
