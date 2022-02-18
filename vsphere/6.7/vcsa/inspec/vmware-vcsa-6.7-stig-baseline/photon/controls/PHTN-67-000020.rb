@@ -5,8 +5,6 @@ successful/unsuccessful attempts to access privileges occur."
 attempting to gain access to information that would otherwise be disallowed.
 Auditing DAC modifications can facilitate the identification of patterns of
 abuse among both authorized and unauthorized users.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
