@@ -5,8 +5,6 @@ attempts to create a persistent method of reestablishing access. One way to
 accomplish this is for the attacker to modify an existing account. Auditing
 account modification actions provides logging that can be used for forensic
 purposes.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
@@ -56,8 +54,8 @@ following lines:
   describe auditd do
     its("lines") { should include %r{-w /etc/passwd -p wa -k passwd} }
     its("lines") { should include %r{-w /etc/shadow -p wa -k shadow}}
-	its("lines") { should include %r{-w /etc/group -p wa -k group}}
-	its("lines") { should include %r{-w /etc/gshadow -p wa -k gshadow} }
+    its("lines") { should include %r{-w /etc/group -p wa -k group}}
+    its("lines") { should include %r{-w /etc/gshadow -p wa -k gshadow} }
   end
 
 end
