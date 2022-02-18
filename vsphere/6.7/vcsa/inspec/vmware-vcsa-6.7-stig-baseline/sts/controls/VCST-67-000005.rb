@@ -11,8 +11,6 @@ logging. The AccessLogValve creates log files in the same format as those
 created by standard web servers. When AccessLogValve is properly configured,
 log files will contain all the forensic information necessary in the case of a
 security incident.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
