@@ -5,8 +5,6 @@ logs to a central server."
 incidental deletion or alteration. Proper configuration of rsyslog ensures that
 information critical to forensic analysis of security events is available for
 future action without any manual offloading or cron jobs.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
