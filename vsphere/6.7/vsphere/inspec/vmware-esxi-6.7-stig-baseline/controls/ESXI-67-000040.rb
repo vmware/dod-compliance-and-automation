@@ -6,8 +6,6 @@ privileged users must utilize multifactor authentication to prevent potential
 misuse and compromise of the system.
 
     Note: This feature requires an existing PKI and AD integration.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
