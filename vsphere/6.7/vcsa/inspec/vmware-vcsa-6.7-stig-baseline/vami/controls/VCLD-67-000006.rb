@@ -4,8 +4,6 @@ establish what type of events occurred."
   desc  "After a security incident has occurred, investigators will often
 review log files to determine what happened. Understanding what type of event
 occurred is critical for investigation of a suspicious event.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
