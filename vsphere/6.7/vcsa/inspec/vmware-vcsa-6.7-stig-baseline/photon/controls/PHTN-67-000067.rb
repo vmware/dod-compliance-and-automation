@@ -21,8 +21,6 @@ software implementing the monitoring port of an Ethernet switch).
 
     The operating system can meet this requirement through leveraging a
 cryptographic module.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
@@ -66,4 +64,3 @@ aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
   end
 
 end
-
