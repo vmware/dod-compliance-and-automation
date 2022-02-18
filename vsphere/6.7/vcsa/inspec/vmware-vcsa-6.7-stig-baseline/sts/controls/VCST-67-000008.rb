@@ -6,8 +6,6 @@ unchanged from its shipping state is essential for file validation and
 non-repudiation of the Security Token Service. There is no reason the MD5 hash
 of the rpm original files should be changed after installation, excluding
 configuration files.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
