@@ -11,8 +11,6 @@ the complete communication session.
 
     To protect the integrity and confidentiality of the remote sessions, VAMI
 uses SSL/TLS.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
@@ -61,4 +59,3 @@ shell for the account to \"/bin/bash\".
   end
 
 end
-
