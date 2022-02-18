@@ -8,8 +8,6 @@ impossible, to achieve.
     In addition, access to log records provides information an attacker could
 potentially use to their advantage since each event record might contain
 communication ports, protocols, services, trust relationships, user names, etc.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
@@ -58,4 +56,3 @@ root:root
   end
 
 end
-
