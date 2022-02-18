@@ -6,8 +6,6 @@ determine the attacker's location, intent, and degree of success.
 
     VAMI uses the \"mod_accesslog\" module to log information relating to
 remote requests. These logs can then be piped to external monitoring systems.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
@@ -63,4 +61,3 @@ mod_accesslog
   end
 
 end
-
