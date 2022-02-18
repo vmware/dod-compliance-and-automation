@@ -1,4 +1,4 @@
-control "VCST-67-000013" do
+control 'VCST-67-000013' do
   title "The Security Token Service must have mappings set for Java servlet
 pages."
   desc  "Resource mapping is the process of tying a particular file type to a
@@ -15,6 +15,8 @@ properly mapped to servlets.
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
@@ -34,6 +36,8 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
 
     Inside the <web-app> parent node, add the following:
@@ -48,9 +52,9 @@ finding.
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000083'
   tag gid: 'V-239664'
-  tag rid: 'SV-239664r679064_rule'
+  tag rid: 'SV-239664r816717_rule'
   tag stig_id: 'VCST-67-000013'
-  tag fix_id: 'F-42856r679063_fix'
+  tag fix_id: 'F-42856r816716_fix'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 

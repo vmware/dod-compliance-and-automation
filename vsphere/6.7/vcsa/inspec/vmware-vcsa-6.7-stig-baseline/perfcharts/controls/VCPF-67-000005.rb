@@ -1,4 +1,4 @@
-control "VCPF-67-000005" do
+control 'VCPF-67-000005' do
   title "Performance Charts must record user access in a format that enables
 monitoring of remote access."
   desc  "Remote access can be exploited by an attacker to compromise the
@@ -11,41 +11,34 @@ logging. The AccessLogValve creates log files in the same format as those
 created by standard web servers. When AccessLogValve is properly configured,
 log files will contain all the forensic information necessary in the case of a
 security incident.
+
+
   "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
 
     # xmllint --format /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml |
-sed '2 s/xmlns=\".*\"//g' |  xmllint --xpath
+sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
 '/Server/Service/Engine/Host/Valve[@className=\"org.apache.catalina.valves.AccessLogValve\"]'/@pattern
 -
 
     Expected result:
 
     pattern=\"%h %{X-Forwarded-For}i %l %u %t &quot;%r&quot; %s %b
-&quot;%{User-Agent}i&quot;\" resolveHosts=\"false\"
-prefix=\"localhost_access_log\" suffix=\".txt\" />
+&quot;%{User-Agent}i&quot;\"
 
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
     Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml.
 
-    Add the following line at the very top of the <Host> node.
-
-    <Valve className=\"org.apache.catalina.valves.RemoteIpValve\"
-httpServerPort=\"80\" httpsServerPort=\"443\"
-protocolHeader=\"x-forwarded-proto\" proxiesHeader=\"x-forwarded-by\"
-remoteIpHeader=\"x-forwarded-for\" requestAttributesEnabled=\"true\"
-internalProxies=\"127\\.0\\.0\\.1\"/>
-
-    Inside the <Host> node, remove the existing \"AccessLogValve\" <Valve> node
-entirely and replace it with the following line:
+    Inside the <Host> node, add the \"AccessLogValve\" <Valve> node entirely if
+it does not exist or update the existing pattern to match the following line:
 
     <Valve className=\"org.apache.catalina.valves.AccessLogValve\"
 directory=\"${vim.logdir}\" pattern=\"%h %{X-Forwarded-For}i %l %u %t
-&quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;\" resolveHosts=\"false\"
+&quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;\"
 prefix=\"localhost_access_log\" suffix=\".txt\"/>
   "
   impact 0.5
@@ -57,9 +50,9 @@ prefix=\"localhost_access_log\" suffix=\".txt\"/>
 'SRG-APP-000099-WSR-000061', 'SRG-APP-000100-WSR-000064',
 'SRG-APP-000374-WSR-000172', 'SRG-APP-000375-WSR-000171']
   tag gid: 'V-239406'
-  tag rid: 'SV-239406r675021_rule'
+  tag rid: 'SV-239406r816585_rule'
   tag stig_id: 'VCPF-67-000005'
-  tag fix_id: 'F-42598r674940_fix'
+  tag fix_id: 'F-42598r816584_fix'
   tag cci: ['CCI-000067', 'CCI-000130', 'CCI-000131', 'CCI-000132',
 'CCI-000133', 'CCI-000134', 'CCI-001462', 'CCI-001487', 'CCI-001889',
 'CCI-001890']

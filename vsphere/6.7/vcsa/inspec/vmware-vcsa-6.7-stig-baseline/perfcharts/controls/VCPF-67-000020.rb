@@ -1,4 +1,4 @@
-control "VCPF-67-000020" do
+control 'VCPF-67-000020' do
   title 'Performance Charts must use the "setCharacterEncodingFilter" filter.'
   desc  "Invalid user input occurs when a user inserts data or characters into
 a hosted application's data entry field and the hosted application is
@@ -50,16 +50,18 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
         <init-param>
           <param-name>encoding</param-name>
           <param-value>UTF-8</param-value>
-          <param-name>ignore</param-name>
-          <param-value>false</param-value>
         </init-param>
-    <async-supported>true</async-supported>
+        <init-param>
+          <param-name>ignore</param-name>
+          <param-value>true</param-value>
+        </init-param>
+        <async-supported>true</async-supported>
     </filter>
 
     If the output is does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml in a text editor.
+    Open   in a text editor.
 
     Configure the <web-app> node with the child nodes listed below:
 
@@ -75,19 +77,21 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
         <init-param>
           <param-name>encoding</param-name>
           <param-value>UTF-8</param-value>
-          <param-name>ignore</param-name>
-          <param-value>false</param-value>
         </init-param>
-    <async-supported>true</async-supported>
+        <init-param>
+          <param-name>ignore</param-name>
+          <param-value>true</param-value>
+        </init-param>
+        <async-supported>true</async-supported>
     </filter>
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000251-WSR-000157'
   tag gid: 'V-239421'
-  tag rid: 'SV-239421r674986_rule'
+  tag rid: 'SV-239421r816588_rule'
   tag stig_id: 'VCPF-67-000020'
-  tag fix_id: 'F-42613r674985_fix'
+  tag fix_id: 'F-42613r816587_fix'
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']
 
@@ -95,7 +99,7 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
     its('/web-app/filter-mapping[filter-name="setCharacterEncodingFilter"]/url-pattern') { should cmp '/*' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/filter-class') { should cmp 'org.apache.catalina.filters.SetCharacterEncodingFilter' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="encoding"]/param-value') { should cmp 'UTF-8' }
-    its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="ignore"]/param-value') { should cmp 'false' }
+    its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="ignore"]/param-value') { should cmp 'true' }
   end
 
 end

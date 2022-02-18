@@ -1,4 +1,4 @@
-control "VCST-67-000018" do
+control 'VCST-67-000018' do
   title "The Security Token Service must fail to a known safe state if system
 initialization fails, shutdown fails, or aborts fail."
   desc  "Determining a safe state for failure and weighing that against a
@@ -8,6 +8,8 @@ the service abort startup on any initialization failure rather than continuing
 in a degraded and potentially insecure state."
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command line, execute the following command:
 
     # grep EXIT_ON_INIT_FAILURE
@@ -21,6 +23,8 @@ in a degraded and potentially insecure state."
 finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open
 /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties.
 
@@ -32,9 +36,9 @@ finding.
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000225-WSR-000140'
   tag gid: 'V-239669'
-  tag rid: 'SV-239669r679079_rule'
+  tag rid: 'SV-239669r816732_rule'
   tag stig_id: 'VCST-67-000018'
-  tag fix_id: 'F-42861r679078_fix'
+  tag fix_id: 'F-42861r816731_fix'
   tag cci: ['CCI-001190']
   tag nist: ['SC-24']
 

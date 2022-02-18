@@ -1,4 +1,4 @@
-control "VCST-67-000024" do
+control 'VCST-67-000024' do
   title "The Security Token Service must be configured to show error pages with
 minimal information."
   desc  "Web servers will often display error messages to client users,
@@ -11,6 +11,8 @@ might be successful. As such, the Security Token Service must be configured to
 not show server version information in error messages."
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/server.xml | sed '2
@@ -26,6 +28,8 @@ showReport=\"false\" showServerInfo=\"false\"/>
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml.
 
     Locate the following Host block:
@@ -43,9 +47,9 @@ showReport=\"false\" showServerInfo=\"false\" />
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000159'
   tag gid: 'V-239675'
-  tag rid: 'SV-239675r679097_rule'
+  tag rid: 'SV-239675r816750_rule'
   tag stig_id: 'VCST-67-000024'
-  tag fix_id: 'F-42867r679096_fix'
+  tag fix_id: 'F-42867r816749_fix'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 

@@ -21,20 +21,22 @@ retry=3
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    Open /etc/pam.d/system-password with a text editor.
+    Open /etc/applmgmt/appliance/system-password with a text editor.
 
     Add the following line after the last auth statement:
 
     password required pam_pwhistory.so enforce_for_root use_authtok remember=5
 retry=3
+
+    Save and close.
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000077-GPOS-00045'
   tag gid: 'V-239101'
-  tag rid: 'SV-239101r675111_rule'
+  tag rid: 'SV-239101r816615_rule'
   tag stig_id: 'PHTN-67-000029'
-  tag fix_id: 'F-42271r675110_fix'
+  tag fix_id: 'F-42271r816614_fix'
   tag cci: ['CCI-000200']
   tag nist: ['IA-5 (1) (e)']
 

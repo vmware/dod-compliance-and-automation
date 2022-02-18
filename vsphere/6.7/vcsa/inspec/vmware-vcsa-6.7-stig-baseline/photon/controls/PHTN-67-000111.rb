@@ -27,19 +27,28 @@ across the network."
 interfaces. Every \"ethx\" entry must be set to \"0\".
   "
   desc  'fix', "
-    At the command line, execute the following command:
+    Open /etc/sysctl.conf with a text editor.
 
-    # for SETTING in $(/sbin/sysctl -aN --pattern
-\"net.ipv[4|6].conf.(all|default|eth.*).mc_forwarding\"); do sed -i -e
-\"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=0>>/etc/sysctl.conf; done
+    Add or update the following lines:
+
+    net.ipv4.conf.all.mc_forwarding = 0
+    net.ipv4.conf.default.mc_forwarding = 0
+    net.ipv4.conf.eth0.mc_forwarding = 0
+    net.ipv6.conf.all.mc_forwarding = 0
+    net.ipv6.conf.default.mc_forwarding = 0
+    net.ipv6.conf.eth0.mc_forwarding = 0
+
+    Run the following command to load the new setting:
+
+    # /sbin/sysctl --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: 'V-239182'
-  tag rid: 'SV-239182r675354_rule'
+  tag rid: 'SV-239182r816670_rule'
   tag stig_id: 'PHTN-67-000111'
-  tag fix_id: 'F-42352r675353_fix'
+  tag fix_id: 'F-42352r816669_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

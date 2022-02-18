@@ -1,4 +1,4 @@
-control "ESXI-67-000044" do
+control 'ESXI-67-000044' do
   title 'The ESXi host must enable kernel core dumps.'
   desc  "In the event of a system failure, the system must preserve any
 information necessary to determine cause of failure and any information
@@ -25,8 +25,14 @@ whether a network core dump collector is configured and enabled via the
 \"HostVNic\", \"NetworkServerIP\", \"NetworkServerPort\", and \"Enabled\"
 variables.
 
-    If there is no active core dump partition or the network core dump
-collector is not configured and enabled, this is a finding.
+    If there is an active core dump partition, via the second command, this is
+not a finding.
+
+    If there is a network core dump collector configured and enabled, this is
+not a finding.
+
+    If there is no core dump partition and no network core dump collector
+configured, this is a finding.
   "
   desc  'fix', "
     From the vSphere Client, select the ESXi host and right-click. Select the
@@ -69,12 +75,12 @@ enable it
   tag severity: 'low'
   tag gtitle: 'SRG-OS-000269-VMM-000950'
   tag gid: 'V-239299'
-  tag rid: 'SV-239299r674826_rule'
+  tag rid: 'SV-239299r816576_rule'
   tag stig_id: 'ESXI-67-000044'
   tag fix_id: 'F-42491r674825_fix'
   tag cci: ['CCI-001665']
   tag nist: ['SC-24']
-  
+ 
   describe.one do
     
     command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.coredump.partition.get.Invoke() | Select-Object -ExpandProperty Active"

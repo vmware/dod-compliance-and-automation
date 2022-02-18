@@ -34,7 +34,9 @@ functioning of the product.
     install squashfs /bin/false
     install udf /bin/false
 
-    If the output does not match the expected result, this is a finding.
+    The output may include other statements outside of the expected result.
+This is acceptable. If the output does not include at least every statement in
+the expected result, this is a finding.
   "
   desc  'fix', "
     Open /etc/modprobe.d/modprobe.conf with a text editor and set the contents
@@ -65,7 +67,7 @@ as follows:
   tag gtitle: 'SRG-OS-000096-GPOS-00050'
   tag satisfies: ['SRG-OS-000096-GPOS-00050', 'SRG-OS-000114-GPOS-00059']
   tag gid: 'V-239105'
-  tag rid: 'SV-239105r675123_rule'
+  tag rid: 'SV-239105r816619_rule'
   tag stig_id: 'PHTN-67-000033'
   tag fix_id: 'F-42275r675122_fix'
   tag cci: ['CCI-000382', 'CCI-000778']

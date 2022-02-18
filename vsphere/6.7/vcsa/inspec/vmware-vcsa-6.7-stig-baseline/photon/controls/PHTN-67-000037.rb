@@ -11,7 +11,7 @@ enables the system to continue servicing valid connection requests.
   desc  'check', "
     At the command line, execute the following command:
 
-    # /sbin/sysctl -a --pattern /tcp_syncookies
+    # /sbin/sysctl -a --pattern tcp_syncookies
 
     Expected result:
 
@@ -20,19 +20,24 @@ enables the system to continue servicing valid connection requests.
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    At the command line, execute the following commands:
+    Open /etc/sysctl.conf with a text editor.
 
-    # sed -i -e \"/^net.ipv4.tcp_syncookies/d\" /etc/sysctl.conf
-    # echo net.ipv4.tcp_syncookies=1>>/etc/sysctl.conf
+    Add or update the following line:
+
+    net.ipv4.tcp_syncookies=1
+
+    Run the following command to load the new setting:
+
+    # /sbin/sysctl --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000142-GPOS-00071'
   tag satisfies: ['SRG-OS-000142-GPOS-00071', 'SRG-OS-000420-GPOS-00186']
   tag gid: 'V-239109'
-  tag rid: 'SV-239109r675135_rule'
+  tag rid: 'SV-239109r816622_rule'
   tag stig_id: 'PHTN-67-000037'
-  tag fix_id: 'F-42279r675134_fix'
+  tag fix_id: 'F-42279r816621_fix'
   tag cci: ['CCI-001095', 'CCI-002385']
   tag nist: ['SC-5 (2)', 'SC-5']
 

@@ -1,4 +1,4 @@
-control "VCST-67-000002" do
+control 'VCST-67-000002' do
   title "The Security Token Service must limit the number of concurrent
 connections permitted."
   desc  "Resource exhaustion can occur when an unlimited number of concurrent
@@ -15,6 +15,8 @@ threads, additional threads will be created up to the value of the
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/server.xml | sed '2
@@ -28,6 +30,8 @@ s/xmlns=\".*\"//g' | xmllint --xpath
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml.
 
     Navigate to the <Executor> mode with the name of \"tomcatThreadPool\" and
@@ -44,9 +48,9 @@ name=\"tomcatThreadPool\" namePrefix=\"tomcat-http--\" />
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
   tag gid: 'V-239653'
-  tag rid: 'SV-239653r679031_rule'
+  tag rid: 'SV-239653r816684_rule'
   tag stig_id: 'VCST-67-000002'
-  tag fix_id: 'F-42845r679030_fix'
+  tag fix_id: 'F-42845r816683_fix'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 

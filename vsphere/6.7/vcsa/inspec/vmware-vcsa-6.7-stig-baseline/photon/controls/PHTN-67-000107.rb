@@ -24,19 +24,25 @@ could result in a man-in-the-middle attack."
 interfaces. Every \"ethx\" entry must be set to \"0\".
   "
   desc  'fix', "
-    At the command line, execute the following command:
+    Open /etc/sysctl.conf with a text editor.
 
-    # for SETTING in $(/sbin/sysctl -aN --pattern
-\"net.ipv4.conf.(all|default|eth.*).secure_redirects\"); do sed -i -e
-\"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=0>>/etc/sysctl.conf; done
+    Add or update the following lines:
+
+    net.ipv4.conf.all.secure_redirects = 0
+    net.ipv4.conf.default.secure_redirects = 0
+    net.ipv4.conf.eth0.secure_redirects = 0
+
+    Run the following command to load the new setting:
+
+    # /sbin/sysctl --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: 'V-239178'
-  tag rid: 'SV-239178r675342_rule'
+  tag rid: 'SV-239178r816662_rule'
   tag stig_id: 'PHTN-67-000107'
-  tag fix_id: 'F-42348r675341_fix'
+  tag fix_id: 'F-42348r816661_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

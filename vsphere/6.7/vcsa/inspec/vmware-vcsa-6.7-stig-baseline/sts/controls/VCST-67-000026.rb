@@ -1,4 +1,4 @@
-control "VCST-67-000026" do
+control 'VCST-67-000026' do
   title 'The Security Token Service must have the debug option disabled.'
   desc  "Information needed by an attacker to begin looking for possible
 vulnerabilities in a web server includes any information about the web server
@@ -16,6 +16,8 @@ to a malicious user.
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2
@@ -32,9 +34,11 @@ s/xmlns=\".*\"//g' | xmllint --xpath
     If the output of the command does not match the expected result, this is a
 finding.
 
-    If no lines are returned, this is NOT a finding.
+    If no lines are returned, this is not a finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
 
     Navigate to all <debug> nodes that are not set to \"0\".
@@ -52,9 +56,9 @@ finding.
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000160'
   tag gid: 'V-239677'
-  tag rid: 'SV-239677r679103_rule'
+  tag rid: 'SV-239677r816756_rule'
   tag stig_id: 'VCST-67-000026'
-  tag fix_id: 'F-42869r679102_fix'
+  tag fix_id: 'F-42869r816755_fix'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 

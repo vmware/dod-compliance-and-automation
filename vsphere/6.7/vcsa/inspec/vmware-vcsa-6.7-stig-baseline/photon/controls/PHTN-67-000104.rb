@@ -34,19 +34,28 @@ malicious purposes and should therefore be disabled.
 interfaces. Every \"ethx\" entry must be set to \"0\".
   "
   desc  'fix', "
-    At the command line, execute the following command:
+    Open /etc/sysctl.conf with a text editor.
 
-    # for SETTING in $(/sbin/sysctl -aN --pattern
-\"net.ipv[4|6].conf.(all|default|eth.*).accept_source_route\"); do sed -i -e
-\"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=0>>/etc/sysctl.conf; done
+    Add or update the following lines:
+
+    net.ipv4.conf.all.accept_source_route = 0
+    net.ipv4.conf.default.accept_source_route = 0
+    net.ipv4.conf.eth0.accept_source_route = 0
+    net.ipv6.conf.all.accept_source_route = 0
+    net.ipv6.conf.default.accept_source_route = 0
+    net.ipv6.conf.eth0.accept_source_route = 0
+
+    Run the following command to load the new setting:
+
+    # /sbin/sysctl --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: 'V-239175'
-  tag rid: 'SV-239175r675333_rule'
+  tag rid: 'SV-239175r816656_rule'
   tag stig_id: 'PHTN-67-000104'
-  tag fix_id: 'F-42345r675332_fix'
+  tag fix_id: 'F-42345r816655_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

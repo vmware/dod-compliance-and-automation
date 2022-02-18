@@ -17,7 +17,7 @@ initialized and used in FIPS 140-2 mode.
 
     Expected result:
 
-    FipsMode yes
+    fipsmode yes
 
     If the output does not match the expected result, this is a finding.
   "
@@ -39,15 +39,15 @@ initialized and used in FIPS 140-2 mode.
 'SRG-OS-000393-GPOS-00173', 'SRG-OS-000396-GPOS-00176',
 'SRG-OS-000423-GPOS-00187']
   tag gid: 'V-239081'
-  tag rid: 'SV-239081r675051_rule'
+  tag rid: 'SV-239081r816597_rule'
   tag stig_id: 'PHTN-67-000009'
   tag fix_id: 'F-42251r675050_fix'
   tag cci: ['CCI-000068', 'CCI-001453', 'CCI-002418', 'CCI-002450',
 'CCI-002890']
   tag nist: ['AC-17 (2)', 'AC-17 (2)', 'SC-8', 'SC-13', 'MA-4 (6)']
 
-  describe command('sshd -T|&grep -i FipsMode') do
-    its ('stdout.strip') { should cmp 'FipsMode yes' }
+  describe command('sshd -T|&grep -i fipsMode') do
+    its ('stdout.strip') { should cmp 'fipsMode yes' }
   end
 
 end

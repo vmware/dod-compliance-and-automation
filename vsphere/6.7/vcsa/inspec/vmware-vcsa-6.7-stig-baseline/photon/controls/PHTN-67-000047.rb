@@ -17,23 +17,29 @@ removal actions."
     -w /usr/sbin/groupdel -p x -k groupdel
 
     If the output does not match the expected result, this is a finding.
+
+    Note: This check depends on the auditd service to be in a running state for
+accurate results. Enabling the auditd service is done as part of a separate
+control.
   "
   desc  'fix', "
-    At the command line, execute the following commands:
+    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
+following lines:
 
-    # echo '-w /usr/sbin/userdel -p x -k userdel' >>
-/etc/audit/rules.d/audit.STIG.rules
-    # echo '-w /usr/sbin/groupdel -p x -k groupdel' >>
-/etc/audit/rules.d/audit.STIG.rules
-    # /sbin/augenrules --load
+    -w /usr/sbin/userdel -p x -k userdel
+    -w /usr/sbin/groupdel -p x -k groupdel
+
+    At the command line, execute the following command:
+
+    # /sbin/augenrules --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000241-GPOS-00091'
   tag gid: 'V-239118'
-  tag rid: 'SV-239118r675162_rule'
+  tag rid: 'SV-239118r816634_rule'
   tag stig_id: 'PHTN-67-000047'
-  tag fix_id: 'F-42288r675161_fix'
+  tag fix_id: 'F-42288r816633_fix'
   tag cci: ['CCI-001405']
   tag nist: ['AC-2 (4)']
 

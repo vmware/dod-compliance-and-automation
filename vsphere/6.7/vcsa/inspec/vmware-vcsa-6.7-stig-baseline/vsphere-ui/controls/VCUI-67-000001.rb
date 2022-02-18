@@ -1,4 +1,4 @@
-control "VCUI-67-000001" do
+control 'VCUI-67-000001' do
   title "vSphere UI must limit the amount of time that each TCP connection is
 kept alive."
   desc  "Denial of service (DoS) is one threat against web servers. Many DoS
@@ -22,7 +22,7 @@ connections.
 
     Expected result:
 
-    connectionTimeout=\"20000\"
+    connectionTimeout=\"300000\"
 
     If the output does not match the expected result, this is a finding.
   "
@@ -31,19 +31,19 @@ connections.
 
     Configure the http <Connector> node with the value:
 
-    'connectionTimeout=\"20000\"'
+    'connectionTimeout=\"300000\"'
 
     Example:
 
-    <Connector .. connectionTimeout=\"20000\" ..>
+    <Connector .. connectionTimeout=\"300000\" ..>
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
   tag gid: 'V-239682'
-  tag rid: 'SV-239682r679152_rule'
+  tag rid: 'SV-239682r816771_rule'
   tag stig_id: 'VCUI-67-000001'
-  tag fix_id: 'F-42874r679151_fix'
+  tag fix_id: 'F-42874r816770_fix'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 

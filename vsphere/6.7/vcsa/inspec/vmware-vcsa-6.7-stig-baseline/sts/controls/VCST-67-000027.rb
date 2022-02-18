@@ -1,4 +1,4 @@
-control "VCST-67-000027" do
+control 'VCST-67-000027' do
   title "Rsyslog must be configured to monitor and ship Security Token Service
 log files."
   desc  "The Security Token Service produces a number of logs that must be
@@ -8,6 +8,8 @@ and integrity of the hosted application.
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # grep -v \"^#\" /etc/vmware-syslog/stig-services-sso.conf
@@ -33,6 +35,8 @@ and integrity of the hosted application.
 finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /etc/vmware-syslog/stig-services-sso.conf.
 
     Create the file if it does not exist.
@@ -57,9 +61,9 @@ finding.
   tag gtitle: 'SRG-APP-000358-WSR-000163'
   tag satisfies: ['SRG-APP-000358-WSR-000163', 'SRG-APP-000125-WSR-000071']
   tag gid: 'V-239678'
-  tag rid: 'SV-239678r679106_rule'
+  tag rid: 'SV-239678r816759_rule'
   tag stig_id: 'VCST-67-000027'
-  tag fix_id: 'F-42870r679105_fix'
+  tag fix_id: 'F-42870r816758_fix'
   tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-9 (2)', 'AU-4 (1)']
 

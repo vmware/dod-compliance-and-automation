@@ -1,9 +1,9 @@
-control "VCRP-67-000004" do
+control 'VCRP-67-000004' do
   title "The rhttpproxy must use cryptography to protect the integrity of
 remote sessions."
   desc  "The rhttpproxy can be configured to support TLS 1.0, 1.1 and 1.2. Due
 to intrinsic problems in TLS 1.0 and TLS 1.1, they are disabled by default. The
-protocol block in the rhttproxy configuration is commented out by default, and
+$protocol block in the rhttproxy configuration is commented out by default, and
 this configuration forces TLS 1.2. The block may also be set to \"tls1.2\" in
 certain upgrade scenarios, but the effect is the same."
   desc  'rationale', ''
@@ -17,7 +17,9 @@ certain upgrade scenarios, but the effect is the same."
 
     <protocols>tls1.2</protocols>
 
-    If there is no output, this is NOT a finding.
+    OR
+
+    XPath set is empty
 
     If the output does not match the expected result, this is a finding.
   "
@@ -37,7 +39,7 @@ follows:
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000015-WSR-000014'
   tag gid: 'V-240719'
-  tag rid: 'SV-240719r679670_rule'
+  tag rid: 'SV-240719r816678_rule'
   tag stig_id: 'VCRP-67-000004'
   tag fix_id: 'F-43911r679669_fix'
   tag cci: ['CCI-001453']

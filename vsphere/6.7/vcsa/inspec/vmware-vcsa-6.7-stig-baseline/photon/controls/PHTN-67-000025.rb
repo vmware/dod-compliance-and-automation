@@ -14,19 +14,21 @@ those passwords are much more vulnerable to offline brute forcing attacks."
     If the output does not include \"sha512\", this is a finding.
   "
   desc  'fix', "
-    Open /etc/pam.d/system-password with a text editor.
+    Open /etc/applmgmt/appliance/system-password with a text editor.
 
     Add the following argument (sha512) to the password line:
 
     password required pam_unix.so sha512 shadow try_first_pass
+
+    Save and close.
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000073-GPOS-00041'
   tag gid: 'V-239097'
-  tag rid: 'SV-239097r675099_rule'
+  tag rid: 'SV-239097r816613_rule'
   tag stig_id: 'PHTN-67-000025'
-  tag fix_id: 'F-42267r675098_fix'
+  tag fix_id: 'F-42267r816612_fix'
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']
 

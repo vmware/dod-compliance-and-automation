@@ -17,21 +17,28 @@ information system (e.g., module or policy filter).
 
     If any of these are not listed with a permissions filter of at least \"w\",
 this is a finding.
+
+    Note: This check depends on the auditd service to be in a running state for
+accurate results. Enabling the auditd service is done as part of a separate
+control.
   "
   desc  'fix', "
+    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
+following lines:
+
+    -w /etc/security/opasswd -p wa -k opasswd
+
     At the command line, execute the following command:
 
-    # echo '-w /etc/security/opasswd -p wa -k opasswd' >>
-/etc/audit/rules.d/audit.STIG.rules
-    # /sbin/augenrules --load
+    # /sbin/augenrules --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000476-GPOS-00221'
   tag gid: 'V-239145'
-  tag rid: 'SV-239145r675243_rule'
+  tag rid: 'SV-239145r816652_rule'
   tag stig_id: 'PHTN-67-000074'
-  tag fix_id: 'F-42315r675242_fix'
+  tag fix_id: 'F-42315r816651_fix'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
 

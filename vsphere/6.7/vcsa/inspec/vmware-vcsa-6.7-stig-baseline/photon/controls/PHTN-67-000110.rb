@@ -24,19 +24,25 @@ networks but is helpful for end hosts and routers serving small networks."
 interfaces. Every \"ethx\" entry must be set to \"1\".
   "
   desc  'fix', "
-    At the command line, execute the following command:
+    Open /etc/sysctl.conf with a text editor.
 
-    # for SETTING in $(/sbin/sysctl -aN --pattern
-\"net.ipv4.conf.(all|default|eth.*)\\.rp_filter\"); do sed -i -e
-\"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=1>>/etc/sysctl.conf; done
+    Add or update the following lines:
+
+    net.ipv4.conf.all.rp_filter = 1
+    net.ipv4.conf.default.rp_filter = 1
+    net.ipv4.conf.eth0.rp_filter = 1
+
+    Run the following command to load the new setting:
+
+    # /sbin/sysctl --load
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: 'V-239181'
-  tag rid: 'SV-239181r675351_rule'
+  tag rid: 'SV-239181r816668_rule'
   tag stig_id: 'PHTN-67-000110'
-  tag fix_id: 'F-42351r675350_fix'
+  tag fix_id: 'F-42351r816667_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

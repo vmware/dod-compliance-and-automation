@@ -1,4 +1,4 @@
-control "VCST-67-000003" do
+control 'VCST-67-000003' do
   title "The Security Token Service must limit the maximum size of a POST
 request."
   desc  "The \"maxPostSize\" value is the maximum size in bytes of the POST
@@ -11,6 +11,8 @@ for \"maxPostSize\".
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/server.xml | sed '2
@@ -24,6 +26,8 @@ s/xmlns=\".*\"//g' | xmllint --xpath
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml.
 
     Navigate to each of the <Connector> nodes.
@@ -34,9 +38,9 @@ s/xmlns=\".*\"//g' | xmllint --xpath
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
   tag gid: 'V-239654'
-  tag rid: 'SV-239654r679034_rule'
+  tag rid: 'SV-239654r816687_rule'
   tag stig_id: 'VCST-67-000003'
-  tag fix_id: 'F-42846r679033_fix'
+  tag fix_id: 'F-42846r816686_fix'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 

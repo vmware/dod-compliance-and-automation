@@ -1,4 +1,4 @@
-control "VCST-67-000014" do
+control 'VCST-67-000014' do
   title "The Security Token Service must not have the Web Distributed Authoring
 (WebDAV) servlet installed."
   desc  "WebDAV is an extension to the HTTP protocol that, when developed, was
@@ -14,6 +14,8 @@ Security Token Service does not configure WebDAV by default.
   "
   desc  'rationale', ''
   desc  'check', "
+    Connect to the PSC, whether external or embedded.
+
     At the command prompt, execute the following command:
 
     # grep -n 'webdav' /usr/lib/vmware-sso/vmware-sts/conf/web.xml
@@ -21,6 +23,8 @@ Security Token Service does not configure WebDAV by default.
     If the command produces any output, this is a finding.
   "
   desc  'fix', "
+    Connect to the PSC, whether external or embedded.
+
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
 
     Find the <servlet-name>webdav</servlet-name> node and remove the entire
@@ -33,9 +37,9 @@ parent <servlet-mapping> block.
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000085'
   tag gid: 'V-239665'
-  tag rid: 'SV-239665r679067_rule'
+  tag rid: 'SV-239665r816720_rule'
   tag stig_id: 'VCST-67-000014'
-  tag fix_id: 'F-42857r679066_fix'
+  tag fix_id: 'F-42857r816719_fix'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 

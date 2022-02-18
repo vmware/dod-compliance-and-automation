@@ -16,17 +16,26 @@ information system (e.g., module or policy filter).
     # auditctl -l | grep sudo
 
     Expected result:
+
+    -a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=1 -k
+privileged
+
+    If the output does not match the expected result, this is a finding.
+
+    Note: This check depends on the auditd service to be in a running state for
+accurate results. Enabling the auditd service is done as part of a separate
+control.
+  "
+  desc  'fix', "
+    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
+following lines:
+
     -a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F
 auid!=4294967295 -k privileged
 
-    If the output does not match the expected result, this is a finding.
-  "
-  desc  'fix', "
-    At the command line, execute the following commands:
+    At the command line, execute the following command:
 
-    # echo '-a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F
-auid!=4294967295 -k privileged' >> /etc/audit/rules.d/audit.STIG.rules
-    # /sbin/augenrules --load
+    # /sbin/augenrules --load
   "
   impact 0.5
   tag severity: 'medium'
@@ -34,9 +43,9 @@ auid!=4294967295 -k privileged' >> /etc/audit/rules.d/audit.STIG.rules
   tag satisfies: ['SRG-OS-000458-GPOS-00203', 'SRG-OS-000463-GPOS-00207',
 'SRG-OS-000466-GPOS-00210', 'SRG-OS-000468-GPOS-00212']
   tag gid: 'V-239142'
-  tag rid: 'SV-239142r675234_rule'
+  tag rid: 'SV-239142r816643_rule'
   tag stig_id: 'PHTN-67-000071'
-  tag fix_id: 'F-42312r675233_fix'
+  tag fix_id: 'F-42312r816642_fix'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
 
@@ -45,4 +54,3 @@ auid!=4294967295 -k privileged' >> /etc/audit/rules.d/audit.STIG.rules
   end
 
 end
-

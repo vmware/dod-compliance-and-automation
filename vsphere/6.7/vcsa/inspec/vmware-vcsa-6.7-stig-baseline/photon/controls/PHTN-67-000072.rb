@@ -22,14 +22,22 @@ information system (e.g., module or policy filter).
     -w /var/log/tallylog -p wa
 
     If the output does not match the expected result, this is a finding.
+
+    Note: This check depends on the auditd service to be in a running state for
+accurate results. Enabling the auditd service is done as part of a separate
+control.
   "
   desc  'fix', "
-    At the command line, execute the following commands:
+    Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
+following lines:
 
-    # echo '-w /var/log/faillog -p wa' >> /etc/audit/rules.d/audit.STIG.rules
-    # echo '-w /var/log/lastlog -p wa' >> /etc/audit/rules.d/audit.STIG.rules
-    # echo '-w /var/log/tallylog -p wa' >> /etc/audit/rules.d/audit.STIG.rules
-    # /sbin/augenrules --load
+    -w /var/log/faillog -p wa
+    -w /var/log/lastlog -p wa
+    -w /var/log/tallylog -p wa
+
+    At the command line, execute the following command:
+
+    # /sbin/augenrules --load
   "
   impact 0.5
   tag severity: 'medium'
@@ -37,9 +45,9 @@ information system (e.g., module or policy filter).
   tag satisfies: ['SRG-OS-000470-GPOS-00214', 'SRG-OS-000472-GPOS-00217',
 'SRG-OS-000473-GPOS-00218']
   tag gid: 'V-239143'
-  tag rid: 'SV-239143r675237_rule'
+  tag rid: 'SV-239143r816646_rule'
   tag stig_id: 'PHTN-67-000072'
-  tag fix_id: 'F-42313r675236_fix'
+  tag fix_id: 'F-42313r816645_fix'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
 
@@ -50,4 +58,3 @@ information system (e.g., module or policy filter).
   end
 
 end
-
