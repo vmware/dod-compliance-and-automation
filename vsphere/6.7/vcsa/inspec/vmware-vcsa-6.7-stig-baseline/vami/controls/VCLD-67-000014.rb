@@ -4,8 +4,6 @@ control 'VCLD-67-000014 do
 configuring VAMI to send events to a syslog facility. Without ensuring that
 logs are created, that rsyslog configs are created, and that those configs are
 loaded, the log file monitoring and shipping will not be effective.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
