@@ -6,8 +6,6 @@ Syncookies can be used to track a connection when a subsequent ACK is received,
 verifying the initiator is attempting a valid connection and is not a flood
 source. This feature is activated when a flood condition is detected and
 enables the system to continue servicing valid connection requests.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
