@@ -8,8 +8,6 @@ responsible for one.
 
     Audit records can be generated from various components within the
 information system (e.g., module or policy filter).
-
-
   "
   desc  'rationale', ''
   desc  'check', "
@@ -56,4 +54,3 @@ auid!=4294967295 -k privileged
   end
 
 end
-
