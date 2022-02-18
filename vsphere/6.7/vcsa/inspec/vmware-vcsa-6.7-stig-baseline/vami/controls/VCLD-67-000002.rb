@@ -14,8 +14,6 @@ encryption possible for a private web server.
     VAMI is compiled to use VMware's FIPS-validated OpenSSL module and cannot
 be configured otherwise. Ciphers may still be specified in order of preference,
 but no non-FIPS-approved ciphers will be implemented.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
@@ -62,4 +60,3 @@ shell for the account to \"/bin/bash\".
   end
 
 end
-
