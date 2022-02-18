@@ -7,8 +7,6 @@ undertake is the modification or deletion of log records to cover tracks and
 prolong discovery. The web server must protect the log data from unauthorized
 modification. Security Token Service restricts all modification of log files by
 default, but this configuration must be verified.
-
-
   "
   desc  'rationale', ''
   desc  'check', "
