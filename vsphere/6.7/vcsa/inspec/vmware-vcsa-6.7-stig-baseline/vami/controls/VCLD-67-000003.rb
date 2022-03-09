@@ -1,4 +1,4 @@
-control 'VCLD-67-000003 do
+control 'VCLD-67-000003' do
   title "VAMI must use cryptography to protect the integrity of remote
 sessions."
   desc  "Data exchanged between the user and the web server can range from
@@ -39,18 +39,13 @@ shell for the account to \"/bin/bash\".
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000015-WSR-000014'
-  tag satisfies: ['SRG-APP-000015-WSR-000014', 'SRG-APP-000172-WSR-000104',
-'SRG-APP-000315-WSR-000003', 'SRG-APP-000141-WSR-000076',
-'SRG-APP-000439-WSR-000151', 'SRG-APP-000439-WSR-000152',
-'SRG-APP-000442-WSR-000182']
+  tag satisfies: ['SRG-APP-000015-WSR-000014', 'SRG-APP-000172-WSR-000104','SRG-APP-000315-WSR-000003', 'SRG-APP-000141-WSR-000076','SRG-APP-000439-WSR-000151', 'SRG-APP-000439-WSR-000152','SRG-APP-000442-WSR-000182']
   tag gid: 'V-239717'
   tag rid: 'SV-239717r816783_rule'
   tag stig_id: 'VCLD-67-000003'
   tag fix_id: 'F-42909r679260_fix'
-  tag cci: ['CCI-000197', 'CCI-000381', 'CCI-001453', 'CCI-002314',
-'CCI-002418', 'CCI-002422']
-  tag nist: ['IA-5 (1) (c)', 'CM-7 a', 'AC-17 (2)', 'AC-17 (1)', 'SC-8', "SC-8
-(2)"]
+  tag cci: ['CCI-000197', 'CCI-000381', 'CCI-001453', 'CCI-002314','CCI-002418', 'CCI-002422']
+  tag nist: ['IA-5 (1) (c)', 'CM-7 a', 'AC-17 (2)', 'AC-17 (1)', 'SC-8', "SC-8(2)"]
 
   runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout
 

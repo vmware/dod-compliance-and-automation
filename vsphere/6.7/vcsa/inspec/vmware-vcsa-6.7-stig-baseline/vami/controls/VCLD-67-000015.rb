@@ -1,4 +1,4 @@
-control 'VCLD-67-000015 do
+control 'VCLD-67-000015' do
   title "VAMI server binaries and libraries must be verified for their
 integrity."
   desc  "Being able to verify that a patch, upgrade, certificate, etc., being

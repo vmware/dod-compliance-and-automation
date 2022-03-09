@@ -1,4 +1,4 @@
-control 'VCLD-67-000017 do
+control 'VCLD-67-000017' do
   title "VAMI must have Multipurpose Internet Mail Extensions (MIME) that
 invoke OS shell programs disabled."
   desc  "Controlling what a user of a hosted application can access is part of

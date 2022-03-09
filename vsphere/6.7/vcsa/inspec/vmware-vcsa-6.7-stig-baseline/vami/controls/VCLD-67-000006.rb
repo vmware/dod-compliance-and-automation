@@ -1,4 +1,4 @@
-control 'VCLD-67-000006 do
+control 'VCLD-67-000006' do
   title "VAMI must produce log records containing sufficient information to
 establish what type of events occurred."
   desc  "After a security incident has occurred, investigators will often

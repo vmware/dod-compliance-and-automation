@@ -1,4 +1,4 @@
-control 'VCLD-67-000005 do
+control 'VCLD-67-000005' do
   title 'VAMI must generate log records for system startup and shutdown.'
   desc  "Logging must be started as soon as possible when a service starts and
 when a service is stopped. Many forms of suspicious actions can be detected by

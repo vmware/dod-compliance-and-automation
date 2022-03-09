@@ -1,4 +1,4 @@
-control 'VCLD-67-000014 do
+control 'VCLD-67-000014' do
   title 'Rsyslog must be configured to monitor VAMI logs.'
   desc  "For performance reasons, rsyslog file monitoring is preferred over
 configuring VAMI to send events to a syslog facility. Without ensuring that
