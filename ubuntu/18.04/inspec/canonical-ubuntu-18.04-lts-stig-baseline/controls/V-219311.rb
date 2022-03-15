@@ -76,7 +76,6 @@ replacing \"[Interval]\" with a value of \"600\" or less:
   tag cci: %w(V-100845 SV-109949 CCI-001133 CCI-002361)
   tag nist: %w(SC-10 AC-12)
   client_alive_interval = input('client_alive_interval')
-  client_alive_count_max = input('client_alive_count_max')
 
   describe sshd_config do
     its('ClientAliveInterval') { should cmp <= client_alive_interval }

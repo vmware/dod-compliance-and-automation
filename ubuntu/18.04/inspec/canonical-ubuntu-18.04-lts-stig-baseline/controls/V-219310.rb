@@ -60,7 +60,6 @@ replacing \"[Count]\" with a value of 1:
   tag cci: %w(SV-109947 V-100843 CCI-000879)
   tag nist: ['MA-4 e']
 
-  client_alive_interval = input('client_alive_interval')
   client_alive_count_max = input('client_alive_count_max')
 
   describe sshd_config do

@@ -148,7 +148,7 @@ class SslCertificate < Inspec.resource(1)
       @http.start do |h|
         return h.peer_cert
       end
-    rescue Exception => e
+    rescue StandardError => e
       if verify == true
         @ssl_error = e.message.gsub(/"/, "'")
         # Trying one more time, this time not verifying the SSL Certificate

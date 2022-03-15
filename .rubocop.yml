@@ -1,2 +1,6 @@
 Layout/EndOfLine:
   Enabled: False
+
+# ignores issue with vsphere/7.0/vcsa/inspec/vmware-vcsa-7.0-stig-baseline/vami/controls/VCLD-70-000019.rb
+Lint/ImplicitStringConcatenation:
+  Enabled: False

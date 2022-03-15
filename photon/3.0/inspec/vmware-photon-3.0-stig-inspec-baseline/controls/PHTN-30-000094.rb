@@ -52,13 +52,13 @@ files could occur."
       # and if/then logic
       describe "The set of files (#{fs}:#{mp}) with unknown owner" do
         subject { user_cmd }
-        eval criteria
+        include criteria
       end
 
       # Reoirt on files with unknow group
       describe "The set of files (#{fs}:#{mp}) with unknown group owner" do
         subject { group_cmd }
-        eval criteria
+        include criteria
       end
     end
   end
