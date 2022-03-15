@@ -13,6 +13,8 @@ jobs:
         with:
           ruby-version: 2.7
           bundler-cache: true
+
+      - name: install cookstyle and run linter
       - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
       - run: |
           gem install cookstyle
