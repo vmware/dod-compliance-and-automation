@@ -1,4 +1,4 @@
-control "VCFL-67-000020" do
+control 'VCFL-67-000020' do
   title 'vSphere Client must limit the number of allowed connections.'
   desc  "Limiting the number of established connections to Sphere Client is a
 basic denial-of-service protection. Servers where the limit is too high or
@@ -17,7 +17,7 @@ system availability."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml.
 
@@ -36,7 +36,6 @@ system availability."
   tag nist: ['SC-5 (1)']
 
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml') do
-    its(['Server/Service/Connector/@acceptCount']) { should be_in ["300"]}
+    its(['Server/Service/Connector/@acceptCount']) { should be_in ['300'] }
   end
-
 end

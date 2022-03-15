@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLD-70-000007' do
   title 'VAMI log files must only be accessible by privileged users.'
   desc  "Log data is essential in the investigation of events. If log data were
@@ -27,7 +25,7 @@ root:root
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command(s):
 
     # chown root:root /opt/vmware/var/log/lighttpd/*.log
@@ -43,13 +41,11 @@ root:root
   tag cci: ['CCI-000162']
   tag nist: ['AU-9']
 
-  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |
+  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
     describe file(fname) do
       it { should_not be_more_permissive_than('0644') }
-      its('owner') {should eq 'root'}
-      its('group') {should eq 'root'}
+      its('owner') { should eq 'root' }
+      its('group') { should eq 'root' }
     end
   end
-
 end
-

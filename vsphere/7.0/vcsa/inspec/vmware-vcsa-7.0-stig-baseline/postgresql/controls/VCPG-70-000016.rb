@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000016' do
   title "VMware Postgres must provide non-privileged users with minimal error
 information."
@@ -27,7 +25,7 @@ client_min_messages;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -46,12 +44,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW client_min_messages;"
-  
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW client_min_messages;'
+
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_client_min_messages')}" }
+    its('output') { should cmp "#{input('pg_client_min_messages')}" }
   end
-
 end
-

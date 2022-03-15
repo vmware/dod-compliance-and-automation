@@ -1,4 +1,4 @@
-control "VCFL-67-000018" do
+control 'VCFL-67-000018' do
   title "vSphere Client must ensure appropriate permissions are set on the
 keystore."
   desc  "The web server's private key is used to prove the identity of the
@@ -26,7 +26,7 @@ vsphere-client:users
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command:
 
     # chmod 640 /etc/vmware/vsphere-client/keystore.jks
@@ -44,8 +44,7 @@ finding.
 
   describe file('/etc/vmware/vsphere-client/keystore.jks') do
     its('mode') { should cmp '0640' }
-    its('owner') { should eq 'vsphere-client'}
-    its('group') { should eq 'users'}
+    its('owner') { should eq 'vsphere-client' }
+    its('group') { should eq 'users' }
   end
-
 end

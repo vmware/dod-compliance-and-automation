@@ -1,4 +1,4 @@
-control "VCRP-67-000005" do
+control 'VCRP-67-000005' do
   title "The rhttpproxy must produce log records containing sufficient
 information to establish the source of events."
   desc  "After a security incident has occurred, investigators will often
@@ -17,7 +17,7 @@ logging to capture client IP addresses and the associated actions."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml.
 
     Locate the <config>/<log> block and configure <level> as follows:
@@ -41,6 +41,4 @@ logging to capture client IP addresses and the associated actions."
   describe xml("#{input('configXmlPath')}") do
     its(['/config/log/level']) { should cmp "#{input('logLevel')}" }
   end
-
 end
-

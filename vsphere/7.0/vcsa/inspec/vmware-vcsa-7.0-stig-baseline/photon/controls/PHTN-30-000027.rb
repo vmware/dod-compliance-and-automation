@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000027' do
   title "The Photon operating system must be configured so that passwords for
 new users are restricted to a 24-hour minimum lifetime."
@@ -16,7 +14,7 @@ defeat the organization's policy regarding password reuse."
 
     If \"PASS_MIN_DAYS\" is not set to 1, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/login.defs
@@ -38,6 +36,4 @@ defeat the organization's policy regarding password reuse."
   describe login_defs do
     its('PASS_MIN_DAYS') { should cmp '1' }
   end
-
 end
-

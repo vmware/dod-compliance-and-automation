@@ -1,4 +1,4 @@
-control "ESXI-67-000059" do
+control 'ESXI-67-000059' do
   title "The virtual switch Forged Transmits policy must be set to reject on
 the ESXi host."
   desc  "If the virtual machine operating system changes the MAC address, the
@@ -33,7 +33,7 @@ following commands:
     If the \"Forged Transmits\" policy is set to accept (or true, via
 PowerCLI), this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Configure >> Networking >> Virtual Switches.
 
     For each virtual switch and port group, click Edit settings (dots) and
@@ -61,13 +61,11 @@ following commands:
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualSwitch | Get-SecurityPolicy | Select-Object -ExpandProperty ForgedTransmits"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not match "True" }
+    its('stdout.strip') { should_not match 'True' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualPortGroup | Get-SecurityPolicy | Select-Object -ExpandProperty ForgedTransmits"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not match "True" }
+    its('stdout.strip') { should_not match 'True' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000002' do
   title 'VMware Postgres log files must contain required fields.'
   desc  "Without the capability to generate audit records, it would be
@@ -24,7 +22,7 @@ log_line_prefix;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -44,12 +42,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-000169']
   tag nist: ['AU-12 a']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW log_line_prefix;"
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW log_line_prefix;'
 
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_log_line_prefix')}" }
+    its('output') { should cmp "#{input('pg_log_line_prefix')}" }
   end
-
 end
-

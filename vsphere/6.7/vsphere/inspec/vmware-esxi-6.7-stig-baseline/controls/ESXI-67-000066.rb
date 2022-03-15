@@ -1,4 +1,4 @@
-control "ESXI-67-000066" do
+control 'ESXI-67-000066' do
   title "For physical switch ports connected to the ESXi host, the
 non-negotiate option must be configured for trunk links between external
 physical switches and virtual switches in Virtual Switch Tagging (VST) mode."
@@ -29,7 +29,7 @@ are made to either ESXi hosts or the upstream external switch ports.
     If DTP is enabled on the physical switch ports connected to the ESXi host,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Note that this check refers to an entity outside the physical scope of the
 ESXi server system.
 
@@ -52,9 +52,7 @@ switch ports.
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

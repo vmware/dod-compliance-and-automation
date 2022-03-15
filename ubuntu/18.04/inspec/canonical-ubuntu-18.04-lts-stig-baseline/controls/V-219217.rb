@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219217' do
   title "The Ubuntu operating system must generate audit records for the
 /var/log/wtmp file."
@@ -28,7 +26,7 @@ commented out, this is a finding.
     Note: The '-k' allows for specifying an arbitrary identifier and the string
 after it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate audit events showing start and stop
 times for user access via the /var/log/wtmp file.
 
@@ -52,31 +50,30 @@ file:
   tag rid: 'SV-219217r508662_rule'
   tag stig_id: 'UBTU-18-010238'
   tag fix_id: 'F-20941r304980_fix'
-  tag cci: ['V-100661', 'SV-109765', 'CCI-000172']
+  tag cci: %w(V-100661 SV-109765 CCI-000172)
   tag nist: ['AU-12 c']
 
-  @audit_file = "/var/log/wtmp"
+  @audit_file = '/var/log/wtmp'
 
   audit_lines_exist = !auditd.lines.index { |line| line.include?(@audit_file) }.nil?
   if audit_lines_exist
     describe auditd.file(@audit_file) do
-      its("permissions") { should_not cmp [] }
-      its("action") { should_not include "never" }
+      its('permissions') { should_not cmp [] }
+      its('action') { should_not include 'never' }
     end
 
     @perms = auditd.file(@audit_file).permissions
 
     @perms.each do |perm|
       describe perm do
-        it { should include "w" }
-        it { should include "a" }
+        it { should include 'w' }
+        it { should include 'a' }
       end
     end
   else
-    describe ("Audit line(s) for " + @audit_file + " exist") do
+    describe('Audit line(s) for ' + @audit_file + ' exist') do
       subject { audit_lines_exist }
       it { should be true }
     end
   end
 end
-

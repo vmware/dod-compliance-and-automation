@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000039' do
   title "The Photon operating system must configure rsyslog to offload system
 logs to a central server."
@@ -21,7 +19,7 @@ is set to the environments approved syslog server:
      If no line is returned or if the line is commented or no valid syslog
 server is specified, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Examples are provided for UDP, TCP, and TLS configurations.  Substitute the
 environments approved syslog server for <syslog server:port> for the protocol
 of choice.
@@ -63,9 +61,7 @@ line:
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
-  describe file ('/etc/rsyslog.conf') do
-    its ('content') { should match /^.*#{input('syslogServer')}.*$/ }
+  describe file('/etc/rsyslog.conf') do
+    its('content') { should match /^.*#{input('syslogServer')}.*$/ }
   end
-
 end
-

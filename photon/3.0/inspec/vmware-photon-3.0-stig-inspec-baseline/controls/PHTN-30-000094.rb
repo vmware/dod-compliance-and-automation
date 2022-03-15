@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000094' do
   title "The Photon operating system must be configured so that all files have
 a valid owner and group owner."
@@ -13,7 +11,7 @@ files could occur."
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command for each returned file:
 
     # chown root:root <file>
@@ -34,21 +32,20 @@ files could occur."
   command('grep -v "nodev" /proc/filesystems | awk \'NF{ print $NF }\'').stdout.strip.split("\n").each do |fs|
     # Collect the mount points of all mounted filesystems matching the type
     command("df -t #{fs} --output=target | tail +2").stdout.split("\n").each do |mp|
-
       # If verbose is 'true' find and list (ls) all files with unknown owner/group
       if verbose
         user_cmd = command("find #{mp} -xdev -fstype #{fs} -nouser -exec ls -ld {} \\; 2>/dev/null").stdout
         group_cmd = command("find #{mp} -xdev -fstype #{fs} -nogroup -exec ls -ld {} \\; 2>/dev/null").stdout
-	# The resulting string should be empty
+        # The resulting string should be empty
         criteria = "it { should cmp '' }"
       # If verbose is 'false' find all files with unknown owner/group and count them (wc)
       else
         user_cmd = command("find #{mp} -xdev -fstype #{fs} -nouser 2>/dev/null | wc -l").stdout.to_i
         group_cmd = command("find #{mp} -xdev -fstype #{fs} -nogroup 2>/dev/null | wc -l").stdout.to_i
-	# The length of the result set should be 0
-        criteria = "it { should cmp 0 }"
+        # The length of the result set should be 0
+        criteria = 'it { should cmp 0 }'
       end
-  
+
       # Report on files with unknown owner
       # Utilize the subject keyword to allow more readable output
       # 'eval' the criteria string to reduce the number of required 'describe' blocks
@@ -57,7 +54,7 @@ files could occur."
         subject { user_cmd }
         eval criteria
       end
-  
+
       # Reoirt on files with unknow group
       describe "The set of files (#{fs}:#{mp}) with unknown group owner" do
         subject { group_cmd }
@@ -66,4 +63,3 @@ files could occur."
     end
   end
 end
-

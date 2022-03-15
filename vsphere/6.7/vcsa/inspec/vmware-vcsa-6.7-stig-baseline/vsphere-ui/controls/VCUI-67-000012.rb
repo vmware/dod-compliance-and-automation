@@ -1,4 +1,4 @@
-control "VCUI-67-000012" do
+control 'VCUI-67-000012' do
   title 'vSphere UI must have mappings set for Java servlet pages.'
   desc  "Resource mapping is the process of tying a particular file type to a
 process in the web server that can serve that type of file to a requesting
@@ -32,7 +32,7 @@ properly mapped to servlets.
     If the jsp and jspx file url-patterns are not configured as in the expected
 result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/web.xml.
 
     Navigate to and locate the mapping for the JSP servlet. It is the
@@ -57,9 +57,8 @@ result, this is a finding.
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
-  list = ["*.jsp", "*.jspx"]
+  list = ['*.jsp', '*.jspx']
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="jsp"]/url-pattern') { should be_in list }
   end
-
 end

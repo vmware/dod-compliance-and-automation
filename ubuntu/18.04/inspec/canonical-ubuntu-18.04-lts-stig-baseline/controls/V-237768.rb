@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-237768' do
   title "All local interactive user home directories defined in the /etc/passwd
 file must exist."
@@ -33,7 +31,7 @@ files containing system logon information.
     If any home directories referenced in \"/etc/passwd\" are returned as not
 defined, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Create home directories to all local interactive users that currently do
 not have a home directory assigned. Use the following commands to create the
 user home directory assigned in \"/etc/ passwd\":
@@ -59,12 +57,11 @@ of \"users assigned\" in \"/etc/passwd\".
   tag nist: ['CM-6 b']
 
   interactive_users = passwd.where { uid.to_i >= 1000 && shell !~ /nologin/ }
-  pwck_output=command('pwck -r').stdout
-  
+  pwck_output = command('pwck -r').stdout
+
   interactive_users.homes.each do |dir|
     describe(pwck_output) do
       it { should_not include dir }
     end
   end
 end
-

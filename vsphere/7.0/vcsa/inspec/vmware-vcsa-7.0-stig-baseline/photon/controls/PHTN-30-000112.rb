@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000112' do
   title "The Photon operating system must protect sshd configuration from
 unauthorized access."
@@ -18,7 +16,7 @@ the system, insecure communication, limited forensic trail, etc."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # chmod 600 /etc/ssh/sshd_config
@@ -35,10 +33,8 @@ the system, insecure communication, limited forensic trail, etc."
   tag nist: ['CM-6 b']
 
   describe file('/etc/ssh/sshd_config') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0600' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0600' }
   end
-
 end
-

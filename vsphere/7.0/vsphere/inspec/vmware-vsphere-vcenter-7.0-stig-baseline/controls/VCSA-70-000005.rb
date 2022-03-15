@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000005' do
   title 'The vCenter Server users must have the correct roles assigned.'
   desc  "Users and service accounts must only be assigned privileges they
@@ -25,7 +23,7 @@ documented.
     If any user or service account has more privileges than required, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     To update a user or groups permissions to an existing role with reduced
 permissions do the following:
 
@@ -52,9 +50,7 @@ role.
   tag cci: 'CCI-001082'
   tag nist: ['SC-2']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

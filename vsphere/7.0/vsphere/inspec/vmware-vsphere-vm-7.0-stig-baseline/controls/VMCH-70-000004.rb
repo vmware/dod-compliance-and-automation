@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000004' do
   title 'Virtual disk shrinking must be disabled on the virtual machine.'
   desc  "Shrinking a virtual disk reclaims unused space in it. If there is
@@ -31,7 +29,7 @@ isolation.tools.diskShrink.disable
     If the virtual machine advanced setting isolation.tools.diskShrink.disable
 does not exist or is not set to true, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the isolation.tools.diskShrink.disable value and set it to
@@ -71,9 +69,7 @@ isolation.tools.diskShrink.disable | Set-AdvancedSetting -Value true
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name isolation.tools.diskShrink.disable).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should cmp 'true' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

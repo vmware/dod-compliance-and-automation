@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000032' do
   title "The Photon operating system must disable the loading of unnecessary
 kernel modules."
@@ -39,7 +37,7 @@ functioning of the product."
 
     If the output does not include at least every statement in the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/modprobe.d/modprobe.conf
@@ -85,4 +83,3 @@ functioning of the product."
     end
   end
 end
-

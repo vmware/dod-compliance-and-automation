@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000012' do
   title 'The ESXi host SSH daemon must ignore .rhosts files.'
   desc  "SSH trust relationships mean a compromise on one host can allow an
@@ -18,7 +16,7 @@ accounts via \".rhosts\" files."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, run the following command(s): add or correct the
 following line in \"/etc/ssh/sshd_config\":
 
@@ -34,9 +32,7 @@ following line in \"/etc/ssh/sshd_config\":
   tag cci: 'CCI-000767'
   tag nist: ['IA-2 (3)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

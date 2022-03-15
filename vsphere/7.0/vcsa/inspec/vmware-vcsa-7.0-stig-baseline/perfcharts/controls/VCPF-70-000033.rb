@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000033' do
   title 'Performance Charts must set the secure flag for cookies.'
   desc  "The secure flag is an option that can be set by the application server
@@ -28,7 +26,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml
@@ -60,6 +58,4 @@ finding.
   describe xml("#{input('statswebXmlPath')}") do
     its('/web-app/session-config/cookie-config/secure') { should cmp 'true' }
   end
-
 end
-

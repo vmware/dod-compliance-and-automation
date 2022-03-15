@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000023' do
   title '3D features on the virtual machine must be disabled when not required.'
   desc  "It is recommended that 3D acceleration be disabled on virtual machines
@@ -24,7 +22,7 @@ is not set to \"false\", this is a finding.
 
     If a virtual machine requires 3D features, this is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client select the Virtual Machine, right click and go to
 Edit Settings >> VM Options Tab >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the \"mks.enable3d\" value and set it to \"false\".
@@ -60,9 +58,7 @@ Set-AdvancedSetting -Value false
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name mks.enable3d).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "false" }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should cmp 'false' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "PHTN-67-000085" do
+control 'PHTN-67-000085' do
   title "The Photon operating system must configure sshd to disable X11
 forwarding."
   desc  "X11 is an older, insecure graphics forwarding protocol. It is not used
@@ -16,7 +16,7 @@ surface area and communication channels."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"X11Forwarding\" line is uncommented and set to the
@@ -39,8 +39,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i X11Forwarding') do
-    its ('stdout.strip') { should cmp 'X11Forwarding no' }
+    its('stdout.strip') { should cmp 'X11Forwarding no' }
   end
-
 end
-

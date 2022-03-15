@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000012' do
   title "The Photon operating system must be configured to audit the execution
 of privileged functions."
@@ -24,10 +22,10 @@ insider threats and the advanced persistent threat."
 
     If the output does not match the expected result, this is a finding.
 
-    Note: This check depends on the auditd service to be in a running state for 
+    Note: This check depends on the auditd service to be in a running state for
     accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/rules.d/audit.STIG.rules
@@ -44,8 +42,8 @@ rules.
 
     # /sbin/augenrules --load
 
-    Note: An older audit.STIG.rules may exist if the file exists and references 
-    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    Note: An older audit.STIG.rules may exist if the file exists and references
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary
     with an updated one.
   "
   impact 0.5
@@ -59,11 +57,9 @@ rules.
   tag nist: ['AU-3 (1)']
 
   describe auditd do
-    its("lines") { should include %r{-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F key=execpriv} }
-    its("lines") { should include %r{-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -F key=execpriv} }
-    its("lines") { should include %r{-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -F key=execpriv} }
-    its("lines") { should include %r{-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -F key=execpriv} }
+    its('lines') { should include /-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F key=execpriv/ }
+    its('lines') { should include /-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -F key=execpriv/ }
+    its('lines') { should include /-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -F key=execpriv/ }
+    its('lines') { should include /-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -F key=execpriv/ }
   end
-
 end
-

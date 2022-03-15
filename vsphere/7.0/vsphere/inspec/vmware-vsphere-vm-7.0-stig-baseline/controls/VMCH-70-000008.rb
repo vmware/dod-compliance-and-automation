@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000008' do
   title "Unauthorized floppy devices must be disconnected on the virtual
 machine."
@@ -19,7 +17,7 @@ server, run the following command:
 
     If a virtual machine has a floppy drive connected, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Floppy drives are no longer visible through the vSphere Client and must be
 done via the API or PowerCLI.
 
@@ -42,9 +40,7 @@ server, run the following command:
 
   command = "Get-VM -Name #{input('vmName')} | Get-FloppyDrive"
   describe powercli_command(command) do
-    its ('stdout') { should be_empty }
-    its ('exit_status') { should cmp 0 }
+    its('stdout') { should be_empty }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

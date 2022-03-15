@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000058' do
   title "The Photon operating system must be configured to synchronize with an
 approved DoD time source."
@@ -29,7 +27,7 @@ or an authoritative U.S. DoD source.
     If no lines are returned or a non-local/non-authoritative time server is
 used, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ntp.conf
@@ -59,18 +57,16 @@ used, this is a finding.
   tag nist: ['AU-8 (1) (a)']
 
   describe ntp_conf do
-    its ('server') { should_not eq nil }
+    its('server') { should_not eq nil }
   end
 
   describe ntp_conf do
-    its ('server') { should be_in ["#{input('ntpServer1')}","#{input('ntpServer2')}"] }
+    its('server') { should be_in ["#{input('ntpServer1')}", "#{input('ntpServer2')}"] }
   end
 
   describe systemd_service('ntpd') do
-    it { should be_installed}
-    it { should be_enabled}
-    it { should be_running}
+    it { should be_installed }
+    it { should be_enabled }
+    it { should be_running }
   end
-
 end
-

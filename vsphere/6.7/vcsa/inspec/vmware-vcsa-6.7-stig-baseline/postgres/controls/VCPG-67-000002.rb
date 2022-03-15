@@ -1,4 +1,4 @@
-control "VCPG-67-000002" do
+control 'VCPG-67-000002' do
   title 'VMware Postgres log files must contain required fields.'
   desc  "Without the capability to generate audit records, it would be
 difficult to establish, correlate, and investigate the events relating to an
@@ -22,7 +22,7 @@ log_line_prefix;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -34,11 +34,11 @@ pg_reload_conf();\"
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000089-DB-000064'
-  tag satisfies: ['SRG-APP-000089-DB-000064', 'SRG-APP-000095-DB-000039',
-'SRG-APP-000096-DB-000040', 'SRG-APP-000097-DB-000041',
-'SRG-APP-000098-DB-000042', 'SRG-APP-000099-DB-000043',
-'SRG-APP-000100-DB-000201', 'SRG-APP-000101-DB-000044',
-'SRG-APP-000375-DB-000323']
+  tag satisfies: %w(SRG-APP-000089-DB-000064 SRG-APP-000095-DB-000039
+SRG-APP-000096-DB-000040 SRG-APP-000097-DB-000041
+SRG-APP-000098-DB-000042 SRG-APP-000099-DB-000043
+SRG-APP-000100-DB-000201 SRG-APP-000101-DB-000044
+SRG-APP-000375-DB-000323)
   tag gid: 'V-239197'
   tag rid: 'SV-239197r717050_rule'
   tag stig_id: 'VCPG-67-000002'
@@ -46,12 +46,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-000169']
   tag nist: ['AU-12 a']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW log_line_prefix;"
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW log_line_prefix;'
 
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_log_line_prefix')}" }
+    its('output') { should cmp "#{input('pg_log_line_prefix')}" }
   end
-
 end
-

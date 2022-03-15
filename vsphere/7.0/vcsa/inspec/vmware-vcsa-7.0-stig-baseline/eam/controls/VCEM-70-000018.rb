@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000018' do
   title "ESX Agent Manager must fail to a known safe state if system
 initialization fails, shutdown fails, or aborts fail."
@@ -21,7 +19,7 @@ degraded, and potentailly insecure, state."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-eam/catalina.properties
@@ -47,6 +45,4 @@ finding.
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['org.apache.catalina.startup.EXIT_ON_INIT_FAILURE'] do
     it { should eq 'true' }
   end
-
 end
-

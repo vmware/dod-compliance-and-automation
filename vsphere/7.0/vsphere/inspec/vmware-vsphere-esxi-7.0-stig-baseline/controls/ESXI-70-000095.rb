@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000095' do
   title 'The ESXi host must implement Secure Boot enforcement.'
   desc  "Secure Boot is part of the UEFI firmware standard. With UEFI Secure
@@ -40,7 +38,7 @@ following command(s):
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     This setting cannot be configured until Secure Boot is properly enabled in
 the BIOS.
 
@@ -70,12 +68,10 @@ following command(s):
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  if "#{input('tpmEnabled')}" == "true" 
+  if "#{input('tpmEnabled')}" == 'true'
     command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.settings.encryption.get.invoke() | Select-Object -ExpandProperty RequireSecureBoot"
     describe powercli_command(command) do
-      its ('stdout.strip') { should cmp "true" }
+      its('stdout.strip') { should cmp 'true' }
     end
   end
-
 end
-

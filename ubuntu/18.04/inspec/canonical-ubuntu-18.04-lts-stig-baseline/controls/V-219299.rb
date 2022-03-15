@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219299' do
   title "The Ubuntu operating system must generate audit records when
 successful/unsuccessful attempts to use the kmod command."
@@ -28,7 +26,7 @@ is a finding.
     Note: The '-k' allows for specifying an arbitrary identifier and the string
 after it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to audit the execution of the module
 management program \"kmod\".
 
@@ -52,7 +50,7 @@ file.
   tag rid: 'SV-219299r508662_rule'
   tag stig_id: 'UBTU-18-010391'
   tag fix_id: 'F-21023r305226_fix'
-  tag cci: ['SV-109925', 'V-100821', 'CCI-000172']
+  tag cci: %w(SV-109925 V-100821 CCI-000172)
   tag nist: ['AU-12 c']
 
   @audit_file = '/bin/kmod'
@@ -72,10 +70,9 @@ file.
       end
     end
   else
-    describe ('Audit line(s) for ' + @audit_file + ' exist') do
+    describe('Audit line(s) for ' + @audit_file + ' exist') do
       subject { audit_lines_exist }
       it { should be true }
     end
   end
 end
-

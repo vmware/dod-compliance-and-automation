@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000019' do
   title "The Security Token Service must limit the number of allowed
 connections."
@@ -21,7 +19,7 @@ affect system availability."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/server.xml
@@ -48,8 +46,6 @@ port=\"${bio-custom.http.port}\".
   tag nist: ['SC-5 (1)']
 
   describe xml("#{input('serverXmlPath')}") do
-    its(['Server/Service/Connector[@port="${bio-custom.http.port}"]/@acceptCount']) { should cmp "#{input('acceptCount')}"}
+    its(['Server/Service/Connector[@port="${bio-custom.http.port}"]/@acceptCount']) { should cmp "#{input('acceptCount')}" }
   end
-
 end
-

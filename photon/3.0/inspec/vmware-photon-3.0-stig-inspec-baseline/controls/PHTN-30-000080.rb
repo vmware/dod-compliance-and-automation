@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000080' do
   title "The Photon operating system must configure sshd to disable X11
 forwarding."
@@ -18,7 +16,7 @@ surface area and communication channels."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -43,8 +41,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i X11Forwarding') do
-    its ('stdout.strip') { should cmp 'X11Forwarding no' }
+    its('stdout.strip') { should cmp 'X11Forwarding no' }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "ESXI-67-000060" do
+control 'ESXI-67-000060' do
   title "The virtual switch MAC Address Change policy must be set to reject on
 the ESXi host."
   desc  "If the virtual machine operating system changes the MAC address, it
@@ -30,7 +30,7 @@ following commands:
     If the \"MAC Address Changes\" policy is set to accept (or true, via
 PowerCLI), this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Configure >> Networking >> Virtual Switches.
 
     For each virtual switch and port group, click Edit settings (dots) and
@@ -58,13 +58,11 @@ $false
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualSwitch | Get-SecurityPolicy | Select-Object -ExpandProperty MacChanges"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not match "True" }
+    its('stdout.strip') { should_not match 'True' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualPortGroup | Get-SecurityPolicy | Select-Object -ExpandProperty MacChanges"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not match "True" }
+    its('stdout.strip') { should_not match 'True' }
   end
-
 end
-

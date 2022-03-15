@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219272' do
   title "The Ubuntu operating system must generate audit records for
 successful/unsuccessful uses of the unix_update command."
@@ -29,7 +27,7 @@ is commented out, this is a finding.
     Note: The '-k' allows for specifying an arbitrary identifier and the string
 after it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful uses of the \"unix_update\" command.
 
@@ -54,7 +52,7 @@ auid!=4294967295 -k privileged-unix-update
   tag rid: 'SV-219272r508662_rule'
   tag stig_id: 'UBTU-18-010349'
   tag fix_id: 'F-20996r305145_fix'
-  tag cci: ['V-100769', 'SV-109873', 'CCI-000172']
+  tag cci: %w(V-100769 SV-109873 CCI-000172)
   tag nist: ['AU-12 c']
 
   @audit_file = '/sbin/unix_update'
@@ -74,10 +72,9 @@ auid!=4294967295 -k privileged-unix-update
       end
     end
   else
-    describe ('Audit line(s) for ' + @audit_file + ' exist') do
+    describe('Audit line(s) for ' + @audit_file + ' exist') do
       subject { audit_lines_exist }
       it { should be true }
     end
   end
 end
-

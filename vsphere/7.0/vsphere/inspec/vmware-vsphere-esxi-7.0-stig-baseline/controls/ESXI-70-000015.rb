@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000015' do
   title "The ESXi host SSH daemon must not allow authentication using an empty
 password."
@@ -18,7 +16,7 @@ of misconfiguration elsewhere."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, add or correct the following line in
 \"/etc/ssh/sshd_config\":
 
@@ -34,9 +32,7 @@ of misconfiguration elsewhere."
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

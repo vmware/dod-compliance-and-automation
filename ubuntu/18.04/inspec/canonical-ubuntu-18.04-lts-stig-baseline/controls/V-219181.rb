@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219181' do
   title "The Ubuntu operating system must enforce a minimum 15-character
 password length."
@@ -24,7 +22,7 @@ password length, by running the following command:
     If \"minlen\" parameter value is not 15 or higher, or is commented out,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to enforce a minimum 15-character
 password length.
 
@@ -40,7 +38,7 @@ password length.
   tag rid: 'SV-219181r508662_rule'
   tag stig_id: 'UBTU-18-010109'
   tag fix_id: 'F-20905r304872_fix'
-  tag cci: ['SV-109693', 'V-100589', 'CCI-000205']
+  tag cci: %w(SV-109693 V-100589 CCI-000205)
   tag nist: ['IA-5 (1) (a)']
 
   config_file = '/etc/security/pwquality.conf'
@@ -51,10 +49,9 @@ password length.
       its('minlen') { should cmp >= '15' }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

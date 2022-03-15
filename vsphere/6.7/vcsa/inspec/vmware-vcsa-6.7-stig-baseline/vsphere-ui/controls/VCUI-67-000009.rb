@@ -1,4 +1,4 @@
-control "VCUI-67-000009" do
+control 'VCUI-67-000009' do
   title 'vSphere UI plugins must be authorized before use.'
   desc  "The vSphere UI ships with a number of plugins out of the box. Any
 additional plugins may affect the availability and integrity of the system and
@@ -34,7 +34,6 @@ command.
   tag nist: ['CM-5 (3)']
 
   describe command('diff <(find /usr/lib/vmware-vsphere-ui/plugin-packages/vsphere-client/plugins -type f|sort) <(rpm -ql vsphere-ui|grep "/usr/lib/vmware-vsphere-ui/plugin-packages/vsphere-client/plugins/"|sort)') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

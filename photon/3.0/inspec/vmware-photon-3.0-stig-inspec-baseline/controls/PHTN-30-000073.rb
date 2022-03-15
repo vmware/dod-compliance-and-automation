@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000073' do
   title "The Photon operating system must enforce a delay of at least four
 seconds between logon prompts following a failed logon attempt."
@@ -17,7 +15,7 @@ reduces the chances that an unauthorized user may gain access to an account."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/pam.d/system-auth
@@ -37,9 +35,7 @@ end of the file:
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe file ('/etc/pam.d/system-auth') do
-      its ('content'){should match /^(?=.*?\bauth\b)(?=.*?\boptional\b)(?=.*?\bpam_faildelay.so\b)(?=.*?\bdelay=4000000\b).*$/}
+  describe file('/etc/pam.d/system-auth') do
+    its('content') { should match /^(?=.*?\bauth\b)(?=.*?\boptional\b)(?=.*?\bpam_faildelay.so\b)(?=.*?\bdelay=4000000\b).*$/ }
   end
-
 end
-

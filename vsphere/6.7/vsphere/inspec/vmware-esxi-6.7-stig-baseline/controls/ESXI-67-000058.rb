@@ -1,4 +1,4 @@
-control "ESXI-67-000058" do
+control 'ESXI-67-000058' do
   title "The ESXi host must enable BPDU filter on the host to prevent being
 locked out of physical switch ports with Portfast and BPDU Guard enabled."
   desc  "BPDU Guard and Portfast are commonly enabled on the physical switch to
@@ -34,7 +34,7 @@ following command:
     If the \"Net.BlockGuestBPDU\" setting is not set to \"1\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -61,8 +61,6 @@ Set-AdvancedSetting -Value 1
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Net.BlockGuestBPDU | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "1" }
+    its('stdout.strip') { should cmp '1' }
   end
-
 end
-

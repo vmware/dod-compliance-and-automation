@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-237770' do
   title "All local interactive user home directories must be group-owned by the
 home directory owners primary group."
@@ -34,7 +32,7 @@ log files containing system logon information. The returned directory
 by that user’s primary GID, this is a finding.
 
   "
-  desc  'fix', "
+  desc 'fix', "
     Change the group owner of a local interactive user’s home directory to the
 group found in \"/etc/passwd\". To change the group owner of a local
 interactive user’s home directory, use the following command:
@@ -56,7 +54,7 @@ of \"/home/smithj\", and has a primary group of users.
   tag legacy: []
   tag nist: ['CM-6 b']
 
-  local_user=passwd.where { uid.to_i >= 1000 && shell !~ /nologin/ }
+  local_user = passwd.where { uid.to_i >= 1000 && shell !~ /nologin/ }
 
   local_user.homes.each do |dir|
     primary_group = command("id -gn #{directory(dir).owner}").stdout.strip
@@ -65,4 +63,3 @@ of \"/home/smithj\", and has a primary group of users.
     end
   end
 end
-

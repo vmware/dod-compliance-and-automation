@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000009' do
   title 'VMware Postgres must require authentication on all connections.'
   desc  "To ensure accountability and prevent unauthenticated access,
@@ -23,7 +21,7 @@ Postgres requires standard password authentication for all connections.
 
     If any lines are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /storage/db/pgdata/pg_hba.conf.
 
     Find and remove the line that has a method of \"trust\" in the far right
@@ -45,13 +43,11 @@ column.
   tag cci: ['CCI-000764']
   tag nist: ['IA-2']
 
-  describe postgres_hba_conf("#{input('pg_install_dir')}/pg_hba.conf").where {type == 'local'} do
-    its ('auth_method') { should_not include 'trust' }
+  describe postgres_hba_conf("#{input('pg_install_dir')}/pg_hba.conf").where { type == 'local' } do
+    its('auth_method') { should_not include 'trust' }
   end
 
-  describe postgres_hba_conf("#{input('pg_install_dir')}/pg_hba.conf").where {type == 'host'} do
-    its ('auth_method') { should_not include 'trust' }
+  describe postgres_hba_conf("#{input('pg_install_dir')}/pg_hba.conf").where { type == 'host' } do
+    its('auth_method') { should_not include 'trust' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219315' do
   title "The Ubuntu operating system, for PKI-based authentication, must
 validate certificates by constructing a certification path (which includes
@@ -47,7 +45,7 @@ cert_policy | grep ca
     If \"cert_policy\" is not set to \"ca\", or the line is commented out, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system, for PKI-based authentication, to
 validate certificates by constructing a certification path to an accepted trust
 anchor.
@@ -67,12 +65,12 @@ modify accordingly at
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000066-GPOS-00034'
-  tag satisfies: ['SRG-OS-000066-GPOS-00034', 'SRG-OS-000384-GPOS-00167']
+  tag satisfies: %w(SRG-OS-000066-GPOS-00034 SRG-OS-000384-GPOS-00167)
   tag gid: 'V-219315'
   tag rid: 'SV-219315r508662_rule'
   tag stig_id: 'UBTU-18-010425'
   tag fix_id: 'F-21039r305274_fix'
-  tag cci: ['V-100853', 'SV-109957', 'CCI-001991', 'CCI-000185']
+  tag cci: %w(V-100853 SV-109957 CCI-001991 CCI-000185)
   tag nist: ['IA-5 (2) (d)', 'IA-5 (2) (a)']
 
   config_file_exists = file('/etc/pam_pkcs11/pam_pkcs11.conf').exist?
@@ -88,4 +86,3 @@ modify accordingly at
     end
   end
 end
-

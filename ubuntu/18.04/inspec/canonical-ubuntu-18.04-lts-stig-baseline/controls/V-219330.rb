@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219330' do
   title 'The Ubuntu operating system must be configured to use TCP syncookies.'
   desc  "DoS is a condition when a resource is not available for legitimate
@@ -30,7 +28,7 @@ grep -v '#'
 
     If no output is returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to use TCP syncookies, by running the
 following command:
 
@@ -48,11 +46,10 @@ line in \"/etc/sysctl.conf\":
   tag rid: 'SV-219330r508662_rule'
   tag stig_id: 'UBTU-18-010500'
   tag fix_id: 'F-21054r305319_fix'
-  tag cci: ['SV-109987', 'V-100883', 'CCI-001095']
+  tag cci: %w(SV-109987 V-100883 CCI-001095)
   tag nist: ['SC-5 (2)']
 
   describe kernel_parameter('net.ipv4.tcp_syncookies') do
     its('value') { should cmp 1 }
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000013' do
   title 'The Photon operating system must have the auditd service running.'
   desc  "Without the capability to generate audit records, it would be
@@ -14,7 +12,7 @@ must be configured to start automatically and be running at all times."
 
     If the service is not running, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # systemctl enable auditd
@@ -31,10 +29,8 @@ must be configured to start automatically and be running at all times."
   tag nist: ['AU-3 (1)']
 
   describe systemd_service('auditd') do
-    it { should be_installed}
-    it { should be_enabled}
-    it { should be_running}
+    it { should be_installed }
+    it { should be_enabled }
+    it { should be_running }
   end
-
 end
-

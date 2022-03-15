@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000032' do
   title "The ESXi host must prohibit the reuse of passwords within five
 iterations."
@@ -23,7 +21,7 @@ following command:
     If the \"Security.PasswordHistory\" setting is not set to \"5\" this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Select the
 \"Security.PasswordHistory\" value and configure it to \"5\".
@@ -48,8 +46,6 @@ Set-AdvancedSetting -Value 5
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Security.PasswordHistory | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should match "5" }
+    its('stdout.strip') { should match '5' }
   end
-
 end
-

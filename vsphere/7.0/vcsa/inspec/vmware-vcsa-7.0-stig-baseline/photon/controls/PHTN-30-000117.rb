@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000117' do
   title "The Photon operating system must store only encrypted representations
 of passwords."
@@ -15,7 +13,7 @@ those password are much more vulnerability to offline bute forcing attacks"
 
     If the output does not include \"sha512\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/pam.d/system-password
@@ -34,9 +32,7 @@ those password are much more vulnerability to offline bute forcing attacks"
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']
 
-  describe file ('/etc/pam.d/system-password') do
-      its ('content'){should match /^(?=.*?\bpassword\b)(?=.*?\brequired\b)(?=.*?\bsha512\b).*$/}
+  describe file('/etc/pam.d/system-password') do
+    its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequired\b)(?=.*?\bsha512\b).*$/ }
   end
-
 end
-

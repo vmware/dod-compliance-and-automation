@@ -1,4 +1,4 @@
-control "VCPG-67-000015" do
+control 'VCPG-67-000015' do
   title 'VMware Postgres must use FIPS 140-2 approved TLS ciphers.'
   desc  "Use of weak or unvalidated cryptographic algorithms undermines the
 purposes of using encryption and digital signatures to protect data. Weak
@@ -28,7 +28,7 @@ ssl_ciphers;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -40,8 +40,8 @@ pg_reload_conf();\"
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-APP-000179-DB-000114'
-  tag satisfies: ['SRG-APP-000179-DB-000114', 'SRG-APP-000514-DB-000381',
-'SRG-APP-000514-DB-000382', 'SRG-APP-000514-DB-000383']
+  tag satisfies: %w(SRG-APP-000179-DB-000114 SRG-APP-000514-DB-000381
+SRG-APP-000514-DB-000382 SRG-APP-000514-DB-000383)
   tag gid: 'V-239207'
   tag rid: 'SV-239207r717058_rule'
   tag stig_id: 'VCPG-67-000015'
@@ -49,12 +49,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-000803']
   tag nist: ['IA-7']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW ssl_ciphers;"
-  
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW ssl_ciphers;'
+
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_ssl_ciphers')}" }
+    its('output') { should cmp "#{input('pg_ssl_ciphers')}" }
   end
-
 end
-

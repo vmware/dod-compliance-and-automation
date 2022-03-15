@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000003' do
   title 'Lookup Service must limit the maximum size of a POST request.'
   desc  "The \"maxPostSize\" value is the maximum size in bytes of the POST
@@ -24,7 +22,7 @@ Lookup service is configured in it's shipping state to not set a value for
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/server.xml
@@ -50,6 +48,4 @@ Lookup service is configured in it's shipping state to not set a value for
   describe xml("#{input('serverXmlPath')}") do
     its(['/Server/Service/Connector[@port="${bio-custom.http.port}"]/@maxPostSize']) { should cmp [] }
   end
-
 end
-

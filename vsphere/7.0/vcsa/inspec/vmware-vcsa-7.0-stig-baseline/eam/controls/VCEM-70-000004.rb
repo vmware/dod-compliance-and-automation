@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000004' do
   title 'ESX Agent Manager must protect cookies from XSS.'
   desc  "Cookies are a common way to save session state over the HTTP(S)
@@ -22,7 +20,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
@@ -54,6 +52,4 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
   describe xml("#{input('webXmlPath')}") do
     its(['/web-app/session-config/cookie-config/http-only']) { should cmp "#{input('cookieHttpOnly')}" }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000055' do
   title 'The ESXi host must disable Inter-VM transparent page sharing.'
   desc  "Published academic papers have demonstrated that by forcing a flush
@@ -31,7 +29,7 @@ following command:
     If the \"Mem.ShareForceSalting\" setting is not set to \"2\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Click \"Edit\". Select the
 \"Mem.ShareForceSalting\" value and set it to \"2\".
@@ -56,8 +54,6 @@ Set-AdvancedSetting -Value 2
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Mem.ShareForceSalting | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "2" }
+    its('stdout.strip') { should cmp '2' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000070' do
   title "The vCenter Server must limit membership to the
 SystemConfiguration.BashShellAdministrators SSO group."
@@ -28,7 +26,7 @@ severely damage vCenter, inadvertently or otherwise.
 SystemConfiguration.BashShellAdministrators that are not authorized, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Single Sign On >> Users
 and Groups >> Groups. Click the next page arrow until you see the
 \"SystemConfiguration.BashShellAdministrators\" group. Click
@@ -47,9 +45,7 @@ account. Select \"Remove Member\".
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

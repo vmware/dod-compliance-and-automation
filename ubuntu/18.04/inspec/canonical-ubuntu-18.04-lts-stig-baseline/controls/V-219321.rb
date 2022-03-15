@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219321' do
   title "The Ubuntu operating system must only allow the use of DoD
 PKI-established certificate authorities for verification of the establishment
@@ -25,7 +23,7 @@ CA\".
 
     If none is found, this is a finding.
   "
-  desc  'fix', "Add at least one DOD certificate authority to the
+  desc 'fix', "Add at least one DOD certificate authority to the
 '/usr/local/share/ca-certificates' directory, then run the
 'update-ca-certificates' command."
   impact 0.5
@@ -35,13 +33,12 @@ CA\".
   tag rid: 'SV-219321r508662_rule'
   tag stig_id: 'UBTU-18-010436'
   tag fix_id: 'F-21045r305292_fix'
-  tag cci: ['V-100865', 'SV-109969', 'CCI-002470']
+  tag cci: %w(V-100865 SV-109969 CCI-002470)
   tag nist: ['SC-23 (5)']
 
-  dod_ca_path = input("dod_ca_path")
+  dod_ca_path = input('dod_ca_path')
 
   describe x509_certificate(dod_ca_path) do
-    its('subject.CN') { should include "DoD Root CA" }
+    its('subject.CN') { should include 'DoD Root CA' }
   end
 end
-

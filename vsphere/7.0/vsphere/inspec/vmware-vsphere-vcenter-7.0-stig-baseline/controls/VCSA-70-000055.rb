@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000055' do
   title "The vCenter Server must configure the vSAN Datastore name to a unique
 name."
@@ -30,7 +28,7 @@ the following command:
     If vSAN is Enabled and a datastore is named \"vsanDatastore\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Host and Clusters >> Select a vSAN Enabled
 Cluster >> Datastores. Right-click on the datastore named \"vsanDatastore\" and
 select \"Rename\". Rename the datastore based on site-specific naming
@@ -62,23 +60,21 @@ the following command:
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command = "Get-Cluster | Where-Object {$_.VsanEnabled} | Get-Datastore | Where-Object {$_.type -match \"vsan\"} | Select-Object -ExpandProperty Name"
+  command = 'Get-Cluster | Where-Object {$_.VsanEnabled} | Get-Datastore | Where-Object {$_.type -match "vsan"} | Select-Object -ExpandProperty Name'
   vsandatastores = powercli_command(command).stdout.strip.split("\r\n")
 
   if vsandatastores.empty?
-    describe "" do
-      skip "No VSAN datastores found to check."
+    describe '' do
+      skip 'No VSAN datastores found to check.'
     end
   end
 
-  if !vsandatastores.empty?
-    vsandatastores.each do | ds |
-      describe "" do
-        subject {ds}
-        it { should cmp "vsanDatastore" }
+  unless vsandatastores.empty?
+    vsandatastores.each do |ds|
+      describe '' do
+        subject { ds }
+        it { should cmp 'vsanDatastore' }
       end
     end
   end
-
 end
-

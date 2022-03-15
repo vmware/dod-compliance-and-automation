@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000110' do
   title "The Photon operating system must enforce password complexity on the
 root account."
@@ -22,7 +20,7 @@ ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/pam.d/system-password
@@ -42,9 +40,7 @@ ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe file ('/etc/pam.d/system-password') do
-      its ('content'){should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\benforce_for_root\b).*$/}
+  describe file('/etc/pam.d/system-password') do
+    its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\benforce_for_root\b).*$/ }
   end
-
 end
-

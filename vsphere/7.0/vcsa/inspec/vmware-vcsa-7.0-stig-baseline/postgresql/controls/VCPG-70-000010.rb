@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000010' do
   title 'The vPostgres database must use md5 for authentication.'
   desc  "The DoD standard for authentication is DoD-approved PKI certificates.
@@ -25,7 +23,7 @@ password_encryption;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
     If the output does not match the expected result, this is a finding
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -43,12 +41,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW password_encryption;"
-  
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW password_encryption;'
+
   describe sql.query(sqlquery) do
-   its('output') {should be_in "#{input('pg_pw_encryption')}" }
+    its('output') { should be_in "#{input('pg_pw_encryption')}" }
   end
-
 end
-

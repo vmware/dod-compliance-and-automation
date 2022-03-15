@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000120' do
   title "The Photon operating system must configure sshd to restrict
 LoginGraceTime."
@@ -20,7 +18,7 @@ the exposure any partial logon attempts may create."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -44,8 +42,7 @@ following:
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-    describe command('sshd -T|&grep -i LoginGraceTime') do
-        its ('stdout.strip') { should cmp 'LoginGraceTime 30' }
-    end
-
+  describe command('sshd -T|&grep -i LoginGraceTime') do
+    its('stdout.strip') { should cmp 'LoginGraceTime 30' }
+  end
 end

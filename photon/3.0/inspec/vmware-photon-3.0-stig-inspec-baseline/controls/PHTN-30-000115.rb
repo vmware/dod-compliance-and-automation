@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000115' do
   title "The Photon operating system must configure sshd to disallow
 HostbasedAuthentication."
@@ -17,7 +15,7 @@ compromise and therefore must be explicitly disabled."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -42,8 +40,6 @@ the following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i HostbasedAuthentication') do
-      its ('stdout.strip') { should cmp 'HostbasedAuthentication no' }
+    its('stdout.strip') { should cmp 'HostbasedAuthentication no' }
   end
-
 end
-

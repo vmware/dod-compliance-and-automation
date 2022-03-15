@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000072' do
   title 'The Photon operating system must set the FAIL_DELAY parameter.'
   desc  "Limiting the number of logon attempts over a certain time interval
@@ -16,7 +14,7 @@ reduces the chances that an unauthorized user may gain access to an account."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/login.defs
@@ -38,6 +36,4 @@ reduces the chances that an unauthorized user may gain access to an account."
   describe login_defs do
     its('FAIL_DELAY') { should cmp '4' }
   end
-
 end
-

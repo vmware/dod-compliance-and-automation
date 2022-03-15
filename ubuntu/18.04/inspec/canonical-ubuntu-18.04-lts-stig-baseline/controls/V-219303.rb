@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219303' do
   title "The Ubuntu operating system must initiate a session lock after a
 15-minute period of inactivity for all connection types."
@@ -30,7 +28,7 @@ determined and/or controlled.
 contents shown above, the value of \"TMOUT\" is greater than 900, or the
 timeout values are commented out, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to initiate a session logout after a
 15-minute period of inactivity.
 
@@ -52,7 +50,7 @@ does not already exist) with the following command:
   tag rid: 'SV-219303r508662_rule'
   tag stig_id: 'UBTU-18-010402'
   tag fix_id: 'F-21027r305238_fix'
-  tag cci: ['V-100829', 'SV-109933', 'CCI-000057']
+  tag cci: %w(V-100829 SV-109933 CCI-000057)
   tag nist: ['AC-11 a']
 
   describe file('/etc/profile.d/autologout.sh') do
@@ -62,4 +60,3 @@ does not already exist) with the following command:
     its('content') { should match /^\s*export\s+TMOUT\s*$/ }
   end
 end
-

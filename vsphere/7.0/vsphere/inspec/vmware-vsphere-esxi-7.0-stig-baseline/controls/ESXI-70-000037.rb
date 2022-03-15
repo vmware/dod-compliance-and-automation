@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000037' do
   title 'The ESXi host must use Active Directory for local user authentication.'
   desc  "Join ESXi hosts to an Active Directory (AD) domain to eliminate the
@@ -31,7 +29,7 @@ accounts, other than root and/or service accounts, this is a finding.
     If the Directory Services Type is not set to \"Active Directory\", this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Authentication Services. Click \"Join Domain...\" and
 enter the AD domain to join, select the \"Using credentials radio
@@ -60,11 +58,9 @@ Users.
   tag cci: 'CCI-000764'
   tag nist: ['IA-2']
 
-  list = ["Joined","Ok"]
+  list = %w(Joined Ok)
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostAuthentication | Select-Object -ExpandProperty DomainMembershipStatus"
   describe powercli_command(command) do
-    its ('stdout.strip') { should be_in list }
+    its('stdout.strip') { should be_in list }
   end
-
 end
-

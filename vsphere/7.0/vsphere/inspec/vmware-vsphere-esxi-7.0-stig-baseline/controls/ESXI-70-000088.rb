@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000088' do
   title 'The ESXi host must configure a session timeout for the vSphere API.'
   desc  "The vSphere API (VIM) allows for remote, programmatic administration
@@ -53,8 +51,6 @@ Config.HostAgent.vmacore.soap.sessionTimeout | Set-AdvancedSetting -Value \"30\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Config.HostAgent.vmacore.soap.sessionTimeout | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "30" }
+    its('stdout.strip') { should cmp '30' }
   end
-
 end
-

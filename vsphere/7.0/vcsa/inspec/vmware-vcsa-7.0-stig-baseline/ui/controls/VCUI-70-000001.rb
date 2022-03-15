@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000001' do
   title "vSphere UI must limit the amount of time that each TCP connection is
 kept alive."
@@ -28,7 +26,7 @@ connections.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-vsphere-ui/server/conf/server.xml
@@ -58,18 +56,16 @@ connections.
   begin
     xmlconf = xml("#{input('serverXmlPath')}")
 
-      if xmlconf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
-        xmlconf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
-          describe x do
-            it { should eq "#{input('connectionTimeout')}" }
-          end
-        end
-      else
-        describe xml(xmlconf['Server/Service/Connector/attribute::connectionTimeout']) do
+    if xmlconf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
+      xmlconf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
+        describe x do
           it { should eq "#{input('connectionTimeout')}" }
         end
       end
+    else
+      describe xml(xmlconf['Server/Service/Connector/attribute::connectionTimeout']) do
+        it { should eq "#{input('connectionTimeout')}" }
+      end
+    end
   end
-
 end
-

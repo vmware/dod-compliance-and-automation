@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000011' do
   title "Unauthorized serial devices must be disconnected on the virtual
 machine."
@@ -40,9 +38,7 @@ Settings. Select the serial device and click the circle-x to remove then OK.
 
   command = "(Get-VM -Name #{input('vmName')}).ExtensionData.Config.Hardware.Device.DeviceInfo.label"
   describe powercli_command(command) do
-    its ('stdout') { should_not match 'Serial' }
-    its ('exit_status') { should cmp 0 }
+    its('stdout') { should_not match 'Serial' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

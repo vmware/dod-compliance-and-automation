@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000060' do
   title "The vCenter Server must enable revocation checking for certificate
 based authentication."
@@ -14,7 +12,7 @@ card authentication settings\" >> \"Certificate revocation\", verify that
 
     If \"Revocation check\" shows as disabled, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Single Sign On >>
 Configuration >> Identity Provider >> Smart Card Authentication. Under \"Smart
 card authentication settings\" >> \"Certificate revocation\", click the
@@ -36,9 +34,7 @@ information.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

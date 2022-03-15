@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000030' do
   title "Rsyslog must be configured to monitor and ship Performance Charts log
 files."
@@ -16,7 +14,7 @@ the availability and integrity of the hosted application."
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 
     /etc/vmware-syslog/vmware-services-perfcharts.conf
@@ -61,8 +59,6 @@ the availability and integrity of the hosted application."
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-perfcharts.conf|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

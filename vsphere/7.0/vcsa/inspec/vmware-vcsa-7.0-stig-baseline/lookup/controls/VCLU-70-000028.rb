@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000028' do
   title "Lookup Service log files must be be offloaded to a central log server
 in real time."
@@ -15,7 +13,7 @@ integrity of the hosted application."
 
     If the above command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-syslog/vmware-services-lookupsvc.conf
@@ -72,8 +70,6 @@ integrity of the hosted application."
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-lookupsvc.conf|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

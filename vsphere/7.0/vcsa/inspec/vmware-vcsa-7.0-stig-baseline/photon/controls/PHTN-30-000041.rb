@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000041' do
   title "The Photon operating system messages file have the correct ownership
 and file permissions."
@@ -16,7 +14,7 @@ state and can provide sensitive information to an unprivileged attacker."
     If the /var/log/messages directory is not owned by root or not group owned
 by root or the file permissions are more permission than 640, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # chown root:root /var/log/messages
@@ -34,10 +32,8 @@ by root or the file permissions are more permission than 640, this is a finding.
   tag nist: ['SI-11 b']
 
   describe file('/var/log/messages') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0640') }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0640') }
   end
-
 end
-

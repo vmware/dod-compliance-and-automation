@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000099' do
   title "The Photon operating system must not respond to IPv4 Internet Control
 Message Protocol (ICMP) echoes sent to a broadcast address."
@@ -17,7 +15,7 @@ provides a vector for amplification attacks."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # sed -i -e \"/^net.ipv4.icmp_echo_ignore_broadcasts/d\" /etc/sysctl.conf
@@ -37,6 +35,4 @@ provides a vector for amplification attacks."
   describe kernel_parameter('net.ipv4.icmp_echo_ignore_broadcasts') do
     its('value') { should eq 1 }
   end
-
 end
-

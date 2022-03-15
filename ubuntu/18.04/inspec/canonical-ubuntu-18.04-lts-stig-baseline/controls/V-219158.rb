@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219158' do
   title "The Ubuntu operating system must not have the rsh-server package
 installed."
@@ -30,7 +28,7 @@ command:
 
     If the rsh-server package is installed, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to disable non-essential capabilities
 by removing the rsh-server package from the system with the following command:
 
@@ -43,11 +41,10 @@ by removing the rsh-server package from the system with the following command:
   tag rid: 'SV-219158r508662_rule'
   tag stig_id: 'UBTU-18-010019'
   tag fix_id: 'F-20882r304803_fix'
-  tag cci: ['SV-109645', 'V-100541', 'CCI-000381']
+  tag cci: %w(SV-109645 V-100541 CCI-000381)
   tag nist: ['CM-7 a']
 
   describe package('rsh-server') do
     it { should_not be_installed }
   end
 end
-

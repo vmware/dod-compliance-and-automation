@@ -25,7 +25,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
@@ -43,17 +43,16 @@ s/xmlns=\".*\"//g' | xmllint --xpath
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000002'
-  tag satisfies: ['SRG-APP-000001-WSR-000002', 'SRG-APP-000223-WSR-000011',
-'SRG-APP-000439-WSR-000154']
+  tag satisfies: %w(SRG-APP-000001-WSR-000002 SRG-APP-000223-WSR-000011
+SRG-APP-000439-WSR-000154)
   tag gid: 'V-239655'
   tag rid: 'SV-239655r816690_rule'
   tag stig_id: 'VCST-67-000004'
   tag fix_id: 'F-42847r816689_fix'
-  tag cci: ['CCI-000054', 'CCI-001664', 'CCI-002418']
+  tag cci: %w(CCI-000054 CCI-001664 CCI-002418)
   tag nist: ['AC-10', 'SC-23 (3)', 'SC-8']
 
   describe xml("#{input('webXmlPath')}") do
     its(['/web-app/session-config/cookie-config/http-only']) { should cmp "#{input('cookieHttpOnly')}" }
   end
-
 end

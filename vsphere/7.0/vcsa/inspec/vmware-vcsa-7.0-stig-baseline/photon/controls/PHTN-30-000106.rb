@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000106' do
   title 'The Photon operating system must not perform IPv4 packet forwarding.'
   desc  "Routing protocol daemons are typically used on routers to exchange
@@ -20,7 +18,7 @@ across the network."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # sed -i -e \"/^net.ipv4.ip_forward/d\" /etc/sysctl.conf
@@ -40,6 +38,4 @@ across the network."
   describe kernel_parameter('net.ipv4.ip_forward') do
     its('value') { should eq 0 }
   end
-
 end
-

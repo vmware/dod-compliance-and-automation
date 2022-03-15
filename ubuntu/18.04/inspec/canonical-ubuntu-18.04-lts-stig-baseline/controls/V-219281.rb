@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219281' do
   title "The Ubuntu operating system must prevent all software from executing
 at higher privilege levels than users executing the software and the audit
@@ -40,7 +38,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to audit the execution of all
 privileged functions.
 
@@ -64,12 +62,12 @@ required.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000326-GPOS-00126'
-  tag satisfies: ['SRG-OS-000326-GPOS-00126', 'SRG-OS-000327-GPOS-00127']
+  tag satisfies: %w(SRG-OS-000326-GPOS-00126 SRG-OS-000327-GPOS-00127)
   tag gid: 'V-219281'
   tag rid: 'SV-219281r508662_rule'
   tag stig_id: 'UBTU-18-010358'
   tag fix_id: 'F-21005r305172_fix'
-  tag cci: ['V-100785', 'SV-109889', 'CCI-002233', 'CCI-002234']
+  tag cci: %w(V-100785 SV-109889 CCI-002233 CCI-002234)
   tag nist: ['AC-6 (8)', 'AC-6 (9)']
 
   if os.arch == 'x86_64'
@@ -83,4 +81,3 @@ required.
     its('list.uniq') { should eq ['exit'] }
   end
 end
-

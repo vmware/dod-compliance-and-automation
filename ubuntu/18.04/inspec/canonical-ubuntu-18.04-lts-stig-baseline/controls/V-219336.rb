@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219336' do
   title "The Ubuntu operating system must use cryptographic mechanisms to
 protect the integrity of audit tools."
@@ -63,7 +61,7 @@ order to protect the integrity of the audit tools.
   tag rid: 'SV-219336r508662_rule'
   tag stig_id: 'UBTU-18-010506'
   tag fix_id: 'F-21060r305337_fix'
-  tag cci: ['V-100895', 'SV-109999', 'CCI-001496']
+  tag cci: %w(V-100895 SV-109999 CCI-001496)
   tag nist: ['AU-9 (3)']
 
   aide_conf = aide_conf input('aide_conf_path')
@@ -72,31 +70,31 @@ order to protect the integrity of the audit tools.
 
   if aide_conf_exists
     describe aide_conf.where { selection_line == '/sbin/auditctl' } do
-      its('rules') { should include ['p', 'i', 'n', 'u', 'g', 's', 'b', 'acl', 'xattrs', 'sha512'] }
+      its('rules') { should include %w(p i n u g s b acl xattrs sha512) }
     end
 
     describe aide_conf.where { selection_line == '/sbin/auditd' } do
-      its('rules') { should include ['p', 'i', 'n', 'u', 'g', 's', 'b', 'acl', 'xattrs', 'sha512'] }
+      its('rules') { should include %w(p i n u g s b acl xattrs sha512) }
     end
 
     describe aide_conf.where { selection_line == '/sbin/ausearch' } do
-      its('rules') { should include ['p', 'i', 'n', 'u', 'g', 's', 'b', 'acl', 'xattrs', 'sha512'] }
+      its('rules') { should include %w(p i n u g s b acl xattrs sha512) }
     end
 
     describe aide_conf.where { selection_line == '/sbin/aureport' } do
-      its('rules') { should include ['p', 'i', 'n', 'u', 'g', 's', 'b', 'acl', 'xattrs', 'sha512'] }
+      its('rules') { should include %w(p i n u g s b acl xattrs sha512) }
     end
 
     describe aide_conf.where { selection_line == '/sbin/autrace' } do
-      its('rules') { should include ['p', 'i', 'n', 'u', 'g', 's', 'b', 'acl', 'xattrs', 'sha512'] }
+      its('rules') { should include %w(p i n u g s b acl xattrs sha512) }
     end
 
     describe aide_conf.where { selection_line == '/sbin/audispd' } do
-      its('rules') { should include ['p', 'i', 'n', 'u', 'g', 's', 'b', 'acl', 'xattrs', 'sha512'] }
+      its('rules') { should include %w(p i n u g s b acl xattrs sha512) }
     end
 
     describe aide_conf.where { selection_line == '/sbin/augenrules' } do
-      its('rules') { should include ['p', 'i', 'n', 'u', 'g', 's', 'b', 'acl', 'xattrs', 'sha512'] }
+      its('rules') { should include %w(p i n u g s b acl xattrs sha512) }
     end
   else
     describe 'aide.conf file exists' do
@@ -105,4 +103,3 @@ order to protect the integrity of the audit tools.
     end
   end
 end
-

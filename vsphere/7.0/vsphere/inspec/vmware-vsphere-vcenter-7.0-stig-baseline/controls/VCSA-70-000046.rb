@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000046' do
   title "The vCenter Server must set the interval for counting failed login
 attempts to at least 15 minutes."
@@ -18,7 +16,7 @@ Configuration >> Local Accounts >> Lockout Policy.
 
     If this lockout policy is not configured as stated, this is a finding.
   "
-  desc  'fix', "From the vSphere Client, go to Administration >> Single Sign On
+  desc 'fix', "From the vSphere Client, go to Administration >> Single Sign On
 >> Configuration >> Local Accounts >> Lockout Policy. Click \"Edit\". Set the
 Time interval between failures to \"900\" and click \"Save\"."
   impact 0.5
@@ -31,9 +29,7 @@ Time interval between failures to \"900\" and click \"Save\"."
   tag cci: 'CCI-002238'
   tag nist: ['AC-7 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

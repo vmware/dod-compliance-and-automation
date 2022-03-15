@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219196' do
   title "The Ubuntu operating system must configure audit tools to be owned by
 root."
@@ -34,7 +32,7 @@ by root to prevent any unauthorized access, deletion, or modification.
 
     If any of the audit tools are not owned by root, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit tools on the Ubuntu operating system to be owned by
 root, by running the following command:
 
@@ -49,7 +47,7 @@ root, by running the following command:
   tag rid: 'SV-219196r508662_rule'
   tag stig_id: 'UBTU-18-010129'
   tag fix_id: 'F-20920r304917_fix'
-  tag cci: ['V-100619', 'SV-109723', 'CCI-001493']
+  tag cci: %w(V-100619 SV-109723 CCI-001493)
   tag nist: ['AU-9']
 
   audit_tools = input('audit_tools')
@@ -60,4 +58,3 @@ root, by running the following command:
     end
   end
 end
-

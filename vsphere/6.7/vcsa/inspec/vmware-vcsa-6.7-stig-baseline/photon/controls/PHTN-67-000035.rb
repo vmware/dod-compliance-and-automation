@@ -1,4 +1,4 @@
-control "PHTN-67-000035" do
+control 'PHTN-67-000035' do
   title "The Photon operating system must configure sshd to disallow root
 logins."
   desc  "Logging on with a user-specific account provides individual
@@ -18,7 +18,7 @@ not otherwise need that level of privilege."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor and ensure that the
 \"PermitRootLogin\" line is uncommented and set to the following:
 
@@ -39,8 +39,6 @@ not otherwise need that level of privilege."
   tag nist: ['IA-2 (5)']
 
   describe command('sshd -T|&grep -i PermitRootLogin') do
-    its ('stdout.strip') { should cmp 'PermitRootLogin no' }
+    its('stdout.strip') { should cmp 'PermitRootLogin no' }
   end
-
 end
-

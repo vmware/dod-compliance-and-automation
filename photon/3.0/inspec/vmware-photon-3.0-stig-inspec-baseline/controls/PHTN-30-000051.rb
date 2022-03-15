@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000051' do
   title 'The Photon operating system package files must not be modified.'
   desc  "Protecting the integrity of the tools used for auditing purposes is a
@@ -21,7 +19,7 @@ files on disk versus the expected ones from the installation package.
 
     If there is any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If the audit system binaries have been altered the system must be taken
 offline and your ISSM must be notified immediately.
 
@@ -39,8 +37,6 @@ restored from a backup or redeployed once the root cause is remediated.
   tag nist: ['AU-9 (3)']
 
   describe command('rpm -V audit | grep "^..5" | grep -v "^...........c"') do
-      its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219327' do
   title "The Ubuntu operating system must automatically remove or disable
 emergency accounts after 72 hours."
@@ -29,7 +27,7 @@ accounts' creation.
     If any of these accounts do not expire within 72 hours of that account's
 creation, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If an emergency account must be created, configure the system to terminate
 the account after a 72 hour time period with the following command to set an
 expiration date on it. Substitute \"account_name\" with the account to be
@@ -44,13 +42,11 @@ created.
   tag rid: 'SV-219327r508662_rule'
   tag stig_id: 'UBTU-18-010447'
   tag fix_id: 'F-21051r305310_fix'
-  tag cci: ['SV-109981', 'V-100877', 'CCI-001682']
+  tag cci: %w(SV-109981 V-100877 CCI-001682)
   tag nist: ['AC-2 (2)']
 
   describe 'Manual verification required' do
     skip 'Manually verify if emergency account must be created
       the system must terminate the account after a 72 hour time period.'
   end
-
 end
-

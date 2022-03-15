@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000088' do
   title "The Photon operating system must configure sshd to limit the number of
 allowed login attempts per connection."
@@ -18,7 +16,7 @@ effectiveness of brute-force attacks."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -43,8 +41,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i MaxAuthTries') do
-    its ('stdout.strip') { should cmp 'MaxAuthTries 6' }
+    its('stdout.strip') { should cmp 'MaxAuthTries 6' }
   end
-
 end
-

@@ -18,7 +18,7 @@ configuration files.
 
     If there is any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Reinstall the VCSA or roll back to a snapshot.
@@ -29,16 +29,15 @@ supported by VMware.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000131-WSR-000051'
-  tag satisfies: ['SRG-APP-000131-WSR-000051', 'SRG-APP-000357-WSR-000150']
+  tag satisfies: %w(SRG-APP-000131-WSR-000051 SRG-APP-000357-WSR-000150)
   tag gid: 'V-239659'
   tag rid: 'SV-239659r816702_rule'
   tag stig_id: 'VCST-67-000008'
   tag fix_id: 'F-42851r816701_fix'
-  tag cci: ['CCI-001749', 'CCI-001849']
+  tag cci: %w(CCI-001749 CCI-001849)
   tag nist: ['CM-5 (3)', 'AU-4']
 
   describe command('rpm -V vmware-identity-sts|grep "^..5......"|grep -E "\.war|\.jar|\.sh|\.py"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

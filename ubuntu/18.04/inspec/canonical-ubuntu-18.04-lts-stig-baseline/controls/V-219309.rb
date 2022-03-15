@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219309' do
   title "The Ubuntu operating system must use strong authenticators in
 establishing nonlocal maintenance and diagnostic sessions."
@@ -27,7 +25,7 @@ maintenance.
 
     If \"UsePAM\" is not set to \"yes\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to use strong authentication when
 establishing nonlocal maintenance and diagnostic sessions.
 
@@ -42,11 +40,10 @@ establishing nonlocal maintenance and diagnostic sessions.
   tag rid: 'SV-219309r508662_rule'
   tag stig_id: 'UBTU-18-010414'
   tag fix_id: 'F-21033r305256_fix'
-  tag cci: ['SV-109945', 'V-100841', 'CCI-000877']
+  tag cci: %w(SV-109945 V-100841 CCI-000877)
   tag nist: ['MA-4 c']
 
   describe sshd_config do
     its('UsePAM') { should cmp 'yes' }
   end
 end
-

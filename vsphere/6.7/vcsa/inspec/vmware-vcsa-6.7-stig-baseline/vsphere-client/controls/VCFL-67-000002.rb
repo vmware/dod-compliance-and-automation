@@ -1,7 +1,7 @@
-control "VCFL-67-000002" do
-   title "vSphere Client must limit the number of concurrent connections
+control 'VCFL-67-000002' do
+  title "vSphere Client must limit the number of concurrent connections
 permitted."
-  desc  "Resource exhaustion can occur when an unlimited number of concurrent
+  desc "Resource exhaustion can occur when an unlimited number of concurrent
 requests are allowed on a website, facilitating a denial-of-service attack.
 Unless the number of requests is controlled, the web server can consume enough
 system resources to cause a system crash.
@@ -26,7 +26,7 @@ threads, additional threads will be created up to the value of the
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml.
 
@@ -47,17 +47,16 @@ threads, additional threads will be created up to the value of the
   begin
     vcui_conf = xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml')
 
-      if vcui_conf['Server/Service/Connector/attribute::maxThreads'].is_a?(Array)
-        vcui_conf['Server/Service/Connector/attribute::maxThreads'].each do |x|
-          describe x do
-            it { should eq "800" }
-          end
-        end
-      else
-        describe xml(vcui_conf['Server/Service/Connector/attribute::maxThreads']) do
-          it { should eq "800" }
+    if vcui_conf['Server/Service/Connector/attribute::maxThreads'].is_a?(Array)
+      vcui_conf['Server/Service/Connector/attribute::maxThreads'].each do |x|
+        describe x do
+          it { should eq '800' }
         end
       end
+    else
+      describe xml(vcui_conf['Server/Service/Connector/attribute::maxThreads']) do
+        it { should eq '800' }
+      end
+    end
   end
-
 end

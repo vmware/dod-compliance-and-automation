@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219147' do
   title "Ubuntu operating systems booted with a BIOS must require
 authentication upon booting into single-user and maintenance modes."
@@ -37,7 +35,7 @@ grub.pbkdf2.sha512.10000.MFU48934NJA87HF8NSD34493GDHF84NG
     If the root password entry does not begin with “password_pbkdf2”, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the system to require a password for authentication upon booting
 into single-user and maintenance modes.
 
@@ -69,10 +67,9 @@ following command:
   tag rid: 'SV-219147r508662_rule'
   tag stig_id: 'UBTU-18-010000'
   tag fix_id: 'F-20871r304770_fix'
-  tag cci: ['V-100519', 'SV-109623', 'CCI-000213']
+  tag cci: %w(V-100519 SV-109623 CCI-000213)
   tag nist: ['AC-3']
   describe file('/boot/grub/grub.cfg') do
     its('content') { should match '^password_pbkdf2' }
   end
 end
-

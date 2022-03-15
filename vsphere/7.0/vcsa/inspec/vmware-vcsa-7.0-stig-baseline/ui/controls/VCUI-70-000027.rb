@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000027' do
   title 'vSphere UI must have the debug option turned off.'
   desc  "Information needed by an attacker to begin looking for possible
@@ -34,7 +32,7 @@ malicious user.
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-vsphere-ui/server/conf/web.xml
@@ -65,16 +63,12 @@ finding.
   tag nist: ['SI-11 a']
 
   describe.one do
-
     describe xml("#{input('webXmlPath')}") do
       its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should eq [] }
     end
 
     describe xml("#{input('webXmlPath')}") do
-      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
+      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp '0' }
     end
-
   end
-
 end
-

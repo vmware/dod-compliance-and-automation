@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000073' do
   title "The vCenter Server must provide an immediate real-time alert to the SA
 and ISSO, at a minimum, on every SSO account action."
@@ -36,7 +34,7 @@ Name,Enabled,@{N=\"EventTypeId\";E={$_.ExtensionData.Info.Expression.Expression.
     If an alarm is not created to alert on SSO account actions, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Host and Clusters >> Select a vCenter Server
 >> Configure >> Security >> Alarm Definitions. Click \"Add\". Provide the alarm
 name of \"SSO account actions - com.vmware.sso.PrincipalManagement\" and an
@@ -58,10 +56,8 @@ and ISSO of the event. Click \"Next\". Click \"Next\". Click \"Create\".
   tag cci: 'CCI-001683'
   tag nist: ['AC-2 (4)']
 
-  command = "Get-AlarmDefinition | Where-Object {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq \"com.vmware.sso.PrincipalManagement\"} | Select-Object -ExpandProperty Enabled"
+  command = 'Get-AlarmDefinition | Where-Object {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq "com.vmware.sso.PrincipalManagement"} | Select-Object -ExpandProperty Enabled'
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
-
 end
-

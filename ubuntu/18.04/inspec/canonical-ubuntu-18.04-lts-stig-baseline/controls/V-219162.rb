@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219162' do
   title "The Ubuntu operating system audit event multiplexor must be configured
 to off-load audit logs onto a different system or storage media from the system
@@ -36,7 +34,7 @@ different system or storage media.
     If there is no evidence that the system is configured to off-load audit
 logs to a different system or storage media, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit event multiplexor to off-load audit records to a
 different system or storage media from the system being audited.
 
@@ -70,7 +68,7 @@ receiving the audit log.
   tag rid: 'SV-219162r508662_rule'
   tag stig_id: 'UBTU-18-010025'
   tag fix_id: 'F-20886r304815_fix'
-  tag cci: ['SV-109655', 'V-100551', 'CCI-001851']
+  tag cci: %w(SV-109655 V-100551 CCI-001851)
   tag nist: ['AU-4 (1)']
 
   config_file = '/etc/audisp/plugins.d/au-remote.conf'
@@ -85,10 +83,9 @@ receiving the audit log.
       its('active') { should cmp 'yes' }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

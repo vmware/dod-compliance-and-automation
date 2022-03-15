@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000018' do
   title 'Shared salt values must be disabled on the virtual machine.'
   desc  "When salting is enabled (Mem.ShareForceSalting=1 or 2) in order to
@@ -27,7 +25,7 @@ server, run the following command:
     If the virtual machine advanced setting sched.mem.pshare.salt exists, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Delete the sched.mem.pshare.salt setting.
@@ -57,9 +55,7 @@ Remove-AdvancedSetting
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name sched.mem.pshare.salt).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should be_empty }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should be_empty }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219326' do
   title "The Ubuntu operating system must disable account identifiers
 (individuals, groups, roles, and devices) after 35 days of inactivity."
@@ -25,7 +23,7 @@ are disabled after 35 days of inactivity with the following command:
     If \"INACTIVE\" is not set to a value 0<[VALUE]<=35, or is commented out,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to disable account identifiers after
 35 days of inactivity after the password expiration.
 
@@ -43,7 +41,7 @@ value \"0\" will disable the account immediately after the password expires.
   tag rid: 'SV-219326r508662_rule'
   tag stig_id: 'UBTU-18-010445'
   tag fix_id: 'F-21050r305307_fix'
-  tag cci: ['SV-109979', 'V-100875', 'CCI-000795']
+  tag cci: %w(SV-109979 V-100875 CCI-000795)
   tag nist: ['IA-4 e']
 
   max_account_inactive_days = input('max_account_inactive_days')
@@ -56,10 +54,9 @@ value \"0\" will disable the account immediately after the password expires.
       its('INACTIVE') { should cmp <= max_account_inactive_days }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

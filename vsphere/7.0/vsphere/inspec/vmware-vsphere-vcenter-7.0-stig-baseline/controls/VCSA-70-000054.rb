@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000054' do
   title "The vCenter Server must disable or restrict the connectivity between
 vSAN Health Check and public Hardware Compatibility List by use of an external
@@ -27,7 +25,7 @@ Server >>  Configure >> vSAN >> Internet Connectivity
     If \"Status\" is \"Enabled\" and a proxy is not configured, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Host and Clusters >> Select the vCenter
 Server >>  Configure >> vSAN >> Internet Connectivity. Click \"Edit\".
 
@@ -47,9 +45,7 @@ Server >>  Configure >> vSAN >> Internet Connectivity. Click \"Edit\".
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

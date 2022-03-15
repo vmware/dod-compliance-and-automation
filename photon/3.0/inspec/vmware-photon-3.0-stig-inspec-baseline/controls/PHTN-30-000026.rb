@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000026' do
   title "The Photon operating system must use OpenSSH for remote maintenance
 sessions."
@@ -14,7 +12,7 @@ can be plainly read (i.e., clear text) and easily compromised."
 
     If there is no output or openssh is not >=  version 7.6, this is a finding.
   "
-  desc  'fix', "Installing openssh manually is not supported by VMware for
+  desc 'fix', "Installing openssh manually is not supported by VMware for
 appliances. Revert to a previous backup or redeploy the appliance."
   impact 0.5
   tag severity: 'medium'
@@ -30,6 +28,4 @@ appliances. Revert to a previous backup or redeploy the appliance."
     its('stdout.strip') { should_not eq '' }
     its('stdout.strip') { should cmp >= '7.6' }
   end
-
 end
-

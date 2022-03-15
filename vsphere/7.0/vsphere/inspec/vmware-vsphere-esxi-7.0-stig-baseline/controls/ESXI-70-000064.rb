@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000064' do
   title "All port groups on standard switches must not be configured to VLAN
 4095 unless Virtual Guest Tagging (VGT) is required."
@@ -31,7 +29,7 @@ following command:
     If any port group is configured with VLAN 4095 and is not documented as a
 needed exception, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> Networking >> Virtual switches. For each port group on a standard
 switch that is configured to a native VLAN, click the '...' button next to the
@@ -58,8 +56,6 @@ following command:
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualPortGroup | Select-Object -ExpandProperty VlanId"
   describe powercli_command(command) do
-    its ('stdout.strip') { should_not match "4095" }
+    its('stdout.strip') { should_not match '4095' }
   end
-
 end
-

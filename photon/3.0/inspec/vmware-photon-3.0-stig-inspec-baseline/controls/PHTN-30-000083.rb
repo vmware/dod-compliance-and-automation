@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000083' do
   title "The Photon operating system must configure sshd to disallow
 authentication with an empty password."
@@ -18,7 +16,7 @@ sshd must not allow that user to log in."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -43,8 +41,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i PermitEmptyPasswords') do
-    its ('stdout.strip') { should cmp 'PermitEmptyPasswords no' }
+    its('stdout.strip') { should cmp 'PermitEmptyPasswords no' }
   end
-
 end
-

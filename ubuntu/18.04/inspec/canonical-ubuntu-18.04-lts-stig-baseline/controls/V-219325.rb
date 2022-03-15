@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219325' do
   title 'The Ubuntu operating system must uniquely identify interactive users.'
   desc  "To assure accountability and prevent unauthenticated access,
@@ -40,13 +38,13 @@ account that has a duplicate User ID (UID) with a unique UID."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000104-GPOS-00051'
-  tag satisfies: ['SRG-OS-000104-GPOS-00051', 'SRG-OS-000121-GPOS-00062']
+  tag satisfies: %w(SRG-OS-000104-GPOS-00051 SRG-OS-000121-GPOS-00062)
   tag gid: 'V-219325'
   tag rid: 'SV-219325r508662_rule'
   tag stig_id: 'UBTU-18-010444'
   tag fix_id: 'F-21049r305304_fix'
-  tag cci: ['SV-109977', 'V-100873', 'CCI-000764', 'CCI-000804']
-  tag nist: ['IA-2', 'IA-8']
+  tag cci: %w(SV-109977 V-100873 CCI-000764 CCI-000804)
+  tag nist: %w(IA-2 IA-8)
   user_list = command("awk -F \":\" 'list[$3]++{print $1}' /etc/passwd").stdout.split("\n")
   findings = Set[]
 
@@ -58,4 +56,3 @@ account that has a duplicate User ID (UID) with a unique UID."
     it { should be_empty }
   end
 end
-

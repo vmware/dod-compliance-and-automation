@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000008' do
   title "The Photon operating system must have the sshd LogLevel set to
 \"INFO\"."
@@ -22,7 +20,7 @@ login events.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -46,8 +44,6 @@ login events.
   tag nist: ['AC-17 (1)']
 
   describe command('sshd -T|&grep -i loglevel') do
-    its ('stdout.strip') { should cmp 'loglevel INFO' }
+    its('stdout.strip') { should cmp 'loglevel INFO' }
   end
-
 end
-

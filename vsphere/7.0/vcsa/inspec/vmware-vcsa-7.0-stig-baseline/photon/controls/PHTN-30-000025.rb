@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000025' do
   title "The Photon operating system must store only encrypted representations
 of passwords."
@@ -20,7 +18,7 @@ those password are much more vulnerability to offline bute forcing attacks"
     If there is no output or if the output does match the expected result, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/login.defs
@@ -42,6 +40,4 @@ is a finding.
   describe login_defs do
     its('ENCRYPT_METHOD') { should cmp 'SHA512' }
   end
-
 end
-

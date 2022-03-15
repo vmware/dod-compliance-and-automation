@@ -1,4 +1,4 @@
-control "VCFL-67-000010" do
+control 'VCFL-67-000010' do
   title "vSphere Client must generate log records during Java startup and
 shutdown."
   desc  "Logging must be started as soon as possible when a service starts and
@@ -27,7 +27,7 @@ correctly enables early Java stdout and stderr logging.
     If there is no log file specified for the \"StreamRedirectFile\" setting,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /etc/vmware/vmware-vmon/svcCfgfiles/vsphere-client.json.
 
@@ -50,7 +50,6 @@ line:
   tag nist: ['AU-12 a']
 
   describe json('/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-client.json') do
-    its('StreamRedirectFile') { should eq '%VMWARE_LOG_DIR%/vmware/vsphere-client/logs/vsphere-client-runtime.log'}
+    its('StreamRedirectFile') { should eq '%VMWARE_LOG_DIR%/vmware/vsphere-client/logs/vsphere-client-runtime.log' }
   end
-
 end

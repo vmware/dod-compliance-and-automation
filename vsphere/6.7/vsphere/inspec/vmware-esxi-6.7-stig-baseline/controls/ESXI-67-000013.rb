@@ -1,4 +1,4 @@
-control "ESXI-67-000013" do
+control 'ESXI-67-000013' do
   title 'The ESXi host SSH daemon must not allow host-based authentication.'
   desc  "SSH trust relationships mean a compromise on one host can allow an
 attacker to move trivially to other hosts. SSH's cryptographic host-based
@@ -15,7 +15,7 @@ the following command:
     If there is no output or the output is not exactly
 \"HostbasedAuthentication no\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an SSH session connected to the ESXi host, or from the ESXi shell, add
 or correct the following line in \"/etc/ssh/sshd_config\":
 
@@ -35,8 +35,6 @@ or correct the following line in \"/etc/ssh/sshd_config\":
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.software.vib.list.Invoke() | Where {$_.Name -eq '#{input('dodStigVibRootEnabled')}' -or $_.Name -eq '#{input('dodStigVibRootDisabled')}'}"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not cmp "" }
+    its('stdout.strip') { should_not cmp '' }
   end
-
 end
-

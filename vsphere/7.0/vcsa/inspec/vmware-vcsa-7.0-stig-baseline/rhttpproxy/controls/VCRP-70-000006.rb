@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCRP-70-000006' do
   title 'Envoy must exclusively use the HTTPS protocol for client connections.'
   desc  "Remotely accessing vCenter via Envoy involves sensitive information
@@ -28,7 +26,7 @@ enable TLS."
     If the output does not match the expected result, this is a finding.
 
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
     Locate the first <ssl> block and set it's content to the following:
@@ -61,6 +59,4 @@ enable TLS."
     its(['/config/ssl/certificate']) { should cmp "#{input('certificateFile')}" }
     its(['/config/ssl/vecsServerName']) { should cmp "#{input('vecsServerName')}" }
   end
-
 end
-

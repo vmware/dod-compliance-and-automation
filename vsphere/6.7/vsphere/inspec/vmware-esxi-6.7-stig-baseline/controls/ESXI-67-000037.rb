@@ -1,4 +1,4 @@
-control "ESXI-67-000037" do
+control 'ESXI-67-000037' do
   title 'The ESXi host must use Active Directory for local user authentication.'
   desc  "Join ESXi hosts to an Active Directory (AD) domain to eliminate the
 need to create and maintain multiple local user accounts. Using AD for user
@@ -33,7 +33,7 @@ accounts, other than root and/or vpxuser, this is a finding.
     If the \"Directory Services Type\" is not set to \"Active Directory\", this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Authentication Services.
 
@@ -52,19 +52,17 @@ following command:
   impact 0.3
   tag severity: 'low'
   tag gtitle: 'SRG-OS-000104-VMM-000500'
-  tag satisfies: ['SRG-OS-000104-VMM-000500', 'SRG-OS-000109-VMM-000550',
-'SRG-OS-000112-VMM-000560', 'SRG-OS-000113-VMM-000570']
+  tag satisfies: %w(SRG-OS-000104-VMM-000500 SRG-OS-000109-VMM-000550
+SRG-OS-000112-VMM-000560 SRG-OS-000113-VMM-000570)
   tag gid: 'V-239292'
   tag rid: 'SV-239292r674805_rule'
   tag stig_id: 'ESXI-67-000037'
   tag fix_id: 'F-42484r674804_fix'
-  tag cci: ['CCI-000764', 'CCI-000770', 'CCI-001941', 'CCI-001942']
+  tag cci: %w(CCI-000764 CCI-000770 CCI-001941 CCI-001942)
   tag nist: ['IA-2', 'IA-2 (5)', 'IA-2 (8)', 'IA-2 (9)']
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostAuthentication | Select-Object -ExpandProperty DomainMembershipStatus"
   describe powercli_command(command) do
-    its('stdout.strip') { should be_in ["Joined","Ok"] }
+    its('stdout.strip') { should be_in %w(Joined Ok) }
   end
-
 end
-

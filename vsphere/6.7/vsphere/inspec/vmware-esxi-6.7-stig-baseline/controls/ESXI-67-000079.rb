@@ -1,4 +1,4 @@
-control "ESXI-67-000079" do
+control 'ESXI-67-000079' do
   title "The ESXi host must not suppress warnings that the local or remote
 shell sessions are enabled."
   desc  "Warnings that local or remote shell sessions are enabled alert
@@ -26,7 +26,7 @@ following command:
     If the value returned is not \"0\" or the setting does not exist, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client, select the host and click Configure >> System
 >> Advanced System Settings.
 
@@ -55,8 +55,6 @@ Set-AdvancedSetting -Value \"0\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name UserVars.SuppressShellWarning | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "0" }
+    its('stdout.strip') { should cmp '0' }
   end
-
 end
-

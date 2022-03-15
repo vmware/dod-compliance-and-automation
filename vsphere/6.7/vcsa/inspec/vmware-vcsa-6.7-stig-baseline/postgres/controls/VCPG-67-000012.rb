@@ -1,4 +1,4 @@
-control "VCPG-67-000012" do
+control 'VCPG-67-000012' do
   title 'VMware Postgres must require authentication on all connections.'
   desc  "To ensure accountability and prevent unauthenticated access,
 organizational users must be identified and authenticated to prevent potential
@@ -21,7 +21,7 @@ requires standard password authentication for all connections.
 
     If any lines are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /storage/db/pgdata/pg_hba.conf.
 
     Find and remove the line that has a method of \"trust\" in the far right
@@ -35,7 +35,7 @@ column.
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-APP-000148-DB-000103'
-  tag satisfies: ['SRG-APP-000148-DB-000103', 'SRG-APP-000171-DB-000074']
+  tag satisfies: %w(SRG-APP-000148-DB-000103 SRG-APP-000171-DB-000074)
   tag gid: 'V-239204'
   tag rid: 'SV-239204r717055_rule'
   tag stig_id: 'VCPG-67-000012'
@@ -43,13 +43,11 @@ column.
   tag cci: ['CCI-000764']
   tag nist: ['IA-2']
 
-  describe postgres_hba_conf('/storage/db/vpostgres/pg_hba.conf').where {type == 'local'} do
-    its ('auth_method') { should_not include 'trust' }
+  describe postgres_hba_conf('/storage/db/vpostgres/pg_hba.conf').where { type == 'local' } do
+    its('auth_method') { should_not include 'trust' }
   end
 
-  describe postgres_hba_conf('/storage/db/vpostgres/pg_hba.conf').where {type == 'host'} do
-    its ('auth_method') { should_not include 'trust' }
+  describe postgres_hba_conf('/storage/db/vpostgres/pg_hba.conf').where { type == 'host' } do
+    its('auth_method') { should_not include 'trust' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219174' do
   title "The Ubuntu operating system must enforce password complexity by
 requiring that at least one numeric character be used."
@@ -27,7 +25,7 @@ requiring that at least one numeric character be used.
     If the \"dcredit\" parameter is greater than \"-1\", or is commented out,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to enforce password complexity by
 requiring that at least one numeric character be used.
 
@@ -43,7 +41,7 @@ requiring that at least one numeric character be used.
   tag rid: 'SV-219174r508662_rule'
   tag stig_id: 'UBTU-18-010102'
   tag fix_id: 'F-20898r304851_fix'
-  tag cci: ['SV-109679', 'V-100575', 'CCI-000194']
+  tag cci: %w(SV-109679 V-100575 CCI-000194)
   tag nist: ['IA-5 (1) (a)']
 
   min_num_numeric_char = input('min_num_numeric_char')
@@ -55,10 +53,9 @@ requiring that at least one numeric character be used.
       its('ucredit') { should cmp min_num_numeric_char }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

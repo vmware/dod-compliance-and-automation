@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000086' do
   title 'The ESXi host must verify certificates for SSL syslog endpoints.'
   desc  "When sending syslog data to a remote host, ESXi can be configured to
@@ -8,7 +6,7 @@ certificate must be validated to ensure that the host "
   desc  'rationale', ''
   desc  'check', "
     If SSL is not used for a syslog target, this is not applicable.
-    
+
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Select the
 \"Syslog.global.logCheckSSLCerts\" value and verify it is set to \"true\".
@@ -23,7 +21,7 @@ following command:
     If the \"Syslog.global.logCheckSSLCerts\" setting is not set to \"true\",
 this is a finding
   "
-  desc  'fix', "
+  desc 'fix', "
     To configure SSL syslog endpoint certificate checking it must be turned on
 and also the trusted certificate chain must be added to ESXi's trusted store.
 
@@ -70,13 +68,11 @@ host.
   if !syslogservers.empty?
     command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Syslog.global.logCheckSSLCerts | Select-Object -ExpandProperty Value"
     describe powercli_command(command) do
-        its ('stdout.strip') { should cmp "true" }
+      its('stdout.strip') { should cmp 'true' }
     end
   else
-    describe "SSL syslog target not detected" do
-        skip "No SSL syslog targets, this check is N/A."
+    describe 'SSL syslog target not detected' do
+      skip 'No SSL syslog targets, this check is N/A.'
     end
   end
-
 end
-

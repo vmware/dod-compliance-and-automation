@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000097' do
   title "The Photon operating system must be configured so that all cron paths
 are protected from unauthorized modification."
@@ -22,7 +20,7 @@ malicious jobs may be created."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s) for each returned
 file:
 
@@ -40,40 +38,38 @@ file:
   tag nist: ['CM-6 b']
 
   describe file('/etc/cron.d') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.daily') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.hourly') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.daily') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.weekly') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.monthly') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
-
 end
-

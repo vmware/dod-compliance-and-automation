@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000003' do
   title 'Paste operations must be disabled on the virtual machine.'
   desc  "Copy and paste operations are disabled by default; however, by
@@ -23,7 +21,7 @@ server, run the following command:
     If the virtual machine advanced setting isolation.tools.paste.disable does
 not exist or is not set to true, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the isolation.tools.paste.disable value and set it to true.
@@ -63,9 +61,7 @@ isolation.tools.paste.disable | Set-AdvancedSetting -Value true
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name isolation.tools.paste.disable).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should cmp 'true' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

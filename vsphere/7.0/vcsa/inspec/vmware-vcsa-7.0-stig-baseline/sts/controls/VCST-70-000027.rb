@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000027' do
   title "Rsyslog must be configured to monitor and ship Security Token Service
 log files."
@@ -17,7 +15,7 @@ vmware-services-sso-services.conf|grep \"^..5......\"
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-syslog/vmware-services-sso-services.conf
@@ -133,8 +131,6 @@ startmsg.regex=\"^[[:digit:]]{4}-[[:digit:]]{1,2}-[[:digit:]]{1,2}T[[:digit:]]{1
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-sso-services.conf|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

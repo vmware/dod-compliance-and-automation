@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000046' do
   title "The Photon operating system must initiate auditing as part of the boot
 process."
@@ -16,7 +14,7 @@ includes processes created before auditd starts."
 
     If no results are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /boot/grub2/grub.cfg
@@ -45,10 +43,8 @@ future releases. Find the similar line and append \"audit=1\" to it.
   tag cci: ['CCI-001464']
   tag nist: ['AU-14 (1)']
 
-  describe file ('/boot/grub2/grub.cfg') do
-      #Regex matches start of line followed anything then the word 'linux' followed by 'photon_linux' then anything and 'audit=1'
-      its ('content'){should match /^(?=.*?\blinux\b)(?=.*?\bphoton_linux\b)(?=.*?\baudit=1\b).*$/}
+  describe file('/boot/grub2/grub.cfg') do
+    # Regex matches start of line followed anything then the word 'linux' followed by 'photon_linux' then anything and 'audit=1'
+    its('content') { should match /^(?=.*?\blinux\b)(?=.*?\bphoton_linux\b)(?=.*?\baudit=1\b).*$/ }
   end
-
 end
-

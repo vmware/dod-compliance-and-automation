@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000064' do
   title 'The vCenter Server must restrict access to cryptographic permissions.'
   desc  "These permissions must be reserved for cryptographic administrators
@@ -38,7 +36,7 @@ $privileges -match \"Host.Local operations.Manage user groups\"){
     If any role other than Administrator and any site-specific group(s) have
 any of these permissions, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Access Control >> Roles
 
     Highlight each role and click the pencil button if it is enabled. Remove
@@ -62,9 +60,7 @@ site-specific cryptographic group(s):
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

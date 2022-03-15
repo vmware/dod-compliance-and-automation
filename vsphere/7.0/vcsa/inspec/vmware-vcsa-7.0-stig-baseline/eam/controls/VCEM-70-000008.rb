@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000008' do
   title "ESX Agent Manager application files must be verified for their
 integrity."
@@ -17,7 +15,7 @@ files."
 
     If there is any output, this is a finding.
   "
-  desc  'fix', "Reinstall the VCSA or roll back to a backup. Modifying the EAM
+  desc 'fix', "Reinstall the VCSA or roll back to a backup. Modifying the EAM
 installation files manually is not supported by VMware."
   impact 0.5
   tag severity: 'medium'
@@ -30,8 +28,6 @@ installation files manually is not supported by VMware."
   tag nist: ['CM-5 (3)']
 
   describe command('rpm -V vmware-eam|grep "^..5......"|grep -v -E "\.installer|\.properties|\.xml"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

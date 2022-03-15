@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000029' do
   title "vSphere UI log files must be moved to a permanent repository in
 accordance with site policy."
@@ -21,7 +19,7 @@ must be verified and maintained.
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-syslog/vmware-services-vsphere-ui.conf
@@ -137,8 +135,6 @@ must be verified and maintained.
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-vsphere-ui.conf|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

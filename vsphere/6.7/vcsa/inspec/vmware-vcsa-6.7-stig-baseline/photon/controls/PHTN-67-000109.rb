@@ -1,4 +1,4 @@
-control "PHTN-67-000109" do
+control 'PHTN-67-000109' do
   title "The Photon operating system must log IPv4 packets with impossible
 addresses."
   desc  "The presence of \"martian\" packets (which have impossible addresses)
@@ -23,7 +23,7 @@ to be detected."
     Note: The number of \"ethx\" lines returned is dependent on the number of
 interfaces. Every \"ethx\" entry must be set to \"1\".
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/sysctl.conf with a text editor.
 
     Add or update the following lines:
@@ -57,6 +57,4 @@ interfaces. Every \"ethx\" entry must be set to \"1\".
   describe kernel_parameter('net.ipv4.conf.eth0.log_martians') do
     its('value') { should eq 1 }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000022' do
   title "The virtual machine guest operating system must be locked when the
 last console connection is closed."
@@ -25,7 +23,7 @@ not exist or is not set to true, this is a finding.
 
     If the VM is not Windows-based, this is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client select the Virtual Machine, right click and go to
 Edit Settings >> VM Options Tab >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find or create the tools.guest.desktop.autolock value and set it
@@ -63,9 +61,7 @@ server, run the following command:
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name tools.guest.desktop.autolock).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should cmp 'true' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

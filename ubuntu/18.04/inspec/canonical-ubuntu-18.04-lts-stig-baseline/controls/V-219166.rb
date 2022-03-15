@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219166' do
   title "The Ubuntu operating system must be configured so that three
 consecutive invalid logon attempts by a user automatically locks the account
@@ -22,7 +20,7 @@ unsuccessful login attempts with following command:
     If the line is missing \"onerr=fail\", this is a finding.
     If the line has \"deny\" set to a value more than 3, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to lock an account after three
 unsuccessful login attempts.
 
@@ -40,7 +38,7 @@ first \"auth\" entry in the file.
   tag rid: 'SV-219166r508662_rule'
   tag stig_id: 'UBTU-18-010033'
   tag fix_id: 'F-20890r485691_fix'
-  tag cci: ['V-100559', 'SV-109663', 'CCI-000044', 'CCI-002238']
+  tag cci: %w(V-100559 SV-109663 CCI-000044 CCI-002238)
   tag nist: ['AC-7 a', 'AC-7 b']
 
   describe file('/etc/pam.d/common-auth') do
@@ -52,6 +50,4 @@ first \"auth\" entry in the file.
     its('stdout.strip') { should match /^\s*auth\s+required\s+pam_tally2.so\s+.*onerr=fail\s+deny=3($|\s+.*$)/ }
     its('stdout.strip') { should_not match /^\s*auth\s+required\s+pam_tally2.so\s+.*onerr=fail\s+deny=3\s+.*unlock_time.*$/ }
   end
-  
 end
-

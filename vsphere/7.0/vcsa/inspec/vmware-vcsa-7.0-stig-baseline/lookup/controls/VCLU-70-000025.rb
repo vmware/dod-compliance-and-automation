@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000025' do
   title 'Lookup Service must not enable support for TRACE requests.'
   desc  "\"Trace\" is a technique for a user to request internal information
@@ -18,7 +16,7 @@ means to disable responding to TRACE requests."
 
     If no line is returned, this is NOT a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/server.xml
@@ -47,9 +45,7 @@ means to disable responding to TRACE requests."
     end
 
     describe xml("#{input('serverXmlPath')}") do
-      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp "false" }
+      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp 'false' }
     end
   end
-
 end
-

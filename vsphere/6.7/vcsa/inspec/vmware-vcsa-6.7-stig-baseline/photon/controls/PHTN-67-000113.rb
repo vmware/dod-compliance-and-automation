@@ -1,4 +1,4 @@
-control "PHTN-67-000113" do
+control 'PHTN-67-000113' do
   title 'The Photon operating system must send TCP timestamps.'
   desc  "TCP timestamps are used to provide protection against wrapped sequence
 numbers. It is possible to calculate system uptime (and boot time) by analyzing
@@ -16,7 +16,7 @@ likely patch levels for vulnerabilities."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/sysctl.conf with a text editor.
 
     Add or update the following line:
@@ -40,6 +40,4 @@ likely patch levels for vulnerabilities."
   describe kernel_parameter('net.ipv4.tcp_timestamps') do
     its('value') { should eq 1 }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000007' do
   title "The ESXi host must display the Standard Mandatory DoD Notice and
 Consent Banner before granting access to the system via the DCUI."
@@ -156,7 +154,7 @@ Accept Conditions and Shut Down/Restart  {bgcolor:black}
     If \"Annotations.WelcomeMessage\" setting is not set to the specified
 banner, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Click \"Edit\". Select the
 \"Annotations.WelcomeMessage\" value and set it to the following. Click \"OK\".
@@ -311,15 +309,13 @@ Set-AdvancedSetting -Value \"<Banner text above>\"
   tag nist: ['AC-8 a']
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Annotations.WelcomeMessage | Select-Object -ExpandProperty Value"
-  
+
   describe.one do
     describe powercli_command(command) do
-        its ('stdout.strip') { should match "You are accessing a U.S. Government" }
+      its('stdout.strip') { should match 'You are accessing a U.S. Government' }
     end
     describe powercli_command(command) do
-        its ('stdout.strip') { should match "I've read & consent to terms in IS user agreem't" }
+      its('stdout.strip') { should match "I've read & consent to terms in IS user agreem't" }
     end
   end
-
 end
-

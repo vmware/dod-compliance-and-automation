@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000098' do
   title "The Photon operating system must not forward IPv4 or IPv6
 source-routed packets."
@@ -35,7 +33,7 @@ malicious purposes and should therefore be disabled.
     Note: The number of \"ethx\" lines returned is dependant on the number of
 interfaces. Every \"ethx\" entry must be set to \"0\".
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # for SETTING in $(/sbin/sysctl -aN --pattern
@@ -76,6 +74,4 @@ interfaces. Every \"ethx\" entry must be set to \"0\".
   describe kernel_parameter('net.ipv6.conf.eth0.accept_source_route') do
     its('value') { should eq 0 }
   end
-
 end
-

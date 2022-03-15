@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000015' do
   title "Informational messages from the virtual machine to the VMX file must
 be limited on the virtual machine."
@@ -25,7 +23,7 @@ server, run the following command:
     If the virtual machine advanced setting tools.setinfo.sizeLimit does not
 exist or is not set to 1048576, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the tools.setinfo.sizeLimit value and set it to 1048576. If
@@ -65,9 +63,7 @@ Set-AdvancedSetting -Value 1048576
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name tools.setinfo.sizeLimit).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "1048576" }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should cmp '1048576' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

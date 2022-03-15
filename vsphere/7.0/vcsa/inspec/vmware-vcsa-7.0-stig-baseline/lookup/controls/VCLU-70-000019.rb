@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000019' do
   title 'Lookup Service must limit the number of allowed connections.'
   desc  "Limiting the number of established connections is a basic denial of
@@ -20,7 +18,7 @@ system availability."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/server.xml
@@ -47,8 +45,6 @@ port=\"${bio-custom.http.port}\".
   tag nist: ['SC-5 (1)']
 
   describe xml("#{input('serverXmlPath')}") do
-    its(['Server/Service/Connector/@acceptCount']) { should cmp "#{input('acceptCount')}"}
+    its(['Server/Service/Connector/@acceptCount']) { should cmp "#{input('acceptCount')}" }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000006' do
   title "Performance Charts must generate log records for system startup and
 shutdown."
@@ -29,7 +27,7 @@ these json files are configured correctly enables early java \"stdout\" and
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware/vmware-vmon/svcCfgfiles/perfcharts.json
@@ -53,8 +51,6 @@ line:
   tag nist: ['AU-12 a']
 
   describe json("#{input('svcJsonPath')}") do
-    its('StreamRedirectFile') { should eq "#{input('streamRedirectFile')}"}
+    its('StreamRedirectFile') { should eq "#{input('streamRedirectFile')}" }
   end
-
 end
-

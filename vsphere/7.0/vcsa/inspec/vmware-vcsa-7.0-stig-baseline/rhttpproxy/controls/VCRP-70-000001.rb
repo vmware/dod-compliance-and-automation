@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCRP-70-000001' do
   title 'Envoy must drop connections to disconnected clients.'
   desc  "Envoy client connections that are established but no longer connected
@@ -28,7 +26,7 @@ effect. This configuration must be verified and maintained.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
     Locate the <config>/<envoy>/<L4Filter> block and configure
@@ -53,7 +51,6 @@ effect. This configuration must be verified and maintained.
   value = input('tcpKeepAliveTimeSec')
 
   describe.one do
-
     describe xml("#{input('configXmlPath')}") do
       its(['/config/envoy/L4Filter/tcpKeepAliveTimeSec']) { should cmp value }
     end
@@ -61,8 +58,5 @@ effect. This configuration must be verified and maintained.
     describe xml("#{input('configXmlPath')}") do
       its(['/config/envoy/L4Filter/tcpKeepAliveTimeSec']) { should cmp [] }
     end
-
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000021' do
   title "The Photon operating system must enforce password complexity by
 requiring that at least one uppercase character be used."
@@ -21,7 +19,7 @@ ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/pam.d/system-password
@@ -41,9 +39,7 @@ ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
   tag cci: 'CCI-000192'
   tag nist: ['IA-5 (1) (a)']
 
-  describe file ('/etc/pam.d/system-password') do
-    its ('content'){should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bucredit=-1\b).*$/}
+  describe file('/etc/pam.d/system-password') do
+    its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bucredit=-1\b).*$/ }
   end
-
 end
-

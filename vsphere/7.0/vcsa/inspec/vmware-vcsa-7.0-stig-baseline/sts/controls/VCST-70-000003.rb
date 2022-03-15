@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000003' do
   title "The Security Token Service must limit the maximum size of a POST
 request."
@@ -25,7 +23,7 @@ for \"maxPostSize\".
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/server.xml
@@ -51,6 +49,4 @@ for \"maxPostSize\".
   describe xml("#{input('serverXmlPath')}") do
     its('Server/Service/Connector/attribute::maxPostSize') { should eq [] }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219169' do
   title "The Ubuntu operating system must be configured so that only users who
 need access to security functions are part of the sudo group."
@@ -39,7 +37,7 @@ security functions.
     If the sudo group contains users not needing access to security functions,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the sudo group with only members requiring access to security
 functions.
 
@@ -54,7 +52,7 @@ functions.
   tag rid: 'SV-219169r508662_rule'
   tag stig_id: 'UBTU-18-010037'
   tag fix_id: 'F-20893r304836_fix'
-  tag cci: ['V-100565', 'SV-109669', 'CCI-001084']
+  tag cci: %w(V-100565 SV-109669 CCI-001084)
   tag nist: ['SC-3']
 
   sudo_accounts = input('sudo_accounts')
@@ -66,12 +64,10 @@ functions.
       end
     end
   else
-    describe "No accounts exist in sudo group" do
+    describe 'No accounts exist in sudo group' do
       describe group('sudo') do
         its('members') { should be_empty }
       end
     end
   end
-  
 end
-

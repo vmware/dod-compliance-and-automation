@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000042' do
   title 'The ESXi host must terminate shell services after ten minutes.'
   desc  "When the ESXi Shell or SSH services are enabled on a host they will
@@ -23,7 +21,7 @@ following command:
     If the \"UserVars.ESXiShellTimeOut\" setting is not set to \"600\", this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Click \"Edit\". Select the
 \"UserVars.ESXiShellTimeOut\" value and configure it to \"600\".
@@ -48,8 +46,6 @@ Set-AdvancedSetting -Value 600
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name UserVars.ESXiShellTimeOut | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "600" }
+    its('stdout.strip') { should cmp '600' }
   end
-
 end
-

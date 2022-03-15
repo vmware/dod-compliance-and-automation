@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000004' do
   title 'Remote logging for ESXi hosts must be configured.'
   desc  "Remote logging to a central log host provides a secure, centralized
@@ -31,7 +29,7 @@ following command:
     If the \"Syslog.global.logHost\" setting is not set to a valid, site
 specific syslog server, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Click \"Edit\". Select the
 \"Syslog.global.logHost\" value and configure it to a site specific syslog
@@ -57,8 +55,6 @@ Set-AdvancedSetting -Value \"<syslog server hostname>\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Syslog.global.logHost | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "#{input('syslogServer')}" }
+    its('stdout.strip') { should cmp "#{input('syslogServer')}" }
   end
-
 end
-

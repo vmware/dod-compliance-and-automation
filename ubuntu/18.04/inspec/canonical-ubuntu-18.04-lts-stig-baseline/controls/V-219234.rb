@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219234' do
   title "The Ubuntu operating system must be configured so that audit
 configuration files are not write-accessible by unauthorized users."
@@ -45,7 +43,7 @@ using the following command:
 \"/etc/audit/auditd.conf\" file have a mode more permissive than \"0640\", this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure \"/etc/audit/audit.rules\", \"/etc/audit/rules.d/*\" and
 \"/etc/audit/auditd.conf\" files to have a mode of 0640 by using the following
 command:
@@ -62,7 +60,7 @@ and /etc/audit/rules.d/ directories.
   tag rid: 'SV-219234r508662_rule'
   tag stig_id: 'UBTU-18-010311'
   tag fix_id: 'F-20958r305031_fix'
-  tag cci: ['V-100695', 'SV-109799', 'CCI-000171']
+  tag cci: %w(V-100695 SV-109799 CCI-000171)
   tag nist: ['AU-12 b']
 
   files1 = command('find /etc/audit/ -type f \( -iname \*.rules -o -iname \*.conf \)').stdout.strip.split("\n").entries
@@ -76,4 +74,3 @@ and /etc/audit/rules.d/ directories.
     end
   end
 end
-

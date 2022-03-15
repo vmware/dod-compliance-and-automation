@@ -1,4 +1,4 @@
-control "PHTN-67-000078" do
+control 'PHTN-67-000078' do
   title "The Photon operating system must ensure audit events are flushed to
 disk at proper intervals."
   desc  "Without setting a balance between performance and ensuring all audit
@@ -17,7 +17,7 @@ missing audit entries may be too high."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/auditd.conf with a text editor.
 
     Ensure that the line below is present and any existing \"flush\" and
@@ -37,9 +37,7 @@ missing audit entries may be too high."
   tag nist: ['CM-6 b']
 
   describe auditd_conf do
-    its("flush") { should cmp 'INCREMENTAL_ASYNC'}
-    its("freq") { should cmp '50'}
+    its('flush') { should cmp 'INCREMENTAL_ASYNC' }
+    its('freq') { should cmp '50' }
   end
-
 end
-

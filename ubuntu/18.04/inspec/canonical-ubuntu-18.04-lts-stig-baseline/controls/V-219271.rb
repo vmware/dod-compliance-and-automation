@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219271' do
   title "The Ubuntu operating system must generate audit records for
 successful/unsuccessful uses of the passwd command."
@@ -29,7 +27,7 @@ is commented out, this is a finding.
     Note: The '-k' allows for specifying an arbitrary identifier and the string
 after it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful uses of the \"passwd\" command.
 
@@ -54,13 +52,13 @@ auid!=4294967295 -k privileged-passwd
   tag rid: 'SV-219271r508662_rule'
   tag stig_id: 'UBTU-18-010348'
   tag fix_id: 'F-20995r305142_fix'
-  tag cci: ['V-100767', 'SV-109871', 'CCI-000172']
+  tag cci: %w(V-100767 SV-109871 CCI-000172)
   tag nist: ['AU-12 c']
 
   @audit_file = '/usr/bin/passwd'
 
   audit_lines_exist = !auditd.lines.index { |line| line.include?(@audit_file) }.nil?
-    
+
   if audit_lines_exist
     describe auditd.file(@audit_file) do
       its('permissions') { should_not cmp [] }
@@ -75,10 +73,9 @@ auid!=4294967295 -k privileged-passwd
       end
     end
   else
-    describe ('Audit line(s) for ' + @audit_file + ' exist') do
+    describe('Audit line(s) for ' + @audit_file + ' exist') do
       subject { audit_lines_exist }
       it { should be true }
     end
   end
 end
-

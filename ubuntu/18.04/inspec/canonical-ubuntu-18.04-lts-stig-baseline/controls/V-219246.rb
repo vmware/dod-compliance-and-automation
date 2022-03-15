@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219246' do
   title "The Ubuntu operating system must generate audit records for any usage
 of the fsetxattr system call."
@@ -36,7 +34,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful use of the \"fsetxattr\" system call.
 
@@ -66,18 +64,17 @@ required.
   tag rid: 'SV-219246r508662_rule'
   tag stig_id: 'UBTU-18-010323'
   tag fix_id: 'F-20970r305067_fix'
-  tag cci: ['SV-109823', 'V-100719', 'CCI-000172']
+  tag cci: %w(SV-109823 V-100719 CCI-000172)
   tag nist: ['AU-12 c']
 
-  if os.arch == "x86_64"
-    describe auditd.syscall("fsetxattr").where { arch == "b64" } do
-      its("action.uniq") { should eq ["always"] }
-      its("list.uniq") { should eq ["exit"] }
+  if os.arch == 'x86_64'
+    describe auditd.syscall('fsetxattr').where { arch == 'b64' } do
+      its('action.uniq') { should eq ['always'] }
+      its('list.uniq') { should eq ['exit'] }
     end
   end
-  describe auditd.syscall("fsetxattr").where { arch == "b32" } do
-    its("action.uniq") { should eq ["always"] }
-    its("list.uniq") { should eq ["exit"] }
+  describe auditd.syscall('fsetxattr').where { arch == 'b32' } do
+    its('action.uniq') { should eq ['always'] }
+    its('list.uniq') { should eq ['exit'] }
   end
 end
-

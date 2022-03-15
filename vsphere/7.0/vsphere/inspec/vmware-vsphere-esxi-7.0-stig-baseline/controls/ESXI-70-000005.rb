@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000005' do
   title "The ESXi host must enforce the limit of three consecutive invalid
 logon attempts by a user."
@@ -23,7 +21,7 @@ following command:
     If \"Security.AccountLockFailures\" setting is set to a value other than 3,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Click \"Edit\". Select the
 \"Security.AccountLockFailures\" value and configure it to 3.
@@ -46,11 +44,8 @@ Set-AdvancedSetting -Value 3
   tag cci: 'CCI-000044'
   tag nist: ['AC-7 a']
 
-
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Security.AccountLockFailures | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "3" }
+    its('stdout.strip') { should cmp '3' }
   end
-
 end
-

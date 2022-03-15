@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000005' do
   title "vSphere UI must record user access in a format that enables monitoring
 of remote access."
@@ -30,7 +28,7 @@ xmllint --xpath
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-vsphere-ui/server/conf/server.xml
@@ -58,6 +56,4 @@ node is set to the following:
   describe xml("#{input('serverXmlPath')}") do
     its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ["#{input('accessValvePattern')}"] }
   end
-
 end
-

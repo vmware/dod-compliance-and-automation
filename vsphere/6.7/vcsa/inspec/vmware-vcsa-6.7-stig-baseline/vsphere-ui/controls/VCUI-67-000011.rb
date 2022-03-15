@@ -1,4 +1,4 @@
-control "VCUI-67-000011" do
+control 'VCUI-67-000011' do
   title "vSphere UI must have Multipurpose Internet Mail Extensions (MIME) that
 invoke OS shell programs disabled."
   desc  "MIME mappings tell the vSphere UI what type of program various file
@@ -15,7 +15,7 @@ the server into executing shell command files."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/web.xml.
 
     Remove any and all of the following nodes lines:
@@ -36,7 +36,6 @@ the server into executing shell command files."
   tag nist: ['CM-7 a']
 
   describe command("grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' '#{input('webXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

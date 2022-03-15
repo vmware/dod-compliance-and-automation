@@ -1,4 +1,4 @@
-control "PHTN-67-000067" do
+control 'PHTN-67-000067' do
   title "The Photon operating system must configure sshd to use FIPS 140-2
 ciphers."
   desc  "Privileged access contains control and configuration information and
@@ -35,7 +35,7 @@ aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"Ciphers\" line is uncommented and set to the following:
@@ -50,17 +50,16 @@ aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000394-GPOS-00174'
-  tag satisfies: ['SRG-OS-000394-GPOS-00174', 'SRG-OS-000424-GPOS-00188',
-'SRG-OS-000478-GPOS-00223']
+  tag satisfies: %w(SRG-OS-000394-GPOS-00174 SRG-OS-000424-GPOS-00188
+SRG-OS-000478-GPOS-00223)
   tag gid: 'V-239138'
   tag rid: 'SV-239138r816640_rule'
   tag stig_id: 'PHTN-67-000067'
   tag fix_id: 'F-42308r675221_fix'
-  tag cci: ['CCI-002421', 'CCI-002450', 'CCI-003123']
+  tag cci: %w(CCI-002421 CCI-002450 CCI-003123)
   tag nist: ['SC-8 (1)', 'SC-13', 'MA-4 (6)']
 
   describe command('sshd -T|&grep -i ciphers') do
-    its ('stdout.strip') { should cmp 'ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr' }
+    its('stdout.strip') { should cmp 'ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr' }
   end
-
 end

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000021' do
   title 'Use of the virtual machine console must be minimized.'
   desc  "The VM console enables a connection to the console of a virtual
@@ -24,7 +22,7 @@ troubleshooting VM issues, this is a finding.
     If SSH and/or terminal management services are exclusively used to perform
 management tasks, this is not a finding.
   "
-  desc  'fix', "Develop a policy prohibiting the use of a VM console for
+  desc 'fix', "Develop a policy prohibiting the use of a VM console for
 performing management services. This policy should include procedures for the
 use of SSH and Terminal Management services for VM management. Where SSH and
 Terminal Management services prove insufficient to troubleshoot a VM, access to
@@ -39,9 +37,7 @@ the VM console may be temporarily granted."
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

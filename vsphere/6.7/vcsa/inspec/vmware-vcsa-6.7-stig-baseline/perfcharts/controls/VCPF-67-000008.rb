@@ -1,4 +1,4 @@
-control "VCPF-67-000008" do
+control 'VCPF-67-000008' do
   title "Performance Charts application files must be verified for their
 integrity."
   desc  "Verifying that the Security Token Service application code is
@@ -15,7 +15,7 @@ configuration files."
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "Reinstall the VCSA or roll back to a snapshot. Modifying the
+  desc 'fix', "Reinstall the VCSA or roll back to a snapshot. Modifying the
 Performance Charts installation files manually is not supported by VMware."
   impact 0.5
   tag severity: 'medium'
@@ -28,8 +28,6 @@ Performance Charts installation files manually is not supported by VMware."
   tag nist: ['CM-5 (3)']
 
   describe command('rpm -V VMware-perfcharts|grep "^..5......"|grep "/usr/lib"|grep -v -E "\.properties|\.conf|\.xml"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000015' do
   title "The Photon operating system audit log must attempt to log audit
 failures to syslog."
@@ -17,7 +15,7 @@ the audit capability, and system operation may be adversely affected."
     If any of the above parameters are not set to SYSLOG or are missing, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/auditd.conf
@@ -45,10 +43,8 @@ commented:
   tag nist: ['AU-5 b']
 
   describe auditd_conf do
-    its("disk_full_action") { should cmp 'SYSLOG'}
-    its("disk_error_action") { should cmp 'SYSLOG'}
-    its("admin_space_left_action") { should cmp 'SYSLOG'}
+    its('disk_full_action') { should cmp 'SYSLOG' }
+    its('disk_error_action') { should cmp 'SYSLOG' }
+    its('admin_space_left_action') { should cmp 'SYSLOG' }
   end
-
 end
-

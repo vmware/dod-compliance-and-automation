@@ -1,4 +1,4 @@
-control "ESXI-67-000052" do
+control 'ESXI-67-000052' do
   title "The ESXi host must protect the confidentiality and integrity of
 transmitted information by using different TCP/IP stacks where possible."
   desc  "Three different TCP/IP stacks are available by default on ESXi:
@@ -19,7 +19,7 @@ the appropriate IP address information.
     If vMotion and Provisioning VMKernels are in use and are not using their
 own TCP/IP stack, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >>
 Networking >> TCP/IP configuration.
 
@@ -38,9 +38,7 @@ particular TCP/IP stack and click \"OK\".
   tag cci: ['CCI-002418']
   tag nist: ['SC-8']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

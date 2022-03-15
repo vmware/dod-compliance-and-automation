@@ -1,4 +1,4 @@
-control "ESXI-67-000062" do
+control 'ESXI-67-000062' do
   title "The ESXi host must prevent unintended use of the dvFilter network
 APIs."
   desc  "If the organization is not using products that use the dvfilter
@@ -29,7 +29,7 @@ following command:
     If the \"Net.DVFilterBindIpAddress\" is not blank and security appliances
 are not in use on the host, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi Host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -56,8 +56,6 @@ Set-AdvancedSetting -Value \"\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Net.DVFilterBindIpAddress | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "" }
+    its('stdout.strip') { should cmp '' }
   end
-
 end
-

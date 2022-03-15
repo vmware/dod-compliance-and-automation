@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000036' do
   title "The ESXi host must disable ESXi Shell unless needed for diagnostics or
 troubleshooting."
@@ -23,7 +21,7 @@ following command:
 
     If the ESXi Shell service is \"Running\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Services. Under Services select the \"ESXi Shell\"
 service and click the \"Stop\" button. Click the \"Edit Startup policy...\"
@@ -51,13 +49,11 @@ Stop-VMHostService
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'ESXi Shell'} | Select-Object -ExpandProperty Policy"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "off" }
+    its('stdout.strip') { should cmp 'off' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'ESXi Shell'} | Select-Object -ExpandProperty Running"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "false" }
+    its('stdout.strip') { should cmp 'false' }
   end
-
 end
-

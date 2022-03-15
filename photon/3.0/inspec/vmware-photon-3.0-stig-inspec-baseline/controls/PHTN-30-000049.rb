@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000049' do
   title "The Photon operating system must limit privileges to change software
 resident within software libraries."
@@ -17,7 +15,7 @@ in order to help prevent tampering and unintended behavior."
 
     If there is any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command for each file returned
 for user and group ownership:
 
@@ -39,8 +37,6 @@ for file permissions:
   tag nist: ['CM-5 (6)']
 
   describe command("find /usr/lib/ -type f \"(\" ! -user root -o ! -group root -o -perm /022\")\" -printf '%p, %u:%g:%m\n'") do
-      its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

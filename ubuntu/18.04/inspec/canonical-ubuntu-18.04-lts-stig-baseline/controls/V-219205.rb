@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219205' do
   title "The Ubuntu operating system must have directories that contain system
 commands set to a mode of 0755 or less permissive."
@@ -35,7 +33,7 @@ with the following command:
     If any directories are found to be group-writable or world-writable, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the system commands directories to be protected from unauthorized
 access. Run the following command:
 
@@ -49,10 +47,10 @@ access. Run the following command:
   tag rid: 'SV-219205r508662_rule'
   tag stig_id: 'UBTU-18-010140'
   tag fix_id: 'F-20929r304944_fix'
-  tag cci: ['SV-109741', 'V-100637', 'CCI-001499']
+  tag cci: %w(SV-109741 V-100637 CCI-001499)
   tag nist: ['CM-5 (6)']
 
-  system_commands = command("find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin -perm /022 -type d").stdout.strip.split("\n").entries
+  system_commands = command('find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin -perm /022 -type d').stdout.strip.split("\n").entries
   valid_system_commands = Set[]
 
   if system_commands.count > 0
@@ -66,15 +64,14 @@ access. Run the following command:
   if valid_system_commands.count > 0
     valid_system_commands.each do |val_sys_cmd|
       describe file(val_sys_cmd) do
-        it { should_not be_more_permissive_than("0755") }
+        it { should_not be_more_permissive_than('0755') }
       end
     end
   else
     describe "Number of directories that contain system commands found in /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin or
       /usr/local/sbin, that are less permissive than 0755" do
       subject { valid_system_commands }
-      its("count") { should eq 0 }
+      its('count') { should eq 0 }
     end
   end
 end
-

@@ -1,5 +1,5 @@
-control "VCFL-67-000030" do
-   title 'vSphere Client must set the secure flag for cookies.'
+control 'VCFL-67-000030' do
+  title 'vSphere Client must set the secure flag for cookies.'
   desc  "The secure flag is an option that can be set by the application server
 when sending a new cookie to the user within an HTTP Response. The purpose of
 the secure flag is to prevent cookies from being observed by unauthorized
@@ -22,7 +22,7 @@ unencrypted channel."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml.
 
@@ -47,5 +47,4 @@ configure it as follows:
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml') do
     its('/web-app/session-config/cookie-config/secure') { should cmp 'true' }
   end
-
 end

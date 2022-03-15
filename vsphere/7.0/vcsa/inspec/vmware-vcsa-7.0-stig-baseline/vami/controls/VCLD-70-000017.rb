@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLD-70-000017' do
   title 'VAMI must protect the keystore from unauthorized access.'
   desc  "The web server's private key is used to prove the identity of the
@@ -21,7 +19,7 @@ root:root
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command(s):
 
     # chown root:root /etc/applmgmt/appliance/server.pem
@@ -39,9 +37,7 @@ root:root
 
   describe file("#{input('serverCert')}") do
     it { should_not be_more_permissive_than('0600') }
-    its('owner') {should eq 'root'}
-    its('group') {should eq 'root'}
+    its('owner') { should eq 'root' }
+    its('group') { should eq 'root' }
   end
-
 end
-

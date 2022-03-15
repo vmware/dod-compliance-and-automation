@@ -29,7 +29,7 @@ root:root
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, enter the following command:
 
     # chown root:root /opt/vmware/var/log/lighttpd/*.log
@@ -38,21 +38,20 @@ root:root
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000118-WSR-000068'
-  tag satisfies: ['SRG-APP-000118-WSR-000068', 'SRG-APP-000119-WSR-000069',
-'SRG-APP-000120-WSR-000070']
+  tag satisfies: %w(SRG-APP-000118-WSR-000068 SRG-APP-000119-WSR-000069
+SRG-APP-000120-WSR-000070)
   tag gid: 'V-239721'
   tag rid: 'SV-239721r816791_rule'
   tag stig_id: 'VCLD-67-000011'
   tag fix_id: 'F-42913r679272_fix'
-  tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9', 'AU-9', 'AU-9']
+  tag cci: %w(CCI-000162 CCI-000163 CCI-000164)
+  tag nist: %w(AU-9 AU-9 AU-9)
 
-  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |
+  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
     describe file(fname) do
       it { should_not be_more_permissive_than('0640') }
-      its('owner') {should eq 'root'}
-      its('group') {should eq 'root'}
+      its('owner') { should eq 'root' }
+      its('group') { should eq 'root' }
     end
   end
-
 end

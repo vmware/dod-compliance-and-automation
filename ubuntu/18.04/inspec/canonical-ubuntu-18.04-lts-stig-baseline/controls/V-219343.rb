@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219343' do
   title "The Ubuntu operating system must use a file integrity tool to verify
 correct operation of all security functions."
@@ -33,7 +31,7 @@ checks are performed on the system.
     If there is no application installed to perform integrity checks, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Install the AIDE package by running the following command:
 
     # sudo apt-get install aide
@@ -45,11 +43,10 @@ finding.
   tag rid: 'SV-219343r508662_rule'
   tag stig_id: 'UBTU-18-010515'
   tag fix_id: 'F-21067r305358_fix'
-  tag cci: ['V-100907', 'SV-110011', 'CCI-002696']
+  tag cci: %w(V-100907 SV-110011 CCI-002696)
   tag nist: ['SI-6 a']
 
   describe package('aide') do
     it { should be_installed }
   end
 end
-

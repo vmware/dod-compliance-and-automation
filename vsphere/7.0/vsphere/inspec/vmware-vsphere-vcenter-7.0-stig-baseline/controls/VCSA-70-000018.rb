@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000018' do
   title "The vCenter Server must configure all port groups to a value other
 than that of the native VLAN."
@@ -33,7 +31,7 @@ the following command:
     If any port group is configured with the native VLAN of the ESXi hosts
 attached physical switch, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Networking >> Select a distributed switch >>
 Select a distributed port group >> Configure >> Settings >> Policies. Click
 \"Edit\". Click the \"VLAN\" tab. Change the VLAN ID to a non-native VLAN.
@@ -56,23 +54,21 @@ VLAN#\"
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command = "Get-VDPortgroup | Where-Object {$_.IsUplink -eq $false} | Select -ExpandProperty Name"
+  command = 'Get-VDPortgroup | Where-Object {$_.IsUplink -eq $false} | Select -ExpandProperty Name'
   vdportgroups = powercli_command(command).stdout.strip.split("\r\n")
 
   if vdportgroups.empty?
-    describe "" do
-      skip "No distributed port groups found to check."
+    describe '' do
+      skip 'No distributed port groups found to check.'
     end
   end
 
-  if !vdportgroups.empty?
-    vdportgroups.each do | vdpg |
+  unless vdportgroups.empty?
+    vdportgroups.each do |vdpg|
       command = "(Get-VDPortgroup -Name \"#{vdpg}\").ExtensionData.Config.DefaultPortConfig.Vlan.VlanId"
       describe powercli_command(command) do
-        its ('stdout.strip') { should_not cmp "1" }
+        its('stdout.strip') { should_not cmp '1' }
       end
     end
   end
-
 end
-

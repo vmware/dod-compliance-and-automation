@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219344' do
   title "The Ubuntu operating system must be configured so that a file
 integrity tool verifies the correct operation of security functions every 30
@@ -53,11 +51,10 @@ by copying it from another location:
   tag rid: 'SV-219344r508662_rule'
   tag stig_id: 'UBTU-18-010516'
   tag fix_id: 'F-21068r305361_fix'
-  tag cci: ['V-100909', 'SV-110013', 'CCI-002699']
+  tag cci: %w(V-100909 SV-110013 CCI-002699)
   tag nist: ['SI-6 b']
 
   describe file('/etc/cron.daily/aide') do
     it { should exist }
   end
 end
-

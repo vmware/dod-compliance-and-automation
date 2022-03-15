@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000021' do
   title "The Security Token Service must use the \"setCharacterEncodingFilter\"
 filter."
@@ -57,7 +55,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 
     If the output is does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/web.xml
@@ -104,6 +102,4 @@ s/xmlns=\".*\"//g' | xmllint --xpath
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="encoding"]/param-value') { should cmp 'UTF-8' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="ignore"]/param-value') { should cmp 'true' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000001' do
   title "The vCenter Server must prohibit password reuse for a minimum of five
 generations."
@@ -22,7 +20,7 @@ Configuration >> Local Accounts >> Password Policy.  View the value of the
     If the \"Restrict reuse\" policy is not set to \"5\" or more, this is a
 finding.
   "
-  desc  'fix', "From the vSphere Client, go to Administration >> Single Sign On
+  desc 'fix', "From the vSphere Client, go to Administration >> Single Sign On
 >> Configuration >> Local Accounts >> Password Policy.  Click \"Edit\" and
 enter \"5\" into the \"Restrict reuse\" setting and click \"OK\". "
   impact 0.5
@@ -35,9 +33,7 @@ enter \"5\" into the \"Restrict reuse\" setting and click \"OK\". "
   tag cci: 'CCI-000200'
   tag nist: ['IA-5 (1) (e)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

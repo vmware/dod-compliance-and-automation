@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000019' do
   title "The vCenter Server must not configure VLAN Trunking unless Virtual
 Guest Tagging (VGT) is required and authorized."
@@ -31,7 +29,7 @@ documented as a needed exception (such as NSX appliances), this is a finding.
     If any port group is authorized to be configured with \"VLAN trunking\" but
 is not configured with the most limited range necessary, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Networking >> Select a distributed switch >>
 Select a distributed port group >> Configure >> Settings >> Policies. Click
 \"Edit\". Click the \"VLAN\" tab.
@@ -64,27 +62,25 @@ VLAN#>\"
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command = "Get-VDPortgroup | Where-Object {(($_.IsUplink -eq $false) -and ($_.VlanConfiguration -match \"Trunk\"))} | Select-Object -ExpandProperty Name"
+  command = 'Get-VDPortgroup | Where-Object {(($_.IsUplink -eq $false) -and ($_.VlanConfiguration -match "Trunk"))} | Select-Object -ExpandProperty Name'
   vdportgroups = powercli_command(command).stdout.strip.split("\r\n")
 
   if vdportgroups.empty?
-    describe "" do
-      skip "No distributed port groups found to check."
+    describe '' do
+      skip 'No distributed port groups found to check.'
     end
   end
 
-  if !vdportgroups.empty?
-    vdportgroups.each do | vdpg |
+  unless vdportgroups.empty?
+    vdportgroups.each do |vdpg|
       command = "(Get-VDPortgroup -Name \"#{vdpg}\").ExtensionData.Config.DefaultPortConfig.Vlan.VlanId.Start"
       describe powercli_command(command) do
-        its ('stdout.strip') { should_not cmp "0" }
+        its('stdout.strip') { should_not cmp '0' }
       end
       command = "(Get-VDPortgroup -Name \"#{vdpg}\").ExtensionData.Config.DefaultPortConfig.Vlan.VlanId.End"
       describe powercli_command(command) do
-        its ('stdout.strip') { should_not cmp "4094" }
+        its('stdout.strip') { should_not cmp '4094' }
       end
     end
   end
-
 end
-

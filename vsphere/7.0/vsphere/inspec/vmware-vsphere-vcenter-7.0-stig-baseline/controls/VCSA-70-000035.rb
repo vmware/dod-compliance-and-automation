@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000035' do
   title 'vCenter Server plugins must be verified.'
   desc  "The vCenter Server includes a vSphere Client extensibility framework,
@@ -24,7 +22,7 @@ approved plug-ins.
 as an allowed vSphere Client plug-ins from trusted sources or are not in active
 use, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Solutions >> Client
 Plug-Ins, click the radio button next to the unknown plug-in and click disable.
 If the plugin will not be needed in the future, proceed to uninstall the
@@ -75,9 +73,7 @@ if previously disabled.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

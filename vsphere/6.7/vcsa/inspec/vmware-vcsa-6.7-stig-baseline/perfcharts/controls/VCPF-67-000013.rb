@@ -1,4 +1,4 @@
-control "VCPF-67-000013" do
+control 'VCPF-67-000013' do
   title "Performance Charts must not have the Web Distributed Authoring
 (WebDAV) servlet installed."
   desc  "WebDAV is an extension to the HTTP protocol that, when developed, was
@@ -20,7 +20,7 @@ Performance Charts does not configure WebDAV by default.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml in a text editor.
 
     Find the <servlet-name>webdav</servlet-name> node and remove the entire
@@ -42,6 +42,4 @@ parent <servlet-mapping> block.
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="webdav"]') { should eq [] }
   end
-
 end
-

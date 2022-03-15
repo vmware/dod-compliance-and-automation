@@ -1,4 +1,4 @@
-control "VCRP-67-000008" do
+control 'VCRP-67-000008' do
   title "The rhttproxy must exclusively use the HTTPS protocol for client
 connections."
   desc  "Remotely accessing vCenter via the rhttpproxy involves sensitive
@@ -26,7 +26,7 @@ safely enable TLS."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml.
 
     Locate the first <ssl> block and set its content to the following:
@@ -59,6 +59,4 @@ safely enable TLS."
     its(['/config/ssl/certificate']) { should cmp "#{input('certificateFile')}" }
     its(['/config/ssl/vecsServerName']) { should cmp "#{input('vecsServerName')}" }
   end
-
 end
-

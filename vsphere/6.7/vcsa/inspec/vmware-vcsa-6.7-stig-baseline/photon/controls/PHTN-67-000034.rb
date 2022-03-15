@@ -1,4 +1,4 @@
-control "PHTN-67-000034" do
+control 'PHTN-67-000034' do
   title 'The Photon operating system must not have Duplicate User IDs (UIDs).'
   desc  "To ensure accountability and prevent unauthenticated access,
 organizational users must be uniquely identified and authenticated to prevent
@@ -11,7 +11,7 @@ potential misuse and provide for non-repudiation."
 
     If any lines are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/passwd with a text editor.
 
     Configure each user account that has a duplicate UID with a unique UID.
@@ -27,8 +27,6 @@ potential misuse and provide for non-repudiation."
   tag nist: ['IA-2']
 
   describe command('awk -F ":" \'list[$3]++{print $1, $3}\' /etc/passwd') do
-      its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

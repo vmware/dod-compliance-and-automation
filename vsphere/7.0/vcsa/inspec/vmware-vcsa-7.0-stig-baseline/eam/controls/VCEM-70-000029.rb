@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000029' do
   title "Rsyslog must be configured to monitor and ship ESX Agent Manager log
 files."
@@ -16,7 +14,7 @@ integrity of the hosted application."
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-syslog/vmware-services-eam.conf
@@ -78,8 +76,6 @@ integrity of the hosted application."
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-eam.conf|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

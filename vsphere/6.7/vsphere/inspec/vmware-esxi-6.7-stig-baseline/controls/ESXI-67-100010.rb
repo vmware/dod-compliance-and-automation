@@ -14,7 +14,7 @@ command:
 aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr\",
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Limit the ciphers to algorithms that are FIPS approved. Counter (CTR) mode
 is also preferred over cipher-block chaining (CBC) mode.
 
@@ -35,8 +35,6 @@ aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.software.vib.list.Invoke() | Where {$_.Name -eq '#{input('dodStigVibRootEnabled')}' -or $_.Name -eq '#{input('dodStigVibRootDisabled')}'}"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not cmp "" }
+    its('stdout.strip') { should_not cmp '' }
   end
-
 end
-

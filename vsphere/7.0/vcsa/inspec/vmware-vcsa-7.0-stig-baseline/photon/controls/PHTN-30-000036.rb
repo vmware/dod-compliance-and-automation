@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000036' do
   title 'The Photon operating system must use TCP syncookies.'
   desc  "A TCP SYN flood attack can cause a denial of service by filling a
@@ -20,7 +18,7 @@ enables the system to continue servicing valid connection requests."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # sed -i -e \"/^net.ipv4.tcp_syncookies/d\" /etc/sysctl.conf
@@ -40,6 +38,4 @@ enables the system to continue servicing valid connection requests."
   describe kernel_parameter('net.ipv4.tcp_syncookies') do
     its('value') { should eq 1 }
   end
-
 end
-

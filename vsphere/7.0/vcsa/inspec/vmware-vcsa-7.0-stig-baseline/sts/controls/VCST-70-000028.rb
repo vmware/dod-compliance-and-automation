@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000028' do
   title "The Security Token Service must be configured with the appropriate
 ports."
@@ -23,7 +21,7 @@ veriified as accurate to their shipping state."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties
@@ -54,12 +52,10 @@ following list:
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-custom.http.port'] do
     it { should eq "#{input('httpPort')}" }
   end
-   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-custom.https.port'] do
+  describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-custom.https.port'] do
     it { should eq "#{input('httpsPort')}" }
   end
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-ssl-localhost.https.port'] do
     it { should eq "#{input('sslhttpsPort')}" }
   end
-
 end
-

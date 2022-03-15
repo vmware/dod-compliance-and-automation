@@ -1,4 +1,4 @@
-control "ESXI-67-000067" do
+control 'ESXI-67-000067' do
   title "All ESXi host-connected physical switch ports must be configured with
 spanning tree disabled."
   desc  "Since VMware virtual switches do not support STP, the ESXi
@@ -24,7 +24,7 @@ connected to ESXi hosts.
 is not configured for all physical ports connected to ESXi hosts, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Note that this check refers to an entity outside the scope of the ESXi
 server system.
 
@@ -48,9 +48,7 @@ modifications are made to either ESXi hosts or the upstream physical switches.
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

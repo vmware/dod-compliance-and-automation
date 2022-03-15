@@ -1,4 +1,4 @@
-control "PHTN-67-000025" do
+control 'PHTN-67-000025' do
   title "The Photon operating system must store only encrypted representations
 of passwords."
   desc  "Passwords must be protected at all times via strong, one-way
@@ -13,7 +13,7 @@ those passwords are much more vulnerable to offline brute forcing attacks."
 
     If the output does not include \"sha512\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/applmgmt/appliance/system-password with a text editor.
 
     Add the following argument (sha512) to the password line:
@@ -32,9 +32,7 @@ those passwords are much more vulnerable to offline brute forcing attacks."
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']
 
-  describe file ('/etc/pam.d/system-password') do
-      its ('content'){should match /^(?=.*?\bpassword\b)(?=.*?\brequired\b)(?=.*?\bsha512\b).*$/}
+  describe file('/etc/pam.d/system-password') do
+    its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequired\b)(?=.*?\bsha512\b).*$/ }
   end
-
 end
-

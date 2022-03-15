@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000010' do
   title "Unauthorized parallel devices must be disconnected on the virtual
 machine."
@@ -40,9 +38,7 @@ Settings. Select the parallel device and click the circle-x to remove then OK.
 
   command = "(Get-VM -Name #{input('vmName')}).ExtensionData.Config.Hardware.Device.DeviceInfo.label"
   describe powercli_command(command) do
-    its ('stdout') { should_not match 'Parallel' }
-    its ('exit_status') { should cmp 0 }
+    its('stdout') { should_not match 'Parallel' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

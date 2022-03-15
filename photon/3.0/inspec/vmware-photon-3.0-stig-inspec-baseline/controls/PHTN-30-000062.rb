@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000062' do
   title "The Photon operating system must require users to reauthenticate for
 privilege escalation."
@@ -21,7 +19,7 @@ capability, it is critical the user reauthenticate.
     If any account listed in the first output is also listed in the second
 output and is not documented, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Check the configuration of the \"/etc/sudoers\" and \"/etc/sudoers.d/*\"
 files with the following command:
 
@@ -44,15 +42,13 @@ with a password hash.
   tag cci: 'CCI-002038'
   tag nist: ['IA-11']
 
-  #Find users in sudoers with NOPASSWD flag and extract username
+  # Find users in sudoers with NOPASSWD flag and extract username
   results = command("awk '/NOPASSWD/ && /^[^#%].*/ {print $1}' /etc/sudoers /etc/sudoers.d/*").stdout.split("\n")
-  
-  #Compare results to shadow file to verify their password is set to !
-  results.each do | result |
+
+  # Compare results to shadow file to verify their password is set to !
+  results.each do |result|
     describe shadow.where(password: '!') do
-      its('users') { should include (result) }
+      its('users') { should include(result) }
     end
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000074' do
   title 'The ESXi host must exclusively enable TLS 1.2 for all endpoints.'
   desc  "TLS 1.0 and 1.1 are deprecated protocols with well published
@@ -60,18 +58,14 @@ Set-AdvancedSetting -Value \"tlsv1,tlsv1.1,sslv3\"
   tag nist: ['CM-6 b']
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name UserVars.ESXiVPsDisabledProtocols | Select-Object -ExpandProperty Value"
-  
+
   describe.one do
-
     describe powercli_command(command) do
-      its('stdout.strip') { should cmp "tlsv1,tlsv1.1,sslv3" }
+      its('stdout.strip') { should cmp 'tlsv1,tlsv1.1,sslv3' }
     end
 
     describe powercli_command(command) do
-      its('stdout.strip') { should cmp "sslv3,tlsv1,tlsv1.1" }
+      its('stdout.strip') { should cmp 'sslv3,tlsv1,tlsv1.1' }
     end
-    
   end
-
 end
-

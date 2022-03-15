@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219173' do
   title "The Ubuntu operating system must enforce password complexity by
 requiring that at least one lower-case character be used."
@@ -40,7 +38,7 @@ this is a finding.
   tag rid: 'SV-219173r508662_rule'
   tag stig_id: 'UBTU-18-010101'
   tag fix_id: 'F-20897r304848_fix'
-  tag cci: ['SV-109677', 'V-100573', 'CCI-000193']
+  tag cci: %w(SV-109677 V-100573 CCI-000193)
   tag nist: ['IA-5 (1) (a)']
 
   min_num_lowercase_char = input('min_num_lowercase_char')
@@ -52,10 +50,9 @@ this is a finding.
       its('lcredit') { should cmp min_num_lowercase_char }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000015' do
   title "The Security Token Service must be configured with memory leak
 protection."
@@ -31,7 +29,7 @@ className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/server.xml
@@ -59,6 +57,4 @@ the <Server> node.
   describe xml("#{input('serverXmlPath')}") do
     its('Server/Listener/attribute::className') { should include "#{input('memLeakListener')}" }
   end
-
 end
-

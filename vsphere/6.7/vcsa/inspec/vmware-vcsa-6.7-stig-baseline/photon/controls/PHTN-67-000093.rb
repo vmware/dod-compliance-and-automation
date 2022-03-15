@@ -1,4 +1,4 @@
-control "PHTN-67-000093" do
+control 'PHTN-67-000093' do
   title "The Photon operating system must configure sshd to ignore
 user-specific known_host files."
   desc  "SSH trust relationships enable trivial lateral spread after a host
@@ -17,7 +17,7 @@ disabling host-based authentication generally."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"IgnoreUserKnownHosts\" line is uncommented and set to the
@@ -40,8 +40,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i IgnoreUserKnownHosts') do
-    its ('stdout.strip') { should cmp 'IgnoreUserKnownHosts yes' }
+    its('stdout.strip') { should cmp 'IgnoreUserKnownHosts yes' }
   end
-
 end
-

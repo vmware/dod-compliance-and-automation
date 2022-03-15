@@ -1,4 +1,4 @@
-control "ESXI-67-000046" do
+control 'ESXI-67-000046' do
   title 'The ESXi host must configure NTP time synchronization.'
   desc  "To ensure the accuracy of the system clock, it must be synchronized
 with an authoritative time source within DoD. Many system functions, including
@@ -27,7 +27,7 @@ following command:
 the service does not have a \"Policy\" of \"on\" or is stopped, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Time Configuration.
 
@@ -49,22 +49,22 @@ Start-VMHostService
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000355-VMM-001330'
-  tag satisfies: ['SRG-OS-000355-VMM-001330', 'SRG-OS-000356-VMM-001340']
+  tag satisfies: %w(SRG-OS-000355-VMM-001330 SRG-OS-000356-VMM-001340)
   tag gid: 'V-239301'
   tag rid: 'SV-239301r674832_rule'
   tag stig_id: 'ESXI-67-000046'
   tag fix_id: 'F-42493r674831_fix'
-  tag cci: ['CCI-001891', 'CCI-002046']
+  tag cci: %w(CCI-001891 CCI-002046)
   tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)']
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'NTP Daemon'} | Select-Object -ExpandProperty Policy"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "on" }
+    its('stdout.strip') { should cmp 'on' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'NTP Daemon'} | Select-Object -ExpandProperty Running"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostNTPServer"
@@ -72,6 +72,4 @@ Start-VMHostService
     its('stdout.strip') { should match "#{input('ntpServer1')}" }
     its('stdout.strip') { should match "#{input('ntpServer2')}" }
   end
-
 end
-

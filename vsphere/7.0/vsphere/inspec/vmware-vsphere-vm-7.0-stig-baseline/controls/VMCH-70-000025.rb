@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000025' do
   title 'Logging must be enabled on the virtual machine.'
   desc  "The ESXi hypervisor maintains logs for each individual VM by default.
@@ -23,13 +21,13 @@ server, run the following command:
 
     If logging is not enabled, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client select the Virtual Machine, right click and go to
 Edit Settings >> VM Options Tab >> Advanced >> Settings. Click the checkbox
 next to \"Enable logging\". Click \"OK\".
 
     or
-   
+
   From a PowerCLI command prompt while connected to the ESXi host or vCenter
 server, run the following commands:
 
@@ -50,9 +48,7 @@ $spec.Flags.enableLogging = $true
 
   command = "((Get-VM -Name #{input('vmName')}).ExtensionData.Config.Flags.EnableLogging)"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should cmp 'true' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

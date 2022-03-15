@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000047' do
   title 'The ESXi Image Profile and VIB Acceptance Levels must be verified.'
   desc  "Verify the ESXi Image Profile to only allow signed VIBs. An unsigned
@@ -34,7 +32,7 @@ following command(s):
 
     If the acceptance level is CommunitySupported, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client select the ESXi Host and go to Configure >> System
 >> Security Profile. Under \"Host Image Profile Acceptance Level\", click
 \"Edit...\" . Using the drop-down selection, set the acceptance level to be
@@ -65,11 +63,9 @@ sensitive.
   tag cci: 'CCI-001749'
   tag nist: ['CM-5 (3)']
 
-  list = ["PartnerSupported","VMwareCertified","VMwareAccepted"]
+  list = %w(PartnerSupported VMwareCertified VMwareAccepted)
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.software.acceptance.get.Invoke()"
   describe powercli_command(command) do
-    its ('stdout.strip') { should be_in list }
+    its('stdout.strip') { should be_in list }
   end
-
 end
-

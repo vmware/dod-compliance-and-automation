@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000011' do
   title "The Photon operating system must configure auditd to use the correct
 log format."
@@ -20,7 +18,7 @@ of the event in question."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/auditd.conf
@@ -45,8 +43,6 @@ of the event in question."
   tag nist: ['AU-3']
 
   describe auditd_conf do
-    its("log_format") { should cmp 'RAW'}
+    its('log_format') { should cmp 'RAW' }
   end
-
 end
-

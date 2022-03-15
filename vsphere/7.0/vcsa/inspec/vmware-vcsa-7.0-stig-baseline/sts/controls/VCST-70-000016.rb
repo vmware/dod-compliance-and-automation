@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000016' do
   title "The Security Token Service must not have any symbolic links in the web
 content directory tree."
@@ -21,7 +19,7 @@ tree and gaining access to the other directories, including the system root.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command(s):
 
     Note: Replace <file_name> for the name of any files that were returned.
@@ -41,8 +39,6 @@ tree and gaining access to the other directories, including the system root.
   tag nist: ['CM-7 a']
 
   describe command("find '#{input('appPath')}' -type l -ls") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

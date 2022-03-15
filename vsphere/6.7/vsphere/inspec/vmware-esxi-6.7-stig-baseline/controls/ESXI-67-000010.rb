@@ -1,4 +1,4 @@
-control "ESXI-67-000010" do
+control 'ESXI-67-000010' do
   title "The ESXi host SSH daemon must use DoD-approved encryption to protect
 the confidentiality of remote access sessions."
   desc  "Approved algorithms should impart some level of confidence in their
@@ -22,7 +22,7 @@ following commands:
     If there is no output or the output is not exactly \"FipsMode yes\" over
 SSH, or enabled is not \"true\" over PowerCLI, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Limit the ciphers to FIPS-approved algorithms.
 
     From an SSH session connected to the ESXi host, or from the ESXi shell, add
@@ -52,8 +52,6 @@ following commands:
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.security.fips140.ssh.get.invoke() | Select-Object -ExpandProperty Enabled"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
-
 end
-

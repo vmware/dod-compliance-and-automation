@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000026' do
   title 'The Security Token Service must have the debug option disabled.'
   desc  "Information needed by an attacker to begin looking for possible
@@ -38,7 +36,7 @@ finding.
 
     If no lines is returned, this is NOT a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/web.xml
@@ -69,16 +67,12 @@ finding.
   tag nist: ['SI-11 a']
 
   describe.one do
-
     describe xml("#{input('webXmlPath')}") do
       its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should eq [] }
     end
 
     describe xml("#{input('webXmlPath')}") do
-      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
+      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp '0' }
     end
-
   end
-
 end
-

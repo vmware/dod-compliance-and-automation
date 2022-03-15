@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000053' do
   title 'SNMP must be configured properly on the ESXi host.'
   desc  "If SNMP is not being used, it must remain disabled. If it is being
@@ -29,7 +27,7 @@ finding.
     Note: SNMP v3 targets can only be viewed and configured via the esxcli
 command.
   "
-  desc  'fix', "
+  desc 'fix', "
     To disable SNMP from an ESXi shell, run the following command(s):
 
     # esxcli system snmp set -e no
@@ -53,12 +51,10 @@ set locally on the host or remotely via PowerCLI.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  if "#{input('snmpEnabled')}" == "false" 
+  if "#{input('snmpEnabled')}" == 'false'
     command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.snmp.get.Invoke() | Select-Object -ExpandProperty enable"
     describe powercli_command(command) do
-      its ('stdout.strip') { should cmp "false" }
+      its('stdout.strip') { should cmp 'false' }
     end
   end
-
 end
-

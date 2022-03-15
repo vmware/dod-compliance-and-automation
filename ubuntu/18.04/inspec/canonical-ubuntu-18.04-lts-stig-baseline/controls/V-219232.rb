@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219232' do
   title "The Ubuntu operating system must allow only authorized accounts to own
 the audit log directory."
@@ -34,7 +32,7 @@ directory is owned by the \"root\" user by using the following command:
     If the audit log directory is owned by an user other than \"root\", this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit log directory to be owned by \"root\" user.
 
     First determine where the audit logs are stored with the following command:
@@ -54,7 +52,7 @@ audit log directory to be owned by \"root\" user by using the following command:
   tag rid: 'SV-219232r508662_rule'
   tag stig_id: 'UBTU-18-010309'
   tag fix_id: 'F-20956r305025_fix'
-  tag cci: ['V-100691', 'SV-109795', 'CCI-000164']
+  tag cci: %w(V-100691 SV-109795 CCI-000164)
   tag nist: ['AU-9']
 
   log_file_dir = input('log_file_dir')
@@ -63,4 +61,3 @@ audit log directory to be owned by \"root\" user by using the following command:
     its('owner') { should cmp 'root' }
   end
 end
-

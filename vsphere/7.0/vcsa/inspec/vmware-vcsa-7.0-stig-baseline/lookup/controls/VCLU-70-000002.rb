@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000002' do
   title "Lookup Service must limit the number of concurrent connections
 permitted."
@@ -28,7 +26,7 @@ threads will be created up to the value of the \"maxThreads\" attribute.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/server.xml
@@ -52,6 +50,4 @@ threads will be created up to the value of the \"maxThreads\" attribute.
   describe xml("#{input('serverXmlPath')}") do
     its(['/Server/Service/Connector[@port="${bio-custom.http.port}"]/@maxThreads']) { should cmp [] }
   end
-
 end
-

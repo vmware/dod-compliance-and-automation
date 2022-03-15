@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCRP-70-000005' do
   title 'The Envoy private key file must be protected from unauthorized access.'
   desc  "Envoy's private key is used to prove the identity of the server to
@@ -24,7 +22,7 @@ group owned by root
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # chmod 600 /etc/vmware-rhttpproxy/ssl/rui.key
@@ -43,9 +41,7 @@ group owned by root
 
   describe file("#{input('sslKey')}") do
     its('mode') { should cmp '0600' }
-    its('owner') {should cmp 'root'}
-    its('group') {should cmp 'root'}
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
-
 end
-

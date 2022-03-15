@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000001' do
   title 'VMware Postgres must limit the number of connections.'
   desc  "Database management includes the ability to control the number of
@@ -25,7 +23,7 @@ max_connections;\"
     If the returned number is not greater than or equal to 100 and less than or
 equal to 1000, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command:
 
     # vmon-cli --restart vmware-vpostgres
@@ -44,12 +42,10 @@ memory for vCenter.
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW max_connections;"
-  
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW max_connections;'
+
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_max_connections')}" }
+    its('output') { should cmp "#{input('pg_max_connections')}" }
   end
-
 end
-

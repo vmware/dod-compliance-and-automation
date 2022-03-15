@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000077' do
   title "The vCenter server must enforce SNMPv3 security features where SNMP is
 required."
@@ -38,7 +36,7 @@ this is a finding.
     If any \"Users\" are configured with a \"Sec_level\" that does not equal
 \"priv\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt on the vCenter Server Appliance, execute the
 following commands:
 
@@ -60,9 +58,7 @@ following commands:
   tag cci: 'CCI-001967'
   tag nist: ['IA-3 (1)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

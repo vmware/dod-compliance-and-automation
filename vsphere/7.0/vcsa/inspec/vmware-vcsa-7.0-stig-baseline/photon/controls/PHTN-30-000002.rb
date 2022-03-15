@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000002' do
   title "The Photon operating system must automatically lock an account when
 three unsuccessful logon attempts occur."
@@ -27,7 +25,7 @@ onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
     If the output does not list the pam_tally2 options as configured in the
 expected results, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/pam.d/system-auth
@@ -58,13 +56,11 @@ onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
   tag cci: ['CCI-000044']
   tag nist: ['AC-7 a']
 
-  describe file ('/etc/pam.d/system-auth') do
-    its ('content'){should match /^(?=.*?\bauth\b)(?=.*?\brequired\b)(?=.*?\bpam_tally2.so\b)(?=.*?\bdeny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300\b).*$/}
+  describe file('/etc/pam.d/system-auth') do
+    its('content') { should match /^(?=.*?\bauth\b)(?=.*?\brequired\b)(?=.*?\bpam_tally2.so\b)(?=.*?\bdeny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300\b).*$/ }
   end
 
-  describe file ('/etc/pam.d/system-account') do
-    its ('content'){should match /^(?=.*?\baccount\b)(?=.*?\brequired\b)(?=.*?\bpam_tally2.so\b)(?=.*?\bdeny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300\b).*$/}
+  describe file('/etc/pam.d/system-account') do
+    its('content') { should match /^(?=.*?\baccount\b)(?=.*?\brequired\b)(?=.*?\bpam_tally2.so\b)(?=.*?\bdeny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300\b).*$/ }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219313' do
   title "The Ubuntu operating system must use SSH to protect the
 confidentiality and integrity of transmitted information unless otherwise
@@ -55,7 +53,7 @@ ago
 
     If \"sshd.service\" is not active or loaded, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Install the \"ssh\" meta-package on the system with the following command:
 
     # sudo apt install ssh
@@ -72,14 +70,14 @@ following command:
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000423-GPOS-00187'
-  tag satisfies: ['SRG-OS-000423-GPOS-00187', 'SRG-OS-000424-GPOS-00188',
-'SRG-OS-000425-GPOS-00189', 'SRG-OS-000426-GPOS-00190']
+  tag satisfies: %w(SRG-OS-000423-GPOS-00187 SRG-OS-000424-GPOS-00188
+SRG-OS-000425-GPOS-00189 SRG-OS-000426-GPOS-00190)
   tag gid: 'V-219313'
   tag rid: 'SV-219313r508662_rule'
   tag stig_id: 'UBTU-18-010420'
   tag fix_id: 'F-21037r305268_fix'
-  tag cci: ['V-100849', 'SV-109953', 'CCI-002418', 'CCI-002420', 'CCI-002421',
-'CCI-002422']
+  tag cci: %w(V-100849 SV-109953 CCI-002418 CCI-002420 CCI-002421
+CCI-002422)
   tag nist: ['SC-8', 'SC-8 (2)', 'SC-8 (1)', 'SC-8 (2)']
 
   describe package('openssh-server') do
@@ -92,4 +90,3 @@ following command:
     it { should be_running }
   end
 end
-

@@ -1,4 +1,4 @@
-control "ESXI-67-000035" do
+control 'ESXI-67-000035' do
   title "The ESXi host must be configured to disable nonessential capabilities
 by disabling SSH."
   desc  "The ESXi Shell is an interactive command line interface (CLI)
@@ -33,7 +33,7 @@ following command:
 
     If the ESXi SSH service is running, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Services.
 
@@ -54,24 +54,22 @@ Stop-VMHostService
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000095-VMM-000480'
-  tag satisfies: ['SRG-OS-000095-VMM-000480', 'SRG-OS-000297-VMM-001040',
-'SRG-OS-000298-VMM-001050']
+  tag satisfies: %w(SRG-OS-000095-VMM-000480 SRG-OS-000297-VMM-001040
+SRG-OS-000298-VMM-001050)
   tag gid: 'V-239290'
   tag rid: 'SV-239290r674799_rule'
   tag stig_id: 'ESXI-67-000035'
   tag fix_id: 'F-42482r674798_fix'
-  tag cci: ['CCI-000381', 'CCI-002314', 'CCI-002322']
+  tag cci: %w(CCI-000381 CCI-002314 CCI-002322)
   tag nist: ['CM-7 a', 'AC-17 (1)', 'AC-17 (9)']
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'SSH'} | Select-Object -ExpandProperty Policy"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "off" }
+    its('stdout.strip') { should cmp 'off' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'SSH'} | Select-Object -ExpandProperty Running"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "false" }
+    its('stdout.strip') { should cmp 'false' }
   end
-
 end
-

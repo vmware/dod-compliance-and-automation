@@ -1,4 +1,4 @@
-control "ESXI-67-000054" do
+control 'ESXI-67-000054' do
   title "The ESXi host must enable bidirectional CHAP authentication for iSCSI
 traffic."
   desc  "When enabled, vSphere performs bidirectional authentication of both
@@ -31,7 +31,7 @@ and host, this is a finding.
     If iSCSI is used and unique CHAP secrets are not used for each host, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >>
 Storage >> Storage Adapters.
 
@@ -65,24 +65,22 @@ following command:
   iscsi_hbas = powercli_command(command).stdout
 
   if iscsi_hbas.empty?
-    describe "" do
-      skip "There are no iSCSI HBAs present so this control is not applicable"
+    describe '' do
+      skip 'There are no iSCSI HBAs present so this control is not applicable'
     end
   end
 
-  if !iscsi_hbas.empty?
+  unless iscsi_hbas.empty?
     command1 = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostHba | Where {$_.Type -eq 'iscsi'} | Select-Object -ExpandProperty AuthenticationProperties | Select-Object -ExpandProperty MutualChapEnabled"
     command2 = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostHba | Where {$_.Type -eq 'iscsi'} | Select-Object -ExpandProperty AuthenticationProperties | Select-Object -ExpandProperty ChapType"
 
     describe powercli_command(command1) do
-      its('stdout.strip') { should cmp "True" }
+      its('stdout.strip') { should cmp 'True' }
     end
 
     describe powercli_command(command2) do
-      its('stdout.strip') { should cmp "Required" }
+      its('stdout.strip') { should cmp 'Required' }
     end
 
   end
-
 end
-

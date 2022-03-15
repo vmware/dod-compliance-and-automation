@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000114' do
   title 'The Photon operating system must set the UMASK parameter correctly.'
   desc  "The umask value influences the permissions assigned to files when they
@@ -18,7 +16,7 @@ allow the new user to read and write files there."
 
     If the output does not match the expected result, this a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/login.defs
@@ -36,10 +34,8 @@ allow the new user to read and write files there."
   tag fix_id: nil
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
-  
+
   describe login_defs do
     its('UMASK') { should cmp '077' }
   end
-
 end
-

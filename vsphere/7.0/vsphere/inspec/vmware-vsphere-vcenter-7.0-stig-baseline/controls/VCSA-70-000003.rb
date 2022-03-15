@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000003' do
   title "The vCenter Server must enforce a 60-day maximum password lifetime
 restriction."
@@ -23,7 +21,7 @@ Configuration >> Local Accounts >> Password Policy.  View the value of the
 
     If the \"Maximum lifetime\" policy is not set to \"60\", this is a finding.
   "
-  desc  'fix', "From the vSphere Client, go to Administration >> Single Sign On
+  desc 'fix', "From the vSphere Client, go to Administration >> Single Sign On
 >> Configuration >> Local Accounts >> Password Policy.  Click \"Edit\" and
 enter \"60\" into the \"Maximum lifetime\" setting and click \"OK\". "
   impact 0.5
@@ -36,9 +34,7 @@ enter \"60\" into the \"Maximum lifetime\" setting and click \"OK\". "
   tag cci: 'CCI-000199'
   tag nist: ['IA-5 (1) (d)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000034' do
   title "The vCenter Server must use unique service accounts when applications
 connect to vCenter."
@@ -35,9 +33,7 @@ permissions needed for that application.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

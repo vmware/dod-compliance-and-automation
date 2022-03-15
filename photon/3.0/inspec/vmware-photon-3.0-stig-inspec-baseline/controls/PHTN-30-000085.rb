@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000085' do
   title "The Photon operating system must configure sshd to display the last
 login immediately after authentication."
@@ -17,7 +15,7 @@ facilitates user recognition and reporting of unauthorized account use."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -42,8 +40,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i PrintLastLog') do
-    its ('stdout.strip') { should cmp 'PrintLastLog yes' }
+    its('stdout.strip') { should cmp 'PrintLastLog yes' }
   end
-
 end
-

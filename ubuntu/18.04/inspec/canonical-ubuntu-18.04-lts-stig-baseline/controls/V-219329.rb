@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219329' do
   title "The Ubuntu operating system must provision temporary user accounts
 with an expiration time of 72 hours or less."
@@ -38,7 +36,7 @@ accounts' creation.
     If any temporary account does not expire within 72 hours of that account's
 creation, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If a temporary account must be created configure the system to terminate
 the account after a 72 hour time period with the following command to set an
 expiration date on it. Substitute \"system_account_name\" with the account to
@@ -53,7 +51,7 @@ be created.
   tag rid: 'SV-219329r508662_rule'
   tag stig_id: 'UBTU-18-010449'
   tag fix_id: 'F-21053r305316_fix'
-  tag cci: ['SV-109985', 'V-100881', 'CCI-000016']
+  tag cci: %w(SV-109985 V-100881 CCI-000016)
   tag nist: ['AC-2 (2)']
 
   temporary_accounts = input('temporary_accounts')
@@ -71,4 +69,3 @@ be created.
     end
   end
 end
-

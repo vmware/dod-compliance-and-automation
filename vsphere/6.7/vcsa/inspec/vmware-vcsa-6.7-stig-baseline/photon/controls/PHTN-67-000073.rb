@@ -1,4 +1,4 @@
-control "PHTN-67-000073" do
+control 'PHTN-67-000073' do
   title 'The Photon operating system must audit the insmod module.'
   desc  "Without generating audit records that are specific to the security and
 mission needs of the organization, it would be difficult to establish,
@@ -24,7 +24,7 @@ information system (e.g., module or policy filter).
 accurate results. Enabling the auditd service is done as part of a separate
 control.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
 following lines:
 
@@ -37,7 +37,7 @@ following lines:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000471-GPOS-00216'
-  tag satisfies: ['SRG-OS-000471-GPOS-00216', 'SRG-OS-000477-GPOS-00222']
+  tag satisfies: %w(SRG-OS-000471-GPOS-00216 SRG-OS-000477-GPOS-00222)
   tag gid: 'V-239144'
   tag rid: 'SV-239144r816649_rule'
   tag stig_id: 'PHTN-67-000073'
@@ -46,7 +46,6 @@ following lines:
   tag nist: ['AU-12 c']
 
   describe auditd do
-    its("lines") { should include %r{-w /sbin/insmod -p x} }
+    its('lines') { should include %r{-w /sbin/insmod -p x} }
   end
-
 end

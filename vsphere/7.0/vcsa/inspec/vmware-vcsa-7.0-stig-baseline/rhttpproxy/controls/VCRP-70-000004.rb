@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCRP-70-000004' do
   title 'Envoy must use only TLS 1.2 for the protection of client connections.'
   desc  "Envoy can be configured to support TLS 1.0, 1.1 and 1.2. Due to
@@ -26,7 +24,7 @@ be verified and maintained."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
     Locate the <config>/<vmacore>/<ssl> block and configure <protocols> as
@@ -51,7 +49,6 @@ follows:
   value = input('protocols')
 
   describe.one do
-
     describe xml("#{input('configXmlPath')}") do
       its(['/config/vmacore/ssl/protocols']) { should cmp value }
     end
@@ -59,8 +56,5 @@ follows:
     describe xml("#{input('configXmlPath')}") do
       its(['/config/vmacore/ssl/protocols']) { should cmp [] }
     end
-
   end
-
 end
-

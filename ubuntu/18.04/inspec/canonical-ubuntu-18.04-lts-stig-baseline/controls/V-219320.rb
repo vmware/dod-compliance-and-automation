@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219320' do
   title "The Ubuntu operating system must implement certificate status checking
 for multifactor authentication."
@@ -28,7 +26,7 @@ cert_policy | grep ocsp_on
     If \"cert_policy\" is not set to \"ocsp_on\", or the line is commented out,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to certificate status checking for
 multifactor authentication.
 
@@ -42,7 +40,7 @@ to include ocsp_on.
   tag rid: 'SV-219320r508662_rule'
   tag stig_id: 'UBTU-18-010434'
   tag fix_id: 'F-21044r305289_fix'
-  tag cci: ['SV-109967', 'V-100863', 'CCI-001954']
+  tag cci: %w(SV-109967 V-100863 CCI-001954)
   tag nist: ['IA-2 (12)']
 
   config_file_exists = file('/etc/pam_pkcs11/pam_pkcs11.conf').exist?
@@ -58,4 +56,3 @@ to include ocsp_on.
     end
   end
 end
-

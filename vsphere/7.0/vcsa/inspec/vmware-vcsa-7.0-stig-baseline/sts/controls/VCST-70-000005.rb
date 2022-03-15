@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000005' do
   title "The Security Token Service must record user access in a format that
 enables monitoring of remote access."
@@ -31,7 +29,7 @@ to local %{local}p - %H %m %U%q    [Response] %s - %b bytes    [Perf] process
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/server.xml
@@ -60,6 +58,4 @@ to local %{local}p - %H %m %U%q    [Response] %s - %b bytes    [Perf] process
   describe xml("#{input('serverXmlPath')}") do
     its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ["#{input('accessValvePattern')}"] }
   end
-
 end
-

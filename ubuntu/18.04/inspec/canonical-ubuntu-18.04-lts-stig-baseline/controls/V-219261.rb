@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219261' do
   title "The Ubuntu operating system must generate audit records for
 successful/unsuccessful uses of the openat system call."
@@ -40,7 +38,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any unsuccessful
 use of the \"openat\" system call.
 
@@ -68,12 +66,12 @@ required.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000064-GPOS-00033'
-  tag satisfies: ['SRG-OS-000064-GPOS-00033', 'SRG-OS-000474-GPOS-00219']
+  tag satisfies: %w(SRG-OS-000064-GPOS-00033 SRG-OS-000474-GPOS-00219)
   tag gid: 'V-219261'
   tag rid: 'SV-219261r508662_rule'
   tag stig_id: 'UBTU-18-010338'
   tag fix_id: 'F-20985r305112_fix'
-  tag cci: ['V-100747', 'SV-109851', 'CCI-000172']
+  tag cci: %w(V-100747 SV-109851 CCI-000172)
   tag nist: ['AU-12 c']
 
   if os.arch == 'x86_64'
@@ -99,4 +97,3 @@ required.
     its('exit.uniq') { should include '-EACCES' }
   end
 end
-

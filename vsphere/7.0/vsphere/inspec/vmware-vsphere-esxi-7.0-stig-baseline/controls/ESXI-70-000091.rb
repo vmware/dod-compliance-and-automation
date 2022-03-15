@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000091' do
   title "The ESXi host must be configured with an appropriate maximum password
 age."
@@ -48,8 +46,6 @@ Set-AdvancedSetting -Value \"90\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Security.PasswordMaxDays | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "90" }
+    its('stdout.strip') { should cmp '90' }
   end
-
 end
-

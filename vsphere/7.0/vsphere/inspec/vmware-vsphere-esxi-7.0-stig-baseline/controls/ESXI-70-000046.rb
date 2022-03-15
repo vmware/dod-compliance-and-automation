@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000046' do
   title 'The ESXi host must configure NTP time synchronization.'
   desc  "To assure the accuracy of the system clock, it must be synchronized
@@ -31,7 +29,7 @@ following command:
 the service does not have a \"Policy\" of \"on\" or is stopped, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Time Configuration. Under \"Network Time Protocol\",
 click \"Edit...\". Ensure that the \"NTP Servers\" are authorized DoD time
@@ -66,19 +64,17 @@ Start-VMHostService
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'NTP Daemon'} | Select-Object -ExpandProperty Policy"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "on" }
+    its('stdout.strip') { should cmp 'on' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'NTP Daemon'} | Select-Object -ExpandProperty Running"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostNTPServer"
   describe powercli_command(command) do
-    its ('stdout.strip') { should match "#{input('ntpServer1')}" }
-    its ('stdout.strip') { should match "#{input('ntpServer2')}" }
+    its('stdout.strip') { should match "#{input('ntpServer1')}" }
+    its('stdout.strip') { should match "#{input('ntpServer2')}" }
   end
-
 end
-

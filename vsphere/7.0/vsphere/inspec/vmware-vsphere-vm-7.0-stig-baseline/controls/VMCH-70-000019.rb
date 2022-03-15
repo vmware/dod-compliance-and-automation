@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000019' do
   title "Access to virtual machines through the dvfilter network APIs must be
 controlled."
@@ -24,7 +22,7 @@ dvfilters are not in use, this is a finding.
     If the virtual machine advanced setting ethernet*.filter*.name exists and
 the value is not valid, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Look for settings with the format ethernet*.filter*.name. Ensure
@@ -59,9 +57,7 @@ environment.
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name ethernet*.filter*).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should be_empty }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should be_empty }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000053' do
   title "The Photon operating system must configure sshd with a specific
 ListenAddress."
@@ -15,7 +13,7 @@ behavior and could lead to offering remote access on an unapproved network."
     If the \"ListenAddress\" is not configured to the Photon management IP,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -45,8 +43,6 @@ local IP:
 
   photonIp = command("ip -br addr show eth0 |&awk '{print $3}' |&cut -d'/' -f1").stdout.strip
   describe command('sshd -T|&grep -i ListenAddress') do
-    its ('stdout.strip') { should match /listenaddress #{photonIp}/ }
+    its('stdout.strip') { should match /listenaddress #{photonIp}/ }
   end
-
 end
-

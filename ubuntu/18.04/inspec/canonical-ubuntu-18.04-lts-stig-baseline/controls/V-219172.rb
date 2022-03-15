@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219172' do
   title "The Ubuntu operating system must enforce password complexity by
 requiring that at least one upper-case character be used."
@@ -40,7 +38,7 @@ this is a finding.
   tag rid: 'SV-219172r508662_rule'
   tag stig_id: 'UBTU-18-010100'
   tag fix_id: 'F-20896r304845_fix'
-  tag cci: ['V-100571', 'SV-109675', 'CCI-000192']
+  tag cci: %w(V-100571 SV-109675 CCI-000192)
   tag nist: ['IA-5 (1) (a)']
 
   min_num_uppercase_char = input('min_num_uppercase_char')
@@ -52,10 +50,9 @@ this is a finding.
       its('ucredit') { should cmp min_num_uppercase_char }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

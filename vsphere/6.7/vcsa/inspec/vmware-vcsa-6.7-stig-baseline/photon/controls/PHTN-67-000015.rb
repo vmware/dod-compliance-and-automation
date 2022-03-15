@@ -1,4 +1,4 @@
-control "PHTN-67-000015" do
+control 'PHTN-67-000015' do
   title 'The Photon operating system audit log must have correct permissions.'
   desc  "Audit information includes all information (e.g., audit records, audit
 settings, audit reports) needed to successfully audit operating system activity.
@@ -20,7 +20,7 @@ in \"${audit_log_file%/*}\":\
     If the permissions on any audit log file is more permissive than 0600, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     #  chmod 0600 <audit log file>
@@ -41,6 +41,4 @@ is a finding.
   describe file(auditlog) do
     it { should_not be_more_permissive_than('0600') }
   end
-
 end
-

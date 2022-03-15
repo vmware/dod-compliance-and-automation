@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000007' do
   title 'vSphere UI log files must only be accessible by privileged users.'
   desc  "Log data is essential in the investigation of events. If log data were
@@ -22,7 +20,7 @@ configuration must be verified.
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command(s):
 
     # chmod 600 /storage/log/vmware/vsphere-ui/logs/<file>
@@ -40,13 +38,11 @@ configuration must be verified.
   tag cci: ['CCI-000162']
   tag nist: ['AU-9']
 
-  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |
+  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
     describe file(fname) do
       it { should_not be_more_permissive_than('0640') }
-      its('owner') {should eq 'vsphere-ui'}
-      its('group') {should eq 'users'}
+      its('owner') { should eq 'vsphere-ui' }
+      its('group') { should eq 'users' }
     end
   end
-
 end
-

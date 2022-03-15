@@ -1,4 +1,4 @@
-control "PHTN-67-000028" do
+control 'PHTN-67-000028' do
   title "The Photon operating system must be configured so that passwords for
 new users are restricted to a 90-day maximum lifetime."
   desc  "Any password, no matter how complex, can eventually be cracked.
@@ -14,7 +14,7 @@ compromised."
 
     If the value of PASS_MAX_DAYS is greater than 90, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/login.defs with a text editor.
 
     Modify the PASS_MAX_DAYS line to the following:
@@ -34,5 +34,4 @@ compromised."
   describe login_defs do
     its('PASS_MAX_DAYS') { should cmp '90' }
   end
-
 end

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000066' do
   title "The Photon operating system must remove all software components after
 updated versions have been installed."
@@ -19,7 +17,7 @@ software automatically from the information system."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/tdnf/tdnf.conf
@@ -40,8 +38,6 @@ following line is present:
   tag nist: ['SI-2 (6)']
 
   describe command('grep -i "^clean_requirements_on_remove" /etc/tdnf/tdnf.conf') do
-      its ('stdout.strip') { should cmp 'clean_requirements_on_remove=true' }
+    its('stdout.strip') { should cmp 'clean_requirements_on_remove=true' }
   end
-
 end
-

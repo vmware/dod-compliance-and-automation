@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219149' do
   title "The Ubuntu operating system must initiate session audits at system
 startup."
@@ -22,7 +20,7 @@ recovery nomodeset audit=1
 
     If any linux lines do not contain \"audit=1\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to produce audit records at system
 startup.
 
@@ -40,15 +38,14 @@ option.
   tag rid: 'SV-219149r508662_rule'
   tag stig_id: 'UBTU-18-010002'
   tag fix_id: 'F-20873r304776_fix'
-  tag cci: ['V-100523', 'SV-109627', 'CCI-001464']
+  tag cci: %w(V-100523 SV-109627 CCI-001464)
   tag nist: ['AU-14 (1)']
-  
+
   grub_entries = command('grep "^\s*linux" /boot/grub/grub.cfg').stdout.strip.split("\n").entries
 
   grub_entries.each do |entry|
     describe entry do
-      it { should include "audit=1" }
+      it { should include 'audit=1' }
     end
   end
 end
-

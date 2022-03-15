@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000069' do
   title "The vCenter Server must use a limited privilege account when adding an
 LDAP identity source."
@@ -20,7 +18,7 @@ highlight the item and click \"Edit\".
     If the account that is configured to bind to the LDAPS server is not one
 with minimal privileges, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Single Sign On >>
 Configuration >> Identity Provider.
 
@@ -40,9 +38,7 @@ password to one with read only rights to the base DN and complete the dialog.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

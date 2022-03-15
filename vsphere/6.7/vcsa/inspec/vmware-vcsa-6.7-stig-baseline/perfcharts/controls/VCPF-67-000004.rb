@@ -25,7 +25,7 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml.
 
@@ -42,17 +42,15 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000002'
-  tag satisfies: ['SRG-APP-000001-WSR-000002', 'SRG-APP-000439-WSR-000154']
+  tag satisfies: %w(SRG-APP-000001-WSR-000002 SRG-APP-000439-WSR-000154)
   tag gid: 'V-239405'
   tag rid: 'SV-239405r816582_rule'
   tag stig_id: 'VCPF-67-000004'
   tag fix_id: 'F-42597r816581_fix'
-  tag cci: ['CCI-000054', 'CCI-002418']
-  tag nist: ['AC-10', 'SC-8']
+  tag cci: %w(CCI-000054 CCI-002418)
+  tag nist: %w(AC-10 SC-8)
 
   describe xml("#{input('statswebXmlPath')}") do
     its(['/web-app/session-config/cookie-config/http-only']) { should cmp "#{input('cookieHttpOnly')}" }
   end
-  
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000027' do
   title 'Performance Charts must not enable support for TRACE requests.'
   desc  "\"Trace\" is a technique for a user to request internal information
@@ -21,7 +19,7 @@ responding to TRACE requests.
 
     If no line is returned, this is NOT a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
@@ -50,9 +48,7 @@ responding to TRACE requests.
     end
 
     describe xml("#{input('serverXmlPath')}") do
-      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp "false" }
+      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp 'false' }
     end
   end
-
 end
-

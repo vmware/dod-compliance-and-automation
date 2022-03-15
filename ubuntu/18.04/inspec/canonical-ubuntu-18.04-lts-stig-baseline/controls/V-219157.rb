@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219157' do
   title "The Ubuntu operating system must not have the Network Information
 Service (NIS) package installed."
@@ -16,7 +14,7 @@ on the Ubuntu operating system.
 
     If the NIS package is installed, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to disable non-essential capabilities
 by removing the Network Information Service (NIS) package from the system with
 the following command:
@@ -30,11 +28,10 @@ the following command:
   tag rid: 'SV-219157r508662_rule'
   tag stig_id: 'UBTU-18-010018'
   tag fix_id: 'F-20881r304800_fix'
-  tag cci: ['V-100539', 'SV-109643', 'CCI-000381']
+  tag cci: %w(V-100539 SV-109643 CCI-000381)
   tag nist: ['CM-7 a']
-  
+
   describe package('nis') do
     it { should_not be_installed }
   end
 end
-

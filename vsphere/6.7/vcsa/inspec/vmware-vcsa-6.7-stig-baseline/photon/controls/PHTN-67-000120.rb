@@ -1,4 +1,4 @@
-control "PHTN-67-000120" do
+control 'PHTN-67-000120' do
   title "The Photon operating system must protect all sysctl configuration
 files from unauthorized access."
   desc  "The sysctl configuration file specifies values for kernel parameters
@@ -13,7 +13,7 @@ have a negative effect on system security."
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands for each returned file:
 
     # chmod 600 <file>
@@ -30,8 +30,6 @@ have a negative effect on system security."
   tag nist: ['CM-6 b']
 
   describe command("find /etc/sysctl.conf /etc/sysctl.d/* -xdev -type f -a '(' -not -perm 600 -o -not -user root -o -not -group root ')' -exec ls -ld {} \;") do
-     its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

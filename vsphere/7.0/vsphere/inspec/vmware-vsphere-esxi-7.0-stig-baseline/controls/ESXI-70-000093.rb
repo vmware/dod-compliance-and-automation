@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000093' do
   title "The ESXi host must not be configured to override Virtual Machine
 logger settings."
@@ -20,7 +18,7 @@ ESXi setting cannot be easily queried, the ESXi configuration must not be used."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, run the following command(s):
 
     # \\cp /etc/vmware/config /etc/vmware/config.bak
@@ -38,9 +36,7 @@ ESXi setting cannot be easily queried, the ESXi configuration must not be used."
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

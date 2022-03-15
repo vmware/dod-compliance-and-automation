@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000009' do
   title 'Performance Charts must only run one webapp.'
   desc  "VMware ships Performance Charts on the VCSA with one webapp. Any other
@@ -37,8 +35,6 @@ command:
   tag nist: ['CM-5 (3)']
 
   describe command("ls -A '#{input('appPath')}'") do
-    its ('stdout.strip') { should eq 'statsreport' }
+    its('stdout.strip') { should eq 'statsreport' }
   end
-
 end
-

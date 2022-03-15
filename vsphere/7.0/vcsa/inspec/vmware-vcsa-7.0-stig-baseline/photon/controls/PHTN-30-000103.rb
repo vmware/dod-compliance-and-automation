@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000103' do
   title "The Photon operating system must log IPv4 packets with impossible
 addresses."
@@ -25,7 +23,7 @@ to be detected."
     Note: The number of \"ethx\" lines returned is dependant on the number of
 interfaces. Every \"ethx\" entry must be set to \"1\".
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # for SETTING in $(/sbin/sysctl -aN --pattern
@@ -54,6 +52,4 @@ interfaces. Every \"ethx\" entry must be set to \"1\".
   describe kernel_parameter('net.ipv4.conf.eth0.log_martians') do
     its('value') { should eq 1 }
   end
-
 end
-

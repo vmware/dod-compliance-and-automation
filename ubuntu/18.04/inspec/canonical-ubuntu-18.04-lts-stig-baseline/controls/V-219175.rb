@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219175' do
   title "The Ubuntu operating system must require the change of at least 8
 characters when passwords are changed."
@@ -31,7 +29,7 @@ characters when passwords are changed.
     If the \"difok\" parameter is less than \"8\", or is commented out, this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to require the change of at least 8
 characters when passwords are changed.
 
@@ -47,7 +45,7 @@ characters when passwords are changed.
   tag rid: 'SV-219175r508662_rule'
   tag stig_id: 'UBTU-18-010103'
   tag fix_id: 'F-20899r304854_fix'
-  tag cci: ['SV-109681', 'V-100577', 'CCI-000195']
+  tag cci: %w(SV-109681 V-100577 CCI-000195)
   tag nist: ['IA-5 (1) (b)']
 
   min_num_characters_to_change = input('min_num_characters_to_change')
@@ -59,10 +57,9 @@ characters when passwords are changed.
       its('difok') { should cmp min_num_characters_to_change }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

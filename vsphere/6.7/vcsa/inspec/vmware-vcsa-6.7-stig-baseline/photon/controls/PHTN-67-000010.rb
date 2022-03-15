@@ -1,4 +1,4 @@
-control "PHTN-67-000010" do
+control 'PHTN-67-000010' do
   title 'The Photon operating system must configure auditd to log to disk.'
   desc  "Without establishing what type of events occurred, it would be
 difficult to establish, correlate, and investigate the events leading up to an
@@ -21,7 +21,7 @@ also be logged locally.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/auditd.conf with a text editor.
 
     Ensure that the \"write_logs\" line is uncommented and set to the following:
@@ -35,26 +35,22 @@ also be logged locally.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000037-GPOS-00015'
-  tag satisfies: ['SRG-OS-000037-GPOS-00015', 'SRG-OS-000039-GPOS-00017',
-'SRG-OS-000040-GPOS-00018', 'SRG-OS-000041-GPOS-00019']
+  tag satisfies: %w(SRG-OS-000037-GPOS-00015 SRG-OS-000039-GPOS-00017
+SRG-OS-000040-GPOS-00018 SRG-OS-000041-GPOS-00019)
   tag gid: 'V-239082'
   tag rid: 'SV-239082r675054_rule'
   tag stig_id: 'PHTN-67-000010'
   tag fix_id: 'F-42252r675053_fix'
-  tag cci: ['CCI-000130', 'CCI-000132', 'CCI-000133', 'CCI-000134']
-  tag nist: ['AU-3', 'AU-3', 'AU-3', 'AU-3']
+  tag cci: %w(CCI-000130 CCI-000132 CCI-000133 CCI-000134)
+  tag nist: %w(AU-3 AU-3 AU-3 AU-3)
 
   describe.one do
-
     describe auditd_conf do
-      its("write_logs") { should eq nil }
+      its('write_logs') { should eq nil }
     end
 
     describe auditd_conf do
-      its("write_logs") { should cmp 'yes'}
+      its('write_logs') { should cmp 'yes' }
     end
-
   end
-
 end
-

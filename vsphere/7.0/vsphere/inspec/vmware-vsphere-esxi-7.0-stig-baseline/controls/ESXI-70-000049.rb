@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000049' do
   title "All management traffic on standard switches must be isolated from
 other traffic types."
@@ -35,7 +33,7 @@ management-related entities are located such as vCenter, this is a finding.
     If there are any other systems or devices such as virtual machines on the
 ESXi management segment, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> Networking >> VMkernel adapters. Select the Management VMkernel
 and click \"Edit...\". On the Port properties tab, uncheck all services except
@@ -60,29 +58,26 @@ dedicated to Management traffic. Click \"OK\".
   command = "Get-VMHost -Name #{input('vmhostName')} | Get-VMHostNetworkAdapter -VMKernel | Where-Object {$_.ManagementTrafficEnabled -eq \"True\"} | Select-Object -ExpandProperty DeviceName"
   vmks = powercli_command(command).stdout
 
-  vmks.split.each do | vmk |
-    #Check to see if Management and any other services are enabled on the same VMkernel adapter
+  vmks.split.each do |vmk|
+    # Check to see if Management and any other services are enabled on the same VMkernel adapter
     command2 = "Get-VMHost -Name #{input('vmhostName')} | Get-VMHostNetworkAdapter -Name #{vmk} | Where-Object {(($_.ManagementTrafficEnabled -eq \"True\" -and $_.FaultToleranceLoggingEnabled -eq \"True\") -xor ($_.VMotionEnabled -eq \"True\" -and $_.ManagementTrafficEnabled -eq \"True\") -xor ($_.ManagementTrafficEnabled -eq \"True\" -and $_.VsanTrafficEnabled -eq \"True\"))} | Select-Object -ExpandProperty DeviceName"
     describe powercli_command(command2) do
-      its ('stdout.strip') { should be_empty }
+      its('stdout.strip') { should be_empty }
     end
-    #Get Management Port Group Name
+    # Get Management Port Group Name
     command3 = "Get-VMHost -Name #{input('vmhostName')} | Get-VMHostNetworkAdapter -Name #{vmk} | Select-Object -ExpandProperty PortGroupName"
     pgname = powercli_command(command3).stdout.strip
-    #Test standard port groups
+    # Test standard port groups
     command4 = "Get-VMHost -Name #{input('vmhostName')} | Get-VirtualPortGroup -Name \"#{pgname}\" | Select-Object -ExpandProperty VlanId"
     stdpgs = powercli_command(command4).stdout.strip
-    if !stdpgs.empty?
-      describe "Checking standand port group VLAN ID" do
-        subject {stdpgs}
+    unless stdpgs.empty?
+      describe 'Checking standand port group VLAN ID' do
+        subject { stdpgs }
         it { should cmp "#{input('mgtVlanId')}" }
       end
     end
-    describe "SA Interview" do
-      skip "SA also needs to confirm this VLAN is dedicated to Management and not shared with VMs or other services."
+    describe 'SA Interview' do
+      skip 'SA also needs to confirm this VLAN is dedicated to Management and not shared with VMs or other services.'
     end
   end
-
-
 end
-

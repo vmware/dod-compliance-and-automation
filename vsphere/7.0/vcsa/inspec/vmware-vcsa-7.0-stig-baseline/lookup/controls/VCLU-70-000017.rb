@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000017' do
   title "Lookup Service directory tree must have permissions in an
 out-of-the-box state."
@@ -19,7 +17,7 @@ out-of-the-box."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command(s):
 
     # chmod o-w <file>
@@ -38,8 +36,6 @@ out-of-the-box."
   tag nist: ['SC-2']
 
   describe command("find '#{input('rootPath')}' /usr/lib/vmware-lookupsvc/conf -xdev -type f -a \'(\' -perm -o+w -o -not -user root -o -not -group root \')\' -exec ls -ld {} \;") do
-   its('stdout.strip') { should eq ''}
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

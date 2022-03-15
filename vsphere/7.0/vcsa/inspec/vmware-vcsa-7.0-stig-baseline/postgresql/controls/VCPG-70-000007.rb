@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000007' do
   title 'VMware Postgres must limit modify privileges to authorized accounts.'
   desc  "If VMware Postgres were to allow any user to make changes to database
@@ -33,7 +31,7 @@ configuration can lead to unauthorized or compromised installations.
     If the accounts other than \"postgres\",\"vc\", and \"vlcmuser\" have any
 \"Create\" privileges, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"REVOKE ALL
@@ -51,18 +49,16 @@ PRIVILEGES FROM <user>;\"
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  list = ["postgres","vc","vlcmuser"]
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
+  list = %w(postgres vc vlcmuser)
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = "SELECT usename FROM pg_catalog.pg_user WHERE usecreatedb = 't';"
 
   result = sql.query(sqlquery)
   users = result.lines
 
-  users.each do | user |
+  users.each do |user|
     describe user do
-      it {should be_in list}
+      it { should be_in list }
     end
   end
-
 end
-

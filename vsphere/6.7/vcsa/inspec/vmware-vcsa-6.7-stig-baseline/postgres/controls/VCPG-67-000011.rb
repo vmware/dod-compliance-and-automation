@@ -1,4 +1,4 @@
-control "VCPG-67-000011" do
+control 'VCPG-67-000011' do
   title 'VMware Postgres must be configured to use the correct port.'
   desc  "To prevent unauthorized connection of devices, unauthorized transfer
 of information, or unauthorized tunneling (i.e., embedding of data types within
@@ -36,7 +36,7 @@ components of the information system.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -48,7 +48,7 @@ pg_reload_conf();\"
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000142-DB-000094'
-  tag satisfies: ['SRG-APP-000142-DB-000094', 'SRG-APP-000383-DB-000364']
+  tag satisfies: %w(SRG-APP-000142-DB-000094 SRG-APP-000383-DB-000364)
   tag gid: 'V-239203'
   tag rid: 'SV-239203r678982_rule'
   tag stig_id: 'VCPG-67-000011'
@@ -56,12 +56,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-000382']
   tag nist: ['CM-7 b']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW port;"
-  
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW port;'
+
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_port')}" }
+    its('output') { should cmp "#{input('pg_port')}" }
   end
-
 end
-

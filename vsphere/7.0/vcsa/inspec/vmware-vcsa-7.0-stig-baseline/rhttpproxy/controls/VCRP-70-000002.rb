@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCRP-70-000002' do
   title 'Envoy must set a limit on established connections.'
   desc  "Envoy client connections must be limited in order to preserve system
@@ -28,7 +26,7 @@ consumed.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
     Locate the <config>/<envoy>/<L4Filter> block and configure
@@ -53,7 +51,6 @@ consumed.
   value = input('maxHttpsConnections')
 
   describe.one do
-
     describe xml("#{input('configXmlPath')}") do
       its(['/config/envoy/L4Filter/maxHttpsConnections']) { should cmp value }
     end
@@ -61,8 +58,5 @@ consumed.
     describe xml("#{input('configXmlPath')}") do
       its(['/config/envoy/L4Filter/maxHttpsConnections']) { should cmp [] }
     end
-
   end
-
 end
-

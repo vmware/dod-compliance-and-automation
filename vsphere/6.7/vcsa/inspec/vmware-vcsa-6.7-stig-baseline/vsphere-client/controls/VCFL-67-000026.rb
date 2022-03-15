@@ -1,4 +1,4 @@
-control "VCFL-67-000026" do
+control 'VCFL-67-000026' do
   title 'vSphere Client must have the debug option turned off.'
   desc  "Information needed by an attacker to begin looking for possible
 vulnerabilities in a web server includes any information about the web server
@@ -33,7 +33,7 @@ malicious user.
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml.
 
@@ -59,15 +59,12 @@ finding.
   tag nist: ['SI-11 a']
 
   describe.one do
-
     describe xml('/usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml') do
       its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should eq [] }
     end
 
     describe xml('/usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml') do
-      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
+      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp '0' }
     end
-
   end
-
 end

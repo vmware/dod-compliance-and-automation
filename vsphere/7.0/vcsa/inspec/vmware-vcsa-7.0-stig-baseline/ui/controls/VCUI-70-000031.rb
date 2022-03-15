@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000031' do
   title 'vSphere UI must disable the shutdown port.'
   desc  "An attacker has at least two reasons to stop a web server. The first
@@ -31,7 +29,7 @@ ensure availability, the shutdown port must be disabled.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-vsphere-ui/server/conf/server.xml
@@ -39,7 +37,7 @@ ensure availability, the shutdown port must be disabled.
     Make sure that the server port is disabled:
 
     <Server port=\"${shutdown.port}\" >
-    
+
     Restart the service with the following command:
 
     # vmon-cli --restart vsphere-ui
@@ -59,8 +57,6 @@ ensure availability, the shutdown port must be disabled.
   end
 
   describe json("#{input('svcJsonPath')}") do
-    its('StartCommandArgs') { should include "#{input('shutdownPort')}"}
+    its('StartCommandArgs') { should include "#{input('shutdownPort')}" }
   end
-
 end
-

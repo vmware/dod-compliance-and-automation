@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000009' do
   title 'The vCenter Server must implement Active Directory authentication.'
   desc  "The vCenter Server must ensure users are authenticated with an
@@ -16,7 +14,7 @@ Integrated Authentication or LDAP), this is a finding.
 
     If a federated identity provider is configured, this is not applicable.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client go to Administration >> Single Sign On >>
 Configuration >> Identity Provider >> Identity Sources. Click \"Add\".
 
@@ -37,9 +35,7 @@ Provider >> Active Directory Domain, before configuration.
   tag cci: 'CCI-000770'
   tag nist: ['IA-2 (5)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

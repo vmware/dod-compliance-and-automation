@@ -23,7 +23,7 @@ shell for the account to \"/bin/bash\".
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If the VAMI binaries have been modified from the default state when
 deployed as part of the VCSA, the system must be wiped and redeployed or
 restored from backup.
@@ -42,7 +42,6 @@ reinstalling RPMs or similar efforts.
   tag nist: ['CM-5 (3)']
 
   describe command('rpm -qa|grep lighttpd|xargs rpm -V') do
-    its ('stdout.strip') { should match "S.5....T.  c /opt/vmware/etc/lighttpd/lighttpd.conf"}
+    its('stdout.strip') { should match 'S.5....T.  c /opt/vmware/etc/lighttpd/lighttpd.conf' }
   end
-
 end

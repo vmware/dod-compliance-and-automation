@@ -1,4 +1,4 @@
-control "PHTN-67-000007" do
+control 'PHTN-67-000007' do
   title "The Photon operating system must have sshd authentication logging
 enabled."
   desc  "Automated monitoring of remote access sessions allows organizations to
@@ -20,7 +20,7 @@ their log aggregators to correlate forensic activities among multiple systems.
 
     If the command does not return any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/rsyslog.conf with a text editor and locate the following line:
 
     $IncludeConfig /etc/vmware-syslog/syslog.conf
@@ -51,8 +51,6 @@ commented out:
   tag nist: ['AC-17 (1)']
 
   describe command('grep "authpriv" /etc/rsyslog.conf') do
-    its ('stdout.strip') { should cmp 'authpriv.*   /var/log/audit/sshinfo.log' }
+    its('stdout.strip') { should cmp 'authpriv.*   /var/log/audit/sshinfo.log' }
   end
-
 end
-

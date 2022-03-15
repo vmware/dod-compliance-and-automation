@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000031' do
   title "The Photon operating system must require authentication upon booting
 into single-user and maintenance modes."
@@ -22,7 +20,7 @@ modifications to the boot menu.
     If the output does not begin with \"password_pbkdf2 root\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # grub2-mkpasswd-pbkdf2
@@ -113,8 +111,6 @@ $photon_cmdline coredump_filter=0x37 consoleblank=0
   tag nist: ['AC-3']
 
   describe command('grep -i ^password_pbkdf2 /boot/grub2/grub.cfg') do
-      its ('stdout.strip') { should match /.*password_pbkdf2 root.*/ }
+    its('stdout.strip') { should match /.*password_pbkdf2 root.*/ }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219339' do
   title "The Ubuntu operating system must disable automatic mounting of
 Universal Serial Bus (USB) mass storage driver."
@@ -31,7 +29,7 @@ device.
     If the command does not return any output, or the line is commented out,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to disable using the USB storage
 kernel module.
 
@@ -52,13 +50,12 @@ storage devices.
   tag rid: 'SV-219339r508662_rule'
   tag stig_id: 'UBTU-18-010509'
   tag fix_id: 'F-21063r305346_fix'
-  tag cci: ['V-100919', 'SV-110023', 'CCI-001958']
+  tag cci: %w(V-100919 SV-110023 CCI-001958)
   tag nist: ['IA-3']
 
-  #usb_storage instead of usb-storage https://github.com/inspec/inspec/issues/5190
+  # usb_storage instead of usb-storage https://github.com/inspec/inspec/issues/5190
   describe kernel_module('usb_storage') do
     it { should_not be_loaded }
     it { should be_disabled }
   end
 end
-

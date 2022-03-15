@@ -1,4 +1,4 @@
-control "ESXI-67-000045" do
+control 'ESXI-67-000045' do
   title "The ESXi host must enable a persistent log location for all locally
 stored logs."
   desc  "ESXi can be configured to store log files on an in-memory file system.
@@ -38,7 +38,7 @@ LocalLogOutput,LocalLogOutputIsPersistent
 
     If the \"LocalLogOutputIsPersistent\" value is not true, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -65,8 +65,6 @@ Set-AdvancedSetting -Value \"New Log Location\"
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.syslog.config.get.Invoke() | Select-Object -ExpandProperty LocalLogOutputIsPersistent"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000062' do
   title 'Use of the dvFilter network APIs must be restricted.'
   desc  "If you are not using products that make use of the dvfilter network
@@ -26,7 +24,7 @@ following command:
     If the \"Net.DVFilterBindIpAddress\" is not blank and security appliances
 are not in use on the host, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Click \"Edit\". Select the
 \"Net.DVFilterBindIpAddress\" value and remove any incorrect addresses.
@@ -51,8 +49,6 @@ Set-AdvancedSetting -Value \"\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Net.DVFilterBindIpAddress | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "" }
+    its('stdout.strip') { should cmp '' }
   end
-
 end
-

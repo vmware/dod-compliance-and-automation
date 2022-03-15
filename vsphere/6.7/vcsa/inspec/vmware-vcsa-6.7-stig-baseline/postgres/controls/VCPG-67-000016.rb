@@ -1,4 +1,4 @@
-control "VCPG-67-000016" do
+control 'VCPG-67-000016' do
   title "VMware Postgres must write log entries to disk prior to returning
 operation success or failure."
   desc  "Failure to a known secure state helps prevent a loss of
@@ -30,7 +30,7 @@ name,setting FROM pg_settings WHERE name IN
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -52,14 +52,12 @@ full_page_writes, synchronous_commit)
   tag cci: ['CCI-001665']
   tag nist: ['SC-24']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = "SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');"
-  
+
   describe sql.query(sqlquery) do
     its('output.strip') { should match /^fsync\|on$/ }
     its('output.strip') { should match /^full_page_writes\|on$/ }
     its('output.strip') { should match /^synchronous_commit\|on$/ }
   end
-
 end
-

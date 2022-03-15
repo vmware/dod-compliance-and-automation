@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000010' do
   title 'The Photon operating system must configure auditd to log to disk.'
   desc  "Without establishing what type of events occurred, it would be
@@ -23,7 +21,7 @@ also be logged locally.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/auditd.conf
@@ -48,16 +46,12 @@ also be logged locally.
   tag nist: ['AU-3']
 
   describe.one do
-
     describe auditd_conf do
-      its("write_logs") { should eq nil }
+      its('write_logs') { should eq nil }
     end
 
     describe auditd_conf do
-      its("write_logs") { should cmp 'yes'}
+      its('write_logs') { should cmp 'yes' }
     end
-
   end
-
 end
-

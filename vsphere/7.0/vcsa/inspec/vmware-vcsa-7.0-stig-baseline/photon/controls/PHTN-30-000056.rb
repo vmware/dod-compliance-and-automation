@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000056' do
   title "The Photon operating system must configure auditd to keep logging in
 the event max log file size is reached."
@@ -21,7 +19,7 @@ ISSO in the event of a central log processing failure."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/auditd.conf
@@ -46,8 +44,6 @@ finding.
   tag nist: ['AU-4']
 
   describe auditd_conf do
-    its("max_log_file_action") { should cmp 'IGNORE'}
+    its('max_log_file_action') { should cmp 'IGNORE' }
   end
-
 end
-

@@ -114,7 +114,7 @@ line and the newline characters have been replaced with \
   tag rid: 'SV-219167r508662_rule'
   tag stig_id: 'UBTU-18-010035'
   tag fix_id: 'F-20891r304830_fix'
-  tag cci: %w[V-100561 SV-109665 CCI-000050]
+  tag cci: %w(V-100561 SV-109665 CCI-000050)
   tag nist: ['AC-8 b']
 
   gnome_installed = (package('ubuntu-gnome-desktop').installed? || package('ubuntu-desktop').installed? || package('gdm3').installed?)

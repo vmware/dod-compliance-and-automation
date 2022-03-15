@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000081' do
   title "The Photon operating system must configure sshd to perform strict mode
 checking of home directory configuration files."
@@ -17,7 +15,7 @@ files, they may be able to log on to the system as another user."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -42,8 +40,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i StrictModes') do
-    its ('stdout.strip') { should cmp 'StrictModes yes' }
+    its('stdout.strip') { should cmp 'StrictModes yes' }
   end
-
 end
-

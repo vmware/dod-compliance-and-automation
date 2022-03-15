@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000008' do
   title "The Security Token Service application files must be verified for
 their integrity."
@@ -17,7 +15,7 @@ configuration files."
 
     If is any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Re-install the VCSA or roll back to a backup.
 
     Modifying the Security Token Service installation files manually is not
@@ -34,8 +32,6 @@ supported by VMware.
   tag nist: ['CM-5 (3)']
 
   describe command('rpm -V vmware-identity-sts|grep "^..5......"|grep -v -E "\.properties|\.xml"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

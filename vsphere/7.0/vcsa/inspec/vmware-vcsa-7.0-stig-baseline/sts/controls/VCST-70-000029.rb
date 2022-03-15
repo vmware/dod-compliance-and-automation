@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000029' do
   title 'The Security Token Service must disable the shutdown port.'
   desc  "An attacker has at least two reasons to stop a web server. The first
@@ -24,7 +22,7 @@ the shutdown port must be disabled.
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties
@@ -50,6 +48,4 @@ finding.
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['base.shutdown.port'] do
     it { should eq "#{input('shutdownPort')}" }
   end
-
 end
-

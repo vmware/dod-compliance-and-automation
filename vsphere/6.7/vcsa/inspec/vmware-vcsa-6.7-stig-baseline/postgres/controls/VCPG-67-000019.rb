@@ -1,4 +1,4 @@
-control "VCPG-67-000019" do
+control 'VCPG-67-000019' do
   title "VMware Postgres must provide non-privileged users with minimal error
 information."
   desc  "Any DBMS or associated application providing too much information in
@@ -25,7 +25,7 @@ client_min_messages;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -37,7 +37,7 @@ pg_reload_conf();\"
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-DB-000162'
-  tag satisfies: ['SRG-APP-000266-DB-000162', 'SRG-APP-000267-DB-000163']
+  tag satisfies: %w(SRG-APP-000266-DB-000162 SRG-APP-000267-DB-000163)
   tag gid: 'V-239211'
   tag rid: 'SV-239211r717062_rule'
   tag stig_id: 'VCPG-67-000019'
@@ -45,12 +45,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW client_min_messages;"
-  
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW client_min_messages;'
+
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_client_min_messages')}" }
+    its('output') { should cmp "#{input('pg_client_min_messages')}" }
   end
-
 end
-

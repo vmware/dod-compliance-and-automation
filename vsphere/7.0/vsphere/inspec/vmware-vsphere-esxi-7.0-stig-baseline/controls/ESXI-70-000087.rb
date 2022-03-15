@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000087' do
   title 'The ESXi host must enable volatile key destruction.'
   desc  "By default, pages allocated for virtual machines, userspace
@@ -56,8 +54,6 @@ Set-AdvancedSetting -Value \"1\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Mem.MemEagerZero | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "1" }
+    its('stdout.strip') { should cmp '1' }
   end
-
 end
-

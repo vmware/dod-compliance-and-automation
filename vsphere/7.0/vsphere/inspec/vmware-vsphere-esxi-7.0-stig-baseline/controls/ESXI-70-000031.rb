@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000031' do
   title "The ESXi host must be configured with a sufficiently complex password
 policy."
@@ -27,7 +25,7 @@ following command:
 \"similar=deny retry=3 min=disabled,disabled,disabled,disabled,15\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Click \"Edit\". Select the
 \"Security.PasswordQualityControl\" value and configure it to \"similar=deny
@@ -54,8 +52,6 @@ min=disabled,disabled,disabled,disabled,15\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Security.PasswordQualityControl | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should match "similar=deny retry=3 min=disabled,disabled,disabled,disabled,15" }
+    its('stdout.strip') { should match 'similar=deny retry=3 min=disabled,disabled,disabled,disabled,15' }
   end
-
 end
-

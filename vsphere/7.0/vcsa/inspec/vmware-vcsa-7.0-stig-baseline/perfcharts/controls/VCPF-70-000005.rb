@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000005' do
   title "Performance Charts must record user access in a format that enables
 monitoring of remote access."
@@ -31,7 +29,7 @@ sed '2 s/xmlns=\".*\"//g' |  xmllint --xpath
     If the output does not match the expected result, this is a finding.
 
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
@@ -59,6 +57,4 @@ replace the \"pattern\" element as follows:
   describe xml("#{input('serverXmlPath')}") do
     its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ["#{input('accessValvePattern')}"] }
   end
-
 end
-

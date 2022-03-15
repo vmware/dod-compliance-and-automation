@@ -1,4 +1,4 @@
-control "VCUI-67-000029" do
+control 'VCUI-67-000029' do
   title 'vSphere UI must disable the shutdown port.'
   desc  "An attacker has at least two reasons to stop a web server. The first
 is to cause a denial of service, and the second is to put in place changes the
@@ -26,7 +26,7 @@ port. To ensure availability, the shutdown port must be disabled."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml.
 
     Make sure that the server port is disabled:
@@ -48,7 +48,6 @@ port. To ensure availability, the shutdown port must be disabled."
   end
 
   describe json("#{input('svcJsonPath')}") do
-    its('StartCommandArgs') { should include "#{input('shutdownPort')}"}
+    its('StartCommandArgs') { should include "#{input('shutdownPort')}" }
   end
-
 end

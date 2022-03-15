@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000047' do
   title "The vCenter Server must require an administrator to unlock an account
 locked due to excessive login failures."
@@ -19,7 +17,7 @@ Configuration >> Local Accounts >> Lockout Policy.
     If this account lockout policy is not configured as stated, this is a
 finding.
   "
-  desc  'fix', "From the vSphere Client, go to Administration >> Single Sign On
+  desc 'fix', "From the vSphere Client, go to Administration >> Single Sign On
 >> Configuration >> Local Accounts >> Lockout Policy. Click \"Edit\". Set the
 Unlock time to \"0\" and click \"Save\"."
   impact 0.5
@@ -32,9 +30,7 @@ Unlock time to \"0\" and click \"Save\"."
   tag cci: 'CCI-002238'
   tag nist: ['AC-7 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

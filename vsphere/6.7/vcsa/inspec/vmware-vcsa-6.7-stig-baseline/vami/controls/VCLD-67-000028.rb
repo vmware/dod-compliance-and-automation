@@ -25,7 +25,7 @@ shell for the account to \"/bin/bash\".
 
     If the command returns any value, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Navigate to the \"mimetype.assign\" block.
@@ -59,7 +59,6 @@ for UTF-8 encoding, as follows:
   tag nist: ['SI-10']
 
   describe command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf|awk '/mimetype\\.assign/,/\\)/' | grep \"text/\" | grep -v 'charset=utf-8'") do
-      its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end

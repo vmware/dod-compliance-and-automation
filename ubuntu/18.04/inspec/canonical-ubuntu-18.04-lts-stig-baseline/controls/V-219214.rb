@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219214' do
   title "The Ubuntu operating system must generate audit records for the use
 and modification of faillog file."
@@ -30,7 +28,7 @@ is commented out, this is a finding.
     Note: The '-k' allows for specifying an arbitrary identifier and the string
 after it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful modifications to the \"faillog\" file occur.
 
@@ -50,13 +48,13 @@ file:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000064-GPOS-00033'
-  tag satisfies: ['SRG-OS-000064-GPOS-00033', 'SRG-OS-000470-GPOS-00214',
-'SRG-OS-000473-GPOS-00218']
+  tag satisfies: %w(SRG-OS-000064-GPOS-00033 SRG-OS-000470-GPOS-00214
+SRG-OS-000473-GPOS-00218)
   tag gid: 'V-219214'
   tag rid: 'SV-219214r508662_rule'
   tag stig_id: 'UBTU-18-010202'
   tag fix_id: 'F-20938r304971_fix'
-  tag cci: ['V-100655', 'SV-109759', 'CCI-000172']
+  tag cci: %w(V-100655 SV-109759 CCI-000172)
   tag nist: ['AU-12 c']
 
   @audit_file = '/var/log/faillog'
@@ -77,10 +75,9 @@ file:
       end
     end
   else
-    describe ('Audit line(s) for ' + @audit_file + ' exist') do
+    describe('Audit line(s) for ' + @audit_file + ' exist') do
       subject { audit_lines_exist }
       it { should be true }
     end
   end
 end
-

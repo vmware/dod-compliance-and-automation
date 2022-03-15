@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLD-70-000008' do
   title 'Rsyslog must be configured to monitor VAMI logs.'
   desc  "For performance reasons, rsyslog file monitoring is preferred over
@@ -19,7 +17,7 @@ must be verified and maintained.
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-syslog/vmware-services-applmgmt.conf
@@ -294,8 +292,6 @@ must be verified and maintained.
   tag nist: ['AU-9 (2)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-applmgmt.conf|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

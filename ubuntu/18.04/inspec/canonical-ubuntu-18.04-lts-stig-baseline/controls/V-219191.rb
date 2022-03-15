@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219191' do
   title "The Ubuntu operating system must configure the /var/log directory to
 have mode 0750 or less permissive."
@@ -28,7 +26,7 @@ with a mode of 750 or less permissive.
 
     If a value of \"750\" or less permissive is not returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to have permissions of 0750 for the
 /var/log directory by running the following command:
 
@@ -41,11 +39,10 @@ with a mode of 750 or less permissive.
   tag rid: 'SV-219191r508662_rule'
   tag stig_id: 'UBTU-18-010124'
   tag fix_id: 'F-20915r304902_fix'
-  tag cci: ['V-100609', 'SV-109713', 'CCI-001314']
+  tag cci: %w(V-100609 SV-109713 CCI-001314)
   tag nist: ['SI-11 b']
 
-  describe directory("/var/log") do
-    it { should_not be_more_permissive_than("0750") }
+  describe directory('/var/log') do
+    it { should_not be_more_permissive_than('0750') }
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000057' do
   title "The ESXi host must configure the firewall to block network traffic by
 default."
@@ -24,7 +22,7 @@ following command:
 
     If the Incoming or Outgoing policies are True, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, run the following command(s):
 
     # esxcli network firewall set --default-action=false
@@ -49,8 +47,6 @@ following command:
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostFirewallDefaultPolicy"
   describe powercli_command(command) do
-    its ('stdout.strip') { should_not match "True" }
+    its('stdout.strip') { should_not match 'True' }
   end
-
 end
-

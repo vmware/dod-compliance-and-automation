@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000003' do
   title 'The ESXi host must verify the exception users list for lockdown mode.'
   desc  "While a host is in lockdown mode (strict or normal), only users on the
@@ -33,7 +31,7 @@ way except under site specific circumstances.
     For environments that do not use vCenter server to manage ESXi, this is not
 applicable.
   "
-  desc  'fix', "From the vSphere Client go to Hosts and Clusters >> Select the
+  desc 'fix', "From the vSphere Client go to Hosts and Clusters >> Select the
 ESXi Host >> Configure >> System >> Security Profile. Under Lockdown Mode,
 click Edit and remove unnecessary users from the exceptions list."
   impact 0.3
@@ -48,8 +46,6 @@ click Edit and remove unnecessary users from the exceptions list."
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')} | Get-View; (Get-View $vmhost.ConfigManager.HostAccessManager).QueryLockdownExceptions()"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "#{input('exceptionUsers')}" }
+    its('stdout.strip') { should cmp "#{input('exceptionUsers')}" }
   end
-
 end
-

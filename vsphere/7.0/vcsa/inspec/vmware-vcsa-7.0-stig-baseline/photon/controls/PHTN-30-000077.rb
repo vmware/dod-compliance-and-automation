@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000077' do
   title "The Photon operating system must configure a secure umask for all
 shells."
@@ -23,7 +21,7 @@ information is not exposed to unprivileged users."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/profile.d/umask.sh
@@ -52,6 +50,4 @@ information is not exposed to unprivileged users."
     its('content') { should match 'umask 002' }
     its('content') { should match 'umask 027' }
   end
-
 end
-

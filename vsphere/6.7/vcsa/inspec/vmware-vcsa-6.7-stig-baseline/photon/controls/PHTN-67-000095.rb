@@ -1,4 +1,4 @@
-control "PHTN-67-000095" do
+control 'PHTN-67-000095' do
   title "The Photon operating system must be configured so that the x86
 Ctrl-Alt-Delete key sequence is disabled on the command line."
   desc  "When the Ctrl-Alt-Del target is enabled, a locally logged-on user who
@@ -20,7 +20,7 @@ unintentional reboot."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # systemctl mask ctrl-alt-del.target
@@ -36,9 +36,7 @@ unintentional reboot."
   tag nist: ['CM-6 b']
 
   describe systemd_service('ctrl-alt-del.target') do
-    it { should_not be_enabled}
-    it { should_not be_running}
+    it { should_not be_enabled }
+    it { should_not be_running }
   end
-
 end
-

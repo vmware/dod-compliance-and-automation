@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000076' do
   title 'The ESXi host must enable Secure Boot.'
   desc  "Secure Boot is a protocol of UEFI firmware that ensures the integrity
@@ -14,7 +12,7 @@ modules, drivers and VIBs be signed by VMware or a partner subordinate."
 
     If the output is not Enabled, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, run the following command(s):
 
     # /usr/lib/vmware/secureboot/bin/secureBoot.py -c
@@ -33,9 +31,7 @@ finding is downgraded to a CAT III.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

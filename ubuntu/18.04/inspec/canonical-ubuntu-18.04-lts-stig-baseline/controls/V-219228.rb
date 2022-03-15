@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219228' do
   title "The Ubuntu operating system must be configured so that audit log files
 cannot be read or write-accessible by unauthorized users."
@@ -34,7 +32,7 @@ audit log files have a mode of \"0600\" or less by using the following command:
     If the audit log files have a mode more permissive than \"0600\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit log files to have a mode of \"0600\" or less permissive.
 
     First determine where the audit logs are stored with the following command:
@@ -51,13 +49,13 @@ following command:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000058-GPOS-00028'
-  tag satisfies: ['SRG-OS-000058-GPOS-00028', 'SRG-OS-000057-GPOS-00027']
+  tag satisfies: %w(SRG-OS-000058-GPOS-00028 SRG-OS-000057-GPOS-00027)
   tag gid: 'V-219228'
   tag rid: 'SV-219228r508662_rule'
   tag stig_id: 'UBTU-18-010305'
   tag fix_id: 'F-20952r305013_fix'
-  tag cci: ['V-100683', 'SV-109787', 'CCI-000162', 'CCI-000163']
-  tag nist: ['AU-9', 'AU-9']
+  tag cci: %w(V-100683 SV-109787 CCI-000162 CCI-000163)
+  tag nist: %w(AU-9 AU-9)
 
   log_file = auditd_conf.log_file
 
@@ -67,10 +65,9 @@ following command:
       it { should_not be_more_permissive_than('0600') }
     end
   else
-    describe ('Audit log file ' + log_file + ' exists') do
+    describe('Audit log file ' + log_file + ' exists') do
       subject { log_file_exists }
       it { should be true }
     end
   end
 end
-

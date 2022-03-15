@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219319' do
   title "The Ubuntu operating system must accept Personal Identity Verification
 (PIV) credentials."
@@ -26,7 +24,7 @@ support for PKCS#15 compatible cards
 
     If the \"opensc-pcks11\" package is not installed, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to accept Personal Identity
 Verification (PIV) credentials.
 
@@ -41,11 +39,10 @@ Verification (PIV) credentials.
   tag rid: 'SV-219319r508662_rule'
   tag stig_id: 'UBTU-18-010432'
   tag fix_id: 'F-21043r305286_fix'
-  tag cci: ['SV-109965', 'V-100861', 'CCI-001953']
+  tag cci: %w(SV-109965 V-100861 CCI-001953)
   tag nist: ['IA-2 (12)']
 
   describe package('opensc-pkcs11') do
     it { should be_installed }
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000007' do
   title 'HGFS file transfers must be disabled on the virtual machine.'
   desc  "Setting isolation.tools.hgfsServerSet.disable to true disables
@@ -26,7 +24,7 @@ isolation.tools.hgfsServerSet.disable
 isolation.tools.hgfsServerSet.disable does not exist or is not set to true,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the isolation.tools.hgfsServerSet.disable value and set it
@@ -66,9 +64,7 @@ isolation.tools.hgfsServerSet.disable | Set-AdvancedSetting -Value true
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name isolation.tools.hgfsServerSet.disable).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should cmp 'true' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

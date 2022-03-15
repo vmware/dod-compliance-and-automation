@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000005' do
   title "VMware Postgres database must protect log files from unauthorized
 access and modification."
@@ -22,7 +20,7 @@ access. This includes read, write, copy, etc.
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, enter the following command:
 
     # chmod 600 <file>
@@ -48,20 +46,18 @@ pg_reload_conf();\"
   tag cci: ['CCI-000162']
   tag nist: ['AU-9']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW log_file_mode;"
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW log_file_mode;'
 
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_log_file_mode')}" }
+    its('output') { should cmp "#{input('pg_log_file_mode')}" }
   end
 
-  command("find '#{input('pg_log_dir')}'/* -xdev -type f").stdout.split.each do | fname |
+  command("find '#{input('pg_log_dir')}'/* -xdev -type f").stdout.split.each do |fname|
     describe file(fname) do
       its('mode') { should cmp '0600' }
-      its('owner') {should cmp 'vpostgres'}
-      its('group') {should cmp 'users'}
+      its('owner') { should cmp 'vpostgres' }
+      its('group') { should cmp 'users' }
     end
   end
-  
 end
-

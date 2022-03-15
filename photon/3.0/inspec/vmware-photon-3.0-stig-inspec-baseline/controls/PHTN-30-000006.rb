@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000006' do
   title "The Photon operating system must have the sshd SyslogFacility set to
 \"authpriv\"."
@@ -19,7 +17,7 @@ by auditing connection activities."
     If there is no output or if the output does not match expected result, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -44,8 +42,6 @@ following:
   tag nist: ['AC-17 (1)']
 
   describe command('sshd -T|&grep -i syslogfacility') do
-    its ('stdout.strip') { should cmp 'syslogfacility AUTHPRIV' }
+    its('stdout.strip') { should cmp 'syslogfacility AUTHPRIV' }
   end
-
 end
-

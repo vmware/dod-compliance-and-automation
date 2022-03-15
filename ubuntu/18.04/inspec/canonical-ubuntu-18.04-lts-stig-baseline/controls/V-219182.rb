@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219182' do
   title "The Ubuntu operating system must employ a FIPS 140-2 approved
 cryptographic hashing algorithms for all created and stored passwords."
@@ -31,7 +29,7 @@ a finding.
     If the output does not contain \"sha512\", or it is commented out, this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to encrypt all stored passwords with
 a strong cryptographic hash.
 
@@ -49,11 +47,10 @@ file to include the sha512 option for pam_unix.so:
   tag rid: 'SV-219182r508662_rule'
   tag stig_id: 'UBTU-18-010110'
   tag fix_id: 'F-20906r304875_fix'
-  tag cci: ['SV-109695', 'V-100591', 'CCI-000803']
+  tag cci: %w(SV-109695 V-100591 CCI-000803)
   tag nist: ['IA-7']
 
   describe login_defs do
     its('ENCRYPT_METHOD') { should eq 'SHA512' }
   end
 end
-

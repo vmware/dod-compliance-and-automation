@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000003' do
   title 'Performance Charts must limit the maximum size of a POST request.'
   desc  "The \"maxPostSize\" value is the maximum size in bytes of the POST
@@ -20,7 +18,7 @@ configured in it's shipping state to not set a value for \"maxPostSize\"."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
@@ -46,6 +44,4 @@ configured in it's shipping state to not set a value for \"maxPostSize\"."
   describe xml("#{input('serverXmlPath')}") do
     its('Server/Service/Connector/attribute::maxPostSize') { should eq [] }
   end
-
 end
-

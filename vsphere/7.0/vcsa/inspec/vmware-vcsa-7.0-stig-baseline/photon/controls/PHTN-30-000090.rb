@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000090' do
   title "The Photon operating system must be configured so that the /etc/skel
 default scripts are protected from unauthorized modification."
@@ -19,7 +17,7 @@ change user startup parameters and possibly jeopardize user files."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # chmod 750 /etc/skel/.bash_logout
@@ -40,22 +38,20 @@ change user startup parameters and possibly jeopardize user files."
   tag nist: ['CM-6 b']
 
   describe file('/etc/skel/.bash_logout') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0750' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0750' }
   end
 
   describe file('/etc/skel/.bash_profile') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0644' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0644' }
   end
 
   describe file('/etc/skel/.bashrc') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0750' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0750' }
   end
-
 end
-

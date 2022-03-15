@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000006' do
   title "The Security Token Service must generate log records during Java
 startup and shutdown."
@@ -33,7 +31,7 @@ java.util.logging.SimpleFormatter
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/logging.properties
@@ -99,6 +97,4 @@ java.util.logging.SimpleFormatter
   describe parse_config_file("#{input('loggingProperties')}").params['org.apache.catalina.startup.Catalina.handlers'] do
     it { should eq '1catalina.org.apache.juli.FileHandler' }
   end
-  
 end
-

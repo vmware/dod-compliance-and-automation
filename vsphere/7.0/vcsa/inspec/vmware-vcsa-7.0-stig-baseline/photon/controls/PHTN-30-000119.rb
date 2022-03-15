@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000119' do
   title "The Photon operating system must configure sshd to restrict
 AllowTcpForwarding."
@@ -17,7 +15,7 @@ feature is not appropriate for use on single purpose appliances."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -41,8 +39,7 @@ following:
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-    describe command('sshd -T|&grep -i allowtcpforwarding') do
-        its ('stdout.strip') { should cmp 'allowtcpforwarding no' }
-    end
-
+  describe command('sshd -T|&grep -i allowtcpforwarding') do
+    its('stdout.strip') { should cmp 'allowtcpforwarding no' }
+  end
 end

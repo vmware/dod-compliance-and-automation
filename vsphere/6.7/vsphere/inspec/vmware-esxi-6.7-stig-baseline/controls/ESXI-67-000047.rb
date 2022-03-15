@@ -1,4 +1,4 @@
-control "ESXI-67-000047" do
+control 'ESXI-67-000047' do
   title "The ESXi Image Profile and vSphere Installation Bundle (VIB)
 Acceptance Levels must be verified."
   desc  "Verify the ESXi Image Profile to only allow signed VIBs. An unsigned
@@ -34,7 +34,7 @@ following commands:
 
     If the acceptance level is \"CommunitySupported\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Security Profile.
 
@@ -60,19 +60,17 @@ sensitive.
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000366-VMM-001430'
-  tag satisfies: ['SRG-OS-000366-VMM-001430', 'SRG-OS-000370-VMM-001460',
-'SRG-OS-000404-VMM-001650']
+  tag satisfies: %w(SRG-OS-000366-VMM-001430 SRG-OS-000370-VMM-001460
+SRG-OS-000404-VMM-001650)
   tag gid: 'V-239302'
   tag rid: 'SV-239302r674835_rule'
   tag stig_id: 'ESXI-67-000047'
   tag fix_id: 'F-42494r674834_fix'
-  tag cci: ['CCI-001749', 'CCI-001774', 'CCI-002475']
+  tag cci: %w(CCI-001749 CCI-001774 CCI-002475)
   tag nist: ['CM-5 (3)', 'CM-7 (5) (b)', 'SC-28 (1)']
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.software.acceptance.get.Invoke()"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not cmp "CommunitySupported" }
+    its('stdout.strip') { should_not cmp 'CommunitySupported' }
   end
-
 end
-

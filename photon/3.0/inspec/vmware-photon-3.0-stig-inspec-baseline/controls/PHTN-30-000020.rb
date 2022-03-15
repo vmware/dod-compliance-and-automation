@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000020' do
   title "The Photon operating system must generate audit records when
 successful/unsuccessful attempts to access privileges occur."
@@ -31,10 +29,10 @@ chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremov
 
     If the output does not match the expected result, this is a finding.
 
-    Note: This check depends on the auditd service to be in a running state for 
+    Note: This check depends on the auditd service to be in a running state for
     accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/rules.d/audit.STIG.rules
@@ -57,8 +55,8 @@ rules.
 
     # /sbin/augenrules --load
 
-    Note: An older audit.STIG.rules may exist if the file exists and references 
-    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    Note: An older audit.STIG.rules may exist if the file exists and references
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary
     with an updated one.
   "
   impact 0.5
@@ -72,11 +70,9 @@ rules.
   tag nist: ['AU-12 c']
 
   describe auditd do
-    its("lines") { should include %r{-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=-1 -F key=perm_mod} }
-    its("lines") { should include %r{-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod} }
-    its("lines") { should include %r{-a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=-1 -F key=perm_mod} }
-    its("lines") { should include %r{-a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod} }
+    its('lines') { should include /-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=-1 -F key=perm_mod/ }
+    its('lines') { should include /-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod/ }
+    its('lines') { should include /-a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=-1 -F key=perm_mod/ }
+    its('lines') { should include /-a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod/ }
   end
-
 end
-

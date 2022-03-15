@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219185' do
   title "The Ubuntu operating system must require users to re-authenticate for
 privilege escalation and changing roles."
@@ -25,17 +23,17 @@ re-authenticate.
     If any occurrences of \"NOPASSWD\" or \"!authenticate\" return from the
 command, this is a finding.
   "
-  desc  'fix', "Remove any occurrence of \"NOPASSWD\" or \"!authenticate\"
+  desc 'fix', "Remove any occurrence of \"NOPASSWD\" or \"!authenticate\"
 found in \"/etc/sudoers\" file or files in the /etc/sudoers.d directory."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000373-GPOS-00156'
-  tag satisfies: ['SRG-OS-000373-GPOS-00156', 'SRG-OS-000373-GPOS-00157']
+  tag satisfies: %w(SRG-OS-000373-GPOS-00156 SRG-OS-000373-GPOS-00157)
   tag gid: 'V-219185'
   tag rid: 'SV-219185r508662_rule'
   tag stig_id: 'UBTU-18-010114'
   tag fix_id: 'F-20909r304884_fix'
-  tag cci: ['SV-109701', 'V-100597', 'CCI-002038']
+  tag cci: %w(SV-109701 V-100597 CCI-002038)
   tag nist: ['IA-11']
 
   desc 'fix', "Remove any occurrence of \"NOPASSWD\" or \"!authenticate\" found
@@ -45,4 +43,3 @@ found in \"/etc/sudoers\" file or files in the /etc/sudoers.d directory."
     its('stdout.strip') { should be_empty }
   end
 end
-

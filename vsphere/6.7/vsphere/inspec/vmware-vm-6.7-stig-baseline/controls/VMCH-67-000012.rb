@@ -1,4 +1,4 @@
-control "VMCH-67-000012" do
+control 'VMCH-67-000012' do
   title 'Unauthorized USB devices must be disconnected on the virtual machine.'
   desc  "Ensure that no device is connected to a virtual machine if it is not
 required. For example, floppy, serial and parallel ports are rarely used for
@@ -25,7 +25,7 @@ is a finding.
 console to a VM then the use of a USB controller and USB devices for that
 purpose is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client right-click the Virtual Machine and go to Edit
 Settings. Select the USB controller and click the circle-x to remove then OK.
 
@@ -52,6 +52,4 @@ server, run the following command:
   describe powercli_command(command).stdout do
     it { should_not match 'USB' }
   end
-
 end
-

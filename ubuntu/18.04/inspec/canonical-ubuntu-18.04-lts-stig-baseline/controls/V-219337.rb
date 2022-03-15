@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219337' do
   title "The Ubuntu operating system must enable and run the uncomplicated
 firewall(ufw)."
@@ -44,7 +42,7 @@ if another application firewall is installed.
 
     If no application firewall is installed this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Enable the Uncomplicated Firewall by using the following command:
 
     # sudo systemctl enable ufw.service
@@ -62,7 +60,7 @@ it with the following command:
   tag rid: 'SV-219337r508662_rule'
   tag stig_id: 'UBTU-18-010507'
   tag fix_id: 'F-21061r485707_fix'
-  tag cci: ['V-100897', 'SV-110001', 'CCI-000366', 'CCI-002314']
+  tag cci: %w(V-100897 SV-110001 CCI-000366 CCI-002314)
   tag nist: ['CM-6 b', 'AC-17 (1)']
 
   describe service('ufw') do
@@ -71,4 +69,3 @@ it with the following command:
     it { should be_running }
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219231' do
   title "The Ubuntu operating system must be configured so that the audit log
 directory is not write-accessible by unauthorized users."
@@ -35,7 +33,7 @@ directory has a mode of \"0750\" or less by using the following command:
     If the audit log directory has a mode more permissive than \"0750\", this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit log directory to have a mode of \"0750\" or less
 permissive.
 
@@ -57,7 +55,7 @@ following command:
   tag rid: 'SV-219231r508662_rule'
   tag stig_id: 'UBTU-18-010308'
   tag fix_id: 'F-20955r305022_fix'
-  tag cci: ['V-100689', 'SV-109793', 'CCI-000164']
+  tag cci: %w(V-100689 SV-109793 CCI-000164)
   tag nist: ['AU-9']
 
   log_file_path = input('log_file_path')
@@ -69,10 +67,9 @@ following command:
       it { should_not be_more_permissive_than('0750') }
     end
   else
-    describe ('Audit log file:' + log_file_path + ' and/or audit directory:' + log_dir + ' exist') do
+    describe('Audit log file:' + log_file_path + ' and/or audit directory:' + log_dir + ' exist') do
       subject { log_file_and_dir_exist }
       it { should be true }
     end
   end
 end
-

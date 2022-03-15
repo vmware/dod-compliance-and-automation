@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219237' do
   title "The Ubuntu operating system must allocate audit record storage
 capacity to store at least one weeks worth of audit records, when audit records
@@ -44,7 +42,7 @@ will be sufficient.
     If the audit record partition is not allocated for sufficient storage
 capacity, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Allocate enough storage capacity for at least one week's worth of audit
 records when audit records are not immediately sent to a central audit record
 storage facility.
@@ -72,7 +70,7 @@ must be located:
   tag rid: 'SV-219237r508662_rule'
   tag stig_id: 'UBTU-18-010314'
   tag fix_id: 'F-20961r305040_fix'
-  tag cci: ['SV-109805', 'V-100701', 'CCI-001849']
+  tag cci: %w(SV-109805 V-100701 CCI-001849)
   tag nist: ['AU-4']
 
   log_file_path = input('log_file_path')
@@ -81,13 +79,12 @@ must be located:
   log_file_size = file(log_file_path).size
   standard_audit_log_size = input('standard_audit_log_size')
 
-  describe ('Current audit log file size is less than the specified standard of ' + standard_audit_log_size.to_s) do
+  describe('Current audit log file size is less than the specified standard of ' + standard_audit_log_size.to_s) do
     subject { log_file_size.to_i }
     it { should be <= standard_audit_log_size }
   end
-  describe ('Available storage for audit log should be more than the defined standard of ' + standard_audit_log_size.to_s) do
+  describe('Available storage for audit log should be more than the defined standard of ' + standard_audit_log_size.to_s) do
     subject { available_storage.to_i }
     it { should be > standard_audit_log_size }
   end
 end
-

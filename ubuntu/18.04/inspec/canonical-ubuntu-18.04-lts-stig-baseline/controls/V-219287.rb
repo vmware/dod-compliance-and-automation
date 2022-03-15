@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219287' do
   title "The Ubuntu operating system must generate audit records when
 successful/unsuccessful use of unlink system call."
@@ -32,7 +30,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate audit events when
 successful/unsuccessful use of unlink system call.
 
@@ -60,18 +58,17 @@ required.
   tag rid: 'SV-219287r508662_rule'
   tag stig_id: 'UBTU-18-010375'
   tag fix_id: 'F-21011r305190_fix'
-  tag cci: ['SV-109901', 'V-100797', 'CCI-000172']
+  tag cci: %w(SV-109901 V-100797 CCI-000172)
   tag nist: ['AU-12 c']
 
-  if os.arch == "x86_64"
-    describe auditd.syscall("unlink").where { arch == "b64" } do
-      its("action.uniq") { should eq ["always"] }
-      its("list.uniq") { should eq ["exit"] }
+  if os.arch == 'x86_64'
+    describe auditd.syscall('unlink').where { arch == 'b64' } do
+      its('action.uniq') { should eq ['always'] }
+      its('list.uniq') { should eq ['exit'] }
     end
   end
-  describe auditd.syscall("unlink").where { arch == "b32" } do
-    its("action.uniq") { should eq ["always"] }
-    its("list.uniq") { should eq ["exit"] }
+  describe auditd.syscall('unlink').where { arch == 'b32' } do
+    its('action.uniq') { should eq ['always'] }
+    its('list.uniq') { should eq ['exit'] }
   end
 end
-

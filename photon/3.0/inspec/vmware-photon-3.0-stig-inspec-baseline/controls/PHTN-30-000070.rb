@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000070' do
   title "The Photon operating system auditd service must generate audit records
 for all account creations, modifications, disabling, and termination events."
@@ -20,10 +18,10 @@ information system (e.g., module or policy filter).
     If any of these are not listed with a permissions filter of at least \"w\",
 this is a finding.
 
-    Note: This check depends on the auditd service to be in a running state for 
+    Note: This check depends on the auditd service to be in a running state for
     accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/rules.d/audit.STIG.rules
@@ -36,8 +34,8 @@ this is a finding.
 
     # /sbin/augenrules --load
 
-    Note: An older audit.STIG.rules may exist if the file exists and references 
-    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    Note: An older audit.STIG.rules may exist if the file exists and references
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary
     with an updated one.
   "
   impact 0.5
@@ -51,8 +49,6 @@ this is a finding.
   tag nist: ['AU-12 c']
 
   describe auditd do
-    its("lines") { should include %r{-w /etc/security/opasswd -p wa -k opasswd} }
+    its('lines') { should include %r{-w /etc/security/opasswd -p wa -k opasswd} }
   end
-
 end
-

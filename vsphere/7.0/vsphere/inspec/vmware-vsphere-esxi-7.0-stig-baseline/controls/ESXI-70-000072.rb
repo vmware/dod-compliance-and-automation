@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000072' do
   title 'The ESXi host must have all security patches and updates installed.'
   desc  "Installing software updates is a fundamental mitigation against the
@@ -24,7 +22,7 @@ available on vmware.com.
 
     https://kb.vmware.com/s/article/2143832
   "
-  desc  'fix', "
+  desc 'fix', "
     ESXi can be patched in multiple ways and the fix text here does not cover
 all methods.
 
@@ -67,8 +65,6 @@ host for changes to take effect.
 
   command = "(Get-VMHost -Name #{input('vmhostName')}).ExtensionData.Config.Product.build"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "#{input('esxiBuildNumber')}" }
+    its('stdout.strip') { should cmp "#{input('esxiBuildNumber')}" }
   end
-
 end
-

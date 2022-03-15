@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000024' do
   title "The vCenter Server must configure the vpxuser password meets length
 policy."
@@ -26,7 +24,7 @@ config.vpxd.hostPasswordLength and verify it is set to 32.
     If the \"config.vpxd.hostPasswordLength\" is set to a value other than
 \"32, this is a finding. If the setting does not exist, this is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Host and Clusters >> Select a vCenter Server
 >> Configure >> Settings >> Advanced Settings. Click \"Edit Settings\" and
 configure the \"config.vpxd.hostPasswordLength\" value to \"32\".
@@ -50,10 +48,8 @@ config.vpxd.hostPasswordLength | Set-AdvancedSetting -Value 32
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command = "Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name config.vpxd.hostPasswordLength | Select-Object -ExpandProperty Value"
+  command = 'Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name config.vpxd.hostPasswordLength | Select-Object -ExpandProperty Value'
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "32" }
+    its('stdout.strip') { should cmp '32' }
   end
-
 end
-

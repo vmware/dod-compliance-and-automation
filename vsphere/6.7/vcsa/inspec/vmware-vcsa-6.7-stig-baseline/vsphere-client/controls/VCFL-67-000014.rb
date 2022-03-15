@@ -1,4 +1,4 @@
-control "VCFL-67-000014" do
+control 'VCFL-67-000014' do
   title 'vSphere Client must have mappings set for Java servlet pages.'
   desc  "Resource mapping is the process of tying a particular file type to a
 process in the web server that can serve that type of file to a requesting
@@ -33,7 +33,7 @@ mapped to servlets.
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml.
 
@@ -59,9 +59,8 @@ finding.
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
-  list = ["*.jsp", "*.jspx"]
+  list = ['*.jsp', '*.jspx']
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml') do
     its('/web-app/servlet-mapping[servlet-name="jsp"]/url-pattern') { should be_in list }
   end
-
 end

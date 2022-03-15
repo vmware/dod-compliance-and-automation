@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000065' do
   title "All port groups on standard switches must not be configured to VLAN
 values reserved by upstream physical switches."
@@ -29,7 +27,7 @@ following command:
 
     If any port group is configured with a reserved VLAN ID, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> Networking >> Virtual switches. For each port group on a standard
 switch that is configured to a reserved VLAN, click the '...' button next to
@@ -54,13 +52,11 @@ following command:
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  vlanlist= ["1001","1024","3968","4047","4094"]
+  vlanlist = %w(1001 1024 3968 4047 4094)
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualPortGroup | Select-Object -ExpandProperty VlanId"
   result = powercli_command(command).stdout.split("\r\n")
   describe result do
     it { should_not be_in vlanlist }
   end
-
 end
-

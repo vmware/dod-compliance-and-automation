@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000026' do
   title 'vSphere UI must not enable support for TRACE requests.'
   desc  "\"TRACE\" is a technique for a user to request internal information
@@ -18,7 +16,7 @@ disable responding to TRACE requests."
 
     If no line is returned, this is NOT a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-vsphere-ui/server/conf/server.xml
@@ -47,9 +45,7 @@ disable responding to TRACE requests."
     end
 
     describe xml("#{input('serverXmlPath')}") do
-      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp "false" }
+      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp 'false' }
     end
   end
-
 end
-

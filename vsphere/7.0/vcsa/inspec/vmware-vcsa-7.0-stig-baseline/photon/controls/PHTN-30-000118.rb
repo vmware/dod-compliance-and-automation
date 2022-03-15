@@ -14,7 +14,7 @@ is a password that is not changed as per policy requirements."
 
     If /etc/security/opasswd does not exist, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # touch /etc/security/opasswd
@@ -33,10 +33,8 @@ is a password that is not changed as per policy requirements."
 
   describe file('/etc/security/opasswd') do
     it { should exist }
-    its('owner') { should cmp 'root'}
-    its('group') { should cmp 'root'}
-    its('mode') { should cmp '0600'}
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0600' }
   end
-
 end
-

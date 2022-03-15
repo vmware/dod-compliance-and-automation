@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000002' do
   title "The Security Token Service must limit the number of concurrent
 connections permitted."
@@ -29,7 +27,7 @@ threads, additional threads will be created up to the value of the
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/server.xml
@@ -57,6 +55,4 @@ name=\"tomcatThreadPool\" namePrefix=\"tomcat-http--\" />
   describe xml("#{input('serverXmlPath')}") do
     its(['/Server/Service/Executor[@name="tomcatThreadPool"]/@maxThreads']) { should cmp "#{input('maxThreads')}" }
   end
-
 end
-

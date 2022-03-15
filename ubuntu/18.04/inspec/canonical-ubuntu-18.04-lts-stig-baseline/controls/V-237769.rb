@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-237769' do
   title "All local interactive user home directories must have mode 0750 or
 less permissive."
@@ -22,7 +20,7 @@ number of log files containing system logon information.
     If home directories referenced in \"/etc/passwd\" do not have a mode of
 \"0750\" or less permissive, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Change the mode of interactive user’s home directories to \"0750\". To
 change the mode of a local interactive user’s home directory, use the following
 command:
@@ -43,11 +41,10 @@ command:
   tag nist: ['CM-6 b']
 
   interactive_users = passwd.where { uid.to_i >= 1000 && shell !~ /nologin/ }
-  
+
   interactive_users.homes.each do |dir|
     describe directory(dir) do
-      it { should_not be_more_permissive_than("0750") }
+      it { should_not be_more_permissive_than('0750') }
     end
   end
 end
-

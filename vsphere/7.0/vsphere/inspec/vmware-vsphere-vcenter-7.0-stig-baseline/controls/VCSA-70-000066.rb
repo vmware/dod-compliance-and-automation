@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000066' do
   title "The vCenter Server must have new Key Encryption Keys (KEKs) re-issued
 at regular intervals for vSAN encrypted datastore(s)."
@@ -24,7 +22,7 @@ the SA and the ISSO.
 
     If vSAN encryption is not in use, this is not a finding.
   "
-  desc  'fix', "If vSAN encryption is in use, ensure that a regular re-key
+  desc 'fix', "If vSAN encryption is in use, ensure that a regular re-key
 procedure is in place."
   impact 0.3
   tag severity: 'low'
@@ -36,9 +34,7 @@ procedure is in place."
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000014' do
   title "Lookup Service must not have the Web Distributed Authoring (WebDAV)
 servlet installed."
@@ -22,7 +20,7 @@ Service does not configure WebDAV by default.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/web.xml
@@ -50,6 +48,4 @@ parent <servlet-mapping> block.
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="webdav"]') { should eq [] }
   end
-
 end
-

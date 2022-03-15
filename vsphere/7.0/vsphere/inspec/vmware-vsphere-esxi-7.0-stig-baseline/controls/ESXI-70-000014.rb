@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000014' do
   title 'The ESXi host SSH daemon must not permit root logins.'
   desc  "Permitting direct root login reduces auditable information about who
@@ -17,7 +15,7 @@ root's password."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, add or correct the following line in
 \"/etc/ssh/sshd_config\":
 
@@ -33,9 +31,7 @@ root's password."
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

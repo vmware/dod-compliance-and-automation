@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000009' do
   title "The ESXi host SSH daemon must be configured with the Department of
 Defense (DoD) login banner."
@@ -19,7 +17,7 @@ that does not provide easy attribution."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell,  add or correct the following line in
 \"/etc/ssh/sshd_config\":
 
@@ -35,9 +33,7 @@ that does not provide easy attribution."
   tag cci: 'CCI-000048'
   tag nist: ['AC-8 a']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

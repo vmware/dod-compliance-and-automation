@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000032' do
   title 'vSphere UI must set the secure flag for cookies.'
   desc  "The secure flag is an option that can be set by the application server
@@ -27,7 +25,7 @@ practice.
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-vsphere-ui/server/conf/web.xml
@@ -57,6 +55,4 @@ configure it as follows.
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/session-config/cookie-config/secure') { should cmp 'true' }
   end
-
 end
-

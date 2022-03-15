@@ -1,4 +1,4 @@
-control "ESXI-67-000076" do
+control 'ESXI-67-000076' do
   title 'The ESXi host must enable Secure Boot.'
   desc  "Secure Boot is a protocol of UEFI firmware that ensures the integrity
 of the boot process from hardware up through to the OS. Secure Boot for ESXi
@@ -14,7 +14,7 @@ command:
 
     If the output is not \"Enabled\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Temporarily enable SSH, connect to the ESXi host, and run the following
 command:
 
@@ -42,9 +42,7 @@ command to verify that Secure Boot is enabled:
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

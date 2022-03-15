@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219279' do
   title "The Ubuntu operating system must generate audit records for
 successful/unsuccessful uses of the finit_module syscall."
@@ -34,7 +32,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful use of the \"finit_module\" syscall.
 
@@ -62,9 +60,9 @@ required.
   tag rid: 'SV-219279r508662_rule'
   tag stig_id: 'UBTU-18-010356'
   tag fix_id: 'F-21003r305166_fix'
-  tag cci: ['SV-109885', 'V-100781', 'CCI-000172']
+  tag cci: %w(SV-109885 V-100781 CCI-000172)
   tag nist: ['AU-12 c']
-  
+
   if os.arch == 'x86_64'
     describe auditd.syscall('finit_module').where { arch == 'b64' } do
       its('action.uniq') { should eq ['always'] }
@@ -76,4 +74,3 @@ required.
     its('list.uniq') { should eq ['exit'] }
   end
 end
-

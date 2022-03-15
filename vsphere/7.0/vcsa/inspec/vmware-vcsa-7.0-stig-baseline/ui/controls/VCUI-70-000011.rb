@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000011' do
   title 'vSphere UI must be configured to limit access to internal packages.'
   desc  "The \"package.access\" entry in the catalina.properties file
@@ -26,7 +24,7 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,o
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties
@@ -51,8 +49,6 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,o
   tag nist: ['CM-7 a']
 
   describe command("grep 'package.access' '#{input('catalinaPropertiesPath')}'") do
-    its ('stdout.strip') { should eq "#{input('packageAccess')}" }
+    its('stdout.strip') { should eq "#{input('packageAccess')}" }
   end
-
 end
-

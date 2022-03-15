@@ -1,4 +1,4 @@
-control "ESXI-67-000033" do
+control 'ESXI-67-000033' do
   title "The password hashes stored on the ESXi host must have been generated
 using a FIPS 140-2 approved cryptographic hashing algorithm."
   desc  "Systems must employ cryptographic hashes for passwords using the SHA-2
@@ -13,7 +13,7 @@ the following command:
 
     If sha512 is not listed, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an SSH session connected to the ESXi host, or from the ESXi shell, add
 or correct the following line in “/etc/pam.d/passwd”:
 
@@ -32,8 +32,6 @@ shadow sha512 remember=5
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.software.vib.list.Invoke() | Where {$_.Name -eq '#{input('dodStigVibRootEnabled')}' -or $_.Name -eq '#{input('dodStigVibRootDisabled')}'}"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not cmp "" }
+    its('stdout.strip') { should_not cmp '' }
   end
-
 end
-

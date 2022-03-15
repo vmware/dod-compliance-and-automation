@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000014' do
   title "Performance Charts must not have the Web Distributed Authoring
 (WebDAV) servlet installed."
@@ -22,7 +20,7 @@ Performance Charts does not configure WebDAV by default.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml
@@ -47,6 +45,4 @@ parent <servlet> block.
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="webdav"]') { should eq [] }
   end
-
 end
-

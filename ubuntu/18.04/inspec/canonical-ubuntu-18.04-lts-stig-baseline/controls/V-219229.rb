@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219229' do
   title "The Ubuntu operating system must permit only authorized accounts
 ownership of the audit log files."
@@ -34,7 +32,7 @@ audit log files are owned by the \"root\" user by using the following command:
     If the audit log files are owned by an user other than \"root\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit log files to be owned by \"root\" user.
 
     First determine where the audit logs are stored with the following command:
@@ -50,13 +48,13 @@ audit log files to be owned by \"root\" user by using the following command:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000058-GPOS-00028'
-  tag satisfies: ['SRG-OS-000058-GPOS-00028', 'SRG-OS-000057-GPOS-00027']
+  tag satisfies: %w(SRG-OS-000058-GPOS-00028 SRG-OS-000057-GPOS-00027)
   tag gid: 'V-219229'
   tag rid: 'SV-219229r508662_rule'
   tag stig_id: 'UBTU-18-010306'
   tag fix_id: 'F-20953r305016_fix'
-  tag cci: ['V-100685', 'SV-109789', 'CCI-000162', 'CCI-000163']
-  tag nist: ['AU-9', 'AU-9']
+  tag cci: %w(V-100685 SV-109789 CCI-000162 CCI-000163)
+  tag nist: %w(AU-9 AU-9)
 
   log_file_path = auditd_conf.log_file
 
@@ -64,4 +62,3 @@ audit log files to be owned by \"root\" user by using the following command:
     its('owner') { should cmp 'root' }
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000065' do
   title "The vCenter Server must have Mutual CHAP configured for vSAN iSCSI
 targets."
@@ -21,7 +19,7 @@ Cluster >> Configure >> vSAN >> iSCSI Target Service.
     If the Authentication method is not set to \"CHAP_Mutual\" for any iSCSI
 target, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Host and Clusters >> Select a vSAN Enabled
 Cluster >> Configure >> vSAN >> iSCSI Target Service
 
@@ -39,9 +37,7 @@ outgoing users and secrets appropriately.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

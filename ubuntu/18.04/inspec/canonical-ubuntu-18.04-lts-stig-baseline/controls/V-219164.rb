@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219164' do
   title "The Ubuntu operating system must enforce a delay of at least 4 seconds
 between logon prompts following a failed logon attempt."
@@ -19,7 +17,7 @@ seconds between logon prompts with the following command:
 
     If the line is not present, or is commented out, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to enforce a delay of at least 4
 seconds between logon prompts following a failed logon attempt.
 
@@ -35,7 +33,7 @@ seconds between logon prompts following a failed logon attempt.
   tag rid: 'SV-219164r508662_rule'
   tag stig_id: 'UBTU-18-010031'
   tag fix_id: 'F-20888r304821_fix'
-  tag cci: ['SV-109659', 'V-100555', 'CCI-000366']
+  tag cci: %w(SV-109659 V-100555 CCI-000366)
   tag nist: ['CM-6 b']
 
   describe file('/etc/pam.d/common-auth') do
@@ -53,4 +51,3 @@ seconds between logon prompts following a failed logon attempt.
     end
   end
 end
-

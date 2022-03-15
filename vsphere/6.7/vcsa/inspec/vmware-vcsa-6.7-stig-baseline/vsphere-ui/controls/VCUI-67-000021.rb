@@ -1,4 +1,4 @@
-control "VCUI-67-000021" do
+control 'VCUI-67-000021' do
   title 'The vSphere UI must not show directory listings.'
   desc  "Enumeration techniques, such as URL parameter manipulation, rely on
 being able to obtain information about the web server's directory structure by
@@ -24,7 +24,7 @@ mitigating the vulnerability."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/web.xml.
 
     Set the <param-value> to \"false\" in all <param-name>listing</param-name>
@@ -48,15 +48,12 @@ nodes.
   tag nist: ['SI-11 a']
 
   describe.one do
-
     describe xml("#{input('webXmlPath')}") do
       its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should eq [] }
     end
 
     describe xml("#{input('webXmlPath')}") do
-      its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp "false" }
+      its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp 'false' }
     end
-
   end
-
 end

@@ -1,4 +1,4 @@
-control "ESXI-67-000040" do
+control 'ESXI-67-000040' do
   title "The ESXi host must use multifactor authentication for local DCUI
 access to privileged accounts."
   desc  "To ensure accountability and prevent unauthenticated access,
@@ -36,17 +36,16 @@ certificate authority certificates and click \"OK\".
   impact 0.3
   tag severity: 'low'
   tag gtitle: 'SRG-OS-000107-VMM-000530'
-  tag satisfies: ['SRG-OS-000107-VMM-000530', 'SRG-OS-000376-VMM-001520',
-'SRG-OS-000377-VMM-001530', 'SRG-OS-000403-VMM-001640']
+  tag satisfies: %w(SRG-OS-000107-VMM-000530 SRG-OS-000376-VMM-001520
+SRG-OS-000377-VMM-001530 SRG-OS-000403-VMM-001640)
   tag gid: 'V-239295'
   tag rid: 'SV-239295r816574_rule'
   tag stig_id: 'ESXI-67-000040'
   tag fix_id: 'F-42487r674813_fix'
-  tag cci: ['CCI-000767', 'CCI-001953', 'CCI-001954', 'CCI-002470']
+  tag cci: %w(CCI-000767 CCI-001953 CCI-001954 CCI-002470)
   tag nist: ['IA-2 (3)', 'IA-2 (12)', 'IA-2 (12)', 'SC-23 (5)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end

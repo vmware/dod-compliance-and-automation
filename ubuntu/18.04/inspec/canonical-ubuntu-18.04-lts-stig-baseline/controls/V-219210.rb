@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219210' do
   title "The Ubuntu operating system must enforce password complexity by
 requiring that at least one special character be used."
@@ -26,7 +24,7 @@ include: ~ ! @ # $ % ^ *.
     If the \"ocredit\" parameter is greater than \"-1\", or is commented out,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to enforce password complexity by
 requiring that at least one special character be used.
 
@@ -42,7 +40,7 @@ file to include the \"ocredit=-1\" parameter:
   tag rid: 'SV-219210r508662_rule'
   tag stig_id: 'UBTU-18-010145'
   tag fix_id: 'F-20934r304959_fix'
-  tag cci: ['V-100647', 'SV-109751', 'CCI-001619']
+  tag cci: %w(V-100647 SV-109751 CCI-001619)
   tag nist: ['IA-5 (1) (a)']
 
   min_num_special_char = input('min_num_special_char')
@@ -54,10 +52,9 @@ file to include the \"ocredit=-1\" parameter:
       its('ocredit') { should cmp min_num_special_char }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

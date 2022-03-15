@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000022' do
   title 'The Lookup Service must not show directory listings.'
   desc  "Enumeration techniques, such as URL parameter manipulation, rely on
@@ -30,7 +28,7 @@ have the default effect.
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/web.xml
@@ -60,16 +58,12 @@ nodes.
   tag nist: ['SI-11 a']
 
   describe.one do
-
     describe xml("#{input('webXmlPath')}") do
       its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should eq [] }
     end
 
     describe xml("#{input('webXmlPath')}") do
-      its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp "false" }
+      its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp 'false' }
     end
-
   end
-
 end
-

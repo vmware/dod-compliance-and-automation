@@ -1,4 +1,4 @@
-control "VCFL-67-000023" do
+control 'VCFL-67-000023' do
   title 'vSphere Client must not show directory listings.'
   desc  "Enumeration techniques, such as URL parameter manipulation, rely on
 being able to obtain information about the web server's directory structure by
@@ -25,7 +25,7 @@ mitigating the vulnerability."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml.
 
@@ -50,15 +50,12 @@ nodes.
   tag nist: ['SI-11 a']
 
   describe.one do
-
     describe xml('/usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml') do
       its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should eq [] }
     end
 
     describe xml('/usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml') do
-      its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp "false" }
+      its('/web-app/servlet/init-param[param-name="listings"]/param-value') { should cmp 'false' }
     end
-
   end
-
 end

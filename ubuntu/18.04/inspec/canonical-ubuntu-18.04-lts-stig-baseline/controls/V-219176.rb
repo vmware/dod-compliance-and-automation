@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219176' do
   title "The Ubuntu operating system must encrypt all stored passwords with a
 FIPS 140-2 approved cryptographic hashing algorithm."
@@ -20,7 +18,7 @@ following command:
 
     If \"ENCRYPT_METHOD\" does not equal SHA512 or greater, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to encrypt all stored passwords.
 
     Edit/Modify the following line in the \"/etc/login.defs\" file and set
@@ -35,11 +33,10 @@ following command:
   tag rid: 'SV-219176r508662_rule'
   tag stig_id: 'UBTU-18-010104'
   tag fix_id: 'F-20900r304857_fix'
-  tag cci: ['V-100579', 'SV-109683', 'CCI-000196']
+  tag cci: %w(V-100579 SV-109683 CCI-000196)
   tag nist: ['IA-5 (1) (c)']
 
   describe login_defs do
     its('ENCRYPT_METHOD') { should eq 'SHA512' }
   end
 end
-

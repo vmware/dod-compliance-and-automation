@@ -30,7 +30,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml.
@@ -46,24 +46,23 @@ prefix=\"localhost_access_log\" suffix=\".txt\" />
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000016-WSR-000005'
-  tag satisfies: ['SRG-APP-000016-WSR-000005', 'SRG-APP-000089-WSR-000047',
-'SRG-APP-000095-WSR-000056', 'SRG-APP-000096-WSR-000057',
-'SRG-APP-000097-WSR-000058', 'SRG-APP-000098-WSR-000059',
-'SRG-APP-000098-WSR-000060', 'SRG-APP-000099-WSR-000061',
-'SRG-APP-000100-WSR-000064', 'SRG-APP-000092-WSR-000055',
-'SRG-APP-000374-WSR-000172', 'SRG-APP-000375-WSR-000171']
+  tag satisfies: %w(SRG-APP-000016-WSR-000005 SRG-APP-000089-WSR-000047
+SRG-APP-000095-WSR-000056 SRG-APP-000096-WSR-000057
+SRG-APP-000097-WSR-000058 SRG-APP-000098-WSR-000059
+SRG-APP-000098-WSR-000060 SRG-APP-000099-WSR-000061
+SRG-APP-000100-WSR-000064 SRG-APP-000092-WSR-000055
+SRG-APP-000374-WSR-000172 SRG-APP-000375-WSR-000171)
   tag gid: 'V-239656'
   tag rid: 'SV-239656r816693_rule'
   tag stig_id: 'VCST-67-000005'
   tag fix_id: 'F-42848r816692_fix'
-  tag cci: ['CCI-000067', 'CCI-000130', 'CCI-000131', 'CCI-000132',
-'CCI-000133', 'CCI-000134', 'CCI-000169', 'CCI-001462', 'CCI-001464',
-'CCI-001487', 'CCI-001889', 'CCI-001890']
+  tag cci: %w(CCI-000067 CCI-000130 CCI-000131 CCI-000132
+CCI-000133 CCI-000134 CCI-000169 CCI-001462 CCI-001464
+CCI-001487 CCI-001889 CCI-001890)
   tag nist: ['AC-17 (1)', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-12 a',
 'AU-14 (2)', 'AU-14 (1)', 'AU-3', 'AU-8 b', 'AU-8 b']
 
   describe xml("#{input('serverXmlPath')}") do
     its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ["#{input('accessValvePattern')}"] }
   end
-
 end

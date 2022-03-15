@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000067' do
   title "The Photon operating system must generate audit records when the sudo
 command is used."
@@ -25,10 +23,10 @@ auid!=4294967295 -k privileged
 
     Note: The auid!= parameter may display as 4294967295 or -1 which are equivalent.
 
-    Note: This check depends on the auditd service to be in a running state for 
+    Note: This check depends on the auditd service to be in a running state for
     accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/rules.d/audit.STIG.rules
@@ -42,8 +40,8 @@ auid!=4294967295 -F key=privileged
 
     # /sbin/augenrules --load
 
-    Note: An older audit.STIG.rules may exist if the file exists and references 
-    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    Note: An older audit.STIG.rules may exist if the file exists and references
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary
     with an updated one.
   "
   impact 0.5
@@ -55,17 +53,13 @@ auid!=4294967295 -F key=privileged
   tag fix_id: nil
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']
-  
+
   describe.one do
-
     describe auditd do
-      its("lines") { should include %r{-a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
+      its('lines') { should include %r{-a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
     end
     describe auditd do
-      its("lines") { should include %r{-a always,exit -S all -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
+      its('lines') { should include %r{-a always,exit -S all -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
     end
-
   end
-
 end
-

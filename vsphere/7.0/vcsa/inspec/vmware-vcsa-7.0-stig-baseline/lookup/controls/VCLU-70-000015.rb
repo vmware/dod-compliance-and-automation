@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000015' do
   title 'Lookup Service must be configured with memory leak protection.'
   desc  "The Java Runtime environment can cause a memory leak or lock files
@@ -31,7 +29,7 @@ className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>
 finding.
 
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/server.xml
@@ -59,6 +57,4 @@ the <Server> node.
   describe xml("#{input('serverXmlPath')}") do
     its('Server/Listener/attribute::className') { should include "#{input('memLeakListener')}" }
   end
-
 end
-

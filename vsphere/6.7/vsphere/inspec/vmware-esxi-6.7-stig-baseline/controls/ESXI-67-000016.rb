@@ -1,4 +1,4 @@
-control "ESXI-67-000016" do
+control 'ESXI-67-000016' do
   title 'The ESXi host SSH daemon must not permit user environment settings.'
   desc  "SSH environment options potentially allow users to bypass access
 restriction in some configurations. Users must not be able to present
@@ -13,7 +13,7 @@ the following command:
     If there is no output or the output is not exactly \"PermitUserEnvironment
 no\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an SSH session connected to the ESXi host, or from the ESXi shell, add
 or correct the following line in \"/etc/ssh/sshd_config\":
 
@@ -31,8 +31,6 @@ or correct the following line in \"/etc/ssh/sshd_config\":
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.software.vib.list.Invoke() | Where {$_.Name -eq '#{input('dodStigVibRootEnabled')}' -or $_.Name -eq '#{input('dodStigVibRootDisabled')}'}"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not cmp "" }
+    its('stdout.strip') { should_not cmp '' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000065' do
   title "The Photon operating system must implement address space layout
 randomization (ASLR) to protect its memory from unauthorized code execution."
@@ -19,7 +17,7 @@ programming (ROP) techniques.
 
     If the value of \"randomize_va_space\" is not \"2\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/sysctl.d/50-security-hardening.conf
@@ -46,6 +44,4 @@ following:
   describe kernel_parameter('kernel.randomize_va_space') do
     its('value') { should eq 2 }
   end
-
 end
-

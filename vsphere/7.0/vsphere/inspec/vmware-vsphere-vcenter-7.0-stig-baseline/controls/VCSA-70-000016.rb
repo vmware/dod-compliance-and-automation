@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000016' do
   title "The vCenter Server must only send NetFlow traffic to authorized
 collectors."
@@ -41,7 +39,7 @@ Name,VirtualSwitch,@{N=\"NetFlowEnabled\";E={$_.Extensiondata.Config.defaultPort
     If NetFlow is configured and the collector IP is not known and documented,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     To remove collector IPs do the following:
 
     From the vSphere Client, go to Networking >> Select a distributed switch >>
@@ -99,27 +97,24 @@ the following commands:
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command = "Get-VDSwitch | Select -ExpandProperty Name"
+  command = 'Get-VDSwitch | Select -ExpandProperty Name'
   vdswitches = powercli_command(command).stdout.strip.split("\r\n")
 
   if vdswitches.empty?
-    describe "" do
-      skip "No distributed switches found to check."
+    describe '' do
+      skip 'No distributed switches found to check.'
     end
   end
 
-  if !vdswitches.empty?
-    vdswitches.each do | vds |
-        command = "(Get-VDSwitch -Name \"#{vds}\").ExtensionData.Config.IpfixConfig.CollectorIpAddress"
-        result = powercli_command(command).stdout.strip
-        if !result.empty?
-            describe "" do
-                subject {result}
-                it { should cmp "#{input('ipfixCollectorAddress')}" }
-            end
-        end
+  unless vdswitches.empty?
+    vdswitches.each do |vds|
+      command = "(Get-VDSwitch -Name \"#{vds}\").ExtensionData.Config.IpfixConfig.CollectorIpAddress"
+      result = powercli_command(command).stdout.strip
+      next if result.empty?
+      describe '' do
+        subject { result }
+        it { should cmp "#{input('ipfixCollectorAddress')}" }
+      end
     end
   end
-
 end
-

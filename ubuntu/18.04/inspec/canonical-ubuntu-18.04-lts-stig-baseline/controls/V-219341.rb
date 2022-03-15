@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219341' do
   title "The Ubuntu operating system must implement non-executable data to
 protect its memory from unauthorized code execution."
@@ -29,7 +27,7 @@ check the cpuinfo settings with the following command:
 
     If \"flags\" does not contain the \"nx\" flag, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to enable NX.
 
     If \"nx\" is not showing up in /proc/cpuinfo and the system's BIOS setup
@@ -42,13 +40,13 @@ configuration permits toggling the No Execution bit, then set it to \"enable\".
   tag rid: 'SV-219341r508662_rule'
   tag stig_id: 'UBTU-18-010513'
   tag fix_id: 'F-21065r305352_fix'
-  tag cci: ['SV-110007', 'V-100903', 'CCI-002824']
+  tag cci: %w(SV-110007 V-100903 CCI-002824)
   tag nist: ['SI-16']
 
   desc 'fix', 'The NX bit execute protection must be enabled in the system BIOS.'
 
   options = {
-    assignment_regex: /^\s*([^:]*?)\s*:\s*(.*?)\s*$/
+    assignment_regex: /^\s*([^:]*?)\s*:\s*(.*?)\s*$/,
   }
   describe.one do
     describe command('dmesg | grep NX').stdout.strip do
@@ -59,4 +57,3 @@ configuration permits toggling the No Execution bit, then set it to \"enable\".
     end
   end
 end
-

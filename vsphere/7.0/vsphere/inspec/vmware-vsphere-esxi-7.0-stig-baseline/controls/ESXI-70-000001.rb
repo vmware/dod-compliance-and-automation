@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000001' do
   title 'Access to the ESXi host must be limited by enabling Lockdown Mode.'
   desc  "Enabling lockdown mode disables direct access to an ESXi host
@@ -28,7 +26,7 @@ Name,@{N=\"Lockdown\";E={$_.Extensiondata.Config.LockdownMode}}
     For environments that do not use vCenter server to manage ESXi, this is not
 applicable.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Security Profile >> Lockdown Mode. Click \"Edit...\".
 Select the \"Normal\" or \"Strict\" radio buttons.
@@ -57,11 +55,9 @@ available, the ESXi host becomes inaccessible.
   tag cci: 'CCI-000054'
   tag nist: ['AC-10']
 
-  list = ["lockdownNormal","lockdownStrict"]
+  list = %w(lockdownNormal lockdownStrict)
   command = "(Get-VMHost -Name #{input('vmhostName')}).Extensiondata.Config.LockdownMode"
   describe powercli_command(command) do
-    its ('stdout.strip') { should be_in list }
+    its('stdout.strip') { should be_in list }
   end
-
 end
-

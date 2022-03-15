@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000062' do
   title 'The vCenter Server must enable Login banner for vSphere Client.'
   desc  "The required legal notice must be configured for the vCenter web
@@ -35,7 +33,7 @@ by attorneys, psychotherapists, or clergy, and their assistants. Such
 communications and work product are private and confidential. See User
 Agreement for details.\"
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Single Sign On >>
 Configuration >> Login Message. Click \"Edit\". Click the \"Show login
 message\" slider to enable. Configure the \"Login message\" to \"DoD User
@@ -53,9 +51,7 @@ of login message\" to the standard DoD User Agreement text. Click \"Save\".
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

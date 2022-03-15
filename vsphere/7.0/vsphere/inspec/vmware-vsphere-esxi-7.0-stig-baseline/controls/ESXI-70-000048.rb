@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000048' do
   title "The ESXi host must protect the confidentiality and integrity of
 transmitted information by isolating vMotion traffic."
@@ -28,7 +26,7 @@ systems other than ESXi hosts, this is a finding.
     For environments that do not use vCenter server to manage ESXi, this is not
 applicable.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configuration of the vMotion VMkernel will be unique to each environment.
 As an example, to modify the IP address and VLAN information to the correct
 network on a distributed switch do the following:
@@ -52,35 +50,33 @@ dedicated to vMotion traffic exclusively.
   vmks = powercli_command(command).stdout
 
   if vmks.empty?
-    describe "" do
-      skip "There are no VMKernel adapters with vMotion enabled so this control is N/A."
+    describe '' do
+      skip 'There are no VMKernel adapters with vMotion enabled so this control is N/A.'
     end
   end
 
-  if !vmks.empty?
-    vmks.split.each do | vmk |
-      #Check to see if vMotion and any other services are enabled on the same VMkernel adapter
+  unless vmks.empty?
+    vmks.split.each do |vmk|
+      # Check to see if vMotion and any other services are enabled on the same VMkernel adapter
       command2 = "Get-VMHost -Name #{input('vmhostName')} | Get-VMHostNetworkAdapter -Name #{vmk} | Where-Object {(($_.VMotionEnabled -eq \"True\" -and $_.FaultToleranceLoggingEnabled -eq \"True\") -xor ($_.VMotionEnabled -eq \"True\" -and $_.ManagementTrafficEnabled -eq \"True\") -xor ($_.VMotionEnabled -eq \"True\" -and $_.VsanTrafficEnabled -eq \"True\"))} | Select-Object -ExpandProperty DeviceName"
       describe powercli_command(command2) do
-        its ('stdout.strip') { should be_empty }
+        its('stdout.strip') { should be_empty }
       end
-      #Get vMotion Port Group Name
+      # Get vMotion Port Group Name
       command3 = "Get-VMHost -Name #{input('vmhostName')} | Get-VMHostNetworkAdapter -Name #{vmk} | Select-Object -ExpandProperty PortGroupName"
       pgname = powercli_command(command3).stdout.strip
-      #Test standard port groups
+      # Test standard port groups
       command4 = "Get-VMHost -Name #{input('vmhostName')} | Get-VirtualPortGroup -Name \"#{pgname}\" | Select-Object -ExpandProperty VlanId"
       stdpgs = powercli_command(command4).stdout.strip
-      if !stdpgs.empty?
-        describe "Checking standand port group VLAN ID" do
-          subject {stdpgs}
+      unless stdpgs.empty?
+        describe 'Checking standand port group VLAN ID' do
+          subject { stdpgs }
           it { should cmp "#{input('vMotionVlanId')}" }
         end
       end
-      describe "SA Interview" do
-        skip "SA also needs to confirm this VLAN is dedicated to vMotion and not routable except to other ESXi hosts."
+      describe 'SA Interview' do
+        skip 'SA also needs to confirm this VLAN is dedicated to vMotion and not routable except to other ESXi hosts.'
       end
     end
   end
-
 end
-

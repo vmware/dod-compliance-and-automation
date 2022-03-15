@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000074' do
   title 'The vCenter server configuration must be backed up on a regular basis.'
   desc  "vCenter server is the control plane for the vSphere infrastructure and
@@ -36,7 +34,7 @@ backup system, this is a finding.
     If the backup configuration is not set to a proper, reachable location or
 if the schedule is anything less frequent than \"Daily\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Option 1: Implement and document a VMware-supported storage/image-based
 backup schedule.
 
@@ -60,9 +58,7 @@ recommended but not required. Click \"Create\".
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

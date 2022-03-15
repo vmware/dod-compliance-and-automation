@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000024' do
   title 'vSphere UI must be configured to hide the server version.'
   desc  "Web servers will often display error messages to client users with
@@ -26,7 +24,7 @@ the server version at all times.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-vsphere-ui/server/conf/server.xml
@@ -52,18 +50,16 @@ the server version at all times.
   begin
     xmlconf = xml("#{input('serverXmlPath')}")
 
-      if xmlconf['Server/Service/Connector/attribute::server'].is_a?(Array)
-        xmlconf['Server/Service/Connector/attribute::server'].each do |x|
-          describe x do
-            it { should eq "#{input('server')}" }
-          end
-        end
-      else
-        describe xml(xmlconf['Server/Service/Connector/attribute::server']) do
+    if xmlconf['Server/Service/Connector/attribute::server'].is_a?(Array)
+      xmlconf['Server/Service/Connector/attribute::server'].each do |x|
+        describe x do
           it { should eq "#{input('server')}" }
         end
       end
+    else
+      describe xml(xmlconf['Server/Service/Connector/attribute::server']) do
+        it { should eq "#{input('server')}" }
+      end
+    end
   end
-
 end
-

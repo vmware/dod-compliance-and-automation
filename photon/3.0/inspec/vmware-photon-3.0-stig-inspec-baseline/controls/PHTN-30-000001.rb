@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000001' do
   title 'The Photon operating system must audit all account creations.'
   desc  "Once an attacker establishes access to a system, the attacker often
@@ -20,10 +18,10 @@ creation actions provides logging that can be used for forensic purposes."
     If either useradd or groupadd are not listed with a permissions filter of
 at least 'x', this is a finding.
 
-    Note: This check depends on the auditd service to be in a running state for 
+    Note: This check depends on the auditd service to be in a running state for
     accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/rules.d/audit.STIG.rules
@@ -38,8 +36,8 @@ rules:
 
     # /sbin/augenrules --load
 
-    Note: An older audit.STIG.rules may exist if the file exists and references 
-    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    Note: An older audit.STIG.rules may exist if the file exists and references
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary
     with an updated one.
   "
   impact 0.5
@@ -53,9 +51,7 @@ rules:
   tag nist: ['AC-2 (4)']
 
   describe auditd do
-    its("lines") { should include %r{-w /usr/sbin/useradd -p x -k useradd} }
-    its("lines") { should include %r{-w /usr/sbin/groupadd -p x -k groupadd} }
+    its('lines') { should include %r{-w /usr/sbin/useradd -p x -k useradd} }
+    its('lines') { should include %r{-w /usr/sbin/groupadd -p x -k groupadd} }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000104' do
   title "The Photon operating system must use a reverse-path filter for IPv4
 network traffic."
@@ -25,7 +23,7 @@ networks but is helpful for end hosts and routers serving small networks."
     Note: The number of \"ethx\" lines returned is dependant on the number of
 interfaces. Every \"ethx\" entry must be set to \"1\".
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # for SETTING in $(/sbin/sysctl -aN --pattern
@@ -54,6 +52,4 @@ interfaces. Every \"ethx\" entry must be set to \"1\".
   describe kernel_parameter('net.ipv4.conf.eth0.rp_filter') do
     its('value') { should eq 1 }
   end
-
 end
-

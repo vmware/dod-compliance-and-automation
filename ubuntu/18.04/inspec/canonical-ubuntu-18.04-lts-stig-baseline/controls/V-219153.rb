@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219153' do
   title "The Ubuntu operating system audit event multiplexor must be configured
 to off-load audit logs onto a different system in real time, if the system is
@@ -41,7 +39,7 @@ different system:
     If the remote_server parameter is not set or is set with a local address,
 or is set with invalid address, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit event multiplexor to off-load audit records to a
 different system or storage media from the system being audited.
 
@@ -75,11 +73,11 @@ receiving the audit log.
   tag rid: 'SV-219153r508662_rule'
   tag stig_id: 'UBTU-18-010007'
   tag fix_id: 'F-20877r304788_fix'
-  tag cci: ['SV-109635', 'V-100531', 'CCI-001851']
+  tag cci: %w(SV-109635 V-100531 CCI-001851)
   tag nist: ['AU-4 (1)']
   config_file = '/etc/audisp/plugins.d/au-remote.conf'
   config_file_exists = file(config_file).exist?
-  audit_sp_remote_server= input("audit_sp_remote_server")
+  audit_sp_remote_server = input('audit_sp_remote_server')
 
   describe package('audispd-plugins') do
     it { should be_installed }
@@ -91,10 +89,9 @@ receiving the audit log.
       its('remote_server') { should cmp audit_sp_remote_server }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

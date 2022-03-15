@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000079' do
   title "vCenter Native Key Providers must be backed up with a strong
 passsword."
@@ -20,7 +18,7 @@ taken of the Native Key Provider.
     If backups exist for the Native Key Provider that are not password
 protected, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Host and Clusters >> Select a vCenter Server
 >> Configure >> Settings >> Key Providers. Select the Native Key Provider and
 click \"Back-up\" and check the box \"Protect Native Key Provider data with
@@ -38,9 +36,7 @@ password\" then provide a strong password and click \"Back up key provider\".
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

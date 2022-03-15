@@ -1,4 +1,4 @@
-control "PHTN-67-000059" do
+control 'PHTN-67-000059' do
   title "The Photon operating system must configure a cron job to rotate auditd
 logs daily."
   desc  "Audit logs are most useful when accessible by date, rather than size.
@@ -20,7 +20,7 @@ ISSO in the event of a central log processing failure."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If /etc/cron.daily/audit-rotate does not exist, run the following commands:
 
     # touch /etc/cron.daily/audit-rotate
@@ -47,8 +47,6 @@ finding.
   describe file('/etc/cron.daily/audit-rotate') do
     it { should exist }
     its('content') { should match %r{#!/bin/bash} }
-    its('content') { should match %r{service auditd rotate} }
+    its('content') { should match /service auditd rotate/ }
   end
-
 end
-

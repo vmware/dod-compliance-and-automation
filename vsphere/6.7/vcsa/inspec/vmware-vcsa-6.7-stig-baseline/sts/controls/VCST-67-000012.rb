@@ -17,7 +17,7 @@ malicious users tricking the server into executing shell command files."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Open /usr/lib/vmware-sso/vmware-sts/conf/web.xml in a text editor.
@@ -42,7 +42,6 @@ malicious users tricking the server into executing shell command files."
   tag nist: ['CM-7 a']
 
   describe command("grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' '#{input('webXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

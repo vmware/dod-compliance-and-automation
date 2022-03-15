@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCRP-70-000007' do
   title "Envoy (rhttpproxy) log files must be shipped via syslog to a central
 log server."
@@ -23,7 +21,7 @@ is present and unmodified.
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-syslog/vmware-services-rhttpproxy.conf ,
 creating the file if it does not exist.
 
@@ -47,8 +45,6 @@ creating the file if it does not exist.
   tag nist: ['AU-4 (1)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-rhttpproxy.conf|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

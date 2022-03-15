@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000010' do
   title "Lookup Service must not be configured with the UserDatabaseRealm
 enabled."
@@ -17,7 +15,7 @@ confirmed."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/server.xml
@@ -39,8 +37,6 @@ confirmed."
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabaseRealm '#{input('serverXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

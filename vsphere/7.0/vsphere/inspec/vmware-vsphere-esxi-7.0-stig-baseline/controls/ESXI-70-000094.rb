@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000094' do
   title 'The ESXi host must require TPM-based configuration encryption.'
   desc  "An ESXi host's configuration consists of configuration files for each
@@ -45,7 +43,7 @@ following command(s):
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Ensure that the TPM 2.0 chip is enabled in the BIOS and that the ESX UI
 does not show any errors about a present but unavailable TPM. This setting
 cannot be configured until the TPM is properly enabled in the BIOS.
@@ -76,12 +74,10 @@ following command(s):
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  if "#{input('tpmEnabled')}" == "true" 
+  if "#{input('tpmEnabled')}" == 'true'
     command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.settings.encryption.get.invoke() | Select-Object -ExpandProperty Mode"
     describe powercli_command(command) do
-      its ('stdout.strip') { should cmp "TPM" }
+      its('stdout.strip') { should cmp 'TPM' }
     end
   end
-
 end
-

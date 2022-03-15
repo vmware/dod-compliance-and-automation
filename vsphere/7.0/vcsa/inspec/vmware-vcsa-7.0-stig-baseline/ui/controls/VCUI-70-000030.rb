@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCUI-70-000030' do
   title 'vSphere UI must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
@@ -21,7 +19,7 @@ accurate to their shipping state."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-vsphere-ui/server/conf/catalina.properties
@@ -55,6 +53,4 @@ configuration as follows:
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['proxy.port'] do
     it { should eq "#{input('catalinaproxyPort')}" }
   end
-
 end
-

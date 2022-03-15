@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000079' do
   title "The Photon operating system must configure sshd to disable environment
 processing."
@@ -17,7 +15,7 @@ restrictions in some configurations and must therefore be disabled."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -42,8 +40,6 @@ the following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i PermitUserEnvironment') do
-    its ('stdout.strip') { should cmp 'PermitUserEnvironment no' }
+    its('stdout.strip') { should cmp 'PermitUserEnvironment no' }
   end
-
 end
-

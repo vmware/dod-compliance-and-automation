@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000030' do
   title 'Lookup Service must disable the shutdown port.'
   desc  "An attacker has at least two reasons to stop a web server. The first
@@ -19,7 +17,7 @@ this port. To ensure availability, the shutdown port must be disabled."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/server.xml
@@ -45,6 +43,4 @@ this port. To ensure availability, the shutdown port must be disabled."
   describe xml("#{input('serverXmlPath')}") do
     its(['/Server/@port']) { should cmp "#{input('shutdownPortVariable')}" }
   end
-
 end
-

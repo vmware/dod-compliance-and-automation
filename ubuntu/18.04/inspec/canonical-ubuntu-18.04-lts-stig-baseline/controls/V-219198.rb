@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219198' do
   title "The Ubuntu operating system library files must have mode 0755 or less
 permissive."
@@ -30,7 +28,7 @@ permissive with the following command:
     If any files are found to be group-writable or world-writable, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the library files to be protected from unauthorized access. Run
 the following command:
 
@@ -43,14 +41,14 @@ the following command:
   tag rid: 'SV-219198r508662_rule'
   tag stig_id: 'UBTU-18-010133'
   tag fix_id: 'F-20922r304923_fix'
-  tag cci: ['V-100623', 'SV-109727', 'CCI-001499']
+  tag cci: %w(V-100623 SV-109727 CCI-001499)
   tag nist: ['CM-5 (6)']
 
-  if os.arch == 'x86_64'
-    library_files = command('find /lib /lib32 lib64 /usr/lib /usr/lib32 -perm /022 -type f').stdout.strip.split("\n").entries
-  else
-    library_files = command('find /lib /usr/lib /usr/lib32 /lib32 -perm /022 -type f').stdout.strip.split("\n").entries
-  end
+  library_files = if os.arch == 'x86_64'
+                    command('find /lib /lib32 lib64 /usr/lib /usr/lib32 -perm /022 -type f').stdout.strip.split("\n").entries
+                  else
+                    command('find /lib /usr/lib /usr/lib32 /lib32 -perm /022 -type f').stdout.strip.split("\n").entries
+                  end
 
   if library_files.count > 0
     library_files.each do |lib_file|
@@ -65,4 +63,3 @@ the following command:
     end
   end
 end
-

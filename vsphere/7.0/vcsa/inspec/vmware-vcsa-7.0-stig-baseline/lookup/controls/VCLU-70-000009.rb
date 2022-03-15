@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000009' do
   title 'Lookup Service must only run one webapp.'
   desc  "VMware ships Lookup Service on the VCSA with one webapp. Any other
@@ -37,8 +35,6 @@ command:
   tag nist: ['CM-5 (3)']
 
   describe command("ls -A '#{input('appPath')}'/*.war") do
-    its ('stdout.strip') { should eq '/usr/lib/vmware-lookupsvc/webapps/ROOT.war' }
+    its('stdout.strip') { should eq '/usr/lib/vmware-lookupsvc/webapps/ROOT.war' }
   end
-
 end
-

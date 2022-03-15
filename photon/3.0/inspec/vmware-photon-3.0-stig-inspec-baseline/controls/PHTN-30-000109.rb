@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000109' do
   title "The Photon operating system must be configured to protect the SSH
 private host key from unauthorized access."
@@ -20,7 +18,7 @@ host could be impersonated."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s) for each returned
 file:
 
@@ -37,13 +35,11 @@ file:
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command('find /etc/ssh/ -maxdepth 1 -name "*key"').stdout.split.each do | fname |
-      describe file(fname) do
-        its('owner') { should cmp 'root' }
-        its('group') { should cmp 'root' }
-        its('mode') { should cmp '0600' }
-      end
+  command('find /etc/ssh/ -maxdepth 1 -name "*key"').stdout.split.each do |fname|
+    describe file(fname) do
+      its('owner') { should cmp 'root' }
+      its('group') { should cmp 'root' }
+      its('mode') { should cmp '0600' }
+    end
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000072' do
   title "The vCenter Server must be configured to send logs to a central log
 server."
@@ -18,7 +16,7 @@ one site-specific syslog receiver is configured and is listed as \"Reachable\".
     If there is no valid syslog collector configured or if the collector is not
 listed as \"Reachable\", this is a finding.
   "
-  desc  'fix', "Open the Virtual Appliance Management Interface (VAMI) by
+  desc 'fix', "Open the Virtual Appliance Management Interface (VAMI) by
 navigating to https://<vCenter server>:5480 . Log in with local OS
 administrative credentials or with an SSO account that is a member of the
 \"SystemConfiguration.BashShellAdministrator\" group. Select \"Syslog\" on the
@@ -36,9 +34,7 @@ it's stateless and unencrypted nature. TLS is preferred. Click \"Save\"."
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000003' do
   title "The Photon operating system must display the Standard Mandatory DoD
 Notice and Consent Banner before granting SSH access."
@@ -46,7 +44,7 @@ by attorneys, psychotherapists, or clergy, and their assistants. Such
 communications and work product are private and confidential. See User
 Agreement for details.\"
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -97,12 +95,10 @@ Agreement for details.\"
   tag nist: ['AC-8 a']
 
   describe command('sshd -T|&grep -i Banner') do
-    its ('stdout.strip') { should cmp 'Banner /etc/issue' }
+    its('stdout.strip') { should cmp 'Banner /etc/issue' }
   end
 
   describe file('/etc/issue') do
-    its ('content') {should match /You are accessing a U\.S\. Government/}
+    its('content') { should match /You are accessing a U\.S\. Government/ }
   end
-
 end
-

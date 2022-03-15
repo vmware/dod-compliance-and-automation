@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000084' do
   title "The Photon operating system must configure sshd to disallow
 compression of the encrypted session stream."
@@ -18,7 +16,7 @@ compromise of the system from an unauthenticated connection."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -43,8 +41,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i Compression') do
-    its ('stdout.strip') { should cmp 'Compression no' }
+    its('stdout.strip') { should cmp 'Compression no' }
   end
-
 end
-

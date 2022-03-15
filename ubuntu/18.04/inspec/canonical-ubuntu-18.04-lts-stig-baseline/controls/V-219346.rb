@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219346' do
   title "The Ubuntu operating system must disable all wireless network
 adapters."
@@ -57,7 +55,7 @@ physical wireless network radios.
     If a wireless interface is configured and has not been documented and
 approved by the Information System Security Officer (ISSO), this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the system to disable all wireless network interfaces with the
 following command:
 
@@ -70,11 +68,10 @@ following command:
   tag rid: 'SV-219346r508662_rule'
   tag stig_id: 'UBTU-18-010521'
   tag fix_id: 'F-21070r305367_fix'
-  tag cci: ['SV-110017', 'V-100913', 'CCI-002418']
+  tag cci: %w(SV-110017 V-100913 CCI-002418)
   tag nist: ['SC-8']
 
   describe command('lshw -C network') do
-   its('stdout') { should_not match /description:\s+Wireless\s+Interface/i }
+    its('stdout') { should_not match /description:\s+Wireless\s+Interface/i }
   end
 end
-

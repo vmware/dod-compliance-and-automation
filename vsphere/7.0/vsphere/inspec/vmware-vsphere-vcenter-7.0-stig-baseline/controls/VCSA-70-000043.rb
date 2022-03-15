@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000043' do
   title "The vCenter Server passwords must contain at least one special
 character."
@@ -22,7 +20,7 @@ value:
     If this password complexity policy is not configured as stated, this is a
 finding.
   "
-  desc  'fix', "From the vSphere Client, go to Administration >> Single Sign On
+  desc 'fix', "From the vSphere Client, go to Administration >> Single Sign On
 >> Configuration >> Local Accounts >> Password Policy. Click \"Edit\". Set
 Special Characters to at least \"1\" and click \"Save\"."
   impact 0.5
@@ -35,9 +33,7 @@ Special Characters to at least \"1\" and click \"Save\"."
   tag cci: 'CCI-001619'
   tag nist: ['IA-5 (1) (a)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

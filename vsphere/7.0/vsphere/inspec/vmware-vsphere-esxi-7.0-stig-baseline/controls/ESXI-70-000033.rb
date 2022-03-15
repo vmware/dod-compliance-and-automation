@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000033' do
   title "The password hashes stored on the ESXi host must have been generated
 using a FIPS 140-2 approved cryptographic hashing algorithm."
@@ -14,7 +12,7 @@ algorithms may result in weak password hashes more vulnerable to compromise."
 
     If sha512 is not listed, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, add or correct the following line in
 /etc/pam.d/passwd:
 
@@ -31,9 +29,7 @@ shadow sha512 remember=5
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000012' do
   title "The vCenter Server must disable the distributed virtual switch health
 check."
@@ -24,7 +22,7 @@ the following commands:
     If the health check feature is enabled on distributed switches and is not
 on temporarily for troubleshooting purposes, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Networking >> Select a distributed switch >>
 Configure >> Settings >> Health Check. Click \"Edit\". Disable the \"VLAN and
 MTU\" and \"Teaming and failover\" checks. Click \"OK\".
@@ -50,27 +48,25 @@ Vmware.Vim.VMwareDVSTeamingHealthCheckConfig -property @{enable=0})))}
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command = "Get-VDSwitch | Select -ExpandProperty Name"
+  command = 'Get-VDSwitch | Select -ExpandProperty Name'
   vdswitches = powercli_command(command).stdout.strip.split("\r\n")
 
   if vdswitches.empty?
-    describe "" do
-      skip "No distributed switches found to check."
+    describe '' do
+      skip 'No distributed switches found to check.'
     end
   end
 
-  if !vdswitches.empty?
-    vdswitches.each do | vds |
+  unless vdswitches.empty?
+    vdswitches.each do |vds|
       command = "(Get-VDSwitch -Name \"#{vds}\").ExtensionData.Config.HealthCheckConfig | Select-Object -ExpandProperty Enable"
       checks = powercli_command(command)
-      checks.stdout.split.each do | hc |
+      checks.stdout.split.each do |hc|
         describe "Health check for #{vds}" do
-          subject {hc}
-          it { should cmp "false" }
+          subject { hc }
+          it { should cmp 'false' }
         end
       end
     end
   end
-
 end
-

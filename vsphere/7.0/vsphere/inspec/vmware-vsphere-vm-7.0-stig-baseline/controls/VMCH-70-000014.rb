@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000014' do
   title "Console access through the VNC protocol must be disabled on the
 virtual machine."
@@ -22,7 +20,7 @@ server, run the following command:
     If the virtual machine advanced setting RemoteDisplay.vnc.enabled does not
 exist or is not set to false, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the RemoteDisplay.vnc.enabled value and set it to false. If
@@ -62,9 +60,7 @@ Set-AdvancedSetting -Value false
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name RemoteDisplay.vnc.enabled).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "false" }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should cmp 'false' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

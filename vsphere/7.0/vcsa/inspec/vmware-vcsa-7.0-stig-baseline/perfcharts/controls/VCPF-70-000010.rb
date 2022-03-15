@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000010' do
   title 'Performance Charts must not be configured with unsupported realms.'
   desc  "Performance Charts performs user authentication at the application
@@ -15,7 +13,7 @@ part of eliminating unnecessary features."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
@@ -37,8 +35,6 @@ part of eliminating unnecessary features."
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabaseRealm '#{input('serverXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

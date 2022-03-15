@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219314' do
   title "The Ubuntu operating system must not allow unattended or automatic
 login via ssh."
@@ -21,7 +19,7 @@ following command:
 set to \"no\", are missing completely, or they are commented out, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to allow the SSH daemon to not allow
 unattended or automatic login to the system.
 
@@ -41,7 +39,7 @@ unattended or automatic login to the system.
   tag rid: 'SV-219314r508662_rule'
   tag stig_id: 'UBTU-18-010424'
   tag fix_id: 'F-21038r305271_fix'
-  tag cci: ['V-100851', 'SV-109955', 'CCI-000366']
+  tag cci: %w(V-100851 SV-109955 CCI-000366)
   tag nist: ['CM-6 b']
 
   describe sshd_config do
@@ -49,4 +47,3 @@ unattended or automatic login to the system.
     its('PermitUserEnvironment') { should cmp 'no' }
   end
 end
-

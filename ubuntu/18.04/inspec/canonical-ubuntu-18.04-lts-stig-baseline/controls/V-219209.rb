@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219209' do
   title "The Ubuntu operating system must have directories that contain system
 commands group-owned by root."
@@ -35,7 +33,7 @@ initiating changes, including upgrades and modifications.
 up on execution (SGID) files and owned by a privileged account, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the system commands directories to be protected from unauthorized
 access. Run the following command:
 
@@ -49,10 +47,10 @@ access. Run the following command:
   tag rid: 'SV-219209r508662_rule'
   tag stig_id: 'UBTU-18-010144'
   tag fix_id: 'F-20933r304956_fix'
-  tag cci: ['V-100645', 'SV-109749', 'CCI-001499']
+  tag cci: %w(V-100645 SV-109749 CCI-001499)
   tag nist: ['CM-5 (6)']
 
-  system_commands = command("find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -type d").stdout.strip.split("\n").entries
+  system_commands = command('find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -type d').stdout.strip.split("\n").entries
   valid_system_commands = Set[]
 
   if system_commands.count > 0
@@ -66,15 +64,14 @@ access. Run the following command:
   if valid_system_commands.count > 0
     valid_system_commands.each do |val_sys_cmd|
       describe file(val_sys_cmd) do
-        its("group") { should cmp "root" }
+        its('group') { should cmp 'root' }
       end
     end
   else
     describe "Number of directories that contain system commands found in /bin, /sbin, /usr/bin, /usr/sbin,
       /usr/local/bin or /usr/local/sbin, that are NOT group-owned by root" do
       subject { valid_system_commands }
-      its("count") { should eq 0 }
+      its('count') { should eq 0 }
     end
   end
 end
-

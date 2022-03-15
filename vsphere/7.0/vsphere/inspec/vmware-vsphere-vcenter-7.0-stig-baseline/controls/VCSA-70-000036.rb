@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000036' do
   title "The vCenter Server must produce audit records containing information
 to establish what type of events occurred."
@@ -22,7 +20,7 @@ and verify it is set to \"info\".
     If the \"config.log.level\" value is not set to \"info\" or does not exist,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Host and Clusters >> Select a vCenter Server
 >> Configure >> Settings >> Advanced Settings. Click \"Edit Settings\" and
 configure the \"config.log.level\" setting to \"info\".
@@ -46,10 +44,8 @@ Set-AdvancedSetting -Value info
   tag cci: 'CCI-002702'
   tag nist: ['SI-6 d']
 
-  command = "Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name config.log.level | Select-Object -ExpandProperty Value"
+  command = 'Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name config.log.level | Select-Object -ExpandProperty Value'
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "info" }
+    its('stdout.strip') { should cmp 'info' }
   end
-
 end
-

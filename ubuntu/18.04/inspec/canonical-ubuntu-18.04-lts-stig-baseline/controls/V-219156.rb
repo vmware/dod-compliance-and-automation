@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219156' do
   title "The Ubuntu operating system must be configured so that Advance package
 Tool (APT) removes all software components after updated versions have been
@@ -24,7 +22,7 @@ updating with the following command:
 \"::Remove-Unused-Kernel-Packages\" parameters are not set to \"true\", or are
 missing, or are commented out, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure APT to remove all software components after updated versions have
 been installed.
 
@@ -41,7 +39,7 @@ been installed.
   tag rid: 'SV-219156r508662_rule'
   tag stig_id: 'UBTU-18-010017'
   tag fix_id: 'F-20880r304797_fix'
-  tag cci: ['V-100537', 'SV-109641', 'CCI-002617']
+  tag cci: %w(V-100537 SV-109641 CCI-002617)
   tag nist: ['SI-2 (6)']
 
   describe directory('/etc/apt/apt.conf.d') do
@@ -53,4 +51,3 @@ been installed.
     it { should match /^\s*([^\s]*::Remove-Unused-Kernel-Packages)\s*\"true\"\s*;$/ }
   end
 end
-

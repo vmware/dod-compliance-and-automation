@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000082' do
   title "The Photon operating system must configure sshd to disallow Kerberos
 authentication."
@@ -20,7 +18,7 @@ disabled."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -45,8 +43,6 @@ the following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i KerberosAuthentication') do
-    its ('stdout.strip') { should cmp 'KerberosAuthentication no' }
+    its('stdout.strip') { should cmp 'KerberosAuthentication no' }
   end
-
 end
-

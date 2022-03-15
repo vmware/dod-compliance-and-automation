@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000029' do
   title 'Performance Charts must properly configure log sizes and rotation.'
   desc  "To ensure that the logging mechanism used by the web server has
@@ -15,7 +13,7 @@ configuration must be verified."
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-perfcharts/log4j.properties
@@ -46,8 +44,6 @@ log4j.appender.LOGFILE.layout.ConversionPattern=%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}
   tag nist: ['AU-4']
 
   describe command('rpm -V VMware-perfcharts|grep log4j|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

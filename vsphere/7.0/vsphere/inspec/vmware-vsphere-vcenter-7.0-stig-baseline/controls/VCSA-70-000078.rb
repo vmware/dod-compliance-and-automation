@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000078' do
   title 'vCenter task and event retention must be set to at least 30 days.'
   desc  "vCenter tasks and events contain valuable historical actions, useful
@@ -36,9 +34,7 @@ Click \"Save\"."
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

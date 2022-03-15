@@ -1,4 +1,4 @@
-control "ESXI-67-000006" do
+control 'ESXI-67-000006' do
   title "The ESXi host must enforce the unlock timeout of 15 minutes after a
 user account is locked out."
   desc  "By enforcing a reasonable unlock timeout after multiple failed logon
@@ -23,7 +23,7 @@ following command:
     If the \"Security.AccountUnlockTime\" is set to a value other than \"900\",
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -50,8 +50,6 @@ Set-AdvancedSetting -Value 900
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Security.AccountUnlockTime | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "900" }
+    its('stdout.strip') { should cmp '900' }
   end
-
 end
-

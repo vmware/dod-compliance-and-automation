@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000084' do
   title 'The ESXi host must enable audit logging.'
   desc  "ESXi offers both local and remote audit recordkeeping to meet the
@@ -38,7 +36,7 @@ above but it must still be located on persistent storage.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, run the following command(s):
 
     Optional: Set the audit log location to persistent storage. This is set to
@@ -79,18 +77,16 @@ following command(s):
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.auditrecords.get.invoke() | Select-Object -ExpandProperty AuditRecordStorageActive"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.auditrecords.get.invoke() | Select-Object -ExpandProperty AuditRecordStorageCapacity"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "4100" }
+    its('stdout.strip') { should cmp '4100' }
   end
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.auditrecords.get.invoke() | Select-Object -ExpandProperty AuditRemoteHostEnabled"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
-
 end
-

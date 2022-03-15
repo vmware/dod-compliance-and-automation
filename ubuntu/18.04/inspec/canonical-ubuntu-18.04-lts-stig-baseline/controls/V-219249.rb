@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219249' do
   title "The Ubuntu operating system must generate audit records for any usage
 of the fremovexattr system call."
@@ -38,7 +36,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful use of the \"fremovexattr\" command.
 
@@ -64,24 +62,23 @@ required.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000064-GPOS-00033'
-  tag satisfies: ['SRG-OS-000064-GPOS-00033', 'SRG-OS-000462-GPOS-00206',
-'SRG-OS-000466-GPOS-00210']
+  tag satisfies: %w(SRG-OS-000064-GPOS-00033 SRG-OS-000462-GPOS-00206
+SRG-OS-000466-GPOS-00210)
   tag gid: 'V-219249'
   tag rid: 'SV-219249r508662_rule'
   tag stig_id: 'UBTU-18-010326'
   tag fix_id: 'F-20973r305076_fix'
-  tag cci: ['V-100723', 'SV-109827', 'CCI-000172']
+  tag cci: %w(V-100723 SV-109827 CCI-000172)
   tag nist: ['AU-12 c']
 
-  if os.arch == "x86_64"
-    describe auditd.syscall("fremovexattr").where { arch == "b64" } do
-      its("action.uniq") { should eq ["always"] }
-      its("list.uniq") { should eq ["exit"] }
+  if os.arch == 'x86_64'
+    describe auditd.syscall('fremovexattr').where { arch == 'b64' } do
+      its('action.uniq') { should eq ['always'] }
+      its('list.uniq') { should eq ['exit'] }
     end
   end
-  describe auditd.syscall("fremovexattr").where { arch == "b32" } do
-    its("action.uniq") { should eq ["always"] }
-    its("list.uniq") { should eq ["exit"] }
+  describe auditd.syscall('fremovexattr').where { arch == 'b32' } do
+    its('action.uniq') { should eq ['always'] }
+    its('list.uniq') { should eq ['exit'] }
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219180' do
   title "The Ubuntu operating system must prohibit password reuse for a minimum
 of five generations."
@@ -21,7 +19,7 @@ rounds=5000
     If the \"remember\" parameter value is not greater than or equal to 5,
 commented out, or not set at all this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system prevents passwords from being reused
 for a minimum of five generations.
 
@@ -38,7 +36,7 @@ rounds=5000
   tag rid: 'SV-219180r508662_rule'
   tag stig_id: 'UBTU-18-010108'
   tag fix_id: 'F-20904r304869_fix'
-  tag cci: ['SV-109691', 'V-100587', 'CCI-000200']
+  tag cci: %w(SV-109691 V-100587 CCI-000200)
   tag nist: ['IA-5 (1) (e)']
 
   min_num_password_generations = input('min_num_password_generations')
@@ -51,6 +49,4 @@ rounds=5000
     its('exit_status') { should eq 0 }
     its('stdout.strip') { should cmp min_num_password_generations }
   end
-  
 end
-

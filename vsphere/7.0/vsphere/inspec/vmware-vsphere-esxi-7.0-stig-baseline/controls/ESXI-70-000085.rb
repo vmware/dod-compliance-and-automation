@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000085' do
   title "The ESXi host must enable strict x509 verification for SSL syslog
 endpoints."
@@ -31,7 +29,7 @@ following command(s):
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, run the following command(s):
 
     # esxcli system syslog config set --x509-strict=true
@@ -60,8 +58,6 @@ following command(s):
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.syslog.config.get.invoke() | Select-Object -ExpandProperty StrictX509Compliance"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000027' do
   title "Lookup Service must use a logging mechanism that is configured to
 allocate log record storage capacity large enough to accommodate the logging
@@ -22,7 +20,7 @@ modified from the default.
 
     If the above command returns any output, this is a finding.
   "
-  desc  'fix', "Reinstall the VCSA or roll back to a backup. Modifying the
+  desc 'fix', "Reinstall the VCSA or roll back to a backup. Modifying the
 Lookup Service installation files manually is not supported by VMware."
   impact 0.5
   tag severity: 'medium'
@@ -35,8 +33,6 @@ Lookup Service installation files manually is not supported by VMware."
   tag nist: ['AU-4']
 
   describe command('rpm -V vmware-lookupsvc|grep logging.properties|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

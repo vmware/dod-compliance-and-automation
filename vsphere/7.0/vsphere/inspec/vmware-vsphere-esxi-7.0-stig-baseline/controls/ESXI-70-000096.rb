@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000096' do
   title "The ESXi host must enforce the exclusive running of executables from
 approved VIBs."
@@ -37,7 +35,7 @@ RequireExecutablesOnlyFromInstalledVIBs
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Note: Secure Boot enforcement must be configured before this feature can be
 enabled. This is covered in another control.
 
@@ -67,12 +65,10 @@ following command(s):
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  if "#{input('tpmEnabled')}" == "true" 
+  if "#{input('tpmEnabled')}" == 'true'
     command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.settings.encryption.get.invoke() | Select-Object -ExpandProperty RequireExecutablesOnlyFromInstalledVIBs"
     describe powercli_command(command) do
-      its ('stdout.strip') { should cmp "true" }
+      its('stdout.strip') { should cmp 'true' }
     end
   end
-
 end
-

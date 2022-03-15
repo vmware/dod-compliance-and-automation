@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219270' do
   title "The Ubuntu operating system must generate audit records for
 successful/unsuccessful uses of the chacl command."
@@ -32,7 +30,7 @@ after it does not need to match the example output above.
     If the command does not return a line that matches the example or the line
 is commented out, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful use of the \"chacl\" command.
 
@@ -57,7 +55,7 @@ auid!=4294967295 -k perm_chng
   tag rid: 'SV-219270r508662_rule'
   tag stig_id: 'UBTU-18-010347'
   tag fix_id: 'F-20994r305139_fix'
-  tag cci: ['V-100765', 'SV-109869', 'CCI-000172']
+  tag cci: %w(V-100765 SV-109869 CCI-000172)
   tag nist: ['AU-12 c']
 
   @audit_file = '/usr/bin/chacl'
@@ -77,10 +75,9 @@ auid!=4294967295 -k perm_chng
       end
     end
   else
-    describe ('Audit line(s) for ' + @audit_file + ' exist') do
+    describe('Audit line(s) for ' + @audit_file + ' exist') do
       subject { audit_lines_exist }
       it { should be true }
     end
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000013' do
   title "The vCenter Server must set the distributed port group Forged
 Transmits policy to reject."
@@ -35,7 +33,7 @@ the following commands:
     If the \"Forged Transmits\" policy is set to accept for a non-uplink port,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Networking >> Select a distributed switch >>
 Select a port group >> Configure >> Settings >> Policies. Click \"Edit\". Click
 the \"Security\" tab. Set \"Forged Transmits\" to \"Reject\". Click \"OK\".
@@ -59,41 +57,39 @@ Set-VDSecurityPolicy -ForgedTransmits $false
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command = "Get-VDSwitch | Select -ExpandProperty Name"
+  command = 'Get-VDSwitch | Select -ExpandProperty Name'
   vdswitches = powercli_command(command).stdout.strip.split("\r\n")
 
   if vdswitches.empty?
-    describe "" do
-      skip "No distributed switches found to check."
+    describe '' do
+      skip 'No distributed switches found to check.'
     end
   end
 
-  if !vdswitches.empty?
-    vdswitches.each do | vds |
+  unless vdswitches.empty?
+    vdswitches.each do |vds|
       command = "(Get-VDSwitch -Name \"#{vds}\") | Get-VDSecurityPolicy | Select-Object -ExpandProperty ForgedTransmits"
       describe powercli_command(command) do
-        its ('stdout.strip') { should cmp "false" }
+        its('stdout.strip') { should cmp 'false' }
       end
     end
   end
 
-  command = "Get-VDPortgroup | Where-Object {$_.IsUplink -eq $false} | Select -ExpandProperty Name"
+  command = 'Get-VDPortgroup | Where-Object {$_.IsUplink -eq $false} | Select -ExpandProperty Name'
   vdportgroups = powercli_command(command).stdout.strip.split("\r\n")
 
   if vdportgroups.empty?
-    describe "" do
-      skip "No distributed port groups found to check."
+    describe '' do
+      skip 'No distributed port groups found to check.'
     end
   end
 
-  if !vdportgroups.empty?
-    vdportgroups.each do | vdpg |
+  unless vdportgroups.empty?
+    vdportgroups.each do |vdpg|
       command = "(Get-VDPortgroup -Name \"#{vdpg}\") | Get-VDSecurityPolicy | Select-Object -ExpandProperty ForgedTransmits"
       describe powercli_command(command) do
-        its ('stdout.strip') { should cmp "false" }
+        its('stdout.strip') { should cmp 'false' }
       end
     end
   end
-
 end
-

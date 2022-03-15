@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219302' do
   title "The Ubuntu operating system must retain a users session lock until
 that user reestablishes access using established identification and
@@ -32,7 +30,7 @@ interface session has the lock enabled with the following command:
 
     If \"lock-enabled\" is not set to \"true\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system so that it allows a user to lock the
 current graphical user interface session.
 
@@ -51,12 +49,12 @@ session locks with the following command:
   tag rid: 'SV-219302r508662_rule'
   tag stig_id: 'UBTU-18-010401'
   tag fix_id: 'F-21026r305235_fix'
-  tag cci: ['V-100827', 'SV-109931', 'CCI-000056']
+  tag cci: %w(V-100827 SV-109931 CCI-000056)
   tag nist: ['AC-11 b']
 
   gnome_installed = (package('ubuntu-gnome-desktop').installed? || package('ubuntu-desktop').installed? || package('gdm3').installed?)
   if !gnome_installed
-    describe "The GUI is installed on the system" do
+    describe 'The GUI is installed on the system' do
       subject { gnome_installed }
       it { should be false }
     end
@@ -66,4 +64,3 @@ session locks with the following command:
     end
   end
 end
-

@@ -36,7 +36,7 @@ finding.
 
     If no lines are returned, this is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
@@ -63,15 +63,12 @@ finding.
   tag nist: ['SI-11 a']
 
   describe.one do
-
     describe xml("#{input('webXmlPath')}") do
       its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should eq [] }
     end
 
     describe xml("#{input('webXmlPath')}") do
-      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
+      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp '0' }
     end
-
   end
-
 end

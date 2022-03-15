@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219200' do
   title 'The Ubuntu operating system library files must be owned by root.'
   desc  "If the Ubuntu operating system were to allow any user to make changes
@@ -27,7 +25,7 @@ following command:
 
     If any system wide library file is returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the system library files to be protected from unauthorized
 access. Run the following command:
 
@@ -41,26 +39,25 @@ access. Run the following command:
   tag rid: 'SV-219200r508662_rule'
   tag stig_id: 'UBTU-18-010135'
   tag fix_id: 'F-20924r304929_fix'
-  tag cci: ['SV-109731', 'V-100627', 'CCI-001499']
+  tag cci: %w(SV-109731 V-100627 CCI-001499)
   tag nist: ['CM-5 (6)']
 
-  if os.arch == "x86_64"
-    library_files = command('find /lib /usr/lib /usr/lib32 /lib32 /lib64 ! \-user root \-type f').stdout.strip.split("\n").entries
-  else
-    library_files = command('find /lib /usr/lib /usr/lib32 /lib32 ! \-user root \-type f').stdout.strip.split("\n").entries
-  end
+  library_files = if os.arch == 'x86_64'
+                    command('find /lib /usr/lib /usr/lib32 /lib32 /lib64 ! \-user root \-type f').stdout.strip.split("\n").entries
+                  else
+                    command('find /lib /usr/lib /usr/lib32 /lib32 ! \-user root \-type f').stdout.strip.split("\n").entries
+                  end
 
   if library_files.count > 0
     library_files.each do |lib_file|
       describe file(lib_file) do
-        its("owner") { should cmp "root" }
+        its('owner') { should cmp 'root' }
       end
     end
   else
-    describe "Number of system-wide shared library files found that are NOT owned by root" do
+    describe 'Number of system-wide shared library files found that are NOT owned by root' do
       subject { library_files }
-      its("count") { should eq 0 }
+      its('count') { should eq 0 }
     end
   end
 end
-

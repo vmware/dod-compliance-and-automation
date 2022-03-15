@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000023' do
   title "The vCenter Server must configure the vpxuser auto-password to be
 changed every 30 days."
@@ -28,7 +26,7 @@ VirtualCenter.VimPasswordExpirationInDays and verify it is set to 30.
     If the \"VirtualCenter.VimPasswordExpirationInDays\" is set to a value
 other than \"30\" or does not exist, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Host and Clusters >> Select a vCenter Server
 >> Configure >> Settings >> Advanced Settings. Click \"Edit Settings\" and
 configure the \"VirtualCenter.VimPasswordExpirationInDays\" value to \"30\" or
@@ -58,10 +56,8 @@ VirtualCenter.VimPasswordExpirationInDays -Value 30
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command = "Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name VirtualCenter.VimPasswordExpirationInDays | Select-Object -ExpandProperty Value"
+  command = 'Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name VirtualCenter.VimPasswordExpirationInDays | Select-Object -ExpandProperty Value'
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "30" }
+    its('stdout.strip') { should cmp '30' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000054' do
   title "The Photon operating system must audit the execution of privileged
 functions."
@@ -31,10 +29,10 @@ rules, this is a finding.
     -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F
 auid!=4294967295 -F key=privileged
 
-    Note: This check depends on the auditd service to be in a running state for 
+    Note: This check depends on the auditd service to be in a running state for
     accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command to obtain a list of
 setuid files:
 
@@ -56,8 +54,8 @@ auid!=4294967295 -F key=privileged
 
     # /sbin/augenrules --load
 
-    Note: An older audit.STIG.rules may exist if the file exists and references 
-    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    Note: An older audit.STIG.rules may exist if the file exists and references
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary
     with an updated one.
   "
   impact 0.5
@@ -72,18 +70,14 @@ auid!=4294967295 -F key=privileged
 
   results = command('find / -xdev -perm -4000 -type f -o -perm -2000 -type f').stdout.split("\n")
 
-  results.each do | path |
+  results.each do |path|
     describe.one do
-
       describe auditd do
-        its("lines") { should include %r{-a always,exit -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
+        its('lines') { should include /-a always,exit -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged/ }
       end
       describe auditd do
-        its("lines") { should include %r{-a always,exit -S all -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
+        its('lines') { should include /-a always,exit -S all -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged/ }
       end
-
     end
   end
-
 end
-

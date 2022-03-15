@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000050' do
   title "All IP-based storage traffic on standard switches must be isolated
 from other traffic types."
@@ -31,7 +29,7 @@ this is a finding.
 
     If IP-based storage is not used, this is not applicable.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configuration of an IP-Based VMkernel will be unique to each environment.
 
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
@@ -54,9 +52,7 @@ to NFS traffic. Click \"OK\".
   tag cci: 'CCI-002418'
   tag nist: ['SC-8']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

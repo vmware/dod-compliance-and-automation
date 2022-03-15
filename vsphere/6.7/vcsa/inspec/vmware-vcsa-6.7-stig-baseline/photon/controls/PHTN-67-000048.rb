@@ -1,4 +1,4 @@
-control "PHTN-67-000048" do
+control 'PHTN-67-000048' do
   title "The Photon operating system must initiate auditing as part of the boot
 process."
   desc  "Each process on the system carries an \"auditable\" flag, which
@@ -14,7 +14,7 @@ includes processes created before auditd starts."
 
     If no results are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /boot/grub2/grub.cfg with a text editor and locate the boot command
 line arguments. An example follows:
 
@@ -41,8 +41,7 @@ future releases. Find the similar line and append \"audit=1\" to it.
   tag cci: ['CCI-001464']
   tag nist: ['AU-14 (1)']
 
-  describe file ('/boot/grub2/grub.cfg') do
-      its ('content'){should match /^(?=.*?\blinux\b)(?=.*?\bphoton_linux\b)(?=.*?\bconsoleblank\b)(?=.*?\baudit=1\b).*$/}
+  describe file('/boot/grub2/grub.cfg') do
+    its('content') { should match /^(?=.*?\blinux\b)(?=.*?\bphoton_linux\b)(?=.*?\bconsoleblank\b)(?=.*?\baudit=1\b).*$/ }
   end
-
 end

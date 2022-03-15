@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000048' do
   title "The Photon operating system must protect audit tools from unauthorized
 modification and deletion."
@@ -17,7 +15,7 @@ tools is necessary to prevent unauthorized operations on audit information."
     If any file is not owned by root or group owned by root or permissions are
 more permissive than 750, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command for each file returned
 for user and group ownership:
 
@@ -39,34 +37,32 @@ for file permissions:
   tag nist: ['AU-9']
 
   describe file('/usr/sbin/auditctl') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0750') }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0750') }
   end
 
   describe file('/usr/sbin/auditd') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0750') }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0750') }
   end
 
   describe file('/usr/sbin/aureport') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0750') }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0750') }
   end
 
   describe file('/usr/sbin/ausearch') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0750') }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0750') }
   end
 
   describe file('/usr/sbin/autrace') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0750') }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0750') }
   end
-
 end
-

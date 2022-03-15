@@ -1,6 +1,6 @@
-control "VCFL-67-000016" do
-   title 'vSphere Client must be configured with memory leak protection.'
-  desc  "The Java Runtime environment can cause a memory leak or lock files
+control 'VCFL-67-000016' do
+  title 'vSphere Client must be configured with memory leak protection.'
+  desc "The Java Runtime environment can cause a memory leak or lock files
 under certain conditions. Without memory leak protection, vSphere Client can
 continue to consume system resources, which will lead to \"OutOfMemoryErrors\"
 when reloading web applications.
@@ -28,7 +28,7 @@ className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\" />
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml.
 
@@ -51,5 +51,4 @@ the <Server> node.
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml') do
     its('Server/Listener/attribute::className') { should include 'org.apache.catalina.core.JreMemoryLeakPreventionListener' }
   end
-
 end

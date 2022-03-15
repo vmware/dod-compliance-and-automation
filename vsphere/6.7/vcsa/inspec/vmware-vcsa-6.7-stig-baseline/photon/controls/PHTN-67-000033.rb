@@ -1,4 +1,4 @@
-control "PHTN-67-000033" do
+control 'PHTN-67-000033' do
   title "The Photon operating system must disable the loading of unnecessary
 kernel modules."
   desc  "To support the requirements and principles of least functionality, the
@@ -38,7 +38,7 @@ functioning of the product.
 This is acceptable. If the output does not include at least every statement in
 the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/modprobe.d/modprobe.conf with a text editor and set the contents
 as follows:
 
@@ -65,12 +65,12 @@ as follows:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000096-GPOS-00050'
-  tag satisfies: ['SRG-OS-000096-GPOS-00050', 'SRG-OS-000114-GPOS-00059']
+  tag satisfies: %w(SRG-OS-000096-GPOS-00050 SRG-OS-000114-GPOS-00059)
   tag gid: 'V-239105'
   tag rid: 'SV-239105r816619_rule'
   tag stig_id: 'PHTN-67-000033'
   tag fix_id: 'F-42275r675122_fix'
-  tag cci: ['CCI-000382', 'CCI-000778']
+  tag cci: %w(CCI-000382 CCI-000778)
   tag nist: ['CM-7 b', 'IA-3']
 
   disabled_modules = input('disabled_modules')
@@ -81,6 +81,4 @@ as follows:
       it { should_not be_loaded }
     end
   end
-
 end
-

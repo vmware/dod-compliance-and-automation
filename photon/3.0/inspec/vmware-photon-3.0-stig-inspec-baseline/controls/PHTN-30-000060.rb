@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000060' do
   title "The Photon operating system RPM package management tool must
 cryptographically verify the authenticity of all software packages during
@@ -16,7 +14,7 @@ has not been tampered with and has been provided by a trusted vendor. "
 
     If \"gpgcheck\" is not set to \"1\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/tdnf/tdnf.conf
@@ -36,8 +34,6 @@ has not been tampered with and has been provided by a trusted vendor. "
   tag nist: ['CM-5 (3)']
 
   describe command('grep "^gpgcheck" /etc/tdnf/tdnf.conf') do
-      its ('stdout.strip') { should cmp 'gpgcheck=1' }
+    its('stdout.strip') { should cmp 'gpgcheck=1' }
   end
-
 end
-

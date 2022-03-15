@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219165' do
   title "The Ubuntu operating system must display the date and time of the last
 successful account logon upon logon."
@@ -33,7 +31,7 @@ command:
     If \"pam_lastlog\" is missing from \"/etc/pam.d/login\" file, is not
 \"required\", or the \"silent\" option is present, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to provide users with feedback on
 when account accesses last occurred by setting the required configuration
 options in \"/etc/pam.d/postlogin-ac\".
@@ -49,7 +47,7 @@ options in \"/etc/pam.d/postlogin-ac\".
   tag rid: 'SV-219165r508662_rule'
   tag stig_id: 'UBTU-18-010032'
   tag fix_id: 'F-20889r304824_fix'
-  tag cci: ['V-100557', 'SV-109661', 'CCI-000366']
+  tag cci: %w(V-100557 SV-109661 CCI-000366)
   tag nist: ['CM-6 b']
 
   describe file('/etc/pam.d/login') do
@@ -62,4 +60,3 @@ options in \"/etc/pam.d/postlogin-ac\".
     its('stdout.strip') { should_not match /^\s*session\s+required\s+pam_lastlog.so[\s\w\d\=]+.*silent/ }
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000012' do
   title 'Unauthorized USB devices must be disconnected on the virtual machine.'
   desc  "Ensure that no device is connected to a virtual machine if it is not
@@ -27,7 +25,7 @@ is a finding.
 console to a VM then the use of a USB controller and USB devices for that
 purpose is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client right-click the Virtual Machine and go to Edit
 Settings. Select the USB controller and click the circle-x to remove then OK.
 
@@ -52,9 +50,7 @@ server, run the following command:
 
   command = "(Get-VM -Name #{input('vmName')}).ExtensionData.Config.Hardware.Device.DeviceInfo.label"
   describe powercli_command(command) do
-    its ('stdout') { should_not match 'USB' }
-    its ('exit_status') { should cmp 0 }
+    its('stdout') { should_not match 'USB' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

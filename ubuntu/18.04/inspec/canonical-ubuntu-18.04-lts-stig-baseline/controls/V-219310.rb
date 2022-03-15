@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219310' do
   title "The Ubuntu operating system must immediately terminate all network
 connections associated with SSH traffic after a period of inactivity."
@@ -39,7 +37,7 @@ automatically terminate after a period of inactivity.
     If \"ClientAliveCountMax\" is not set, or not set to \"1\", or is commented
 out, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to automatically terminate inactive
 SSH sessions after a period of inactivity.
 
@@ -59,7 +57,7 @@ replacing \"[Count]\" with a value of 1:
   tag rid: 'SV-219310r508662_rule'
   tag stig_id: 'UBTU-18-010415'
   tag fix_id: 'F-21034r305259_fix'
-  tag cci: ['SV-109947', 'V-100843', 'CCI-000879']
+  tag cci: %w(SV-109947 V-100843 CCI-000879)
   tag nist: ['MA-4 e']
 
   client_alive_interval = input('client_alive_interval')
@@ -69,4 +67,3 @@ replacing \"[Count]\" with a value of 1:
     its('ClientAliveCountMax') { should cmp >= client_alive_count_max }
   end
 end
-

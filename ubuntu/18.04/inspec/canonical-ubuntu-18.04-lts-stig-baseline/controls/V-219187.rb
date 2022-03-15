@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219187' do
   title "The Ubuntu operating system must set a sticky bit on all public
 directories to prevent unauthorized and unintended information transferred via
@@ -34,7 +32,7 @@ following command:
     If any world-writable directories are found missing the sticky bit, this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure all public directories to have the sticky bit set to prevent
 unauthorized and unintended information transferred via shared system resources.
 
@@ -50,7 +48,7 @@ unauthorized and unintended information transferred via shared system resources.
   tag rid: 'SV-219187r508662_rule'
   tag stig_id: 'UBTU-18-010120'
   tag fix_id: 'F-20911r304890_fix'
-  tag cci: ['V-100601', 'SV-109705', 'CCI-001090']
+  tag cci: %w(V-100601 SV-109705 CCI-001090)
   tag nist: ['SC-4']
 
   lines = command('find / -xdev -type d  \( -perm -0002 -a ! -perm -1000 \) -print 2>/dev/null').stdout.lines
@@ -68,4 +66,3 @@ unauthorized and unintended information transferred via shared system resources.
     end
   end
 end
-

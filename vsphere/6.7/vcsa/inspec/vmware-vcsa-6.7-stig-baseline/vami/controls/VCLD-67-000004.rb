@@ -25,7 +25,7 @@ mod_accesslog
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Add the following value in the \"server.modules\" section:
@@ -53,11 +53,10 @@ mod_accesslog
   tag rid: 'SV-239718r816785_rule'
   tag stig_id: 'VCLD-67-000004'
   tag fix_id: 'F-42910r679263_fix'
-  tag cci: ['CCI-000067', 'CCI-001462']
+  tag cci: %w(CCI-000067 CCI-001462)
   tag nist: ['AC-17 (1)', 'AU-14 (2)']
 
   describe command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/server\.modules/,/\)/'|grep mod_accesslog|sed -e 's/^[ ]*//'").stdout.strip do
-    it { should eq "\"mod_accesslog\"," }
+    it { should eq '"mod_accesslog",' }
   end
-
 end

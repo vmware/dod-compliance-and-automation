@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000028' do
   title "The Photon operating system must be configured so that passwords for
 new users are restricted to a 90-day maximum lifetime."
@@ -16,7 +14,7 @@ compromised."
 
     If the value of \"PASS_MAX_DAYS\" is greater than 90, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/login.def
@@ -38,6 +36,4 @@ compromised."
   describe login_defs do
     its('PASS_MAX_DAYS') { should be <= '90' }
   end
-
 end
-

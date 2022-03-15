@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000031' do
   title "The vCenter Server must be isolated from the public Internet but must
 still allow for patch notification and delivery."
@@ -62,7 +60,7 @@ download sources are disabled.
 
     If this is not set, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Option 1: From the vSphere Client, go to Lifecycle Manager >> Settings >>
 Patch Setup. Click the \"Change Download Source\" button. Select the \"Download
 patches from a UMDS shared repository\" radio button and supply a valid UMDS
@@ -90,9 +88,7 @@ Patch Downloads.  Click \"Edit\" and uncheck \"Download patches\". Then under
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

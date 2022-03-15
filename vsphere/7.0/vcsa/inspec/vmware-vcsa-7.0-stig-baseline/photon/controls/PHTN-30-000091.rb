@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000091' do
   title "The Photon operating system must be configured so that the /root path
 is protected from unauthorized access."
@@ -17,7 +15,7 @@ unauthorized users could change the root partitions files."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # chmod 700 /root
@@ -34,10 +32,8 @@ unauthorized users could change the root partitions files."
   tag nist: ['CM-6 b']
 
   describe directory('/root') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0700' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0700' }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCUI-67-000019" do
+control 'VCUI-67-000019' do
   title 'vSphere UI must set URIEncoding to UTF-8.'
   desc  "Invalid user input occurs when a user inserts data or characters into
 a hosted application's data entry field and the hosted application is
@@ -26,7 +26,7 @@ set via the URIEncoding attribute on the Connector nodes.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml.
 
     Navigate to each of the <Connector> nodes.
@@ -46,17 +46,16 @@ set via the URIEncoding attribute on the Connector nodes.
   begin
     xmlconf = xml("#{input('serverXmlPath')}")
 
-      if xmlconf['Server/Service/Connector/attribute::URIEncoding'].is_a?(Array)
-        xmlconf['Server/Service/Connector/attribute::URIEncoding'].each do |x|
-          describe x do
-            it {  should cmp "#{input('uriEncoding')}" }
-          end
-        end
-      else
-        describe xml(xmlconf['Server/Service/Connector/attribute::URIEncoding']) do
-          it {  should cmp "#{input('uriEncoding')}" }
+    if xmlconf['Server/Service/Connector/attribute::URIEncoding'].is_a?(Array)
+      xmlconf['Server/Service/Connector/attribute::URIEncoding'].each do |x|
+        describe x do
+          it { should cmp "#{input('uriEncoding')}" }
         end
       end
+    else
+      describe xml(xmlconf['Server/Service/Connector/attribute::URIEncoding']) do
+        it { should cmp "#{input('uriEncoding')}" }
+      end
+    end
   end
-
 end

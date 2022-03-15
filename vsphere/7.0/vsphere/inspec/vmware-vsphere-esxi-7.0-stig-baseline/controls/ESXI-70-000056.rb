@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000056' do
   title "The ESXi host must configure the firewall to restrict access to
 services running on the host."
@@ -25,7 +23,7 @@ Name,Enabled,@{N=\"AllIPEnabled\";E={$_.ExtensionData.AllowedHosts.AllIP}}
     If for an enabled service \"Allow connections from any IP address\" is
 selected, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Firewall. Click \"Edit...\". For each enabled service,
 uncheck the check box to Allow connections from any IP
@@ -71,11 +69,9 @@ through the console.
   tag nist: ['CM-6 b']
 
   command = "(Get-VMHost -Name #{input('vmhostName')} | Get-VMHostFirewallException | Where {$_.Enabled -eq $true}).ExtensionData.AllowedHosts.AllIP"
-  powercli_command(command).stdout.split("\r\n").each do | result |
+  powercli_command(command).stdout.split("\r\n").each do |result|
     describe result do
-      it { should_not cmp "True" }
+      it { should_not cmp 'True' }
     end
   end
-
 end
-

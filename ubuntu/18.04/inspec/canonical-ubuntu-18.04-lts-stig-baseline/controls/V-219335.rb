@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219335' do
   title 'Kernel core dumps must be disabled unless needed.'
   desc  "Kernel core dumps may contain the full contents of system memory at
@@ -21,7 +19,7 @@ Officer (ISSO).
 
     If the service is active and is not documented, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If kernel core dumps are not required, disable the \"kdump\" service with
 the following command:
 
@@ -37,7 +35,7 @@ System Security Officer (ISSO).
   tag rid: 'SV-219335r508662_rule'
   tag stig_id: 'UBTU-18-010505'
   tag fix_id: 'F-21059r305334_fix'
-  tag cci: ['V-100893', 'SV-109997', 'CCI-001190']
+  tag cci: %w(V-100893 SV-109997 CCI-001190)
   tag nist: ['SC-24']
 
   is_kdump_required = input('is_kdump_required')
@@ -55,4 +53,3 @@ System Security Officer (ISSO).
     end
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000026' do
   title 'ESX Agent Manager must hide the server version.'
   desc  "Web servers will often display error messages to client users,
@@ -27,7 +25,7 @@ configured with a catch-all error handler that redirects to a standard
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -53,18 +51,16 @@ finding.
   begin
     xmlconf = xml("#{input('serverXmlPath')}")
 
-      if xmlconf['Server/Service/Connector/attribute::server'].is_a?(Array)
-        xmlconf['Server/Service/Connector/attribute::server'].each do |x|
-          describe x do
-            it { should eq "#{input('server')}" }
-          end
-        end
-      else
-        describe xml(xmlconf['Server/Service/Connector/attribute::server']) do
+    if xmlconf['Server/Service/Connector/attribute::server'].is_a?(Array)
+      xmlconf['Server/Service/Connector/attribute::server'].each do |x|
+        describe x do
           it { should eq "#{input('server')}" }
         end
       end
+    else
+      describe xml(xmlconf['Server/Service/Connector/attribute::server']) do
+        it { should eq "#{input('server')}" }
+      end
+    end
   end
-
 end
-

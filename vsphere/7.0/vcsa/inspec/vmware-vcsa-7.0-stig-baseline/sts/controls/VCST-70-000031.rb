@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000031' do
   title 'The Security Token Service default servlet must be set to readonly.'
   desc  "The default servlet (or DefaultServlet) is a special servlet provided
@@ -29,7 +27,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/web.xml
@@ -59,6 +57,4 @@ node and remove the following node:
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet[servlet-name="default"]/init-param[param-name="readonly"]/param-value') { should eq [] }
   end
-
 end
-

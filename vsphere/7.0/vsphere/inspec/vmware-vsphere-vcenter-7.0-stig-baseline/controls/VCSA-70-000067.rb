@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000067' do
   title "The vCenter Server must disable the Customer Experience Improvement
 Program (CEIP)."
@@ -15,7 +13,7 @@ Experience Improvement Program
     If Customer Experience Improvement \"Program Status\" is \"Joined\", this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Deployment >> Customer
 Experience Improvement Program
 
@@ -31,9 +29,7 @@ Experience Improvement Program
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

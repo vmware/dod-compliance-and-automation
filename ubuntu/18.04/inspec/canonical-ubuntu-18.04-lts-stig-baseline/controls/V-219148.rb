@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219148' do
   title "Ubuntu operating systems booted with United Extensible Firmware
 Interface (UEFI) implemented must require authentication upon booting into
@@ -36,7 +34,7 @@ Ubuntu operating systems that use UEFI.
     If the root password entry does not begin with “password_pbkdf2”, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the system to require a password for authentication upon booting
 into single-user and maintenance modes.
 
@@ -68,7 +66,7 @@ following command:
   tag rid: 'SV-219148r508662_rule'
   tag stig_id: 'UBTU-18-010001'
   tag fix_id: 'F-20872r304773_fix'
-  tag cci: ['V-100521', 'SV-109625', 'CCI-000213']
+  tag cci: %w(V-100521 SV-109625 CCI-000213)
   tag nist: ['AC-3']
   efi_grub_file = '/boot/efi/EFI/grub.cfg'
   efi_grub_file_exists = file(efi_grub_file).exist?
@@ -77,10 +75,9 @@ following command:
       its('content') { should match '^password_pbkdf2' }
     end
   else
-    describe (efi_grub_file + ' exists') do
+    describe(efi_grub_file + ' exists') do
       subject { efi_grub_file_exists }
       it { should be false }
     end
   end
 end
-

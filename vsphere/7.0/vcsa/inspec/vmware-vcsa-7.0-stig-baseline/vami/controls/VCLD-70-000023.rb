@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLD-70-000023' do
   title 'VAMI must be protected from being stopped by a non-privileged user.'
   desc  "An attacker has at least two reasons to stop a web server. The first
@@ -22,7 +20,7 @@ configuration must be verified and maintained.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/systemd/system/vami-lighttp.service
@@ -44,8 +42,6 @@ configuration must be verified and maintained.
   tag nist: ['SC-5']
 
   describe command("ps -f -U root | awk '$0 ~ /vami-lighttpd/ && $0 !~ /awk/ {print $1}'") do
-    its ('stdout.strip') { should cmp "root" }
+    its('stdout.strip') { should cmp 'root' }
   end
-  
 end
-

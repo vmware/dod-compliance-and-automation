@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219295' do
   title "The Ubuntu operating system must generate audit records when
 successful/unsuccessful uses of the creat system call."
@@ -40,7 +38,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any unsuccessful
 use of the \"creat\" system call.
 
@@ -73,7 +71,7 @@ required.
   tag rid: 'SV-219295r508662_rule'
   tag stig_id: 'UBTU-18-010384'
   tag fix_id: 'F-21019r485726_fix'
-  tag cci: ['V-100813', 'SV-109917', 'CCI-000172']
+  tag cci: %w(V-100813 SV-109917 CCI-000172)
   tag nist: ['AU-12 c']
 
   if os.arch == 'x86_64'
@@ -99,4 +97,3 @@ required.
     its('exit.uniq') { should include '-EACCES' }
   end
 end
-

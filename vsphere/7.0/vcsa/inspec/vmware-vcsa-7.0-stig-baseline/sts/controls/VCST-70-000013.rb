@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000013' do
   title "The Security Token Service must have mappings set for Java servlet
 pages."
@@ -35,7 +33,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/web.xml
@@ -62,10 +60,8 @@ finding.
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
-  list = ["*.jsp", "*.jspx"]
+  list = ['*.jsp', '*.jspx']
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="jsp"]/url-pattern') { should be_in list }
   end
-
 end
-

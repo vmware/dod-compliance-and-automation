@@ -20,7 +20,7 @@ verified as accurate to their shipping state."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties.
 
@@ -48,6 +48,4 @@ finding.
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio.https.port'] do
     it { should eq "#{input('httpsPort')}" }
   end
-
 end
-

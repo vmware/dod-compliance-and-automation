@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000083' do
   title 'The ESXi host OpenSLP service must be disabled.'
   desc  "OpenSLP implements the Service Location Protocol to help CIM clients
@@ -56,13 +54,11 @@ Stop-VMHostService
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'slpd'} | Select-Object -ExpandProperty Policy"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "off" }
+    its('stdout.strip') { should cmp 'off' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'slpd'} | Select-Object -ExpandProperty Running"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "false" }
+    its('stdout.strip') { should cmp 'false' }
   end
-
 end
-

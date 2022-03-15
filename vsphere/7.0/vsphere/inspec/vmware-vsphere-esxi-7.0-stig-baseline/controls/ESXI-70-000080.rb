@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000080' do
   title 'The ESXi host must only run executables from approved VIBs.'
   desc  "vSphere Installation Bundles (VIBs) are the only method that binaries
@@ -52,8 +50,6 @@ Set-AdvancedSetting -Value \"true\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name VMkernel.Boot.execInstalledOnly | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
-
 end
-

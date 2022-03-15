@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219312' do
   title "The Ubuntu operating system must configure the SSH daemon to only use
 Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic
@@ -41,7 +39,7 @@ Message Authentication Codes (MACs) that employ FIPS 140-2 approved ciphers.
     If any ciphers other than \"hmac-sha2-256\" or \"hmac-sha2-512\" are listed
 or the returned line is commented out, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to allow the SSH daemon to only use
 Message Authentication Codes (MACs) that employ FIPS 140-2 approved ciphers.
 
@@ -58,13 +56,13 @@ Message Authentication Codes (MACs) that employ FIPS 140-2 approved ciphers.
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000250-GPOS-00093'
-  tag satisfies: ['SRG-OS-000250-GPOS-00093', 'SRG-OS-000393-GPOS-00173',
-'SRG-OS-000394-GPOS-00174']
+  tag satisfies: %w(SRG-OS-000250-GPOS-00093 SRG-OS-000393-GPOS-00173
+SRG-OS-000394-GPOS-00174)
   tag gid: 'V-219312'
   tag rid: 'SV-219312r508662_rule'
   tag stig_id: 'UBTU-18-010417'
   tag fix_id: 'F-21036r305265_fix'
-  tag cci: ['V-100847', 'SV-109951', 'CCI-001453', 'CCI-002890', 'CCI-003123']
+  tag cci: %w(V-100847 SV-109951 CCI-001453 CCI-002890 CCI-003123)
   tag nist: ['AC-17 (2)', 'MA-4 (6)', 'MA-4 (6)']
 
   @macs_array = inspec.sshd_config.params['macs']
@@ -72,7 +70,6 @@ Message Authentication Codes (MACs) that employ FIPS 140-2 approved ciphers.
   @macs_array = @macs_array.first.split(',') unless @macs_array.nil?
 
   describe @macs_array do
-    it { should be_in %w[hmac-sha2-256 hmac-sha2-512] }
+    it { should be_in %w(hmac-sha2-256 hmac-sha2-512) }
   end
 end
-

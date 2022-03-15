@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000102' do
   title "The Photon operating system must not send IPv4 Internet Control
 Message Protocol (ICMP) redirects."
@@ -25,7 +23,7 @@ network topology."
     Note: The number of \"ethx\" lines returned is dependant on the number of
 interfaces. Every \"ethx\" entry must be set to \"0\".
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # for SETTING in $(/sbin/sysctl -aN --pattern
@@ -54,6 +52,4 @@ interfaces. Every \"ethx\" entry must be set to \"0\".
   describe kernel_parameter('net.ipv4.conf.eth0.send_redirects') do
     its('value') { should eq 0 }
   end
-
 end
-

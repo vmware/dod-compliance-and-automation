@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000006' do
   title "ESX Agent Manager must generate log records for system startup and
 shutdown."
@@ -21,7 +19,7 @@ difficult for suspicious activity to go unlogged."
     If no log file is specified for the \"StreamRedirectFile\" setting, this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware/vmware-vmon/svcCfgfiles/eam.json
@@ -44,8 +42,6 @@ line:
   tag nist: ['AU-12 a']
 
   describe json("#{input('svcJsonPath')}") do
-    its('StreamRedirectFile') { should eq "#{input('streamRedirectFile')}"}
+    its('StreamRedirectFile') { should eq "#{input('streamRedirectFile')}" }
   end
-
 end
-

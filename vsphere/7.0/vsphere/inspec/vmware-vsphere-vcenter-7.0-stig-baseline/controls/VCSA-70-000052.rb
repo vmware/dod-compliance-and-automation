@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000052' do
   title "The vCenter Server must protect the confidentiality and integrity of
 transmitted information by isolating IP-based storage traffic."
@@ -36,7 +34,7 @@ purpose and is logically separated from other traffic types.
     If any IP-Based storage networks are not isolated from other traffic types,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configuration of an IP-Based VMkernel will be unique to each environment.
 To configure VLANs and traffic types, do the following:
 
@@ -78,9 +76,7 @@ Click the \"VLAN\" tab. Enter the appropriate VLAN type and ID and click OK.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

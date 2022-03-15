@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219334' do
   title "The Ubuntu operating system must be configured to prohibit or restrict
 the use of functions, ports, protocols, and/or services, as defined in the PPSM
@@ -75,7 +73,7 @@ to the protocol or service allowed.
   tag rid: 'SV-219334r508662_rule'
   tag stig_id: 'UBTU-18-010504'
   tag fix_id: 'F-21058r305331_fix'
-  tag cci: ['V-100891', 'SV-109995', 'CCI-000382']
+  tag cci: %w(V-100891 SV-109995 CCI-000382)
   tag nist: ['CM-7 b']
 
   ufw_installed = package('ufw').installed?
@@ -93,8 +91,7 @@ to the protocol or service allowed.
   else
     describe 'UFW is installed' do
       subject { ufw_installed }
-      it {  should be true }
+      it { should be true }
     end
   end
 end
-

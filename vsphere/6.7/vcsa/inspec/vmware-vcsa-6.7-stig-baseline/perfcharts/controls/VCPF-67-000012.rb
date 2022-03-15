@@ -1,4 +1,4 @@
-control "VCPF-67-000012" do
+control 'VCPF-67-000012' do
   title 'Performance Charts must have mappings set for Java servlet pages.'
   desc  "Resource mapping is the process of tying a particular file type to a
 process in the web server that can serve that type of file to a requesting
@@ -32,7 +32,7 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml.
 
     Inside the <web-app> parent node, add the following:
@@ -53,10 +53,8 @@ finding.
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
-  list = ["*.jsp", "*.jspx"]
+  list = ['*.jsp', '*.jspx']
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="jsp"]/url-pattern') { should be_in list }
   end
-
 end
-

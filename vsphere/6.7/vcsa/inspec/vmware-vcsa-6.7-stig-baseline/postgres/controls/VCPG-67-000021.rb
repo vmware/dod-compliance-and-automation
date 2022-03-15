@@ -1,4 +1,4 @@
-control "VCPG-67-000021" do
+control 'VCPG-67-000021' do
   title 'VMware Postgres must be configured to log to stderr.'
   desc  "Without the ability to centrally manage the content captured in the
 audit records, identification, troubleshooting, and correlation of suspicious
@@ -27,7 +27,7 @@ log_destination;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -39,7 +39,7 @@ pg_reload_conf();\"
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000359-DB-000319'
-  tag satisfies: ['SRG-APP-000359-DB-000319', 'SRG-APP-000515-DB-000318']
+  tag satisfies: %w(SRG-APP-000359-DB-000319 SRG-APP-000515-DB-000318)
   tag gid: 'V-239213'
   tag rid: 'SV-239213r717065_rule'
   tag stig_id: 'VCPG-67-000021'
@@ -47,12 +47,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-001855']
   tag nist: ['AU-5 (1)']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW log_destination;"
-  
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW log_destination;'
+
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_log_destination')}" }
+    its('output') { should cmp "#{input('pg_log_destination')}" }
   end
-
 end
-

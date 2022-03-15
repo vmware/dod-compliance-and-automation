@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000068' do
   title 'The vCenter Server must use LDAPS when adding an LDAP identity source.'
   desc  "LDAP (Lightweight Directory Access Protocol) is an industry standard
@@ -20,7 +18,7 @@ Configuration >> Identity Provider.
     For each identity source of type \"Active Directory over LDAP\", if the
 \"Server URL\" does not indicate \"ldaps://\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Single Sign On >>
 Configuration >> Identity Provider.
 
@@ -47,9 +45,7 @@ that URL.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

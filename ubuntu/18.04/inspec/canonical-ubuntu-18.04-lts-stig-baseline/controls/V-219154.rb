@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219154' do
   title "The Ubuntu operating system must have a crontab script running weekly
 to off-load audit events of standalone systems."
@@ -27,7 +25,7 @@ external media.
     If the script file does not exist or if the script file doesn't offload
 audit logs, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Create a script which off-loads audit logs to external media and runs
 weekly.
 
@@ -40,7 +38,7 @@ weekly.
   tag rid: 'SV-219154r508662_rule'
   tag stig_id: 'UBTU-18-010008'
   tag fix_id: 'F-20878r304791_fix'
-  tag cci: ['SV-109637', 'V-100533', 'CCI-001851']
+  tag cci: %w(SV-109637 V-100533 CCI-001851)
   tag nist: ['AU-4 (1)']
 
   cron_file = '/etc/cron.weekly/audit-offload'
@@ -57,4 +55,3 @@ weekly.
     end
   end
 end
-

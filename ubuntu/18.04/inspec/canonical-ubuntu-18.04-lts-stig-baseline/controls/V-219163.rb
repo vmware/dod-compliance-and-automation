@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219163' do
   title "The Ubuntu operating system must be configured such that Pluggable
 Authentication Module (PAM) prohibits the use of cached authentications after
@@ -26,7 +24,7 @@ with the following command:
 /etc/sssd/sssd.conf or in a file with a name ending in .conf in the
 /etc/sssd/conf.d/ directory, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure Pluggable Authentication Module (PAM) to prohibit the use of
 cached authentications after one day. Add or change the following line in
 \"/etc/sssd/sssd.conf\" just below the line \"[pam]\".
@@ -44,7 +42,7 @@ directory instead of the /etc/sssd/sssd.conf file.
   tag rid: 'SV-219163r508662_rule'
   tag stig_id: 'UBTU-18-010030'
   tag fix_id: 'F-20887r304818_fix'
-  tag cci: ['SV-109657', 'V-100553', 'CCI-002007']
+  tag cci: %w(SV-109657 V-100553 CCI-002007)
   tag nist: ['IA-5 (13)']
 
   config_file = input('sssd_conf_path')
@@ -55,10 +53,9 @@ directory instead of the /etc/sssd/sssd.conf file.
       its('offline_credentials_expiration') { should cmp '1' }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
 end
-

@@ -1,4 +1,4 @@
-control "VCFL-67-000015" do
+control 'VCFL-67-000015' do
   title "vSphere Client must not have the Web Distributed Authoring (WebDAV)
 servlet installed."
   desc  "WebDAV is an extension to the HTTP protocol that, when developed, was
@@ -20,7 +20,7 @@ configure WebDAV by default.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open all listed files.
 
     Navigate to and locate the mapping for the JSP servlet. It is
@@ -41,5 +41,4 @@ the <servlet-mapping> node that contains <servlet-name>webdav</servlet-name>.
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml') do
     its('/web-app/servlet-mapping[servlet-name="webdav"]') { should eq [] }
   end
-
 end

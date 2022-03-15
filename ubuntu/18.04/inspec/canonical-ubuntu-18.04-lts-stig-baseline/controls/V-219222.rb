@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219222' do
   title "The Ubuntu operating system must generate audit records for all
 account creations, modifications, disabling, and termination events that affect
@@ -32,7 +30,7 @@ is commented out, this is a finding.
     Note: The '-k' allows for specifying an arbitrary identifier and the string
 after it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to generate audit records for all
 account creations, modifications, disabling, and termination events that affect
 /etc/gshadow.
@@ -52,16 +50,16 @@ account creations, modifications, disabling, and termination events that affect
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000476-GPOS-00221'
-  tag satisfies: ['SRG-OS-000476-GPOS-00221', 'SRG-OS-000463-GPOS-00207',
-'SRG-OS-000458-GPOS-00203', 'SRG-OS-000303-GPOS-00120',
-'SRG-OS-000241-GPOS-00091', 'SRG-OS-000240-GPOS-00090',
-'SRG-OS-000239-GPOS-00089']
+  tag satisfies: %w(SRG-OS-000476-GPOS-00221 SRG-OS-000463-GPOS-00207
+SRG-OS-000458-GPOS-00203 SRG-OS-000303-GPOS-00120
+SRG-OS-000241-GPOS-00091 SRG-OS-000240-GPOS-00090
+SRG-OS-000239-GPOS-00089)
   tag gid: 'V-219222'
   tag rid: 'SV-219222r508662_rule'
   tag stig_id: 'UBTU-18-010246'
   tag fix_id: 'F-20946r304995_fix'
-  tag cci: ['SV-109775', 'V-100671', 'CCI-000172', 'CCI-001405', 'CCI-001403',
-'CCI-001404', 'CCI-002130']
+  tag cci: %w(SV-109775 V-100671 CCI-000172 CCI-001405 CCI-001403
+CCI-001404 CCI-002130)
   tag nist: ['AU-12 c', 'AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)']
 
   @audit_file = '/etc/gshadow'
@@ -81,10 +79,9 @@ account creations, modifications, disabling, and termination events that affect
       end
     end
   else
-    describe ('Audit line(s) for ' + @audit_file + ' exist') do
+    describe('Audit line(s) for ' + @audit_file + ' exist') do
       subject { audit_lines_exist }
       it { should be true }
     end
   end
 end
-

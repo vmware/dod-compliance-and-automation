@@ -33,7 +33,7 @@ shell for the account to \"/bin/bash\".
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/applmgmt/appliance/lighttpd.conf.
 
     Add or reconfigure the following value:
@@ -44,13 +44,13 @@ shell for the account to \"/bin/bash\".
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-APP-000014-WSR-000006'
-  tag satisfies: ['SRG-APP-000014-WSR-000006', 'SRG-APP-000179-WSR-000111',
-'SRG-APP-000416-WSR-000118', 'SRG-APP-000439-WSR-000188']
+  tag satisfies: %w(SRG-APP-000014-WSR-000006 SRG-APP-000179-WSR-000111
+SRG-APP-000416-WSR-000118 SRG-APP-000439-WSR-000188)
   tag gid: 'V-239716'
   tag rid: 'SV-239716r816781_rule'
   tag stig_id: 'VCLD-67-000002'
   tag fix_id: 'F-42908r679257_fix'
-  tag cci: ['CCI-000068', 'CCI-000803', 'CCI-002418']
+  tag cci: %w(CCI-000068 CCI-000803 CCI-002418)
   tag nist: ['AC-17 (2)', 'IA-7', 'SC-8']
 
   runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout
@@ -58,5 +58,4 @@ shell for the account to \"/bin/bash\".
   describe parse_config(runtime).params['ssl.cipher-list'] do
     it { should cmp "#{input('sslCipherList')}" }
   end
-
 end

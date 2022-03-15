@@ -1,4 +1,4 @@
-control "VCUI-67-000003" do
+control 'VCUI-67-000003' do
   title 'vSphere UI must limit the maximum size of a POST request.'
   desc  "The \"maxPostSize\" value is the maximum size in bytes of the POST
 that will be handled by the container FORM URL parameter parsing. Limit its
@@ -22,7 +22,7 @@ for \"maxPostSize\"'.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml.
 
     Navigate to each of the <Connector> nodes.
@@ -42,5 +42,4 @@ for \"maxPostSize\"'.
   describe xml("#{input('serverXmlPath')}") do
     its('Server/Service/Connector/attribute::maxPostSize') { should eq [] }
   end
-
 end

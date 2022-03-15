@@ -24,7 +24,7 @@ mod_webdav
 
     If any value is returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Delete or comment out the \"mod_webdav\" line.
@@ -46,6 +46,4 @@ mod_webdav
   describe parse_config(runtime).params['mod_webdav'] do
     it { should eq nil }
   end
-
 end
-

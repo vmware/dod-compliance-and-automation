@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000004' do
   title "The vCenter Server must terminate vSphere Client sessions after 10
 minutes of inactivity."
@@ -16,7 +14,7 @@ Configuration. View the value of the \"Session timeout\" setting.
     If the \"Session timeout\" is not set to \"10 minute(s)\", or below, this
 is a finding.
   "
-  desc  'fix', "From the vSphere Client, go to Administration >> Deployment >>
+  desc 'fix', "From the vSphere Client, go to Administration >> Deployment >>
 Client Configuration. Click \"Edit\" and enter \"10\" minutes into the
 \"Session timeout\" setting. Click \"Save\". "
   impact 0.5
@@ -29,9 +27,7 @@ Client Configuration. Click \"Edit\" and enter \"10\" minutes into the
   tag cci: 'CCI-001133'
   tag nist: ['SC-10']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

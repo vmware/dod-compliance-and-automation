@@ -1,4 +1,4 @@
-control "VCEM-67-000002" do
+control 'VCEM-67-000002' do
   title "ESX Agent Manager must limit the number of concurrent connections
 permitted."
   desc  "Resource exhaustion can occur when an unlimited number of concurrent
@@ -27,7 +27,7 @@ attribute.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -55,6 +55,4 @@ configure with the value 'maxThreads=\"300\"'
   describe xml("#{input('serverXmlPath')}") do
     its(['/Server/Service/Executor[@name="tomcatThreadPool"]/@maxThreads']) { should cmp "#{input('maxThreads')}" }
   end
-
 end
-

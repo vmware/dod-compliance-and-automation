@@ -1,4 +1,3 @@
-# encoding: utf-8
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,18 +65,18 @@ class SslCertificate < Inspec.resource(1)
         @timeout = opts[:timeout] if opts[:timeout]
       end
     else
-      return skip_resource "Unsupported parameter #{opts.inspect}. Must be a Hash, for example: ssl_certificate(host: 'github.com', port: 443)"
+      skip_resource "Unsupported parameter #{opts.inspect}. Must be a Hash, for example: ssl_certificate(host: 'github.com', port: 443)"
     end
   end
 
   # Called by: it { should exist }
   def exists?
-    return cert.class == OpenSSL::X509::Certificate
+    cert.class == OpenSSL::X509::Certificate
   end
 
   # Called by: it { should be_trusted }
   def trusted?
-    return ssl_error == nil
+    ssl_error.nil?
   end
 
   # Called by: its('signature_algorithm') { should eq 'something' }
@@ -90,15 +89,15 @@ class SslCertificate < Inspec.resource(1)
   end
 
   def subject
-     cert.subject.to_s
+    cert.subject.to_s
   end
 
   def hash_algorithm
-    return cert.signature_algorithm[/^(.+?)with/i,1].upcase
+    cert.signature_algorithm[/^(.+?)with/i, 1].upcase
   end
 
   def key_algorithm
-    return cert.signature_algorithm[/with(.+)encryption$/i,1].upcase
+    cert.signature_algorithm[/with(.+)encryption$/i, 1].upcase
   end
 
   # Public key size in bits
@@ -107,15 +106,15 @@ class SslCertificate < Inspec.resource(1)
   end
 
   def expiration_days
-    return ((cert.not_after - Time.now) / 86_400).to_i
+    ((cert.not_after - Time.now) / 86_400).to_i
   end
 
   def expiration
-    return cert.not_after
+    cert.not_after
   end
 
   def to_s
-    return "ssl_certificate on #{@host}:#{@port}"
+    "ssl_certificate on #{@host}:#{@port}"
   end
 
   private
@@ -156,7 +155,7 @@ class SslCertificate < Inspec.resource(1)
         get_cert(verify: false)
       else
         # Mark test as skipped if we can't get an SSL certificate
-        return skip_resource "Cannot connect to #{@host}:#{@port}, #{e.message}"
+        skip_resource "Cannot connect to #{@host}:#{@port}, #{e.message}"
       end
     end
   end
@@ -172,6 +171,6 @@ class SslCertificate < Inspec.resource(1)
     if hostname.nil? && inspec.backend.class.to_s == 'Train::Transports::Local::Connection'
       hostname = 'localhost'
     end
-    return hostname
+    hostname
   end
 end

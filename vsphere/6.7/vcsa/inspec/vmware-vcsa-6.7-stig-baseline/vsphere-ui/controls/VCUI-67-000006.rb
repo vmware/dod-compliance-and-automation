@@ -1,4 +1,4 @@
-control "VCUI-67-000006" do
+control 'VCUI-67-000006' do
   title 'vSphere UI must generate log records for system startup and shutdown.'
   desc  "Logging must be started as soon as possible when a service starts and
 when a service is stopped. Many forms of suspicious actions can be detected by
@@ -26,7 +26,7 @@ correctly enable early Java stdout and stderr logging.
     If no log file is specified for the \"StreamRedirectFile\" setting, this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json.
 
     Below the last line of the \"PreStartCommandArg\" block, add or reconfigure
@@ -40,7 +40,7 @@ the following line:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000089-WSR-000047'
-  tag satisfies: ['SRG-APP-000089-WSR-000047', 'SRG-APP-000092-WSR-000055']
+  tag satisfies: %w(SRG-APP-000089-WSR-000047 SRG-APP-000092-WSR-000055)
   tag gid: 'V-239687'
   tag rid: 'SV-239687r679167_rule'
   tag stig_id: 'VCUI-67-000006'
@@ -49,7 +49,6 @@ the following line:
   tag nist: ['AU-12 a']
 
   describe json("#{input('svcJsonPath')}") do
-    its('StreamRedirectFile') { should eq "#{input('streamRedirectFile')}"}
+    its('StreamRedirectFile') { should eq "#{input('streamRedirectFile')}" }
   end
-
 end

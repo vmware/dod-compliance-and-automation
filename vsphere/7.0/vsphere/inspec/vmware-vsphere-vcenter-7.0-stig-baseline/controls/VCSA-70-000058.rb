@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000058' do
   title "The vCenter Server Machine SSL certificate must be issued by a DoD
 certificate authority."
@@ -16,7 +14,7 @@ Examine the \"Issuer Information\" block.
     If the issuer specified is not a DoD approved certificate authority, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Obtain a DoD issued certificate and private key for each vCenter in the
 system, following the below requirements:
 
@@ -46,8 +44,4 @@ certificate\" radio button and click \"Next\". Supply the CA issued certificate
   tag fix_id: nil
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
-
-
-  
 end
-

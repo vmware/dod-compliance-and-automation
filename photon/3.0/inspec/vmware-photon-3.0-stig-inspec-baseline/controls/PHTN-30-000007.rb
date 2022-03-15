@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000007' do
   title "The Photon operating system must have sshd authentication logging
 enabled."
@@ -22,7 +20,7 @@ their log aggregators to correlate forensic activities among multiple systems.
 
     If authpriv is not configured to be logged, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/rsyslog.conf
@@ -48,8 +46,6 @@ their log aggregators to correlate forensic activities among multiple systems.
   tag nist: ['AC-17 (1)']
 
   describe command('grep "^authpriv" /etc/rsyslog.conf') do
-    its ('stdout.strip') { should cmp "authpriv.*   #{input('authprivlog')}" }
+    its('stdout.strip') { should cmp "authpriv.*   #{input('authprivlog')}" }
   end
-
 end
-

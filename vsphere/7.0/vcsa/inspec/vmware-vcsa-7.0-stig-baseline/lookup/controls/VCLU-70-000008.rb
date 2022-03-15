@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000008' do
   title 'Lookup Service application files must be verified for their integrity.'
   desc  "Verifying that the Lookup Service application code is unchanged from
@@ -15,7 +13,7 @@ files should be changed after installation, excluding configuration files."
 
     If there is any output, this is a finding.
   "
-  desc  'fix', "Reinstall the VCSA or roll back to a backup. Modifying the
+  desc 'fix', "Reinstall the VCSA or roll back to a backup. Modifying the
 Lookup Service installation files manually is not supported by VMware."
   impact 0.5
   tag severity: 'medium'
@@ -28,8 +26,6 @@ Lookup Service installation files manually is not supported by VMware."
   tag nist: ['CM-5 (3)']
 
   describe command('rpm -V vmware-lookupsvc|grep "^..5......"|grep -E "\.war|\.jar|\.sh|\.py"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

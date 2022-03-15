@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000076' do
   title 'The vCenter server must disable SNMPv1/2 receivers.'
   desc  "SNMPv3 supports commercial-grade security, including authentication,
@@ -28,9 +26,7 @@ vCenter Server >> Configure >> Settings >> General. Click \"Edit\". On the
   tag cci: 'CCI-001967'
   tag nist: ['IA-3 (1)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

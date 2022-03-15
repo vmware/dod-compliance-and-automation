@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000038' do
   title "ESXi hosts utilizing Host Profiles and/or Auto Deploy must use the
 vSphere Authentication Proxy to protect passwords when adding themselves to
@@ -42,7 +40,7 @@ Get-VMHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirect
     If you are not using Host Profiles to join active directory, this is not
 applicable.
   "
-  desc  'fix', "From the vSphere Client go to Home >> Policies and Profiles >>
+  desc 'fix', "From the vSphere Client go to Home >> Policies and Profiles >>
 Host Profiles >> Click a Host Profile to enter details mode >> Configure >>
 Security and Services >> Security Settings >> Authentication Configuration >>
 Active Directory Configuration. Click \"Edit Host Profile...\". Set the \"Join
@@ -63,29 +61,27 @@ Click \"Save\"."
   hostprofile = powercli_command(command).stdout
 
   if hostprofile.empty?
-    describe "" do
-      skip "There are no attached host profiles to this host so this control is not applicable"
+    describe '' do
+      skip 'There are no attached host profiles to this host so this control is not applicable'
     end
   end
 
-  if !hostprofile.empty?
+  unless hostprofile.empty?
     command1 = "(Get-VMHost -Name #{input('vmhostName')} | Get-VMHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirectory.Enabled"
     adEnabled = powercli_command(command1).stdout.strip
 
-    if adEnabled.match?("True")
+    if adEnabled.match?('True')
       command2 = "(Get-VMHost -Name #{input('vmhostName')} | Get-VMHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirectory | Select-Object -ExpandProperty Policy | Where {$_.Id -eq 'JoinDomainMethodPolicy'} | Select-Object -ExpandProperty PolicyOption | Select-Object -ExpandProperty Id"
       describe powercli_command(command2) do
-        its ('stdout.strip') { should cmp "FixedCAMConfigOption" }
+        its('stdout.strip') { should cmp 'FixedCAMConfigOption' }
       end
     end
 
-    if adEnabled.match?("False")
-      describe "" do
-        skip "Active Directory is not enabled on this host so this control is not applicable"
+    if adEnabled.match?('False')
+      describe '' do
+        skip 'Active Directory is not enabled on this host so this control is not applicable'
       end
     end
 
   end
-
 end
-

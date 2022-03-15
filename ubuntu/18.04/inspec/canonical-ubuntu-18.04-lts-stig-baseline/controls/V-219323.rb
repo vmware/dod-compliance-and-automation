@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219323' do
   title 'The Ubuntu operating system must be configured to use AppArmor.'
   desc  "Control of program execution is a mechanism used to prevent execution
@@ -44,7 +42,7 @@ command:
 
     If \"enabled\" is not returned, then this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Install \"Apparmor\" (if it is not installed) with the following command:
 
     # sudo apt-get install apparmor
@@ -67,7 +65,7 @@ documentation for more information on configuring profiles.
   tag rid: 'SV-219323r508662_rule'
   tag stig_id: 'UBTU-18-010441'
   tag fix_id: 'F-21047r305298_fix'
-  tag cci: ['V-100869', 'SV-109973', 'CCI-001764']
+  tag cci: %w(V-100869 SV-109973 CCI-001764)
   tag nist: ['CM-7 (2)']
 
   describe service('apparmor') do
@@ -76,4 +74,3 @@ documentation for more information on configuring profiles.
     it { should be_running }
   end
 end
-

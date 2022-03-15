@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219316' do
   title "The Ubuntu operating system must map the authenticated identity to the
 user or group account for PKI-based authentication."
@@ -21,7 +19,7 @@ installed, by running the following command:
 
     If ‘use_mappers’ is not found or is not set to pwent this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Install libpam-pkcs11 package on the system.
 
     Set use_mappers=pwent in /etc/pam_pkcs11/pam_pkcs11.conf
@@ -38,7 +36,7 @@ modify accordingly at
   tag rid: 'SV-219316r508662_rule'
   tag stig_id: 'UBTU-18-010426'
   tag fix_id: 'F-21040r305277_fix'
-  tag cci: ['V-100855', 'SV-109959', 'CCI-000187']
+  tag cci: %w(V-100855 SV-109959 CCI-000187)
   tag nist: ['IA-5 (2) (c)']
 
   config_file = '/etc/pam_pkcs11/pam_pkcs11.conf'
@@ -53,11 +51,9 @@ modify accordingly at
       its('use_mappers') { should cmp 'pwent' }
     end
   else
-    describe (config_file + ' exists') do
+    describe(config_file + ' exists') do
       subject { config_file_exists }
       it { should be true }
     end
   end
-
 end
-

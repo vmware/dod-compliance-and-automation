@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLD-70-000009' do
   title "VAMI server binaries and libraries must be verified for their
 integrity."
@@ -24,7 +22,7 @@ modified on first boot and thus are excluded from the check.
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If the VAMI binaries have been modified from the default state when
 deployed as part of the VCSA then the system must be wiped and redeployed or
 restored from backup.
@@ -43,8 +41,6 @@ reinstalling RPMs or similar efforts.
   tag nist: ['CM-5 (3)']
 
   describe command('rpm -V vmware-studio-vami-lighttpd|grep "^..5......"|grep -v -E "\.conf|\.service"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

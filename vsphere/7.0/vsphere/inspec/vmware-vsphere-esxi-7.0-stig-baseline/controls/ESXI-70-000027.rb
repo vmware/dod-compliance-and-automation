@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000027' do
   title 'The ESXi host SSH daemon must set a timeout interval on idle sessions.'
   desc  "Automatically logging out idle users guards against compromises via
@@ -16,7 +14,7 @@ hijacked administrative sessions."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, add or correct the following line in
 \"/etc/ssh/sshd_config\":
 
@@ -32,9 +30,7 @@ hijacked administrative sessions."
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219247' do
   title "The Ubuntu operating system must generate audit records for any usage
 of the removexattr system call."
@@ -36,7 +34,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful use of the \"removexattr\" system call.
 
@@ -66,22 +64,21 @@ required.
   tag rid: 'SV-219247r508662_rule'
   tag stig_id: 'UBTU-18-010324'
   tag fix_id: 'F-20971r305070_fix'
-  tag cci: ['SV-110019', 'V-100915', 'CCI-000172']
+  tag cci: %w(SV-110019 V-100915 CCI-000172)
   tag nist: ['AU-12 c']
 
-  if os.arch == "x86_64"
-    describe auditd.syscall("removexattr").where { arch == "b64" } do
-      its("action.uniq") { should eq ["always"] }
-      its("list.uniq") { should eq ["exit"] }
+  if os.arch == 'x86_64'
+    describe auditd.syscall('removexattr').where { arch == 'b64' } do
+      its('action.uniq') { should eq ['always'] }
+      its('list.uniq') { should eq ['exit'] }
       its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
-      its('fields.flatten.uniq') {  should include "auid=0" }
+      its('fields.flatten.uniq') {  should include 'auid=0' }
     end
   end
-  describe auditd.syscall("removexattr").where { arch == "b32" } do
-    its("action.uniq") { should eq ["always"] }
-    its("list.uniq") { should eq ["exit"] }
+  describe auditd.syscall('removexattr').where { arch == 'b32' } do
+    its('action.uniq') { should eq ['always'] }
+    its('list.uniq') { should eq ['exit'] }
     its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
-    its('fields.flatten.uniq') {  should include "auid=0" }
+    its('fields.flatten.uniq') {  should include 'auid=0' }
   end
 end
-

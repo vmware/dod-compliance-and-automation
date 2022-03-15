@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219245' do
   title "The Ubuntu operating system must generate audit records for any usage
 of the lsetxattr system call."
@@ -36,7 +34,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful use of the \"lsetxattr\" system call.
 
@@ -68,22 +66,21 @@ required.
   tag stig_id: 'UBTU-18-010322'
   tag fix_id: 'F-20969r305064_fix'
   tag cci: ['CCI-000172']
-  tag legacy: ['SV-109821', 'V-100717']
+  tag legacy: %w(SV-109821 V-100717)
   tag nist: ['AU-12 c']
 
-  if os.arch == "x86_64"
-    describe auditd.syscall("lsetxattr").where { arch == "b64" } do
-      its("action.uniq") { should eq ["always"] }
-      its("list.uniq") { should eq ["exit"] }
+  if os.arch == 'x86_64'
+    describe auditd.syscall('lsetxattr').where { arch == 'b64' } do
+      its('action.uniq') { should eq ['always'] }
+      its('list.uniq') { should eq ['exit'] }
       its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
-      its('fields.flatten.uniq') {  should include "auid=0" }
+      its('fields.flatten.uniq') {  should include 'auid=0' }
     end
   end
-  describe auditd.syscall("lsetxattr").where { arch == "b32" } do
-    its("action.uniq") { should eq ["always"] }
-    its("list.uniq") { should eq ["exit"] }
+  describe auditd.syscall('lsetxattr').where { arch == 'b32' } do
+    its('action.uniq') { should eq ['always'] }
+    its('list.uniq') { should eq ['exit'] }
     its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
-    its('fields.flatten.uniq') {  should include "auid=0" }
+    its('fields.flatten.uniq') {  should include 'auid=0' }
   end
 end
-

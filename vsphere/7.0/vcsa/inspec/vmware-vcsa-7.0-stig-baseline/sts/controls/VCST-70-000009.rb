@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000009' do
   title 'The Security Token Service must only run one webapp.'
   desc  "VMware ships the Security Token Service on the VCSA with one webapp,
@@ -37,8 +35,6 @@ finding.
   tag nist: ['CM-5 (3)']
 
   describe command("ls -A '#{input('appPath')}'/*.war") do
-    its ('stdout.strip') { should eq '/usr/lib/vmware-sso/vmware-sts/webapps/ROOT.war' }
+    its('stdout.strip') { should eq '/usr/lib/vmware-sso/vmware-sts/webapps/ROOT.war' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219152' do
   title "The Ubuntu operating system must immediately notify the SA and ISSO
 (at a minimum) when allocated audit record storage volume reaches 75% of the
@@ -54,7 +52,7 @@ system administrator(s) and/or ISSO, this is a finding.
     Note: If the email address of the system administrator is on a remote
 system a mail package must be available.
   "
-  desc  'fix', "
+  desc 'fix', "
     Edit /etc/audit/auditd.conf and set the space_left_action parameter to
 \"exec\" or \"email\".
 
@@ -76,9 +74,9 @@ least, 25% of the repository maximum audit record storage capacity.
   tag rid: 'SV-219152r508662_rule'
   tag stig_id: 'UBTU-18-010006'
   tag fix_id: 'F-20876r304785_fix'
-  tag cci: ['SV-109633', 'V-100529', 'CCI-001855']
+  tag cci: %w(SV-109633 V-100529 CCI-001855)
   tag nist: ['AU-5 (1)']
-  
+
   audit_log_path = input('log_file_dir')
   email_to_notify = input('action_mail_acct')
 
@@ -91,7 +89,7 @@ least, 25% of the repository maximum audit record storage capacity.
   end
   describe 'The space_left_action configuration' do
     subject { auditd_conf.space_left_action }
-    it { should eq "email" }
+    it { should eq 'email' }
   end
 
   describe 'The action_mail_acct configuration' do
@@ -99,4 +97,3 @@ least, 25% of the repository maximum audit record storage capacity.
     it { should eq email_to_notify }
   end
 end
-

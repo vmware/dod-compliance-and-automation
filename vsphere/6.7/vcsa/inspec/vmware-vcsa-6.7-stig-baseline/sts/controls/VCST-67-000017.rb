@@ -21,7 +21,7 @@ permissions as applied out of the box.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     At the command prompt, execute the following command:
@@ -35,16 +35,15 @@ permissions as applied out of the box.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000211-WSR-000030'
-  tag satisfies: ['SRG-APP-000211-WSR-000030', 'SRG-APP-000380-WSR-000072']
+  tag satisfies: %w(SRG-APP-000211-WSR-000030 SRG-APP-000380-WSR-000072)
   tag gid: 'V-239668'
   tag rid: 'SV-239668r816729_rule'
   tag stig_id: 'VCST-67-000017'
   tag fix_id: 'F-42860r816728_fix'
-  tag cci: ['CCI-001082', 'CCI-001813']
+  tag cci: %w(CCI-001082 CCI-001813)
   tag nist: ['SC-2', 'CM-5 (1)']
 
   describe command("find '#{input('rootPath')}' -xdev -type f -a \'(\' -not -user root -o -not -group root \')\' -exec ls -ld {} \;") do
-   its('stdout.strip') { should eq ''}
+    its('stdout.strip') { should eq '' }
   end
-
 end

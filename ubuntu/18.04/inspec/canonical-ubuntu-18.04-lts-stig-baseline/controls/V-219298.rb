@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219298' do
   title "The Ubuntu operating system must generate audit records when
 successful/unsuccessful attempts to use modprobe command."
@@ -26,7 +24,7 @@ is a finding.
     Note: The '-k' allows for specifying an arbitrary identifier and the string
 after it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to audit the execution of the module
 management program \"modprobe\".
 
@@ -50,7 +48,7 @@ file.
   tag rid: 'SV-219298r508662_rule'
   tag stig_id: 'UBTU-18-010389'
   tag fix_id: 'F-21022r305223_fix'
-  tag cci: ['SV-109923', 'V-100819', 'CCI-000172']
+  tag cci: %w(SV-109923 V-100819 CCI-000172)
   tag nist: ['AU-12 c']
 
   @audit_file = '/sbin/modprobe'
@@ -70,10 +68,9 @@ file.
       end
     end
   else
-    describe ('Audit line(s) for ' + @audit_file + ' exist') do
+    describe('Audit line(s) for ' + @audit_file + ' exist') do
       subject { audit_lines_exist }
       it { should be true }
     end
   end
 end
-

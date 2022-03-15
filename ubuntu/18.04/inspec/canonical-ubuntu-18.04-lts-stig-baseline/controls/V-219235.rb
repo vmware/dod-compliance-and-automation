@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219235' do
   title "The Ubuntu operating system must permit only authorized accounts to
 own the audit configuration files."
@@ -45,7 +43,7 @@ following command:
 \"/etc/audit/auditd.conf\" file is owned by a user other than \"root\", this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure \"/etc/audit/audit.rules\", \"/etc/audit/rules.d/*\" and
 \"/etc/audit/auditd.conf\" files to be owned by root user by using the
 following command:
@@ -62,7 +60,7 @@ and /etc/audit/rules.d/ directories.
   tag rid: 'SV-219235r508662_rule'
   tag stig_id: 'UBTU-18-010312'
   tag fix_id: 'F-20959r305034_fix'
-  tag cci: ['SV-109801', 'V-100697', 'CCI-000171']
+  tag cci: %w(SV-109801 V-100697 CCI-000171)
   tag nist: ['AU-12 b']
 
   files1 = command('find /etc/audit/ -type f \( -iname \*.rules -o -iname \*.conf \)').stdout.strip.split("\n").entries
@@ -76,4 +74,3 @@ and /etc/audit/rules.d/ directories.
     end
   end
 end
-

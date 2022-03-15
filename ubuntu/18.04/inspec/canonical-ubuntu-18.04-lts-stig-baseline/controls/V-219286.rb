@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219286' do
   title "The Ubuntu operating system must generate audit records when
 successful/unsuccessful attempts to use the lremovexattr system call."
@@ -36,7 +34,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate audit records for
 successful/unsuccessful attempts to use lremovexattr system call.
 
@@ -60,12 +58,12 @@ required.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000462-GPOS-00206'
-  tag satisfies: ['SRG-OS-000462-GPOS-00206', 'SRG-OS-000466-GPOS-00210']
+  tag satisfies: %w(SRG-OS-000462-GPOS-00206 SRG-OS-000466-GPOS-00210)
   tag gid: 'V-219286'
   tag rid: 'SV-219286r508662_rule'
   tag stig_id: 'UBTU-18-010370'
   tag fix_id: 'F-21010r305187_fix'
-  tag cci: ['SV-109899', 'V-100795', 'CCI-000172']
+  tag cci: %w(SV-109899 V-100795 CCI-000172)
   tag nist: ['AU-12 c']
 
   if os.arch == 'x86_64'
@@ -79,4 +77,3 @@ required.
     its('list.uniq') { should eq ['exit'] }
   end
 end
-

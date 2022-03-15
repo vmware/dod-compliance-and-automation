@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000057' do
   title 'The vCenter Server must enable TLS 1.2 exclusively.'
   desc  "TLS 1.0 and 1.1 are deprecated protocols with well published
@@ -23,7 +21,7 @@ following command:
     If the output indicates versions of TLS other than 1.2 are enabled, this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt on the vCenter Server Appliance, execute the
 following commands:
 
@@ -47,9 +45,7 @@ the appliance is rebooted.
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

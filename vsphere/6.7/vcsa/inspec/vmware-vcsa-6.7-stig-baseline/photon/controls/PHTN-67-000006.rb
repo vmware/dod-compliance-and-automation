@@ -1,4 +1,4 @@
-control "PHTN-67-000006" do
+control 'PHTN-67-000006' do
   title "The Photon operating system must have the sshd SyslogFacility set to
 \"authpriv\"."
   desc  "Automated monitoring of remote access sessions allows organizations to
@@ -17,7 +17,7 @@ by auditing connection activities."
     If there is no output or if the output does not match expected result, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"SyslogFacility\" line is uncommented and set to the
@@ -40,8 +40,6 @@ following:
   tag nist: ['AC-17 (1)']
 
   describe command('sshd -T|&grep -i syslogfacility') do
-    its ('stdout.strip') { should cmp 'syslogfacility AUTHPRIV' }
+    its('stdout.strip') { should cmp 'syslogfacility AUTHPRIV' }
   end
-
 end
-

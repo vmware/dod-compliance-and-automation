@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219318' do
   title "The Ubuntu operating system must implement multifactor authentication
 for remote access to privileged accounts in such a way that one of the factors
@@ -45,7 +43,7 @@ smart cards
 
     If the \"libpam-pkcs11\" package is not installed, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to implement multifactor
 authentication by installing the required packages.
 
@@ -61,11 +59,10 @@ command:
   tag rid: 'SV-219318r508662_rule'
   tag stig_id: 'UBTU-18-010431'
   tag fix_id: 'F-21042r305283_fix'
-  tag cci: ['V-100859', 'SV-109963', 'CCI-001948']
+  tag cci: %w(V-100859 SV-109963 CCI-001948)
   tag nist: ['IA-2 (11)']
 
   describe package('libpam-pkcs11') do
     it { should be_installed }
   end
 end
-

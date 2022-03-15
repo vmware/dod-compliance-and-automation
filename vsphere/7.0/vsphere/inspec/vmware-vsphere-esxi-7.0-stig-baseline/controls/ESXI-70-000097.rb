@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000097' do
   title 'The ESXi CIM service must be disabled.'
   desc  "The Common Information Model (CIM) system provides an interface that
@@ -54,13 +52,11 @@ Stop-VMHostService
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'CIM Server'} | Select-Object -ExpandProperty Policy"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "off" }
+    its('stdout.strip') { should cmp 'off' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'CIM Server'} | Select-Object -ExpandProperty Running"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "false" }
+    its('stdout.strip') { should cmp 'false' }
   end
-
 end
-

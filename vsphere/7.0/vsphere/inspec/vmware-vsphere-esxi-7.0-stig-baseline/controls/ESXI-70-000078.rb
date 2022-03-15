@@ -1,7 +1,5 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000078' do
-  title "The ESXi host must use DoD approved certificates."
+  title 'The ESXi host must use DoD approved certificates.'
   desc  "The default self-signed, VMCA issued host certificate must replaced
 with a DoD approved certificate when the host will be accessed directly, such
 during a VM console connection. The use of a DoD certificate on the host
@@ -18,7 +16,7 @@ finding.
     If the host will never be accessed directly (VM console connections bypass
 vCenter), this is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Join the ESXi host to vCenter before replacing the certificate.
 
     Obtain a DoD issued certificate and private key for the host following the
@@ -64,8 +62,6 @@ new certificate:
   tag nist: ['CM-6 b']
 
   describe ssl_certificate(host: "#{input('vmhostName')}", port: 443) do
-    its('issuer') { should cmp "O=U.S. Government" }
+    its('issuer') { should cmp 'O=U.S. Government' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219332' do
   title "The Ubuntu operating system must synchronize internal information
 system clocks to the authoritative time source when the time difference is
@@ -35,7 +33,7 @@ authoritative time source when the time difference is greater than one second.
     If the makestep option is commented out or is not set to \"1 -1\", this is
 a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure chrony to synchronize the internal system clocks to the
 authoritative source when the time difference is greater than one second by
 doing the following,
@@ -55,7 +53,7 @@ doing the following,
   tag rid: 'SV-219332r508662_rule'
   tag stig_id: 'UBTU-18-010502'
   tag fix_id: 'F-21056r305325_fix'
-  tag cci: ['V-100887', 'SV-109991', 'CCI-002046']
+  tag cci: %w(V-100887 SV-109991 CCI-002046)
   tag nist: ['AU-8 (1) (b)']
 
   chrony_file_path = '/etc/chrony/chrony.conf'
@@ -64,13 +62,12 @@ doing the following,
   if chrony_file.exist?
     describe chrony_file do
       subject { chrony_file }
-      its('content') { should match %r{^makestep 1 -1} }
+      its('content') { should match /^makestep 1 -1/ }
     end
   else
-    describe (chrony_file_path + ' exists') do
+    describe(chrony_file_path + ' exists') do
       subject { chrony_file.exist? }
       it { should be true }
     end
   end
 end
-

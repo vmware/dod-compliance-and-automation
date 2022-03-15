@@ -1,4 +1,4 @@
-control "ESXI-67-000068" do
+control 'ESXI-67-000068' do
   title "All ESXi host-connected virtual switch VLANs must be fully documented
 and have only the required VLANs."
   desc  "When defining a physical switch port for trunk mode, only specified
@@ -24,7 +24,7 @@ VLANs are configured for all physical ports connected to ESXi hosts.
     If the physical switch's configuration is trunked VLANs that are not used
 by ESXi for all physical ports connected to ESXi hosts, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Note that this check refers to an entity outside the scope of the ESXi
 server system.
 
@@ -41,9 +41,7 @@ are not in use.
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

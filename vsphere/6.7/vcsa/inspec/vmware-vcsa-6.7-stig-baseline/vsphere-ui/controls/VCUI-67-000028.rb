@@ -1,4 +1,4 @@
-control "VCUI-67-000028" do
+control 'VCUI-67-000028' do
   title 'vSphere UI must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
 that use TCP/IP ports. Some of these processes may be deemed unnecessary or too
@@ -20,7 +20,7 @@ accurate to their shipping state."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-ui/server/conf/catalina.properties.
 
@@ -53,5 +53,4 @@ configuration below:
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['https.port'] do
     it { should eq "#{input('catalinahttpsPort')}" }
   end
-
 end

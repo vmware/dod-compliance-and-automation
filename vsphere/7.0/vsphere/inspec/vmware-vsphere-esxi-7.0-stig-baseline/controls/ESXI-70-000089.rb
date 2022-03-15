@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000089' do
   title 'The ESXi Host Client must be configured with a session timeout.'
   desc  "The ESXi Host Client is the UI served up by the host itself, outside
@@ -48,8 +46,6 @@ Set-AdvancedSetting -Value \"600\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "600" }
+    its('stdout.strip') { should cmp '600' }
   end
-
 end
-

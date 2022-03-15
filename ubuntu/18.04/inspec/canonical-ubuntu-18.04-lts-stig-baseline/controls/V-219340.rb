@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219340' do
   title "The Ubuntu operating system must configure the uncomplicated firewall
 to rate-limit impacted network interfaces."
@@ -37,7 +35,7 @@ connection to the system with the following command:
     If any service is not rate limited by the Uncomplicated Firewall, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the application firewall to protect against or limit the effects
 of Denial of Service (DoS) attacks by ensuring the Ubuntu operating system is
 implementing rate-limiting measures on impacted network interfaces.
@@ -59,7 +57,7 @@ rate-limit on the eth0 interface:
   tag rid: 'SV-219340r508662_rule'
   tag stig_id: 'UBTU-18-010512'
   tag fix_id: 'F-21064r305349_fix'
-  tag cci: ['SV-110005', 'V-100901', 'CCI-002385']
+  tag cci: %w(SV-110005 V-100901 CCI-002385)
   tag nist: ['SC-5']
 
   ufw_installed = package('ufw').installed?
@@ -80,8 +78,7 @@ rate-limit on the eth0 interface:
   else
     describe 'UFW is installed' do
       subject { ufw_installed }
-      it {  should be true }
+      it { should be true }
     end
   end
 end
-

@@ -1,4 +1,4 @@
-control "PHTN-67-000037" do
+control 'PHTN-67-000037' do
   title 'The Photon operating system must use TCP syncookies.'
   desc  "A TCP SYN flood attack can cause a denial of service by filling a
 system's TCP connection table with connections in the SYN_RCVD state.
@@ -19,7 +19,7 @@ enables the system to continue servicing valid connection requests.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/sysctl.conf with a text editor.
 
     Add or update the following line:
@@ -33,17 +33,15 @@ enables the system to continue servicing valid connection requests.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000142-GPOS-00071'
-  tag satisfies: ['SRG-OS-000142-GPOS-00071', 'SRG-OS-000420-GPOS-00186']
+  tag satisfies: %w(SRG-OS-000142-GPOS-00071 SRG-OS-000420-GPOS-00186)
   tag gid: 'V-239109'
   tag rid: 'SV-239109r816622_rule'
   tag stig_id: 'PHTN-67-000037'
   tag fix_id: 'F-42279r816621_fix'
-  tag cci: ['CCI-001095', 'CCI-002385']
+  tag cci: %w(CCI-001095 CCI-002385)
   tag nist: ['SC-5 (2)', 'SC-5']
 
   describe kernel_parameter('net.ipv4.tcp_syncookies') do
     its('value') { should eq 1 }
   end
-
 end
-

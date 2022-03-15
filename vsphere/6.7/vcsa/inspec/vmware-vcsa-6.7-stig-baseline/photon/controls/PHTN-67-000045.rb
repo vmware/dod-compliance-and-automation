@@ -1,4 +1,4 @@
-control "PHTN-67-000045" do
+control 'PHTN-67-000045' do
   title 'The Photon operating system must audit all account modifications.'
   desc  "Once an attacker establishes access to a system, the attacker often
 attempts to create a persistent method of reestablishing access. One way to
@@ -26,7 +26,7 @@ purposes.
 accurate results. Enabling the auditd service is done as part of a separate
 control.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
 following lines:
 
@@ -42,21 +42,19 @@ following lines:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000239-GPOS-00089'
-  tag satisfies: ['SRG-OS-000239-GPOS-00089', 'SRG-OS-000303-GPOS-00120',
-'SRG-OS-000304-GPOS-00121']
+  tag satisfies: %w(SRG-OS-000239-GPOS-00089 SRG-OS-000303-GPOS-00120
+SRG-OS-000304-GPOS-00121)
   tag gid: 'V-239116'
   tag rid: 'SV-239116r816628_rule'
   tag stig_id: 'PHTN-67-000045'
   tag fix_id: 'F-42286r816627_fix'
-  tag cci: ['CCI-001403', 'CCI-002130', 'CCI-002132']
+  tag cci: %w(CCI-001403 CCI-002130 CCI-002132)
   tag nist: ['AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)']
 
   describe auditd do
-    its("lines") { should include %r{-w /etc/passwd -p wa -k passwd} }
-    its("lines") { should include %r{-w /etc/shadow -p wa -k shadow}}
-    its("lines") { should include %r{-w /etc/group -p wa -k group}}
-    its("lines") { should include %r{-w /etc/gshadow -p wa -k gshadow} }
+    its('lines') { should include %r{-w /etc/passwd -p wa -k passwd} }
+    its('lines') { should include %r{-w /etc/shadow -p wa -k shadow} }
+    its('lines') { should include %r{-w /etc/group -p wa -k group} }
+    its('lines') { should include %r{-w /etc/gshadow -p wa -k gshadow} }
   end
-
 end
-

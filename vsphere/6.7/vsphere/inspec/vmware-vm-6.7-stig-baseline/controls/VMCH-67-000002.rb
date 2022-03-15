@@ -1,4 +1,4 @@
-control "VMCH-67-000002" do
+control 'VMCH-67-000002' do
   title 'Drag and drop operations must be disabled on the virtual machine.'
   desc  "Copy and paste operations are disabled by default; however, by
 explicitly disabling this feature it will enable audit controls to check that
@@ -21,7 +21,7 @@ server, run the following command:
     If the virtual machine advanced setting isolation.tools.dnd.disable does
 not exist or is not set to true, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Verify the isolation.tools.dnd.disable value is set to true. If
@@ -61,8 +61,6 @@ server, run the following command:
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name isolation.tools.dnd.disable).value"
   describe powercli_command(command).stdout.strip do
-    it { should cmp "true" }
+    it { should cmp 'true' }
   end
-
 end
-

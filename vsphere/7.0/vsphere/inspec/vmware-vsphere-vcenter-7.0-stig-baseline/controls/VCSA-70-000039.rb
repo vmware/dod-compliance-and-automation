@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000039' do
   title 'The vCenter Server passwords must be at least 15 characters in length.'
   desc  "The shorter the password, the lower the number of possible
@@ -27,7 +25,7 @@ value:
 
     If this password policy is not configured as stated, this is a finding.
   "
-  desc  'fix', "From the vSphere Client, go to Administration >> Single Sign On
+  desc 'fix', "From the vSphere Client, go to Administration >> Single Sign On
 >> Configuration >> Local Accounts >> Password Policy. Click \"Edit\". Set the
 Minimum Length to \"15\" and click \"Save\"."
   impact 0.5
@@ -40,9 +38,7 @@ Minimum Length to \"15\" and click \"Save\"."
   tag cci: 'CCI-000205'
   tag nist: ['IA-5 (1) (a)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

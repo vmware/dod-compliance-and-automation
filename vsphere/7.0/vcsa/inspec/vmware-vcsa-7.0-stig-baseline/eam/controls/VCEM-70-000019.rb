@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000019' do
   title 'ESX Agent Manager must limit the number of allowed connections.'
   desc  "Limiting the number of established connections to the ESX Agent
@@ -19,7 +17,7 @@ affect system availability."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -43,8 +41,6 @@ affect system availability."
   tag nist: ['SC-5 (1)']
 
   describe xml("#{input('serverXmlPath')}") do
-    its(['Server/Service/Connector/@acceptCount']) { should cmp "#{input('acceptCount')}"}
+    its(['Server/Service/Connector/@acceptCount']) { should cmp "#{input('acceptCount')}" }
   end
-
 end
-

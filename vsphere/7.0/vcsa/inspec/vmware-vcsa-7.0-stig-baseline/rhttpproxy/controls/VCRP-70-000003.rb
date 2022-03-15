@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCRP-70-000003' do
   title 'Envoy must be configured to operate in FIPS mode.'
   desc  "Envoy ships with FIPS 140-2 validated OpenSSL cryptographic libraries
@@ -19,7 +17,7 @@ over the client TLS connection."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml
 
     Locate the <config>/<vmacore>/<ssl> block and configure <fips> as follows:
@@ -43,6 +41,4 @@ over the client TLS connection."
   describe xml("#{input('configXmlPath')}") do
     its(['/config/vmacore/ssl/fips']) { should cmp "#{input('fips')}" }
   end
-
 end
-

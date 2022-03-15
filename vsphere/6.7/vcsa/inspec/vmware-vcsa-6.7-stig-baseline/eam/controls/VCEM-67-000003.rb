@@ -1,4 +1,4 @@
-control "VCEM-67-000003" do
+control 'VCEM-67-000003' do
   title 'ESX Agent Manager must limit the maximum size of a POST request.'
   desc  "The \"maxPostSize\" value is the maximum size in bytes of the POST
 that will be handled by the container FORM URL parameter parsing. Limit its
@@ -19,7 +19,7 @@ configured in its shipping state to not set a value for \"maxPostSize\"."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -39,6 +39,4 @@ configured in its shipping state to not set a value for \"maxPostSize\"."
   describe xml("#{input('serverXmlPath')}") do
     its('Server/Service/Connector/attribute::maxPostSize') { should eq [] }
   end
-
 end
-

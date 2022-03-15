@@ -1,4 +1,4 @@
-control "PHTN-67-000055" do
+control 'PHTN-67-000055' do
   title "The Photon operating system must configure sshd with a specific
 ListenAddress."
   desc  "Without specifying a ListenAddress, sshd will listen on all
@@ -13,7 +13,7 @@ behavior and could lead to offering remote access on an unapproved network."
     If the ListenAddress is not configured to the VCSA management IP, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"ListenAddress\" line is uncommented and set to a valid
@@ -41,8 +41,6 @@ local IP:
 
   photonIp = command("ip -br addr show eth0 |&awk '{print $3}' |&cut -d'/' -f1").stdout.strip
   describe command('sshd -T|&grep -i ListenAddress') do
-    its ('stdout.strip') { should match /listenaddress #{photonIp}/ }
+    its('stdout.strip') { should match /listenaddress #{photonIp}/ }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000034' do
   title 'The ESXi host must disable the Managed Object Browser (MOB).'
   desc  "The Managed Object Browser (MOB) provides a way to explore the object
@@ -26,7 +24,7 @@ Config.HostAgent.plugins.solo.enableMob
     If the \"Config.HostAgent.plugins.solo.enableMob\" setting is not set to
 \"false\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Click \"Edit\". Select the
 \"Config.HostAgent.plugins.solo.enableMob\" value and configure it to \"false\".
@@ -51,8 +49,6 @@ Config.HostAgent.plugins.solo.enableMob | Set-AdvancedSetting -Value false
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Config.HostAgent.plugins.solo.enableMob | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "false" }
+    its('stdout.strip') { should cmp 'false' }
   end
-
 end
-

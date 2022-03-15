@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000014' do
   title "The Photon operating system audit log must log space limit problems to
 syslog."
@@ -19,7 +17,7 @@ the audit capability, and system operation may be adversely affected."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/auditd.conf
@@ -45,8 +43,6 @@ following:
   tag nist: ['AU-5 a']
 
   describe auditd_conf do
-    its("space_left_action") { should cmp 'SYSLOG'}
+    its('space_left_action') { should cmp 'SYSLOG' }
   end
-
 end
-

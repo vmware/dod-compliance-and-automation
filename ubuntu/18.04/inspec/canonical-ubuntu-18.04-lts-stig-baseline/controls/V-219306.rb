@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219306' do
   title 'The Ubuntu operating system must monitor remote access methods.'
   desc  "Remote access services, such as those providing remote access to
@@ -32,7 +30,7 @@ command:
     If \"auth.*\", \"authpriv.*\" or \"daemon.*\" are not configured to be
 logged in at least one of the config files, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to monitor all remote access methods
 by adding the following lines to the \"/etc/rsyslog.d/50-default.conf\" file:
 
@@ -51,11 +49,11 @@ restarted with the following command:
   tag rid: 'SV-219306r508662_rule'
   tag stig_id: 'UBTU-18-010410'
   tag fix_id: 'F-21030r305247_fix'
-  tag cci: ['SV-109939', 'V-100835', 'CCI-000067']
+  tag cci: %w(SV-109939 V-100835 CCI-000067)
   tag nist: ['AC-17 (1)']
 
   options = {
-    assignment_regex: /^\s*([^:]*?)\s*\t\s*(.*?)\s*$/
+    assignment_regex: /^\s*([^:]*?)\s*\t\s*(.*?)\s*$/,
   }
   config_file = '/etc/rsyslog.d/50-default.conf'
   auth_setting = parse_config_file(config_file, options).params['auth,authpriv.*']
@@ -69,4 +67,3 @@ restarted with the following command:
     it { should_not be_empty }
   end
 end
-

@@ -1,4 +1,4 @@
-control "PHTN-67-000003" do
+control 'PHTN-67-000003' do
   title "The Photon operating system must display the Standard Mandatory DoD
 Notice and Consent Banner before granting SSH access."
   desc  "Display of a standardized and approved use notification before
@@ -23,7 +23,7 @@ Executive Orders, directives, policies, regulations, standards, and guidance.
     If the file does not contain the Standard Mandatory DoD Notice and Consent
 Banner, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands:
 
     # cp /etc/issue.DoD /etc/issue
@@ -65,23 +65,21 @@ Agreement for details.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000023-GPOS-00006'
-  tag satisfies: ['SRG-OS-000023-GPOS-00006', 'SRG-OS-000228-GPOS-00088']
+  tag satisfies: %w(SRG-OS-000023-GPOS-00006 SRG-OS-000228-GPOS-00088)
   tag gid: 'V-239075'
   tag rid: 'SV-239075r675033_rule'
   tag stig_id: 'PHTN-67-000003'
   tag fix_id: 'F-42245r675032_fix'
-  tag cci: ['CCI-000048', 'CCI-001384', 'CCI-001385', 'CCI-001386',
-'CCI-001387', 'CCI-001388']
+  tag cci: %w(CCI-000048 CCI-001384 CCI-001385 CCI-001386
+CCI-001387 CCI-001388)
   tag nist: ['AC-8 a', 'AC-8 c 1', 'AC-8 c 2', 'AC-8 c 2', 'AC-8 c 2', "AC-8 c
 3"]
 
   describe command('sshd -T|&grep -i Banner') do
-    its ('stdout.strip') { should cmp 'Banner /etc/issue' }
+    its('stdout.strip') { should cmp 'Banner /etc/issue' }
   end
 
   describe file('/etc/issue') do
-    its ('content') {should match /You are accessing a U\.S\. Government/}
+    its('content') { should match /You are accessing a U\.S\. Government/ }
   end
-
 end
-

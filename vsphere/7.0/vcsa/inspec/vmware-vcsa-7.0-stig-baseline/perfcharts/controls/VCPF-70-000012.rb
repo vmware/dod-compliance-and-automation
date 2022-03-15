@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000012' do
   title "Performance Charts must have Multipurpose Internet Mail Extensions
 (MIMEs) that invoke operating system shell programs disabled."
@@ -17,7 +15,7 @@ users tricking the server into executing shell command files."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml
@@ -53,8 +51,6 @@ users tricking the server into executing shell command files."
   tag nist: ['CM-7 a']
 
   describe command("grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' '#{input('webXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

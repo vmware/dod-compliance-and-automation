@@ -1,4 +1,4 @@
-control "PHTN-67-000074" do
+control 'PHTN-67-000074' do
   title "The Photon operating system auditd service must generate audit records
 for all account creations, modifications, disabling, and termination events."
   desc  "Without generating audit records that are specific to the security and
@@ -22,7 +22,7 @@ this is a finding.
 accurate results. Enabling the auditd service is done as part of a separate
 control.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
 following lines:
 
@@ -43,8 +43,6 @@ following lines:
   tag nist: ['AU-12 c']
 
   describe auditd do
-    its("lines") { should include %r{-w /etc/security/opasswd -p wa -k opasswd} }
+    its('lines') { should include %r{-w /etc/security/opasswd -p wa -k opasswd} }
   end
-
 end
-

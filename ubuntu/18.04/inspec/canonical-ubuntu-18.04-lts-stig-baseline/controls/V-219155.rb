@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219155' do
   title "Advance package Tool (APT) must be configured to prevent the
 installation of patches, service packs, device drivers, or Ubuntu operating
@@ -39,7 +37,7 @@ to \"false\" with the following command:
     If any of the files returned from the command with \"AllowUnauthenticated\"
 set to \"true\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure Advance package Tool (APT) to prevent the installation of
 patches, service packs, device drivers, or Ubuntu operating system components
 without verification they have been digitally signed using a certificate that
@@ -59,7 +57,7 @@ entirely from each file. Below is an example of setting the
   tag rid: 'SV-219155r508662_rule'
   tag stig_id: 'UBTU-18-010016'
   tag fix_id: 'F-20879r304794_fix'
-  tag cci: ['V-100535', 'SV-109639', 'CCI-001749']
+  tag cci: %w(V-100535 SV-109639 CCI-001749)
   tag nist: ['CM-5 (3)']
 
   describe directory('/etc/apt/apt.conf.d') do
@@ -81,4 +79,3 @@ entirely from each file. Below is an example of setting the
     end
   end
 end
-

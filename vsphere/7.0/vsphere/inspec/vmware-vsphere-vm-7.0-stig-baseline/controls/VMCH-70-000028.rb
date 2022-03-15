@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000028' do
   title "DirectPath I/O must be disabled on the virtual machine when not
 required."
@@ -31,7 +29,7 @@ present, and the specific device returned is not approved, this is a finding.
     If the virtual machine advanced setting \"pciPassthruX.present\" is not
 present, this is not a finding.
   "
-  desc  'fix', "From the vSphere Client select the Virtual Machine, right click
+  desc 'fix', "From the vSphere Client select the Virtual Machine, right click
 and go to Edit Settings >> Virtual Hardware Tab. Find the unexpected PCI device
 returned from the check. Hover the mouse over the device and click the circled
 'X' to remove the device. Click \"OK\"."
@@ -47,9 +45,7 @@ returned from the check. Hover the mouse over the device and click the circled
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name pciPassthru*.present).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should be_empty }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should be_empty }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

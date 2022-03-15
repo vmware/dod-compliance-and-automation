@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219317' do
   title "The Ubuntu operating system must implement smart card logins for
 multifactor authentication for access to accounts."
@@ -41,7 +39,7 @@ local access to accounts.
     If \"pam_pkcs11.so\" is not set in \"/etc/pam.d/common-auth\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to use multifactor authentication for
 local access to accounts.
 
@@ -53,19 +51,18 @@ following line:
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000105-GPOS-00052'
-  tag satisfies: ['SRG-OS-000105-GPOS-00052', 'SRG-OS-000106-GPOS-00053',
-'SRG-OS-000107-GPOS-00054', 'SRG-OS-000108-GPOS-00055',
-'SRG-OS-000377-GPOS-00162']
+  tag satisfies: %w(SRG-OS-000105-GPOS-00052 SRG-OS-000106-GPOS-00053
+SRG-OS-000107-GPOS-00054 SRG-OS-000108-GPOS-00055
+SRG-OS-000377-GPOS-00162)
   tag gid: 'V-219317'
   tag rid: 'SV-219317r508662_rule'
   tag stig_id: 'UBTU-18-010427'
   tag fix_id: 'F-21041r305280_fix'
-  tag cci: ['V-100857', 'SV-109961', 'CCI-001954', 'CCI-000765', 'CCI-000766',
-'CCI-000767', 'CCI-000768']
+  tag cci: %w(V-100857 SV-109961 CCI-001954 CCI-000765 CCI-000766
+CCI-000767 CCI-000768)
   tag nist: ['IA-2 (12)', 'IA-2 (1)', 'IA-2 (2)', 'IA-2 (3)', 'IA-2 (4)']
 
   describe command('grep pam_pkcs11.so /etc/pam.d/common-auth') do
     its('stdout') { should_not be_empty }
   end
 end
-

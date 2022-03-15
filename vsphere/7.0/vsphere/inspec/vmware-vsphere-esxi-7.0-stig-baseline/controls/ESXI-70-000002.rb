@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000002' do
   title 'The ESXi host must verify the DCUI.Access list.'
   desc  "Lockdown mode disables direct host access requiring that admins manage
@@ -30,7 +28,7 @@ root user.
     For environments that do not use vCenter server to manage ESXi, this is not
 applicable.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> System >> Advanced System Settings. Click \"Edit\". Select the
 DCUI.Access value and configure it to root.
@@ -55,8 +53,6 @@ following command:
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name DCUI.Access | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "root" }
+    its('stdout.strip') { should cmp 'root' }
   end
-
 end
-

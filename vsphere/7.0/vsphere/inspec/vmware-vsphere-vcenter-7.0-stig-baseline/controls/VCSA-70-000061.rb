@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000061' do
   title "The vCenter Server must disable Username/Password and Windows
 Integrated Authentication."
@@ -16,7 +14,7 @@ Configuration >> Identity Provider >> Smart Card Authentication. Under
     If \"Smart card authentication\" not enabled and \"Password and windows
 session authentication\" not disabled , this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Single Sign On >>
 Configuration >> Identity Provider >> Smart Card Authentication. Next to
 \"Authentication method\", click \"Edit\". Select to radio button to \"Enable
@@ -38,9 +36,7 @@ false -certAuthn false -securIDAuthn false -t vsphere.local
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

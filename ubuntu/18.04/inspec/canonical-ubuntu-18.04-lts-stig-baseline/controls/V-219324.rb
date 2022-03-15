@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219324' do
   title "The Apparmor module must be configured to employ a deny-all,
 permit-by-exception policy to allow the execution of authorized software
@@ -46,7 +44,7 @@ and home directory access control with the following command:
     If the defined profiles do not match the organization's list of authorized
 software, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to employ a deny-all,
 permit-by-exception policy to allow the execution of authorized software
 programs.
@@ -76,11 +74,10 @@ documentation for more information on configuring profiles.
   tag rid: 'SV-219324r508662_rule'
   tag stig_id: 'UBTU-18-010442'
   tag fix_id: 'F-21048r305301_fix'
-  tag cci: ['SV-109975', 'V-100871', 'CCI-001774']
+  tag cci: %w(SV-109975 V-100871 CCI-001774)
   tag nist: ['CM-7 (5) (b)']
 
   describe 'Manual test' do
     skip 'This control must be reviewed manually'
   end
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000015' do
   title 'VMware Postgres must not allow schema access to unauthorized accounts.'
   desc  "Database Management Systems typically separate security functionality
@@ -25,7 +23,7 @@ $1}'|grep -v \"=r\" | grep -v \"^[[:space:]]*$\" | grep -v \"postgres\"
 
     If any lines are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"REVOKE ALL
@@ -45,8 +43,6 @@ respectively, discovered during the check.
   tag nist: ['SC-3']
 
   describe command("/opt/vmware/vpostgres/current/bin/psql -U postgres -c \"\\dp .*.;\" |grep -E \"information_schema|pg_catalog\"|awk -F '|' '{print $4}'|awk -F '/' '{print $1}'|grep -v \"=r\" | grep -v \"^[[:space:]]*$\" | grep -v \"postgres\"").stdout do
-    it {should cmp ""}
+    it { should cmp '' }
   end
-
 end
-

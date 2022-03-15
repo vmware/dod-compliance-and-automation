@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000075' do
   title "The Photon operating system must create a home directory for all new
 local interactive user accounts."
@@ -14,7 +12,7 @@ there is no place for the storage and control of files they should own."
     If there is no output or the output does not equal \"CREATE_HOME     yes\",
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/login.defs
@@ -37,6 +35,4 @@ removed:
   describe login_defs do
     its('CREATE_HOME') { should cmp 'yes' }
   end
-
 end
-

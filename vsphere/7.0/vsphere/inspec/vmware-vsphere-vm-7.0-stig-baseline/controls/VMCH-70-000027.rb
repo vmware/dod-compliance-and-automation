@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000027' do
   title 'Log retention must be properly configured on the virtual machine.'
   desc  "The ESXi hypervisor maintains logs for each individual VM by default.
@@ -28,7 +26,7 @@ server, run the following command:
     If the virtual machine advanced setting \"vmx.log.keepOld\" does not exist,
 this is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client select the Virtual Machine, right click and go to
 Edit Settings >> VM Options Tab >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the \"vmx.log.keepOld\" value and set it to \"10\".
@@ -64,9 +62,7 @@ Set-AdvancedSetting -Value 10
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name vmx.log.keepOld).value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "10" }
-    its ('exit_status') { should cmp 0 }
+    its('stdout.strip') { should cmp '10' }
+    its('exit_status') { should cmp 0 }
   end
-
 end
-

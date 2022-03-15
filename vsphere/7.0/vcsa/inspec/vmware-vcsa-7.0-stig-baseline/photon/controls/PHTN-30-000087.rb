@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000087' do
   title "The Photon operating system must configure sshd to ignore
 user-specific known_host files."
@@ -19,7 +17,7 @@ disabling host-based authentication generally."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -44,8 +42,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i IgnoreUserKnownHosts') do
-    its ('stdout.strip') { should cmp 'IgnoreUserKnownHosts yes' }
+    its('stdout.strip') { should cmp 'IgnoreUserKnownHosts yes' }
   end
-
 end
-

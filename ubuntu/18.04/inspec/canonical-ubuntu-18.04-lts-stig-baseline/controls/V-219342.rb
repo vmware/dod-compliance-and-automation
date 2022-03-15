@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219342' do
   title "The Ubuntu operating system must implement address space layout
 randomization to protect its memory from unauthorized code execution."
@@ -61,11 +59,10 @@ files:
   tag rid: 'SV-219342r508662_rule'
   tag stig_id: 'UBTU-18-010514'
   tag fix_id: 'F-21066r485710_fix'
-  tag cci: ['V-100905', 'SV-110009', 'CCI-002824']
+  tag cci: %w(V-100905 SV-110009 CCI-002824)
   tag nist: ['SI-16']
-  
+
   describe kernel_parameter('kernel.randomize_va_space') do
     its('value') { should cmp 2 }
   end
 end
-

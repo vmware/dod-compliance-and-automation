@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219251' do
   title "The Ubuntu operating system must generate audit records for
 successful/unsuccessful uses of the fchown system call."
@@ -34,7 +32,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the audit system to generate an audit event for any
 successful/unsuccessful use of the \"fchown\" system call.
 
@@ -57,12 +55,12 @@ required.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000064-GPOS-00033'
-  tag satisfies: ['SRG-OS-000064-GPOS-00033', 'SRG-OS-000462-GPOS-00206']
+  tag satisfies: %w(SRG-OS-000064-GPOS-00033 SRG-OS-000462-GPOS-00206)
   tag gid: 'V-219251'
   tag rid: 'SV-219251r508662_rule'
   tag stig_id: 'UBTU-18-010328'
   tag fix_id: 'F-20975r485697_fix'
-  tag cci: ['V-100727', 'SV-109831', 'CCI-000172']
+  tag cci: %w(V-100727 SV-109831 CCI-000172)
   tag nist: ['AU-12 c']
 
   if os.arch == 'x86_64'
@@ -76,4 +74,3 @@ required.
     its('list.uniq') { should eq ['exit'] }
   end
 end
-

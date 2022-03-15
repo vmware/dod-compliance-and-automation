@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCST-70-000004' do
   title 'The Security Token Service must protect cookies from XSS.'
   desc  "Cookies are a common way to save session state over the HTTP(S)
@@ -24,7 +22,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/web.xml
@@ -56,6 +54,4 @@ s/xmlns=\".*\"//g' | xmllint --xpath
   describe xml("#{input('webXmlPath')}") do
     its(['/web-app/session-config/cookie-config/http-only']) { should cmp "#{input('cookieHttpOnly')}" }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCUI-67-000023" do
+control 'VCUI-67-000023' do
   title "vSphere UI must be configured to show error pages with minimal
 information."
   desc  "Web servers will often display error messages to client users with
@@ -26,7 +26,7 @@ showServerInfo=\"false\"/>
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml.
 
     Locate the following Host block:
@@ -51,7 +51,6 @@ showServerInfo=\"false\"/>
   tag nist: ['SI-11 a']
 
   describe xml("#{input('serverXmlPath')}") do
-    its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]/@showServerInfo']) { should cmp "false" }
+    its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]/@showServerInfo']) { should cmp 'false' }
   end
-
 end

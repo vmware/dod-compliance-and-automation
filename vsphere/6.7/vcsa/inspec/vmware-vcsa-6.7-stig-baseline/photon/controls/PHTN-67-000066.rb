@@ -1,4 +1,4 @@
-control "PHTN-67-000066" do
+control 'PHTN-67-000066' do
   title "The Photon operating system must prohibit the use of cached
 authenticators after one day."
   desc  "If cached authentication information is out of date, the validity of
@@ -13,7 +13,7 @@ the authentication information may be questionable."
 
     If the value returned is not 14400 or less, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # /opt/likewise/bin/lwregshell set_value
@@ -31,8 +31,6 @@ CacheEntryExpiry 14400
   tag nist: ['IA-5 (13)']
 
   describe command('/opt/likewise/bin/lwregshell list_values "HKEY_THIS_MACHINE\Services\lsass\Parameters\Providers\ActiveDirectory"|grep "CacheEntryExpiry"') do
-      its ('stdout') { should match /^(?=.*?\bCacheEntryExpiry\b)(?=.*?\bREG_DWORD\b)(?=.*?\b14400\b).*$/ }
+    its('stdout') { should match /^(?=.*?\bCacheEntryExpiry\b)(?=.*?\bREG_DWORD\b)(?=.*?\b14400\b).*$/ }
   end
-
 end
-

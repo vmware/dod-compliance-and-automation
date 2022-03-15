@@ -1,4 +1,4 @@
-control "VCPG-67-000024" do
+control 'VCPG-67-000024' do
   title 'VMware Postgres must set client-side character encoding to UTF-8.'
   desc  "A common vulnerability is unplanned behavior when invalid inputs are
 received. This requirement guards against adverse or unintended system behavior
@@ -17,7 +17,7 @@ client_encoding;\"|sed -n 3p|sed -e 's/^[ ]*//'
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -36,11 +36,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-002754']
   tag nist: ['SI-10 (3)']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-   sqlquery = "SHOW client_encoding;"
-  
-  describe sql.query(sqlquery) do
-   its('output') {should be_in "#{input('pg_client_encoding')}" }
-  end
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW client_encoding;'
 
+  describe sql.query(sqlquery) do
+    its('output') { should be_in "#{input('pg_client_encoding')}" }
+  end
 end

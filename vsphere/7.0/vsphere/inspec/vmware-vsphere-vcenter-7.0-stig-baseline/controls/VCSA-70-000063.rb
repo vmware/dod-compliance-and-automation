@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000063' do
   title 'The vCenter Server must restrict access to cryptographic role.'
   desc  "In vSphere 6.7, the built-in 'Administrator' role contains permission
@@ -29,7 +27,7 @@ Role,Principal,Entity,Propagate,IsGroup | FT -Auto
 role that are not explicitly designated for cryptographic operations, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Access Control >> Roles
 
     Move any accounts not explicitly designated for cryptographic operations,
@@ -47,9 +45,7 @@ Administrator\".
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "PHTN-67-000054" do
+control 'PHTN-67-000054' do
   title "The Photon operating system must set an inactivity timeout value for
 non-interactive sessions."
   desc  "A session timeout is an action taken when a session goes idle for any
@@ -20,7 +20,7 @@ a session has idled and take action to terminate the session."
     If the file does not exist or the output does not match the expected
 result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/bash.bashrc with a text editor and add the following to the end:
 
     TMOUT=900
@@ -39,10 +39,8 @@ result, this is a finding.
 
   describe file('/etc/bash.bashrc') do
     it { should exist }
-    its('content') { should match %r{TMOUT=900} }
-    its('content') { should match %r{readonly TMOUT} }
-    its('content') { should match %r{export TMOUT} }
+    its('content') { should match /TMOUT=900/ }
+    its('content') { should match /readonly TMOUT/ }
+    its('content') { should match /export TMOUT/ }
   end
-
 end
-

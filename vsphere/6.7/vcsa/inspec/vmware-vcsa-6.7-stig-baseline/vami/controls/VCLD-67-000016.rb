@@ -34,7 +34,7 @@ shell for the account to \"/bin/bash\".
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Configure the \"server.modules\" section to the following:
@@ -58,12 +58,10 @@ shell for the account to \"/bin/bash\".
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
-  list = ["\"mod_access\",", "\"mod_accesslog\",", "\"mod_proxy\",", "\"mod_cgi\",", "\"mod_rewrite\",", "\"mod_magnet\",", "\"mod_setenv\","]
-  command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/server\.modules/,/\)/'|sed -e 's/^[ ]*//'|grep mod_").stdout.split.each do | result |
+  list = ['"mod_access",', '"mod_accesslog",', '"mod_proxy",', '"mod_cgi",', '"mod_rewrite",', '"mod_magnet",', '"mod_setenv",']
+  command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/server\.modules/,/\)/'|sed -e 's/^[ ]*//'|grep mod_").stdout.split.each do |result|
     describe result do
       it { should be_in list }
     end
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000008' do
   title "Performance Charts application files must be verified for their
 integrity."
@@ -17,7 +15,7 @@ configuration files."
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "Reinstall the VCSA or roll back to a backup. Modifying the
+  desc 'fix', "Reinstall the VCSA or roll back to a backup. Modifying the
 Performance Charts installation files manually is not supported by VMware."
   impact 0.5
   tag severity: 'medium'
@@ -30,8 +28,6 @@ Performance Charts installation files manually is not supported by VMware."
   tag nist: ['CM-5 (3)']
 
   describe command('rpm -V VMware-perfcharts|grep "^..5......"|grep -v -E "\.properties|\.conf|\.xml|\.password"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-  
 end
-

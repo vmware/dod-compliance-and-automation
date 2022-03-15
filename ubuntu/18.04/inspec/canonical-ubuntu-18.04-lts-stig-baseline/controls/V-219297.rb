@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219297' do
   title "The Ubuntu operating system must generate records for
 successful/unsuccessful uses of delete_module syscall and when unloading
@@ -32,7 +30,7 @@ commands are required.
     The '-k' allows for specifying an arbitrary identifier and the string after
 it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to generate an audit event for any
 use of the delete_module system call.
 
@@ -54,26 +52,25 @@ required.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000477-GPOS-00222'
-  tag satisfies: ['SRG-OS-000064-GPOS-00033', 'SRG-OS-000471-GPOS-00216']
+  tag satisfies: %w(SRG-OS-000064-GPOS-00033 SRG-OS-000471-GPOS-00216)
   tag gid: 'V-219297'
   tag rid: 'SV-219297r648694_rule'
   tag stig_id: 'UBTU-18-010388'
   tag fix_id: 'F-21021r305220_fix'
   tag cci: ['CCI-000172']
-  tag legacy: ['V-100817', 'SV-109921']
+  tag legacy: %w(V-100817 SV-109921)
   tag nist: ['AU-12 c']
 
   if os.arch == 'x86_64'
     describe auditd.syscall('delete_module').where { arch == 'b64' } do
       its('action.uniq') { should eq ['always'] }
       its('list.uniq') { should eq ['exit'] }
-      its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
+      its('fields.flatten.uniq') { should include "auid>=#{login_defs.UID_MIN}" }
     end
   end
   describe auditd.syscall('delete_module').where { arch == 'b32' } do
     its('action.uniq') { should eq ['always'] }
     its('list.uniq') { should eq ['exit'] }
-    its('fields.flatten.uniq') {  should include "auid>=#{login_defs.UID_MIN}" }
+    its('fields.flatten.uniq') { should include "auid>=#{login_defs.UID_MIN}" }
   end
 end
-

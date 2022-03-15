@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219331' do
   title "The Ubuntu operating system must, for networked systems, compare
 internal information system clocks at least every 24 hours with a server which
@@ -46,7 +44,7 @@ time source by running the following command:
     If the parameter \"server\" is not set, is not set to an authoritative DoD
 time source, or is commented out, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If the system is not networked this requirement is Not Applicable.
 
     To configure the system clock to compare the system clock at least every 24
@@ -69,18 +67,18 @@ command:
   tag rid: 'SV-219331r508662_rule'
   tag stig_id: 'UBTU-18-010501'
   tag fix_id: 'F-21055r305322_fix'
-  tag cci: ['SV-109989', 'V-100885', 'CCI-001891']
+  tag cci: %w(SV-109989 V-100885 CCI-001891)
   tag nist: ['AU-8 (1) (a)']
 
   is_system_networked = input('is_system_networked')
-  
+
   if is_system_networked
 
     chrony_conf = '/etc/chrony/chrony.conf'
     chrony_conf_exists = file(chrony_conf).exist?
-    
+
     if chrony_conf_exists
-      describe "time sources" do
+      describe 'time sources' do
         server_entries = command('grep "^server" /etc/chrony/chrony.conf').stdout.strip.split("\n").entries
 
         server_entries.each do |entry|
@@ -101,4 +99,3 @@ command:
     end
   end
 end
-

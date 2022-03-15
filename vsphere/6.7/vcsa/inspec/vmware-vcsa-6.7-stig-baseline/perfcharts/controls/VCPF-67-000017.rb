@@ -1,4 +1,4 @@
-control "VCPF-67-000017" do
+control 'VCPF-67-000017' do
   title "Performance Charts must fail to a known safe state if system
 initialization fails, shutdown fails, or aborts fail."
   desc  "Determining a safe state for failure and weighing that against a
@@ -20,7 +20,7 @@ degraded, and potentially insecure, state."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties.
 
@@ -41,6 +41,4 @@ finding.
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['org.apache.catalina.startup.EXIT_ON_INIT_FAILURE'] do
     it { should eq 'true' }
   end
-
 end
-

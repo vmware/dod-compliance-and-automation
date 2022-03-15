@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VMCH-70-000006' do
   title "Independent, non-persistent disks must be not be used on the virtual
 machine."
@@ -33,7 +31,7 @@ DiskType, Persistence | FT -AutoSize
     If the virtual machine has attached disks that are in independent
 nonpersistent mode and are not documented, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client right-click the Virtual Machine and go to Edit
 Settings. Select the target hard disk and change the mode to persistent or
 uncheck Independent.
@@ -62,12 +60,10 @@ IndependentPersistent
 
   command = "(Get-VM -Name #{input('vmName')} | Get-HardDisk).Persistence"
   results = powercli_command(command)
-  results.stdout.split.each do | disk |
-    describe "Checking the VM for Non-Persistent Hard Disks" do
-      subject {disk}
-      it {should_not cmp "IndependentNonPersistent"}
+  results.stdout.split.each do |disk|
+    describe 'Checking the VM for Non-Persistent Hard Disks' do
+      subject { disk }
+      it { should_not cmp 'IndependentNonPersistent' }
     end
   end
-
 end
-

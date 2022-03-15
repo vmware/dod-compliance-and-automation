@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000060' do
   title "All port groups on standard switches must be configured to reject
 guest MAC address changes."
@@ -35,7 +33,7 @@ following command(s):
     If the \"MAC Address Changes\" policy is set to \"Accept\" (or true, via
 PowerCLI), this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >>
 Configure >> Networking >> Virtual Switches. On each standard switch, click the
 '...' button next to each port group. Click \"Edit Settings\". Click the
@@ -63,13 +61,11 @@ $false
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualSwitch | Get-SecurityPolicy | Select-Object -ExpandProperty MacChanges"
   describe powercli_command(command) do
-    its ('stdout.strip') { should_not match "True" }
+    its('stdout.strip') { should_not match 'True' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualPortGroup | Get-SecurityPolicy | Select-Object -ExpandProperty MacChanges"
   describe powercli_command(command) do
-    its ('stdout.strip') { should_not match "True" }
+    its('stdout.strip') { should_not match 'True' }
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000019' do
   title 'Rsyslog must be configured to monitor VMware Postgres logs.'
   desc  "For performance reasons, rsyslog file monitoring is preferred over
@@ -16,7 +14,7 @@ configs are loaded, the log file monitoring and shipping will not be effective."
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-syslog/vmware-services-vmware-vpostgres.conf
@@ -64,8 +62,6 @@ configs are loaded, the log file monitoring and shipping will not be effective."
   tag nist: ['AU-5 (1)']
 
   describe command('rpm -V VMware-Postgres-cis-visl-scripts|grep -E "vmware-services-vmware-vpostgres.conf|vmware-services-vmware-postgres-archiver.conf" | grep "^..5......"') do
-    its ('stdout.strip') {should cmp ""}
+    its('stdout.strip') { should cmp '' }
   end
-
 end
-

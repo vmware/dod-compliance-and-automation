@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000007' do
   title "The vCenter Server must manage excess capacity, bandwidth, or other
 redundancy to limit the effects of information-flooding types of Denial of
@@ -30,7 +28,7 @@ Enabled\";E={$_.ExtensionData.config.NetworkResourceManagementEnabled}}
 
     If Network I/O Control is disabled, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Networking >> Select a distributed switch >>
 Configure >> Settings >> Properties. In the Properties pane click \"Edit\".
 Change Network I/O Control to enabled. Click \"OK\".
@@ -53,23 +51,21 @@ Get-View).EnableNetworkResourceManagement($true)
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  command = "Get-VDSwitch | Select -ExpandProperty Name"
+  command = 'Get-VDSwitch | Select -ExpandProperty Name'
   vdswitches = powercli_command(command).stdout.strip.split("\r\n")
 
   if vdswitches.empty?
-    describe "" do
-      skip "No distributed switches found to check."
+    describe '' do
+      skip 'No distributed switches found to check.'
     end
   end
 
-  if !vdswitches.empty?
-    vdswitches.each do | vds |
+  unless vdswitches.empty?
+    vdswitches.each do |vds|
       command = "(Get-VDSwitch -Name \"#{vds}\").ExtensionData.Config.NetworkResourceManagementEnabled"
       describe powercli_command(command) do
-        its ('stdout.strip') { should cmp "true" }
+        its('stdout.strip') { should cmp 'true' }
       end
     end
   end
-
 end
-

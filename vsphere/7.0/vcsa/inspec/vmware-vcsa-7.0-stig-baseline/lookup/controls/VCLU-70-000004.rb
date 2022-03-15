@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000004' do
   title 'Lookup Service must protect cookies from cross-site scripting (XSS).'
   desc  "Cookies are a common way to save session state over the HTTP(S)
@@ -23,7 +21,7 @@ attempt to access the cookie from client script is strictly forbidden.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/context.xml
@@ -53,6 +51,4 @@ attempt to access the cookie from client script is strictly forbidden.
   describe xml("#{input('contextXmlPath')}") do
     its(['/Context/@useHttpOnly']) { should cmp "#{input('cookieHttpOnly')}" }
   end
-
 end
-

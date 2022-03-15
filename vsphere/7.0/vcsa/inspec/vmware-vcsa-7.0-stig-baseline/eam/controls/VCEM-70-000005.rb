@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000005' do
   title "ESX Agent Manager must record user access in a format that enables
 monitoring of remote access."
@@ -30,7 +28,7 @@ security incident.
     If the output does not match the expected result, this is a finding.
 
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -58,6 +56,4 @@ replace the \"pattern\" element as follows:
   describe xml("#{input('serverXmlPath')}") do
     its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ["#{input('accessValvePattern')}"] }
   end
-
 end
-

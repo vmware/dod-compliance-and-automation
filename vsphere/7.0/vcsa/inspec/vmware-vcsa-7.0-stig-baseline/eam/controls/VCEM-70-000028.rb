@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000028' do
   title 'ESX Agent Manager must have the debug option disabled.'
   desc  "Information needed by an attacker to begin looking for possible
@@ -37,7 +35,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
 
     If no lines is returned, this is NOT a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
@@ -68,16 +66,12 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
   tag nist: ['SI-11 a']
 
   describe.one do
-
     describe xml("#{input('webXmlPath')}") do
       its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should eq [] }
     end
 
     describe xml("#{input('webXmlPath')}") do
-      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp "0" }
+      its('/web-app/servlet/init-param[param-name="debug"]/param-value') { should cmp '0' }
     end
-
   end
-
 end
-

@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000090' do
   title "The ESXi host rhttpproxy daemon must use FIPS 140-2 validated
 cryptographic modules to protect the confidentiality of remote access sessions."
@@ -29,7 +27,7 @@ following command(s):
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, run the following command(s):
 
     # esxcli system security fips140 rhttpproxy set -e true
@@ -56,8 +54,6 @@ following command(s):
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.security.fips140.rhttpproxy.get.invoke() | Select-Object -ExpandProperty Enabled"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
-
 end
-

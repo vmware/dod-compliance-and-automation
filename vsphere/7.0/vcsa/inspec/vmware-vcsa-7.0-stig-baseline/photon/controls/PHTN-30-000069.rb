@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000069' do
   title 'The Photon operating system must audit the insmod module.'
   desc  "Without generating audit records that are specific to the security and
@@ -22,10 +20,10 @@ information system (e.g., module or policy filter).
 
     If the output does not match the expected result, this is a finding.
 
-    Note: This check depends on the auditd service to be in a running state for 
+    Note: This check depends on the auditd service to be in a running state for
     accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/audit/rules.d/audit.STIG.rules
@@ -38,8 +36,8 @@ information system (e.g., module or policy filter).
 
     # /sbin/augenrules --load
 
-    Note: An older audit.STIG.rules may exist if the file exists and references 
-    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary 
+    Note: An older audit.STIG.rules may exist if the file exists and references
+    older \"GEN\" SRG IDs. This file can be removed and replaced as necessary
     with an updated one.
   "
   impact 0.5
@@ -53,8 +51,6 @@ information system (e.g., module or policy filter).
   tag nist: ['AU-12 c']
 
   describe auditd do
-    its("lines") { should include %r{-w /sbin/insmod -p x} }
+    its('lines') { should include %r{-w /sbin/insmod -p x} }
   end
-
 end
-

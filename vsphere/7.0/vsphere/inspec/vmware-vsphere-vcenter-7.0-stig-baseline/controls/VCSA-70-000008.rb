@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000008' do
   title "The vCenter Server must provide an immediate real-time alert to the SA
 and ISSO, at a minimum, if the syslog server becomes unreachable."
@@ -33,7 +31,7 @@ Name,Enabled,@{N=\"EventTypeId\";E={$_.ExtensionData.Info.Expression.Expression.
     If an alarm is not created to alert when syslog failures occur and enabled,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Host and Clusters >> Select a vCenter Server
 >> Configure >> Security >> Alarm Definitions. Click \"Add\". Provide an alarm
 name and description. From the 'Target type' dropdown menu, select \"Hosts\".
@@ -58,10 +56,8 @@ reached the central log server.
   tag cci: 'CCI-000139'
   tag nist: ['AU-5 a']
 
-  command = "Get-AlarmDefinition | Where-Object {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq \"esx.problem.vmsyslogd.remote.failure\"} | Select-Object -ExpandProperty Enabled"
+  command = 'Get-AlarmDefinition | Where-Object {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq "esx.problem.vmsyslogd.remote.failure"} | Select-Object -ExpandProperty Enabled'
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "true" }
+    its('stdout.strip') { should cmp 'true' }
   end
-
 end
-

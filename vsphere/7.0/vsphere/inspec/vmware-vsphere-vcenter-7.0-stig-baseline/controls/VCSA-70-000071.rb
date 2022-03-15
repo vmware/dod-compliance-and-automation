@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCSA-70-000071' do
   title "The vCenter Server must limit membership to the TrustedAdmins SSO
 group."
@@ -21,7 +19,7 @@ severely damage vCenter, inadvertently or otherwise.
     If there are any accounts present as members of TrustedAdmins that are not
 authorized, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Administration >> Single Sign On >> Users
 and Groups >> Groups. Click the next page arrow until you see the
 \"TrustedAdmins\" group. Click \"TrustedAdmins\".
@@ -39,9 +37,7 @@ account. Select \"Remove Member\".
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

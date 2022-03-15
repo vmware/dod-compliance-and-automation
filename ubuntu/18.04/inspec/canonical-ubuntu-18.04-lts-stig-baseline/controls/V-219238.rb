@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219238' do
   title "The Ubuntu operating system must generate audit records for
 successful/unsuccessful uses of the su command."
@@ -29,7 +27,7 @@ are commented out, this is a finding.
     Note: The '-k' allows for specifying an arbitrary identifier and the string
 after it does not need to match the example output above.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to generate audit records when
 successful/unsuccessful attempts to use the \"su\" command occur.
 
@@ -54,7 +52,7 @@ file:
   tag rid: 'SV-219238r508662_rule'
   tag stig_id: 'UBTU-18-010315'
   tag fix_id: 'F-20962r485694_fix'
-  tag cci: ['V-100703', 'SV-109807', 'CCI-000172']
+  tag cci: %w(V-100703 SV-109807 CCI-000172)
   tag nist: ['AU-12 c']
 
   @audit_file = '/bin/su'
@@ -76,10 +74,9 @@ file:
       end
     end
   else
-    describe ('Audit line(s) for ' + @audit_file + ' exist') do
+    describe('Audit line(s) for ' + @audit_file + ' exist') do
       subject { audit_lines_exist }
       it { should be true }
     end
   end
 end
-

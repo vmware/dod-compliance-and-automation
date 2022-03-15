@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219150' do
   title "Ubuntu operating systems handling data requiring data at rest
 protections must employ cryptographic mechanisms to prevent unauthorized
@@ -51,7 +49,7 @@ command:
 any partitions other than the boot partition or pseudo file systems (such as
 /proc or /sys) are not listed, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     To encrypt an entire partition, dedicate a partition for encryption in the
 partition layout.
 
@@ -61,16 +59,15 @@ difficult because the existing partitions must be resized and changed.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000185-GPOS-00079'
-  tag satisfies: ['SRG-OS-000185-GPOS-00079', 'SRG-OS-000404-GPOS-00183',
-'SRG-OS-000405-GPOS-00184']
+  tag satisfies: %w(SRG-OS-000185-GPOS-00079 SRG-OS-000404-GPOS-00183
+SRG-OS-000405-GPOS-00184)
   tag gid: 'V-219150'
   tag rid: 'SV-219150r508662_rule'
   tag stig_id: 'UBTU-18-010003'
   tag fix_id: 'F-20874r304779_fix'
-  tag cci: ['V-100525', 'SV-109629', 'CCI-001199', 'CCI-002475', 'CCI-002476']
+  tag cci: %w(V-100525 SV-109629 CCI-001199 CCI-002475 CCI-002476)
   tag nist: ['SC-28', 'SC-28 (1)', 'SC-28 (1)']
   describe 'Not Applicable' do
     skip 'Encryption of data at rest is handled by the IaaS'
   end
 end
-

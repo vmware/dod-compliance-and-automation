@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'PHTN-30-000004' do
   title "The Photon operating system must limit the number of concurrent
 sessions to 10 for all accounts and/or account types."
@@ -21,7 +19,7 @@ related to denial-of-service attacks."
 
     Note: The expected result may be repeated multiple times.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # echo '* hard maxlogins 10' >> /etc/security/limits.conf
@@ -37,8 +35,6 @@ related to denial-of-service attacks."
   tag nist: ['AC-10']
 
   describe limits_conf('/etc/security/limits.conf') do
-    its('*') { should include ['hard', 'maxlogins', '10'] }
+    its('*') { should include %w(hard maxlogins 10) }
   end
-
 end
-

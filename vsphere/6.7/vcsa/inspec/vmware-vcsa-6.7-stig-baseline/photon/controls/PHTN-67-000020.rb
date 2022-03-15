@@ -1,4 +1,4 @@
-control "PHTN-67-000020" do
+control 'PHTN-67-000020' do
   title "The Photon operating system must generate audit records when
 successful/unsuccessful attempts to access privileges occur."
   desc  "The changing of file permissions could indicate that a user is
@@ -31,7 +31,7 @@ chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremov
 accurate results. Enabling the auditd service is done as part of a separate
 control.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
 following lines:
 
@@ -53,7 +53,7 @@ chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremov
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000064-GPOS-00033'
-  tag satisfies: ['SRG-OS-000064-GPOS-00033', 'SRG-OS-000462-GPOS-00206']
+  tag satisfies: %w(SRG-OS-000064-GPOS-00033 SRG-OS-000462-GPOS-00206)
   tag gid: 'V-239092'
   tag rid: 'SV-239092r816603_rule'
   tag stig_id: 'PHTN-67-000020'
@@ -62,11 +62,9 @@ chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremov
   tag nist: ['AU-12 c']
 
   describe auditd do
-    its("lines") { should include %r{-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=-1} }
-    its("lines") { should include %r{-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat} }
-    its("lines") { should include %r{-a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=-1} }
-    its("lines") { should include %r{-a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat} }
+    its('lines') { should include /-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=-1/ }
+    its('lines') { should include /-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat/ }
+    its('lines') { should include /-a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=-1/ }
+    its('lines') { should include /-a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat/ }
   end
-
 end
-

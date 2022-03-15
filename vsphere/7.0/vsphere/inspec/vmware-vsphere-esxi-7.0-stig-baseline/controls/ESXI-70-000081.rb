@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000081' do
   title "The ESXi host must not suppress warnings about unmitigated
 hyperthreading vulnerabilities."
@@ -51,8 +49,6 @@ following command:
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name UserVars.SuppressHyperthreadWarning | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its ('stdout.strip') { should cmp "0" }
+    its('stdout.strip') { should cmp '0' }
   end
-
 end
-

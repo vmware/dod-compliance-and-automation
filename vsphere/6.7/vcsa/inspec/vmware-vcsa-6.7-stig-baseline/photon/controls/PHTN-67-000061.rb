@@ -1,4 +1,4 @@
-control "PHTN-67-000061" do
+control 'PHTN-67-000061' do
   title "The Photon operating system must be configured to synchronize with an
 approved DoD time source."
   desc  "Inaccurate time stamps make it more difficult to correlate events and
@@ -36,7 +36,7 @@ Management Interface (VAMI).
 
     If no appropriate time server is specified, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ntp.conf with a text editor and set its contents to the following:
 
     tinker panic 0
@@ -65,27 +65,25 @@ server.
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000355-GPOS-00143'
-  tag satisfies: ['SRG-OS-000355-GPOS-00143', 'SRG-OS-000356-GPOS-00144']
+  tag satisfies: %w(SRG-OS-000355-GPOS-00143 SRG-OS-000356-GPOS-00144)
   tag gid: 'V-239132'
   tag rid: 'SV-239132r675204_rule'
   tag stig_id: 'PHTN-67-000061'
   tag fix_id: 'F-42302r675203_fix'
-  tag cci: ['CCI-001891', 'CCI-002046']
+  tag cci: %w(CCI-001891 CCI-002046)
   tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)']
 
   describe ntp_conf do
-    its ('server') { should_not eq nil }
+    its('server') { should_not eq nil }
   end
 
   describe ntp_conf do
-    its ('server') { should be_in ["#{input('ntpServer1')}","#{input('ntpServer2')}"] }
+    its('server') { should be_in ["#{input('ntpServer1')}", "#{input('ntpServer2')}"] }
   end
 
   describe systemd_service('ntpd') do
-    it { should be_installed}
-    it { should be_enabled}
-    it { should be_running}
+    it { should be_installed }
+    it { should be_enabled }
+    it { should be_running }
   end
-
 end
-

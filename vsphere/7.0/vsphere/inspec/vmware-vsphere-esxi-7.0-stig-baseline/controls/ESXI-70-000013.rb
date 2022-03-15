@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'ESXI-70-000013' do
   title 'The ESXi host SSH daemon must not allow host-based authentication.'
   desc  "SSH trust relationships mean a compromise on one host can allow an
@@ -19,7 +17,7 @@ unilaterally trust one another, even within an organization."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From an ESXi shell, add or correct the following line in
 \"/etc/ssh/sshd_config\":
 
@@ -35,9 +33,7 @@ unilaterally trust one another, even within an organization."
   tag cci: 'CCI-000366'
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

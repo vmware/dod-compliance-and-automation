@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-219168' do
   title "The Ubuntu operating system must prevent direct login into the root
 account."
@@ -43,7 +41,7 @@ account with the following command:
     If the output does not contain \"L\" in the second field to indicate the
 account is locked, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configure the Ubuntu operating system to prevent direct logins to the root
 account by performing the following operations:
 
@@ -56,7 +54,7 @@ account by performing the following operations:
   tag rid: 'SV-219168r508662_rule'
   tag stig_id: 'UBTU-18-010036'
   tag fix_id: 'F-20892r304833_fix'
-  tag cci: ['V-100563', 'SV-109667', 'CCI-000770']
+  tag cci: %w(V-100563 SV-109667 CCI-000770)
   tag nist: ['IA-2 (5)']
 
   describe.one do
@@ -64,8 +62,7 @@ account by performing the following operations:
       its('passwords.uniq.first') { should eq '!*' }
     end
   end
-  describe command("passwd -S root").stdout.strip do
+  describe command('passwd -S root').stdout.strip do
     it { should match /^root\s+L\s+.*$/ }
   end
 end
-

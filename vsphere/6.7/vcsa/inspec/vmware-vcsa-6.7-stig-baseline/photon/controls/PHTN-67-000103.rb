@@ -1,4 +1,4 @@
-control "PHTN-67-000103" do
+control 'PHTN-67-000103' do
   title "The Photon operating system must be configured so that all cron paths
 are protected from unauthorized modification."
   desc  "If cron files and folders are accessible to unauthorized users,
@@ -20,7 +20,7 @@ malicious jobs may be created."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands for each returned file:
 
     # chmod 755 <path>
@@ -37,40 +37,38 @@ malicious jobs may be created."
   tag nist: ['CM-6 b']
 
   describe file('/etc/cron.d') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.daily') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.hourly') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.daily') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.weekly') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
 
   describe file('/etc/cron.monthly') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0755' }
   end
-
 end
-

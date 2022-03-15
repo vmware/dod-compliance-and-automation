@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000029' do
   title 'Lookup Service must must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
@@ -23,7 +21,7 @@ accurate to their shipping state."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/catalina.properties
@@ -67,6 +65,4 @@ configuration below:
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-custom.https.port'] do
     it { should eq "#{input('catalinahttpsPort')}" }
   end
-
 end
-

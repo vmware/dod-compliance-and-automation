@@ -1,4 +1,4 @@
-control "PHTN-67-000064" do
+control 'PHTN-67-000064' do
   title "The Photon operating system RPM package management tool must
 cryptographically verify the authenticity of all software packages during
 installation."
@@ -14,7 +14,7 @@ has not been tampered with and has been provided by a trusted vendor."
 
     If \"gpgcheck\" is not set to \"1\" in any returned file, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open the file where gpgcheck is not set to \"1\" with a text editor.
 
     Remove any existing gpgcheck setting and add the following line at the end
@@ -32,11 +32,9 @@ of the file:
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
-  command('find /etc/yum.repos.d/ -type f').stdout.split.each do | repofile |
-    describe file (repofile) do
-      its ('content'){should match /^(?=.*?\bgpgcheck=1\b).*$/}
+  command('find /etc/yum.repos.d/ -type f').stdout.split.each do |repofile|
+    describe file(repofile) do
+      its('content') { should match /^(?=.*?\bgpgcheck=1\b).*$/ }
     end
   end
-
 end
-
