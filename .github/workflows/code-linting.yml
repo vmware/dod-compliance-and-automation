@@ -20,7 +20,7 @@ jobs:
         run: |
           gem install cookstyle
           cookstyle ./
-  ansiblelint-vsphere6.7:
+  ansiblelint-vsphere67:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
