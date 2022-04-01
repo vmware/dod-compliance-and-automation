@@ -26,5 +26,5 @@ jobs:
       - name: Clone Repo
         uses: actions/checkout@v2
       - uses: ansible-community/ansible-lint-action@main
-         with:
+        with:
           path: "vsphere/6.7/vcsa/ansible/vmware-vcsa-6.7-stig-ansible-hardening/"  # <-- only one value is allowed
