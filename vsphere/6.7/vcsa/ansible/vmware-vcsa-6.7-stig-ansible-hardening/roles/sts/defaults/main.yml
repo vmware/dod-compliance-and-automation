@@ -2,57 +2,57 @@
 
 # Turn specific controls on/off by setting the value to true or false
 
-#VCST-67-000001
+# VCST-67-000001
 run_connection_timeout: true
-#VCST-67-000002
+# VCST-67-000002
 run_max_threads: true
-#VCST-67-000003
+# VCST-67-000003
 run_max_post_size: true
-#VCST-67-000004
+# VCST-67-000004
 run_http_only: true
-#VCST-67-000005
+# VCST-67-000005
 run_access_valve_pattern: true
-#VCST-67-000006
+# VCST-67-000006
 run_logging_properties: true
-#VCST-67-000007
+# VCST-67-000007
 run_logs_permissions: true
-#VCST-67-000010
+# VCST-67-000010
 run_user_database_realm: true
-#VCST-67-000011
+# VCST-67-000011
 run_catalina_props_package_access: true
-#VCST-67-000012
+# VCST-67-000012
 run_removed_mime_mappings: true
-#VCST-67-000013
+# VCST-67-000013
 run_java_servlet: true
-#VCST-67-000014
+# VCST-67-000014
 run_remove_webdav: true
-#VCST-67-000015
+# VCST-67-000015
 run_mem_leak_prevention: true
-#VCST-67-000017
+# VCST-67-000017
 run_web_files_permissions: true
-#VCST-67-000018
+# VCST-67-000018
 run_catalina_props_init_failure: true
-#VCST-67-000019
+# VCST-67-000019
 run_accept_count: true
-#VCST-67-000020
+# VCST-67-000020
 run_uri_encoding: true
-#VCST-67-000021
+# VCST-67-000021
 run_web_filter: true
-#VCST-67-000022
+# VCST-67-000022
 run_web_welcome_file: true
-#VCST-67-000023
+# VCST-67-000023
 run_web_remove_listings: true
-#VCST-67-000024
+# VCST-67-000024
 run_web_error_page: true
-#VCST-67-000025
+# VCST-67-000025
 run_allow_trace: true
-#VCST-67-000026
+# VCST-67-000026
 run_web_remove_debug: true
-#VCST-67-000027
+# VCST-67-000027
 run_sts_syslog_config: true
-#VCST-67-000028
+# VCST-67-000028
 run_catalina_props_ports: true
-#VCST-67-000029
+# VCST-67-000029
 run_catalina_properties_shutdownport: true
-#VCST-67-000030
+# VCST-67-000030
 run_web_cookie_secure: true

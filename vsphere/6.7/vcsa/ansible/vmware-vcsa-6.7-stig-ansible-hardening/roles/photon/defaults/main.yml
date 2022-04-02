@@ -2,232 +2,232 @@
 
 # Turn specific controls on/off by setting the value to true or false
 
-#PHTN-10-000001
+# PHTN-67-000001
 run_auditd_rules: true
-#PHTN-10-000002
+# PHTN-67-000002
 run_pamd_lock: true
-#PHTN-10-000003
+# PHTN-67-000003
 run_sshd_banner: true
-#PHTN-10-000004
+# PHTN-67-000004
 run_limits_maxlogins: true
-#PHTN-10-000005
+# PHTN-67-000005
 run_configure_tmout: true
-#PHTN-10-000006
+# PHTN-67-000006
 run_sshd_syslogfacility: true
-#PHTN-10-000007
+# PHTN-67-000007
 run_sshd_rsyslog: true
-#PHTN-10-000008
+# PHTN-67-000008
 run_sshd_loglevel: true
-#PHTN-10-000009
+# PHTN-67-000009
 run_sshd_fipsmode: true
-#PHTN-10-000010
+# PHTN-67-000010
 run_auditd_write_logs: true
-#PHTN-10-000011
+# PHTN-67-000011
 run_auditd_log_format: true
-#PHTN-10-000013
+# PHTN-67-000013
 run_auditd_space_left_action: true
-#PHTN-10-000014
+# PHTN-67-000014
 run_auditd_disk_full_action: true
 run_auditd_disk_error_action: true
 run_auditd_admin_space_left_action: true
-#PHTN-10-000015
+# PHTN-67-000015
 run_audit_logs_permissions: true
-#PHTN-10-000016
+# PHTN-67-000016
 run_audit_logs_owner: true
-#PHTN-10-000017
+# PHTN-67-000017
 run_audit_logs_group: true
-#PHTN-10-000018
+# PHTN-67-000018
 run_auditd_enable: true
-#PHTN-10-000019
+# PHTN-67-000019
 run_audit_config_permissions: true
-#PHTN-10-000021
+# PHTN-67-000021
 run_pamd_upperchars: true
-#PHTN-10-000022
+# PHTN-67-000022
 run_pamd_lowerchars: true
-#PHTN-10-000023
+# PHTN-67-000023
 run_pamd_numchars: true
-#PHTN-10-000024
+# PHTN-67-000024
 run_pamd_diffchars: true
-#PHTN-10-000025
+# PHTN-67-000025
 run_pamd_encryption: true
-#PHTN-10-000026
+# PHTN-67-000026
 run_login_encrypt_method: true
-#PHTN-10-000027
+# PHTN-67-000027
 run_login_pass_min_days: true
-#PHTN-10-000028
+# PHTN-67-000028
 run_login_pass_max_days: true
-#PHTN-10-000029
+# PHTN-67-000029
 run_pamd_pwremember: true
-#PHTN-10-000030
+# PHTN-67-000030
 run_create_opasswd: true
-#PHTN-10-000031
+# PHTN-67-000031
 run_pamd_minlength: true
-#PHTN-10-000033
+# PHTN-67-000033
 run_disable_kernel_modules: true
-#PHTN-10-000035
+# PHTN-67-000035
 run_sshd_permitrootlogin: false
-#PHTN-10-000036
+# PHTN-67-000036
 run_useradd_inactive: true
-#PHTN-10-000037
+# PHTN-67-000037
 run_sysctl_tcp_syncookies: true
-#PHTN-10-000038
+# PHTN-67-000038
 run_sshd_clientaliveinterval: true
-#PHTN-10-000039
+# PHTN-67-000039
 run_sshd_clientalivecountmax: true
-#PHTN-10-000040
+# PHTN-67-000040
 run_set_syslog_server: true
-#PHTN-10-000041
+# PHTN-67-000041
 run_log_dir_permissions: true
-#PHTN-10-000042
+# PHTN-67-000042
 run_log_messages_permissions_owner: true
-#PHTN-10-000043
+# PHTN-67-000043
 run_log_messages_permissions: true
-#PHTN-10-000048
+# PHTN-67-000048
 run_grub_enable_audit: true
-#PHTN-10-000049
+# PHTN-67-000049
 run_audit_conf_permissions: true
-#PHTN-10-000050
+# PHTN-67-000050
 run_audit_tools_owner: true
-#PHTN-10-000051
+# PHTN-67-000051
 run_audit_tools_permissions: true
-#PHTN-10-000052
+# PHTN-67-000052
 run_pamd_complexchars: true
-#PHTN-10-000054
+# PHTN-67-000054
 run_configure_bash_tmout: true
-#PHTN-10-000055
+# PHTN-67-000055
 run_sshd_listenaddress: true
-#PHTN-10-000057
+# PHTN-67-000057
 run_auditd_num_logs: true
-#PHTN-10-000058
+# PHTN-67-000058
 run_auditd_max_log_file_action: true
-#PHTN-10-000059
+# PHTN-67-000059
 run_auditd_cron_rotate: true
-#PHTN-10-000060
+# PHTN-67-000060
 run_auditd_space_left: true
-#PHTN-10-000061
+# PHTN-67-000061
 run_set_ntp_server: true
-#PHTN-10-000063
+# PHTN-67-000063
 run_tdnf_gpgcheck: true
-#PHTN-10-000064
+# PHTN-67-000064
 run_yum_gpgcheck: true
-#PHTN-10-000066
+# PHTN-67-000066
 run_likewise_cacheexpiry: true
-#PHTN-10-000067
+# PHTN-67-000067
 run_sshd_ciphers: true
-#PHTN-10-000069
+# PHTN-67-000069
 run_sysctl_randomize_va_space: true
-#PHTN-10-000070
+# PHTN-67-000070
 run_tdnf_cleanreqs: true
-#PHTN-10-000076
+# PHTN-67-000076
 run_login_fail_delay: true
-#PHTN-10-000077
+# PHTN-67-000077
 run_pamd_faildelay: true
-#PHTN-10-000078
+# PHTN-67-000078
 run_auditd_flush: true
 run_auditd_freq: true
-#PHTN-10-000080
+# PHTN-67-000080
 run_login_createhome: true
-#PHTN-10-000081
+# PHTN-67-000081
 run_service_debug_shell: true
-#PHTN-10-000082
+# PHTN-67-000082
 run_configure_default_umask: true
-#PHTN-10-000083
+# PHTN-67-000083
 run_sshd_gssapiauthentication: true
-#PHTN-10-000084
+# PHTN-67-000084
 run_sshd_permituserenvironment: true
-#PHTN-10-000085
+# PHTN-67-000085
 run_sshd_x11forwarding: true
-#PHTN-10-000086
+# PHTN-67-000086
 run_sshd_strictmodes: true
-#PHTN-10-000087
+# PHTN-67-000087
 run_sshd_kerberosauth: true
-#PHTN-10-000088
+# PHTN-67-000088
 run_sshd_useprivsep: true
-#PHTN-10-000089
+# PHTN-67-000089
 run_sshd_permitemptypasswords: true
-#PHTN-10-000090
+# PHTN-67-000090
 run_sshd_compression: true
-#PHTN-10-000091
+# PHTN-67-000091
 run_sshd_printlastlog: true
-#PHTN-10-000092
+# PHTN-67-000092
 run_sshd_ignorerhosts: true
-#PHTN-10-000093
+# PHTN-67-000093
 run_sshd_ignoreuserknownhosts: true
-#PHTN-10-000094
+# PHTN-67-000094
 run_sshd_maxauthtries: true
-#PHTN-10-000095
+# PHTN-67-000095
 run_mask_ctrl_alt_del: true
-#PHTN-10-000096
+# PHTN-67-000096
 run_skel_config_permissions: true
-#PHTN-10-000097
+# PHTN-67-000097
 run_root_dir_permissions: true
-#PHTN-10-000098
+# PHTN-67-000098
 run_init_files_permissions: true
-#PHTN-10-000099
+# PHTN-67-000099
 run_rcd_files_permissions: true
-#PHTN-10-000101
+# PHTN-67-000101
 run_cron_allow_permissions: true
-#PHTN-10-000102
+# PHTN-67-000102
 run_cron_files_permissions: true
-#PHTN-10-000103
+# PHTN-67-000103
 run_cron_dir_permissions: true
-#PHTN-10-000104
+# PHTN-67-000104
 run_sysctl_net_ipv4_conf_all_accept_source_route: true
 run_sysctl_net_ipv4_conf_default_accept_source_route: true
 run_sysctl_net_ipv4_conf_eth0_accept_source_route: true
 run_sysctl_net_ipv6_conf_all_accept_source_route: true
 run_sysctl_net_ipv6_conf_default_accept_source_route: true
 run_sysctl_net_ipv6_conf_eth0_accept_source_route: true
-#PHTN-10-000105
+# PHTN-67-000105
 run_sysctl_net_ipv4_icmp_echo_ignore_broadcasts: true
-#PHTN-10-000106
+# PHTN-67-000106
 run_sysctl_net_ipv4_conf_all_accept_redirects: true
 run_sysctl_net_ipv4_conf_default_accept_redirects: true
 run_sysctl_net_ipv4_conf_eth0_accept_redirects: true
-#PHTN-10-000107
+# PHTN-67-000107
 run_sysctl_net_ipv4_conf_all_secure_redirects: true
 run_sysctl_net_ipv4_conf_default_secure_redirects: true
 run_sysctl_net_ipv4_conf_eth0_secure_redirects: true
-#PHTN-10-000108
+# PHTN-67-000108
 run_sysctl_net_ipv4_conf_all_send_redirects: true
 run_sysctl_net_ipv4_conf_default_send_redirects: true
 run_sysctl_net_ipv4_conf_eth0_send_redirects: true
-#PHTN-10-000109
+# PHTN-67-000109
 run_sysctl_net_ipv4_conf_all_log_martians: true
 run_sysctl_net_ipv4_conf_default_log_martians: true
 run_sysctl_net_ipv4_conf_eth0_log_martians: true
-#PHTN-10-000110
+# PHTN-67-000110
 run_sysctl_net_ipv4_conf_all_rp_filter: true
 run_sysctl_net_ipv4_conf_default_rp_filter: true
 run_sysctl_net_ipv4_conf_eth0_rp_filter: true
-#PHTN-10-000111
+# PHTN-67-000111
 run_sysctl_net_ipv4_conf_all_mc_forwarding: true
 run_sysctl_net_ipv4_conf_default_mc_forwarding: true
 run_sysctl_net_ipv4_conf_eth0_mc_forwarding: true
 run_sysctl_net_ipv6_conf_all_mc_forwarding: true
 run_sysctl_net_ipv6_conf_default_mc_forwarding: true
 run_sysctl_net_ipv6_conf_eth0_mc_forwarding: true
-#PHTN-10-000112
+# PHTN-67-000112
 run_sysctl_net_ipv4_ip_forward: true
-#PHTN-10-000113
+# PHTN-67-000113
 run_sysctl_tcp_timestamps: true
-#PHTN-10-000114
+# PHTN-67-000114
 run_xinetd_disable: true
-#PHTN-10-000115
+# PHTN-67-000115
 run_ssh_pubkeys_permissions: true
-#PHTN-10-000116
+# PHTN-67-000116
 run_ssh_prikeys_permissions: true
-#PHTN-10-000117
+# PHTN-67-000117
 run_pamd_enforceforroot: true
-#PHTN-10-000118
+# PHTN-67-000118
 run_boot_config_file_permissions: true
-#PHTN-10-000119
+# PHTN-67-000119
 run_ssh_config_file_permissions: true
-#PHTN-10-000120
+# PHTN-67-000120
 run_sysctl_file_permissions: true
-#PHTN-10-000121
+# PHTN-67-000122
 run_login_umask: true
-#PHTN-10-000122
+# PHTN-67-000123
 run_sshd_hostbasedauth: true
-#PHTN-10-000123
+# PHTN-67-000123
 run_default_firewall_rules: true

@@ -4,8 +4,8 @@
 var_server_xml_path: '/usr/lib/vmware-perfcharts/tc-instance/conf/server.xml'
 var_server_xml_connectiontimeout: '20000'
 var_server_xml_maxthreads: '300'
-#This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
-#Also & needs to just be a " which turns into &quot
+# This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+# Also & needs to just be a " which turns into &quot
 var_server_xml_access_log_valve_pattern: '{% raw %}%h %{X-Forwarded-For}i %l %u %t "%r" %s %b "%{User-Agent}i"{% endraw %}'
 var_server_xml_acceptcount: '300'
 var_server_xml_uriencoding: 'UTF-8'
@@ -19,7 +19,7 @@ var_web_xml_servlet_jsp_url_pattern2: '*.jspx'
 var_web_xml_welcome_file_list1: 'index.html'
 var_web_xml_welcome_file_list2: 'index.htm'
 var_web_xml_welcome_file_list3: 'index.jsp'
-var_web_xml_error_page: '/error.jsp'
+var_web_xml_error_page: '/http_error.jsp'
 var_web_xml_cookie_secure: 'true'
 
 # perfcharts.json variables
