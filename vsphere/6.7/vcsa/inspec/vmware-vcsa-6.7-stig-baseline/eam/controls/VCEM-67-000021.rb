@@ -51,7 +51,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     </init-param>
     <init-param>
           <param-name>ignore</param-name>
-          <param-value>false</param-value>
+          <param-value>true</param-value>
         </init-param>
     <async-supported>true</async-supported>
     </filter>
@@ -80,7 +80,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     </init-param>
     <init-param>
           <param-name>ignore</param-name>
-          <param-value>false</param-value>
+          <param-value>true</param-value>
         </init-param>
     <async-supported>true</async-supported>
     </filter>
@@ -99,7 +99,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     its('/web-app/filter-mapping[filter-name="setCharacterEncodingFilter"]/url-pattern') { should cmp '/*' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/filter-class') { should cmp 'org.apache.catalina.filters.SetCharacterEncodingFilter' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="encoding"]/param-value') { should cmp 'UTF-8' }
-    its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="ignore"]/param-value') { should cmp 'false' }
+    its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="ignore"]/param-value') { should cmp 'true' }
   end
 
 end
