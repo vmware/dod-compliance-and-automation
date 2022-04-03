@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  cookstyle:
+  cookstyle-vsphere67:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -19,7 +19,7 @@ jobs:
       - name: Install cookstyle and run
         run: |
           gem install cookstyle
-          cookstyle ./
+          cookstyle ./vsphere/6.7
   ansiblelint-vsphere67:
     runs-on: ubuntu-latest
     steps:
