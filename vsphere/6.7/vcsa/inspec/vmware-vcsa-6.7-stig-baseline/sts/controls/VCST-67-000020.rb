@@ -49,7 +49,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
   tag nist: ['SI-10']
 
   describe xml("#{input('serverXmlPath')}") do
-    its(['Server/Service/Connector/@URIEncoding']) { should cmp "#{input('uriEncoding')}"}
+    its(['Server/Service/Connector[@port="${bio-custom.http.port}"]/@URIEncoding']) { should cmp "#{input('uriEncoding')}"}
   end
 
 end
