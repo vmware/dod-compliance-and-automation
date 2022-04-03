@@ -9,5 +9,7 @@
 #
 # See https://docs.rubocop.org/rubocop/configuration
 
-WordArray:
+Style/WordArray:
+  Enabled: false
+Layout/EndOfLine:
   Enabled: false
