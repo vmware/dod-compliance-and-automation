@@ -229,5 +229,5 @@ run_sysctl_file_permissions: true
 run_login_umask: true
 # PHTN-67-000123
 run_sshd_hostbasedauth: true
-# PHTN-67-000123
-run_default_firewall_rules: true
+# PHTN-67-000129
+run_auditd_syslog_config: true

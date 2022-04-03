@@ -2730,3 +2730,23 @@
 
 # Title: The Photon operating system must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
 # Manual Remediation
+
+############################################
+
+# Title: The Photon operating system must be configured to offload audit logs to a syslog server.
+
+- name: PHTN-67-000129 - The Photon operating system must be configured to offload audit logs to a syslog server.
+  ansible.builtin.template:
+    src: stig-services-auditd.conf.j2
+    dest: /etc/vmware-syslog/stig-services-auditd.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  notify:
+    - restart syslog
+  tags:
+    - PHTN-67-000129
+    - auditd
+  when:
+    - run_auditd_syslog_config | bool
