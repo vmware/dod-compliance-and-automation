@@ -1,4 +1,4 @@
-control "PHTN-67-000036" do
+control 'PHTN-67-000036' do
   title "The Photon operating system must disable new accounts immediately upon
 password expiration."
   desc  "Inactive identifiers pose a risk to systems and applications because
@@ -22,7 +22,7 @@ their credentials.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/default/useradd with a text editor.
 
     Remove any existing \"INACTIVE\" line and add the following line:
@@ -39,9 +39,7 @@ their credentials.
   tag cci: ['CCI-000795']
   tag nist: ['IA-4 e']
 
-  describe parse_config_file("/etc/default/useradd") do
-      its('INACTIVE') { should eq '0'}
+  describe parse_config_file('/etc/default/useradd') do
+    its('INACTIVE') { should eq '0' }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCPF-67-000002" do
+control 'VCPF-67-000002' do
   title "Performance Charts must limit the number of concurrent connections
 permitted."
   desc  "Resource exhaustion can occur when an unlimited number of concurrent
@@ -26,7 +26,7 @@ threads, additional threads will be created up to the value of the
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml.
 
     Navigate to the <Executor> mode with the name of \"tomcatThreadPool\" and
@@ -50,6 +50,4 @@ name=\"tomcatThreadPool\" namePrefix=\"tomcat-http--\"/>
   describe xml("#{input('serverXmlPath')}") do
     its(['/Server/Service/Executor[@name="tomcatThreadPool"]/@maxThreads']) { should cmp "#{input('maxThreads')}" }
   end
-
 end
-

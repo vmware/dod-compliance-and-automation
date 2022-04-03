@@ -30,7 +30,7 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml.
 
@@ -54,6 +54,4 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
   describe xml("#{input('statswebXmlPath')}") do
     its(['/web-app/error-page[exception-type="java.lang.Throwable"]/location']) { should cmp '/http_error.jsp' }
   end
-
 end
-

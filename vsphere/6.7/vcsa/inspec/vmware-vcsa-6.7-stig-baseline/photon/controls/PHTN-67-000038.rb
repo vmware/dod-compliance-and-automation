@@ -1,4 +1,4 @@
-control "PHTN-67-000038" do
+control 'PHTN-67-000038' do
   title "The Photon operating system must configure sshd to disconnect idle SSH
 sessions."
   desc  "Terminating an idle session within a short time period reduces the
@@ -17,7 +17,7 @@ unattended."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"ClientAliveInterval\" line is uncommented and set to the
@@ -40,8 +40,6 @@ following:
   tag nist: ['SC-10']
 
   describe command('sshd -T|&grep -i ClientAliveInterval') do
-    its ('stdout.strip') { should cmp 'ClientAliveInterval 900' }
+    its('stdout.strip') { should cmp 'ClientAliveInterval 900' }
   end
-
 end
-

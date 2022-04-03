@@ -1,4 +1,4 @@
-control "VCFL-67-000013" do
+control 'VCFL-67-000013' do
   title "vSphere Client must have Multipurpose Internet Mail Extensions (MIME)
 that invoke OS shell programs disabled."
   desc  "MIME mappings tell vSphere Client what type of program various file
@@ -18,7 +18,7 @@ into executing shell command files.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml in a
 text editor.
 
@@ -40,7 +40,6 @@ text editor.
   tag nist: ['CM-7 a']
 
   describe command('grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' /usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

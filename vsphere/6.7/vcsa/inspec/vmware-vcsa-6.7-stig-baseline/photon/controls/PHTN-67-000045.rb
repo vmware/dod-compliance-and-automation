@@ -1,4 +1,4 @@
-control "PHTN-67-000045" do
+control 'PHTN-67-000045' do
   title 'The Photon operating system must audit all account modifications.'
   desc  "Once an attacker establishes access to a system, the attacker often
 attempts to create a persistent method of reestablishing access. One way to
@@ -26,7 +26,7 @@ purposes.
 accurate results. Enabling the auditd service is done as part of a separate
 control.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
 following lines:
 
@@ -52,11 +52,9 @@ following lines:
   tag nist: ['AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)']
 
   describe auditd do
-    its("lines") { should include %r{-w /etc/passwd -p wa -k passwd} }
-    its("lines") { should include %r{-w /etc/shadow -p wa -k shadow}}
-    its("lines") { should include %r{-w /etc/group -p wa -k group}}
-    its("lines") { should include %r{-w /etc/gshadow -p wa -k gshadow} }
+    its('lines') { should include %r{-w /etc/passwd -p wa -k passwd} }
+    its('lines') { should include %r{-w /etc/shadow -p wa -k shadow} }
+    its('lines') { should include %r{-w /etc/group -p wa -k group} }
+    its('lines') { should include %r{-w /etc/gshadow -p wa -k gshadow} }
   end
-
 end
-

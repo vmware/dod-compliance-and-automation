@@ -29,7 +29,7 @@ shell for the account to \"/bin/bash\".
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Add or reconfigure the following value:
@@ -51,6 +51,4 @@ shell for the account to \"/bin/bash\".
   describe parse_config(runtime).params['debug.log-request-handling'] do
     it { should cmp "#{input('debugLogRequestHandling')}" }
   end
-
 end
-

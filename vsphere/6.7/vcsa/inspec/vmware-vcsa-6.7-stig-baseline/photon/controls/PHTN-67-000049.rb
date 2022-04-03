@@ -1,4 +1,4 @@
-control "PHTN-67-000049" do
+control 'PHTN-67-000049' do
   title "The Photon operating system audit files and directories must have
 correct permissions."
   desc  "Protecting audit information also includes identifying and protecting
@@ -13,7 +13,7 @@ tools is necessary to prevent unauthorized operations on audit information."
     If auditd.conf is not owned by root and group owned by root, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # chown root:root /etc/audit/auditd.conf
@@ -29,9 +29,7 @@ finding.
   tag nist: ['AU-9']
 
   describe file('/etc/audit/auditd.conf') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
-
 end
-

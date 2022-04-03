@@ -1,4 +1,4 @@
-control "PHTN-67-000071" do
+control 'PHTN-67-000071' do
   title "The Photon operating system must generate audit records when the sudo
 command is used."
   desc  "Without generating audit records that are specific to the security and
@@ -26,7 +26,7 @@ privileged
 accurate results. Enabling the auditd service is done as part of a separate
 control.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
 following lines:
 
@@ -50,7 +50,6 @@ auid!=4294967295 -k privileged
   tag nist: ['AU-12 c']
 
   describe auditd do
-    its("lines") { should include %r{-a always,exit -S all -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=-1} }
+    its('lines') { should include %r{-a always,exit -S all -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=-1} }
   end
-
 end

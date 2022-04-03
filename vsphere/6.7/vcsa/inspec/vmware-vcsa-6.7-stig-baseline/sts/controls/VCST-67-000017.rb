@@ -21,7 +21,7 @@ permissions as applied out of the box.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     At the command prompt, execute the following command:
@@ -44,7 +44,6 @@ permissions as applied out of the box.
   tag nist: ['SC-2', 'CM-5 (1)']
 
   describe command("find '#{input('rootPath')}' -xdev -type f -a \'(\' -not -user root -o -not -group root \')\' -exec ls -ld {} \;") do
-   its('stdout.strip') { should eq ''}
+    its('stdout.strip') { should eq '' }
   end
-
 end

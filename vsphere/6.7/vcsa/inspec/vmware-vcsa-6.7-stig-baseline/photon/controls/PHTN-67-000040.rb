@@ -1,4 +1,4 @@
-control "PHTN-67-000040" do
+control 'PHTN-67-000040' do
   title "The Photon operating system must configure rsyslog to offload system
 logs to a central server."
   desc  "Information stored in one location is vulnerable to accidental or
@@ -28,7 +28,7 @@ Configuration\".
 
     If no site-specific syslog server is configured, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/vmware-syslog/syslog.conf with a text editor.
 
     Remove any existing content and create a new remote server configuration
@@ -67,9 +67,7 @@ line.
   tag nist: ['SI-11 a', 'AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)', "AU-4
 (1)"]
 
-  describe file ('/etc/vmware-syslog/syslog.conf') do
-    its ('content') { should match /^.*#{input('syslogServer')}.*$/ }
+  describe file('/etc/vmware-syslog/syslog.conf') do
+    its('content') { should match /^.*#{input('syslogServer')}.*$/ }
   end
-
 end
-

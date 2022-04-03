@@ -1,4 +1,4 @@
-control "VCRP-67-000002" do
+control 'VCRP-67-000002' do
   title 'The rhttpproxy must set a limit on established connections.'
   desc  "The rhttpproxy client connections must be limited to preserve system
 resources and continue servicing connections without interruption. Without a
@@ -19,7 +19,7 @@ must be maintained."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml.
 
     Locate the <config>/<vmacore>/<http> block and configure <maxConnections>
@@ -40,11 +40,10 @@ as follows:
   tag fix_id: 'F-43909r679663_fix'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
-  
+
   value = input('maxconnections')
 
   describe.one do
-  
     describe xml("#{input('configXmlPath')}") do
       its(['/config/vmacore/http/maxConnections']) { should cmp [value] }
     end
@@ -52,8 +51,5 @@ as follows:
     describe xml("#{input('configXmlPath')}") do
       its(['/config/vmacore/http/maxConnections']) { should cmp [" #{value} "] }
     end
-  
   end
-
 end
-

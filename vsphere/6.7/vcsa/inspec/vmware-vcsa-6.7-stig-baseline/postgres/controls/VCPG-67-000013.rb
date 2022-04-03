@@ -1,4 +1,4 @@
-control "VCPG-67-000013" do
+control 'VCPG-67-000013' do
   title 'VMware Postgres must be configured to use TLS.'
   desc  "The DoD standard for authentication is DoD-approved PKI certificates.
 Authentication based on user ID and password may be used only when it is not
@@ -26,7 +26,7 @@ must be verified and maintained.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -46,12 +46,10 @@ pg_reload_conf();\"
   tag cci: ['CCI-000197']
   tag nist: ['IA-5 (1) (c)']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW ssl;"
-  
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW ssl;'
+
   describe sql.query(sqlquery) do
-   its('output') {should cmp "#{input('pg_ssl')}" }
+    its('output') { should cmp "#{input('pg_ssl')}" }
   end
-
 end
-

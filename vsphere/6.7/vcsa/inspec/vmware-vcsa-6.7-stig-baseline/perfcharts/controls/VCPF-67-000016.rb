@@ -1,4 +1,4 @@
-control "VCPF-67-000016" do
+control 'VCPF-67-000016' do
   title "Performance Charts directory tree must have permissions in an
 \"out-of-the box\" state."
   desc  "Accounts on a web server are to be kept to a minimum. Only
@@ -26,7 +26,7 @@ Charts files must be adequately protected with correct permissions as applied
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command:
 
     # chown perfcharts:cis <file_name>
@@ -47,8 +47,6 @@ finding.
   tag nist: ['SC-2', 'CM-5 (1)']
 
   describe command('find /usr/lib/vmware-perfcharts/tc-instance/webapps/ -xdev -type f -a \'(\' -not -user perfcharts -o -not -group cis \')\' -exec ls -A {} \;') do
-   its('stdout.strip') { should eq '/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml'}
+    its('stdout.strip') { should eq '/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml' }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCUI-67-000008" do
+control 'VCUI-67-000008' do
   title 'vSphere UI application files must be verified for their integrity.'
   desc  "Verifying that the vSphere UI application code is unchanged from its
 shipping state is essential for file validation and non-repudiation of the
@@ -13,7 +13,7 @@ should be changed after installation, excluding configuration files."
 
     If is any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Reinstall the VCSA or roll back to a snapshot.
 
     Modifying the vSphere UI installation files manually is not supported by
@@ -30,7 +30,6 @@ VMware.
   tag nist: ['CM-5 (3)']
 
   describe command('rpm -V vsphere-ui|grep "^..5......"|grep -E "\.war|\.jar|\.sh|\.py"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

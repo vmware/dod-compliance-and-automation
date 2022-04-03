@@ -1,4 +1,4 @@
-control "VCPG-67-000003" do
+control 'VCPG-67-000003' do
   title "VMware Postgres configuration files must not be accessible by
 unauthorized users."
   desc  "VMware Postgres has several configuration files that directly control
@@ -20,7 +20,7 @@ identify those responsible for one.
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, enter the following command:
 
     # chmod 600 <file>
@@ -41,13 +41,11 @@ identify those responsible for one.
   tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
 
-  command("find #{input('pg_install_dir')} -type f -maxdepth 1 -name '*conf*'").stdout.split.each do | fname |
+  command("find #{input('pg_install_dir')} -type f -maxdepth 1 -name '*conf*'").stdout.split.each do |fname|
     describe file(fname) do
       its('mode') { should cmp '0600' }
-      its('owner') {should cmp 'vpostgres'}
-      its('group') {should cmp 'users'}
+      its('owner') { should cmp 'vpostgres' }
+      its('group') { should cmp 'users' }
     end
   end
-
 end
-

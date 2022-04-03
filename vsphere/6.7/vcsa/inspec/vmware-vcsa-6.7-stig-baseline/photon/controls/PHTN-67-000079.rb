@@ -1,4 +1,4 @@
-control "PHTN-67-000079" do
+control 'PHTN-67-000079' do
   title "The Photon operating system must ensure root $PATH entries are
 appropriate."
   desc  "The $PATH variable contains a semicolon-delimited set of directories
@@ -18,7 +18,7 @@ than the one intended."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # export
@@ -35,8 +35,6 @@ PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/java/jre-vmware/bin:/opt/
   tag nist: ['CM-6 b']
 
   describe command('echo $PATH') do
-      its ('stdout.strip') { should cmp '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/java/jre-vmware/bin:/opt/vmware/bin' }
+    its('stdout.strip') { should cmp '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/java/jre-vmware/bin:/opt/vmware/bin' }
   end
-
 end
-

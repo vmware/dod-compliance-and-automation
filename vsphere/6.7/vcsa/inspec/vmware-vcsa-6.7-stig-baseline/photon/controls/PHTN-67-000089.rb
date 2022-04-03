@@ -1,4 +1,4 @@
-control "PHTN-67-000089" do
+control 'PHTN-67-000089' do
   title "The Photon operating system must configure sshd to disallow
 authentication with an empty password."
   desc  "Blank passwords are one of the first things an attacker checks for
@@ -16,7 +16,7 @@ sshd must not allow that user to log in."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"PermitEmptyPasswords\" line is uncommented and set to the
@@ -39,8 +39,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i PermitEmptyPasswords') do
-    its ('stdout.strip') { should cmp 'PermitEmptyPasswords no' }
+    its('stdout.strip') { should cmp 'PermitEmptyPasswords no' }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "PHTN-67-000017" do
+control 'PHTN-67-000017' do
   title 'The Photon operating system audit log must be group-owned by root.'
   desc  "Audit information includes all information (e.g., audit records, audit
 settings, audit reports) needed to successfully audit operating system activity.
@@ -19,7 +19,7 @@ in \"${audit_log_file%/*}\":\
 
     If any audit log file is not group-owned by root, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     #  chown root:root <audit log file>
@@ -40,6 +40,4 @@ in \"${audit_log_file%/*}\":\
   describe file(auditlog) do
     its('group') { should cmp 'root' }
   end
-
 end
-

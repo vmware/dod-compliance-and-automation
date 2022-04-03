@@ -25,7 +25,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
@@ -51,5 +51,4 @@ configure it as follows:
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/session-config/cookie-config/secure') { should cmp 'true' }
   end
-
 end

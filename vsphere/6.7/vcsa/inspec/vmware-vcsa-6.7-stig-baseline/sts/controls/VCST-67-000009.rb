@@ -17,7 +17,7 @@ in ROOT.war. Any other .war file is potentially malicious and must be removed."
     If the result of this command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     For each unexpected file returned in the check, run the following command:
@@ -39,7 +39,6 @@ finding.
   tag nist: ['CM-5 (3)']
 
   describe command("ls -A '#{input('appPath')}'/*.war") do
-    its ('stdout.strip') { should eq '/usr/lib/vmware-sso/vmware-sts/webapps/ROOT.war' }
+    its('stdout.strip') { should eq '/usr/lib/vmware-sso/vmware-sts/webapps/ROOT.war' }
   end
-
 end

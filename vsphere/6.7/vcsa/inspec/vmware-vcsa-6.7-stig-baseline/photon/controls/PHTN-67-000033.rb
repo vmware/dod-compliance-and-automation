@@ -1,4 +1,4 @@
-control "PHTN-67-000033" do
+control 'PHTN-67-000033' do
   title "The Photon operating system must disable the loading of unnecessary
 kernel modules."
   desc  "To support the requirements and principles of least functionality, the
@@ -38,7 +38,7 @@ functioning of the product.
 This is acceptable. If the output does not include at least every statement in
 the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/modprobe.d/modprobe.conf with a text editor and set the contents
 as follows:
 
@@ -81,6 +81,4 @@ as follows:
       it { should_not be_loaded }
     end
   end
-
 end
-

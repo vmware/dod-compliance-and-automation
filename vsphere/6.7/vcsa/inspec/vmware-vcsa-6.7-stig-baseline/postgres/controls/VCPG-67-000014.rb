@@ -1,4 +1,4 @@
-control "VCPG-67-000014" do
+control 'VCPG-67-000014' do
   title "VMware Postgres must enforce authorized access to all PKI private
 keys."
   desc  "The DoD standard for authentication is DoD-approved PKI certificates.
@@ -26,7 +26,7 @@ authorized and authenticated users.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # chmod 600 /storage/db/vpostgres_ssl/server.key
@@ -44,9 +44,7 @@ authorized and authenticated users.
 
   describe file("#{input('pg_ssl_key')}") do
     its('mode') { should cmp '0600' }
-    its('owner') {should cmp 'vpostgres'}
-    its('group') {should cmp 'users'}
+    its('owner') { should cmp 'vpostgres' }
+    its('group') { should cmp 'users' }
   end
-
 end
-

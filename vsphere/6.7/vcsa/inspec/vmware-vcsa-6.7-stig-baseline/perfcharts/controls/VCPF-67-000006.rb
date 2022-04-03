@@ -1,4 +1,4 @@
-control "VCPF-67-000006" do
+control 'VCPF-67-000006' do
   title "Performance Charts must generate log records for system startup and
 shutdown."
   desc  "Logging must be started as soon as possible when a service starts and
@@ -27,7 +27,7 @@ Ensuring these \"json\" files are configured correctly enables early Java
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware/vmware-vmon/svcCfgfiles/perfcharts.json.
 
     Below the last line of the \"PreStartCommandArg\" block, add the following
@@ -50,8 +50,6 @@ line:
   tag nist: ['AU-9', 'AU-12 a', 'AU-14 (1)']
 
   describe json("#{input('svcJsonPath')}") do
-    its('StreamRedirectFile') { should eq "#{input('streamRedirectFile')}"}
+    its('StreamRedirectFile') { should eq "#{input('streamRedirectFile')}" }
   end
-
 end
-

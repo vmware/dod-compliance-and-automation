@@ -1,4 +1,4 @@
-control "VCFL-67-000024" do
+control 'VCFL-67-000024' do
   title "vSphere Client must be configured to show error pages with minimal
 information."
   desc  "Web servers will often display error messages to client users,
@@ -24,7 +24,7 @@ not show server version information in error messages.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml.
 
@@ -45,17 +45,16 @@ not show server version information in error messages.
   begin
     vcui_conf = xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml')
 
-      if vcui_conf['Server/Service/Connector/attribute::server'].is_a?(Array)
-        vcui_conf['Server/Service/Connector/attribute::server'].each do |x|
-          describe x do
-            it { should eq "Anonymous" }
-          end
-        end
-      else
-        describe xml(vcui_conf['Server/Service/Connector/attribute::server']) do
-          it { should eq "Anonymous" }
+    if vcui_conf['Server/Service/Connector/attribute::server'].is_a?(Array)
+      vcui_conf['Server/Service/Connector/attribute::server'].each do |x|
+        describe x do
+          it { should eq 'Anonymous' }
         end
       end
+    else
+      describe xml(vcui_conf['Server/Service/Connector/attribute::server']) do
+        it { should eq 'Anonymous' }
+      end
+    end
   end
-
 end

@@ -1,4 +1,4 @@
-control "PHTN-67-000029" do
+control 'PHTN-67-000029' do
   title "The Photon operating system must prohibit password reuse for a minimum
 of five generations."
   desc  "Password complexity, or strength, is a measure of the effectiveness of
@@ -20,7 +20,7 @@ retry=3
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/applmgmt/appliance/system-password with a text editor.
 
     Add the following line after the last auth statement:
@@ -40,9 +40,7 @@ retry=3
   tag cci: ['CCI-000200']
   tag nist: ['IA-5 (1) (e)']
 
-  describe file ('/etc/pam.d/system-password') do
-      its ('content'){should match /^(?=.*?\bpassword\b)(?=.*?\brequired\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\bremember=5\b).*$/}
+  describe file('/etc/pam.d/system-password') do
+    its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequired\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\bremember=5\b).*$/ }
   end
-
 end
-

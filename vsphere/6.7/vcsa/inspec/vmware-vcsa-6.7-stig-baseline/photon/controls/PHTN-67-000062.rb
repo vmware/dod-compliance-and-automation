@@ -1,4 +1,4 @@
-control "PHTN-67-000062" do
+control 'PHTN-67-000062' do
   title "The Photon operating system RPM package management tool must
 cryptographically verify the authenticity of all software packages during
 installation."
@@ -15,7 +15,7 @@ software and protects against malicious tampering."
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "Open the file containing \"nosignature\" with a text editor and
+  desc 'fix', "Open the file containing \"nosignature\" with a text editor and
 remove the option."
   impact 0.5
   tag severity: 'medium'
@@ -28,8 +28,6 @@ remove the option."
   tag nist: ['CM-5 (3)']
 
   describe command('grep -s nosignature /usr/lib/rpm/rpmrc /etc/rpmrc ~root/.rpmrc') do
-      its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

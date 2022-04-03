@@ -1,4 +1,4 @@
-control "PHTN-67-000069" do
+control 'PHTN-67-000069' do
   title "The Photon operating system must implement address space layout
 randomization (ASLR) to protect its memory from unauthorized code execution."
   desc  "ASLR makes it more difficult for an attacker to predict the location
@@ -14,7 +14,7 @@ return-oriented programming techniques."
 
     If the value of \"randomize_va_space\" is not \"2\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/sysctl.d/50-security-hardening.conf with a text editor.
 
     Ensure that the \"randomize_va_space\" is uncommented and set to the
@@ -39,6 +39,4 @@ following:
   describe kernel_parameter('kernel.randomize_va_space') do
     its('value') { should eq 2 }
   end
-
 end
-

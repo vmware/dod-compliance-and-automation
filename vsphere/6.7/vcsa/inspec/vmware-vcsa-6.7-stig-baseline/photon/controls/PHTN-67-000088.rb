@@ -1,4 +1,4 @@
-control "PHTN-67-000088" do
+control 'PHTN-67-000088' do
   title "The Photon operating system must configure sshd to use privilege
 separation."
   desc  "Privilege separation in sshd causes the process to drop root
@@ -16,7 +16,7 @@ vulnerabilities in the unprivileged section."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"UsePrivilegeSeparation\" line is uncommented and set to
@@ -39,8 +39,6 @@ the following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i UsePrivilegeSeparation') do
-    its ('stdout.strip') { should cmp 'UsePrivilegeSeparation yes' }
+    its('stdout.strip') { should cmp 'UsePrivilegeSeparation yes' }
   end
-
 end
-

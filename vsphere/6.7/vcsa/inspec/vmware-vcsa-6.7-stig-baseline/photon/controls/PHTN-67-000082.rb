@@ -1,4 +1,4 @@
-control "PHTN-67-000082" do
+control 'PHTN-67-000082' do
   title "The Photon operating system must configure a secure umask for all
 shells."
   desc  "A user's umask influences the permissions assigned to files that a
@@ -21,7 +21,7 @@ information is not exposed to unprivileged users."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/profile.d/umask.sh with a text editor.
 
     Set the contents as follows:
@@ -48,6 +48,4 @@ information is not exposed to unprivileged users."
     its('content') { should match 'umask 002' }
     its('content') { should match 'umask 027' }
   end
-
 end
-

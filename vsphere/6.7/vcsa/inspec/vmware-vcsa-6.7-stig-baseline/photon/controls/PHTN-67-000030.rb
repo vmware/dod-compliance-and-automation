@@ -1,4 +1,4 @@
-control "PHTN-67-000030" do
+control 'PHTN-67-000030' do
   title "The Photon operating system must ensure old passwords are being
 stored."
   desc  "Password complexity, or strength, is a measure of the effectiveness of
@@ -14,7 +14,7 @@ is a password that is not changed as per policy requirements."
 
     If \"/etc/security/opasswd\" does not exist, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands:
 
     # touch /etc/security/opasswd
@@ -34,6 +34,4 @@ is a password that is not changed as per policy requirements."
   describe file('/etc/security/opasswd') do
     it { should exist }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "PHTN-67-000101" do
+control 'PHTN-67-000101' do
   title "The Photon operating system must be configured so that the
 /etc/cron.allow file is protected from unauthorized modification."
   desc  "If cron files and folders are accessible to unauthorized users,
@@ -15,7 +15,7 @@ malicious jobs may be created."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands:
 
     # chmod 600 /etc/cron.allow
@@ -32,10 +32,8 @@ malicious jobs may be created."
   tag nist: ['CM-6 b']
 
   describe file('/etc/cron.allow') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0600' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    its('mode') { should cmp '0600' }
   end
-
 end
-

@@ -20,7 +20,7 @@ No output should be returned.
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Comment any existing accesslog.format lines by adding a \"#\" at the
@@ -46,5 +46,4 @@ beginning of the line.
   describe parse_config(runtime).params['accesslog.format'] do
     it { should eq nil }
   end
-
 end

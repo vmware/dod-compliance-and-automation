@@ -1,7 +1,7 @@
-control "VCFL-67-000019" do
-   title "vSphere Client directory tree must have permissions in an
+control 'VCFL-67-000019' do
+  title "vSphere Client directory tree must have permissions in an
 \"out-of-the-box\" state."
-  desc  "As a rule, accounts on a web server are to be kept to a minimum. Only
+  desc "As a rule, accounts on a web server are to be kept to a minimum. Only
 administrators, web managers, developers, auditors, and web authors require
 accounts on the machine hosting the web server. The resources to which these
 accounts have access must also be closely monitored and controlled. vSphere
@@ -20,7 +20,7 @@ cis ')' ')' -exec ls -ld {} \\;
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command:
 
     #chown vsphere-client:root <file_name>
@@ -41,7 +41,6 @@ cis ')' ')' -exec ls -ld {} \\;
   tag nist: ['SC-2', 'CM-5 (1)']
 
   describe command('find /usr/lib/vmware-vsphere-client/server -xdev -type f -a \'(\' -not -user vsphere-client -o \'(\' -not -group root -a -not -group users -not -group cis \')\' \')\' -exec ls -ld {} \;') do
-   its('stdout.strip') { should eq ''}
+    its('stdout.strip') { should eq '' }
   end
-
 end

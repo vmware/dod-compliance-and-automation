@@ -1,4 +1,4 @@
-control "PHTN-67-000005" do
+control 'PHTN-67-000005' do
   title "The Photon operating system must set a session inactivity timeout of
 15 minutes or less."
   desc  "A session timeout is an action taken when a session goes idle for any
@@ -22,7 +22,7 @@ a session has idled and take action to terminate the session.
     If the file \"tmout.sh\" does not exist or the output does not look like
 the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/profile.d/tmout.sh with a text editor and set its content to the
 following:
 
@@ -45,8 +45,6 @@ following:
 
   describe file('/etc/profile.d/tmout.sh') do
     it { should exist }
-    its('content') { should match %r{TMOUT=900} }
+    its('content') { should match /TMOUT=900/ }
   end
-
 end
-

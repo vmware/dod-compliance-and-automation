@@ -30,7 +30,7 @@ shell for the account to \"/bin/bash\".
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Configure the \"cgi.assign\" section to the following:
@@ -55,7 +55,6 @@ shell for the account to \"/bin/bash\".
   tag nist: ['CM-7 a']
 
   describe command("cat /opt/vmware/etc/lighttpd/lighttpd.conf | awk '/cgi\.assign/,/\)/'") do
-    its ('stdout') { should match "cgi.assign                 = ( \".pl\"  => \"/usr/bin/perl\",\n                               \".cgi\" => \"/usr/bin/perl\",\n                               \".rb\"  => \"/usr/bin/ruby\",\n                               \".erb\" => \"/usr/bin/eruby\",\n                               \".py\"  => \"/usr/bin/python\" )\n" }
+    its('stdout') { should match "cgi.assign                 = ( \".pl\"  => \"/usr/bin/perl\",\n                               \".cgi\" => \"/usr/bin/perl\",\n                               \".rb\"  => \"/usr/bin/ruby\",\n                               \".erb\" => \"/usr/bin/eruby\",\n                               \".py\"  => \"/usr/bin/python\" )\n" }
   end
-                            
 end

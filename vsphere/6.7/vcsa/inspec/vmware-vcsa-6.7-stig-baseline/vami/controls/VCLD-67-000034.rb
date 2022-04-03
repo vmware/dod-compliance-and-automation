@@ -30,7 +30,7 @@ shell for the account to \"/bin/bash\".
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Replace any and all \"ssl.use-*\" lines with following:
@@ -54,24 +54,22 @@ shell for the account to \"/bin/bash\".
   runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout
 
   describe parse_config(runtime).params['ssl.use-sslv2'] do
-    it { should cmp "\"disable\"" }
+    it { should cmp '"disable"' }
   end
 
   describe parse_config(runtime).params['ssl.use-sslv3'] do
-    it { should cmp "\"disable\"" }
+    it { should cmp '"disable"' }
   end
 
   describe parse_config(runtime).params['ssl.use-tlsv10'] do
-    it { should cmp "\"disable\"" }
+    it { should cmp '"disable"' }
   end
 
   describe parse_config(runtime).params['ssl.use-tlsv11'] do
-    it { should cmp "\"disable\"" }
+    it { should cmp '"disable"' }
   end
 
   describe parse_config(runtime).params['ssl.use-tlsv12'] do
-    it { should cmp "\"enable\"" }
+    it { should cmp '"enable"' }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCPF-67-000009" do
+control 'VCPF-67-000009' do
   title 'Performance Charts must only run one web app.'
   desc  "VMware ships Performance Charts on the VCSA with one web app. Any
 other path is potentially malicious and must be removed."
@@ -35,8 +35,6 @@ command:
   tag nist: ['CM-5 (3)']
 
   describe command("ls -A '#{input('appPath')}'") do
-    its ('stdout.strip') { should eq 'statsreport' }
+    its('stdout.strip') { should eq 'statsreport' }
   end
-
 end
-

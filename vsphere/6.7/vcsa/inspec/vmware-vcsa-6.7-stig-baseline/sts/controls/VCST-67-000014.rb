@@ -22,7 +22,7 @@ Security Token Service does not configure WebDAV by default.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
@@ -46,5 +46,4 @@ parent <servlet-mapping> block.
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="webdav"]') { should eq [] }
   end
-
 end

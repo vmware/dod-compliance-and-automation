@@ -1,4 +1,4 @@
-control "PHTN-67-000018" do
+control 'PHTN-67-000018' do
   title 'The Photon operating system must have the auditd service running.'
   desc  "Without the capability to generate audit records, it would be
 difficult to establish, correlate, and investigate the events relating to an
@@ -13,7 +13,7 @@ must be configured to start automatically and be running at all times.
 
     If the service is not running, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # systemctl enable auditd.service
@@ -38,10 +38,8 @@ must be configured to start automatically and be running at all times.
 'SI-6 a', 'SI-6 b']
 
   describe systemd_service('auditd') do
-    it { should be_installed}
-    it { should be_enabled}
-    it { should be_running}
+    it { should be_installed }
+    it { should be_enabled }
+    it { should be_running }
   end
-
 end
-

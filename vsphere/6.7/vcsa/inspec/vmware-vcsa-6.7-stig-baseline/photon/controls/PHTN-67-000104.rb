@@ -1,4 +1,4 @@
-control "PHTN-67-000104" do
+control 'PHTN-67-000104' do
   title "The Photon operating system must not forward IPv4 or IPv6
 source-routed packets."
   desc  "Source routing is an Internet Protocol (IP) mechanism that allows an
@@ -33,7 +33,7 @@ malicious purposes and should therefore be disabled.
     Note: The number of \"ethx\" lines returned is dependent on the number of
 interfaces. Every \"ethx\" entry must be set to \"0\".
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/sysctl.conf with a text editor.
 
     Add or update the following lines:
@@ -82,6 +82,4 @@ interfaces. Every \"ethx\" entry must be set to \"0\".
   describe kernel_parameter('net.ipv6.conf.eth0.accept_source_route') do
     its('value') { should eq 0 }
   end
-
 end
-

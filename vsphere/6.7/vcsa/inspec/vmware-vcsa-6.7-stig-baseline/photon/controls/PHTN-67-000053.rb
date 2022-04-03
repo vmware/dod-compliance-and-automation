@@ -1,4 +1,4 @@
-control "PHTN-67-000053" do
+control 'PHTN-67-000053' do
   title 'The Photon operating system package files must not be modified.'
   desc  "Protecting the integrity of the tools used for auditing purposes is a
 critical step toward ensuring the integrity of audit information. Audit
@@ -17,7 +17,7 @@ files on disk versus the expected ones from the installation package.
 
     If there is output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If the audit system binaries have been altered, the system must be taken
 offline and the ISSM must be notified immediately.
 
@@ -37,8 +37,6 @@ once the root cause is remediated.
   tag nist: ['AU-9 (3)']
 
   describe command('rpm -V audit | grep "^..5" | grep -v "^...........c"') do
-      its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

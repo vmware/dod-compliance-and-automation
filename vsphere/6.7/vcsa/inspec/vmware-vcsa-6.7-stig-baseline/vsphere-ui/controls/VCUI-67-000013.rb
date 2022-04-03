@@ -1,4 +1,4 @@
-control "VCUI-67-000013" do
+control 'VCUI-67-000013' do
   title "vSphere UI must not have the Web Distributed Authoring (WebDAV)
 servlet installed."
   desc  "WebDAV is an extension to the HTTP protocol that, when developed, was
@@ -20,7 +20,7 @@ vSphere UI does not configure WebDAV by default.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/web.xml.
 
     Find the <servlet-name>webdav</servlet-name> node and remove the entire
@@ -42,5 +42,4 @@ parent <servlet-mapping> block.
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="webdav"]') { should eq [] }
   end
-
 end

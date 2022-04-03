@@ -1,4 +1,4 @@
-control "PHTN-67-000060" do
+control 'PHTN-67-000060' do
   title "The Photon operating system must configure auditd to log space limit
 problems to syslog."
   desc  "If security personnel are not notified immediately when storage volume
@@ -16,7 +16,7 @@ capacity expansion."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/auditd.conf with a text editor.
 
     Ensure that the \"space_left\" line is uncommented and set to the following:
@@ -38,8 +38,6 @@ capacity expansion."
   tag nist: ['AU-5 (1)']
 
   describe auditd_conf do
-    its("space_left") { should cmp '75'}
+    its('space_left') { should cmp '75' }
   end
-
 end
-

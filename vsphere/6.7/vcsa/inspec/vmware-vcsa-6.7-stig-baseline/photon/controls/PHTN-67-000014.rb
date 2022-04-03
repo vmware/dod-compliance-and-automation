@@ -1,4 +1,4 @@
-control "PHTN-67-000014" do
+control 'PHTN-67-000014' do
   title "The Photon operating system audit log must attempt to log audit
 failures to syslog."
   desc  "It is critical for the appropriate personnel to be aware if a system
@@ -15,7 +15,7 @@ the audit capability, and system operation may be adversely affected."
     If any of the above parameters are not set to SYSLOG or are missing, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/auditd.conf with a text editor.
 
     Ensure that the following lines are present, not duplicated, and not
@@ -40,10 +40,8 @@ commented:
   tag nist: ['AU-5 b']
 
   describe auditd_conf do
-    its("disk_full_action") { should cmp 'SYSLOG'}
-    its("disk_error_action") { should cmp 'SYSLOG'}
-    its("admin_space_left_action") { should cmp 'SYSLOG'}
+    its('disk_full_action') { should cmp 'SYSLOG' }
+    its('disk_error_action') { should cmp 'SYSLOG' }
+    its('admin_space_left_action') { should cmp 'SYSLOG' }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCEM-67-000028" do
+control 'VCEM-67-000028' do
   title 'ESX Agent Manager must set the secure flag for cookies.'
   desc  "The secure flag is an option that can be set by the application server
 when sending a new cookie to the user within an HTTP Response. The purpose of
@@ -22,7 +22,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
@@ -48,6 +48,4 @@ configure it as follows:
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/session-config/cookie-config/secure') { should cmp 'true' }
   end
-
 end
-

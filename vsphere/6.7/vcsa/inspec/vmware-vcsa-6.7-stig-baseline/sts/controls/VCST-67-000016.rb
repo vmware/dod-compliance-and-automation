@@ -21,7 +21,7 @@ tree and gaining access to the other directories, including the system root.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     At the command prompt, execute the following commands:
@@ -43,7 +43,6 @@ tree and gaining access to the other directories, including the system root.
   tag nist: ['CM-7 a']
 
   describe command("find '#{input('appPath')}' -type l -ls") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

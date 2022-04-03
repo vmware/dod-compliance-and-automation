@@ -30,7 +30,7 @@ sed '2 s/xmlns=\".*\"//g' | xmllint --xpath
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml.
 
     Inside the <Host> node, add the \"AccessLogValve\" <Valve> node entirely if
@@ -62,6 +62,4 @@ prefix=\"localhost_access_log\" suffix=\".txt\"/>
   describe xml("#{input('serverXmlPath')}") do
     its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ["#{input('accessValvePattern')}"] }
   end
-
 end
-

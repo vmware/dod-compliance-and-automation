@@ -1,4 +1,4 @@
-control "VCFL-67-000029" do
+control 'VCFL-67-000029' do
   title 'vSphere Client must disable the shutdown port.'
   desc  "An attacker has at least two reasons to stop a web server. The first
 is to cause a denial of service, and the second is to put in place changes the
@@ -18,7 +18,7 @@ this port. To ensure availability, the shutdown port must be disabled."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and
 open /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml in a
 text editor.
@@ -40,5 +40,4 @@ text editor.
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml') do
     its('Server/attribute::port') { should cmp '-1' }
   end
-
 end

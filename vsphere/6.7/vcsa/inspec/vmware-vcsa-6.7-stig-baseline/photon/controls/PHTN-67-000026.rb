@@ -1,4 +1,4 @@
-control "PHTN-67-000026" do
+control 'PHTN-67-000026' do
   title "The Photon operating system must store only encrypted representations
 of passwords."
   desc  "Passwords must be protected at all times via strong, one-way
@@ -18,7 +18,7 @@ those passwords are much more vulnerable to offline brute forcing attacks."
     If there is no output or if the output does match the expected result, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/login.defs with a text editor.
 
     Add or replace the ENCRYPT_METHOD line as follows:
@@ -38,6 +38,4 @@ is a finding.
   describe login_defs do
     its('ENCRYPT_METHOD') { should cmp 'SHA512' }
   end
-
 end
-

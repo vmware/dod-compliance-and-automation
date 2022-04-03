@@ -1,4 +1,4 @@
-control "PHTN-67-000123" do
+control 'PHTN-67-000123' do
   title "The Photon operating system must configure sshd to disallow
 HostbasedAuthentication."
   desc  "SSH trust relationships enable trivial lateral spread after a host
@@ -15,7 +15,7 @@ compromise and therefore must be explicitly disabled."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"HostbasedAuthentication\" line is uncommented and set to
@@ -38,8 +38,6 @@ the following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i HostbasedAuthentication') do
-      its ('stdout.strip') { should cmp 'HostbasedAuthentication no' }
+    its('stdout.strip') { should cmp 'HostbasedAuthentication no' }
   end
-
 end
-

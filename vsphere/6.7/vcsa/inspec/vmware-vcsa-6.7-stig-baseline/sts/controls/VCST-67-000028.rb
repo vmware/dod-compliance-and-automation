@@ -23,7 +23,7 @@ be verified as accurate to their shipping state."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open
@@ -51,11 +51,10 @@ following list:
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-custom.http.port'] do
     it { should eq "#{input('httpPort')}" }
   end
-   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-custom.https.port'] do
+  describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-custom.https.port'] do
     it { should eq "#{input('httpsPort')}" }
   end
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-ssl-localhost.https.port'] do
     it { should eq "#{input('sslhttpsPort')}" }
   end
-
 end

@@ -1,4 +1,4 @@
-control "VCPF-67-000019" do
+control 'VCPF-67-000019' do
   title 'Performance Charts must set "URIEncoding" to UTF-8.'
   desc  "Invalid user input occurs when a user inserts data or characters into
 a hosted application's data entry field and the hosted application is
@@ -25,7 +25,7 @@ character set via the \"URIEncoding\" attribute on the Connector nodes.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml.
 
     Configure the <Connector> node with the value 'URIEncoding=\"UTF-8\"'.
@@ -41,8 +41,6 @@ character set via the \"URIEncoding\" attribute on the Connector nodes.
   tag nist: ['SI-10']
 
   describe xml("#{input('serverXmlPath')}") do
-    its(['Server/Service/Connector/@URIEncoding']) { should cmp "#{input('uriEncoding')}"}
+    its(['Server/Service/Connector/@URIEncoding']) { should cmp "#{input('uriEncoding')}" }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCEM-67-000011" do
+control 'VCEM-67-000011' do
   title "ESX Agent Manager must be configured to limit access to internal
 packages."
   desc  "The \"package.access\" entry in the \"catalina.properties\" file
@@ -26,7 +26,7 @@ configuration must be maintained."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-eam/catalina.properties
@@ -51,8 +51,6 @@ finding.
   tag nist: ['CM-7 a']
 
   describe command("grep 'package.access' -A 5 '#{input('catalinaPropertiesPath')}'") do
-    its ('stdout.strip') { should eq "#{input('packageAccess')}" }
+    its('stdout.strip') { should eq "#{input('packageAccess')}" }
   end
-
 end
-

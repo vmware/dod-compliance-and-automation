@@ -1,6 +1,6 @@
-control "VCFL-67-000004" do
-   title 'vSphere Client must protect cookies from XSS.'
-  desc  "Cookies are a common way to save session state over the HTTP(S)
+control 'VCFL-67-000004' do
+  title 'vSphere Client must protect cookies from XSS.'
+  desc "Cookies are a common way to save session state over the HTTP(S)
 protocol. If an attacker can compromise session data stored in a cookie, they
 are better able to launch an attack against the server and its applications.
 
@@ -21,7 +21,7 @@ Any attempt to access the cookie from client script is strictly forbidden.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/context.xml.
 
@@ -44,5 +44,4 @@ Any attempt to access the cookie from client script is strictly forbidden.
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/context.xml') do
     its(['Context/attribute::useHttpOnly']) { should eq ['true'] }
   end
-
 end

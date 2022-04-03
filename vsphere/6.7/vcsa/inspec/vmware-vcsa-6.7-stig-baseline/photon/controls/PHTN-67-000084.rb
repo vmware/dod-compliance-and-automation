@@ -1,4 +1,4 @@
-control "PHTN-67-000084" do
+control 'PHTN-67-000084' do
   title "The Photon operating system must configure sshd to disable environment
 processing."
   desc  "Enabling environment processing may enable users to bypass access
@@ -15,7 +15,7 @@ restrictions in some configurations and must therefore be disabled."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"PermitUserEnvironment\" line is uncommented and set to
@@ -38,8 +38,6 @@ the following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i PermitUserEnvironment') do
-    its ('stdout.strip') { should cmp 'PermitUserEnvironment no' }
+    its('stdout.strip') { should cmp 'PermitUserEnvironment no' }
   end
-
 end
-

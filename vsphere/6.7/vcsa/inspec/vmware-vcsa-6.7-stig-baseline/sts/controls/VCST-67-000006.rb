@@ -28,7 +28,7 @@ difficult for suspicious activity to go unlogged."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/logging.properties.
@@ -82,5 +82,4 @@ follows:
   describe parse_config_file("#{input('loggingProperties')}").params['1catalina.org.apache.juli.FileHandler.bufferSize'] do
     it { should eq '-1' }
   end
-
 end

@@ -1,4 +1,4 @@
-control "VCUI-67-000018" do
+control 'VCUI-67-000018' do
   title 'vSphere UI must limit the number of allowed connections.'
   desc  "Limiting the number of established connections is a basic
 denial-of-service protection and a best practice. Servers where the limit is
@@ -18,7 +18,7 @@ negatively affect system availability."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml.
 
     Navigate to the <Connector> configured with port=\"${http.port}\".
@@ -38,7 +38,6 @@ negatively affect system availability."
   tag nist: ['SC-5 (1)']
 
   describe xml("#{input('serverXmlPath')}") do
-    its(['Server/Service/Connector[@port=\'${http.port}\']/@acceptCount']) { should cmp "#{input('acceptCount')}"}
+    its(['Server/Service/Connector[@port=\'${http.port}\']/@acceptCount']) { should cmp "#{input('acceptCount')}" }
   end
-
 end

@@ -1,4 +1,4 @@
-control "PHTN-67-000111" do
+control 'PHTN-67-000111' do
   title "The Photon operating system must not perform multicast packet
 forwarding."
   desc  "Routing protocol daemons are typically used on routers to exchange
@@ -26,7 +26,7 @@ across the network."
     Note: The number of \"ethx\" lines returned is dependent on the number of
 interfaces. Every \"ethx\" entry must be set to \"0\".
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/sysctl.conf with a text editor.
 
     Add or update the following lines:
@@ -75,6 +75,4 @@ interfaces. Every \"ethx\" entry must be set to \"0\".
   describe kernel_parameter('net.ipv6.conf.eth0.mc_forwarding') do
     its('value') { should eq 0 }
   end
-
 end
-

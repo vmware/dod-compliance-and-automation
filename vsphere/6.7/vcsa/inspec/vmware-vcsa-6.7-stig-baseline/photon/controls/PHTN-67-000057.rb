@@ -1,4 +1,4 @@
-control "PHTN-67-000057" do
+control 'PHTN-67-000057' do
   title "The Photon operating system must configure auditd to keep five rotated
 log files."
   desc  "Audit logs are most useful when accessible by date, rather than size.
@@ -19,7 +19,7 @@ ISSO in the event of a central log processing failure."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/auditd.conf with a text editor. Add or change the
 \"num_logs\" line as follows:
 
@@ -40,8 +40,6 @@ finding.
   tag nist: ['AU-4']
 
   describe auditd_conf do
-    its("num_logs") { should cmp '5'}
+    its('num_logs') { should cmp '5' }
   end
-
 end
-

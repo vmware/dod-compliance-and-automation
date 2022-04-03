@@ -1,4 +1,4 @@
-control "VCPG-67-000022" do
+control 'VCPG-67-000022' do
   title 'Rsyslog must be configured to monitor VMware Postgres logs.'
   desc  "For performance reasons, rsyslog file monitoring is preferred over
 configuring VMware Postgres to send events to a syslog facility. Without
@@ -34,7 +34,7 @@ is a finding.
     If there is no output from the command, vPostgres will default to
 \"stderr\", and this is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-syslog/stig-services-vpostgres.conf.
 
     Create the file if it does not exist.
@@ -69,8 +69,6 @@ is a finding.
     it { should exist }
   end
   describe command('grep -v "^#" /etc/vmware-syslog/stig-services-vpostgres.conf') do
-    its ('stdout') { should match "input(type=\"imfile\"\nFile=\"/var/log/vmware/vpostgres/serverlog.std*\"\nTag=\"vpostgres-first\"\nSeverity=\"info\"\nFacility=\"local0\")\n\ninput(type=\"imfile\"\nFile=\"/var/log/vmware/vpostgres/postgresql-*.log\"\nTag=\"vpostgres\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
+    its('stdout') { should match "input(type=\"imfile\"\nFile=\"/var/log/vmware/vpostgres/serverlog.std*\"\nTag=\"vpostgres-first\"\nSeverity=\"info\"\nFacility=\"local0\")\n\ninput(type=\"imfile\"\nFile=\"/var/log/vmware/vpostgres/postgresql-*.log\"\nTag=\"vpostgres\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
   end
-
 end
-

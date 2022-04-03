@@ -25,7 +25,7 @@ storage capacity.
     If the output of the command does not match the expected result above, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/vmware-syslog/vmware-syslog/stig-services-auditd.conf with a text
 editor.
 
@@ -53,7 +53,6 @@ editor.
     it { should exist }
   end
   describe command('grep -v "^#" /etc/vmware-syslog/stig-services-auditd.conf') do
-    its ('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/audit/audit.log\"\n      Tag=\"auditd\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
+    its('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/audit/audit.log\"\n      Tag=\"auditd\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
   end
-  
 end

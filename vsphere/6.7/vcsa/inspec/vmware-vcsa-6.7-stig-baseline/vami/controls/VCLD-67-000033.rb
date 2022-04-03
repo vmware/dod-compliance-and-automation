@@ -24,7 +24,7 @@ shell for the account to \"/bin/bash\".
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/systemd/system/vami-lighttp.service in a text
 editor.
 
@@ -47,6 +47,4 @@ editor.
   describe processes('vami-lighttpd') do
     its('users') { should eq ['root'] }
   end
-
 end
-

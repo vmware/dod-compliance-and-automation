@@ -25,7 +25,7 @@ mod_accesslog
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Add the following value in the \"server.modules\" section:
@@ -57,7 +57,6 @@ mod_accesslog
   tag nist: ['AC-17 (1)', 'AU-14 (2)']
 
   describe command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/server\.modules/,/\)/'|grep mod_accesslog|sed -e 's/^[ ]*//'").stdout.strip do
-    it { should eq "\"mod_accesslog\"," }
+    it { should eq '"mod_accesslog",' }
   end
-
 end

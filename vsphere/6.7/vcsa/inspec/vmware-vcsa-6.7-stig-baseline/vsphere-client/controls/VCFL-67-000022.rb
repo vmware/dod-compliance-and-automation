@@ -1,4 +1,4 @@
-control "VCFL-67-000022" do
+control 'VCFL-67-000022' do
   title "vSphere Client must set the \"welcome-file\" node to a default web
 page."
   desc  "Enumeration techniques, such as URL parameter manipulation, rely on
@@ -32,7 +32,7 @@ vulnerability.
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml.
 
@@ -54,9 +54,8 @@ finding.
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
-  list = ["index.html", "index.htm", "index.jsp"]
+  list = ['index.html', 'index.htm', 'index.jsp']
   describe xml('//usr/lib/vmware-vsphere-client/server/configuration/conf/web.xml') do
     its('/web-app/welcome-file-list/welcome-file') { should be_in list }
   end
-
 end

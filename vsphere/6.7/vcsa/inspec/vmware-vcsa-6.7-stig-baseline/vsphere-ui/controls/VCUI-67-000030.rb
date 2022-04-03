@@ -1,4 +1,4 @@
-control "VCUI-67-000030" do
+control 'VCUI-67-000030' do
   title 'vSphere UI must set the secure flag for cookies.'
   desc  "The secure flag is an option that can be set by the application server
 when sending a new cookie to the user within an HTTP Response. The purpose of
@@ -22,7 +22,7 @@ tunnel, but this cookie flag is still a recommended best practice."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/web.xml.
 
     Navigate to the /<web-apps>/<session-config>/<cookie-config> node and
@@ -46,5 +46,4 @@ configure it as follows:
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/session-config/cookie-config/secure') { should cmp 'true' }
   end
-
 end
