@@ -1,4 +1,4 @@
-control "VCUI-67-000014" do
+control 'VCUI-67-000014' do
   title 'vSphere UI must be configured with memory leak protection.'
   desc  "The Java Runtime environment can cause a memory leak or lock files
 under certain conditions. Without memory leak protection, vSphere UI can
@@ -28,7 +28,7 @@ className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml.
 
     Navigate to the <Server> node.
@@ -50,5 +50,4 @@ the <Server> node.
   describe xml("#{input('serverXmlPath')}") do
     its('Server/Listener/attribute::className') { should include "#{input('memLeakListener')}" }
   end
-
 end

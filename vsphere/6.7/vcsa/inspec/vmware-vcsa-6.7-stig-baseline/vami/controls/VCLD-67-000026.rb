@@ -19,7 +19,7 @@ shell for the account to \"/bin/bash\".
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # chmod 0755 <directory>
@@ -38,8 +38,6 @@ shell for the account to \"/bin/bash\".
   tag nist: ['SC-2']
 
   describe command("find /opt/vmware/share/htdocs/ -xdev -type d -a '(' -not -perm 0755 -o -not -user root -o -not -group root ')' -exec ls -ld {} ;") do
-    its("stdout.strip") { should cmp "" }
+    its('stdout.strip') { should cmp '' }
   end
-
 end
-

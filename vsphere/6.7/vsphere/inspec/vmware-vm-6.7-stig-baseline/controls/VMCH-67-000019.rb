@@ -1,4 +1,4 @@
-control "VMCH-67-000019" do
+control 'VMCH-67-000019' do
   title "Access to virtual machines through the dvfilter network APIs must be
 controlled."
   desc  "An attacker might compromise a VM by making use the dvFilter API.
@@ -22,7 +22,7 @@ dvfilters are not in use, this is a finding.
     If the virtual machine advanced setting ethernet*.filter*.name exists and
 the value is not valid, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Look for settings with the format ethernet*.filter*.name. Ensure
@@ -59,6 +59,4 @@ environment.
   describe powercli_command(command).stdout.strip do
     it { should be_empty }
   end
-
 end
-

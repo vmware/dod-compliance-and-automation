@@ -33,7 +33,7 @@ mod_status
 
     If any value is returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Remove the line containing \"mod_status\".
@@ -55,6 +55,4 @@ mod_status
   describe parse_config(runtime).params['mod_status'] do
     it { should eq nil }
   end
-
 end
-

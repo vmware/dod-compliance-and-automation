@@ -1,4 +1,4 @@
-control "VCFL-67-000021" do
+control 'VCFL-67-000021' do
   title 'vSphere Client must set "URIEncoding" to UTF-8.'
   desc  "Invalid user input occurs when a user inserts data or characters into
 a hosted application's data entry field and the hosted application is
@@ -25,7 +25,7 @@ character set via the \"URIEncoding\" attribute on the Connector nodes.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml.
 
@@ -46,17 +46,16 @@ character set via the \"URIEncoding\" attribute on the Connector nodes.
   begin
     vcui_conf = xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml')
 
-      if vcui_conf['Server/Service/Connector/attribute::URIEncoding'].is_a?(Array)
-        vcui_conf['Server/Service/Connector/attribute::URIEncoding'].each do |x|
-          describe x do
-            it { should eq "UTF-8" }
-          end
-        end
-      else
-        describe xml(vcui_conf['Server/Service/Connector/attribute::URIEncoding']) do
-          it { should eq "UTF-8" }
+    if vcui_conf['Server/Service/Connector/attribute::URIEncoding'].is_a?(Array)
+      vcui_conf['Server/Service/Connector/attribute::URIEncoding'].each do |x|
+        describe x do
+          it { should eq 'UTF-8' }
         end
       end
+    else
+      describe xml(vcui_conf['Server/Service/Connector/attribute::URIEncoding']) do
+        it { should eq 'UTF-8' }
+      end
+    end
   end
-
 end

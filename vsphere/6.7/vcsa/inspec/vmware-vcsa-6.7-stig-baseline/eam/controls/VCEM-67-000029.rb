@@ -1,4 +1,4 @@
-control "VCEM-67-000029" do
+control 'VCEM-67-000029' do
   title 'ESX Agent Manager must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
 that use TCP/IP ports. Some of these processes may be deemed unnecessary or too
@@ -18,7 +18,7 @@ verified as accurate to their shipping state."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-eam/catalina.properties
@@ -42,6 +42,4 @@ finding.
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio.http.port'] do
     it { should eq "#{input('httpPort')}" }
   end
-
 end
-

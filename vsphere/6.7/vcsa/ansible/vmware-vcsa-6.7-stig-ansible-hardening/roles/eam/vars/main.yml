@@ -4,8 +4,8 @@
 var_server_xml_path: '/usr/lib/vmware-eam/web/conf/server.xml'
 var_server_xml_connectiontimeout: '20000'
 var_server_xml_maxthreads: '300'
-#This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
-#Also & needs to just be a " which turns into &quot
+# This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+# Also & needs to just be a " which turns into &quot
 var_server_xml_access_log_valve_pattern: '{% raw %}%h %{X-Forwarded-For}i %l %u %t [%I] "%r" %s %b [Processing time %D msec] "%{User-Agent}i"{% endraw %}'
 var_server_xml_acceptcount: '300'
 var_server_xml_uriencoding: 'UTF-8'

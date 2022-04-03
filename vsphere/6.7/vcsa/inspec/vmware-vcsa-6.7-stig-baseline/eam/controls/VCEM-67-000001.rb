@@ -1,4 +1,4 @@
-control "VCEM-67-000001" do
+control 'VCEM-67-000001' do
   title "ESX Agent Manager must limit the amount of time that each TCP
 connection is kept alive."
   desc  "Denial of service is one threat against web servers. Many DoS attacks
@@ -25,7 +25,7 @@ connections.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -47,18 +47,16 @@ connections.
   begin
     xmlconf = xml("#{input('serverXmlPath')}")
 
-      if xmlconf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
-        xmlconf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
-          describe x do
-            it { should eq "#{input('connectionTimeout')}" }
-          end
-        end
-      else
-        describe xml(xmlconf['Server/Service/Connector/attribute::connectionTimeout']) do
+    if xmlconf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
+      xmlconf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
+        describe x do
           it { should eq "#{input('connectionTimeout')}" }
         end
       end
+    else
+      describe xml(xmlconf['Server/Service/Connector/attribute::connectionTimeout']) do
+        it { should eq "#{input('connectionTimeout')}" }
+      end
+    end
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "ESXI-67-000055" do
+control 'ESXI-67-000055' do
   title 'The ESXi host must disable Inter-VM transparent page sharing.'
   desc  "Published academic papers have demonstrated that by forcing a flush
 and reload of cache memory, it is possible to measure memory timings to try to
@@ -30,7 +30,7 @@ following command:
     If the \"Mem.ShareForceSalting\" setting is not set to \"2\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -57,8 +57,6 @@ Set-AdvancedSetting -Value 2
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Mem.ShareForceSalting | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "2" }
+    its('stdout.strip') { should cmp '2' }
   end
-
 end
-

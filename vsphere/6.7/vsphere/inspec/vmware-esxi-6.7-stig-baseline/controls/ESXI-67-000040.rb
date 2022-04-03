@@ -1,4 +1,4 @@
-control "ESXI-67-000040" do
+control 'ESXI-67-000040' do
   title "The ESXi host must use multifactor authentication for local DCUI
 access to privileged accounts."
   desc  "To ensure accountability and prevent unauthenticated access,
@@ -45,8 +45,7 @@ certificate authority certificates and click \"OK\".
   tag cci: ['CCI-000767', 'CCI-001953', 'CCI-001954', 'CCI-002470']
   tag nist: ['IA-2 (3)', 'IA-2 (12)', 'IA-2 (12)', 'SC-23 (5)']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end

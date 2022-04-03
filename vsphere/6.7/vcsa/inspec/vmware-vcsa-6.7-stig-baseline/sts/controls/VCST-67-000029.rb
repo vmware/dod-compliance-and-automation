@@ -21,7 +21,7 @@ through this port. To ensure availability, the shutdown port must be disabled."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Open /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties in a text
@@ -44,5 +44,4 @@ editor.
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['base.shutdown.port'] do
     it { should eq "#{input('shutdownPort')}" }
   end
-
 end

@@ -1,4 +1,4 @@
-control "VCEM-67-000030" do
+control 'VCEM-67-000030' do
   title 'ESX Agent Manager must disable the shutdown port.'
   desc  "An attacker has at least two reasons to stop a web server. The first
 is to cause a denial of service, and the second is to put in place changes the
@@ -18,7 +18,7 @@ through this port. To ensure availability, the shutdown port must be disabled."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/vmware-eam/catalina.properties in a text editor.
 
     Add or modify the setting \"base.shutdown.port=-1\" in the
@@ -37,7 +37,4 @@ finding.
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['base.shutdown.port'] do
     it { should eq "#{input('shutdownPort')}" }
   end
-
-
 end
-

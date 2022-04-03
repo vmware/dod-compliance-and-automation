@@ -22,7 +22,7 @@ purposes. "
 accurate results. Enabling the auditd service is done as part of a separate
 control.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
 following lines:
 
@@ -44,9 +44,7 @@ following lines:
   tag nist: ['AU-12 c']
 
   describe auditd do
-    its("lines") { should include %r{-w /usr/sbin/usermod -p x -k usermod} }
-    its("lines") { should include %r{-w /usr/sbin/groupmod -p x -k groupmod} }
+    its('lines') { should include %r{-w /usr/sbin/usermod -p x -k usermod} }
+    its('lines') { should include %r{-w /usr/sbin/groupmod -p x -k groupmod} }
   end
-
 end
-

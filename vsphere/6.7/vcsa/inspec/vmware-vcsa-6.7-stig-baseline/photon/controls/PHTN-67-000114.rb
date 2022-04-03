@@ -1,4 +1,4 @@
-control "PHTN-67-000114" do
+control 'PHTN-67-000114' do
   title 'The Photon OS must not have the xinetd service enabled.'
   desc  "The xinetd service is not required for normal appliance operation and
 must be disabled."
@@ -14,7 +14,7 @@ must be disabled."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands:
 
     # service xinetd stop
@@ -31,9 +31,7 @@ must be disabled."
   tag nist: ['CM-6 b']
 
   describe systemd_service('xinetd.service') do
-    it { should_not be_enabled}
-    it { should_not be_running}
+    it { should_not be_enabled }
+    it { should_not be_running }
   end
-
 end
-

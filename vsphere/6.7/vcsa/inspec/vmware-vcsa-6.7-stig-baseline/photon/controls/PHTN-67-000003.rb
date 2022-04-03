@@ -1,4 +1,4 @@
-control "PHTN-67-000003" do
+control 'PHTN-67-000003' do
   title "The Photon operating system must display the Standard Mandatory DoD
 Notice and Consent Banner before granting SSH access."
   desc  "Display of a standardized and approved use notification before
@@ -23,7 +23,7 @@ Executive Orders, directives, policies, regulations, standards, and guidance.
     If the file does not contain the Standard Mandatory DoD Notice and Consent
 Banner, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands:
 
     # cp /etc/issue.DoD /etc/issue
@@ -76,12 +76,10 @@ Agreement for details.
 3"]
 
   describe command('sshd -T|&grep -i Banner') do
-    its ('stdout.strip') { should cmp 'Banner /etc/issue' }
+    its('stdout.strip') { should cmp 'Banner /etc/issue' }
   end
 
   describe file('/etc/issue') do
-    its ('content') {should match /You are accessing a U\.S\. Government/}
+    its('content') { should match /You are accessing a U\.S\. Government/ }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCPG-67-000008" do
+control 'VCPG-67-000008' do
   title 'All VCDB tables must be owned by the "vc" user account.'
   desc  "Within the database, object ownership implies full privileges to the
 owned object, including the privilege to assign access to the owned objects to
@@ -19,7 +19,7 @@ This configuration must be verified and maintained.
 
     If any tables are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following command:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER TABLE
@@ -37,13 +37,11 @@ This configuration must be verified and maintained.
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = "select tablename,tableowner from pg_tables where schemaname = 'vc' AND tableowner != 'vc';"
-  db = "VCDB"
+  db = 'VCDB'
 
   describe sql.query(sqlquery, [db]) do
-   its('output') {should cmp "" }
+    its('output') { should cmp '' }
   end
-
 end
-

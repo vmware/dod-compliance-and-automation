@@ -1,4 +1,4 @@
-control "PHTN-67-000094" do
+control 'PHTN-67-000094' do
   title "The Photon operating system must configure sshd to limit the number of
 allowed login attempts per connection."
   desc  "By setting the login attempt limit to a low value, an attacker will be
@@ -16,7 +16,7 @@ effectiveness of brute-force attacks."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"MaxAuthTries\" line is uncommented and set to the
@@ -39,8 +39,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i MaxAuthTries') do
-    its ('stdout.strip') { should cmp 'MaxAuthTries 2' }
+    its('stdout.strip') { should cmp 'MaxAuthTries 2' }
   end
-
 end
-

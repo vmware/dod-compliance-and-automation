@@ -1,4 +1,4 @@
-control "ESXI-67-000049" do
+control 'ESXI-67-000049' do
   title "The ESXi host must protect the confidentiality and integrity of
 transmitted information by protecting ESXi management traffic."
   desc  "The vSphere management network provides access to the vSphere
@@ -24,7 +24,7 @@ dedicated for that purpose and is logically separated from other functions.
     If the network segment is accessible, except to networks where other
 management-related entities such as vCenter are located, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >>
 Networking >> VMkernel adapters.
 
@@ -51,9 +51,7 @@ information and click \"OK\".
   tag cci: ['CCI-002418']
   tag nist: ['SC-8']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

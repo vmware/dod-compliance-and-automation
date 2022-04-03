@@ -1,4 +1,4 @@
-control "PHTN-67-000008" do
+control 'PHTN-67-000008' do
   title "The Photon operating system must have the sshd LogLevel set to
 \"INFO\"."
   desc  "Automated monitoring of remote access sessions allows organizations to
@@ -20,7 +20,7 @@ login events.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"LogLevel\" line is uncommented and set to the following:
@@ -42,8 +42,6 @@ login events.
   tag nist: ['AC-17 (1)']
 
   describe command('sshd -T|&grep -i loglevel') do
-    its ('stdout.strip') { should cmp 'loglevel INFO' }
+    its('stdout.strip') { should cmp 'loglevel INFO' }
   end
-
 end
-

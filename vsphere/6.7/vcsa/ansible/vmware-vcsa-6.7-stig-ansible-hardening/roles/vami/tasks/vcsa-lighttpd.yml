@@ -2,8 +2,8 @@
 
 ---
 
-#---------- vCenter 6.7 Appliance Lighttpd STIG Controls ----------#
-#---------- Ansible version 2.8.5 --------#
+# ---------- vCenter 6.7 Appliance Lighttpd STIG Controls ----------#
+# ---------- Ansible version 2.12 --------#
 
 
 ############################################
@@ -11,95 +11,95 @@
 # Title: VAMI must limit the number of simultaneous requests.
 
 - name: VCLD-67-000001 - VAMI must limit the number of simultaneous requests.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^server.max-connections.*$'
     line: server.max-connections = {{ var_conf_server_max_connections }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000001
-  - conf
+    - VCLD-67-000001
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_server_max_connections | bool
+    - run_conf_server_max_connections | bool
 
 ############################################
 
 # Title: VAMI must be configured with FIPS 140-2 compliant ciphers for HTTPS connections.
 
 - name: VCLD-67-000002 - VAMI must be configured with FIPS 140-2 compliant ciphers for HTTPS connections.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/applmgmt/appliance/lighttpd.conf
     state: present
     regexp: '^ssl.cipher-list.*$'
     line: ssl.cipher-list = "{{ var_conf_ssl_ciphers }}"
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000002
-  - conf
+    - VCLD-67-000002
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_ssl_ciphers | bool
+    - run_conf_ssl_ciphers | bool
 
 ############################################
 
 # Title: VAMI must use cryptography to protect the integrity of remote sessions.
 
 - name: VCLD-67-000003 - VAMI must use cryptography to protect the integrity of remote sessions.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^ssl.engine.*$'
     line: ssl.engine = {{ var_conf_ssl_engine }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000003
-  - conf
+    - VCLD-67-000003
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_ssl_engine | bool
+    - run_conf_ssl_engine | bool
 
 ############################################
 
 # Title: VAMI must be configured to use mod_accesslog.
 
 - name: VCLD-67-000004 - VAMI must be configured to use mod_accesslog.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^  "mod_accesslog",$'
     line: '  "mod_accesslog",'
     insertafter: '^server.modules = \($'
   tags:
-  - VCLD-67-000004
-  - conf
+    - VCLD-67-000004
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_server_mod_accesslog | bool
+    - run_conf_server_mod_accesslog | bool
 
 ############################################
 
 # Title: VAMI must generate log records for system startup and shutdown.
 
 - name: VCLD-67-000005 - VAMI must generate log records for system startup and shutdown.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^server.errorlog.*$'
     line: server.errorlog = {{ var_conf_server_error_log }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000005
-  - conf
+    - VCLD-67-000005
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_server_error_log | bool
+    - run_conf_server_error_log | bool
 
 
 ############################################
@@ -107,366 +107,370 @@
 # Title: VAMI must produce log records containing sufficient information to establish what type of events occurred.
 
 - name: VCLD-67-000006 - VAMI must produce log records containing sufficient information to establish what type of events occurred.
-  replace:
+  ansible.builtin.replace:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     regexp: '^(accesslog.format.*)$'
     replace: '# \1'
   tags:
-  - VCLD-67-000006
-  - conf
+    - VCLD-67-000006
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_comment_accesslog_format | bool
+    - run_conf_comment_accesslog_format | bool
 
 ############################################
 
 # Title: VAMI log files must be owned by root
 
 - name: VCLD-67-000011 - Find VAMI log files
-  find:
+  ansible.builtin.find:
     paths: /opt/vmware/var/log/lighttpd
     file_type: file
     patterns: '*.log'
-    recurse: yes
+    recurse: true
   register: vamilogfiles
   tags:
-  - VCLD-67-000011
-  - perms
+    - VCLD-67-000011
+    - perms
   when:
-  - run_vami_logs | bool
+    - run_vami_logs | bool
 
 - name: VCLD-67-000011 - VAMI log file permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     owner: root
     group: root
     mode: "0640"
-  with_items: " {{ vamilogfiles.files }}"
+  with_items: "{{ vamilogfiles.files }}"
   tags:
-  - VCLD-67-000011
-  - perms
+    - VCLD-67-000011
+    - perms
   when:
-  - run_vami_logs | bool
+    - run_vami_logs | bool
 
 ############################################
 
 # Title: Rsyslog must be configured to monitor VAMI logs.
 
 - name: VCLD-67-000014 - Rsyslog must be configured to monitor VAMI logs.
-  template:
+  ansible.builtin.template:
     src: stig-services-vami.conf.j2
     dest: /etc/vmware-syslog/stig-services-vami.conf
     owner: root
     group: root
     mode: '0644'
-    force: yes
+    force: true
   notify:
-  - restart syslog
+    - restart syslog
   tags:
-  - VCLD-67-000014
-  - syslog
+    - VCLD-67-000014
+    - syslog
   when:
-  - run_vami_syslog_config | bool
+    - run_vami_syslog_config | bool
 
 ############################################
 
 # Title: VAMI must only contain services and functions necessary for operation.
 
 - name: VCLD-67-000016 - VAMI must only contain services and functions necessary for operation.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^server.modules =.*$'
     line: server.modules = (
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000016
-  - conf
+    - VCLD-67-000016
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_set_server_modules | bool
+    - run_conf_set_server_modules | bool
 
 - name: VCLD-67-000016 - VAMI must only contain services and functions necessary for operation.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
-    regexp: "{{ item.regexp }}" 
+    regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    insertafter: "{{ item.insertafter }}" 
+    insertafter: "{{ item.insertafter }}"
   with_items:
-  - { line: '  "mod_access",', regexp: '^  "mod_access",$', insertafter: '^server.modules = \($' }
-  - { line: '  "mod_accesslog",', regexp: '^  "mod_accesslog",$', insertafter: '^  "mod_access",$' }
-  - { line: '  "mod_proxy",', regexp: '^  "mod_proxy",$', insertafter: '^  "mod_accesslog",$' }
-  - { line: '  "mod_cgi",', regexp: '^  "mod_cgi",$', insertafter: '^  "mod_proxy",$' }
-  - { line: '  "mod_rewrite",', regexp: '^  "mod_rewrite",$', insertafter: '^  "mod_cgi",$' }
+    - {line: '  "mod_access",', regexp: '^  "mod_access",$', insertafter: '^server.modules = \($'}
+    - {line: '  "mod_accesslog",', regexp: '^  "mod_accesslog",$', insertafter: '^  "mod_access",$'}
+    - {line: '  "mod_proxy",', regexp: '^  "mod_proxy",$', insertafter: '^  "mod_accesslog",$'}
+    - {line: '  "mod_cgi",', regexp: '^  "mod_cgi",$', insertafter: '^  "mod_proxy",$'}
+    - {line: '  "mod_rewrite",', regexp: '^  "mod_rewrite",$', insertafter: '^  "mod_cgi",$'}
   tags:
-  - VCLD-67-000016
-  - conf
+    - VCLD-67-000016
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_set_server_modules | bool
+    - run_conf_set_server_modules | bool
 
 - name: VCLD-67-000016 - VAMI must only contain services and functions necessary for operation.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^server.modules \+= \( "mod_magnet" \)$'
     line: server.modules += ( "mod_magnet" )
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000016
-  - conf
+    - VCLD-67-000016
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_set_server_modules | bool
+    - run_conf_set_server_modules | bool
 
 ############################################
 
 # Title: VAMI must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled.
 
 - name: VCLD-67-000017 - VAMI must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: absent
     regexp: '^.*{{ item }}.*$'
   with_items:
-  - '".sh"'
-  - '".csh"'
+    - '".sh"'
+    - '".csh"'
   tags:
-  - VCLD-67-000017
-  - conf
+    - VCLD-67-000017
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_remove_shell_mimetypes | bool
+    - run_conf_remove_shell_mimetypes | bool
 
 ############################################
 
 # Title: VAMI must explicitly disable Multipurpose Internet Mail Extensions (MIME) mime mappings based on "Content-Type".
 
 - name: VCLD-67-000018 - VAMI must explicitly disable Multipurpose Internet Mail Extensions (MIME) mime mappings based on "Content-Type".
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^mimetype.use-xattr.*$'
     line: mimetype.use-xattr = "{{ var_conf_mimetype_xattr }}"
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000018
-  - conf
+    - VCLD-67-000018
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_mimetype_xattr | bool
+    - run_conf_mimetype_xattr | bool
 
 ############################################
 
 # Title: VAMI must have all mappings to unused and vulnerable scripts to be removed.
 
 - name: VCLD-67-000019 - VAMI must have all mappings to unused and vulnerable scripts to be removed.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^cgi.assign.*=.*$'
     line: cgi.assign                 = ( ".pl"  => "/usr/bin/perl",
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000019
-  - conf
+    - VCLD-67-000019
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_set_cgi_assign | bool
+    - run_conf_set_cgi_assign | bool
 
 - name: VCLD-67-000019 - VAMI must have all mappings to unused and vulnerable scripts to be removed.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
-    regexp: "{{ item.regexp }}" 
+    regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    insertafter: "{{ item.insertafter }}" 
+    insertafter: "{{ item.insertafter }}"
   with_items:
-  - { line: '                               ".cgi" => "/usr/bin/perl",', regexp: '^                               ".cgi" => "/usr/bin/perl",$', insertafter: '^cgi.assign.*=.*$' }
-  - { line: '                               ".rb"  => "/usr/bin/ruby",', regexp: '^                               ".rb"  => "/usr/bin/ruby",$', insertafter: '^                               ".cgi" => "/usr/bin/perl",$' }
-  - { line: '                               ".erb" => "/usr/bin/eruby",', regexp: '^                               ".erb" => "/usr/bin/eruby",$', insertafter: '^                               ".rb"  => "/usr/bin/ruby",$' }
-  - { line: '                               ".py"  => "/usr/bin/python" )', regexp: '^                               ".py"  => "/usr/bin/python" \)$', insertafter: '^                               ".erb" => "/usr/bin/eruby",$' }
+    - {line: '                               ".cgi" => "/usr/bin/perl",', regexp: '^                               ".cgi" => "/usr/bin/perl",$', insertafter: '^cgi.assign.*=.*$'}
+    - {line: '                               ".rb"  => "/usr/bin/ruby",', regexp: '^                               ".rb"  => "/usr/bin/ruby",$', insertafter: '^                               ".cgi" => "/usr/bin/perl",$'}
+    - {line: '                               ".erb" => "/usr/bin/eruby",', regexp: '^                               ".erb" => "/usr/bin/eruby",$', insertafter: '^                               ".rb"  => "/usr/bin/ruby",$'}
+    - {line: '                               ".py"  => "/usr/bin/python" )', regexp: '^                               ".py"  => "/usr/bin/python" \)$', insertafter: '^                               ".erb" => "/usr/bin/eruby",$'}
   tags:
-  - VCLD-67-000019
-  - conf
+    - VCLD-67-000019
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_set_cgi_assign | bool
+    - run_conf_set_cgi_assign | bool
 
 ############################################
 
 # Title: VAMI must have resource mappings set to disable the serving of certain file types
 
 - name: VCLD-67-000020 - VAMI must have resource mappings set to disable the serving of certain file types
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^url.access-deny.*$'
     line: url.access-deny             = {{ var_conf_url_access_deny }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000020
-  - conf
+    - VCLD-67-000020
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_url_access_deny | bool
+    - run_conf_url_access_deny | bool
 
 ############################################
 
 # Title: VAMI must not have the Web Distributed Authoring (WebDAV) servlet installed.
 
 - name: VCLD-67-000021 - VAMI must not have the Web Distributed Authoring (WebDAV) servlet installed.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: absent
     regexp: '^mod_webdav.*$'
   tags:
-  - VCLD-67-000021
-  - conf
+    - VCLD-67-000021
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_remove_mod_webdav | bool
+    - run_conf_remove_mod_webdav | bool
 
 ############################################
 
 # Title: VAMI must prevent hosted applications from exhausting system resources.
 
 - name: VCLD-67-000022 - VAMI must prevent hosted applications from exhausting system resources.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^server.max-keep-alive-idle.*$'
     line: server.max-keep-alive-idle = {{ var_conf_server_max_keep_alive_idle }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000022
-  - conf
+    - VCLD-67-000022
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_server_max_keep_alive_idle | bool
+    - run_conf_server_max_keep_alive_idle | bool
 
 ############################################
 
 # Title: VAMI must not have any symbolic links in the web content directory tree.
 
 - name: VCLD-67-000023 - VAMI must not have any symbolic links in the web content directory tree. Find symlinks
-  find:
+  ansible.builtin.find:
     paths: /opt/vmware/share/htdocs
     file_type: link
-    recurse: yes
+    recurse: true
   register: symlinkfiles
   tags:
-  - VCLD-67-000023
-  - symlinks
+    - VCLD-67-000023
+    - symlinks
   when:
-  - run_remove_symlinks | bool
+    - run_remove_symlinks | bool
 
 - name: VCLD-67-000023 - VAMI must not have any symbolic links in the web content directory tree. Remove symlinks
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
-  with_items: " {{ symlinkfiles.files }}"
+  with_items: "{{ symlinkfiles.files }}"
   tags:
-  - VCLD-67-000023
-  - symlinks
+    - VCLD-67-000023
+    - symlinks
   when:
-  - run_remove_symlinks | bool
+    - run_remove_symlinks | bool
 
 ############################################
 
 # Title: VAMI must only listen on localhost.
 
 - name: VCLD-67-000024 - VAMI must only listen on localhost.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^server.port.*$'
     line: server.port={{ var_conf_server_port }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000024
-  - conf
+    - VCLD-67-000024
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_server_port | bool
+    - run_conf_server_port | bool
 
 ############################################
 
 # Title: VAMI must only allow authenticated system administrators to have access to the keystore.
 
 - name: VCLD-67-000025 - VAMI must only allow authenticated system administrators to have access to the keystore.
-  file:
+  ansible.builtin.file:
     path: /etc/applmgmt/appliance/server.pem
     state: file
     mode: "0600"
     owner: root
     group: root
   tags:
-  - VCLD-67-000025
-  - perms
+    - VCLD-67-000025
+    - perms
   when:
-  - run_vami_server_pem_permissions | bool
+    - run_vami_server_pem_permissions | bool
 
 ############################################
 
 # Title: VAMI must protect against or limit the effects of HTTP types of Denial of Service (DoS) attacks.
 
 - name: VCLD-67-000027 - VAMI must protect against or limit the effects of HTTP types of Denial of Service (DoS) attacks.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^server.max-fds.*$'
     line: server.max-fds = {{ var_conf_server_max_fds }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000027
-  - conf
+    - VCLD-67-000027
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_server_max_fds | bool
+    - run_conf_server_max_fds | bool
 
 ############################################
 
 # Title: VAMI must set the enconding for all text mime types to UTF-8.
 
 - name: VCLD-67-000028 - VAMI must set the enconding for all text mime types to UTF-8. Find text mime types without charset.
-  shell: grep 'text/' /opt/vmware/etc/lighttpd/lighttpd.conf | grep -v 'charset=utf-8'
+  ansible.builtin.shell: >
+                      set -o pipefail && \
+                      grep 'text/' /opt/vmware/etc/lighttpd/lighttpd.conf | grep -v 'charset=utf-8'
+  args:
+    executable: /bin/bash
   register: mimetypes
   changed_when: false
   failed_when: "mimetypes.rc == 2"
   tags:
-  - VCLD-67-000028
-  - conf
+    - VCLD-67-000028
+    - conf
   when:
-  - run_conf_text_mime_utf8 | bool
+    - run_conf_text_mime_utf8 | bool
 
 - name: VCLD-67-000028 - VAMI must set the enconding for all text mime types to UTF-8. Parse results
-  set_fact:
+  ansible.builtin.set_fact:
     mimetypes: "{{ mimetypes.stdout_lines }}"
   tags:
-  - VCLD-67-000028
-  - conf
+    - VCLD-67-000028
+    - conf
   when:
-  - run_conf_text_mime_utf8 | bool
-  - mimetypes | length | int > 0
+    - run_conf_text_mime_utf8 | bool
+    - mimetypes | length | int > 0
 
 - name: VCLD-67-000028 - VAMI must set the enconding for all text mime types to UTF-8.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: "{{ item }}"
@@ -474,123 +478,123 @@
   with_items:
     - "{{ mimetypes }}"
   tags:
-  - VCLD-67-000028
-  - conf
+    - VCLD-67-000028
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_text_mime_utf8 | bool
-  - mimetypes | length | int > 0
+    - run_conf_text_mime_utf8 | bool
+    - mimetypes | length | int > 0
 
 ############################################
 
 # Title: VAMI must disable directory browsing.
 
 - name: VCLD-67-000029 - VAMI must disable directory browsing.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^dir-listing.activate.*$'
     line: dir-listing.activate = "{{ var_conf_dir_listing_activate }}"
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000029
-  - conf
+    - VCLD-67-000029
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_dir_listing_activate | bool
+    - run_conf_dir_listing_activate | bool
 
 ############################################
 
 # Title: VAMI must not be configured to use mod_status.
 
 - name: VCLD-67-000030 - VAMI must not be configured to use mod_status.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: absent
     regexp: '^mod_status.*$'
   tags:
-  - VCLD-67-000030
-  - conf
+    - VCLD-67-000030
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_remove_mod_status | bool
+    - run_conf_remove_mod_status | bool
 
 ############################################
 
 # Title: VAMI must have debug logging disabled.
 
 - name: VCLD-67-000031 - VAMI must have debug logging disabled.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^debug.log-request-handling.*$'
     line: debug.log-request-handling = "{{ var_conf_debug_log_request_handling }}"
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCLD-67-000031
-  - conf
+    - VCLD-67-000031
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_debug_log_request_handling | bool
+    - run_conf_debug_log_request_handling | bool
 
 ############################################
 
 # Title: VAMI must be protected from being stopped by a non-privileged user.
 
 - name: VCLD-67-000033 - VAMI must be protected from being stopped by a non-privileged user.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: absent
     regexp: '^User=.*$'
   tags:
-  - VCLD-67-000033
-  - service
+    - VCLD-67-000033
+    - service
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_service_remove_user | bool
+    - run_service_remove_user | bool
 
 ############################################
 
 # Title: VAMI must use an approved TLS version for encryption.
 
 - name: VCLD-67-000034 - VAMI must use an approved TLS version for encryption. Disabled versions
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^{{ item }}.*$'
     line: '{{ item }} = "{{ var_conf_ssl_disabled_versions }}"'
-    firstmatch: yes
+    firstmatch: true
   with_items:
     - ssl.use-sslv2
     - ssl.use-sslv3
     - ssl.use-tlsv10
     - ssl.use-tlsv11
   tags:
-  - VCLD-67-000034
-  - conf
+    - VCLD-67-000034
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_ssl_disabled_versions | bool
+    - run_conf_ssl_disabled_versions | bool
 
 - name: VCLD-67-000034 - VAMI must use an approved TLS version for encryption. Enabled versions
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: '^{{ item }}.*$'
     line: '{{ item }} = "{{ var_conf_ssl_enabled_versions }}"'
-    firstmatch: yes
+    firstmatch: true
   with_items:
     - ssl.use-tlsv12
   tags:
-  - VCLD-67-000034
-  - conf
+    - VCLD-67-000034
+    - conf
   notify:
-  - restart vami
+    - restart vami
   when:
-  - run_conf_ssl_disabled_versions | bool
+    - run_conf_ssl_disabled_versions | bool

@@ -1,4 +1,4 @@
-control "VCEM-67-000020" do
+control 'VCEM-67-000020' do
   title 'ESX Agent Manager must set "URIEncoding" to UTF-8.'
   desc  "Invalid user input occurs when a user inserts data or characters into
 a hosted application's data entry field and the hosted application is
@@ -25,7 +25,7 @@ character set via the \"URIEncoding\" attribute on the Connector nodes.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -45,8 +45,6 @@ character set via the \"URIEncoding\" attribute on the Connector nodes.
   tag nist: ['SI-10']
 
   describe xml("#{input('serverXmlPath')}") do
-    its(['Server/Service/Connector/@URIEncoding']) { should cmp "#{input('uriEncoding')}"}
+    its(['Server/Service/Connector/@URIEncoding']) { should cmp "#{input('uriEncoding')}" }
   end
-
 end
-

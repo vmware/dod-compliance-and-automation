@@ -1,4 +1,4 @@
-control "VCFL-67-000001" do
+control 'VCFL-67-000001' do
   title "vSphere Client must limit the amount of time that each TCP connection
 is kept alive."
   desc  "Denial of service (DoS) is one threat against web servers. Many DoS
@@ -26,7 +26,7 @@ connections.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml.
 
@@ -48,17 +48,16 @@ connections.
   begin
     vcui_conf = xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml')
 
-      if vcui_conf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
-        vcui_conf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
-          describe x do
-            it { should eq "20000" }
-          end
-        end
-      else
-        describe xml(vcui_conf['Server/Service/Connector/attribute::connectionTimeout']) do
-          it { should eq "20000" }
+    if vcui_conf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
+      vcui_conf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
+        describe x do
+          it { should eq '20000' }
         end
       end
+    else
+      describe xml(vcui_conf['Server/Service/Connector/attribute::connectionTimeout']) do
+        it { should eq '20000' }
+      end
+    end
   end
-
 end

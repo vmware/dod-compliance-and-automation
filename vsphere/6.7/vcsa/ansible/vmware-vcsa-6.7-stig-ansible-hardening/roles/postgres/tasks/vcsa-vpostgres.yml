@@ -2,8 +2,8 @@
 
 ---
 
-#---------- vCenter 6.7 Appliance vPostgres STIG Controls ----------#
-#---------- Ansible version 2.8.5 --------#
+# ---------- vCenter 6.7 Appliance vPostgres STIG Controls ---------- #
+# ---------- Ansible version 2.8.5 -------- #
 
 
 ############################################
@@ -16,398 +16,398 @@
 # Title: vPostgres database log file data must contain required data elements.
 
 - name: VCPG-67-000002 - vPostgres database log file data must contain required data elements.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^log_line_prefix.*$'
     line: log_line_prefix = {{ var_postgres_conf_log_line_prefix }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000002
-  - conf
-  - vpostgres
+    - VCPG-67-000002
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_log_line_prefix | bool
+    - run_postgres_conf_log_line_prefix | bool
 
 ############################################
 
 # Title: The vPostgres configuration file must not be accessible by unauthorized users.
 
 - name: VCPG-67-000003 - The vPostgres configuration file must not be accessible by unauthorized users.
-  find:
+  ansible.builtin.find:
     paths: /storage/db/vpostgres
     file_type: file
     patterns: '*conf*'
   register: pgconffiles
   tags:
-  - VCPG-67-000003
-  - perms
-  - vpostgres
+    - VCPG-67-000003
+    - perms
+    - vpostgres
   when:
-  - run_postgres_conf_file_permissions | bool
+    - run_postgres_conf_file_permissions | bool
 
 - name: VCPG-67-000003 - The vPostgres configuration file must not be accessible by unauthorized users.
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: 0600
   with_items: "{{ pgconffiles.files }}"
   tags:
-  - VCPG-67-000003
-  - perms
-  - vpostgres
+    - VCPG-67-000003
+    - perms
+    - vpostgres
   when:
-  - run_postgres_conf_file_permissions | bool
+    - run_postgres_conf_file_permissions | bool
 
 ############################################
 
 # Title: vPostgres database must have log_truncate_on_rotation enabled.
 
 - name: VCPG-67-000004 - vPostgres database must have log_truncate_on_rotation enabled.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^log_truncate_on_rotation.*$'
     line: log_truncate_on_rotation = {{ var_postgres_conf_log_truncate_on_rotation }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000004
-  - conf
-  - vpostgres
+    - VCPG-67-000004
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_log_truncate_on_rotation | bool
+    - run_postgres_conf_log_truncate_on_rotation | bool
 
 ############################################
 
 # Title: The vPostgres database must have the correct permissions on the log files.
 
 - name: VCPG-67-000005 - The vPostgres database must have the correct permissions on the log files.
-  find:
+  ansible.builtin.find:
     paths: /var/log/vmware/vpostgres
     file_type: file
     patterns: '*'
   register: pglogfiles
   tags:
-  - VCPG-67-000005
-  - perms
-  - vpostgres
+    - VCPG-67-000005
+    - perms
+    - vpostgres
   when:
-  - run_postgres_log_file_permissions | bool
+    - run_postgres_log_file_permissions | bool
 
 - name: VCPG-67-000005 - The vPostgres database must have the correct permissions on the log files.
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: 0600
   with_items: "{{ pglogfiles.files }}"
   tags:
-  - VCPG-67-000005
-  - perms
-  - vpostgres
+    - VCPG-67-000005
+    - perms
+    - vpostgres
   when:
-  - run_postgres_log_file_permissions | bool
+    - run_postgres_log_file_permissions | bool
 
 ############################################
 
 # Title: The vPostgres database must have the correct ownership on the log files.
 
 - name: VCPG-67-000006 - The vPostgres database must have the correct ownership on the log files.
-  find:
+  ansible.builtin.find:
     paths: /var/log/vmware/vpostgres
     file_type: file
     patterns: '*'
   register: pglogfiles
   tags:
-  - VCPG-67-000006
-  - perms
-  - vpostgres
+    - VCPG-67-000006
+    - perms
+    - vpostgres
   when:
-  - run_postgres_log_file_ownership | bool
+    - run_postgres_log_file_ownership | bool
 
 - name: VCPG-67-000006 - The vPostgres database must have the correct ownership on the log files.
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     owner: vpostgres
     group: users
   with_items: "{{ pglogfiles.files }}"
   tags:
-  - VCPG-67-000006
-  - perms
-  - vpostgres
+    - VCPG-67-000006
+    - perms
+    - vpostgres
   when:
-  - run_postgres_log_file_ownership | bool
+    - run_postgres_log_file_ownership | bool
 
 ############################################
 
 # Title: The vPostgres configuration files must have the correct ownership.
 
 - name: VCPG-67-000007 - The vPostgres configuration files must have the correct ownership.
-  find:
+  ansible.builtin.find:
     paths: /storage/db/vpostgres
     file_type: file
     patterns: '*conf*'
   register: pgconffiles
   tags:
-  - VCPG-67-000007
-  - perms
-  - vpostgres
+    - VCPG-67-000007
+    - perms
+    - vpostgres
   when:
-  - run_postgres_conf_file_ownership | bool
+    - run_postgres_conf_file_ownership | bool
 
 - name: VCPG-67-000007 - The vPostgres configuration files must have the correct ownership.
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     owner: vpostgres
     group: users
   with_items: "{{ pgconffiles.files }}"
   tags:
-  - VCPG-67-000007
-  - perms
-  - vpostgres
+    - VCPG-67-000007
+    - perms
+    - vpostgres
   when:
-  - run_postgres_conf_file_ownership | bool
+    - run_postgres_conf_file_ownership | bool
 
 ############################################
 
 # Title: vPostgres must be configured to use the correct port.
 
 - name: VCPG-67-000011 - vPostgres must be configured to use the correct port.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^port.*$'
     line: port = {{ var_postgres_conf_port }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000011
-  - conf
-  - vpostgres
+    - VCPG-67-000011
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_port | bool
+    - run_postgres_conf_port | bool
 
 ############################################
 
 # Title: The vPostgres database must be limited to authorized accounts.
 
 - name: VCPG-67-000012 - The vPostgres database must be limited to authorized accounts.
-  replace:
+  ansible.builtin.replace:
     path: /storage/db/vpostgres/pg_hba.conf
     regexp: ^(local.*)(trust)(.*)$
     replace: \1 md5 \3
   tags:
-  - VCPG-67-000012
-  - conf
-  - vpostgres
+    - VCPG-67-000012
+    - conf
+    - vpostgres
   notify:
-  - restart vpostgres
+    - restart vpostgres
   when:
-  - run_postgres_hba_conf_local_trust | bool
+    - run_postgres_hba_conf_local_trust | bool
 
 ############################################
 
 # Title: The vPostgres database must be configured to use ssl.
 
 - name: VCPG-67-000013 - The vPostgres database must be configured to use ssl.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^ssl =.*$'
     line: ssl = {{ var_postgres_conf_ssl }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000013
-  - conf
-  - vpostgres
+    - VCPG-67-000013
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_ssl | bool
+    - run_postgres_conf_ssl | bool
 
 ############################################
 
 # Title: The vPostgres database must enforce authorized access to all PKI private keys stored/utilized by the DBMS.
 
 - name: VCPG-67-000014 - The vPostgres database must enforce authorized access to all PKI private keys stored/utilized by the DBMS.
-  file:
+  ansible.builtin.file:
     path: /storage/db/vpostgres_ssl/server.key
     state: file
     mode: 0600
   tags:
-  - VCPG-67-000014
-  - perms
-  - vpostgres
+    - VCPG-67-000014
+    - perms
+    - vpostgres
   when:
-  - run_postgres_key_file_permissions | bool
+    - run_postgres_key_file_permissions | bool
 
 ############################################
 
 # Title: The vPostgres database must use NIST FIPS 140-2 validated cryptographic modules for cryptographic operations.
 
 - name: VCPG-67-000015 - The vPostgres database must use NIST FIPS 140-2 validated cryptographic modules for cryptographic operations.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^ssl_ciphers.*$'
     line: ssl_ciphers = {{ var_postgres_conf_ssl_ciphers }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000015
-  - conf
-  - vpostgres
+    - VCPG-67-000015
+    - conf
+    - vpostgres
   notify:
-  - restart vpostgres
+    - restart vpostgres
   when:
-  - run_postgres_conf_ssl_ciphers | bool
+    - run_postgres_conf_ssl_ciphers | bool
 
 ############################################
 
 # Title: The vPostgres database must complete writing log entries prior to returning results.
 
 - name: VCPG-67-000016 - The vPostgres database must complete writing log entries prior to returning results.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    firstmatch: yes
+    firstmatch: true
   with_items:
-  - { line: 'fsync = {{ var_postgres_conf_fsync }}', regexp: '^fsync =.*$' }
-  - { line: 'full_page_writes = {{ var_postgres_conf_full_page_writes }}', regexp: '^full_page_writes =.*$' }
-  - { line: 'synchronous_commit = {{ var_postgres_conf_synchronous_commit }}', regexp: '^synchronous_commit =.*$' }
+    - {line: 'fsync = {{ var_postgres_conf_fsync }}', regexp: '^fsync =.*$'}
+    - {line: 'full_page_writes = {{ var_postgres_conf_full_page_writes }}', regexp: '^full_page_writes =.*$'}
+    - {line: 'synchronous_commit = {{ var_postgres_conf_synchronous_commit }}', regexp: '^synchronous_commit =.*$'}
   tags:
-  - VCPG-67-000016
-  - conf
-  - vpostgres
+    - VCPG-67-000016
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_write_log_entries | bool
+    - run_postgres_conf_write_log_entries | bool
 
 ############################################
 
 # Title: The vPostgres database must provide non-privileged users with error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.
 
 - name: VCPG-67-000019 - The vPostgres database must provide non-privileged users with error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^client_min_messages.*$'
     line: client_min_messages = {{ var_postgres_conf_client_min_messages }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000019
-  - conf
-  - vpostgres
+    - VCPG-67-000019
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_client_min_messages | bool
+    - run_postgres_conf_client_min_messages | bool
 
 ############################################
 
 # Title: The vPostgres database must have log collection enabled.
 
 - name: VCPG-67-000020 - The vPostgres database must have log collection enabled.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^logging_collector.*$'
     line: logging_collector = {{ var_postgres_conf_logging_collector }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000020
-  - conf
-  - vpostgres
+    - VCPG-67-000020
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_logging_collector | bool
+    - run_postgres_conf_logging_collector | bool
 
 ############################################
 
 # Title: The vPostgres database must be configured to log to stderr.
 
 - name: VCPG-67-000021 - The vPostgres database must be configured to log to stderr.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^log_destination.*$'
     line: log_destination = {{ var_postgres_conf_log_destination }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000021
-  - conf
-  - vpostgres
+    - VCPG-67-000021
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_log_destination | bool
+    - run_postgres_conf_log_destination | bool
 
 ############################################
 
 # Title: Rsyslog must be configured to monitor vPostgres logs.
 
 - name: VCPG-67-000022 - Rsyslog must be configured to monitor vPostgres logs.
-  template:
+  ansible.builtin.template:
     src: stig-services-vpostgres.conf.j2
     dest: /etc/vmware-syslog/stig-services-vpostgres.conf
     owner: root
     group: root
     mode: '0644'
-    force: yes
+    force: true
   notify:
-  - restart syslog
+    - restart syslog
   tags:
-  - VCPG-67-000022
-  - syslog
-  - vpostgres
+    - VCPG-67-000022
+    - syslog
+    - vpostgres
   when:
-  - run_postgres_syslog_config | bool
+    - run_postgres_syslog_config | bool
 
 ############################################
 
 # Title: The vPostgres database must use UTC for log timestamps.
 
 - name: VCPG-67-000023 - The vPostgres database must use UTC for log timestamps.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^log_timezone.*$'
     line: log_timezone = {{ var_postgres_conf_log_timezone }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000023
-  - conf
-  - vpostgres
+    - VCPG-67-000023
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_log_timezone | bool
+    - run_postgres_conf_log_timezone | bool
 
 ############################################
 
 # Title: The vPostgres database must be configured to validate characer encoding to UTF-8.
 
 - name: VCPG-67-000024 - The vPostgres database must be configured to validate characer encoding to UTF-8.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /storage/db/vpostgres/postgresql.conf
     state: present
     regexp: '^client_encoding.*$'
     line: client_encoding = {{ var_postgres_conf_client_encoding }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCPG-67-000024
-  - conf
-  - vpostgres
+    - VCPG-67-000024
+    - conf
+    - vpostgres
   notify:
-  - reload vpostgres config
+    - reload vpostgres config
   when:
-  - run_postgres_conf_client_encoding | bool
+    - run_postgres_conf_client_encoding | bool

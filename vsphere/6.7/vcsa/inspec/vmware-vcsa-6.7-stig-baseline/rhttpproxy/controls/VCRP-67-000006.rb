@@ -1,4 +1,4 @@
-control "VCRP-67-000006" do
+control 'VCRP-67-000006' do
   title 'The rhttpproxy must have logging enabled.'
   desc  "After a security incident has occurred, investigators will often
 review log files to determine what happened. The rhttpproxy must create logs
@@ -16,7 +16,7 @@ upon service startup to capture information relevant to investigations."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml.
 
     Locate the <config>/<log> block and configure <outputToFiles> as follows:
@@ -40,6 +40,4 @@ upon service startup to capture information relevant to investigations."
   describe xml("#{input('configXmlPath')}") do
     its(['/config/log/outputToFiles']) { should cmp "#{input('outputToFiles')}" }
   end
-
 end
-

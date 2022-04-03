@@ -2,57 +2,57 @@
 
 # Turn specific controls on/off by setting the value to true or false
 
-#VCEM-67-000001
+# VCEM-67-000001
 run_connection_timeout: true
-#VCEM-67-000002
+# VCEM-67-000002
 run_max_threads: true
-#VCEM-67-000003
+# VCEM-67-000003
 run_max_post_size: true
-#VCEM-67-000004
+# VCEM-67-000004
 run_http_only: true
-#VCEM-67-000005
+# VCEM-67-000005
 run_access_valve_pattern: true
-#VCEM-67-000006
+# VCEM-67-000006
 run_json_stream_redirect_file: true
-#VCEM-67-000007
+# VCEM-67-000007
 run_logs_permissions: true
-#VCEM-67-000010
+# VCEM-67-000010
 run_user_database_realm: true
-#VCEM-67-000011
+# VCEM-67-000011
 run_catalina_properties: true
-#VCEM-67-000012
+# VCEM-67-000012
 run_removed_mime_mappings: true
-#VCEM-67-000013
+# VCEM-67-000013
 run_java_servlet: true
-#VCEM-67-000014
+# VCEM-67-000014
 run_remove_webdav: true
-#VCEM-67-000015
+# VCEM-67-000015
 run_mem_leak_prevention: true
-#VCEM-67-000017
+# VCEM-67-000017
 run_web_files_permissions: true
-#VCEM-67-000018
+# VCEM-67-000018
 run_catalina_properties_shutdown: true
-#VCEM-67-000019
+# VCEM-67-000019
 run_accept_count: true
-#VCEM-67-000020
+# VCEM-67-000020
 run_uri_encoding: true
-#VCEM-67-000021
+# VCEM-67-000021
 run_web_filter: true
-#VCEM-67-000022
+# VCEM-67-000022
 run_web_welcome_file: true
-#VCEM-67-000023
+# VCEM-67-000023
 run_web_remove_listings: true
-#VCEM-67-000024
+# VCEM-67-000024
 run_web_error_page: true
-#VCEM-67-000025
+# VCEM-67-000025
 run_allow_trace: true
-#VCEM-67-000026
+# VCEM-67-000026
 run_web_remove_debug: true
-#VCEM-67-000027
+# VCEM-67-000027
 run_eam_syslog_config: true
-#VCEM-67-000028
+# VCEM-67-000028
 run_web_cookie_secure: true
-#VCEM-67-000029
+# VCEM-67-000029
 run_catalina_properties_bioport: true
-#VCEM-67-000030
+# VCEM-67-000030
 run_catalina_properties_shutdownport: true

@@ -1,4 +1,4 @@
-control "VMCH-67-000024" do
+control 'VMCH-67-000024' do
   title 'Encryption must be enabled for vMotion on the virtual machine.'
   desc  "vMotion migrations in vSphere 6.0 and earlier transferred working
 memory and CPU state information in clear text over the vMotion network. As of
@@ -31,7 +31,7 @@ server, run the following command:
     If the setting does not have a value of \"Opportunistic\" or \"Required\",
 this is a finding.
   "
-  desc  'fix', "From the vSphere Client select the Virtual Machine, right click
+  desc 'fix', "From the vSphere Client select the Virtual Machine, right click
 and go to Edit Settings >> VM Options Tab >> Encryption >> Encrypted vMotion.
 Set the value to \"Opportunistic\" or \"Required\"."
   impact 0.5
@@ -44,11 +44,10 @@ Set the value to \"Opportunistic\" or \"Required\"."
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  list = ["opportunistic", "required"]
+  list = ['opportunistic', 'required']
   command = "((Get-VM -Name #{input('vmName')}).ExtensionData.Config.MigrateEncryption)"
   describe powercli_command(command).stdout.strip do
-   it {should_not cmp "disabled"}
-   it {should be_in list}
+    it { should_not cmp 'disabled' }
+    it { should be_in list }
   end
-
 end

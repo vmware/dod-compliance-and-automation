@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 control 'V-239713' do
   title 'vSphere UI must restrict its cookie path.'
   desc  "When the cookie parameters are not set properly (i.e., domain and path
@@ -24,7 +22,7 @@ xmllint --xpath '/Context/@sessionCookiePath' -
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/context.xml.
 
     Add the following configuration to the <Context> node:
@@ -49,6 +47,4 @@ sessionCookiePath=\"/ui\">
   describe xml("#{input('contextXmlPath')}") do
     its(['/Context/@sessionCookiePath']) { should cmp "#{input('sessionCookiePath')}" }
   end
-
 end
-

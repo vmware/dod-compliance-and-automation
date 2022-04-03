@@ -1,4 +1,4 @@
-control "VCPF-67-000010" do
+control 'VCPF-67-000010' do
   title 'Performance Charts must not be configured with unsupported realms.'
   desc  "Performance Charts performs user authentication at the application
 level and not through Tomcat. Depending on the VCSA version, Performance Charts
@@ -13,7 +13,7 @@ part of eliminating unnecessary features."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml.
 
     Remove the <Realm> node returned in the check.
@@ -29,8 +29,6 @@ part of eliminating unnecessary features."
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabaseRealm '#{input('serverXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

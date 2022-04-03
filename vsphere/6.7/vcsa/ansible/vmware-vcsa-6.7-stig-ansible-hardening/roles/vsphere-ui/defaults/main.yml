@@ -2,57 +2,57 @@
 
 # Turn specific controls on/off by setting the value to true or false
 
-#VCUI-67-000001
+# VCUI-67-000001
 run_connection_timeout: true
-#VCUI-67-000002
+# VCUI-67-000002
 run_max_threads: true
-#VCUI-67-000003
+# VCUI-67-000003
 run_max_post_size: true
-#VCUI-67-000004
+# VCUI-67-000004
 run_http_only: true
-#VCUI-67-000005
+# VCUI-67-000005
 run_access_valve_pattern: true
-#VCUI-67-000006
+# VCUI-67-000006
 run_json_stream_redirect_file: true
-#VCUI-67-000007
+# VCUI-67-000007
 run_logs_permissions: true
-#VCUI-67-000010
+# VCUI-67-000010
 run_catalina_props_package_access: true
-#VCUI-67-000011
+# VCUI-67-000011
 run_removed_mime_mappings: true
-#VCUI-67-000012
+# VCUI-67-000012
 run_java_servlet: true
-#VCUI-67-000013
+# VCUI-67-000013
 run_remove_webdav: true
-#VCUI-67-000014
+# VCUI-67-000014
 run_mem_leak_prevention: true
-#VCUI-67-000016
+# VCUI-67-000016
 run_web_files_permissions: true
-#VCUI-67-000017
+# VCUI-67-000017
 run_catalina_props_init_failure: true
-#VCUI-67-000018
+# VCUI-67-000018
 run_accept_count: true
-#VCUI-67-000019
+# VCUI-67-000019
 run_uri_encoding: true
-#VCUI-67-000020
+# VCUI-67-000020
 run_web_welcome_file: true
-#VCUI-67-000021
+# VCUI-67-000021
 run_web_remove_listings: true
-#VCUI-67-000022
+# VCUI-67-000022
 run_min_info: true
-#VCUI-67-000023
+# VCUI-67-000023
 run_show_server_info: true
-#VCUI-67-000024
+# VCUI-67-000024
 run_allow_trace: true
-#VCUI-67-000025
+# VCUI-67-000025
 run_web_remove_debug: true
-#VCUI-67-000027
+# VCUI-67-000027
 run_syslog_config: true
-#VCUI-67-000028
+# VCUI-67-000028
 run_catalina_props_ports: true
-#VCUI-67-000029
+# VCUI-67-000029
 run_server_shutdownport: true
-#VCUI-67-000030
+# VCUI-67-000030
 run_web_cookie_secure: true
-#VCUI-67-000031
+# VCUI-67-000031
 run_user_database_realm: true

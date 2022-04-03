@@ -1,4 +1,4 @@
-control "VCEM-67-000015" do
+control 'VCEM-67-000015' do
   title 'ESX Agent Manager must be configured with memory leak protection.'
   desc  "The Java Runtime environment can cause a memory leak or lock files
 under certain conditions. Without memory leak protection, ESX Agent Manager can
@@ -28,7 +28,7 @@ className=\"org.apache.catalina.core.JreMemoryLeakPreventionListener\"/>
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -52,6 +52,4 @@ the <Server> node.
   describe xml("#{input('serverXmlPath')}") do
     its('Server/Listener/attribute::className') { should include "#{input('memLeakListener')}" }
   end
-
 end
-

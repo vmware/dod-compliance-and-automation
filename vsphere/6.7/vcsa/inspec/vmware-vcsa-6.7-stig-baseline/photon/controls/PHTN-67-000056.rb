@@ -1,4 +1,4 @@
-control "PHTN-67-000056" do
+control 'PHTN-67-000056' do
   title "The Photon operating system must audit the execution of privileged
 functions."
   desc  "Misuse of privileged functions, either intentionally or
@@ -36,7 +36,7 @@ privileged
 accurate results. Enabling the auditd service is done as part of a separate
 control.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command to obtain a list of
 setuid files:
 
@@ -66,19 +66,15 @@ auid!=4294967295 -k privileged
   tag nist: ['AU-12 c', 'AC-6 (9)']
 
   results = command('find / -xdev -perm -4000 -type f -o -perm -2000 -type f').stdout.split("\n")
-  
-  results.each do | path |
+
+  results.each do |path|
     describe.one do
-
       describe auditd do
-        its("lines") { should include %r{-a always,exit -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
+        its('lines') { should include /-a always,exit -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged/ }
       end
       describe auditd do
-        its("lines") { should include %r{-a always,exit -S all -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
+        its('lines') { should include /-a always,exit -S all -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged/ }
       end
-
     end
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "PHTN-67-000100" do
+control 'PHTN-67-000100' do
   title "The Photon operating system must be configured so that all files have
 a valid owner and group owner."
   desc  "If files do not have valid user and group owners, unintended access to
@@ -11,7 +11,7 @@ files could occur."
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command for each returned file:
 
     # chown root:root <file>
@@ -27,8 +27,6 @@ files could occur."
   tag nist: ['CM-6 b']
 
   describe command('find / -fstype ext4 -nouser -o -nogroup -exec ls -ld {} \;') do
-      its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

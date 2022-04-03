@@ -1,4 +1,4 @@
-control "PHTN-67-000041" do
+control 'PHTN-67-000041' do
   title 'The Photon operating system /var/log directory must be owned by root.'
   desc  "Only authorized personnel should be aware of errors and the details of
 the errors. Error messages are an indicator of an organization's operational
@@ -11,7 +11,7 @@ state and can provide sensitive information to an unprivileged attacker."
 
     If the /var/log is not owned by root, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # chown root:root /var/log
@@ -27,8 +27,6 @@ state and can provide sensitive information to an unprivileged attacker."
   tag nist: ['SI-11 b']
 
   describe directory('/var/log') do
-      its('owner') { should cmp 'root' }
+    its('owner') { should cmp 'root' }
   end
-
 end
-

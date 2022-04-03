@@ -1,4 +1,4 @@
-control "VCPF-67-000007" do
+control 'VCPF-67-000007' do
   title "Performance Charts log files must only be modifiable by privileged
 users."
   desc  "Log data is essential in the investigation of events. The accuracy of
@@ -17,7 +17,7 @@ default, but this configuration must be verified.
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # chmod o-w <file>
@@ -37,13 +37,11 @@ default, but this configuration must be verified.
   tag cci: ['CCI-000163', 'CCI-000164']
   tag nist: ['AU-9', 'AU-9']
 
-  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |
+  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
     describe file(fname) do
       it { should_not be_more_permissive_than('0644') }
-      its('owner') {should eq 'root'}
-      its('group') {should eq 'root'}
+      its('owner') { should eq 'root' }
+      its('group') { should eq 'root' }
     end
   end
-
 end
-

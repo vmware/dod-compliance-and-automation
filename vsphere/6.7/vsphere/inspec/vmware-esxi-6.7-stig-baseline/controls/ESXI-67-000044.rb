@@ -34,7 +34,7 @@ not a finding.
     If there is no core dump partition and no network core dump collector
 configured, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and right-click. Select the
 \"Add Diagnostic Partition\" option to configure a core dump diagnostic
 partition.
@@ -80,20 +80,16 @@ enable it
   tag fix_id: 'F-42491r674825_fix'
   tag cci: ['CCI-001665']
   tag nist: ['SC-24']
- 
+
   describe.one do
-    
     command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.coredump.partition.get.Invoke() | Select-Object -ExpandProperty Active"
     describe powercli_command(command) do
-      its('stdout.strip') { should_not cmp "" }
+      its('stdout.strip') { should_not cmp '' }
     end
-    
+
     command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.coredump.network.get.Invoke() | Select-Object -ExpandProperty Enabled"
     describe powercli_command(command) do
-      its('stdout.strip') { should cmp "true" }
+      its('stdout.strip') { should cmp 'true' }
     end
-
   end
-
 end
-

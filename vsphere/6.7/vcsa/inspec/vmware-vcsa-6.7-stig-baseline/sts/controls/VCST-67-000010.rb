@@ -14,7 +14,7 @@ of a \"UserDatabaseRealm\" configuration must be confirmed."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml.
@@ -32,7 +32,6 @@ of a \"UserDatabaseRealm\" configuration must be confirmed."
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabase '#{input('serverXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

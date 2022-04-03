@@ -1,4 +1,4 @@
-control "VMCH-67-000010" do
+control 'VMCH-67-000010' do
   title "Unauthorized parallel devices must be disconnected on the virtual
 machine."
   desc  "Ensure that no device is connected to a virtual machine if it is not
@@ -40,6 +40,4 @@ Settings. Select the parallel device and click the circle-x to remove then OK.
   describe powercli_command(command).stdout do
     it { should_not match 'Parallel' }
   end
-
 end
-

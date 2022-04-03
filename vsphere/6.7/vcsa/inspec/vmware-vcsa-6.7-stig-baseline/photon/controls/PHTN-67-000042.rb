@@ -1,4 +1,4 @@
-control "PHTN-67-000042" do
+control 'PHTN-67-000042' do
   title 'The Photon operating system messages file must be owned by root.'
   desc  "Only authorized personnel should be aware of errors and the details of
 the errors. Error messages are an indicator of an organization's operational
@@ -13,7 +13,7 @@ state and can provide sensitive information to an unprivileged attacker."
     If /var/log/vmware/messages is not owned by root or not group owned by
 root, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # chown root:root /var/log/vmware/messages
@@ -29,9 +29,7 @@ root, this is a finding.
   tag nist: ['SI-11 b']
 
   describe file('/var/log/vmware/messages') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
-
 end
-

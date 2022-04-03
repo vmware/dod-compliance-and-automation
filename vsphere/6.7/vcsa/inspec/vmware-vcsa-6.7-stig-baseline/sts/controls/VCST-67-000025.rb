@@ -18,7 +18,7 @@ to perform a more targeted attack. The Security Token Service provides the
 
     If no line is returned, this is NOT a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/server.xml.
@@ -44,8 +44,7 @@ to perform a more targeted attack. The Security Token Service provides the
     end
 
     describe xml("#{input('serverXmlPath')}") do
-      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp "false" }
+      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp 'false' }
     end
   end
-
 end

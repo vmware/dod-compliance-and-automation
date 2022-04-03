@@ -1,4 +1,4 @@
-control "PHTN-67-000068" do
+control 'PHTN-67-000068' do
   title "The Photon operating system must use OpenSSH for remote maintenance
 sessions."
   desc  "If the remote connection is not closed and verified as closed, the
@@ -15,7 +15,7 @@ longer available for use.
 
     If there is no output, this is a finding.
   "
-  desc  'fix', "Installing openssh manually is not supported by VMware. Revert
+  desc 'fix', "Installing openssh manually is not supported by VMware. Revert
 to a previous backup or redeploy the VCSA."
   impact 0.5
   tag severity: 'medium'
@@ -34,8 +34,6 @@ to a previous backup or redeploy the VCSA."
 (2)", 'SC-8 (2)', 'MA-4 (7)']
 
   describe command('rpm -qa|grep openssh') do
-    its ('stdout') { should_not eq '' }
+    its('stdout') { should_not eq '' }
   end
-
 end
-

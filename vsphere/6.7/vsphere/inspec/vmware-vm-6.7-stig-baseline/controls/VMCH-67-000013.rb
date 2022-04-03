@@ -1,4 +1,4 @@
-control "VMCH-67-000013" do
+control 'VMCH-67-000013' do
   title 'Console connection sharing must be limited on the virtual machine.'
   desc  "By default, remote console sessions can be connected to by more than
 one user at a time. When multiple sessions are activated, each terminal window
@@ -26,7 +26,7 @@ server, run the following command:
     If the virtual machine advanced setting RemoteDisplay.maxConnections does
 not exist or is not set to 1, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the RemoteDisplay.maxConnections value and set it to 1. If
@@ -66,8 +66,6 @@ server, run the following command:
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name RemoteDisplay.maxConnections).value"
   describe powercli_command(command).stdout.strip do
-    it { should cmp "1" }
+    it { should cmp '1' }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCEM-67-000009" do
+control 'VCEM-67-000009' do
   title 'ESX Agent Manager must only run one webapp.'
   desc  "VMware ships ESX Agent Managers on the VCSA with one webapp. Any other
 path is potentially malicious and must be removed."
@@ -35,8 +35,6 @@ command:
   tag nist: ['CM-5 (3)']
 
   describe command("ls -A '#{input('appPath')}'") do
-    its ('stdout.strip') { should eq 'eam' }
+    its('stdout.strip') { should eq 'eam' }
   end
-
 end
-

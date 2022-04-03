@@ -1,4 +1,4 @@
-control "VCFL-67-000028" do
+control 'VCFL-67-000028' do
   title 'vSphere Client must be configured with the appropriate ports.'
   desc  "Web servers provide numerous processes, features, and functionalities
 that use TCP/IP ports. Some of these processes may be deemed unnecessary or too
@@ -19,7 +19,7 @@ must be verified as accurate to their shipping state."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and
 open /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml in a
 text editor.
@@ -45,11 +45,10 @@ follows:
   tag nist: ['CM-7 (1) (b)']
 
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml') do
-    its(['Server/Service/Connector[@redirectPort="9443"]/@port']) { should cmp '9090'}
+    its(['Server/Service/Connector[@redirectPort="9443"]/@port']) { should cmp '9090' }
   end
 
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml') do
-    its(['Server/Service/Connector[@SSLEnabled="true"]/@port']) { should cmp '9443'}
+    its(['Server/Service/Connector[@SSLEnabled="true"]/@port']) { should cmp '9443' }
   end
-
 end

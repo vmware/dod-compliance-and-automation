@@ -1,4 +1,4 @@
-control "VCEM-67-000025" do
+control 'VCEM-67-000025' do
   title 'ESX Agent Manager must not enable support for TRACE requests.'
   desc  "\"Trace\" is a technique for a user to request internal information
 about Tomcat. This is useful during product development but should not be
@@ -16,7 +16,7 @@ parameter to disable responding to Trace requests."
 
     If no line is returned, this is NOT a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -43,9 +43,7 @@ parameter to disable responding to Trace requests."
     end
 
     describe xml("#{input('serverXmlPath')}") do
-      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp "false" }
+      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp 'false' }
     end
   end
-
 end
-

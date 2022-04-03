@@ -1,4 +1,4 @@
-control "VCPG-67-000001" do
+control 'VCPG-67-000001' do
   title 'VMware Postgres must limit the number of connections.'
   desc  "Database management includes the ability to control the number of
 users and user sessions utilizing a DBMS. Unlimited concurrent connections to
@@ -23,7 +23,7 @@ max_connections;\"|sed -n 3p|sed -e 's/^[ ]*//'
     If the returned number is not greater than or equal to 100 and less than or
 equal to 1000, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET
@@ -42,13 +42,11 @@ pg_reload_conf();\"
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
-  sql = postgres_session("#{input('postgres_user')}","#{input('postgres_pass')}","#{input('postgres_host')}")
-  sqlquery = "SHOW max_connections;"
-  
+  sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
+  sqlquery = 'SHOW max_connections;'
+
   describe sql.query(sqlquery) do
-   its('output') {should cmp >= 100 }
-   its('output') {should cmp < 1000 }
+    its('output') { should cmp >= 100 }
+    its('output') { should cmp < 1000 }
   end
-
 end
-

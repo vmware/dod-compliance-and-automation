@@ -1,4 +1,4 @@
-control "VCUI-67-000022" do
+control 'VCUI-67-000022' do
   title 'vSphere UI must be configured to hide the server version.'
   desc  "Web servers will often display error messages to client users with
 enough information to aid in the debugging of the error. The information given
@@ -22,7 +22,7 @@ server version at all times."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/server.xml.
 
     Navigate to each of the <Connector> nodes.
@@ -42,17 +42,16 @@ server version at all times."
   begin
     xmlconf = xml("#{input('serverXmlPath')}")
 
-      if xmlconf['Server/Service/Connector/attribute::server'].is_a?(Array)
-        xmlconf['Server/Service/Connector/attribute::server'].each do |x|
-          describe x do
-            it { should eq "#{input('server')}" }
-          end
-        end
-      else
-        describe xml(xmlconf['Server/Service/Connector/attribute::server']) do
+    if xmlconf['Server/Service/Connector/attribute::server'].is_a?(Array)
+      xmlconf['Server/Service/Connector/attribute::server'].each do |x|
+        describe x do
           it { should eq "#{input('server')}" }
         end
       end
+    else
+      describe xml(xmlconf['Server/Service/Connector/attribute::server']) do
+        it { should eq "#{input('server')}" }
+      end
+    end
   end
-
 end

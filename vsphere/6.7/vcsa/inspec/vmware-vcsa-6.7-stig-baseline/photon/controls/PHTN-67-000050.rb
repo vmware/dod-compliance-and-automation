@@ -1,4 +1,4 @@
-control "PHTN-67-000050" do
+control 'PHTN-67-000050' do
   title "The Photon operating system audit files and directories must have
 correct permissions."
   desc  "Protecting audit information also includes identifying and protecting
@@ -13,7 +13,7 @@ tools is necessary to prevent unauthorized operations on audit information."
 
     If any file is not owned by root and group owned by root, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command for each file returned:
 
     # chown root:root <file>
@@ -29,29 +29,27 @@ tools is necessary to prevent unauthorized operations on audit information."
   tag nist: ['AU-9']
 
   describe file('/usr/sbin/auditctl') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
 
   describe file('/usr/sbin/auditd') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
 
   describe file('/usr/sbin/aureport') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
 
   describe file('/usr/sbin/ausearch') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
 
   describe file('/usr/sbin/autrace') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
-
 end
-

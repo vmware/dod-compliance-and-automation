@@ -29,7 +29,7 @@ root:root
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, enter the following command:
 
     # chown root:root /opt/vmware/var/log/lighttpd/*.log
@@ -47,12 +47,11 @@ root:root
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9', 'AU-9', 'AU-9']
 
-  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do | fname |
+  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
     describe file(fname) do
       it { should_not be_more_permissive_than('0640') }
-      its('owner') {should eq 'root'}
-      its('group') {should eq 'root'}
+      its('owner') { should eq 'root' }
+      its('group') { should eq 'root' }
     end
   end
-
 end

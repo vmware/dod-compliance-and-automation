@@ -27,7 +27,7 @@ shell for the account to \"/bin/bash\".
     If the output of the command does not match the expected result above, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-syslog/stig-services-vami.conf.
 
     Create the file if it does not exist.
@@ -55,8 +55,6 @@ is a finding.
     it { should exist }
   end
   describe command('grep -v "^#" /etc/vmware-syslog/stig-services-vami.conf') do
-    its ('stdout') { should match "input(type=\"imfile\" File=\"/opt/vmware/var/log/lighttpd/access.log\"\nTag=\"vami-access\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
+    its('stdout') { should match "input(type=\"imfile\" File=\"/opt/vmware/var/log/lighttpd/access.log\"\nTag=\"vami-access\"\nSeverity=\"info\"\nFacility=\"local0\")\n" }
   end
-
 end
-

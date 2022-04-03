@@ -1,4 +1,4 @@
-control "PHTN-67-000081" do
+control 'PHTN-67-000081' do
   title 'The Photon operating system must disable the debug-shell service.'
   desc  "The debug-shell service is intended to diagnose system-related boot
 issues with various systemctl commands. Once enabled and following a system
@@ -12,7 +12,7 @@ disabled until and unless otherwise directed by VMware support."
 
     If the debug-shell service is not disabled, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands:
 
     # systemctl stop debug-shell.service
@@ -31,9 +31,7 @@ disabled until and unless otherwise directed by VMware support."
   tag nist: ['CM-6 b']
 
   describe systemd_service('debug-shell.service') do
-    it { should_not be_enabled}
-    it { should_not be_running}
+    it { should_not be_enabled }
+    it { should_not be_running }
   end
-
 end
-

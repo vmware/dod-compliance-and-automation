@@ -1,4 +1,4 @@
-control "PHTN-67-000072" do
+control 'PHTN-67-000072' do
   title "The Photon operating system must generate audit records when
 successful/unsuccessful logon attempts occur."
   desc  "Without generating audit records that are specific to the security and
@@ -27,7 +27,7 @@ information system (e.g., module or policy filter).
 accurate results. Enabling the auditd service is done as part of a separate
 control.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/audit/rules.d/audit.STIG.rules with a text editor and add the
 following lines:
 
@@ -52,9 +52,8 @@ following lines:
   tag nist: ['AU-12 c']
 
   describe auditd do
-    its("lines") { should include %r{-w /var/log/faillog -p wa} }
-    its("lines") { should include %r{-w /var/log/lastlog -p wa} }
-    its("lines") { should include %r{-w /var/log/tallylog -p wa} }
+    its('lines') { should include %r{-w /var/log/faillog -p wa} }
+    its('lines') { should include %r{-w /var/log/lastlog -p wa} }
+    its('lines') { should include %r{-w /var/log/tallylog -p wa} }
   end
-
 end

@@ -1,4 +1,4 @@
-control "PHTN-67-000009" do
+control 'PHTN-67-000009' do
   title "The Photon operating system must configure sshd to use approved
 encryption algorithms."
   desc  "Without confidentiality protection mechanisms, unauthorized
@@ -21,7 +21,7 @@ initialized and used in FIPS 140-2 mode.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"FipsMode\" line is uncommented and set to the following:
@@ -47,8 +47,6 @@ initialized and used in FIPS 140-2 mode.
   tag nist: ['AC-17 (2)', 'AC-17 (2)', 'SC-8', 'SC-13', 'MA-4 (6)']
 
   describe command('sshd -T|&grep -i fipsMode') do
-    its ('stdout.strip') { should cmp 'fipsMode yes' }
+    its('stdout.strip') { should cmp 'fipsMode yes' }
   end
-
 end
-

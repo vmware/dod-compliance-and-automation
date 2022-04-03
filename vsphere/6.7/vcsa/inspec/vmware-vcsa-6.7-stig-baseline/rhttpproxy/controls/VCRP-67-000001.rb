@@ -1,4 +1,4 @@
-control "VCRP-67-000001" do
+control 'VCRP-67-000001' do
   title 'The rhttpproxy must drop connections to disconnected clients.'
   desc  "The rhttpproxy client connections that are established but no longer
 connected can consume resources that might otherwise be required by active
@@ -17,7 +17,7 @@ connected to an active client."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml.
 
     Locate the <config>/<vmacore>/<tcpKeepAlive>/<clientSocket> block and
@@ -42,6 +42,4 @@ configure <idleTimeSec> as follows:
   describe xml("#{input('configXmlPath')}") do
     its(['/config/vmacore/tcpKeepAlive/clientSocket/idleTimeSec']) { should cmp "#{input('idleTimeSec')}" }
   end
-
 end
-

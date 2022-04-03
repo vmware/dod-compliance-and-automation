@@ -1,4 +1,4 @@
-control "VCFL-67-000008" do
+control 'VCFL-67-000008' do
   title 'vSphere Client must be configured to use the HTTPS scheme.'
   desc  "Data exchanged between the user and the web server can range from
 static display data to credentials used to log into the hosted application.
@@ -27,7 +27,7 @@ enabled on the 9443 connector.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml.
 
@@ -47,7 +47,6 @@ value:
   tag nist: ['AC-17 (2)']
 
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml') do
-    its(['Server/Service/Connector[@port="9443"]/@scheme']) { should cmp 'https'}
+    its(['Server/Service/Connector[@port="9443"]/@scheme']) { should cmp 'https' }
   end
-
 end

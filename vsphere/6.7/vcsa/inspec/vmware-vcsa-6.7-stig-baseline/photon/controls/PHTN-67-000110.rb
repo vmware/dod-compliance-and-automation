@@ -1,4 +1,4 @@
-control "PHTN-67-000110" do
+control 'PHTN-67-000110' do
   title "The Photon operating system must use a reverse-path filter for IPv4
 network traffic."
   desc  "Enabling reverse path filtering drops packets with source addresses
@@ -23,7 +23,7 @@ networks but is helpful for end hosts and routers serving small networks."
     Note: The number of \"ethx\" lines returned is dependent on the number of
 interfaces. Every \"ethx\" entry must be set to \"1\".
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/sysctl.conf with a text editor.
 
     Add or update the following lines:
@@ -57,6 +57,4 @@ interfaces. Every \"ethx\" entry must be set to \"1\".
   describe kernel_parameter('net.ipv4.conf.eth0.rp_filter') do
     its('value') { should eq 1 }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VCEM-67-000014" do
+control 'VCEM-67-000014' do
   title "ESX Agent Manager must not have the Web Distributed Authoring (WebDAV)
 servlet installed."
   desc  "WebDAV is an extension to the HTTP protocol that, when developed, was
@@ -20,7 +20,7 @@ Agent Manager does not configure WebDAV by default.
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
@@ -44,6 +44,4 @@ parent <servlet-mapping> block.
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="webdav"]') { should eq [] }
   end
-
 end
-

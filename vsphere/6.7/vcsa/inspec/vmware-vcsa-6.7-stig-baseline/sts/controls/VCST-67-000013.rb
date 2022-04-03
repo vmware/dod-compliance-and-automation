@@ -35,7 +35,7 @@ s/xmlns=\".*\"//g' | xmllint --xpath
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /usr/lib/vmware-sso/vmware-sts/conf/web.xml.
@@ -58,9 +58,8 @@ finding.
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
-  list = ["*.jsp", "*.jspx"]
+  list = ['*.jsp', '*.jspx']
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="jsp"]/url-pattern') { should be_in list }
   end
-
 end

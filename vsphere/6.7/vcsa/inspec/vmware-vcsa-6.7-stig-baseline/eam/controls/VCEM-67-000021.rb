@@ -1,4 +1,4 @@
-control "VCEM-67-000021" do
+control 'VCEM-67-000021' do
   title 'ESX Agent Manager must use the "setCharacterEncodingFilter" filter.'
   desc  "Invalid user input occurs when a user inserts data or characters into
 a hosted application's data entry field and the hosted application is
@@ -51,14 +51,14 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     </init-param>
     <init-param>
           <param-name>ignore</param-name>
-          <param-value>false</param-value>
+          <param-value>true</param-value>
         </init-param>
     <async-supported>true</async-supported>
     </filter>
 
     If the output is does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
@@ -80,7 +80,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     </init-param>
     <init-param>
           <param-name>ignore</param-name>
-          <param-value>false</param-value>
+          <param-value>true</param-value>
         </init-param>
     <async-supported>true</async-supported>
     </filter>
@@ -99,8 +99,6 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     its('/web-app/filter-mapping[filter-name="setCharacterEncodingFilter"]/url-pattern') { should cmp '/*' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/filter-class') { should cmp 'org.apache.catalina.filters.SetCharacterEncodingFilter' }
     its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="encoding"]/param-value') { should cmp 'UTF-8' }
-    its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="ignore"]/param-value') { should cmp 'false' }
+    its('/web-app/filter[filter-name="setCharacterEncodingFilter"]/init-param[param-name="ignore"]/param-value') { should cmp 'true' }
   end
-
 end
-

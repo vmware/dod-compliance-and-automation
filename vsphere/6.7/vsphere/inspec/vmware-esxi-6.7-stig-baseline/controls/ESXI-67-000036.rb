@@ -1,4 +1,4 @@
-control "ESXI-67-000036" do
+control 'ESXI-67-000036' do
   title "The ESXi host must disable ESXi Shell unless needed for diagnostics or
 troubleshooting."
   desc  "The ESXi Shell is an interactive command line environment available
@@ -25,7 +25,7 @@ following command:
 
     If the ESXi Shell service is running, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Services.
 
@@ -55,13 +55,11 @@ Stop-VMHostService
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'ESXi Shell'} | Select-Object -ExpandProperty Policy"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "off" }
+    its('stdout.strip') { should cmp 'off' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VMHostService | Where {$_.Label -eq 'ESXi Shell'} | Select-Object -ExpandProperty Running"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "false" }
+    its('stdout.strip') { should cmp 'false' }
   end
-
 end
-

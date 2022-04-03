@@ -1,4 +1,4 @@
-control "PHTN-67-000115" do
+control 'PHTN-67-000115' do
   title "The Photon operating system must be configured to protect the SSH
 public host key from unauthorized modification."
   desc  "If a public host key file is modified by an unauthorized user, the SSH
@@ -18,7 +18,7 @@ service may be compromised."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands for each returned file:
 
     # chmod 644 <file>
@@ -34,13 +34,11 @@ service may be compromised."
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  command('find /etc/ssh/ -maxdepth 1 -name "*key.pub"').stdout.split.each do | fname |
-      describe file(fname) do
-        its('owner') { should cmp 'root' }
-        its('group') { should cmp 'root' }
-        its('mode') { should cmp '0644' }
-      end
+  command('find /etc/ssh/ -maxdepth 1 -name "*key.pub"').stdout.split.each do |fname|
+    describe file(fname) do
+      its('owner') { should cmp 'root' }
+      its('group') { should cmp 'root' }
+      its('mode') { should cmp '0644' }
+    end
   end
-
 end
-

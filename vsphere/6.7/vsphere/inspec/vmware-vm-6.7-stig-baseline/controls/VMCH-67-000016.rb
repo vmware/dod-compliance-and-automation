@@ -1,4 +1,4 @@
-control "VMCH-67-000016" do
+control 'VMCH-67-000016' do
   title "Unauthorized removal, connection and modification of devices must be
 prevented on the virtual machine."
   desc  "In a virtual machine, users and processes without root or
@@ -34,7 +34,7 @@ isolation.device.connectable.disable
 isolation.device.connectable.disable does not exist or is not set to true, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the isolation.device.connectable.disable value and set it
@@ -74,8 +74,6 @@ isolation.device.connectable.disable | Set-AdvancedSetting -Value true
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name isolation.device.connectable.disable).value"
   describe powercli_command(command).stdout.strip do
-    it { should cmp "true" }
+    it { should cmp 'true' }
   end
-
 end
-

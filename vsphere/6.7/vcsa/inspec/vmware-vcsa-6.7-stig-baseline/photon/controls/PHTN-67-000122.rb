@@ -1,4 +1,4 @@
-control "PHTN-67-000122" do
+control 'PHTN-67-000122' do
   title 'The Photon operating system must set the UMASK parameter correctly.'
   desc  "The umask value influences the permissions assigned to files when they
 are created. The umask setting in login.defs controls the permissions for a new
@@ -19,7 +19,7 @@ allow the new user to read and write files there.
 
     If the output does not match the expected result, this a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/login.defs with a text editor.
 
     Ensure that the \"UMASK\" line is uncommented and set to the following:
@@ -40,6 +40,4 @@ allow the new user to read and write files there.
   describe login_defs do
     its('UMASK') { should cmp '077' }
   end
-
 end
-

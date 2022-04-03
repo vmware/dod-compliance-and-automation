@@ -1,4 +1,4 @@
-control "VCUI-67-000010" do
+control 'VCUI-67-000010' do
   title 'vSphere UI must be configured to limit access to internal packages.'
   desc  "The \"package.access\" entry in the \"catalina.properties\" file
 implements access control at the package level. When properly configured, a
@@ -22,7 +22,7 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,o
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties.
 
@@ -43,5 +43,4 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,o
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['package.access'] do
     it { should cmp "#{input('packageAccess')}" }
   end
-
 end

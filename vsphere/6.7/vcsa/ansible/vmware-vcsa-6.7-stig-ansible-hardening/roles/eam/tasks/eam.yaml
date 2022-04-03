@@ -2,7 +2,7 @@
 
 ---
 
- #---------- Ansible version 2.9.6 --------#
+ # ---------- Ansible version 2.12 -------- #
 
 
 ############################################
@@ -10,140 +10,140 @@
 # Title: ESX Agent Manager must limit the amount of time that each TCP connection is kept alive
 
 - name: VCEM-67-000001 - ESX Agent Manager must limit the amount of time that each TCP connection is kept alive.
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
     attribute: 'connectionTimeout'
     value: '{{ var_server_xml_connectiontimeout }}'
   tags:
-  - VCEM-67-000001
-  - eam
+    - VCEM-67-000001
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_connection_timeout | bool
+    - run_connection_timeout | bool
 
 ############################################
 
 # Title: ESX Agent Manager must limit the number of concurrent connections permitted
 
 - name: VCEM-67-000002 - ESX Agent Manager must limit the number of concurrent connections permitted
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Executor'
     attribute: 'maxThreads'
     value: '{{ var_server_xml_maxthreads }}'
   tags:
-  - VCEM-67-000002
-  - eam
+    - VCEM-67-000002
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_max_threads | bool
+    - run_max_threads | bool
 
 ############################################
 
 # Title: ESX Agent Manager must limit the maximum size of a POST request
 
 - name: VCEM-67-000003 - ESX Agent Manager must limit the maximum size of a POST request
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector/@maxPostSize'
     state: absent
   tags:
-  - VCEM-67-000003
-  - eam
+    - VCEM-67-000003
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_max_post_size | bool
+    - run_max_post_size | bool
 
 ############################################
 
 # Title: ESX Agent Manager must protect cookies from XSS
 
 - name: VCEM-67-000004 - ESX Agent Manager must protect cookies from XSS
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:session-config/x:cookie-config/x:http-only'
     value: '{{ var_web_xml_http_only }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000004
-  - eam
+    - VCEM-67-000004
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_http_only | bool
+    - run_http_only | bool
 
 ############################################
 
 # Title: ESX Agent Manager must record user access in a format that enables monitoring of remote access
 
 - name: VCEM-67-000005 - ESX Agent Manager must record user access in a format that enables monitoring of remote access
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
     attribute: 'pattern'
     value: '{{ var_server_xml_access_log_valve_pattern }}'
   tags:
-  - VCEM-67-000005
-  - eam
+    - VCEM-67-000005
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_access_valve_pattern | bool
+    - run_access_valve_pattern | bool
 
 ############################################
 
 # Title: ESX Agent Manager must generate log records for system startup and shutdown
 
 - name: VCEM-67-000006 - ESX Agent Manager must generate log records for system startup and shutdown
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_eam_json_path }}'
     state: present
     regexp: '^.*"StreamRedirectFile".*$'
     line: '    "StreamRedirectFile" : "{{ var_stream_redirect_file }}",'
     insertbefore: ^.*WorkingDir.*$
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - VCEM-67-000006
-  - eam
+    - VCEM-67-000006
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_json_stream_redirect_file | bool
+    - run_json_stream_redirect_file | bool
 
 ############################################
 
 # Title: ESX Agent Manager log files must only be modifiable by privileged users
 
 - name: VCEM-67-000007 - Find EAM log files
-  find:
+  ansible.builtin.find:
     paths: '{{ var_eam_logs_path }}'
     file_type: file
     patterns: "*.log*,*.txt*"
   register: eamlogs
   tags:
-  - VCEM-67-000007
-  - eam  
+    - VCEM-67-000007
+    - eam
   when:
-  - run_logs_permissions | bool
+    - run_logs_permissions | bool
 
 - name: VCEM-67-000007 - Set EAM log permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: "0644"
     owner: "eam"
     group: "users"
-  with_items: " {{ eamlogs.files }}"
+  with_items: "{{ eamlogs.files }}"
   tags:
-  - VCEM-67-000007
-  - eam  
+    - VCEM-67-000007
+    - eam
   when:
-  - run_logs_permissions | bool
+    - run_logs_permissions | bool
 
 ############################################
 
@@ -160,169 +160,169 @@
 # Title: ESX Agent Manager must not be configured with unsupported realms
 
 - name: VCEM-67-000010 - Remove GlobalNamingResources
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/GlobalNamingResources'
     state: absent
   tags:
-  - VCEM-67-000010
-  - eam
+    - VCEM-67-000010
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_user_database_realm | bool
+    - run_user_database_realm | bool
 
 - name: VCEM-67-000010 - Remove Realm
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Engine/Realm'
     state: absent
   tags:
-  - VCEM-67-000010
-  - eam
+    - VCEM-67-000010
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_user_database_realm | bool
+    - run_user_database_realm | bool
 
 ############################################
 
 # Title: ESX Agent Manager must be configured to limit access to internal packages
 
 - name: VCEM-67-000011 - Configure catalina.properties file
-  template:
+  ansible.builtin.template:
     src: catalina.properties.j2
     dest: '{{ var_catalina_props_path }}'
     owner: eam
     group: cis
     mode: '0644'
-    force: yes
+    force: true
   tags:
-  - VCEM-67-000011
-  - eam
+    - VCEM-67-000011
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_catalina_properties | bool
+    - run_catalina_properties | bool
 
 ############################################
 
 # Title: ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled
 
 - name: VCEM-67-000012 - ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled CSH
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:mime-mapping/x:extension[text()="csh"]/..'
     state: absent
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000012
-  - eam
+    - VCEM-67-000012
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_removed_mime_mappings | bool
+    - run_removed_mime_mappings | bool
 
 - name: VCEM-67-000012 - ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled SH
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:mime-mapping/x:extension[text()="sh"]/..'
     state: absent
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000012
-  - eam
+    - VCEM-67-000012
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_removed_mime_mappings | bool
+    - run_removed_mime_mappings | bool
 
 - name: VCEM-67-000012 - ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled SHAR
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:mime-mapping/x:extension[text()="shar"]/..'
     state: absent
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000012
-  - eam
+    - VCEM-67-000012
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_removed_mime_mappings | bool
+    - run_removed_mime_mappings | bool
 
 - name: VCEM-67-000012 - ESX Agent Manager must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled KSH
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:mime-mapping/x:extension[text()="ksh"]/..'
     state: absent
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000012
-  - eam
+    - VCEM-67-000012
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_removed_mime_mappings | bool
+    - run_removed_mime_mappings | bool
 
 ############################################
 
 # Title: ESX Agent Manager must have mappings set for Java servlet pages.
 
 - name: VCEM-67-000013 - ESX Agent Manager must have mappings set for Java servlet pages.
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="JspServlet"]/x:url-pattern'
     value: '{{ var_web_xml_servlet_jsp_url_pattern }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000013
-  - eam
+    - VCEM-67-000013
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_java_servlet | bool
+    - run_java_servlet | bool
 
 ############################################
 
 # Title: ESX Agent Manager must not have the Web Distributed Authoring (WebDAV) servlet installed.
 
 - name: VCEM-67-000014 - ESX Agent Manager must not have the Web Distributed Authoring (WebDAV) servlet installed.
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="webdav"]/..'
     state: absent
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000014
-  - eam
+    - VCEM-67-000014
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_remove_webdav | bool
+    - run_remove_webdav | bool
 
 ############################################
 
 # Title: ESX Agent Manager must be configured with memory leak protection.
 
 - name: VCEM-67-000015 - ESX Agent Manager must be configured with memory leak protection.
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Listener[@className="org.apache.catalina.core.JreMemoryLeakPreventionListener"]'
     state: present
   tags:
-  - VCEM-67-000015
-  - eam
+    - VCEM-67-000015
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_mem_leak_prevention | bool
+    - run_mem_leak_prevention | bool
 
 ############################################
 
@@ -334,106 +334,106 @@
 # Title: ESX Agent Manager directory tree must have permissions in an "out of the box" state.
 
 - name: VCEM-67-000017 - Find EAM web files
-  shell: find {{ var_eam_web_path }} -xdev -type f -a '(' -not -user eam -o -not -group cis ')';
+  ansible.builtin.shell: find {{ var_eam_web_path }} -xdev -type f -a '(' -not -user eam -o -not -group cis ')';
   register: files
   tags:
-  - VCEM-67-000017
-  - eam
+    - VCEM-67-000017
+    - eam
   changed_when: files.stdout!=""
   when:
-  - run_web_files_permissions | bool
+    - run_web_files_permissions | bool
 
 - name: VCEM-67-000017 - Set EAM web files owner and group
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: file
     owner: "eam"
     group: "cis"
   with_items: "{{ files.stdout_lines }}"
   tags:
-  - VCEM-67-000017
-  - eam  
+    - VCEM-67-000017
+    - eam
   when:
-  - run_web_files_permissions | bool
-  - files.stdout != ""
+    - run_web_files_permissions | bool
+    - files.stdout != ""
 
 ############################################
 
 # Title: ESX Agent Manager must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
 
 - name: VCEM-67-000018 - ESX Agent Manager must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
-  template:
+  ansible.builtin.template:
     src: catalina.properties.j2
     dest: '{{ var_catalina_props_path }}'
     owner: eam
     group: cis
     mode: '0644'
-    force: yes
+    force: true
   tags:
-  - VCEM-67-000018
-  - eam
+    - VCEM-67-000018
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_catalina_properties_shutdown | bool
+    - run_catalina_properties_shutdown | bool
 
 ############################################
 
 # Title: ESX Agent Manager must limit the number of allowed connections.
 
 - name: VCEM-67-000019 - ESX Agent Manager must limit the number of allowed connections.
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
     attribute: 'acceptCount'
     value: '{{ var_server_xml_acceptcount }}'
   tags:
-  - VCEM-67-000019
-  - eam
+    - VCEM-67-000019
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_accept_count | bool
+    - run_accept_count | bool
 
 ############################################
 
 # Title: ESX Agent Manager must set URIEncoding to UTF-8.
 
 - name: VCEM-67-000020 - ESX Agent Manager must set URIEncoding to UTF-8.
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector'
     attribute: 'URIEncoding'
     value: '{{ var_server_xml_uriencoding }}'
   tags:
-  - VCEM-67-000020
-  - eam
+    - VCEM-67-000020
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_uri_encoding | bool
+    - run_uri_encoding | bool
 
 ############################################
 
 # Title: ESX Agent Manager must use the setCharacterEncodingFilter filter.
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter-mapping
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter-mapping'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter mapping filter-name
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter-mapping/x:filter-name'
     value: 'setCharacterEncodingFilter'
@@ -441,15 +441,15 @@
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter mapping url-pattern
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]/x:url-pattern'
     value: '/*'
@@ -457,30 +457,30 @@
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter filter-name
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter/x:filter-name'
     value: 'setCharacterEncodingFilter'
@@ -488,15 +488,15 @@
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter filter-class
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:filter-class'
     value: 'org.apache.catalina.filters.SetCharacterEncodingFilter'
@@ -504,15 +504,15 @@
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter async
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:async-supported'
     value: 'true'
@@ -520,30 +520,30 @@
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param 1
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter/x:init-param/x:param-name'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-name'
     value: 'encoding'
@@ -551,15 +551,15 @@
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param encoding
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-value'
     value: 'UTF-8'
@@ -567,47 +567,47 @@
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Check for init-param 2 existance
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]'
-    count: yes
+    count: true
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   register: counts
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param 2
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
     state: present
     add_children:
-    - init-param:
+      - init-param:
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
-  - counts.count == 0
+    - run_web_filter | bool
+    - counts.count == 0
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-name'
     value: 'ignore'
@@ -615,35 +615,35 @@
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 - name: VCEM-67-000021 - ESX Agent Manager must use the setCharacterEncodingFilter filter. Setup filter init-param ignore
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-value'
-    value: 'false'
+    value: 'true'
     state: present
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000021
-  - eam
+    - VCEM-67-000021
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_filter | bool
+    - run_web_filter | bool
 
 ############################################
 
 # Title: ESX Agent Manager must set the welcome-file node to a default web page.
 
 - name: VCEM-67-000022 - ESX Agent Manager must set the welcome-file node to a default web page.
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:welcome-file-list/x:welcome-file'
     value: '{{ var_web_xml_welcome_file_list }}'
@@ -651,162 +651,162 @@
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000022
-  - eam
+    - VCEM-67-000022
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_welcome_file | bool
+    - run_web_welcome_file | bool
 
 ############################################
 
 # Title: ESX Agent Manager must not show directory listings.
 
 - name: VCEM-67-000023 - ESX Agent Manager must not show directory listings.
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="listings"]/..'
     state: absent
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000023
-  - eam
+    - VCEM-67-000023
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_remove_listings | bool
+    - run_web_remove_listings | bool
 
 ############################################
 
 # Title: ESX Agent Manager must configured to show error pages with minimal information.
 
 - name: VCEM-67-000024 - ESX Agent Manager must configured to show error pages with minimal information.
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:error-page[x:exception-type="java.lang.Throwable"]/x:location'
     value: '{{ var_web_xml_error_page }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000024
-  - eam
+    - VCEM-67-000024
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_error_page | bool
+    - run_web_error_page | bool
 
 ############################################
 
 # Title: ESX Agent Manager must not enable support for TRACE requests.
 
 - name: VCEM-67-000025 - ESX Agent Manager must not enable support for TRACE requests.
-  xml:
+  community.general.xml:
     path: '{{ var_server_xml_path }}'
     xpath: '/Server/Service/Connector/@allowTrace'
     state: absent
   tags:
-  - VCEM-67-000025
-  - eam
+    - VCEM-67-000025
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_allow_trace | bool
+    - run_allow_trace | bool
 
 ############################################
 
 # Title: ESX Agent Manager must have the debug option turned off.
 
 - name: VCEM-67-000026 - ESX Agent Manager must have the debug option turned off.
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="debug"]/..'
     state: absent
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000026
-  - eam
+    - VCEM-67-000026
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_remove_debug | bool
+    - run_web_remove_debug | bool
 
 ############################################
 
 # Title: Rsyslog must be configured to monitor and ship ESX Agent Manager log files.
 
 - name: VCEM-67-000027 - Rsyslog must be configured to monitor and ship ESX Agent Manager log files.
-  template:
+  ansible.builtin.template:
     src: stig-services-eam.conf.j2
     dest: /etc/vmware-syslog/stig-services-eam.conf
     owner: root
     group: root
     mode: '0644'
-    force: yes
+    force: true
   tags:
-  - VCEM-67-000027
-  - eam
+    - VCEM-67-000027
+    - eam
   notify:
-  - restart syslog
+    - restart syslog
   when:
-  - run_eam_syslog_config | bool
+    - run_eam_syslog_config | bool
 
 ############################################
 
 # Title: ESX Agent Manager must set the secure flag for cookies.
 
 - name: VCEM-67-000028 - ESX Agent Manager must set the secure flag for cookies.
-  xml:
+  community.general.xml:
     path: '{{ var_web_xml_path }}'
     xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
     value: '{{ var_web_xml_cookie_secure }}'
     namespaces:
       x: http://java.sun.com/xml/ns/javaee
   tags:
-  - VCEM-67-000028
-  - eam
+    - VCEM-67-000028
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_web_cookie_secure | bool
+    - run_web_cookie_secure | bool
 
 ############################################
 
 # Title: ESX Agent Manager must be configured with the appropriate ports.
 
 - name: VCEM-67-000029 - Configure catalina.properties file
-  template:
+  ansible.builtin.template:
     src: catalina.properties.j2
     dest: '{{ var_catalina_props_path }}'
     owner: eam
     group: cis
     mode: '0644'
-    force: yes
+    force: true
   tags:
-  - VCEM-67-000029
-  - eam
+    - VCEM-67-000029
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_catalina_properties_bioport | bool
+    - run_catalina_properties_bioport | bool
 
 ############################################
 
 # Title: ESX Agent Manager must disable the shutdown port.
 
 - name: VCEM-67-000030 - Configure catalina.properties file
-  template:
+  ansible.builtin.template:
     src: catalina.properties.j2
     dest: '{{ var_catalina_props_path }}'
     owner: eam
     group: cis
     mode: '0644'
-    force: yes
+    force: true
   tags:
-  - VCEM-67-000030
-  - eam
+    - VCEM-67-000030
+    - eam
   notify:
-  - restart eam
+    - restart eam
   when:
-  - run_catalina_properties_shutdownport | bool
+    - run_catalina_properties_shutdownport | bool

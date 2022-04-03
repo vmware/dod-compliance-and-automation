@@ -1,4 +1,4 @@
-control "VCEM-67-000013" do
+control 'VCEM-67-000013' do
   title 'ESX Agent Manager must have mappings set for Java servlet pages.'
   desc  "Resource mapping is the process of tying a particular file type to a
 process in the web server that can serve that type of file to a requesting
@@ -31,7 +31,7 @@ sed 's/xmlns=\".*\"//g' | xmllint --xpath
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml
@@ -56,10 +56,8 @@ finding.
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
-  list = ["*.jsp", "*.jspx"]
+  list = ['*.jsp', '*.jspx']
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/servlet-mapping[servlet-name="JspServlet"]/url-pattern') { should be_in list }
   end
-
 end
-

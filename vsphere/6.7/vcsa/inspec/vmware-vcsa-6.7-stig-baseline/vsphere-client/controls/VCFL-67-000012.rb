@@ -1,4 +1,4 @@
-control "VCFL-67-000012" do
+control 'VCFL-67-000012' do
   title 'vSphere Client application files must be verified for their integrity.'
   desc  "Verifying that vSphere Client application code is unchanged from its
 shipping state is essential for file validation and non-repudiation of vSphere
@@ -13,7 +13,7 @@ be changed after installation, excluding configuration files."
 
     If there is any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Reinstall the VCSA or roll back to a snapshot.
 
     Modifying the vSphere Client installation files manually is not supported
@@ -29,12 +29,11 @@ by VMware.
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
-  command('find /storage/log/vmware/vsphere-client/logs/ -maxdepth 1 -type f').stdout.split.each do | fname |
+  command('find /storage/log/vmware/vsphere-client/logs/ -maxdepth 1 -type f').stdout.split.each do |fname|
     describe file(fname) do
       it { should_not be_more_permissive_than('0600') }
-      its('owner') {should eq 'vsphere-client'}
-      its('group') {should eq 'users'}
+      its('owner') { should eq 'vsphere-client' }
+      its('group') { should eq 'users' }
     end
   end
-
 end

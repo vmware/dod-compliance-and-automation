@@ -1,4 +1,4 @@
-control "ESXI-67-000030" do
+control 'ESXI-67-000030' do
   title "The ESXi host must produce audit records containing information to
 establish what type of events occurred."
   desc  "Without establishing what types of events occurred, it would be
@@ -25,7 +25,7 @@ is a finding.
 
     Note: Verbose logging level is acceptable for troubleshooting purposes.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi Host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -53,8 +53,6 @@ Set-AdvancedSetting -Value \"info\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Config.HostAgent.log.level | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should match "info" }
+    its('stdout.strip') { should match 'info' }
   end
-
 end
-

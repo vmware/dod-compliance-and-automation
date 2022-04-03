@@ -23,7 +23,7 @@ shell for the account to \"/bin/bash\".
 
     If any files are listed, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, enter the following command:
 
     # unlink <file_name>
@@ -43,8 +43,6 @@ shell for the account to \"/bin/bash\".
   tag nist: ['CM-7 a']
 
   describe command('find /opt/vmware/share/htdocs -type l') do
-      its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

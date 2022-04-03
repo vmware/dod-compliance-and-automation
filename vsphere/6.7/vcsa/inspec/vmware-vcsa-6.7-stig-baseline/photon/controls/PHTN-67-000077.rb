@@ -1,4 +1,4 @@
-control "PHTN-67-000077" do
+control 'PHTN-67-000077' do
   title "The Photon operating system must enforce a delay of at least four
 seconds between logon prompts following a failed logon attempt."
   desc  "Limiting the number of logon attempts over a certain time interval
@@ -15,7 +15,7 @@ reduces the chances that an unauthorized user may gain access to an account."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/pam.d/system-auth with a text editor.
 
     Remove any existing \"pam_faildelay\" line and add the following line at
@@ -33,9 +33,7 @@ the end of the file:
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe file ('/etc/pam.d/system-auth') do
-      its ('content'){should match /^(?=.*?\bauth\b)(?=.*?\boptional\b)(?=.*?\bpam_faildelay.so\b)(?=.*?\bdelay=4000000\b).*$/}
+  describe file('/etc/pam.d/system-auth') do
+    its('content') { should match /^(?=.*?\bauth\b)(?=.*?\boptional\b)(?=.*?\bpam_faildelay.so\b)(?=.*?\bdelay=4000000\b).*$/ }
   end
-
 end
-

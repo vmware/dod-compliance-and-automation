@@ -28,7 +28,7 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,o
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open
@@ -50,7 +50,6 @@ package.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.tomcat.,o
   tag nist: ['CM-7 a']
 
   describe command("grep 'package.access' '#{input('catalinaPropertiesPath')}'") do
-    its ('stdout.strip') { should eq "#{input('packageAccess')}" }
+    its('stdout.strip') { should eq "#{input('packageAccess')}" }
   end
-
 end

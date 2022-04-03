@@ -1,4 +1,4 @@
-control "VCFL-67-000009" do
+control 'VCFL-67-000009' do
   title "vSphere Client must record user access in a format that enables
 monitoring of remote access."
   desc  "Remote access can be exploited by an attacker to compromise the
@@ -29,7 +29,7 @@ s/xmlns=\".*\"//g' |  xmllint --xpath
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open
 /usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml.
 
@@ -61,5 +61,4 @@ node is set to the following:
   describe xml('/usr/lib/vmware-vsphere-client/server/configuration/tomcat-server.xml') do
     its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ['%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b %{#hashedSessionId#}s %I %D'] }
   end
-
 end

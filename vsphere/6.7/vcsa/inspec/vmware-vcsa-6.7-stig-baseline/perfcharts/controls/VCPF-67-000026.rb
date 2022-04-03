@@ -1,4 +1,4 @@
-control "VCPF-67-000026" do
+control 'VCPF-67-000026' do
   title 'Performance Charts must properly configure log sizes and rotation.'
   desc  "To ensure that the logging mechanism used by the web server has
 sufficient storage capacity in which to write the logs, the logging mechanism
@@ -19,7 +19,7 @@ configuration must be verified."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open  /etc/vmware-perfcharts/log4j.properties with a text editor and add or
 change the following settings:
 
@@ -43,6 +43,4 @@ change the following settings:
   describe parse_config_file('/etc/vmware-perfcharts/log4j.properties').params['log4j.appender.LOGFILE.MaxBackupIndex'] do
     it { should eq '10' }
   end
-
 end
-

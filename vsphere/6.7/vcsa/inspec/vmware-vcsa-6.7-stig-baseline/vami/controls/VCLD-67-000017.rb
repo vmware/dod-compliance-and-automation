@@ -27,7 +27,7 @@ shell for the account to \"/bin/bash\".
 
     If the command returns any value, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /opt/vmware/etc/lighttpd/lighttpd.conf.
 
     Remove any lines that reference \".sh\" or \".csh\" from the
@@ -44,8 +44,6 @@ shell for the account to \"/bin/bash\".
   tag nist: ['CM-7 a']
 
   describe command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/mimetype\.assign/,/\)/'|grep -E \"\\.sh|\\.csh\"").stdout do
-    it { should eq "" }
+    it { should eq '' }
   end
-
 end
-

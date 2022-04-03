@@ -1,4 +1,4 @@
-control "VMCH-67-000009" do
+control 'VMCH-67-000009' do
   title "Unauthorized CD/DVD devices must be disconnected on the virtual
 machine."
   desc  "Ensure that no device is connected to a virtual machine if it is not
@@ -21,7 +21,7 @@ $true} | Select Parent,Name
     If a virtual machine has a CD/DVD drive connected other than temporarily,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client right-click the Virtual Machine and go to Edit
 Settings. Select the CD/DVD drive and uncheck \"Connected\" and \"Connect at
 power on\" and remove any attached ISOs.
@@ -46,15 +46,13 @@ server, run the following command:
   command = "(Get-VM -Name #{input('vmName')} | Get-CDDrive).ExtensionData.connectable.connected"
   results = powercli_command(command).stdout.strip
   describe.one do
-    describe "Checking the VM for connected CD/DVD drives" do
-      subject {results}
-      it {should cmp "False"}
+    describe 'Checking the VM for connected CD/DVD drives' do
+      subject { results }
+      it { should cmp 'False' }
     end
-    describe "Checking the VM for connected CD/DVD drives" do
-      subject {results}
+    describe 'Checking the VM for connected CD/DVD drives' do
+      subject { results }
       it { should be_empty }
     end
   end
-
 end
-

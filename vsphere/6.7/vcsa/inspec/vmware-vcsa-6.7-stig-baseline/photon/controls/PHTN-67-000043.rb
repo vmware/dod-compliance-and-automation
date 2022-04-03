@@ -1,4 +1,4 @@
-control "PHTN-67-000043" do
+control 'PHTN-67-000043' do
   title "The Photon operating system messages file must have mode 0640 or less
 permissive."
   desc  "Only authorized personnel should be aware of errors and the details of
@@ -13,7 +13,7 @@ state and can provide sensitive information to an unprivileged attacker."
     If the permissions on the file are more permissive than 0640, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # chmod 0640 /var/log/vmware/messages
@@ -31,6 +31,4 @@ finding.
   describe file('/var/log/vmware/messages') do
     it { should_not be_more_permissive_than('0640') }
   end
-
 end
-

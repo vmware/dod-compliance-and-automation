@@ -1,4 +1,4 @@
-control "ESXI-67-000071" do
+control 'ESXI-67-000071' do
   title "The SA must verify the integrity of the installation media before
 installing ESXi."
   desc  "Always check the SHA1 or MD5 hash after downloading an ISO, offline
@@ -17,7 +17,7 @@ check(s) below:
     If any of the system's downloaded ISO, offline bundle, or system patch
 hashes cannot be verified against the vendor's checksum, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If the hash returned from the \"md5sum\" or \"sha1sum\" commands do not
 match the vendor's hash, the downloaded software must be discarded.
 
@@ -34,9 +34,7 @@ broken, the software must be returned to VMware for replacement.
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

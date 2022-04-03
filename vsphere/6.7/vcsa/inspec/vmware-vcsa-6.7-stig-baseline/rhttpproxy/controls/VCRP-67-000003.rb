@@ -1,4 +1,4 @@
-control "VCRP-67-000003" do
+control 'VCRP-67-000003' do
   title 'The rhttpproxy must be configured to operate solely with FIPS ciphers.'
   desc  "The rhttpproxy ships with FIPS 140-2 validated OpenSSL cryptographic
 libraries and is configured by default to run in FIPS mode. This module is used
@@ -17,7 +17,7 @@ data-in-transit over the client TLS connection."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-rhttpproxy/config.xml.
 
     Locate the <config>/<vmacore>/<ssl> block and configure <fips> as follows:
@@ -41,6 +41,4 @@ data-in-transit over the client TLS connection."
   describe xml("#{input('configXmlPath')}") do
     its(['/config/vmacore/ssl/fips']) { should cmp "#{input('fips')}" }
   end
-
 end
-

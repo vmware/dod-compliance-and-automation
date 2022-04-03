@@ -1,7 +1,7 @@
-control "VCPF-67-000001" do
-    title "Performance Charts must limit the amount of time that each TCP
+control 'VCPF-67-000001' do
+  title "Performance Charts must limit the amount of time that each TCP
 connection is kept alive."
-  desc  "Denial of service (DoS) is one threat against web servers. Many DoS
+  desc "Denial of service (DoS) is one threat against web servers. Many DoS
 attacks attempt to consume web server resources in such a way that no more
 resources are available to satisfy legitimate requests.
 
@@ -25,7 +25,7 @@ connections.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml.
 
     Navigate to each of the <Connector> nodes.
@@ -47,18 +47,16 @@ connections.
   begin
     xmlconf = xml("#{input('serverXmlPath')}")
 
-      if xmlconf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
-        xmlconf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
-          describe x do
-            it { should eq "#{input('connectionTimeout')}" }
-          end
-        end
-      else
-        describe xml(xmlconf['Server/Service/Connector/attribute::connectionTimeout']) do
+    if xmlconf['Server/Service/Connector/attribute::connectionTimeout'].is_a?(Array)
+      xmlconf['Server/Service/Connector/attribute::connectionTimeout'].each do |x|
+        describe x do
           it { should eq "#{input('connectionTimeout')}" }
         end
       end
+    else
+      describe xml(xmlconf['Server/Service/Connector/attribute::connectionTimeout']) do
+        it { should eq "#{input('connectionTimeout')}" }
+      end
+    end
   end
-
 end
-

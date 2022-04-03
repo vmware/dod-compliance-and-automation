@@ -1,4 +1,4 @@
-control "ESXI-67-000061" do
+control 'ESXI-67-000061' do
   title "The virtual switch Promiscuous Mode policy must be set to reject on
 the ESXi host."
   desc  "When Promiscuous Mode is enabled for a virtual switch, all virtual
@@ -28,7 +28,7 @@ following commands:
     If the \"Promiscuous Mode\" policy is set to accept (or true, via
 PowerCLI), this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client go to Configure >> Networking >> Virtual Switches.
 
     For each virtual switch and port group, click Edit settings (dots) and
@@ -56,13 +56,11 @@ following commands:
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualSwitch | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not match "True" }
+    its('stdout.strip') { should_not match 'True' }
   end
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualPortGroup | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not match "True" }
+    its('stdout.strip') { should_not match 'True' }
   end
-
 end
-

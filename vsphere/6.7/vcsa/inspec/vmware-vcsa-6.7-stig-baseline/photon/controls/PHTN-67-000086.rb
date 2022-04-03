@@ -1,4 +1,4 @@
-control "PHTN-67-000086" do
+control 'PHTN-67-000086' do
   title "The Photon operating system must configure sshd to perform strict mode
 checking of home directory configuration files."
   desc  "If other users have access to modify user-specific SSH configuration
@@ -15,7 +15,7 @@ files, they may be able to log on to the system as another user."
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /etc/ssh/sshd_config with a text editor.
 
     Ensure that the \"StrictModes\" line is uncommented and set to the
@@ -38,8 +38,6 @@ following:
   tag nist: ['CM-6 b']
 
   describe command('sshd -T|&grep -i StrictModes') do
-    its ('stdout.strip') { should cmp 'StrictModes yes' }
+    its('stdout.strip') { should cmp 'StrictModes yes' }
   end
-
 end
-

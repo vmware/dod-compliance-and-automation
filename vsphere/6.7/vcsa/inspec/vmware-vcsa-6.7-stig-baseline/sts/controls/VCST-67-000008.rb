@@ -18,7 +18,7 @@ configuration files.
 
     If there is any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Reinstall the VCSA or roll back to a snapshot.
@@ -38,7 +38,6 @@ supported by VMware.
   tag nist: ['CM-5 (3)', 'AU-4']
 
   describe command('rpm -V vmware-identity-sts|grep "^..5......"|grep -E "\.war|\.jar|\.sh|\.py"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

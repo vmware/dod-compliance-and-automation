@@ -1,4 +1,4 @@
-control "VCUI-67-000026" do
+control 'VCUI-67-000026' do
   title "vSphere UI must use a logging mechanism that is configured to allocate
 log record storage capacity large enough to accommodate the logging
 requirements of the web server."
@@ -17,7 +17,7 @@ modified from the default."
 
     If the above command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Reinstall the VCSA or roll back to a snapshot.
 
     Modifying the vSphere UI installation files manually is not supported by
@@ -34,7 +34,6 @@ VMware.
   tag nist: ['AU-4']
 
   describe command('rpm -V vsphere-ui|grep serviceability.xml|grep "^..5......"') do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end

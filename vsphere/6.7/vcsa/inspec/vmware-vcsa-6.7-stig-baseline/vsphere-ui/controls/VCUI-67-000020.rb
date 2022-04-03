@@ -1,4 +1,4 @@
-control "VCUI-67-000020" do
+control 'VCUI-67-000020' do
   title 'vSphere UI must set the welcome-file node to a default web page.'
   desc  "Enumeration techniques, such as URL parameter manipulation, rely on
 being able to obtain information about the web server's directory structure by
@@ -34,7 +34,7 @@ vulnerability.
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/web.xml.
 
     Add the following section under the <web-apps> node:
@@ -55,9 +55,8 @@ finding.
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
-  list = ["index.jsp","index.html","index.htm"]
+  list = ['index.jsp', 'index.html', 'index.htm']
   describe xml("#{input('webXmlPath')}") do
     its('/web-app/welcome-file-list/welcome-file') { should be_in list }
   end
-
 end

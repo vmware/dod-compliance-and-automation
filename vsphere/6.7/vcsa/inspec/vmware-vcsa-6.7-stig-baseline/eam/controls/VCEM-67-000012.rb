@@ -1,4 +1,4 @@
-control "VCEM-67-000012" do
+control 'VCEM-67-000012' do
   title "ESX Agent Manager must have Multipurpose Internet Mail Extensions
 (MIMEs) that invoke operating system shell programs disabled."
   desc  "MIME mappings tell ESX Agent Manager what type of program various file
@@ -15,7 +15,7 @@ the server into executing shell command files."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Open /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml in a text editor.
 Remove the following nodes lines:
 
@@ -35,8 +35,6 @@ Remove the following nodes lines:
   tag nist: ['CM-7 a']
 
   describe command("grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' '#{input('webXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

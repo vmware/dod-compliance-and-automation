@@ -1,4 +1,4 @@
-control "PHTN-67-000032" do
+control 'PHTN-67-000032' do
   title "The Photon operating system must only allow installation of packages
 signed by VMware."
   desc  "Installation of any non-trusted software, patches, service packs,
@@ -15,7 +15,7 @@ has not been tampered with and has been provided by VMware."
     If there is any output, an unsupported package has been installed and this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Confirm with VMware support that this package is not supported (for
 potential package additions after STIG publication).
 
@@ -34,8 +34,6 @@ potential package additions after STIG publication).
   tag nist: ['CM-7 a']
 
   describe command('rpm -qa gpg-pubkey --qf "%{version}-%{release} %{summary}\n"|grep -v "66fd4949-4803fe57"') do
-      its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

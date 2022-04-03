@@ -1,4 +1,4 @@
-control "PHTN-67-000118" do
+control 'PHTN-67-000118' do
   title "The Photon operating system must protect all boot configuration files
 from unauthorized access."
   desc  "Boot configuration files control how the system boots, including
@@ -13,7 +13,7 @@ configurations can negatively affect system security and availability."
 
     If any files are returned, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command line, execute the following commands for each returned file:
 
     # chmod 600 <file>
@@ -30,8 +30,6 @@ configurations can negatively affect system security and availability."
   tag nist: ['CM-6 b']
 
   describe command("find /boot/*.cfg -xdev -type f -a '(' -not -perm 600 -o -not -user root -o -not -group root ')' -exec ls -ld {} \;") do
-     its ('stdout') { should eq '' }
+    its('stdout') { should eq '' }
   end
-
 end
-

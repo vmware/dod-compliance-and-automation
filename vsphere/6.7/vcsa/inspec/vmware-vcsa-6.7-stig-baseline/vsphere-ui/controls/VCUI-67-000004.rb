@@ -1,4 +1,4 @@
-control "VCUI-67-000004" do
+control 'VCUI-67-000004' do
   title 'vSphere UI must protect cookies from XSS.'
   desc  "Cookies are a common way to save session state over the HTTP(S)
 protocol. If an attacker can compromise session data stored in a cookie, they
@@ -20,7 +20,7 @@ xmllint --xpath '/Context/@useHttpOnly' -
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /usr/lib/vmware-vsphere-ui/server/conf/context.xml.
 
     Add the following configuration to the <Context> node:
@@ -46,5 +46,4 @@ sessionCookiePath=\"/ui\">
   describe xml("#{input('contextXmlPath')}") do
     its(['/Context/@useHttpOnly']) { should cmp "#{input('cookieHttpOnly')}" }
   end
-
 end

@@ -1,4 +1,4 @@
-control "VCFL-67-000027" do
+control 'VCFL-67-000027' do
   title "Rsyslog must be configured to monitor and ship vSphere Client log
 files."
   desc  "The vSphere Client produces a handful of logs that must be offloaded
@@ -29,7 +29,7 @@ integrity of the hosted application."
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open /etc/vmware-syslog/stig-vsphere-client.conf.
 
     Create the file if it does not exist.
@@ -61,7 +61,6 @@ finding.
     it { should exist }
   end
   describe command('grep -v "^#" /etc/vmware-syslog/stig-vsphere-client.conf') do
-    its ('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/vmware/vsphere-client/logs/access/localhost_access*\"\n      Tag=\"client-access\"\n      Severity=\"info\"\n      Facility=\"local0\")\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vsphere-client/logs/vsphere-client-runtime*\"\n      Tag=\"client-runtime\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
+    its('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/vmware/vsphere-client/logs/access/localhost_access*\"\n      Tag=\"client-access\"\n      Severity=\"info\"\n      Facility=\"local0\")\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vsphere-client/logs/vsphere-client-runtime*\"\n      Tag=\"client-runtime\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
   end
-
 end

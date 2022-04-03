@@ -1,4 +1,4 @@
-control "VMCH-67-000018" do
+control 'VMCH-67-000018' do
   title 'Shared salt values must be disabled on the virtual machine.'
   desc  "When salting is enabled (Mem.ShareForceSalting=1 or 2) in order to
 share a page between two virtual machines both salt and the content of the page
@@ -25,7 +25,7 @@ server, run the following command:
     If the virtual machine advanced setting sched.mem.pshare.salt exists, this
 is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Delete the sched.mem.pshare.salt setting.
@@ -58,6 +58,4 @@ Remove-AdvancedSetting
   describe powercli_command(command).stdout.strip do
     it { should be_empty }
   end
-
 end
-

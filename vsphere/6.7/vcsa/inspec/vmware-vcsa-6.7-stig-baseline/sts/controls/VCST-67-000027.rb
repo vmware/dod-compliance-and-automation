@@ -34,7 +34,7 @@ and integrity of the hosted application.
     If the output of the command does not match the expected result, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Connect to the PSC, whether external or embedded.
 
     Navigate to and open /etc/vmware-syslog/stig-services-sso.conf.
@@ -71,7 +71,6 @@ finding.
     it { should exist }
   end
   describe command('grep -v "^#" /etc/vmware-syslog/stig-services-sso.conf') do
-    its ('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/vmware/sso/*.log\"\n      Tag=\"vmidentity\"\n      PersistStateInterval=\"200\"\n      Severity=\"info\"\n      Facility=\"local0\")\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/sso/sts-runtime.log.*\"\n      Tag=\"sts-runtime\"\n      PersistStateInterval=\"200\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
+    its('stdout') { should match "input(type=\"imfile\"\n      File=\"/var/log/vmware/sso/*.log\"\n      Tag=\"vmidentity\"\n      PersistStateInterval=\"200\"\n      Severity=\"info\"\n      Facility=\"local0\")\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/sso/sts-runtime.log.*\"\n      Tag=\"sts-runtime\"\n      PersistStateInterval=\"200\"\n      Severity=\"info\"\n      Facility=\"local0\")\n" }
   end
-
 end

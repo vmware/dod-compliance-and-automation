@@ -1,4 +1,4 @@
-control "VMCH-67-000008" do
+control 'VMCH-67-000008' do
   title "Unauthorized floppy devices must be disconnected on the virtual
 machine."
   desc  "Ensure that no device is connected to a virtual machine if it is not
@@ -19,7 +19,7 @@ server, run the following command:
 
     If a virtual machine has a floppy drive connected, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     If the floppy drive is required to be present, then from the vSphere Client
 right-click the Virtual Machine and go to Edit Settings, make sure the drive is
 not connected and will not \"Connect at power on\".
@@ -49,6 +49,4 @@ server, run the following command:
   describe powercli_command(command).stdout do
     it { should be_empty }
   end
-
 end
-
