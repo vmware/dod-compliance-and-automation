@@ -1,4 +1,4 @@
-control "ESXI-67-000048" do
+control 'ESXI-67-000048' do
   title "The ESXi host must protect the confidentiality and integrity of
 transmitted information by isolating vMotion traffic."
   desc  "While encrypted vMotion is available now, vMotion traffic should still
@@ -29,7 +29,7 @@ be routable but must be accessible to only the intended ESXi hosts.
     If the vMotion port group is not on an isolated VLAN and/or is routable to
 systems other than ESXi hosts, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configuration of the vMotion VMkernel will be unique to each environment.
 
     As an example, to modify the IP address and VLAN information to the correct
@@ -51,9 +51,7 @@ network allocated and dedicated to vMotion traffic exclusively.
   tag cci: ['CCI-002418']
   tag nist: ['SC-8']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "ESXI-67-000078" do
+control 'ESXI-67-000078' do
   title 'The ESXi host must use DoD-approved certificates.'
   desc  "The default self-signed, VMware Certificate Authority-issued host
 certificate must be replaced with a DoD-approved certificate when the host will
@@ -18,7 +18,7 @@ finding.
     If the host will never be accessed directly (VM console connections bypass
 vCenter), this is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Obtain a DoD-issued certificate and private key for the host following the
 requirements below:
 
@@ -69,8 +69,6 @@ new certificate:
   tag nist: ['CM-6 b']
 
   describe ssl_certificate(host: "#{input('vmhostName')}", port: 443) do
-    its('issuer') { should match "O=U.S. Government" }
+    its('issuer') { should match 'O=U.S. Government' }
   end
-
 end
-

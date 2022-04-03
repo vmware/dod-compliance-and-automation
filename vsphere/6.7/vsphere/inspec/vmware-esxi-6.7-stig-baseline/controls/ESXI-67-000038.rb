@@ -1,4 +1,4 @@
-control "ESXI-67-000038"do
+control 'ESXI-67-000038' do
   title "ESXi hosts using Host Profiles and/or Auto Deploy must use the vSphere
 Authentication Proxy to protect passwords when adding themselves to Active
 Directory."
@@ -38,7 +38,7 @@ Get-VMHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirect
 
     If not using Host Profiles to join active directory, this is not a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, go to Home >> Host Profiles and select a Host
 Profile to edit.
 
@@ -66,28 +66,27 @@ the vSphere Authentication Proxy server.
   hostprofile = powercli_command(command).stdout
 
   if hostprofile.empty?
-    describe "" do
-      skip "There are no attached host profiles to this host so this control is not applicable"
+    describe '' do
+      skip 'There are no attached host profiles to this host so this control is not applicable'
     end
   end
 
-  if !hostprofile.empty?
+  unless hostprofile.empty?
     command1 = "(Get-VMHost -Name #{input('vmhostName')} | Get-VMHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirectory.Enabled"
     adEnabled = powercli_command(command1).stdout.strip
 
-    if adEnabled.match?("True")
+    if adEnabled.match?('True')
       command2 = "(Get-VMHost -Name #{input('vmhostName')} | Get-VMHostProfile).ExtensionData.Config.ApplyProfile.Authentication.ActiveDirectory | Select-Object -ExpandProperty Policy | Where {$_.Id -eq 'JoinDomainMethodPolicy'} | Select-Object -ExpandProperty PolicyOption | Select-Object -ExpandProperty Id"
       describe powercli_command(command2) do
-        its('stdout.strip') { should cmp "FixedCAMConfigOption" }
+        its('stdout.strip') { should cmp 'FixedCAMConfigOption' }
       end
     end
 
-    if adEnabled.match?("False")
-      describe "" do
-        skip "Active Directory is not enabled on this host so this control is not applicable"
+    if adEnabled.match?('False')
+      describe '' do
+        skip 'Active Directory is not enabled on this host so this control is not applicable'
       end
     end
 
   end
-
 end

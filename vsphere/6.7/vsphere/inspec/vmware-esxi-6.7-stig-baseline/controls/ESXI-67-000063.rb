@@ -1,4 +1,4 @@
-control "ESXI-67-000063" do
+control 'ESXI-67-000063' do
   title "For the ESXi host, all port groups must be configured to a value other
 than that of the native VLAN."
   desc  "ESXi does not use the concept of native VLAN. Frames with VLAN
@@ -36,7 +36,7 @@ following command:
     If any port group is configured with the native VLAN of the attached
 physical switch, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >>
 Networking >> Virtual switches.
 
@@ -65,8 +65,6 @@ following command:
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-VirtualPortGroup | Select-Object -ExpandProperty VlanId"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not match "1" }
+    its('stdout.strip') { should_not match '1' }
   end
-
 end
-

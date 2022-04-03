@@ -1,4 +1,4 @@
-control "ESXI-67-000050" do
+control 'ESXI-67-000050' do
   title "The ESXi host must protect the confidentiality and integrity of
 transmitted information by isolating IP-based storage traffic."
   desc  "Virtual machines might share virtual switches and VLANs with the
@@ -31,7 +31,7 @@ it is dedicated for that purpose and logically separated from other functions.
     If any IP-based storage networks are not isolated from other traffic types,
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Configuration of an IP-Based VMkernel will be unique to each environment.
 However, as an example, to modify the IP address and VLAN information to the
 correct network on a standard switch for an iSCSI VMkernel, do the following:
@@ -64,9 +64,7 @@ Virtual switches.
   tag cci: ['CCI-002418']
   tag nist: ['SC-8']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

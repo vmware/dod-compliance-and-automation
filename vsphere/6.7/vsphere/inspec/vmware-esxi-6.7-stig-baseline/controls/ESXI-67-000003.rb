@@ -1,4 +1,4 @@
-control "ESXI-67-000003" do
+control 'ESXI-67-000003' do
   title 'The ESXi host must verify the exception users list for Lockdown Mode.'
   desc  "In vSphere, users can be added to the Exception Users list from the
 vSphere Web Client. These users do not lose their permissions when the host
@@ -34,7 +34,7 @@ permissions, this is a finding.
     Note: This list is not intended for system administrator accounts but for
 special circumstances such as a service account.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Security Profile.
 
@@ -55,6 +55,4 @@ the exceptions list.
   describe powercli_command(command) do
     its('stdout.strip') { should cmp "#{input('exceptionUsers')}" }
   end
-
 end
-

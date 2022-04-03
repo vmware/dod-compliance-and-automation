@@ -15,7 +15,7 @@ class PowerCLICommand < Inspec.resource(1)
   attr_reader :command
 
   def initialize(command = nil)
-    if command == nil
+    if command.nil?
       raise Inspec::Exceptions::ResourceFailed,
             'This resource requires a command as an argument'
     end

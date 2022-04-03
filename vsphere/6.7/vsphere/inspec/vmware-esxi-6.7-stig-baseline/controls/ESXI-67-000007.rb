@@ -1,4 +1,4 @@
-control "ESXI-67-000007" do
+control 'ESXI-67-000007' do
   title "The ESXi host must display the Standard Mandatory DoD Notice and
 Consent Banner before granting access to the system via the DCUI."
   desc  "Failure to display the DoD logon banner prior to a logon attempt will
@@ -59,7 +59,7 @@ Agreement for details.
     If the DCUI logon screen does not display the DoD logon banner, this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From a PowerCLI command prompt while connected to the ESXi host, copy the
 following contents into a script(.ps1 file) and run to set the DCUI screen to
 display the DoD logon banner:
@@ -216,15 +216,13 @@ Set-AdvancedSetting -Value $value
   tag nist: ['AC-8 a', 'AC-8 b']
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Annotations.WelcomeMessage | Select-Object -ExpandProperty Value"
-  
+
   describe.one do
     describe powercli_command(command) do
-      its('stdout.strip') { should match "You are accessing a U.S. Government" }
+      its('stdout.strip') { should match 'You are accessing a U.S. Government' }
     end
     describe powercli_command(command) do
-    its('stdout.strip') { should match "I've read & consent to terms in IS user agreem't" }
+      its('stdout.strip') { should match "I've read & consent to terms in IS user agreem't" }
     end
   end
-
 end
-

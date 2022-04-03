@@ -1,4 +1,4 @@
-control "ESXI-67-000039" do
+control 'ESXI-67-000039' do
   title "Active Directory ESX Admin group membership must not be used when
 adding ESXi hosts to Active Directory."
   desc  "When adding ESXi hosts to Active Directory (AD), all user/group
@@ -30,7 +30,7 @@ Config.HostAgent.plugins.hostsvc.esxAdminsGroup
     If the \"Config.HostAgent.plugins.hostsvc.esxAdminsGroup\" key is set to
 \"ESX Admins\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configuration >>
 System >> Advanced System Settings.
 
@@ -61,8 +61,6 @@ Config.HostAgent.plugins.hostsvc.esxAdminsGroup | Set-AdvancedSetting -Value
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Config.HostAgent.plugins.hostsvc.esxAdminsGroup | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not cmp "ESX Admins" }
+    its('stdout.strip') { should_not cmp 'ESX Admins' }
   end
-
 end
-

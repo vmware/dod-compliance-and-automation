@@ -1,4 +1,4 @@
-control "ESXI-67-000031" do
+control 'ESXI-67-000031' do
   title "The ESXi host must enforce password complexity by requiring that at
 least one uppercase character be used."
   desc  "To enforce the use of complex passwords, minimum numbers of characters
@@ -27,7 +27,7 @@ following command:
 \"similar=deny retry=3 min=disabled,disabled,disabled,disabled,15\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -61,8 +61,6 @@ min=disabled,disabled,disabled,disabled,15\"
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Security.PasswordQualityControl | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should match "similar=deny retry=3 min=disabled,disabled,disabled,disabled,15" }
+    its('stdout.strip') { should match 'similar=deny retry=3 min=disabled,disabled,disabled,disabled,15' }
   end
-
 end
-

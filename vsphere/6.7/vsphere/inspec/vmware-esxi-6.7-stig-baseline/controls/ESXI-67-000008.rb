@@ -1,4 +1,4 @@
-control "ESXI-67-000008" do
+control 'ESXI-67-000008' do
   title "The ESXi host must display the Standard Mandatory DoD Notice and
 Consent Banner before granting access to the system via SSH."
   desc  "Failure to display the DoD logon banner prior to a logon attempt will
@@ -40,7 +40,7 @@ product, related to personal representation or services by attorneys,
 psychotherapists, or clergy, and their assistants. Such communications and work
 product are private and confidential. See User Agreement for details.\"
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -84,15 +84,13 @@ Set-AdvancedSetting -Value \"<insert logon banner>\"
   tag nist: ['AC-8 a']
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name Config.Etc.issue | Select-Object -ExpandProperty Value"
-  
+
   describe.one do
     describe powercli_command(command) do
-      its('stdout.strip') { should match "You are accessing a U.S. Government" }
+      its('stdout.strip') { should match 'You are accessing a U.S. Government' }
     end
     describe powercli_command(command) do
-    its('stdout.strip') { should match "I've read & consent to terms in IS user agreem't" }
+      its('stdout.strip') { should match "I've read & consent to terms in IS user agreem't" }
     end
   end
-
 end
-

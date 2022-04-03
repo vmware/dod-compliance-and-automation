@@ -1,4 +1,4 @@
-control "ESXI-67-000041" do
+control 'ESXI-67-000041' do
   title "The ESXi host must set a timeout to automatically disable idle shell
 sessions after two minutes."
   desc  "If a user forgets to log out of their local or remote ESXi Shell
@@ -25,7 +25,7 @@ following command:
     If the \"UserVars.ESXiShellInteractiveTimeOut\" setting is not set to
 \"120\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi Host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -53,8 +53,6 @@ following commands:
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name UserVars.ESXiShellInteractiveTimeOut | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "120" }
+    its('stdout.strip') { should cmp '120' }
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VMCH-67-000017" do
+control 'VMCH-67-000017' do
   title "The virtual machine must not be able to obtain host information from
 the hypervisor."
   desc  "If enabled, a VM can obtain detailed information about the physical
@@ -22,7 +22,7 @@ server, run the following command:
     If the virtual machine advanced setting tools.guestlib.enableHostInfo does
 not exist or is not set to false, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Web Client right-click the Virtual Machine and go to Edit
 Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit
 Configuration. Find the tools.guestlib.enableHostInfo value and set it to
@@ -62,8 +62,6 @@ tools.guestlib.enableHostInfo | Set-AdvancedSetting -Value false
 
   command = "(Get-VM -Name #{input('vmName')} | Get-AdvancedSetting -Name tools.guestlib.enableHostInfo).value"
   describe powercli_command(command).stdout.strip do
-    it { should cmp "false" }
+    it { should cmp 'false' }
   end
-
 end
-

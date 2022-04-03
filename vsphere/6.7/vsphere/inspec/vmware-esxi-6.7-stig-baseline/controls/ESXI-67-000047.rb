@@ -1,4 +1,4 @@
-control "ESXI-67-000047" do
+control 'ESXI-67-000047' do
   title "The ESXi Image Profile and vSphere Installation Bundle (VIB)
 Acceptance Levels must be verified."
   desc  "Verify the ESXi Image Profile to only allow signed VIBs. An unsigned
@@ -34,7 +34,7 @@ following commands:
 
     If the acceptance level is \"CommunitySupported\", this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Security Profile.
 
@@ -71,8 +71,6 @@ sensitive.
 
   command = "$vmhost = Get-VMHost -Name #{input('vmhostName')}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.software.acceptance.get.Invoke()"
   describe powercli_command(command) do
-    its('stdout.strip') { should_not cmp "CommunitySupported" }
+    its('stdout.strip') { should_not cmp 'CommunitySupported' }
   end
-
 end
-

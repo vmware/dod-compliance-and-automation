@@ -1,4 +1,4 @@
-control "ESXI-67-000072" do
+control 'ESXI-67-000072' do
   title 'The ESXi host must have all security patches and updates installed.'
   desc  "Installing software updates is a fundamental mitigation against the
 exploitation of publicly known vulnerabilities."
@@ -26,7 +26,7 @@ subscribe to email alerts for them.
 
     Go to: https://www.vmware.com/support/policies/security_response
   "
-  desc  'fix', "
+  desc 'fix', "
     If vCenter Update Manager is used on the network, hosts can be remediated
 from the vSphere Web Client.
 
@@ -58,6 +58,4 @@ the ESXi shell:
   describe powercli_command(command) do
     its('stdout.strip') { should cmp "#{input('esxiBuildNumber')}" }
   end
-
 end
-

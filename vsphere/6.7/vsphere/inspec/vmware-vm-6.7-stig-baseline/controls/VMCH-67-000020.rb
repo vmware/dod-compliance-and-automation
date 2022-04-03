@@ -1,4 +1,4 @@
-control "VMCH-67-000020" do
+control 'VMCH-67-000020' do
   title "System administrators must use templates to deploy virtual machines
 whenever possible."
   desc  "By capturing a hardened base operating system image (with no
@@ -16,7 +16,7 @@ non-dependent on VM-specific configurations.
     If hardened, patched templates are not used for VM creation, this is a
 finding.
   "
-  desc  'fix', "Create hardened virtual machine templates to use for OS
+  desc 'fix', "Create hardened virtual machine templates to use for OS
 deployments."
   impact 0.3
   tag severity: 'low'
@@ -28,9 +28,7 @@ deployments."
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

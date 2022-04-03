@@ -1,4 +1,4 @@
-control "ESXI-67-000070" do
+control 'ESXI-67-000070' do
   title "The ESXi host must not provide root/administrator-level access to
 CIM-based hardware monitoring tools or other third-party applications."
   desc  "The CIM system provides an interface that enables hardware-level
@@ -21,7 +21,7 @@ monitoring, this is a finding.
     If write access is not required and the access level is not \"read-only\",
 this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Create a role for the CIM account:
 
     From the Host Client, go to Manage >> Security & Users.
@@ -58,9 +58,7 @@ the new CIM role from the drop-down list, and click \"Add User\".
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe "This check is a manual or policy based check" do
-    skip "This must be reviewed manually"
+  describe 'This check is a manual or policy based check' do
+    skip 'This must be reviewed manually'
   end
-
 end
-

@@ -1,4 +1,4 @@
-control "VMCH-67-000011" do
+control 'VMCH-67-000011' do
   title "Unauthorized serial devices must be disconnected on the virtual
 machine."
   desc  "Ensure that no device is connected to a virtual machine if it is not
@@ -40,6 +40,4 @@ Settings. Select the serial device and click the circle-x to remove then OK.
   describe powercli_command(command).stdout do
     it { should_not match 'Serial' }
   end
-
 end
-

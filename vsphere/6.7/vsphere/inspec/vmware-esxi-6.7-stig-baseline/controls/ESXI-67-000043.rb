@@ -1,4 +1,4 @@
-control "ESXI-67-000043" do
+control 'ESXI-67-000043' do
   title 'The ESXi host must log out of the console UI after two minutes.'
   desc  "When the direct console user interface (DCUI) is enabled and logged
 in, it should be automatically logged out if left logged in to avoid access by
@@ -23,7 +23,7 @@ following command:
     If the \"UserVars.DcuiTimeOut\" setting is not set to \"120\", this is a
 finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     From the vSphere Client, select the ESXi host and go to Configure >> System
 >> Advanced System Settings.
 
@@ -51,8 +51,6 @@ Set-AdvancedSetting -Value 120
 
   command = "(Get-VMHost -Name #{input('vmhostName')}) | Get-AdvancedSetting -Name UserVars.DcuiTimeOut | Select-Object -ExpandProperty Value"
   describe powercli_command(command) do
-    its('stdout.strip') { should cmp "120" }
+    its('stdout.strip') { should cmp '120' }
   end
-
 end
-
