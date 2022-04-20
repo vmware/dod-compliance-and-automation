@@ -1,7 +1,12 @@
 # VMware vSphere 6.7 DoD STIG Compliance and Automation
 
+```diff
+-Note: It is not recommended or supported to apply 6.7 vCenter appliance STIG controls to a 7.0 or greater vCenter.
+-Please refer to the 7.0 content if hardening is needed.
+```
+
 ## Overview
-*STIG Status: V1R1 released - https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_6-7_STIG.zip *
+STIG Status: V1R2 released - https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_6-7_Y22M02_STIG.zip
 
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
 
