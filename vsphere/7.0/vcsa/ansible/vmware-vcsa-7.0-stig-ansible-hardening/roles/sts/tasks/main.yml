@@ -1,0 +1,10 @@
+---
+
+- name: Include STS
+  include_tasks:
+    file: sts.yml
+    apply:
+      tags:
+        - sts
+  tags:
+    - always

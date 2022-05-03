@@ -1,0 +1,14 @@
+#Expiration date and run are optional
+#control_id:
+#  expiration_date: YYYY-MM-DD
+#  run: false
+#  justification: "reason for waiving this control"
+
+PHTN-30-000053:
+  expiration_date: 2024-12-31
+  run: false
+  justification: "vRA gets it's IP after sshd starts and causes sshd to fail if this is configured to something other than 0.0.0.0:22"
+PHTN-30-000106:
+  expiration_date: 2024-12-31
+  run: false
+  justification: "vRA runs Kubernetes which needs this kernel option to forward traffic"

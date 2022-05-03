@@ -1,14 +1,15 @@
 # vmware-photon-3.0-stig-ansible-hardening
-An ansible playbook to harden VMware Photon OS 3.0 based appliances against the Photon OS 3.0 STIG Readiness Guide
+VMware Photon OS 3.0 STIG Readiness Guide Ansible Playbook  
+Version: Version 1 Release 4: 18 April 2022  
+STIG Type: STIG Readiness Guide  
 
 ## Requirements
-- VMware Photon OS 3.0 STIG Readiness Release 1 Version 2
-- Tested with Ansible 2.9.6
+- Tested with Ansible 2.12.4
 - Tested with Photon OS 3.0
 - Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 10 to run an Unbuntu box for example
 
 ## Backups
-The first item in the photon.yml task is to backup files that may be changed in the same location as the original with a timestamp and .bkp extention.
+The first item in the photon.yml task is to backup files that may be changed to a folder under /tmp.
 This can be turned on/off by updating the create_backups variable to true or false in the defaults main.yml file.
 
 ## Playbook Structure
@@ -51,9 +52,11 @@ ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --tags photon
 ```
 
 ## Misc
-To set syslog or NTP you must update the variables at the top of /roles/photon/vars/main.yml or specifiy then at the command line
+To set syslog or NTP you must update the variables by specifiying them at the command line or by passing a vars file.
 
 The DoD SSH banner update is disabled by default. Update the run_sshd_banner_issue variable to enable or disable it.
+
+Enabling FIPS mode for the kernel is disabled by default. Update the run_fips_kernel variable to enable or disable it.
 
 ## STIG Control Coverage
 
@@ -109,10 +112,9 @@ The DoD SSH banner update is disabled by default. Update the run_sshd_banner_iss
 | PHTN-30-000046 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000047 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000048 | :heavy_check_mark: |         :x:        |
-| PHTN-30-000049 |         :x:        |         :x:        |
+| PHTN-30-000049 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000050 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000051 | :heavy_check_mark: |         :x:        |
-| PHTN-30-000052 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000053 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000054 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000055 | :heavy_check_mark: |         :x:        |
@@ -123,6 +125,7 @@ The DoD SSH banner update is disabled by default. Update the run_sshd_banner_iss
 | PHTN-30-000060 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000061 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000062 | :heavy_check_mark: | :heavy_check_mark: |
+| PHTN-30-000064 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000065 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000066 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000067 | :heavy_check_mark: |         :x:        |
@@ -178,7 +181,8 @@ The DoD SSH banner update is disabled by default. Update the run_sshd_banner_iss
 | PHTN-30-000118 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000119 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000120 | :heavy_check_mark: |         :x:        |
-
+| PHTN-30-000240 | :heavy_check_mark: |         :x:        |
+| PHTN-30-000245 | :heavy_check_mark: |         :x:        |
 
 ## License
 Copyright 2019-2021 VMware, Inc.  

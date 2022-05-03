@@ -1,22 +1,15 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000019' do
   title 'Rsyslog must be configured to monitor VMware Postgres logs.'
-  desc  "For performance reasons, rsyslog file monitoring is preferred over
-configuring VMware Postgres to send events to a syslog facility. Without
-ensuring that logs are created, that rsyslog configs are create and that those
-configs are loaded, the log file monitoring and shipping will not be effective."
+  desc  'For performance reasons, rsyslog file monitoring is preferred over configuring VMware Postgres to send events to a syslog facility. Without ensuring that logs are created, that rsyslog configs are create and that those configs are loaded, the log file monitoring and shipping will not be effective.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
 
-    # rpm -V VMware-Postgres-cis-visl-scripts|grep -E
-\"vmware-services-vmware-vpostgres.conf|vmware-services-vmware-postgres-archiver.conf\"
-| grep \"^..5......\"
+    # rpm -V VMware-Postgres-cis-visl-scripts|grep -E \"vmware-services-vmware-vpostgres.conf|vmware-services-vmware-postgres-archiver.conf\" | grep \"^..5......\"
 
     If the command returns any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-syslog/vmware-services-vmware-vpostgres.conf
@@ -56,16 +49,14 @@ configs are loaded, the log file monitoring and shipping will not be effective."
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000359-DB-000319'
+  tag satisfies: ['SRG-APP-000360-DB-000320', 'SRG-APP-000515-DB-000318']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCPG-70-000019'
-  tag fix_id: nil
-  tag cci: ['CCI-001855']
-  tag nist: ['AU-5 (1)']
+  tag cci: ['CCI-001855', 'CCI-001858', 'CCI-001851']
+  tag nist: ['AU-5 (1)', 'AU-5 (2)', 'AU-4 (1)']
 
   describe command('rpm -V VMware-Postgres-cis-visl-scripts|grep -E "vmware-services-vmware-vpostgres.conf|vmware-services-vmware-postgres-archiver.conf" | grep "^..5......"') do
-    its ('stdout.strip') {should cmp ""}
+    its('stdout.strip') { should cmp '' }
   end
-
 end
-

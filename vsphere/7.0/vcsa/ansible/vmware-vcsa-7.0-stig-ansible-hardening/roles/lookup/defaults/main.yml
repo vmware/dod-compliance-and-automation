@@ -1,61 +1,59 @@
 ---
-
 # Turn specific controls on/off by setting the value to true or false
-
-#Create backups of files?
+# Create backups of files?
 create_backups: true
 
-#VCLU-70-000001
+# VCLU-70-000001
 run_connection_timeout: true
-#VCLU-70-000002
+# VCLU-70-000002
 run_max_threads: true
-#VCLU-70-000003
+# VCLU-70-000003
 run_max_post_size: true
-#VCLU-70-000004
+# VCLU-70-000004
 run_http_only: true
-#VCLU-70-000005
+# VCLU-70-000005
 run_access_valve_pattern: true
-#VCLU-70-000006
+# VCLU-70-000006
 run_json_stream_redirect_file: true
-#VCLU-70-000007
+# VCLU-70-000007
 run_logs_permissions: true
-#VCLU-70-000010
+# VCLU-70-000010
 run_user_database_realm: true
-#VCLU-70-000011
+# VCLU-70-000011
 run_catalina_properties: true
-#VCLU-70-000012
+# VCLU-70-000012
 run_removed_mime_mappings: true
-#VCLU-70-000013
+# VCLU-70-000013
 run_java_servlet: true
-#VCLU-70-000014
+# VCLU-70-000014
 run_remove_webdav: true
-#VCLU-70-000015
+# VCLU-70-000015
 run_mem_leak_prevention: true
-#VCLU-70-000017
+# VCLU-70-000017
 run_web_files_permissions: true
-#VCLU-70-000018
+# VCLU-70-000018
 run_catalina_properties_shutdown: true
-#VCLU-70-000019
+# VCLU-70-000019
 run_accept_count: true
-#VCLU-70-000020
+# VCLU-70-000020
 run_uri_encoding: true
-#VCLU-70-000021
+# VCLU-70-000021
 run_web_welcome_file: true
-#VCLU-70-000022
+# VCLU-70-000022
 run_web_remove_listings: true
-#VCLU-70-000023
+# VCLU-70-000023
 run_server_anonymous: true
-#VCLU-70-000024
+# VCLU-70-000024
 run_hide_error_reports: true
-#VCLU-70-000025
+# VCLU-70-000025
 run_allow_trace: true
-#VCLU-70-000026
+# VCLU-70-000026
 run_web_remove_debug: true
-#VCLU-70-000028
+# VCLU-70-000028
 run_syslog_config: true
-#VCLU-70-000029
+# VCLU-70-000029
 run_catalina_properties_ports: true
-#VCLU-70-000030
+# VCLU-70-000030
 run_server_shutdownport: true
-#VCLU-70-000031
+# VCLU-70-000031
 run_web_cookie_secure: true

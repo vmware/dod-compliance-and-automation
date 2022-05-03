@@ -1,11 +1,11 @@
 name: vmware-photon-3.0-stig-inspec-baseline
 title: InSpec Profile VMware Photon OS 3.0 Appliance based deployments
-maintainer: Ryan Lakey
+maintainer: The Authors
 copyright: The Authors
-copyright_email: stigs@vmware.com
+copyright_email: 
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 3.0 Release 1 Version 2
+version: 1.0.4
 
 inputs:
 - name: verbose
@@ -18,6 +18,9 @@ inputs:
 - name: photonIp
   type: string
   value: "x.x.x.x"  #Enter IP for PhotonOS
+- name: ntptype
+  type: string
+  value: "ntpd"  #Enter the NTP solution. Either "ntpd" "timesyncd" "chrony"  
 - name: ntpServer1
   type: string
   value: "x.x.x.x"  #Enter IP or FQDN of NTP Server

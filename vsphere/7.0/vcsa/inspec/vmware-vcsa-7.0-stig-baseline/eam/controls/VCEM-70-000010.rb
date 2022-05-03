@@ -1,11 +1,6 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000010' do
   title 'ESX Agent Manager must not be configured with unsupported realms.'
-  desc  "ESX Agent Manager performs authentication at the application level and
-not through Tomcat. To eliminate unnecessary features and to ensure that ESX
-Agent Manager remains in it's shipping state, the lack of a UserDatabaseRealm
-configuration must be confirmed."
+  desc  "ESX Agent Manager performs authentication at the application level and not through Tomcat. To eliminate unnecessary features and to ensure that ESX Agent Manager remains in it's shipping state, the lack of a UserDatabaseRealm configuration must be confirmed."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -14,7 +9,7 @@ configuration must be confirmed."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -31,13 +26,10 @@ configuration must be confirmed."
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCEM-70-000010'
-  tag fix_id: nil
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabaseRealm '#{input('serverXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

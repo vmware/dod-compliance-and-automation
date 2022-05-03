@@ -1,0 +1,191 @@
+# VMware vSphere 7.0 vCenter Server Appliance rhttpproxy Ansible Role
+
+---
+############################################
+
+# Backup files that may be modified in case restoration is needed
+
+- name: Create time stamp
+  ansible.builtin.set_fact:
+    backup_timestamp: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+  when:
+    - create_backups | bool
+
+- name: Backup files...if restoring be sure to restore permissions that original file had!!
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ item }}"
+    dest: "/tmp/ansible-vcsa-rhttpproxy-backups-{{ backup_timestamp }}/"
+    mode: preserve
+  with_items:
+    - '{{ var_config_xml_path }}'
+    - '{{ var_syslog_conf_path }}'
+    - '{{ var_syslog_conf_path2 }}'
+  changed_when: false
+  when:
+    - create_backups | bool
+
+############################################
+
+# Title: Envoy must drop connections to disconnected clients.
+
+- name: VCRP-70-000001 - Envoy must drop connections to disconnected clients.
+  community.general.xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/envoy/L4Filter/tcpKeepAliveTimeSec'
+    value: '{{ var_config_xml_tcpkeepalivetimesec }}'
+    state: present
+  tags:
+    - VCRP-70-000001
+  notify:
+    - restart rhttpproxy
+  when:
+    - run_config_tcpkeepalivetimesec | bool
+
+############################################
+
+# Title: Envoy must set a limit on established connections.
+
+- name: VCRP-70-000002 - Envoy must set a limit on established connections.
+  community.general.xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/envoy/L4Filter/maxHttpsConnections'
+    value: '{{ var_config_xml_maxhttpsconnections }}'
+    state: present
+  tags:
+    - VCRP-70-000002
+  notify:
+    - restart rhttpproxy
+  when:
+    - run_config_maxhttpsconnections | bool
+
+############################################
+
+# Title: Envoy must be configured to operate in FIPS mode.
+
+- name: VCRP-70-000003 - Envoy must be configured to operate in FIPS mode.
+  community.general.xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/vmacore/ssl/fips'
+    value: '{{ var_config_xml_fips }}'
+    state: present
+  tags:
+    - VCRP-70-000003
+  notify:
+    - restart rhttpproxy
+  when:
+    - run_config_fips | bool
+
+############################################
+
+# Title: Envoy must use only TLS 1.2 for the protection of client connections.
+
+- name: VCRP-70-000004 - Envoy must use only TLS 1.2 for the protection of client connections.
+  community.general.xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/vmacore/ssl/protocols'
+    value: '{{ var_config_xml_tls }}'
+    state: present
+  tags:
+    - VCRP-70-000004
+  notify:
+    - restart rhttpproxy
+  when:
+    - run_config_tls | bool
+
+############################################
+
+# Title: The Envoy private key file must be protected from unauthorized access.
+
+- name: VCRP-70-000005 - The Envoy private key file must be protected from unauthorized access.
+  ansible.builtin.file:
+    path: "{{ var_key_path }}"
+    state: file
+    mode: 0600
+    owner: "root"
+    group: "root"
+  tags:
+    - VCRP-70-000005
+  when:
+    - run_key_permissions | bool
+
+############################################
+
+# Title: Envoy must exclusively use the HTTPS protocol for client connections.
+
+- name: VCRP-70-000006 - Envoy must exclusively use the HTTPS protocol for client connections. Key
+  community.general.xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/ssl/privateKey'
+    value: '{{ var_config_xml_ssl_private_key }}'
+    state: present
+  tags:
+    - VCRP-70-000006
+  notify:
+    - restart rhttpproxy
+  when:
+    - run_config_ssl | bool
+
+- name: VCRP-70-000006 - Envoy must exclusively use the HTTPS protocol for client connections. Cert
+  community.general.xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/ssl/certificate'
+    value: '{{ var_config_xml_ssl_cert }}'
+    state: present
+  tags:
+    - VCRP-70-000006
+  notify:
+    - restart rhttpproxy
+  when:
+    - run_config_ssl | bool
+
+- name: VCRP-70-000006 - Envoy must exclusively use the HTTPS protocol for client connections. VECS
+  community.general.xml:
+    path: '{{ var_config_xml_path }}'
+    xpath: '/config/ssl/vecsServerName'
+    value: '{{ var_config_xml_ssl_vecs }}'
+    state: present
+  tags:
+    - VCRP-70-000006
+  notify:
+    - restart rhttpproxy
+  when:
+    - run_config_ssl | bool
+
+############################################
+
+# Title: Envoy (rhttpproxy) log files must be shipped via syslog to a central log server.
+
+- name: VCRP-70-000007 - Envoy (rhttpproxy) log files must be shipped via syslog to a central log server.
+  ansible.builtin.template:
+    src: vmware-services-rhttpproxy.conf
+    dest: /etc/vmware-syslog/vmware-services-rhttpproxy.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  notify:
+    - restart syslog
+  tags:
+    - VCRP-70-000007
+  when:
+    - run_syslog_config_rhttpproxy | bool
+
+############################################
+
+# Title: Envoy log files must be shipped via syslog to a central log server.
+
+- name: VCRP-70-000008 - Envoy log files must be shipped via syslog to a central log server.
+  ansible.builtin.template:
+    src: vmware-services-envoy.conf
+    dest: /etc/vmware-syslog/vmware-services-envoy.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  notify:
+    - restart syslog
+  tags:
+    - VCRP-70-000008
+  when:
+    - run_syslog_config_envoy | bool

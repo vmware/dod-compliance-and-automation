@@ -1,30 +1,23 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000032' do
   title 'Performance Charts must disable the shutdown port.'
-  desc  "An attacker has at least two reasons to stop a web server. The first
-is to cause a denial of service, and the second is to put in place changes the
-attacker made to the web server configuration.
+  desc  "
+    An attacker has at least two reasons to stop a web server. The first is to cause a denial of service, and the second is to put in place changes the attacker made to the web server configuration.
 
-    If the Tomcat shutdown port feature is enabled, a shutdown signal can be
-sent to Performance Charts through this port. To ensure availability, the
-shutdown port must be disabled.
+    If the Tomcat shutdown port feature is enabled, a shutdown signal can be sent to Performance Charts through this port. To ensure availability, the shutdown port must be disabled.
   "
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
 
-    # grep base.shutdown.port
-/usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties
+    # grep base.shutdown.port /usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties
 
     Expected result:
 
     base.shutdown.port=-1
 
-    If the output of the command does not match the expected result, this is a
-finding.
+    If the output of the command does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/vmware-eam/catalina.properties
@@ -45,13 +38,10 @@ finding.
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCPF-70-000032'
-  tag fix_id: nil
   tag cci: ['CCI-002385']
   tag nist: ['SC-5']
 
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['base.shutdown.port'] do
     it { should eq "#{input('shutdownPort')}" }
   end
-
 end
-

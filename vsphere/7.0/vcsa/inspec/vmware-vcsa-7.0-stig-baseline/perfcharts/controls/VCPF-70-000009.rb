@@ -1,9 +1,6 @@
-# encoding: UTF-8
-
 control 'VCPF-70-000009' do
   title 'Performance Charts must only run one webapp.'
-  desc  "VMware ships Performance Charts on the VCSA with one webapp. Any other
-path is potentially malicious and must be removed."
+  desc  'VMware ships Performance Charts on the VCSA with one webapp. Any other path is potentially malicious and must be removed.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -17,14 +14,13 @@ path is potentially malicious and must be removed."
     If the output does not match the expected result, this is a finding.
   "
   desc  'fix', "
-    For each unexpected directory returned in the check, run the following
-command:
+    For each unexpected directory returned in the check, run the following command:
 
     # rm /usr/lib/vmware-perfcharts/tc-instance/webapps/<NAME>
 
     Restart the service with the following command:
 
-    # service-control --restart vmware-perfcharts
+    # vmon-cli --restart perfcharts
   "
   impact 0.5
   tag severity: 'medium'
@@ -32,13 +28,10 @@ command:
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCPF-70-000009'
-  tag fix_id: nil
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
   describe command("ls -A '#{input('appPath')}'") do
-    its ('stdout.strip') { should eq 'statsreport' }
+    its('stdout.strip') { should eq 'statsreport' }
   end
-
 end
-

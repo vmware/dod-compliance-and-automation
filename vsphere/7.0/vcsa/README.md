@@ -5,5 +5,3 @@ The vCenter Server Appliance (VCSA) is vCenter as you know it but delivered with
 
 
 <img src="https://github.com/vmware/dod-compliance-and-automation/blob/vsphere7/vsphere/7.0/vcsa/Diagram.png" width="484" height="457">
-
-

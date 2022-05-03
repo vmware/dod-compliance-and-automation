@@ -1,5 +1,25 @@
 # Change Log
 
+## [7.0 Version 1 Release 3] (2022-04-29)
+
+#### Release Notes
+- Cookstyle lint corrections
+- Profile now pulls Photon content from the Photon source repo instead of a copy here
+- VCEM-70-000017 Updated owner and group, fixed issue a not properly espaced character in test
+- VCLU-70-000007 Updated permissions to 640
+- VCLU-70-000017 fixed issue a not properly espaced character in test
+- VCPF-70-000017 fixed issue a not properly espaced character in test
+- VCPF-70-000021 updated test to account for values on a separate line
+- VCPF-70-000029 fix updated to match updates to log4j properties
+- VCPG-70-000001 updated test to look for values in a range
+- VCST-70-000008 Add .conf to grep statement
+- VCUI-70-000005 Updated log pattern
+- VCUI-70-000017 Updated owner and group, fixed issue a not properly espaced character in test
+- VCLD-70-000002 updated fix restart command
+- VCLD-70-000003 updated fix restart command
+- VCLD-70-000019 fixed issue a not properly espaced character in test
+- VCLD-70-000056 Added control
+
 ## [7.0 Version 1 Release 2] (2021-09-15)
 
 #### Release Notes

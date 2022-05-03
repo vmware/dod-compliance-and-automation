@@ -1,12 +1,6 @@
-# encoding: UTF-8
-
 control 'VCLU-70-000029' do
   title 'Lookup Service must must be configured with the appropriate ports.'
-  desc  "Web servers provide numerous processes, features, and functionalities
-that use TCP/IP ports. Some of these processes may be deemed unnecessary or too
-unsecure to run on a production system. The ports that Lookup Service listens
-on are configured in the \"catalina.properties\" file and must be veriified as
-accurate to their shipping state."
+  desc  'Web servers provide numerous processes, features, and functionalities that use TCP/IP ports. Some of these processes may be deemed unnecessary or too unsecure to run on a production system. The ports that Lookup Service listens on are configured in the "catalina.properties" file and must be veriified as accurate to their shipping state.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -20,18 +14,16 @@ accurate to their shipping state."
     bio-custom.http.port=7090
     bio-custom.https.port=8443
 
-    If the output of the command does not match the expected result, this is a
-finding.
+    If the output of the command does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-lookupsvc/conf/catalina.properties
 
     Navigate to the ports specification section.
 
-    Set the Lookup Service port specifications according to the shipping
-configuration below:
+    Set the Lookup Service port specifications according to the shipping configuration below:
 
     base.shutdown.port=-1
     base.jmx.port=-1
@@ -48,7 +40,6 @@ configuration below:
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCLU-70-000029'
-  tag fix_id: nil
   tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']
 
@@ -67,6 +58,4 @@ configuration below:
   describe parse_config_file("#{input('catalinaPropertiesPath')}").params['bio-custom.https.port'] do
     it { should eq "#{input('catalinahttpsPort')}" }
   end
-
 end
-

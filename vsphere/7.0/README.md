@@ -1,7 +1,7 @@
 # VMware vSphere 7.0 DoD STIG Compliance and Automation
 
 ## Overview
-*STIG Status: In process with DISA, internal draft phase.*
+*STIG Status: In process with DISA, STIG Readiness Guide v1r3*
 
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
 

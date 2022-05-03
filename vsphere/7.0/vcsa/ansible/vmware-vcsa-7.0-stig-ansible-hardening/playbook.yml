@@ -1,0 +1,14 @@
+- hosts: all
+  roles:
+    - role: vmware-photon-3.0-stig-ansible-hardening
+      vars:
+        var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
+    - role: eam
+    - role: lookup
+    - role: perfcharts
+    - role: postgresql
+    - role: rhttpproxy
+    - role: sts
+    - role: vami
+    - role: ui
+    - role: misc

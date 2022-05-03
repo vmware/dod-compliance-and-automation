@@ -1,21 +1,11 @@
-# encoding: UTF-8
-
 control 'VCPG-70-000012' do
-  title "VMware Postgres must enforce authorized access to all PKI private
-keys."
-  desc  "The DoD standard for authentication is DoD-approved PKI certificates.
-PKI certificate-based authentication is performed by requiring the certificate
-holder to cryptographically prove possession of the corresponding private key.
+  title 'VMware Postgres must enforce authorized access to all PKI private keys.'
+  desc  "
+    The DoD standard for authentication is DoD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.
 
-    If the private key is stolen, an attacker can use the private key(s) to
-impersonate the certificate holder.  In cases where the DBMS-stored private
-keys are used to authenticate the DBMS to the system\xE2\x80\x99s clients, loss
-of the corresponding private keys would allow an attacker to successfully
-perform undetected man in the middle attacks against the DBMS system and its
-clients.
+    If the private key is stolen, an attacker can use the private key(s) to impersonate the certificate holder.  In cases where the DBMS-stored private keys are used to authenticate the DBMS to the system's clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man in the middle attacks against the DBMS system and its clients.
 
-    All access to the private key(s) of the DBMS must be restricted to
-authorized and authenticated users.
+    All access to the private key(s) of the DBMS must be restricted to authorized and authenticated users.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -29,7 +19,7 @@ authorized and authenticated users.
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     At the command prompt, execute the following commands:
 
     # chmod 600 /storage/db/vpostgres_ssl/server.key
@@ -41,15 +31,12 @@ authorized and authenticated users.
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCPG-70-000012'
-  tag fix_id: nil
   tag cci: ['CCI-000186']
   tag nist: ['IA-5 (2) (b)']
 
   describe file("#{input('pg_ssl_key')}") do
     its('mode') { should cmp '0600' }
-    its('owner') {should cmp 'vpostgres'}
-    its('group') {should cmp 'users'}
+    its('owner') { should cmp 'vpostgres' }
+    its('group') { should cmp 'users' }
   end
-
 end
-
