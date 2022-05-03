@@ -1,2 +1,10 @@
-- include: postgresql.yml
-  tags: postgresql
+---
+
+- name: Include PostgreSQL
+  include_tasks:
+    file: postgresql.yml
+    apply:
+      tags:
+        - postgresql
+  tags:
+    - always

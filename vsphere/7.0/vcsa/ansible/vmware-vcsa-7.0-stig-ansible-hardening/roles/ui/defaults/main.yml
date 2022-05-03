@@ -1,0 +1,65 @@
+---
+
+# Turn specific controls on/off by setting the value to true or false
+
+# Create backups of files?
+create_backups: true
+
+# VCUI-70-000001
+run_connection_timeout: true
+# VCUI-70-000002
+run_max_threads: true
+# VCUI-70-000003
+run_max_post_size: true
+# VCUI-70-000004
+run_http_only: true
+# VCUI-70-000005
+run_access_valve_pattern: true
+# VCUI-70-000006
+run_json_stream_redirect_file: true
+# VCUI-70-000007
+run_logs_permissions: true
+# VCUI-70-000010
+run_user_database_realm: true
+# VCUI-70-000011
+run_catalina_props_package_access: true
+# VCUI-70-000012
+run_removed_mime_mappings: true
+# VCUI-70-000013
+run_java_servlet: true
+# VCUI-70-000014
+run_remove_webdav: true
+# VCUI-70-000015
+run_mem_leak_prevention: true
+# VCUI-70-000017
+run_web_files_permissions: true
+# VCUI-70-000018
+run_session_cookies: true
+# VCUI-70-000019
+run_catalina_props_init_failure: true
+# VCUI-70-000020
+run_accept_count: true
+# VCUI-70-000021
+run_uri_encoding: true
+# VCUI-70-000022
+run_web_welcome_file: true
+# VCUI-70-000023
+run_web_remove_listings: true
+# VCUI-70-000024
+run_min_info: true
+# VCUI-70-000025
+run_show_server_info: true
+# VCUI-70-000026
+run_allow_trace: true
+# VCUI-70-000027
+run_web_remove_debug: true
+# VCUI-70-000029
+run_syslog_config: true
+# VCUI-70-000030
+run_catalina_props_ports: true
+# VCUI-70-000031
+run_server_shutdownport: true
+# VCUI-70-000032
+run_web_cookie_secure: true
+# VCUI-70-000033
+run_web_remove_readonly: true

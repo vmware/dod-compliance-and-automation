@@ -1,0 +1,10 @@
+---
+
+- name: Include Lookup
+  include_tasks:
+    file: lookup.yml
+    apply:
+      tags:
+        - lookup
+  tags:
+    - always

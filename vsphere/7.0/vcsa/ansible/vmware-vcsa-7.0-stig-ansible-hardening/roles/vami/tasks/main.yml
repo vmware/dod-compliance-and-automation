@@ -1,2 +1,10 @@
-- include: vami.yml
-  tags: vami
+---
+
+- name: Include VAMI
+  include_tasks:
+    file: vami.yml
+    apply:
+      tags:
+        - vami
+  tags:
+    - always

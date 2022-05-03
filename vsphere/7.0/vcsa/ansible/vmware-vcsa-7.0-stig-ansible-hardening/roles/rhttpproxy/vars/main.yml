@@ -12,3 +12,5 @@ var_config_xml_ssl_vecs: 'localhost'
 
 # misc variables
 var_key_path: '/etc/vmware-rhttpproxy/ssl/rui.key'
+var_syslog_conf_path: '/etc/vmware-syslog/vmware-services-rhttpproxy.conf'
+var_syslog_conf_path2: '/etc/vmware-syslog/vmware-services-envoy.conf'

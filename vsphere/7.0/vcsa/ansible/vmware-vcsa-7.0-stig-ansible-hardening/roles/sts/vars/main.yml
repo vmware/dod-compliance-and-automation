@@ -4,8 +4,8 @@
 var_server_xml_path: '/usr/lib/vmware-sso/vmware-sts/conf/server.xml'
 var_server_xml_connectiontimeout: '60000'
 var_server_xml_maxthreads: '150'
-#This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
-#Also & needs to just be a " which turns into &quot
+# This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+# Also & needs to just be a " which turns into &quot
 var_server_xml_access_log_valve_pattern: '{% raw %}%t %I [RemoteIP] %{X-Forwarded-For}i %u [Request] %h:%{remote}p to local %{local}p - %H %m %U%q    [Response] %s - %b bytes    [Perf] process %Dms / commit %Fms / conn [%X]{% endraw %}'
 var_server_xml_acceptcount: '100'
 var_server_xml_uriencoding: 'UTF-8'
@@ -38,3 +38,4 @@ var_catalina_props_path: '/usr/lib/vmware-sso/vmware-sts/conf/catalina.propertie
 
 # misc variables
 var_sts_web_path: '/usr/lib/vmware-sso/vmware-sts'
+var_syslog_conf_path: '/etc/vmware-syslog/vmware-services-sso-services.conf'

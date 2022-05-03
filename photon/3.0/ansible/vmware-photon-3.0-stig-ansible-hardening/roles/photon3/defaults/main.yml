@@ -2,7 +2,7 @@
 
 # Turn specific controls on/off by setting the value to true or false
 
-#Create backups of files?
+# Create backups of files?
 create_backups: true
 
 # PHTN-30-000001 and more
@@ -11,7 +11,7 @@ run_auditd_rules: true
 run_pamd_lock: true
 # PHTN-30-000003
 run_sshd_banner: true
-run_sshd_banner_issue: false  #false by default for internal use  should be true for customer use
+run_sshd_banner_issue: true
 # PHTN-30-000004
 run_limits_maxlogins: true
 # PHTN-30-000005
@@ -102,7 +102,7 @@ run_auditd_max_log_file_action: true
 run_auditd_space_left: true
 # PHTN-30-000058
 run_set_ntp_server: true
-# PHTN-30-000059 PHTN-30-000060 
+# PHTN-30-000059 PHTN-30-000060
 run_tdnf_gpgcheck: true
 # PHTN-30-000061
 run_yum_gpgcheck: true
@@ -131,7 +131,7 @@ run_service_debug_shell: true
 run_configure_default_umask: true
 # PHTN-30-000078
 run_sshd_gssapiauthentication: true
-# PHTN-30-000079 
+# PHTN-30-000079
 run_sshd_permituserenvironment: true
 # PHTN-30-000080
 run_sshd_x11forwarding: true
@@ -231,3 +231,7 @@ run_create_opasswd: true
 run_sshd_allowtcpforwarding: true
 # PHTN-30-000120
 run_sshd_logingracetime: true
+# PHTN-30-000240
+run_kernel_fips: false
+# PHTN-30-000245
+run_dns_fallback: true

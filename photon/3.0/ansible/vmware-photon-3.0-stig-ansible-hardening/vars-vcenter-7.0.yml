@@ -1,0 +1,1 @@
+var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'

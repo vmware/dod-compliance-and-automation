@@ -30,7 +30,7 @@ var_auditd_space_left_action: 'SYSLOG'
 var_auditd_disk_full_action: 'SYSLOG'
 var_auditd_disk_error_action: 'SYSLOG'
 var_auditd_admin_space_left_action: 'SYSLOG'
-var_auditd_max_log_file_action: 'IGNORE'
+var_auditd_max_log_file_action: 'ROTATE' # IGNORE or ROTATE
 var_auditd_space_left: 75
 var_auditd_flush: 'INCREMENTAL_ASYNC'
 var_auditd_freq: 50
@@ -129,3 +129,4 @@ var_grub_conf_file: '/boot/grub2/grub.cfg'
 var_bashrc_file: '/etc/bash.bashrc'
 var_tdnf_conf_file: '/etc/tdnf/tdnf.conf'
 var_umask_file: '/etc/profile.d/umask.sh'
+var_resolved_file: '/etc/systemd/resolved.conf'

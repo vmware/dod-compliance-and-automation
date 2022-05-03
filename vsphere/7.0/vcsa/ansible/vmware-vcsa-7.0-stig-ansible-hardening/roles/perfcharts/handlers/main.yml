@@ -1,0 +1,7 @@
+---
+
+- name: restart syslog
+  ansible.builtin.service: name=syslog state=restarted
+
+- name: restart perfcharts
+  ansible.builtin.command: vmon-cli --restart perfcharts

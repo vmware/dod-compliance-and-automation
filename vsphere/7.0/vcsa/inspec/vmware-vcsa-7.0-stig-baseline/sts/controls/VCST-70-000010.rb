@@ -1,11 +1,6 @@
-# encoding: UTF-8
-
 control 'VCST-70-000010' do
   title 'The Security Token Service must not be configured with unused realms.'
-  desc  "The Security Token Service performs user authentication at the
-application level and not through Tomcat. To eliminate unnecessary features and
-to ensure that the Security Token Service remains in it's shipping state, the
-lack of a \"UserDatabaseRealm\" configuration must be confirmed."
+  desc  "The Security Token Service performs user authentication at the application level and not through Tomcat. To eliminate unnecessary features and to ensure that the Security Token Service remains in it's shipping state, the lack of a \"UserDatabaseRealm\" configuration must be confirmed."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -14,7 +9,7 @@ lack of a \"UserDatabaseRealm\" configuration must be confirmed."
 
     If the command produces any output, this is a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-sso/vmware-sts/conf/server.xml
@@ -31,13 +26,10 @@ lack of a \"UserDatabaseRealm\" configuration must be confirmed."
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCST-70-000010'
-  tag fix_id: nil
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
   describe command("grep UserDatabaseRealm '#{input('serverXmlPath')}'") do
-    its ('stdout.strip') { should eq '' }
+    its('stdout.strip') { should eq '' }
   end
-
 end
-

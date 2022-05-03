@@ -1,25 +1,24 @@
-# Ansible Playbook for Photon OS 3.0 STIG Readiness 
-
-#---------- Ansible version 2.9.7 --------#
 ---
+# Ansible Playbook for Photon OS 3.0 STIG Readiness
 
 ############################################
 
 # Backup files that may be modified in case restoration is needed
 
 - name: Create time stamp
-  set_fact:
+  ansible.builtin.set_fact:
     backup_timestamp: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
   tags:
-  - perfcharts
+    - photon
   when:
-  - create_backups | bool
+    - create_backups | bool
 
 - name: Backup files...if restoring be sure to restore permissions that original file had!!
-  copy:
-    remote_src: yes
+  ansible.builtin.copy:
+    remote_src: true
     src: "{{ item }}"
-    dest: "{{ item }}_{{ backup_timestamp }}.bak"
+    dest: "/tmp/ansible-backups-{{ backup_timestamp }}/"
+    mode: preserve
   with_items:
     - '{{ var_syslog_conf_path }}'
     - '{{ var_sshd_banner }}'
@@ -39,48 +38,63 @@
     - '{{ var_tdnf_conf_file }}'
     - '{{ var_umask_file }}'
     - '{{ var_sysctl_conf_file }}'
+    - '{{ var_resolved_file }}'
   tags:
-  - photon
+    - photon
   when:
-  - create_backups | bool
+    - create_backups | bool
 
 ############################################
 
 # Title: The Photon operating system must audit all account creations.
 
 - name: PHTN-30-000001 - Update/Create audit.STIG.rules file
-  template:
+  ansible.builtin.template:
     src: audit.STIG.rules.j2
     dest: '{{ var_auditd_rule_file }}'
     owner: root
     group: root
     mode: '0640'
-    force: yes
+    force: true
   tags:
-  - PHTN-30-000001
-  - PHTN-30-000012
-  - PHTN-30-000020
-  - PHTN-30-000042
-  - PHTN-30-000043
-  - PHTN-30-000044
-  - PHTN-30-000045
-  - PHTN-30-000056
-  - PHTN-30-000067
-  - PHTN-30-000068
-  - PHTN-30-000069
-  - PHTN-30-000070
-  - auditd
+    - PHTN-30-000001
+    - PHTN-30-000012
+    - PHTN-30-000020
+    - PHTN-30-000042
+    - PHTN-30-000043
+    - PHTN-30-000044
+    - PHTN-30-000045
+    - PHTN-30-000056
+    - PHTN-30-000067
+    - PHTN-30-000068
+    - PHTN-30-000069
+    - PHTN-30-000070
+    - auditd
   notify:
     - reload auditd
   when:
-  - run_auditd_rules | bool
+    - run_auditd_rules | bool
 
 ############################################
 
 # Title: The Photon operating system must automatically lock an account when three unsuccessful logon attempts occur.
 
-- name: PHTN-30-000002 - Create rule for pam_tally2.so if it doesn't exist after the pam_unix.sp auth rule in system-auth
-  pamd:
+- name: PHTN-30-000002 - Check for existing pam_tally2.so rule in system-auth
+  ansible.builtin.lineinfile:
+    name: /etc/pam.d/system-auth
+    regexp: '^auth.*required.*pam_tally2.so'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: authtally
+  tags:
+    - PHTN-30-000002
+    - pam
+  when:
+    - run_pamd_lock | bool
+
+- name: PHTN-30-000002 - Create rule for pam_tally2.so if it doesn't exist after the pam_unix.so auth rule in system-account
+  community.general.pamd:
     name: system-auth
     type: auth
     control: required
@@ -90,13 +104,14 @@
     new_module_path: pam_tally2.so
     state: after
   tags:
-  - PHTN-30-000002
-  - pam
+    - PHTN-30-000002
+    - pam
   when:
-  - run_pamd_lock | bool
+    - run_pamd_lock | bool
+    - authtally.found == 0
 
-- name: PHTN-30-000002 - Add arguements to pam_tally2.so rule
-  pamd:
+- name: PHTN-30-000002 - Update arguments to existing pam_tally2.so rule
+  community.general.pamd:
     name: system-auth
     type: auth
     control: required
@@ -106,16 +121,31 @@
         audit
         even_deny_root
         unlock_time={{ var_pamd_unlock_time }}
-        root_unlock_time={{ var_pamd_root_unlock_time }}'
+        root_unlock_time={{ var_pamd_root_unlock_time }}
+        file=/var/log/tallylog'
     state: updated
   tags:
-  - PHTN-30-000002
-  - pam
+    - PHTN-30-000002
+    - pam
   when:
-  - run_pamd_lock | bool
+    - run_pamd_lock | bool
+
+- name: PHTN-30-000002 - Check for existing pam_tally2.so rule in system-account
+  ansible.builtin.lineinfile:
+    name: /etc/pam.d/system-account
+    regexp: '^account.*required.*pam_tally2.so'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: accounttally
+  tags:
+    - PHTN-30-000002
+    - pam
+  when:
+    - run_pamd_lock | bool
 
 - name: PHTN-30-000002 - Create rule for pam_tally2.so if it doesn't exist after the pam_unix.so auth rule in system-account
-  pamd:
+  community.general.pamd:
     name: system-account
     type: account
     control: required
@@ -125,13 +155,14 @@
     new_module_path: pam_tally2.so
     state: after
   tags:
-  - PHTN-30-000002
-  - pam
+    - PHTN-30-000002
+    - pam
   when:
-  - run_pamd_lock | bool
+    - run_pamd_lock | bool
+    - accounttally.found == 0
 
-- name: PHTN-30-000002 - Add arguements to pam_tally2.so rule
-  pamd:
+- name: PHTN-30-000002 - Add arguments to pam_tally2.so rule
+  community.general.pamd:
     name: system-account
     type: account
     control: required
@@ -139,382 +170,365 @@
     module_arguments: 'deny={{ var_pamd_lock }}
         onerr=fail
         audit
-        even_deny_root
-        unlock_time={{ var_pamd_unlock_time }}
-        root_unlock_time={{ var_pamd_root_unlock_time }}'
+        file=/var/log/tallylog'
     state: updated
   tags:
-  - PHTN-30-000002
-  - pam
+    - PHTN-30-000002
+    - pam
   when:
-  - run_pamd_lock | bool
+    - run_pamd_lock | bool
 
 ############################################
 
 # Title: The Photon operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting SSH access.
 
 - name: PHTN-30-000003 - Update sshd_config banner
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^Banner.*$'
     line: Banner {{ var_sshd_banner }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000003
-  - sshd
+    - PHTN-30-000003
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_banner | bool
+    - run_sshd_banner | bool
 
 - name: PHTN-30-000003 - Update/Create /etc/issue file
-  template:
+  ansible.builtin.template:
     src: issue.j2
     dest: '{{ var_sshd_banner }}'
     owner: root
     group: root
     mode: '0644'
-    force: yes
+    force: true
   tags:
-  - PHTN-30-000003
-  - sshd
+    - PHTN-30-000003
+    - sshd
   notify:
     - restart sshd
   when:
-  - run_sshd_banner_issue | bool
+    - run_sshd_banner_issue | bool
 
 ############################################
 
 # Title: The Photon operating system must limit the number of concurrent sessions to ten for all accounts and/or account types.
 
 - name: PHTN-30-000004 - Limit the number of concurrent sessions to ten for all accounts and/or account types
-  pam_limits:
+  community.general.pam_limits:
     limit_item: maxlogins
     domain: "*"
     limit_type: hard
     value: "{{ var_limits_maxlogins }}"
   tags:
-  - PHTN-30-000004
-  - limits.conf
+    - PHTN-30-000004
+    - limits.conf
   when:
-  - run_limits_maxlogins | bool
+    - run_limits_maxlogins | bool
 
 ############################################
 
 # Title: The Photon operating system must set a session inactivity timeout of 15 minutes or less.
 
 - name: PHTN-30-000005 - Create /etc/profile.d/tmout.sh
-  template:
+  ansible.builtin.template:
     src: tmout.sh.j2
     dest: /etc/profile.d/tmout.sh
-    force: no
+    force: false
     group: root
     owner: root
     mode: 0644
   tags:
-  - PHTN-30-000005
-  - tmout.sh
+    - PHTN-30-000005
+    - tmout.sh
   when:
-  - run_configure_tmout | bool
+    - run_configure_tmout | bool
 
 ############################################
 
 # Title: The Photon operating system must have the sshd SyslogFacility set to authpriv.
 
 - name: PHTN-30-000006 - Update sshd_config SyslogFacility
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^SyslogFacility.*$'
     line: SyslogFacility {{ var_sshd_syslogfacility }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000006
-  - sshd
+    - PHTN-30-000006
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_syslogfacility | bool
+    - run_sshd_syslogfacility | bool
 
 ############################################
 
 # Title: The Photon operating system must have sshd authentication logging enabled.
 
 - name: PHTN-30-000007 - Update rsyslog to log ssh authentication
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_syslog_conf_path }}'
     state: present
     regexp: '^authpriv'
     line: authpriv.*   {{ var_syslog_authpriv_log }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000007
-  - sshd
+    - PHTN-30-000007
+    - sshd
   notify:
-  - restart syslog
+    - restart syslog
   when:
-  - run_sshd_rsyslog | bool
+    - run_sshd_rsyslog | bool
 
 ############################################
 
 # Title: The Photon operating system must have the sshd LogLevel set to INFO
 
 - name: PHTN-30-000008 - Update sshd_config LogLevel
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^LogLevel.*$'
     line: LogLevel {{ var_sshd_loglevel }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000008
-  - sshd
+    - PHTN-30-000008
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_loglevel | bool
+    - run_sshd_loglevel | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to use approved encryption algorithms.
 
-# RL - Commenting this section out because we added ciphers back in later
-# Comment out ciphers since Fipsmode takes care of this and sshd will not start if Ciphers is specified before fipsmode
-# - name: PHTN-30-000009 - Comment out Ciphers
-#   replace:
-#     path: '{{ var_sshd_config_file }}'
-#     regexp: '(^Ciphers.*$)'
-#     replace: '#\1'
-#   tags:
-#   - PHTN-30-000009
-#   - sshd
-#   notify:
-#   - restart sshd
-#   when:
-#   - run_sshd_fipsmode | bool
-
 - name: PHTN-30-000009 - Update sshd_config FipsMode
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^FipsMode.*$'
     line: FipsMode {{ var_sshd_fipsmode }}
     insertbefore: '^Ciphers.*$'
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000009
-  - sshd
+    - PHTN-30-000009
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_fipsmode | bool
+    - run_sshd_fipsmode | bool
 
 ############################################
 
 # Title: The Photon operating system must configure auditd to log to disk.
 
 - name: PHTN-30-000010 - Configure auditd write_logs
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^write_logs.*$'
     line: write_logs = {{ var_auditd_write_logs }}
     state: present
-    create: yes
-    backrefs: yes
+    create: true
+    backrefs: true
   tags:
-  - PHTN-30-000010
-  - auditd
+    - PHTN-30-000010
+    - auditd
   notify:
-  - restart auditd
+    - restart auditd
   when:
-  - run_auditd_write_logs | bool
+    - run_auditd_write_logs | bool
 
 ############################################
 
 # Title: The Photon operating system must configure auditd to use the correct log format.
 
 - name: PHTN-30-000011 - Configure auditd log_format
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^log_format.*$'
     line: log_format = {{ var_auditd_log_format }}
     state: present
-    create: yes
+    create: true
   tags:
-  - PHTN-30-000011
-  - auditd
+    - PHTN-30-000011
+    - auditd
   notify:
-  - restart auditd
+    - restart auditd
   when:
-  - run_auditd_log_format | bool
+    - run_auditd_log_format | bool
 
 ############################################
 
 # Title: The Photon operating system must have the auditd service running.
 
 - name: PHTN-30-000013 - The Photon operating system must have the auditd service running.
-  service:
+  ansible.builtin.service:
     name: auditd
     state: started
-    enabled: yes
+    enabled: true
   tags:
-  - PHTN-30-000013
-  - auditd
+    - PHTN-30-000013
+    - auditd
   when:
-  - run_auditd_service_enable | bool
+    - run_auditd_service_enable | bool
 
 ############################################
 
 # Title: The Photon operating system audit log must log space limit problems to syslog.
 
 - name: PHTN-30-000014 - Configure auditd space_left_action
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^space_left_action.*$'
     line: space_left_action = {{ var_auditd_space_left_action }}
-    create: yes
+    create: true
     state: present
   tags:
-  - PHTN-30-000014
-  - auditd
+    - PHTN-30-000014
+    - auditd
   notify:
-  - restart auditd
+    - restart auditd
   when:
-  - run_auditd_space_left_action | bool
+    - run_auditd_space_left_action | bool
 
 ############################################
 
 # Title: The Photon operating system audit log must attempt to log audit failures to syslog.
 
 - name: PHTN-30-000015 - Configure auditd disk_full_action
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^disk_full_action.*$'
     line: disk_full_action = {{ var_auditd_disk_full_action }}
-    create: yes
+    create: true
     state: present
   tags:
-  - PHTN-30-000015
-  - auditd
+    - PHTN-30-000015
+    - auditd
   notify:
-  - restart auditd
+    - restart auditd
   when:
-  - run_auditd_disk_full_action | bool
+    - run_auditd_disk_full_action | bool
 
 - name: PHTN-30-000015 - Configure auditd disk_error_action
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^disk_error_action.*$'
     line: disk_error_action = {{ var_auditd_disk_error_action }}
-    create: yes
+    create: true
     state: present
   tags:
-  - PHTN-30-000015
-  - auditd
+    - PHTN-30-000015
+    - auditd
   notify:
-  - restart auditd
+    - restart auditd
   when:
-  - run_auditd_disk_error_action | bool
+    - run_auditd_disk_error_action | bool
 
 - name: PHTN-30-000015 - Configure auditd admin_space_left_action
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^admin_space_left_action.*$'
     line: admin_space_left_action = {{ var_auditd_admin_space_left_action }}
-    create: yes
+    create: true
     state: present
   tags:
-  - PHTN-30-000015
-  - auditd
+    - PHTN-30-000015
+    - auditd
   notify:
-  - restart auditd
+    - restart auditd
   when:
-  - run_auditd_admin_space_left_action | bool
+    - run_auditd_admin_space_left_action | bool
 
 ############################################
 
 # Title: The Photon operating system audit log must have correct permissions.
 
 - name: PHTN-30-000016 - Find audit log files
-  find:
+  ansible.builtin.find:
     paths: /var/log/audit/
     file_type: file
     patterns: "*.log*"
   register: auditlogs
   tags:
-  - PHTN-30-000016
-  - perms
+    - PHTN-30-000016
+    - perms
   when:
-  - run_audit_logs_permissions | bool
+    - run_audit_logs_permissions | bool
 
 - name: PHTN-30-000016 - Set audit logs permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: "0600"
-  with_items: " {{ auditlogs.files }}"
+  with_items: "{{ auditlogs.files }}"
   tags:
-  - PHTN-30-000016
-  - perms
+    - PHTN-30-000016
+    - perms
   when:
-  - run_audit_logs_permissions | bool
+    - run_audit_logs_permissions | bool
 
 # Title: The Photon operating system audit log must be owned by root.
 
 - name: PHTN-30-000017 - Set audit logs owner
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     owner: root
-  with_items: " {{ auditlogs.files }}"
+  with_items: "{{ auditlogs.files }}"
   tags:
-  - PHTN-30-000017
-  - perms
+    - PHTN-30-000017
+    - perms
   when:
-  - run_audit_logs_owner | bool
+    - run_audit_logs_owner | bool
 
 # Title: The Photon operating system audit log must be group-owned by root.
 
 - name: PHTN-30-000018 - Set audit logs permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     group: root
-  with_items: " {{ auditlogs.files }}"
+  with_items: "{{ auditlogs.files }}"
   tags:
-  - PHTN-30-000018
-  - perms
+    - PHTN-30-000018
+    - perms
   when:
-  - run_audit_logs_group | bool
+    - run_audit_logs_group | bool
 
 ############################################
 
 # Title: The Photon operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.
 
 - name: PHTN-30-000019 - Find audit config files
-  find:
+  ansible.builtin.find:
     paths: /etc/audit
     file_type: file
-    recurse: yes
+    recurse: true
   register: auditconfigfiles
   tags:
-  - PHTN-30-000019
-  - perms
+    - PHTN-30-000019
+    - perms
   when:
-  - run_audit_config_permissions | bool
+    - run_audit_config_permissions | bool
 
 - name: PHTN-30-000019 - Set audit config file permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: "0640"
-  with_items: " {{ auditconfigfiles.files }}"
+  with_items: "{{ auditconfigfiles.files }}"
   tags:
-  - PHTN-30-000019
-  - perms
+    - PHTN-30-000019
+    - perms
   when:
-  - run_audit_config_permissions | bool
+    - run_audit_config_permissions | bool
 
 ############################################
 
@@ -522,7 +536,7 @@
 # password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
 - name: PHTN-30-000021 - Enforce password complexity by requiring that at least one upper-case character be used
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: requisite
@@ -530,10 +544,10 @@
     module_arguments: 'ucredit={{ var_pamd_upperchars }}'
     state: args_present
   tags:
-  - PHTN-30-000021
-  - pam
+    - PHTN-30-000021
+    - pam
   when:
-  - run_pamd_upperchars | bool
+    - run_pamd_upperchars | bool
 
 ############################################
 
@@ -541,7 +555,7 @@
 # password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
 - name: PHTN-30-000022 - Enforce password complexity by requiring that at least one lower-case character be used
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: requisite
@@ -549,10 +563,10 @@
     module_arguments: 'lcredit={{ var_pamd_lowerchars }}'
     state: args_present
   tags:
-  - PHTN-30-000022
-  - pam
+    - PHTN-30-000022
+    - pam
   when:
-  - run_pamd_lowerchars | bool
+    - run_pamd_lowerchars | bool
 
 ############################################
 
@@ -560,7 +574,7 @@
 # password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
 - name: PHTN-30-000023 - Enforce password complexity by requiring that at least one numeric character be used
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: requisite
@@ -568,10 +582,10 @@
     module_arguments: 'dcredit={{ var_pamd_numberchars }}'
     state: args_present
   tags:
-  - PHTN-30-000023
-  - pam
+    - PHTN-30-000023
+    - pam
   when:
-  - run_pamd_numchars | bool
+    - run_pamd_numchars | bool
 
 ############################################
 
@@ -579,7 +593,7 @@
 # password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
 - name: PHTN-30-000024 - New passwords are at least four characters different from the old password
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: requisite
@@ -587,27 +601,27 @@
     module_arguments: 'difok={{ var_pamd_diffchars }}'
     state: args_present
   tags:
-  - PHTN-30-000024
-  - pam
+    - PHTN-30-000024
+    - pam
   when:
-  - run_pamd_diffchars | bool
+    - run_pamd_diffchars | bool
 
 ############################################
 
 # Title: The Photon operating system must store only encrypted representations of passwords.
 
 - name: PHTN-30-000025 - Configure login.defs ENCRYPT_METHOD setting
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_login_defs_file }}'
     state: present
     regexp: '^ENCRYPT_METHOD'
     line: ENCRYPT_METHOD {{ var_login_encrypt_method }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000025
-  - login.defs
+    - PHTN-30-000025
+    - login.defs
   when:
-  - run_login_encrypt_method | bool
+    - run_login_encrypt_method | bool
 
 ############################################
 
@@ -615,46 +629,46 @@
 
 # This is only a message and does not install the package.
 
-- name: PHTN-30-000026 - OpenSSH must be installed 
-  debug: 
+- name: PHTN-30-000026 - OpenSSH must be installed
+  ansible.builtin.debug:
     msg: "OpenSSH must be installed and running! This is the default configuration and will not be configured with Ansible."
   tags:
-  - PHTN-30-000026
-  - openssh
+    - PHTN-30-000026
+    - openssh
 
 ############################################
 
 # Title: The Photon operating system must be configured so that passwords for new users are restricted to a 24 hour minimum lifetime.
 
 - name: PHTN-30-000027 - Configure login.defs PASS_MIN_DAYS setting
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_login_defs_file }}'
     state: present
     regexp: '^PASS_MIN_DAYS'
     line: PASS_MIN_DAYS   {{ var_login_pass_min_days }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000027
-  - login.defs
+    - PHTN-30-000027
+    - login.defs
   when:
-  - run_login_pass_min_days | bool
+    - run_login_pass_min_days | bool
 
 ############################################
 
 # Title: The Photon operating system must be configured so that passwords for new users are restricted to a 90 day maximum lifetime.
 
 - name: PHTN-30-000028 - Configure login.defs PASS_MAX_DAYS setting
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_login_defs_file }}'
     state: present
     regexp: '^PASS_MAX_DAYS'
     line: PASS_MAX_DAYS   {{ var_login_pass_max_days }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000028
-  - login.defs
+    - PHTN-30-000028
+    - login.defs
   when:
-  - run_login_pass_max_days | bool
+    - run_login_pass_max_days | bool
 
   ############################################
 
@@ -662,18 +676,18 @@
 # password required pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
 
 - name: PHTN-30-000029 - Remove password required pam_pwhistory.so if exists
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/pam.d/system-password
     state: absent
-    regexp: "^password.*required.*pam_pwhistory\\.so.*$" 
+    regexp: "^password.*required.*pam_pwhistory\\.so.*$"
   tags:
-  - PHTN-30-000029
-  - pam
+    - PHTN-30-000029
+    - pam
   when:
-  - run_pamd_pwremember | bool
+    - run_pamd_pwremember | bool
 
 - name: PHTN-30-000029 - Prohibit password reuse for a minimum of five generations add pam_pwhistory.so
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: requisite
@@ -683,28 +697,28 @@
     new_module_path: pam_pwhistory.so
     state: after
   tags:
-  - PHTN-30-000029
-  - pam
+    - PHTN-30-000029
+    - pam
   when:
-  - run_pamd_pwremember | bool
+    - run_pamd_pwremember | bool
 
 - name: PHTN-30-000029 - Prohibit password reuse for a minimum of five generations configure args
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: requisite
     module_path: pam_pwhistory.so
-    module_arguments: 
-    - enforce_for_root
-    - use_authtok
-    - remember={{ var_pamd_pwremember }} 
-    - retry=3
+    module_arguments:
+      - enforce_for_root
+      - use_authtok
+      - remember={{ var_pamd_pwremember }}
+      - retry=3
     state: args_present
   tags:
-  - PHTN-30-000029
-  - pam
+    - PHTN-30-000029
+    - pam
   when:
-  - run_pamd_pwremember | bool
+    - run_pamd_pwremember | bool
 
 ############################################
 
@@ -712,7 +726,7 @@
 # password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
 - name: PHTN-30-000030 - Enforce a minimum 8-character password length
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: requisite
@@ -720,30 +734,30 @@
     module_arguments: 'minlen={{ var_pamd_minlength }}'
     state: args_present
   tags:
-  - PHTN-30-000030
-  - pam
+    - PHTN-30-000030
+    - pam
   when:
-  - run_pamd_minlength | bool
+    - run_pamd_minlength | bool
 
 ############################################
 
 # Title: The Photon operating system must require authentication upon bootinginto single-user and maintenance modes.
 
 - name: PHTN-30-000031 - The Photon operating system must require authentication upon booting into single-user and maintenance modes.
-  debug:
+  ansible.builtin.debug:
     msg: "Grub password should be configured manually"
   tags:
-  - PHTN-30-000031
-  - grub
+    - PHTN-30-000031
+    - grub
   when:
-  - run_grub_password | bool
+    - run_grub_password | bool
 
 ############################################
 
 # Title: The Photon operating system must disable the loading of unnecessary kernel modules.
 
 - name: PHTN-30-000032 - Create modprobe.conf if it doesn't exist
-  file:
+  ansible.builtin.file:
     path: '{{ var_modprobe_conf_file }}'
     state: touch
     owner: root
@@ -752,334 +766,336 @@
     access_time: preserve
     modification_time: preserve
   tags:
-  - PHTN-30-000032
-  - packages
+    - PHTN-30-000032
+    - packages
   when:
-  - run_disable_kernel_modules | bool
+    - run_disable_kernel_modules | bool
 
 - name: PHTN-30-000032 - Disable unnecessary kernel modules
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_modprobe_conf_file }}'
     state: present
-    regexp: "{{ item.regexp }}" 
-    line: "{{ item.line }}" 
-    firstmatch: yes
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    firstmatch: true
   with_items:
-    - { regexp: '^#?install sctp', line: 'install sctp /bin/false' }
-    - { regexp: '^#?install dccp /bin/false', line: 'install dccp /bin/false' }
-    - { regexp: '^#?install dccp_ipv4', line: 'install dccp_ipv4 /bin/false' }
-    - { regexp: '^#?install dccp_ipv6', line: 'install dccp_ipv6 /bin/false' }
-    - { regexp: '^#?install ipx', line: 'install ipx /bin/false' }
-    - { regexp: '^#?install appletalk', line: 'install appletalk /bin/false' }
-    - { regexp: '^#?install decnet', line: 'install decnet /bin/false' }
-    - { regexp: '^#?install rds', line: 'install rds /bin/false' }
-    - { regexp: '^#?install tipc', line: 'install tipc /bin/false' }
-    - { regexp: '^#?install bluetooth', line: 'install bluetooth /bin/false' }
-    - { regexp: '^#?install usb.*storage', line: 'install usb_storage /bin/false' }
-    - { regexp: '^#?install ieee1394', line: 'install ieee1394 /bin/false' }
-    - { regexp: '^#?install cramfs', line: 'install cramfs /bin/false' }
-    - { regexp: '^#?install freevxfs', line: 'install freevxfs /bin/false' }
-    - { regexp: '^#?install jffs2', line: 'install jffs2 /bin/false' }
-    - { regexp: '^#?install hfs /bin/false', line: 'install hfs /bin/false' }
-    - { regexp: '^#?install hfsplus', line: 'install hfsplus /bin/false' }
-    - { regexp: '^#?install squashfs', line: 'install squashfs /bin/false' }
-    - { regexp: '^#?install udf', line: 'install udf /bin/false' }
+    - {regexp: '^#?install sctp', line: 'install sctp /bin/false'}
+    - {regexp: '^#?install dccp /bin/false', line: 'install dccp /bin/false'}
+    - {regexp: '^#?install dccp_ipv4', line: 'install dccp_ipv4 /bin/false'}
+    - {regexp: '^#?install dccp_ipv6', line: 'install dccp_ipv6 /bin/false'}
+    - {regexp: '^#?install ipx', line: 'install ipx /bin/false'}
+    - {regexp: '^#?install appletalk', line: 'install appletalk /bin/false'}
+    - {regexp: '^#?install decnet', line: 'install decnet /bin/false'}
+    - {regexp: '^#?install rds', line: 'install rds /bin/false'}
+    - {regexp: '^#?install tipc', line: 'install tipc /bin/false'}
+    - {regexp: '^#?install bluetooth', line: 'install bluetooth /bin/false'}
+    - {regexp: '^#?install usb.*storage', line: 'install usb_storage /bin/false'}
+    - {regexp: '^#?install ieee1394', line: 'install ieee1394 /bin/false'}
+    - {regexp: '^#?install cramfs', line: 'install cramfs /bin/false'}
+    - {regexp: '^#?install freevxfs', line: 'install freevxfs /bin/false'}
+    - {regexp: '^#?install jffs2', line: 'install jffs2 /bin/false'}
+    - {regexp: '^#?install hfs /bin/false', line: 'install hfs /bin/false'}
+    - {regexp: '^#?install hfsplus', line: 'install hfsplus /bin/false'}
+    - {regexp: '^#?install squashfs', line: 'install squashfs /bin/false'}
+    - {regexp: '^#?install udf', line: 'install udf /bin/false'}
   tags:
-  - PHTN-30-000032
-  - packages
+    - PHTN-30-000032
+    - packages
   when:
-  - run_disable_kernel_modules | bool
+    - run_disable_kernel_modules | bool
 
 ############################################
 
 # Title: The Photon operating system must not have Duplicate User IDs (UIDs).
 
 - name: PHTN-30-000033 - The Photon operating system must not have Duplicate User IDs (UIDs).
-  debug:
+  ansible.builtin.debug:
     msg: "Manual investigation needed if found"
   tags:
-  - PHTN-30-000033
-  - users
+    - PHTN-30-000033
+    - users
   when:
-  - run_duplicate_user_uids | bool
+    - run_duplicate_user_uids | bool
 
 ############################################
 
 # Title: The Photon operating system must disable new accounts immeidately upon password expiration.
 
 - name: PHTN-30-000035 - Disable new accounts immediately upon password expiration.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_useradd_file }}'
     state: present
     regexp: '^INACTIVE.*$'
     line: INACTIVE={{ var_useradd_inactive }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000035
-  - users
+    - PHTN-30-000035
+    - users
   when:
-  - run_useradd_inactive | bool
+    - run_useradd_inactive | bool
 
 ############################################
 
 # Title: The Photon operating system must use TCP syncookies.
 
 - name: PHTN-30-000036 - Set kernel parameter net.ipv4.tcp_syncookies
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.tcp_syncookies
     value: '{{ var_sysctl_tcp_syncookies }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000036
-  - sysctl.conf
+    - PHTN-30-000036
+    - sysctl.conf
   when:
-  - run_sysctl_tcp_syncookies | bool
+    - run_sysctl_tcp_syncookies | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to disconnect idle SSH sessions.
 
 - name: PHTN-30-000037 - Update sshd_config ClientAliveInterval
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^ClientAliveInterval.*$'
     line: ClientAliveInterval {{ var_sshd_clientaliveinterval }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000037
-  - sshd
+    - PHTN-30-000037
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_clientaliveinterval | bool
+    - run_sshd_clientaliveinterval | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to disconnect idle SSH sessions.
 
 - name: PHTN-30-000038 - Update sshd_config ClientAliveCountMax
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^ClientAliveCountMax.*$'
     line: ClientAliveCountMax {{ var_sshd_clientalivecountmax }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000038
-  - sshd
+    - PHTN-30-000038
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_clientalivecountmax | bool
+    - run_sshd_clientalivecountmax | bool
 
 ############################################
 
 # Title: The Photon operating system must configure rsyslog to offload system logs to a central server.
 
 - name: PHTN-30-000039 - Set syslog server when UDP is specified
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_syslog_conf_path }}'
     state: present
     regexp: '^.*{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
     line: '*.* @{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
   tags:
-  - PHTN-30-000039
-  - syslog
+    - PHTN-30-000039
+    - syslog
   notify:
-  - restart syslog
+    - restart syslog
   when:
-  - var_syslog_server_name != ''
-  - var_syslog_server_port != ''
-  - var_syslog_server_protocol == 'udp'
-  - run_set_syslog_server | bool
+    - var_syslog_server_name != ''
+    - var_syslog_server_port != ''
+    - var_syslog_server_protocol == 'udp'
+    - run_set_syslog_server | bool
 
 - name: PHTN-30-000039 - Set syslog server when TCP is specified
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_syslog_conf_path }}'
     state: present
     regexp: '^.*{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
     line: '*.* @@{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
   tags:
-  - PHTN-30-000039
-  - syslog
+    - PHTN-30-000039
+    - syslog
   notify:
-  - restart syslog
+    - restart syslog
   when:
-  - var_syslog_server_name != ''
-  - var_syslog_server_port != ''
-  - var_syslog_server_protocol == 'tcp'
-  - run_set_syslog_server | bool
+    - var_syslog_server_name != ''
+    - var_syslog_server_port != ''
+    - var_syslog_server_protocol == 'tcp'
+    - run_set_syslog_server | bool
 
 - name: PHTN-30-000039 - Set syslog server when TLS is specified
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_syslog_conf_path }}'
     state: present
     regexp: '^.*{{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
     line: '*.* @@(o){{ var_syslog_server_name }}:{{ var_syslog_server_port }};RSYSLOG_SyslogProtocol23Format'
   tags:
-  - PHTN-30-000039
-  - syslog
+    - PHTN-30-000039
+    - syslog
   notify:
-  - restart syslog
+    - restart syslog
   when:
-  - var_syslog_server_name != ''
-  - var_syslog_server_port != ''
-  - var_syslog_server_protocol == 'tls'
-  - run_set_syslog_server | bool
+    - var_syslog_server_name != ''
+    - var_syslog_server_port != ''
+    - var_syslog_server_protocol == 'tls'
+    - run_set_syslog_server | bool
 
 - name: PHTN-30-000039 - Set syslog server when TLS is specified other options 1
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_syslog_conf_path }}'
     state: present
     line: $ActionSendStreamDriverAuthMode anon
   tags:
-  - PHTN-30-000039
-  - syslog
+    - PHTN-30-000039
+    - syslog
   notify:
-  - restart syslog
+    - restart syslog
   when:
-  - var_syslog_server_name != ''
-  - var_syslog_server_port != ''
-  - var_syslog_server_protocol == 'tls'
-  - run_set_syslog_server | bool
+    - var_syslog_server_name != ''
+    - var_syslog_server_port != ''
+    - var_syslog_server_protocol == 'tls'
+    - run_set_syslog_server | bool
 
 - name: PHTN-30-000039 - Set syslog server when TLS is specified other options 2
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_syslog_conf_path }}'
     state: present
     line: $ActionSendStreamDriverMode 1
   tags:
-  - PHTN-30-000039
-  - syslog
+    - PHTN-30-000039
+    - syslog
   notify:
-  - restart syslog
+    - restart syslog
   when:
-  - var_syslog_server_name != ''
-  - var_syslog_server_port != ''
-  - var_syslog_server_protocol == 'tls'
-  - run_set_syslog_server | bool
+    - var_syslog_server_name != ''
+    - var_syslog_server_port != ''
+    - var_syslog_server_protocol == 'tls'
+    - run_set_syslog_server | bool
 
 - name: PHTN-30-000039 - Enable syslog service
-  service:
+  ansible.builtin.service:
     name: syslog
-    enabled: 'yes'
+    enabled: 'true'
     state: started
   tags:
-  - PHTN-30-000039
-  - syslog
+    - PHTN-30-000039
+    - syslog
   when:
-  - run_set_syslog_server | bool
+    - var_syslog_server_name != ''
+    - var_syslog_server_port != ''
+    - run_set_syslog_server | bool
 
 ############################################
 
 # Title: The Photon operating system /var/log directory must be owned by root.
 
 - name: PHTN-30-000040 - Set /var/log owner and group to root
-  file:
+  ansible.builtin.file:
     path: /var/log
     state: directory
     owner: root
     group: root
   tags:
-  - PHTN-30-000040
-  - perms
+    - PHTN-30-000040
+    - perms
   when:
-  - run_log_dir_permissions | bool
+    - run_log_dir_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system messages file must be owned by root.
 
 - name: PHTN-30-000041 - Set /var/log/messages owner and group to root
-  file:
+  ansible.builtin.file:
     path: /var/log/messages
     state: file
     owner: root
     group: root
   tags:
-  - PHTN-30-000041
-  - perms
+    - PHTN-30-000041
+    - perms
   when:
-  - run_log_messages_permissions | bool
+    - run_log_messages_permissions | bool
 
 - name: PHTN-30-000041 - Set /var/log/messages permissions
-  file:
+  ansible.builtin.file:
     path: /var/log/messages
     state: file
     mode: 0640
   tags:
-  - PHTN-30-000041
-  - perms
+    - PHTN-30-000041
+    - perms
   when:
-  - run_log_messages_permissions | bool
+    - run_log_messages_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system must initiate auditing as part of the boot process.
 
 - name: PHTN-30-000046 - Add audit=1 in /boot/grub2/grub.cfg
-  replace:
+  ansible.builtin.replace:
     path: '{{ var_grub_conf_file }}'
     regexp: '^(\s*linux(?!.* audit=).*)'
     replace: '\1 audit=1'
   tags:
-  - PHTN-30-000046
-  - auditd
+    - PHTN-30-000046
+    - auditd
   when:
-  - run_grub_enable_audit | bool
+    - run_grub_enable_audit | bool
 
 - name: PHTN-30-000046 - Replace audit=1 in /boot/grub2/grub.cfg
-  replace:
+  ansible.builtin.replace:
     path: '{{ var_grub_conf_file }}'
     regexp: '^(\s*linux.*? audit=)(?!1)(\S*)(.*)'
     replace: '\g<1>1\3'
   tags:
-  - PHTN-30-000046
-  - auditd
+    - PHTN-30-000046
+    - auditd
   when:
-  - run_grub_enable_audit | bool
+    - run_grub_enable_audit | bool
 
 ############################################
 
 # Title: The Photon operating system audit files and directories must have correct permissions.
 
 - name: PHTN-30-000047 - Set '{{ var_auditd_conf_file }}' owner and group to root
-  file:
+  ansible.builtin.file:
     path: '{{ var_auditd_conf_file }}'
     state: file
     owner: root
     group: root
   tags:
-  - PHTN-30-000047
-  - perms
+    - PHTN-30-000047
+    - perms
   when:
-  - run_audit_conf_permissions | bool
+    - run_audit_conf_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system audit files and directories must have correct permissions.
 
 - name: PHTN-30-000048 - Set owner/group on audit tools
-  file:
+  ansible.builtin.file:
     path: "{{ item.file }}"
     state: file
     owner: root
     group: root
     mode: 0750
   with_items:
-    - { file: '/usr/sbin/auditctl' }
-    - { file: '/usr/sbin/auditd' }
-    - { file: '/usr/sbin/aureport' }
-    - { file: '/usr/sbin/ausearch' }
-    - { file: '/usr/sbin/autrace' }
+    - {file: '/usr/sbin/auditctl'}
+    - {file: '/usr/sbin/auditd'}
+    - {file: '/usr/sbin/aureport'}
+    - {file: '/usr/sbin/ausearch'}
+    - {file: '/usr/sbin/autrace'}
   tags:
-  - PHTN-30-000048
-  - perms
+    - PHTN-30-000048
+    - perms
   when:
-  - run_audit_tools_permissions | bool
+    - run_audit_tools_permissions | bool
 
 ############################################
 
@@ -1087,7 +1103,7 @@
 # password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
 - name: PHTN-30-000050 - Enforce password complexity by requiring that at least one special character be used.
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: requisite
@@ -1095,174 +1111,130 @@
     module_arguments: 'ocredit={{ var_pamd_complexchars }}'
     state: args_present
   tags:
-  - PHTN-30-000050
-  - pam
+    - PHTN-30-000050
+    - pam
   when:
-  - run_pamd_complexchars | bool
-
-############################################
-
-# Title: The Photon operating system must set an inactivity timeout value for non-interactive sessions.
-
-- name: PHTN-30-000052 - Set a session inactivity timeout of 15 minutes or less
-  lineinfile:
-    path: '{{ var_bashrc_file }}'
-    state: present
-    regexp: '^TMOUT='
-    line: 'TMOUT={{ var_tmout_sh }}'
-    insertafter: EOF
-    firstmatch: yes
-  tags:
-  - PHTN-30-000052
-  - bash.bashrc
-  when:
-  - run_configure_bash_tmout | bool
-
-- name: PHTN-30-000052 - Set a session inactivity timeout of 15 minutes or less readonly
-  lineinfile:
-    path: '{{ var_bashrc_file }}'
-    state: present
-    insertafter: '^TMOUT='
-    regexp: '^readonly'
-    line: 'readonly TMOUT'
-  tags:
-  - PHTN-30-000052
-  - bash.bashrc
-  when:
-  - run_configure_bash_tmout | bool
-
-- name: PHTN-30-000052 - Set a session inactivity timeout of 15 minutes or less export
-  lineinfile:
-    path: '{{ var_bashrc_file }}'
-    state: present
-    insertafter: '^readonly'
-    regexp: '^export'
-    line: 'export TMOUT'
-  tags:
-  - PHTN-30-000052
-  - bash.bashrc
-  when:
-  - run_configure_bash_tmout | bool
+    - run_pamd_complexchars | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd with a specific ListenAddress.
 
 - name: PHTN-30-000053 - Configure sshd listen address
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^ListenAddress.*$'
-    line:  ListenAddress {{ ansible_eth0.ipv4.address }}
-    firstmatch: yes
+    line: ListenAddress {{ ansible_eth0.ipv4.address }}
+    firstmatch: true
   tags:
-  - PHTN-30-000053
-  - sshd
+    - PHTN-30-000053
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_listenaddress | bool
+    - run_sshd_listenaddress | bool
 
 ############################################
 
 # Title: The Photon operating system must configure auditd to keep five rotated log files.
 
 - name: PHTN-30-000055 - Configure auditd num_logs
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     line: num_logs = {{ var_auditd_num_logs }}
     state: present
   tags:
-  - PHTN-30-000055
-  - auditd
+    - PHTN-30-000055
+    - auditd
   notify:
-  - restart auditd
+    - restart auditd
   when:
-  - run_auditd_num_logs | bool
+    - run_auditd_num_logs | bool
 
 ############################################
 
 # Title: The Photon operating system must configure auditd to keep five rotated log files.
 
 - name: PHTN-30-000056 - Configure auditd max_log_file_action
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     line: max_log_file_action = {{ var_auditd_max_log_file_action }}
     state: present
   tags:
-  - PHTN-30-000056
-  - auditd
+    - PHTN-30-000056
+    - auditd
   notify:
-  - restart auditd
+    - restart auditd
   when:
-  - run_auditd_max_log_file_action | bool
+    - run_auditd_max_log_file_action | bool
 
 ############################################
 
 # Title: The Photon operating system must configure auditd to log space limit problems to syslog.
 
 - name: PHTN-30-000057 - Configure auditd space_left
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     line: space_left = {{ var_auditd_space_left }}
     state: present
   tags:
-  - PHTN-30-000057
-  - auditd
+    - PHTN-30-000057
+    - auditd
   notify:
-  - restart auditd
+    - restart auditd
   when:
-  - run_auditd_space_left | bool
+    - run_auditd_space_left | bool
 
 ############################################
 
 # Title: The Photon operating system must be configured to synchronize with an approved DoD time source.
 
 - name: PHTN-30-000058 - Remove Unknown NTP Servers
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_ntp_conf_file }}'
     state: absent
     regexp: '^server ((?!({{ var_ntp_servers[0] }}|{{ var_ntp_servers[1] }})).)*$'
   tags:
-  - PHTN-30-000058
-  - ntp
+    - PHTN-30-000058
+    - ntp
   notify:
-  - restart ntp
+    - restart ntp
   when:
-  - var_ntp_servers[0] != ''
-  - var_ntp_servers[1] != ''
-  - run_set_ntp_server | bool
+    - var_ntp_servers[0] != ''
+    - var_ntp_servers[1] != ''
+    - run_set_ntp_server | bool
 
 - name: PHTN-30-000058 - Configure NTP Servers
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_ntp_conf_file }}'
     state: present
     regexp: '^server {{ item }}'
     line: 'server {{ item }}'
   with_items:
-  - "{{ var_ntp_servers }}"
+    - "{{ var_ntp_servers }}"
   tags:
-  - PHTN-30-000058
-  - ntp
+    - PHTN-30-000058
+    - ntp
   notify:
-  - restart ntp
+    - restart ntp
   when:
-  - var_ntp_servers[0] != ''
-  - var_ntp_servers[1] != ''
-  - run_set_ntp_server | bool
+    - var_ntp_servers[0] != ''
+    - var_ntp_servers[1] != ''
+    - run_set_ntp_server | bool
 
 - name: PHTN-30-000058 - Enable ntp service
-  service:
+  ansible.builtin.service:
     name: ntpd
-    enabled: 'yes'
+    enabled: 'true'
     state: started
   tags:
-  - PHTN-30-000058
-  - ntp
+    - PHTN-30-000058
+    - ntp
   when:
-  - var_ntp_servers[0] != ''
-  - var_ntp_servers[1] != ''
-  - run_set_ntp_server | bool
+    - var_ntp_servers[0] != ''
+    - var_ntp_servers[1] != ''
+    - run_set_ntp_server | bool
 
 
 ############################################
@@ -1270,7 +1242,7 @@
 # Title: The Photon operating system RPM package management tool must cryptographically verify the authenticity of all software packages during installation.
 
 - name: PHTN-30-000059
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ item }}"
     regexp: '^nosignature'
     state: absent
@@ -1279,57 +1251,57 @@
     - /etc/rpmrc
     - /root/.rpmrc
   tags:
-  - PHTN-30-000059
-  - packages
+    - PHTN-30-000059
+    - packages
   when:
-  - run_tdnf_gpgcheck | bool
+    - run_tdnf_gpgcheck | bool
 
 ############################################
 
 # Title: The Photon operating system RPM package management tool must cryptographically verify the authenticity of all software packages during installation.
 
 - name: PHTN-30-000060
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_tdnf_conf_file }}'
     regexp: '^gpgcheck.*'
     line: gpgcheck=1
     state: present
-    create: yes
+    create: true
   tags:
-  - PHTN-30-000060  
-  - packages
+    - PHTN-30-000060
+    - packages
   when:
-  - run_tdnf_gpgcheck | bool
+    - run_tdnf_gpgcheck | bool
 
 ############################################
 
 # Title: The Photon operating system RPM package management tool must cryptographically verify the authenticity of all software packages during installation.
 
 - name: PHTN-30-000061 - Find yum repos
-  find:
+  ansible.builtin.find:
     paths: /etc/yum.repos.d/
     file_type: file
     patterns: "*.repo"
   register: yumrepos
   tags:
-  - PHTN-30-000061
-  - packages
+    - PHTN-30-000061
+    - packages
   when:
-  - run_yum_gpgcheck | bool
+    - run_yum_gpgcheck | bool
 
 - name: PHTN-30-000061 - Configure gpgcheck in yum repos
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ item.path }}"
     state: present
     regexp: '^gpgcheck.*$'
-    line:  gpgcheck=1
-    firstmatch: yes
-  with_items: " {{ yumrepos.files }}"
+    line: gpgcheck=1
+    firstmatch: true
+  with_items: "{{ yumrepos.files }}"
   tags:
-  - PHTN-30-000061
-  - packages
+    - PHTN-30-000061
+    - packages
   when:
-  - run_yum_gpgcheck | bool
+    - run_yum_gpgcheck | bool
 
 ############################################
 
@@ -1337,118 +1309,132 @@
 # Could use some more tuning to further filter out service accounts with no password set with NOPASSWD in sudoers
 
 - name: PHTN-30-000062 - Get sudoers with NOPASSWD set
-  shell: grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v "^#"|grep -v "^%"|awk '{print $1}'
+  ansible.builtin.shell: grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v "^#"|grep -v "^%"|awk '{print $1}'
   register: nopasswd_sudo_users
   tags:
-  - PHTN-30-000062
-  - sudo
+    - PHTN-30-000062
+    - sudo
   when:
-  - run_sudo_nopasswd | bool
-  changed_when: False
+    - run_sudo_nopasswd | bool
+  changed_when: false
 
 - name: PHTN-30-000062 - User account should not be configured with NOPASSWD.
-  fail:
+  ansible.builtin.fail:
     msg: User account {{ item }} is configured with NOPASSWD in the sudoers file.  If this is a service account with no password that cannot login interactively this can be ignored.  If not this needs to be remediated.
   loop: "{{ nopasswd_sudo_users.stdout_lines }}"
-  ignore_errors: yes
+  ignore_errors: true
   tags:
-  - PHTN-30-000062
-  - sudo
+    - PHTN-30-000062
+    - sudo
   when:
-  - run_sudo_nopasswd | bool
-  - nopasswd_sudo_users.stdout_lines != ""
+    - run_sudo_nopasswd | bool
+    - nopasswd_sudo_users.stdout_lines != ""
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to use FIPS 140-2 ciphers.
 
 - name: PHTN-30-000064 - The Photon operating system must configure sshd to use FIPS 140-2 ciphers.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^Ciphers.*$'
     line: Ciphers {{ var_sshd_ciphers }}
     insertafter: '^FipsMode.*$'
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000064
-  - sshd
+    - PHTN-30-000064
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_ciphers | bool
+    - run_sshd_ciphers | bool
 
 ############################################
 
 # Title: The Photon operating system must implement address space layout randomization to protect its memory from unauthorized code execution.
 
 - name: PHTN-30-000065 - Set kernel parameter randomize_va_space
-  sysctl:
+  ansible.posix.sysctl:
     name: kernel.randomize_va_space
     value: '{{ var_sysctl_randomize_va_space }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000065
-  - sysctl.conf
+    - PHTN-30-000065
+    - sysctl.conf
   when:
-  - run_sysctl_randomize_va_space | bool
+    - run_sysctl_randomize_va_space | bool
 
 ############################################
 
 # Title: The Photon operating system must remove all software components after updated versions have been installed.
 
 - name: PHTN-30-000066 - Configure clean_requirements_on_remove in /etc/tdnf/tdnf.conf
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_tdnf_conf_file }}'
     state: present
     regexp: '^clean_requirements_on_remove.*$'
-    line:  clean_requirements_on_remove=true
-    firstmatch: yes
+    line: clean_requirements_on_remove=true
+    firstmatch: true
   tags:
-  - PHTN-30-000066
-  - packages
+    - PHTN-30-000066
+    - packages
   when:
-  - run_tdnf_cleanreqs | bool
+    - run_tdnf_cleanreqs | bool
 
 ###########################################
 
 # Title: The Photon operating system must use the pam_cracklib module.
 
 - name: PHTN-30-000071 - The Photon operating system must use the pam_cracklib module.
-  debug:
+  ansible.builtin.debug:
     msg: 'Met by other controls that implement password complexity requirements so nothing to do here.'
   tags:
-  - PHTN-30-000071
-  - pam
+    - PHTN-30-000071
+    - pam
   when:
-  - run_pamd_cracklib | bool
+    - run_pamd_cracklib | bool
 
 ############################################
 
 # Title: The Photon operating system must be configured so that passwords for new users are restricted to a 24 hour minimum lifetime.
 
 - name: PHTN-30-000072 - Configure login.defs FAIL_DELAY setting
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_login_defs_file }}'
     state: present
     regexp: '^FAIL_DELAY'
     line: FAIL_DELAY   {{ var_login_fail_delay }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000072
-  - login.defs
+    - PHTN-30-000072
+    - login.defs
   when:
-  - run_login_fail_delay | bool
+    - run_login_fail_delay | bool
 
 ############################################
 
 # Title: The Photon operating system must enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt.
 # auth optional pam_faildelay.so delay=4000000
 
+- name: PHTN-30-000073 - Check for existing pam_faildelay.so rule in system-auth
+  ansible.builtin.lineinfile:
+    name: /etc/pam.d/system-auth
+    regexp: '^auth.*optional.*pam_faildelay.so'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: authfaildelay
+  tags:
+    - PHTN-30-000073
+    - pam
+  when:
+    - run_pamd_faildelay | bool
+
 - name: PHTN-30-000073 - Enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt add
-  pamd:
+  community.general.pamd:
     name: system-auth
     type: auth
     control: required
@@ -1459,13 +1445,14 @@
     module_arguments: 'delay={{ var_pamd_faildelay }}'
     state: after
   tags:
-  - PHTN-30-000073
-  - pam
+    - PHTN-30-000073
+    - pam
   when:
-  - run_pamd_faildelay | bool
+    - run_pamd_faildelay | bool
+    - authfaildelay.found == 0
 
 - name: PHTN-30-000073 - Enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt change
-  pamd:
+  community.general.pamd:
     name: system-auth
     type: auth
     control: optional
@@ -1473,293 +1460,293 @@
     module_arguments: 'delay={{ var_pamd_faildelay }}'
     state: args_present
   tags:
-  - PHTN-30-000073
-  - pam
+    - PHTN-30-000073
+    - pam
   when:
-  - run_pamd_faildelay | bool
+    - run_pamd_faildelay | bool
 
 ############################################
 
 # Title: The Photon operating system must ensure that audit events are flushed to disk at proper intervals.
 
 - name: PHTN-30-000074 - Configure auditd flush
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     line: flush = {{ var_auditd_flush }}
     state: present
   tags:
-  - PHTN-30-000074
-  - auditd
+    - PHTN-30-000074
+    - auditd
   when:
-  - run_auditd_flush | bool
+    - run_auditd_flush | bool
 
 - name: PHTN-30-000074 - Configure auditd freq
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
     line: freq = {{ var_auditd_freq }}
     state: present
   tags:
-  - PHTN-30-000074
-  - auditd
+    - PHTN-30-000074
+    - auditd
   when:
-  - run_auditd_freq | bool
+    - run_auditd_freq | bool
 
 ############################################
 
 # Title: The Photon operating system must create a home directory for all new local interactive user accounts.
 
 - name: PHTN-30-000075 - Configure login.defs CREATE_HOME setting
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_login_defs_file }}'
     state: present
     regexp: '^CREATE_HOME'
     line: CREATE_HOME {{ var_login_createhome }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000075
-  - login.defs
+    - PHTN-30-000075
+    - login.defs
   when:
-  - run_login_createhome | bool
+    - run_login_createhome | bool
 
 ############################################
 
 # Title: The Photon operating system must disabled the debug-shell service.
 
 - name: PHTN-30-000076 - Stop and disable debug-shell service
-  service:
+  ansible.builtin.service:
     name: debug-shell
     state: stopped
-    enabled: no
+    enabled: false
   tags:
-  - PHTN-30-000076
-  - services
+    - PHTN-30-000076
+    - services
   when:
-  - run_service_debug_shell | bool
+    - run_service_debug_shell | bool
 
 ############################################
 
 # Title: The Photon operating system must configure a secure umask for all shells.
 
 - name: PHTN-30-000077 - Configure /etc/profile.d/umask.sh
-  template:
+  ansible.builtin.template:
     src: umask.sh.j2
     dest: '{{ var_umask_file }}'
     owner: root
     group: root
     mode: '0644'
-    force: yes
+    force: true
   tags:
-  - PHTN-30-000077
-  - umask
+    - PHTN-30-000077
+    - umask
   when:
-  - run_configure_default_umask | bool
+    - run_configure_default_umask | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to disallow Generic Security Service Application Program Interface (GSSAPI) authentication.
 
 - name: PHTN-30-000078 - Configure sshd to disallow Generic Security Service Application Program Interface (GSSAPI) authentication
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^GSSAPIAuthentication.*$'
     line: GSSAPIAuthentication {{ var_sshd_gssapiauthentication }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000078
-  - sshd
+    - PHTN-30-000078
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_gssapiauthentication | bool
+    - run_sshd_gssapiauthentication | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to disable environment processing.
 
 - name: PHTN-30-000079 - Configure sshd to disable environment processing
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^PermitUserEnvironment.*$'
     line: PermitUserEnvironment {{ var_sshd_permituserenvironment }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000079
-  - sshd
+    - PHTN-30-000079
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_permituserenvironment | bool
+    - run_sshd_permituserenvironment | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to disable X11 forwarding.
 
 - name: PHTN-30-000080 - Configure sshd to disable X11 forwarding
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^X11Forwarding.*$'
     line: X11Forwarding {{ var_sshd_x11forwarding }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000080
-  - sshd
+    - PHTN-30-000080
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_x11forwarding | bool
+    - run_sshd_x11forwarding | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to perform strict mode checking of home directory configuration files.
 
 - name: PHTN-30-000081 - Configure sshd to perform strict mode checking of home directory configuration files
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^StrictModes.*$'
     line: StrictModes {{ var_sshd_strictmodes }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000081
-  - sshd
+    - PHTN-30-000081
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_strictmodes | bool
+    - run_sshd_strictmodes | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to disallow Kerberos authentication.
 
 - name: PHTN-30-000082 - Configure sshd to disallow Kerberos authentication
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^KerberosAuthentication.*$'
     line: KerberosAuthentication {{ var_sshd_kerberosauth }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000082
-  - sshd
+    - PHTN-30-000082
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_kerberosauth | bool
+    - run_sshd_kerberosauth | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to disallow authentication with an empty password.
 
 - name: PHTN-30-000083 - Configure sshd to disallow authentication with an empty password
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^PermitEmptyPasswords.*$'
     line: PermitEmptyPasswords {{ var_sshd_permitemptypasswords }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000083
-  - sshd
+    - PHTN-30-000083
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_permitemptypasswords | bool
+    - run_sshd_permitemptypasswords | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to disallow compression of the encrypted session stream.
 
 - name: PHTN-30-000084 - Configure sshd to disallow compression of the encrypted session stream
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^Compression.*$'
     line: Compression {{ var_sshd_compression }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000084
-  - sshd
+    - PHTN-30-000084
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_compression | bool
+    - run_sshd_compression | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to display the last login immeidately after authentication.
 
 - name: PHTN-30-000085 - Configure sshd to display the last login immeidately after authentication
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^PrintLastLog.*$'
     line: PrintLastLog {{ var_sshd_printlastlog }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000085
-  - sshd
+    - PHTN-30-000085
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_printlastlog | bool
+    - run_sshd_printlastlog | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to ignore user-specific trusted hosts lists.
 
 - name: PHTN-30-000086 - Configure sshd to ignore user-specific trusted hosts lists
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^IgnoreRhosts.*$'
     line: IgnoreRhosts {{ var_sshd_ignorerhosts }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000086
-  - sshd
+    - PHTN-30-000086
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_ignorerhosts | bool
+    - run_sshd_ignorerhosts | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to ignore user-specific known_host files.
 
 - name: PHTN-30-000087 - Configure sshd to ignore user-specific known_host files
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^IgnoreUserKnownHosts.*$'
     line: IgnoreUserKnownHosts {{ var_sshd_ignoreuserknownhosts }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000087
-  - sshd
+    - PHTN-30-000087
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_ignoreuserknownhosts | bool
+    - run_sshd_ignoreuserknownhosts | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to limit the number of allowed login attempts per connection.
 
 - name: PHTN-30-000088 - Configure sshd to limit the number of allowed login attempts per connection
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^MaxAuthTries.*$'
     line: MaxAuthTries {{ var_sshd_maxauthtries }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000088
-  - sshd
+    - PHTN-30-000088
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
 
 ############################################
@@ -1767,168 +1754,168 @@
 # Title: The Photon operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled on the command line.
 
 - name: PHTN-30-000089 - Ctrl-Alt-Delete key sequence is disabled on the command line
-  systemd:
+  ansible.builtin.systemd:
     name: ctrl-alt-del.target
-    enabled: no
-    masked: yes
-    daemon_reload: yes
+    enabled: false
+    masked: true
+    daemon_reload: true
   tags:
-  - PHTN-30-000089
-  - systemctl
+    - PHTN-30-000089
+    - systemctl
   when:
-  - run_mask_ctrl_alt_del | bool
+    - run_mask_ctrl_alt_del | bool
 
 ############################################
 
 # Title: The Photon operating system must be configured so that the /etc/skel default scripts are protected from unauthorized modification.
 
 - name: PHTN-30-000090 - Set skel file permissions .bash_logout
-  file:
+  ansible.builtin.file:
     path: /etc/skel/.bash_logout
     state: file
     mode: "0750"
     owner: root
     group: root
   tags:
-  - PHTN-30-000090
-  - perms
+    - PHTN-30-000090
+    - perms
   when:
-  - run_skel_config_permissions | bool
+    - run_skel_config_permissions | bool
 
 - name: PHTN-30-000090 - Set skel file permissions .bash_profile
-  file:
+  ansible.builtin.file:
     path: /etc/skel/.bash_profile
     state: file
     mode: "0644"
     owner: root
     group: root
   tags:
-  - PHTN-30-000090
-  - perms
+    - PHTN-30-000090
+    - perms
   when:
-  - run_skel_config_permissions | bool
+    - run_skel_config_permissions | bool
 
 - name: PHTN-30-000090 - Set skel file permissions .bashrc
-  file:
+  ansible.builtin.file:
     path: /etc/skel/.bashrc
     state: file
     mode: "0750"
     owner: root
     group: root
   tags:
-  - PHTN-30-000090
-  - perms
+    - PHTN-30-000090
+    - perms
   when:
-  - run_skel_config_permissions | bool
+    - run_skel_config_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system must be configured so that the /root path is protected from unauthorized access.
 
 - name: PHTN-30-000091 - Set /root file permissions
-  file:
+  ansible.builtin.file:
     path: /root
     state: directory
     mode: "0700"
     owner: root
     group: root
   tags:
-  - PHTN-30-000091
-  - perms
+    - PHTN-30-000091
+    - perms
   when:
-  - run_root_dir_permissions | bool
+    - run_root_dir_permissions | bool
 
 ############################################
 
 # Title: Local initialization files are used to configure the user's shell environment upon login. Malicious modification of these files could compromise accounts upon logon.
 
 - name: PHTN-30-000092 - Set /etc/bash.bashrc permissions
-  file:
+  ansible.builtin.file:
     path: '{{ var_bashrc_file }}'
     state: file
     mode: o-w
     owner: root
     group: root
   tags:
-  - PHTN-30-000092
-  - perms
+    - PHTN-30-000092
+    - perms
   when:
-  - run_init_files_permissions | bool
+    - run_init_files_permissions | bool
 
 - name: PHTN-30-000092 - Set /etc/profile permissions
-  file:
+  ansible.builtin.file:
     path: /etc/profile
     state: file
     mode: o-w
     owner: root
     group: root
   tags:
-  - PHTN-30-000092
-  - perms
+    - PHTN-30-000092
+    - perms
   when:
-  - run_init_files_permissions | bool
+    - run_init_files_permissions | bool
 
 - name: PHTN-30-000092 - Find profile.d files
-  find:
+  ansible.builtin.find:
     paths: /etc/profile.d/
     file_type: file
   register: profilefiles
   tags:
-  - PHTN-30-000092
-  - perms
+    - PHTN-30-000092
+    - perms
   when:
-  - run_init_files_permissions | bool
+    - run_init_files_permissions | bool
 
 - name: PHTN-30-000092 - Set profile files permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: o-w
     owner: root
     group: root
-  with_items: " {{ profilefiles.files }}"
+  with_items: "{{ profilefiles.files }}"
   tags:
-  - PHTN-30-000092
-  - perms
+    - PHTN-30-000092
+    - perms
   when:
-  - run_init_files_permissions | bool
+    - run_init_files_permissions | bool
 
 ############################################
 
 # Title: If system startup scripts are accessible to unauthorized modification this could compromise the system on startup.
 
 - name: PHTN-30-000093 - Find rc.d files
-  find:
+  ansible.builtin.find:
     paths: /etc/rc.d/
     file_type: file
-    recurse: yes
+    recurse: true
   register: rcdfiles
   tags:
-  - PHTN-30-000093
-  - perms
+    - PHTN-30-000093
+    - perms
   when:
-  - run_rcd_files_permissions | bool
+    - run_rcd_files_permissions | bool
 
 - name: PHTN-30-000093 - Set rc.d files permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: o-w
     owner: root
     group: root
-  with_items: " {{ rcdfiles.files }}"
+  with_items: "{{ rcdfiles.files }}"
   tags:
-  - PHTN-30-000093
-  - perms
+    - PHTN-30-000093
+    - perms
   when:
-  - run_rcd_files_permissions | bool
+    - run_rcd_files_permissions | bool
 
 ############################################
 
 # Title: If system startup scripts are accessible to unauthorized modification this could compromise the system on startup.
 
 - name: PHTN-30-000094 - The Photon operating system must be configured so that all files have a valid owner and group owner.
-  debug:
+  ansible.builtin.debug:
     msg: Investigate any failures from auditing manually.
 
 ############################################
@@ -1936,7 +1923,7 @@
 # Title: The Photon operating system must be configured so that the /etc/cron.allow file is protected from unauthorized modification.
 
 - name: PHTN-30-000095 - Set /etc/cron.allow permissions
-  file:
+  ansible.builtin.file:
     path: /etc/cron.allow
     state: touch
     mode: 0600
@@ -1945,151 +1932,151 @@
     access_time: preserve
     modification_time: preserve
   tags:
-  - PHTN-30-000095
-  - perms
+    - PHTN-30-000095
+    - perms
   when:
-  - run_cron_allow_permissions | bool
+    - run_cron_allow_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system must be configured so that all cron jobs are protected from unauthorized modification.
 
 - name: PHTN-30-000096 - Find cron.d files
-  find:
+  ansible.builtin.find:
     paths: /etc/cron.d/
     file_type: file
-    recurse: yes
+    recurse: true
   register: crondfiles
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 - name: PHTN-30-000096 - Set cron.d files permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: o-w
     owner: root
     group: root
-  with_items: " {{ crondfiles.files }}"
+  with_items: "{{ crondfiles.files }}"
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 - name: PHTN-30-000096 - Find cron.daily files
-  find:
+  ansible.builtin.find:
     paths: /etc/cron.daily/
     file_type: file
-    recurse: yes
+    recurse: true
   register: crondailyfiles
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 - name: PHTN-30-000096 - Set cron.daily files permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: o-w
     owner: root
     group: root
-  with_items: " {{ crondailyfiles.files }}"
+  with_items: "{{ crondailyfiles.files }}"
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 - name: PHTN-30-000096 - Find cron.hourly files
-  find:
+  ansible.builtin.find:
     paths: /etc/cron.hourly/
     file_type: file
-    recurse: yes
+    recurse: true
   register: cronhourlyfiles
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 - name: PHTN-30-000096 - Set cron.hourly files permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: o-w
     owner: root
     group: root
-  with_items: " {{ cronhourlyfiles.files }}"
+  with_items: "{{ cronhourlyfiles.files }}"
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 - name: PHTN-30-000096 - Find cron.monthly files
-  find:
+  ansible.builtin.find:
     paths: /etc/cron.monthly/
     file_type: file
-    recurse: yes
+    recurse: true
   register: cronmonthlyfiles
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 - name: PHTN-30-000096 - Set cron.monthly files permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: o-w
     owner: root
     group: root
-  with_items: " {{ cronmonthlyfiles.files }}"
+  with_items: "{{ cronmonthlyfiles.files }}"
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 - name: PHTN-30-000096 - Find cron.weekly files
-  find:
+  ansible.builtin.find:
     paths: /etc/cron.weekly/
     file_type: file
-    recurse: yes
+    recurse: true
   register: cronweeklyfiles
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 - name: PHTN-30-000096 - Set cron.weekly files permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: o-w
     owner: root
     group: root
-  with_items: " {{ cronweeklyfiles.files }}"
+  with_items: "{{ cronweeklyfiles.files }}"
   tags:
-  - PHTN-30-000096
-  - perms
+    - PHTN-30-000096
+    - perms
   when:
-  - run_cron_files_permissions | bool
+    - run_cron_files_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system must be configured so that all cron paths are protected from unauthorized modification.
 
 - name: PHTN-30-000097 - Set cron directory permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: 0755
@@ -2102,504 +2089,504 @@
     - /etc/cron.monthly
     - /etc/cron.weekly
   tags:
-  - PHTN-30-000097
-  - perms
+    - PHTN-30-000097
+    - perms
   when:
-  - run_cron_dir_permissions | bool
+    - run_cron_dir_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system must not forward IPv4 or IPv6 source-routed packets.
 
 - name: PHTN-30-000098 - Set kernel parameter net.ipv4.conf.all.accept_source_route
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.all.accept_source_route
     value: '{{ var_sysctl_net_ipv4_conf_all_accept_source_route }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000098
-  - sysctl.conf
+    - PHTN-30-000098
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_all_accept_source_route | bool
+    - run_sysctl_net_ipv4_conf_all_accept_source_route | bool
 
 - name: PHTN-30-000098 - Set kernel parameter net.ipv4.conf.default.accept_source_route
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.default.accept_source_route
     value: '{{ var_sysctl_net_ipv4_conf_default_accept_source_route }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000098
-  - sysctl.conf
+    - PHTN-30-000098
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_default_accept_source_route | bool
+    - run_sysctl_net_ipv4_conf_default_accept_source_route | bool
 
 - name: PHTN-30-000098 - Set kernel parameter net.ipv4.conf.eth0.accept_source_route
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.eth0.accept_source_route
     value: '{{ var_sysctl_net_ipv4_conf_eth0_accept_source_route }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000098
-  - sysctl.conf
+    - PHTN-30-000098
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_eth0_accept_source_route | bool
+    - run_sysctl_net_ipv4_conf_eth0_accept_source_route | bool
 
 - name: PHTN-30-000098 - Set kernel parameter net.ipv6.conf.all.accept_source_route
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv6.conf.all.accept_source_route
     value: '{{ var_sysctl_net_ipv6_conf_all_accept_source_route }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000098
-  - sysctl.conf
+    - PHTN-30-000098
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv6_conf_all_accept_source_route | bool
+    - run_sysctl_net_ipv6_conf_all_accept_source_route | bool
 
 - name: PHTN-30-000098 - Set kernel parameter net.ipv6.conf.default.accept_source_route
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv6.conf.default.accept_source_route
     value: '{{ var_sysctl_net_ipv6_conf_default_accept_source_route }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000098
-  - sysctl.conf
+    - PHTN-30-000098
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv6_conf_default_accept_source_route | bool
+    - run_sysctl_net_ipv6_conf_default_accept_source_route | bool
 
 - name: PHTN-30-000098 - Set kernel parameter net.ipv6.conf.eth0.accept_source_route
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv6.conf.eth0.accept_source_route
     value: '{{ var_sysctl_net_ipv6_conf_eth0_accept_source_route }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000098
-  - sysctl.conf
+    - PHTN-30-000098
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv6_conf_eth0_accept_source_route | bool
+    - run_sysctl_net_ipv6_conf_eth0_accept_source_route | bool
 
 ############################################
 
 # Title: The Photon operating system must not respond to IPv4 Internet Control Message Protocol (ICMP) echoes sent to a broadcast address.
 
 - name: PHTN-30-000099 - Set kernel parameter net.ipv4.icmp_echo_ignore_broadcasts
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.icmp_echo_ignore_broadcasts
     value: '{{ var_sysctl_net_ipv4_icmp_echo_ignore_broadcasts }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000099
-  - sysctl.conf
+    - PHTN-30-000099
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_icmp_echo_ignore_broadcasts | bool
+    - run_sysctl_net_ipv4_icmp_echo_ignore_broadcasts | bool
 
 ############################################
 
 # Title: The Photon operating system must prevent IPv4 Internet Control Message Protocol (ICMP) redirect messages from being accepted.
 
 - name: PHTN-30-000100 - Set kernel parameter net.ipv4.conf.all.accept_redirects
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.all.accept_redirects
     value: '{{ var_sysctl_net_ipv4_conf_all_accept_redirects }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000100
-  - sysctl.conf
+    - PHTN-30-000100
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_all_accept_redirects | bool
+    - run_sysctl_net_ipv4_conf_all_accept_redirects | bool
 
 - name: PHTN-30-000100 - Set kernel parameter net.ipv4.conf.default.accept_redirects
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.default.accept_redirects
     value: '{{ var_sysctl_net_ipv4_conf_default_accept_redirects }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000100
-  - sysctl.conf
+    - PHTN-30-000100
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_default_accept_redirects | bool
+    - run_sysctl_net_ipv4_conf_default_accept_redirects | bool
 
 - name: PHTN-30-000100 - Set kernel parameter net.ipv4.conf.eth0.accept_redirects
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.eth0.accept_redirects
     value: '{{ var_sysctl_net_ipv4_conf_eth0_accept_redirects }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000100
-  - sysctl.conf
+    - PHTN-30-000100
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_eth0_accept_redirects | bool
+    - run_sysctl_net_ipv4_conf_eth0_accept_redirects | bool
 
 ############################################
 
 # Title: The Photon operating system must prevent IPv4 Internet Control Message Protocol (ICMP) secure redirect messages from being accepted.
 
 - name: PHTN-30-000101 - Set kernel parameter net.ipv4.conf.all.secure_redirects
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.all.secure_redirects
     value: '{{ var_sysctl_net_ipv4_conf_all_secure_redirects }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000101
-  - sysctl.conf
+    - PHTN-30-000101
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_all_secure_redirects | bool
+    - run_sysctl_net_ipv4_conf_all_secure_redirects | bool
 
 - name: PHTN-30-000101 - Set kernel parameter net.ipv4.conf.default.secure_redirects
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.default.secure_redirects
     value: '{{ var_sysctl_net_ipv4_conf_default_secure_redirects }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000101
-  - sysctl.conf
+    - PHTN-30-000101
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_default_secure_redirects | bool
+    - run_sysctl_net_ipv4_conf_default_secure_redirects | bool
 
 - name: PHTN-30-000101 - Set kernel parameter net.ipv4.conf.eth0.secure_redirects
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.eth0.secure_redirects
     value: '{{ var_sysctl_net_ipv4_conf_eth0_secure_redirects }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000101
-  - sysctl.conf
+    - PHTN-30-000101
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_eth0_secure_redirects | bool
+    - run_sysctl_net_ipv4_conf_eth0_secure_redirects | bool
 
 ############################################
 
 # Title: The Photon operating system must not send IPv4 Internet Control Message Protocol (ICMP) redirects.
 
 - name: PHTN-30-000102 - Set kernel parameter net.ipv4.conf.all.send_redirects
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.all.send_redirects
     value: '{{ var_sysctl_net_ipv4_conf_all_send_redirects }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000102
-  - sysctl.conf
+    - PHTN-30-000102
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_all_send_redirects | bool
+    - run_sysctl_net_ipv4_conf_all_send_redirects | bool
 
 - name: PHTN-30-000102 - Set kernel parameter net.ipv4.conf.default.send_redirects
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.default.send_redirects
     value: '{{ var_sysctl_net_ipv4_conf_default_send_redirects }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000102
-  - sysctl.conf
+    - PHTN-30-000102
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_default_send_redirects | bool
+    - run_sysctl_net_ipv4_conf_default_send_redirects | bool
 
 - name: PHTN-30-000102 - Set kernel parameter net.ipv4.conf.eth0.send_redirects
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.eth0.send_redirects
     value: '{{ var_sysctl_net_ipv4_conf_eth0_send_redirects }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000102
-  - sysctl.conf
+    - PHTN-30-000102
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_eth0_send_redirects | bool
+    - run_sysctl_net_ipv4_conf_eth0_send_redirects | bool
 
 ############################################
 
 # Title: The Photon operating system must log IPv4 packets with impossible addresses.
 
 - name: PHTN-30-000103 - Set kernel parameter net.ipv4.conf.all.log_martians
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.all.log_martians
     value: '{{ var_sysctl_net_ipv4_conf_all_log_martians }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000103
-  - sysctl.conf
+    - PHTN-30-000103
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_all_log_martians | bool
+    - run_sysctl_net_ipv4_conf_all_log_martians | bool
 
 - name: PHTN-30-000103 - Set kernel parameter net.ipv4.conf.default.log_martians
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.default.log_martians
     value: '{{ var_sysctl_net_ipv4_conf_default_log_martians }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000103
-  - sysctl.conf
+    - PHTN-30-000103
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_default_log_martians | bool
+    - run_sysctl_net_ipv4_conf_default_log_martians | bool
 
 - name: PHTN-30-000103 - Set kernel parameter net.ipv4.conf.eth0.log_martians
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.eth0.log_martians
     value: '{{ var_sysctl_net_ipv4_conf_eth0_log_martians }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000103
-  - sysctl.conf
+    - PHTN-30-000103
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_eth0_log_martians | bool
+    - run_sysctl_net_ipv4_conf_eth0_log_martians | bool
 
 ############################################
 
 # Title: The Photon operating system must use a reverse-path filter for IPv4 network traffic.
 
 - name: PHTN-30-000104 - Set kernel parameter net.ipv4.conf.all.rp_filter
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.all.rp_filter
     value: '{{ var_sysctl_net_ipv4_conf_all_rp_filter }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000104
-  - sysctl.conf
+    - PHTN-30-000104
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_all_rp_filter | bool
+    - run_sysctl_net_ipv4_conf_all_rp_filter | bool
 
 - name: PHTN-30-000104 - Set kernel parameter net.ipv4.conf.default.rp_filter
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.default.rp_filter
     value: '{{ var_sysctl_net_ipv4_conf_default_rp_filter }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000104
-  - sysctl.conf
+    - PHTN-30-000104
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_default_rp_filter | bool
+    - run_sysctl_net_ipv4_conf_default_rp_filter | bool
 
 - name: PHTN-30-000104 - Set kernel parameter net.ipv4.conf.eth0.rp_filter
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.eth0.rp_filter
     value: '{{ var_sysctl_net_ipv4_conf_eth0_rp_filter }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000104
-  - sysctl.conf
+    - PHTN-30-000104
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_eth0_rp_filter | bool
+    - run_sysctl_net_ipv4_conf_eth0_rp_filter | bool
 
 ############################################
 
 # Title: The Photon operating system must not perform multicast packet forwarding.
 
 - name: PHTN-30-000105 - Set kernel parameter net.ipv4.conf.all.mc_forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.all.mc_forwarding
     value: '{{ var_sysctl_net_ipv4_conf_all_mc_forwarding }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000105
-  - sysctl.conf
+    - PHTN-30-000105
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_all_mc_forwarding | bool
+    - run_sysctl_net_ipv4_conf_all_mc_forwarding | bool
 
 - name: PHTN-30-000105 - Set kernel parameter net.ipv4.conf.default.mc_forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.default.mc_forwarding
     value: '{{ var_sysctl_net_ipv4_conf_default_mc_forwarding }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000105
-  - sysctl.conf
+    - PHTN-30-000105
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_default_mc_forwarding | bool
+    - run_sysctl_net_ipv4_conf_default_mc_forwarding | bool
 
 - name: PHTN-30-000105 - Set kernel parameter net.ipv4.conf.eth0.mc_forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.conf.eth0.mc_forwarding
     value: '{{ var_sysctl_net_ipv4_conf_eth0_mc_forwarding }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000105
-  - sysctl.conf
+    - PHTN-30-000105
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_conf_eth0_mc_forwarding | bool
+    - run_sysctl_net_ipv4_conf_eth0_mc_forwarding | bool
 
 - name: PHTN-30-000105 - Set kernel parameter net.ipv6.conf.all.mc_forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv6.conf.all.mc_forwarding
     value: '{{ var_sysctl_net_ipv6_conf_all_mc_forwarding }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000105
-  - sysctl.conf
+    - PHTN-30-000105
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv6_conf_all_mc_forwarding | bool
+    - run_sysctl_net_ipv6_conf_all_mc_forwarding | bool
 
 - name: PHTN-30-000105 - Set kernel parameter net.ipv6.conf.default.mc_forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv6.conf.default.mc_forwarding
     value: '{{ var_sysctl_net_ipv6_conf_default_mc_forwarding }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000105
-  - sysctl.conf
+    - PHTN-30-000105
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv6_conf_default_mc_forwarding | bool
+    - run_sysctl_net_ipv6_conf_default_mc_forwarding | bool
 
 - name: PHTN-30-000105 - Set kernel parameter net.ipv6.conf.eth0.mc_forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv6.conf.eth0.mc_forwarding
     value: '{{ var_sysctl_net_ipv6_conf_eth0_mc_forwarding }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000105
-  - sysctl.conf
+    - PHTN-30-000105
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv6_conf_eth0_mc_forwarding | bool
+    - run_sysctl_net_ipv6_conf_eth0_mc_forwarding | bool
 
 ############################################
 
 # Title: The Photon operating system must not perform IPv4 packet forwarding.
 
 - name: PHTN-30-000106 - Set kernel parameter net.ipv4.ip_forward
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.ip_forward
     value: '{{ var_sysctl_net_ipv4_ip_forward }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000106
-  - sysctl.conf
+    - PHTN-30-000106
+    - sysctl.conf
   when:
-  - run_sysctl_net_ipv4_ip_forward | bool
+    - run_sysctl_net_ipv4_ip_forward | bool
 
 ############################################
 
 # Title: The Photon operating system must send TCP timestamps.
 
 - name: PHTN-30-000107 - Set kernel parameter net.ipv4.tcp_timestamps
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.tcp_timestamps
     value: '{{ var_sysctl_tcp_timestamps }}'
     state: present
-    sysctl_set: yes
-    reload: yes
+    sysctl_set: true
+    reload: true
   tags:
-  - PHTN-30-000107
-  - sysctl.conf
+    - PHTN-30-000107
+    - sysctl.conf
   when:
-  - run_sysctl_tcp_timestamps | bool
+    - run_sysctl_tcp_timestamps | bool
 
 ############################################
 
 # Title: The Photon operating system must be configured to protect the SSH public host key from unauthorized modification.
 
 - name: PHTN-30-000108 - Find sshd public key files
-  find:
+  ansible.builtin.find:
     paths: /etc/ssh/
     file_type: file
     patterns: "*key.pub"
   register: sshpubkeys
   tags:
-  - PHTN-30-000108
-  - sshd
-  - perms
+    - PHTN-30-000108
+    - sshd
+    - perms
   when:
-  - run_ssh_pubkeys_permissions | bool
+    - run_ssh_pubkeys_permissions | bool
 
 - name: PHTN-30-000108 - Set sshd public key permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: "0644"
     owner: root
     group: root
-  with_items: " {{ sshpubkeys.files }}"
+  with_items: "{{ sshpubkeys.files }}"
   tags:
-  - PHTN-30-000108
-  - sshd
-  - perms
+    - PHTN-30-000108
+    - sshd
+    - perms
   when:
-  - run_ssh_pubkeys_permissions | bool
+    - run_ssh_pubkeys_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system must be configured to protect the SSH private host key from unauthorized access.
 
 - name: PHTN-30-000109 - Find sshd private key files
-  find:
+  ansible.builtin.find:
     paths: /etc/ssh/
     file_type: file
     patterns: "*key"
   register: sshprikeys
   tags:
-  - PHTN-30-000109
-  - sshd
-  - perms
+    - PHTN-30-000109
+    - sshd
+    - perms
   when:
-  - run_ssh_prikeys_permissions | bool
+    - run_ssh_prikeys_permissions | bool
 
 - name: PHTN-30-000109 - Set sshd private key permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: "0600"
     owner: root
     group: root
-  with_items: " {{ sshprikeys.files }}"
+  with_items: "{{ sshprikeys.files }}"
   tags:
-  - PHTN-30-000109
-  - sshd
-  - perms
+    - PHTN-30-000109
+    - sshd
+    - perms
   when:
-  - run_ssh_prikeys_permissions | bool
+    - run_ssh_prikeys_permissions | bool
 
 ############################################
 
@@ -2607,7 +2594,7 @@
 # password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
 - name: PHTN-30-000110 - Enforce password complexity on the root account
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: requisite
@@ -2615,135 +2602,135 @@
     module_arguments: 'enforce_for_root'
     state: args_present
   tags:
-  - PHTN-30-000110
-  - pam
+    - PHTN-30-000110
+    - pam
   when:
-  - run_pamd_enforceforroot | bool
+    - run_pamd_enforceforroot | bool
 
 ############################################
 
 # Title: The Photon operating system must protect all boot configuration files from unauthorized access.
 
 - name: PHTN-30-000111 - Find boot config files
-  find:
+  ansible.builtin.find:
     paths: /boot/
     file_type: file
     patterns: "*.cfg"
   register: bootcfgfiles
   tags:
-  - PHTN-30-000111
-  - perms
+    - PHTN-30-000111
+    - perms
   when:
-  - run_boot_config_file_permissions | bool
+    - run_boot_config_file_permissions | bool
 
 - name: PHTN-30-000111 - Set boot config file permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: "0600"
     owner: root
     group: root
-  with_items: " {{ bootcfgfiles.files }}"
+  with_items: "{{ bootcfgfiles.files }}"
   tags:
-  - PHTN-30-000111
-  - perms
+    - PHTN-30-000111
+    - perms
   when:
-  - run_boot_config_file_permissions | bool
+    - run_boot_config_file_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system must protect sshd configuration from unauthorized access.
 
 - name: PHTN-30-000112 - Set sshd_config file permissions
-  file:
+  ansible.builtin.file:
     path: '{{ var_sshd_config_file }}'
     state: file
     mode: "0600"
     owner: root
     group: root
   tags:
-  - PHTN-30-000112
-  - sshd
-  - perms
+    - PHTN-30-000112
+    - sshd
+    - perms
   when:
-  - run_ssh_config_file_permissions | bool
+    - run_ssh_config_file_permissions | bool
 
 ############################################
 
 # Title: The Photon operating system must protect all sysctl configuration files from unauthorized access.
 
 - name: PHTN-30-000113 - Find sysctl files
-  find:
+  ansible.builtin.find:
     paths: /etc/sysctl.d/
     file_type: file
   register: sysctlfiles
   tags:
-  - PHTN-30-000113
-  - perms
+    - PHTN-30-000113
+    - perms
   when:
-  - run_sysctl_file_permissions | bool
+    - run_sysctl_file_permissions | bool
 
 - name: PHTN-30-000113 - Set sysctl config file permissions
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
     mode: "0600"
     owner: root
     group: root
-  with_items: " {{ sysctlfiles.files }}"
+  with_items: "{{ sysctlfiles.files }}"
   tags:
-  - PHTN-30-000113
-  - perms
+    - PHTN-30-000113
+    - perms
   when:
-  - run_sysctl_file_permissions | bool
+    - run_sysctl_file_permissions | bool
 
 - name: PHTN-30-000113 - Set sysctl.conf file permissions
-  file:
+  ansible.builtin.file:
     path: '{{ var_sysctl_conf_file }}'
     state: file
     mode: "0600"
     owner: root
     group: root
   tags:
-  - PHTN-30-000113
-  - perms
+    - PHTN-30-000113
+    - perms
   when:
-  - run_sysctl_file_permissions | bool
+    - run_sysctl_file_permissions | bool
 
 ############################################
 
 # Title: The operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.
 
 - name: PHTN-30-000114 - Configure login.defs UMASK setting
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_login_defs_file }}'
     state: present
     regexp: '^UMASK '
     line: UMASK {{ var_login_umask }}
   tags:
-  - PHTN-30-000114
-  - login.defs
+    - PHTN-30-000114
+    - login.defs
   when:
-  - run_login_umask | bool
+    - run_login_umask | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to disallow HostbasedAuthentication.
 
 - name: PHTN-30-000115 - Configure sshd to disallow HostbasedAuthentication
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^HostbasedAuthentication.*$'
     line: HostbasedAuthentication {{ var_sshd_hostbasedauth }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000115
-  - sshd
+    - PHTN-30-000115
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_hostbasedauth | bool
+    - run_sshd_hostbasedauth | bool
 
 ############################################
 
@@ -2751,7 +2738,7 @@
 # password   required pam_unix.so sha512 shadow try_first_pass
 
 - name: PHTN-30-000117 - store only encrypted representations of passwords
-  pamd:
+  community.general.pamd:
     name: system-password
     type: password
     control: required
@@ -2759,17 +2746,17 @@
     module_arguments: 'sha512'
     state: args_present
   tags:
-  - PHTN-30-000117
-  - pam
+    - PHTN-30-000117
+    - pam
   when:
-  - run_pamd_encryption | bool
+    - run_pamd_encryption | bool
 
 ############################################
 
 # Title: The Photon operating system must ensure that the old passwords are being stored.
 
 - name: PHTN-30-000118 - Create /etc/security/opasswd if it doesn't exist
-  file:
+  ansible.builtin.file:
     path: /etc/security/opasswd
     state: touch
     group: root
@@ -2778,45 +2765,87 @@
     access_time: preserve
     modification_time: preserve
   tags:
-  - PHTN-30-000118
-  - perms
+    - PHTN-30-000118
+    - perms
   when:
-  - run_create_opasswd | bool
+    - run_create_opasswd | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to restrict AllowTcpForwarding.
 
 - name: PHTN-30-000119 - Configure sshd to restrict AllowTcpForwarding.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^AllowTcpForwarding.*$'
     line: AllowTcpForwarding {{ var_sshd_allowtcpforwarding }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000119
-  - sshd
+    - PHTN-30-000119
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_allowtcpforwarding | bool
+    - run_sshd_allowtcpforwarding | bool
 
 ############################################
 
 # Title: The Photon operating system must configure sshd to restrict LoginGraceTime.
 
 - name: PHTN-30-000120 - Configure sshd to restrict LoginGraceTime.
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: '{{ var_sshd_config_file }}'
     state: present
     regexp: '^LoginGraceTime.*$'
     line: LoginGraceTime {{ var_sshd_logingracetime }}
-    firstmatch: yes
+    firstmatch: true
   tags:
-  - PHTN-30-000120
-  - sshd
+    - PHTN-30-000120
+    - sshd
   notify:
-  - restart sshd
+    - restart sshd
   when:
-  - run_sshd_logingracetime | bool
+    - run_sshd_logingracetime | bool
+
+############################################
+
+# Title: The Photon operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.
+
+- name: PHTN-30-000240 - Add fips=1 in /boot/grub2/grub.cfg
+  ansible.builtin.replace:
+    path: '{{ var_grub_conf_file }}'
+    regexp: '^(\s*linux(?!.*fips=).*)'
+    replace: '\1 fips=1'
+  tags:
+    - PHTN-30-000240
+    - fips
+  when:
+    - run_kernel_fips | bool
+
+- name: PHTN-30-000240 - Replace fips=1 in /boot/grub2/grub.cfg
+  ansible.builtin.replace:
+    path: '{{ var_grub_conf_file }}'
+    regexp: '^(\s*linux.*?fips=)(?!1)(\S*)(.*)'
+    replace: '\g<1>1\3'
+  tags:
+    - PHTN-30-000240
+    - fips
+  when:
+    - run_kernel_fips | bool
+
+############################################
+
+# Title: The Photon operating system must disable systemd fallback DNS.
+
+- name: PHTN-30-000245 - Comment out fallback DNS in resolved
+  ansible.builtin.replace:
+    path: '{{ var_resolved_file }}'
+    regexp: '^FallbackDNS='
+    replace: '#FallbackDNS='
+  tags:
+    - PHTN-30-000245
+  notify:
+    - restart resolved
+  when:
+    - run_dns_fallback | bool

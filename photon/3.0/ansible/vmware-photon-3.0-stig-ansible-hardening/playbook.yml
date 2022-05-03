@@ -1,5 +1,4 @@
 ---
- - name: Photon OS 3.0 STIG
-   hosts: all
-   roles:
-    - photon3
+- hosts: all
+  roles:
+    - role: photon3

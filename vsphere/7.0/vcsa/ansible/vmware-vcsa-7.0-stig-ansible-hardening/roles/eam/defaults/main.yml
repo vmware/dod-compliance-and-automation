@@ -1,67 +1,65 @@
 ---
-
 # Turn specific controls on/off by setting the value to true or false
-
-#Create backups of files?
+# Create backups of files?
 create_backups: true
 
-#VCEM-70-000001
+# VCEM-70-000001
 run_connection_timeout: true
-#VCEM-70-000002
+# VCEM-70-000002
 run_max_threads: true
-#VCEM-70-000003
+# VCEM-70-000003
 run_max_post_size: true
-#VCEM-70-000004
+# VCEM-70-000004
 run_http_only: true
-#VCEM-70-000005
+# VCEM-70-000005
 run_access_valve_pattern: true
-#VCEM-70-000006
+# VCEM-70-000006
 run_json_stream_redirect_file: true
-#VCEM-70-000007
+# VCEM-70-000007
 run_logs_permissions: true
-#VCEM-70-000010
+# VCEM-70-000010
 run_user_database_realm: true
-#VCEM-70-000011
+# VCEM-70-000011
 run_catalina_properties: true
-#VCEM-70-000012
+# VCEM-70-000012
 run_removed_mime_mappings: true
-#VCEM-70-000013
+# VCEM-70-000013
 run_java_servlet: true
-#VCEM-70-000014
+# VCEM-70-000014
 run_remove_webdav: true
-#VCEM-70-000015
+# VCEM-70-000015
 run_mem_leak_prevention: true
-#VCEM-70-000017
+# VCEM-70-000017
 run_web_files_permissions: true
-#VCEM-70-000018
+# VCEM-70-000018
 run_catalina_properties_shutdown: true
-#VCEM-70-000019
+# VCEM-70-000019
 run_accept_count: true
-#VCEM-70-000020
+# VCEM-70-000020
 run_uri_encoding: true
-#VCEM-70-000021
+# VCEM-70-000021
 run_web_filter: true
-#VCEM-70-000022
+# VCEM-70-000022
 run_web_welcome_file: true
-#VCEM-70-000023
+# VCEM-70-000023
 run_web_remove_listings: true
-#VCEM-70-000024
+# VCEM-70-000024
 run_web_error_page: true
-#VCEM-70-000025
+# VCEM-70-000025
 run_hide_error_reports: true
-#VCEM-70-000026
+# VCEM-70-000026
 run_server_anonymous: true
-#VCEM-70-000027
+# VCEM-70-000027
 run_allow_trace: true
-#VCEM-70-000028
+# VCEM-70-000028
 run_web_remove_debug: true
-#VCEM-70-000029
+# VCEM-70-000029
 run_eam_syslog_config: true
-#VCEM-70-000030
+# VCEM-70-000030
 run_web_cookie_secure: true
-#VCEM-70-000031
+# VCEM-70-000031
 run_catalina_properties_bioport: true
-#VCEM-70-000032
+# VCEM-70-000032
 run_catalina_properties_shutdownport: true
-#VCEM-70-000033
+# VCEM-70-000033
 run_web_remove_readonly: true

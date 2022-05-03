@@ -1,13 +1,6 @@
-# encoding: UTF-8
-
 control 'VCRP-70-000006' do
   title 'Envoy must exclusively use the HTTPS protocol for client connections.'
-  desc  "Remotely accessing vCenter via Envoy involves sensitive information
-going over the wire. To protect the confidentiality and integrity of these
-communications, Envoy must be configured to use an encrypted session of HTTPS
-rather than plain-text HTTP. The SSL configuration block inside the rhttproxy
-configuration must be present and correctly configured in order to safely
-enable TLS."
+  desc  'Remotely accessing vCenter via Envoy involves sensitive information going over the wire. To protect the confidentiality and integrity of these communications, Envoy must be configured to use an encrypted session of HTTPS rather than plain-text HTTP. The SSL configuration block inside the rhttproxy configuration must be present and correctly configured in order to safely enable TLS.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -26,10 +19,11 @@ enable TLS."
       </ssl>
 
     If the output does not match the expected result, this is a finding.
-
   "
-  desc  'fix', "
-    Navigate to and open /etc/vmware-rhttpproxy/config.xml
+  desc 'fix', "
+    Navigate to and open:
+
+    /etc/vmware-rhttpproxy/config.xml
 
     Locate the first <ssl> block and set it's content to the following:
 
@@ -52,7 +46,6 @@ enable TLS."
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCRP-70-000006'
-  tag fix_id: nil
   tag cci: ['CCI-002314']
   tag nist: ['AC-17 (1)']
 
@@ -61,6 +54,4 @@ enable TLS."
     its(['/config/ssl/certificate']) { should cmp "#{input('certificateFile')}" }
     its(['/config/ssl/vecsServerName']) { should cmp "#{input('vecsServerName')}" }
   end
-
 end
-

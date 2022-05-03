@@ -63,7 +63,7 @@ inputs:
 - name: accessValvePattern
   description: "VCUI-70-000005"
   type: string
-  value: "%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b %{#hashedSessionId#}s %I %D %S %{set-cookie}o"
+  value: "%h %{x-forwarded-for}i %l %u %t &quot;%r&quot; %s %b %{#hashedClientId#}s %{#hashedRequestId#}r %I %D"
 - name: streamRedirectFile
   description: "VCUI-70-000006"
   type: string

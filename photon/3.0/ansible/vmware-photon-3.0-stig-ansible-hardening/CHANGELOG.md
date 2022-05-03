@@ -1,5 +1,15 @@
 # Change Log
 
+## [3.0 Version 1 Release 4] (2022-04-18)
+
+#### Release Notes
+- Ansible-lint syntax fixes
+- Moved backup files to /tmp/ansible-backups-{date} since some files when backed up to the same folder as the original cause issues
+- PHTN-30-000052 Removed in favor of 000005
+- PHTN-30-000056 Added ROTATE as a valid value
+- PHTN-30-000240 Added Control
+- PHTN-30-000245 Added Control
+
 ## [3.0 Version 1 Release 2] (2021-06-24)
 
 #### Release Notes

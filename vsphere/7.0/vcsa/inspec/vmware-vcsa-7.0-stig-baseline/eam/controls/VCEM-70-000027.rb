@@ -1,13 +1,6 @@
-# encoding: UTF-8
-
 control 'VCEM-70-000027' do
   title 'ESX Agent Manager must not enable support for TRACE requests.'
-  desc  "\"Trace\" is a technique for a user to request internal information
-about Tomcat. This is useful during product development, but should not be
-enabled in production. Allowing an attacker to conduct a TRACE operation
-against ESX Agent Manager will expose information that would be useful to
-perform a more targeted attack. ESX Agent Manager provides the \"allowTrace\"
-parameter as means to disable responding to TRACE requests."
+  desc  '"Trace" is a technique for a user to request internal information about Tomcat. This is useful during product development, but should not be enabled in production. Allowing an attacker to conduct a TRACE operation against ESX Agent Manager will expose information that would be useful to perform a more targeted attack. ESX Agent Manager provides the "allowTrace" parameter as means to disable responding to TRACE requests.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
@@ -18,7 +11,7 @@ parameter as means to disable responding to TRACE requests."
 
     If no line is returned, this is NOT a finding.
   "
-  desc  'fix', "
+  desc 'fix', "
     Navigate to and open:
 
     /usr/lib/vmware-eam/web/conf/server.xml
@@ -39,7 +32,6 @@ parameter as means to disable responding to TRACE requests."
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCEM-70-000027'
-  tag fix_id: nil
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
@@ -49,9 +41,7 @@ parameter as means to disable responding to TRACE requests."
     end
 
     describe xml("#{input('serverXmlPath')}") do
-      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp "false" }
+      its(['Server/Service/Connector/attribute::allowTrace']) { should cmp 'false' }
     end
   end
-
 end
-

@@ -17,3 +17,4 @@ var_conf_ssl_enabled_versions: "enable"
 var_conf_ssl_honor_cipher_order: "enable"
 var_conf_server_tag: "vami"
 var_server_pem_file: '/etc/applmgmt/appliance/server.pem'
+var_syslog_conf_path: '/etc/vmware-syslog/vmware-services-applmgmt.conf'

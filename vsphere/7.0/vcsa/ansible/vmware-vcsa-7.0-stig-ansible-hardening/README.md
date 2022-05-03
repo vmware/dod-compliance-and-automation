@@ -1,10 +1,11 @@
 # vmware-vcsa-7.0-stig-ansible-hardening
-An ansible playbook to harden VMware vCenter Server Appliance 7.0 against the draft DISA vSphere 7.0 STIG
+VMware vSphere vCenter Appliance 7.0 STIG Readiness Guide Ansible Playbook  
+Version: Version 1 Release 3: 29 April 2022  
+STIG Type: STIG Readiness Guide  
 
 ## Requirements
-- VMware vSphere 7.0 DISA STIG Draft
-- Tested with Ansible 2.9.6
-- Tested with vCenter 7.0 U2b
+- Tested with Ansible 2.12.4
+- Tested with vCenter 7.0 U3d
 - Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 10 to run an Unbuntu box for example
 
 ## Status
@@ -19,12 +20,12 @@ Complete Components
 - VAMI
 - vsphere-ui
 
-This playbook does not cover the vSphere (ESXi,VM,vCenter) or Photon controls which are in a companion PowerCLI or Ansible Playbook.
+This playbook does not cover the vSphere (ESXi,VM,vCenter) which are in a companion PowerCLI.
 
 ## Playbook Structure
 Using the EAM role as an example...  
 
-- vcsa-stig.yml - Main playbook to run
+- playbook.yml - Main playbook to run
 - /roles/eam/defaults/main.yml - Default variables used to turn controls on/off in the playbook.  Set these to true/false
 - /roles/eam/handlers/main.yaml - handlers referenced in the photon task
 - /roles/eam/tasks/main.yml - Default role playbook
@@ -38,22 +39,22 @@ Using the EAM role as an example...
 
 Run all controls on a single host. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v  
+ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yaml -k -v  
 ```
 
 Run all controls on a single host in check mode and does not change anything. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v --check  
+ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yaml -k -v --check  
 ```
 
 Run all controls on a single host and only for a specific control VCUI-70-000001. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v --tags VCUI-70-000001  
+ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yaml -k -v --tags VCUI-70-000001  
 ```
 
 Run all controls on a single host and only for a specific group of controls for ssh. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v --tags sshd  
+ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yaml -k -v --tags sshd  
 ```
 
 ## STIG Control Coverage
