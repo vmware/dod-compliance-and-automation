@@ -55,6 +55,7 @@ jobs:
           mkdir -p /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening
           cp -r $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/roles/*/* /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/
           ls -la /usr/share/ansible/roles
+          ansible-galaxy role list
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/"  # <-- only one value is allowed
