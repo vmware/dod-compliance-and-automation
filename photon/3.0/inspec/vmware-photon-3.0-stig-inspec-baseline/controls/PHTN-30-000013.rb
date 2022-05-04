@@ -5,14 +5,14 @@ control "PHTN-30-000013" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # systemctl status auditd
-    
+
     If the service is not running, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command(s):
-    
+
     # systemctl enable auditd
     # systemctl start auditd
   "
@@ -25,7 +25,7 @@ control "PHTN-30-000013" do
   tag stig_id: "PHTN-30-000013"
   tag cci: ["CCI-000135", "CCI-000169", "CCI-001744", "CCI-001814", "CCI-002699", "CCI-000172", "CCI-000172", "CCI-001487", "CCI-002696", "CCI-000172", "CCI-000172", "CCI-000172"]
   tag nist: ["AU-3 (1)", "AU-12 a", "CM-3 (5)", "CM-5 (1)", "SI-6 b", "AU-12 c", "AU-12 c", "AU-3", "SI-6 a", "AU-12 c", "AU-12 c", "AU-12 c"]
-  
+
   describe systemd_service('auditd') do
     it { should be_installed }
     it { should be_enabled }

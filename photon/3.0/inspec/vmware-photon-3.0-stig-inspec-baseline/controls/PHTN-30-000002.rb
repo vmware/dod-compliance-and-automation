@@ -5,38 +5,38 @@ control "PHTN-30-000002" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command(s):
-    
+
     # grep pam_tally2 /etc/pam.d/system-auth
-    
+
     Expected result:
-    
+
     auth       required pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
-    
+
     # grep pam_tally2 /etc/pam.d/system-account
-    
+
     Expected result:
-    
+
     account    required pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
-    
+
     If the output does not list the pam_tally2 options as configured in the expected results, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/pam.d/system-auth
-    
+
     Remove any existing \"pam_tally2.so\" line and add the following line after the pam_unix.so statement:
-    
+
     auth       required pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
-    
+
     Navigate to and open:
-    
+
     /etc/pam.d/system-account
-    
+
     Remove any existing \"pam_tally2.so\" line and add the following line after the pam_unix.so statement:
-    
+
     account    required pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
-    
+
     Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
   "
   impact 0.5
@@ -48,11 +48,11 @@ control "PHTN-30-000002" do
   tag stig_id: "PHTN-30-000002"
   tag cci: ["CCI-000044", "CCI-002238"]
   tag nist: ["AC-7 a", "AC-7 b"]
-  
+
   describe file('/etc/pam.d/system-auth') do
     its('content') { should match /^(?=.*?\bauth\b)(?=.*?\brequired\b)(?=.*?\bpam_tally2.so\b)(?=.*?\bdeny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300\b).*$/ }
   end
-  
+
   describe file('/etc/pam.d/system-account') do
     its('content') { should match /^(?=.*?\baccount\b)(?=.*?\brequired\b)(?=.*?\bpam_tally2.so\b)(?=.*?\bdeny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300\b).*$/ }
   end

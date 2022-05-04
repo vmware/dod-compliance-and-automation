@@ -5,9 +5,9 @@ control "PHTN-30-000059" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep -s nosignature /usr/lib/rpm/rpmrc /etc/rpmrc ~root/.rpmrc
-    
+
     If the command returns any output, this is a finding.
   "
   desc  "fix", "Open the file containing \"nosignature\" with a text editor and remove the option."
@@ -19,7 +19,7 @@ control "PHTN-30-000059" do
   tag stig_id: "PHTN-30-000059"
   tag cci: ["CCI-001749"]
   tag nist: ["CM-5 (3)"]
-  
+
   describe command('grep -s nosignature /usr/lib/rpm/rpmrc /etc/rpmrc ~root/.rpmrc') do
     its('stdout') { should eq '' }
   end

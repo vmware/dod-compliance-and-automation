@@ -5,22 +5,22 @@ control "PHTN-30-000240" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # cat /proc/sys/crypto/fips_enabled
-    
+
     If a value of \"1\" is not returned, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /boot/grub2/grub.cfg
-    
+
     Location the kernel command line which will start with \"linux\" and add \"fips=1\" to the end, for example:
-    
+
     linux /$photon_linux audit=1 root=$rootpartition $photon_cmdline coredump_filter=0x37 consoleblank=0 $systemd_cmdline fips=1
-    
+
     Reboot the system in order for the change to take effect.
-    
+
     Note: The fipsify package must be installed in order for FIPS mode to work properly.
   "
   impact 0.5
@@ -31,7 +31,7 @@ control "PHTN-30-000240" do
   tag stig_id: "PHTN-30-000240"
   tag cci: ["CCI-002450"]
   tag nist: ["SC-13"]
-  
+
   describe file('/proc/sys/crypto/fips_enabled') do
     its('content') { should cmp 1 }
   end

@@ -5,28 +5,28 @@ control "PHTN-30-000011" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep \"^log_format\" /etc/audit/auditd.conf
-    
+
     Expected result:
-    
+
     log_format = RAW
-    
+
     If there is no output, this is not a finding.
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/audit/auditd.conf
-    
+
     Ensure that the \"log_format\" line is uncommented and set to the following:
-    
+
     log_format = RAW
-    
+
     At the command line, execute the following command:
-    
+
     # killproc auditd -TERM
     # systemctl start auditd
   "
@@ -38,7 +38,7 @@ control "PHTN-30-000011" do
   tag stig_id: "PHTN-30-000011"
   tag cci: ["CCI-000131"]
   tag nist: ["AU-3"]
-  
+
   describe auditd_conf do
     its('log_format') { should cmp 'RAW' }
   end

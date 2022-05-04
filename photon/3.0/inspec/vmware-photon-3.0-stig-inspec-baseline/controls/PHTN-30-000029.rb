@@ -5,24 +5,24 @@ control "PHTN-30-000029" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep pam_pwhistory /etc/pam.d/system-password|grep --color=always \"remember=.\"
-    
+
     Expected result:
-    
+
     password requisite pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
-    
+
     If the output does include the \"remember=5\" setting as shown in the expected result, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/pam.d/system-password
-    
+
     Add the following line after the \"password requisite pam_cracklib.so\" statement:
-    
+
     password requisite pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
-    
+
     Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
   "
   impact 0.5
@@ -33,28 +33,26 @@ control "PHTN-30-000029" do
   tag stig_id: "PHTN-30-000029"
   tag cci: ["CCI-000200"]
   tag nist: ["IA-5 (1) (e)"]
-  
+
   describe.one do
-  
     describe file('/etc/pam.d/system-password') do
       its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\benforce_for_root use_authtok remember=5 retry=3\b).*$/ }
     end
-  
+
     describe file('/etc/pam.d/system-password') do
       its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\benforce_for_root use_authtok retry=3 remember=5\b).*$/ }
     end
-  
+
     describe file('/etc/pam.d/system-password') do
       its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\buse_authtok enforce_for_root retry=3 remember=5\b).*$/ }
     end
-  
+
     describe file('/etc/pam.d/system-password') do
       its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\buse_authtok enforce_for_root remember=5 retry=3\b).*$/ }
     end
-  
+
     describe file('/etc/pam.d/system-password') do
       its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_pwhistory.so\b)(?=.*?\bretry=3 remember=5 enforce_for_root use_authtok\b).*$/ }
     end
-  
   end
 end

@@ -5,20 +5,20 @@ control "PHTN-30-000090" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # stat -c \"%n permissions are %a and owned by %U:%G\" /etc/skel/.[^.]*
-    
+
     Expected result:
-    
+
     /etc/skel/.bash_logout permissions are 750 and owned by root:root
     /etc/skel/.bash_profile permissions are 644 and owned by root:root
     /etc/skel/.bashrc permissions are 750 and owned by root:root
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command(s):
-    
+
     # chmod 750 /etc/skel/.bash_logout
     # chmod 644 /etc/skel/.bash_profile
     # chmod 750 /etc/skel/.bashrc
@@ -34,19 +34,19 @@ control "PHTN-30-000090" do
   tag stig_id: "PHTN-30-000090"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   describe file('/etc/skel/.bash_logout') do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'root' }
     its('mode') { should cmp '0750' }
   end
-  
+
   describe file('/etc/skel/.bash_profile') do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'root' }
     its('mode') { should cmp '0644' }
   end
-  
+
   describe file('/etc/skel/.bashrc') do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'root' }

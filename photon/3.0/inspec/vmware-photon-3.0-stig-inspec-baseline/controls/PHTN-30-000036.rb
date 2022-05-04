@@ -5,18 +5,18 @@ control "PHTN-30-000036" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # /sbin/sysctl -a --pattern tcp_syncookies
-    
+
     Expected result:
-    
+
     net.ipv4.tcp_syncookies = 1
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command(s):
-    
+
     # sed -i -e \"/^net.ipv4.tcp_syncookies/d\" /etc/sysctl.conf
     # echo net.ipv4.tcp_syncookies=1>>/etc/sysctl.conf
     # /sbin/sysctl --load
@@ -30,7 +30,7 @@ control "PHTN-30-000036" do
   tag stig_id: "PHTN-30-000036"
   tag cci: ["CCI-001095", "CCI-002385"]
   tag nist: ["SC-5 (2)", "SC-5"]
-  
+
   describe kernel_parameter('net.ipv4.tcp_syncookies') do
     its('value') { should eq 1 }
   end

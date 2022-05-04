@@ -5,16 +5,16 @@ control "PHTN-30-000061" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep gpgcheck /etc/yum.repos.d/*
-    
+
     If \"gpgcheck\" is not set to \"1\" in any returned file, this is a finding.
   "
   desc  "fix", "
     Open the file where \"gpgcheck\" is not set to 1 with a text editor.
-    
+
     Remove any existing \"gpgcheck\" setting and add the following line at the end of the file:
-    
+
     gpgcheck=1
   "
   impact 0.5
@@ -25,7 +25,7 @@ control "PHTN-30-000061" do
   tag stig_id: "PHTN-30-000061"
   tag cci: ["CCI-001749"]
   tag nist: ["CM-5 (3)"]
-  
+
   command('find /etc/yum.repos.d/ -type f').stdout.split.each do |repofile|
     describe file(repofile) do
       its('content') { should match /^(?=.*?\bgpgcheck=1\b).*$/ }

@@ -5,20 +5,20 @@ control "PHTN-30-000071" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep pam_cracklib /etc/pam.d/system-password
-    
+
     If the output does not return at least \"password  requisite   pam_cracklib.so\", this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/pam.d/system-password
-    
+
     Add the following, replacing any existing \"pam_cracklib.so\" line :
-    
+
     password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
-    
+
     Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
   "
   impact 0.5
@@ -29,7 +29,7 @@ control "PHTN-30-000071" do
   tag stig_id: "PHTN-30-000071"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   describe file('/etc/pam.d/system-password') do
     its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_cracklib.so\b).*$/ }
   end
