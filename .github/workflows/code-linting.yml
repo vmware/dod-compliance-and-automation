@@ -52,8 +52,8 @@ jobs:
         run: |
           echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
           ls -la $GITHUB_WORKSPACE
-          mkdir -p /usr/share/ansible/roles
-          cp -r $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/ /usr/share/ansible/roles
+          mkdir -p /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening
+          cp -r $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/roles/*/* /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/
           ls -la /usr/share/ansible/roles
       - uses: ansible-community/ansible-lint-action@main
         with:
