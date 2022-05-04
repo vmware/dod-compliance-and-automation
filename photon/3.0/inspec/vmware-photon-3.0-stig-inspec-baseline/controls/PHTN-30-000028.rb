@@ -5,18 +5,18 @@ control "PHTN-30-000028" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep \"^PASS_MAX_DAYS\" /etc/login.defs
-    
+
     If the value of \"PASS_MAX_DAYS\" is greater than 90, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/login.def
-    
-    Modify the PASS_MAX_DAYS line to the following: 
-    
+
+    Modify the PASS_MAX_DAYS line to the following:
+
     PASS_MAX_DAYS   90
   "
   impact 0.5
@@ -27,7 +27,7 @@ control "PHTN-30-000028" do
   tag stig_id: "PHTN-30-000028"
   tag cci: ["CCI-000199"]
   tag nist: ["IA-5 (1) (d)"]
-  
+
   describe login_defs do
     its('PASS_MAX_DAYS') { should be <= '90' }
   end

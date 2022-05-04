@@ -5,18 +5,18 @@ control "PHTN-30-000099" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # /sbin/sysctl -a --pattern ignore_broadcasts
-    
+
     Expected result:
-    
+
     net.ipv4.icmp_echo_ignore_broadcasts = 1
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command(s):
-    
+
     # sed -i -e \"/^net.ipv4.icmp_echo_ignore_broadcasts/d\" /etc/sysctl.conf
     # echo net.ipv4.icmp_echo_ignore_broadcasts=1>>/etc/sysctl.conf
     # /sbin/sysctl --load
@@ -29,7 +29,7 @@ control "PHTN-30-000099" do
   tag stig_id: "PHTN-30-000099"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   describe kernel_parameter('net.ipv4.icmp_echo_ignore_broadcasts') do
     its('value') { should eq 1 }
   end

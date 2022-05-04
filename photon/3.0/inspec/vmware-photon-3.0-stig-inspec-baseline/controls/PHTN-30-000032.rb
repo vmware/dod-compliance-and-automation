@@ -5,11 +5,11 @@ control "PHTN-30-000032" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # modprobe --showconfig | grep \"^install\" | grep \"/bin\"
-    
+
     Expected result:
-    
+
     install sctp /bin/false
     install dccp /bin/false
     install dccp_ipv4 /bin/false
@@ -29,18 +29,18 @@ control "PHTN-30-000032" do
     install hfsplus /bin/false
     install squashfs /bin/false
     install udf /bin/false
-    
+
     The output may include other statements outside of the expected result.
-    
+
     If the output does not include at least every statement in the expected result, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/modprobe.d/modprobe.conf
-    
+
     Set the contents as follows:
-    
+
     install sctp /bin/false
     install dccp /bin/false
     install dccp_ipv4 /bin/false
@@ -70,9 +70,9 @@ control "PHTN-30-000032" do
   tag stig_id: "PHTN-30-000032"
   tag cci: ["CCI-000382", "CCI-000778"]
   tag nist: ["CM-7 b", "IA-3"]
-  
+
   disabled_modules = input('disabled_modules')
-  
+
   disabled_modules.each do |mod|
     describe kernel_module(mod) do
       it { should be_disabled }

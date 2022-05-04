@@ -5,14 +5,14 @@ control "PHTN-30-000118" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # ls -al /etc/security/opasswd
-    
+
     If /etc/security/opasswd does not exist, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command(s):
-    
+
     # touch /etc/security/opasswd
     # chown root:root /etc/security/opasswd
     # chmod 0600 /etc/security/opasswd
@@ -25,7 +25,7 @@ control "PHTN-30-000118" do
   tag stig_id: "PHTN-30-000118"
   tag cci: ["CCI-000200"]
   tag nist: ["IA-5 (1) (e)"]
-  
+
   describe file('/etc/security/opasswd') do
     it { should exist }
     its('owner') { should cmp 'root' }

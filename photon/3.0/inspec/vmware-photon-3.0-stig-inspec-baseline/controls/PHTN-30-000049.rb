@@ -5,19 +5,19 @@ control "PHTN-30-000049" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # find /usr/lib/ -type f \"(\" ! -user root -o ! -group root -o -perm /022 \")\" -printf '%p, %u:%g:%m\
     '
-    
+
     If there is any output, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command for each file returned for user and group ownership:
-    
+
     # chown root:root <file>
-    
+
     At the command line, execute the following command for each file returned for file permissions:
-    
+
     # chmod 755 <file>
   "
   impact 0.5
@@ -28,7 +28,7 @@ control "PHTN-30-000049" do
   tag stig_id: "PHTN-30-000049"
   tag cci: ["CCI-001499"]
   tag nist: ["CM-5 (6)"]
-  
+
   describe command("find /usr/lib/ -type f \"(\" ! -user root -o ! -group root -o -perm /022 \")\" -printf '%p, %u:%g:%m\\n'") do
     its('stdout') { should cmp '' }
   end

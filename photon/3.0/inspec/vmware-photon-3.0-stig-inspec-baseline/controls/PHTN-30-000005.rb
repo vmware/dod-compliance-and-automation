@@ -5,27 +5,27 @@ control "PHTN-30-000005" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # cat /etc/profile.d/tmout.sh
-    
+
     Expected result:
-    
+
     TMOUT=900
-    readonly TMOUT 
+    readonly TMOUT
     export TMOUT
     mesg n 2>/dev/null
-    
+
     If the file \"tmout.sh\" does not exist or the output does not look like the expected result, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/profile.d/tmout.sh
-    
-    Set its content to the following: 
-    
+
+    Set its content to the following:
+
     TMOUT=900
-    readonly TMOUT 
+    readonly TMOUT
     export TMOUT
     mesg n 2>/dev/null
   "
@@ -38,7 +38,7 @@ control "PHTN-30-000005" do
   tag stig_id: "PHTN-30-000005"
   tag cci: ["CCI-000057", "CCI-000879", "CCI-002361"]
   tag nist: ["AC-11 a", "MA-4 e", "AC-12"]
-  
+
   describe file('/etc/profile.d/tmout.sh') do
     it { should exist }
     its('content') { should match /TMOUT=900/ }

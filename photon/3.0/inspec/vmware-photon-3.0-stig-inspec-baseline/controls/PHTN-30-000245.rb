@@ -5,20 +5,20 @@ control "PHTN-30-000245" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # resolvectl status | grep 'Fallback DNS'
-    
+
     If the output indicates that Fallback DNS servers are configured, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/systemd/resolved.conf
-    
+
     Remove or comment out any \"FallbackDNS\" entries.
-    
+
     Restart the Systemd resolved service by running the following command:
-    
+
     # systemctl restart systemd-resolved
   "
   impact 0.5

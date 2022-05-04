@@ -5,27 +5,27 @@ control "PHTN-30-000077" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # cat /etc/profile.d/umask.sh
-    
+
     Expected result:
-    
+
     # By default, the umask should be set.
     if [ \"$(id -gn)\" = \"$(id -un)\" -a $EUID -gt 99 ] ; then
       umask 002
     else
       umask 027
     fi
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/profile.d/umask.sh
-    
+
     Set the contents as follows:
-    
+
     # By default, the umask should be set.
     if [ \"$(id -gn)\" = \"$(id -un)\" -a $EUID -gt 99 ] ; then
       umask 002
@@ -41,7 +41,7 @@ control "PHTN-30-000077" do
   tag stig_id: "PHTN-30-000077"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   describe file('/etc/profile.d/umask.sh') do
     its('content') { should match "# By default, the umask should be set.\nif [ \"$(id -gn)\" = \"$(id -un)\" -a $EUID -gt 99 ] ; then\n  umask 002\nelse\n  umask 027\nfi" }
     its('content') { should match 'umask 002' }

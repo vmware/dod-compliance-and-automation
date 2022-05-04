@@ -5,18 +5,18 @@ control "PHTN-30-000107" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # /sbin/sysctl -a --pattern \"net.ipv4.tcp_timestamps$\"
-    
+
     Expected result:
-    
+
     net.ipv4.tcp_timestamps = 1
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command(s):
-    
+
     # sed -i -e \"/^net.ipv4.tcp_timestamps/d\" /etc/sysctl.conf
     # echo net.ipv4.tcp_timestamps=1>>/etc/sysctl.conf
     # /sbin/sysctl --load
@@ -29,7 +29,7 @@ control "PHTN-30-000107" do
   tag stig_id: "PHTN-30-000107"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   describe kernel_parameter('net.ipv4.tcp_timestamps') do
     its('value') { should eq 1 }
   end

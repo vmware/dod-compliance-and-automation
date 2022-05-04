@@ -5,18 +5,18 @@ control "PHTN-30-000027" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep \"^PASS_MIN_DAYS\" /etc/login.defs
-    
+
     If \"PASS_MIN_DAYS\" is not set to 1, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/login.defs
-    
-    Modify the PASS_MIN_DAYS line to the following: 
-    
+
+    Modify the PASS_MIN_DAYS line to the following:
+
     PASS_MIN_DAYS   1
   "
   impact 0.5
@@ -27,7 +27,7 @@ control "PHTN-30-000027" do
   tag stig_id: "PHTN-30-000027"
   tag cci: ["CCI-000198"]
   tag nist: ["IA-5 (1) (d)"]
-  
+
   describe login_defs do
     its('PASS_MIN_DAYS') { should cmp '1' }
   end

@@ -5,26 +5,26 @@ control "PHTN-30-000087" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # sshd -T|&grep -i IgnoreUserKnownHosts
-    
+
     Expected result:
-    
+
     IgnoreUserKnownHosts yes
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/ssh/sshd_config
-    
+
     Ensure that the \"IgnoreUserKnownHosts\" line is uncommented and set to the following:
-    
+
     IgnoreUserKnownHosts yes
-    
+
     At the command line, execute the following command:
-    
+
     # systemctl restart sshd.service
   "
   impact 0.5
@@ -35,7 +35,7 @@ control "PHTN-30-000087" do
   tag stig_id: "PHTN-30-000087"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   describe command('sshd -T|&grep -i IgnoreUserKnownHosts') do
     its('stdout.strip') { should cmp 'IgnoreUserKnownHosts yes' }
   end

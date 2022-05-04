@@ -5,14 +5,14 @@ control "PHTN-30-000047" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # stat -c \"%n is owned by %U and group owned by %G\" /etc/audit/auditd.conf
-    
+
     If auditd.conf is not owned by root and group owned by root, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command:
-    
+
     # chown root:root /etc/audit/auditd.conf
   "
   impact 0.5
@@ -23,7 +23,7 @@ control "PHTN-30-000047" do
   tag stig_id: "PHTN-30-000047"
   tag cci: ["CCI-001493"]
   tag nist: ["AU-9"]
-  
+
   describe file('/etc/audit/auditd.conf') do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'root' }

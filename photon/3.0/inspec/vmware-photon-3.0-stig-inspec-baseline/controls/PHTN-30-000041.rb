@@ -5,16 +5,16 @@ control "PHTN-30-000041" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # stat -c \"%n is owned by %U and group owned by %G with %a permissions\" /var/log/messages
-    
+
     If the /var/log/messages directory is not owned by root or not group owned by root or the file permissions are more permission than 640, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command(s):
-    
+
     # chown root:root /var/log/messages
-    
+
     # chmod 0640 /var/log/messages
   "
   impact 0.5
@@ -25,7 +25,7 @@ control "PHTN-30-000041" do
   tag stig_id: "PHTN-30-000041"
   tag cci: ["CCI-001314"]
   tag nist: ["SI-11 b"]
-  
+
   describe file('/var/log/messages') do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'root' }

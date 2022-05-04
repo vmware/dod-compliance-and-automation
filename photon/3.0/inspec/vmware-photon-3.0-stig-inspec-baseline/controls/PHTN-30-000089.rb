@@ -5,20 +5,20 @@ control "PHTN-30-000089" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # systemctl status ctrl-alt-del.target
-    
+
     Expected result:
-    
+
     ctrl-alt-del.target
     Loaded: masked (/dev/null; bad)
     Active: inactive (dead)
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command:
-    
+
     # systemctl mask ctrl-alt-del.target
   "
   impact 0.5
@@ -29,7 +29,7 @@ control "PHTN-30-000089" do
   tag stig_id: "PHTN-30-000089"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   describe systemd_service('ctrl-alt-del.target') do
     it { should_not be_enabled }
     it { should_not be_running }

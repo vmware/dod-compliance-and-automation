@@ -5,22 +5,22 @@ control "PHTN-30-000066" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep -i \"^clean_requirements_on_remove\" /etc/tdnf/tdnf.conf
-    
+
     Expected result:
-    
+
     clean_requirements_on_remove=true
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/tdnf/tdnf.conf
-    
+
     Remove any existing \"clean_requirements_on_remove\" line and ensure the following line is present:
-    
+
     clean_requirements_on_remove=true
   "
   impact 0.5
@@ -31,7 +31,7 @@ control "PHTN-30-000066" do
   tag stig_id: "PHTN-30-000066"
   tag cci: ["CCI-002617"]
   tag nist: ["SI-2 (6)"]
-  
+
   describe command('grep -i "^clean_requirements_on_remove" /etc/tdnf/tdnf.conf') do
     its('stdout.strip') { should cmp 'clean_requirements_on_remove=true' }
   end

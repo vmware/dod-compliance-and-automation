@@ -5,42 +5,42 @@ control "PHTN-30-000054" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command to obtain a list of setuid files:
-    
+
     # find / -xdev -perm -4000 -type f -o -perm -2000 -type f | sort
-    
+
     Execute the following command for each setuid file found in the first command:
-    
-    # auditctl -l | grep <setuid_path> 
-    
+
+    # auditctl -l | grep <setuid_path>
+
     Replace <setuid_path> with each path found in the first command.
-    
-    If each <setuid_path> does not have a corresponding line in the audit rules, this is a finding. 
-    
+
+    If each <setuid_path> does not have a corresponding line in the audit rules, this is a finding.
+
     A typical corresponding line will look like the below:
-    
+
     -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
-    
+
     Note: This check depends on the auditd service to be in a running state for accurate results. Enabling the auditd service is done in control PHTN-30-000013.
   "
   desc  "fix", "
     At the command line, execute the following command to obtain a list of setuid files:
-    
+
     # find / -xdev -perm -4000 -type f -o -perm -2000 -type f | sort
-    
+
     Execute the following for each setuid file found in the first command that does not have a corresponding line in the audit rules:
-    
+
     Navigate to and open:
-    
+
     /etc/audit/rules.d/audit.STIG.rules
-    
+
     Add the following line:
-    
+
     -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
-    
+
     Execute the following command to load the new audit rules:
-    
+
     # /sbin/augenrules --load
-    
+
     Note: An older audit.STIG.rules may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
   "
   impact 0.5

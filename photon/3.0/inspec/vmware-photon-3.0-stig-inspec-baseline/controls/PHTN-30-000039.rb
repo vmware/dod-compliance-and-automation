@@ -5,42 +5,42 @@ control "PHTN-30-000039" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-     
+
      # cat /etc/rsyslog.conf
-     
+
      The output should be similar to the following where <syslog server:port> is set to the environments approved syslog server:
-     
+
      *.* @<syslog server:port>;RSYSLOG_syslogProtocol23Format
-     
+
      If no line is returned or if the line is commented or no valid syslog server is specified, this is a finding.
   "
   desc  "fix", "
     Examples are provided for UDP, TCP, and TLS configurations.  Substitute the environments approved syslog server for <syslog server:port> for the protocol of choice.
-    
+
     For Example:
-    
+
     *.* @mysyslog.domain.local:514;RSYSLOG_syslogProtocol23Format
-    
+
     Navigate to and open:
-    
+
     /etc/rsyslog.conf
-    
+
     Remove any existing content and create a new remote server configuration line:
-     
+
      For UDP
-     
+
      *.* @<syslog server:port>;RSYSLOG_syslogProtocol23Format
-     
+
      For TCP
-     
+
      *.* @@<syslog server:port>;RSYSLOG_syslogProtocol23Format
-     
+
      For TLS
-     
+
      *.* @@(o)<syslog server:port>;RSYSLOG_syslogProtocol23Format
-     
+
     At the command line, execute the following command:
-    
+
      # systemctl restart rsyslog.service
   "
   impact 0.5
@@ -52,7 +52,7 @@ control "PHTN-30-000039" do
   tag stig_id: "PHTN-30-000039"
   tag cci: ["CCI-001312", "CCI-001683", "CCI-001684", "CCI-001685", "CCI-001851", "CCI-002702", "CCI-001851", "CCI-001686", "CCI-002132"]
   tag nist: ["SI-11 a", "AC-2 (4)", "AC-2 (4)", "AC-2 (4)", "AU-4 (1)", "SI-6 d", "AU-4 (1)", "AC-2 (4)", "AC-2 (4)"]
-  
+
   describe file('/etc/rsyslog.conf') do
     its('content') { should match /^.*#{input('syslogServer')}.*$/ }
   end

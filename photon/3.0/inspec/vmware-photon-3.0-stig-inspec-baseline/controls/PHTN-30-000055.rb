@@ -5,26 +5,26 @@ control "PHTN-30-000055" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep \"^num_logs\" /etc/audit/auditd.conf
-    
+
     Expected result:
-    
+
     num_logs = 5
-    
+
     If the output of the command does not match the expected result, this is a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/audit/auditd.conf
-    
+
     Add or change the \"num_logs\" line as follows:
-    
+
     num_logs = 5
-    
+
     At the command line, execute the following command(s):
-    
+
     # killproc auditd -TERM
     # systemctl start auditd
   "
@@ -36,7 +36,7 @@ control "PHTN-30-000055" do
   tag stig_id: "PHTN-30-000055"
   tag cci: ["CCI-001849"]
   tag nist: ["AU-4"]
-  
+
   describe auditd_conf do
     its('num_logs') { should cmp '5' }
   end

@@ -5,21 +5,21 @@ control "PHTN-30-000109" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # stat -c \"%n permissions are %a and owned by %U:%G\" /etc/ssh/*key
-    
+
     Expected result:
-    
+
     /etc/ssh/ssh_host_dsa_key permissions are 600 and owned by root:root
     /etc/ssh/ssh_host_ecdsa_key permissions are 600 and owned by root:root
     /etc/ssh/ssh_host_ed25519_key permissions are 600 and owned by root:root
     /etc/ssh/ssh_host_rsa_key permissions are 600 and owned by root:root
-    
+
     If the output does not match the expected result, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command(s) for each returned file:
-    
+
     # chmod 600 <file>
     # chown root:root <file>
   "
@@ -31,7 +31,7 @@ control "PHTN-30-000109" do
   tag stig_id: "PHTN-30-000109"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   command('find /etc/ssh/ -maxdepth 1 -name "*key"').stdout.split.each do |fname|
     describe file(fname) do
       its('owner') { should cmp 'root' }

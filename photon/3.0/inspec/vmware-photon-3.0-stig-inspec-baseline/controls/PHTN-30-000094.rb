@@ -5,14 +5,14 @@ control "PHTN-30-000094" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # find / -fstype ext4 -nouser -o -nogroup -exec ls -ld {} \\; 2>/dev/null
-    
+
     If any files are returned, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command for each returned file:
-    
+
     # chown root:root <file>
   "
   impact 0.5
@@ -23,14 +23,13 @@ control "PHTN-30-000094" do
   tag stig_id: "PHTN-30-000094"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   verbose = input('verbose')
-  
+
   # Pull all supported local filesystems from /proc/filesystems
   command('grep -v "nodev" /proc/filesystems | awk \'NF{ print $NF }\'').stdout.strip.split("\n").each do |fs|
     # Collect the mount points of all mounted filesystems matching the type
     command("df -t #{fs} --output=target | tail +2").stdout.split("\n").each do |mp|
-  
       # If verbose is 'true' find and list (ls) all files with unknown owner/group
       if verbose
         user_cmd = command("find #{mp} -xdev -fstype #{fs} -nouser -exec ls -ld {} \\; 2>/dev/null").stdout

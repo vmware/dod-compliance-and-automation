@@ -5,14 +5,14 @@ control "PHTN-30-000040" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
-    # stat -c \"%n is owned by %U and group owned by %G\" /var/log 
-    
+
+    # stat -c \"%n is owned by %U and group owned by %G\" /var/log
+
     If the /var/log directory is not owned by root, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command:
-    
+
     # chown root:root /var/log
   "
   impact 0.5
@@ -23,7 +23,7 @@ control "PHTN-30-000040" do
   tag stig_id: "PHTN-30-000040"
   tag cci: ["CCI-001314"]
   tag nist: ["SI-11 b"]
-  
+
   describe directory('/var/log') do
     its('owner') { should cmp 'root' }
   end

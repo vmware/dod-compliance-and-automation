@@ -5,22 +5,22 @@ control "PHTN-30-000114" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # grep UMASK /etc/login.defs
-    
+
     Expected result:
-    
+
     UMASK 077
-    
+
     If the output does not match the expected result, this a finding.
   "
   desc  "fix", "
     Navigate to and open:
-    
+
     /etc/login.defs
-    
+
     Ensure that the \"UMASK\" line is uncommented and set to the following:
-    
+
     UMASK 077
   "
   impact 0.5
@@ -31,7 +31,7 @@ control "PHTN-30-000114" do
   tag stig_id: "PHTN-30-000114"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   describe login_defs do
     its('UMASK') { should cmp '077' }
   end

@@ -5,17 +5,17 @@ control "PHTN-30-000076" do
   desc  "rationale", ""
   desc  "check", "
     At the command line, execute the following command:
-    
+
     # systemctl status debug-shell.service|grep -E --color=always disabled
-    
+
     If the debug-shell service is not disabled, this is a finding.
   "
   desc  "fix", "
     At the command line, execute the following command(s):
-    
+
     # systemctl stop debug-shell.service
     # systemctl disable debug-shell.service
-    
+
     Reboot for changes to take effect.
   "
   impact 0.5
@@ -26,7 +26,7 @@ control "PHTN-30-000076" do
   tag stig_id: "PHTN-30-000076"
   tag cci: ["CCI-000366"]
   tag nist: ["CM-6 b"]
-  
+
   describe systemd_service('debug-shell.service') do
     it { should_not be_enabled }
     it { should_not be_running }
