@@ -1,0 +1,15 @@
+---
+name: VMware vSphere 7.0 vCenter STIG Readiness Guide
+title: VMware vSphere 7.0 vCenter STIG Readiness Guide
+maintainer: The Authors
+copyright: The Authors
+copyright_email: 
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.3
+
+inputs:
+  - name: ipfixCollectorAddress
+    value: ""
+    type: string
+    description: "If IpFix is used enter the collector address"
