@@ -50,7 +50,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Copy Photon playbook to roles folder
         run: |
-          cp ./photon/3.0/inspec/vmware-photon-3.0-stig-ansible-hardening /usr/share/ansible/roles
+          cp photon/3.0/inspec/vmware-photon-3.0-stig-ansible-hardening/ /usr/share/ansible/roles
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/"  # <-- only one value is allowed
