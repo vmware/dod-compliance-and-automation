@@ -51,10 +51,8 @@ jobs:
       - name: Copy Photon playbook to roles folder
         run: |
           echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
-          echo "github.workspace = ${{ github.workspace }}"
-          echo "$GITHUB_CONTEXT"
           ls -la $GITHUB_WORKSPACE
-          cp photon/3.0/inspec/vmware-photon-3.0-stig-ansible-hardening/ /usr/share/ansible/roles
+          cp $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/ /usr/share/ansible/roles
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/"  # <-- only one value is allowed
