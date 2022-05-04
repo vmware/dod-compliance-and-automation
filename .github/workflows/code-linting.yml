@@ -52,8 +52,9 @@ jobs:
         run: |
           echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
           ls -la $GITHUB_WORKSPACE
-          ls -la /github/home/.ansible/roles
-          cp -r $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/ /github/home/.ansible/roles
+          mkdir -p /usr/share/ansible/roles
+          cp -r $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/ /usr/share/ansible/roles
+          ls -la /usr/share/ansible/roles
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/"  # <-- only one value is allowed
