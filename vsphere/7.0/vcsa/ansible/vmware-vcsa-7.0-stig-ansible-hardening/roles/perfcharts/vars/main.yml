@@ -11,6 +11,7 @@ var_server_xml_acceptcount: '300'
 var_server_xml_uriencoding: 'UTF-8'
 var_server_xml_show_server_info: 'false'
 var_server_xml_show_server_report: 'false'
+var_server_xml_server: 'Anonymous'
 
 # web.xml variables
 var_web_xml_path: '/usr/lib/vmware-perfcharts/tc-instance/conf/web.xml'
