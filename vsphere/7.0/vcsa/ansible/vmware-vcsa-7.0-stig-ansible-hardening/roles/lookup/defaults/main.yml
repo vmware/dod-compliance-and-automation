@@ -30,7 +30,7 @@ run_remove_webdav: true
 # VCLU-70-000015
 run_mem_leak_prevention: true
 # VCLU-70-000017
-run_web_files_permissions: true
+run_web_files_permissions: false
 # VCLU-70-000018
 run_catalina_properties_shutdown: true
 # VCLU-70-000019

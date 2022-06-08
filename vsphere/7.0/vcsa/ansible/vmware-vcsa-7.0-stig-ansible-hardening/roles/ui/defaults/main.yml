@@ -32,7 +32,7 @@ run_remove_webdav: true
 # VCUI-70-000015
 run_mem_leak_prevention: true
 # VCUI-70-000017
-run_web_files_permissions: true
+run_web_files_permissions: false
 # VCUI-70-000018
 run_session_cookies: true
 # VCUI-70-000019

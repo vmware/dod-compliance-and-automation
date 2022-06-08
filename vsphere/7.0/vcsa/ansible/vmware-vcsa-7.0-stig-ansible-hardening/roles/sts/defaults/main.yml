@@ -31,7 +31,7 @@ run_remove_webdav: true
 # VCST-70-000015
 run_mem_leak_prevention: true
 # VCST-70-000017
-run_web_files_permissions: true
+run_web_files_permissions: false
 # VCST-70-000018
 run_catalina_props_init_failure: true
 # VCST-70-000019
