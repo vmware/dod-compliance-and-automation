@@ -1,2 +1,3 @@
 var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
 run_login_umask: false # Setting this to false until umask issue is resolved
+run_configure_default_umask: false #Setting this one to false too.
