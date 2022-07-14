@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/6.7/vcsa/ansible/vmware-vcsa-6.7-stig-ansible-hardening/"  # <-- only one value is allowed
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # - name: Copy Photon playbook to roles folder
       #   run: |
       #     echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "photon/3.0/inspec/vmware-photon-3.0-stig-ansible-hardening/"  # <-- only one value is allowed
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # - name: Copy Photon playbook to roles folder
       #   run: |
       #     echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
