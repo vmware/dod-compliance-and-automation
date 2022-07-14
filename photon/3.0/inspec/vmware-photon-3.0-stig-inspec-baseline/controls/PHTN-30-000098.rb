@@ -1,13 +1,12 @@
-# -*- encoding : utf-8 -*-
-control "PHTN-30-000098" do
-  title "The Photon operating system must not forward IPv4 or IPv6 source-routed packets."
+control 'PHTN-30-000098' do
+  title 'The Photon operating system must not forward IPv4 or IPv6 source-routed packets.'
   desc  "
     Source routing is an Internet Protocol mechanism that allows an IP packet to carry information, a list of addresses, that tells a router the path the packet must take. There is also an option to record the hops as the route is traversed.
 
     The list of hops taken, the \"route record\", provides the destination with a return path to the source. This allows the source (the sending host) to specify the route, loosely or strictly, ignoring the routing tables of some or all of the routers. It can allow a user to redirect network traffic for malicious purposes and should therefore be disabled.
   "
-  desc  "rationale", ""
-  desc  "check", "
+  desc  'rationale', ''
+  desc  'check', "
     At the command line, execute the following command:
 
     # /sbin/sysctl -a --pattern \"net.ipv[4|6].conf.(all|default|eth.*).accept_source_route\"
@@ -25,20 +24,20 @@ control "PHTN-30-000098" do
 
     Note: The number of \"ethx\" lines returned is dependant on the number of interfaces. Every \"ethx\" entry must be set to \"0\".
   "
-  desc  "fix", "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # for SETTING in $(/sbin/sysctl -aN --pattern \"net.ipv[4|6].conf.(all|default|eth.*).accept_source_route\"); do sed -i -e \"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=0>>/etc/sysctl.conf; done
     # /sbin/sysctl --load
   "
   impact 0.5
-  tag severity: "medium"
-  tag gtitle: "SRG-OS-000480-GPOS-00227"
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: nil
   tag rid: nil
-  tag stig_id: "PHTN-30-000098"
-  tag cci: ["CCI-000366"]
-  tag nist: ["CM-6 b"]
+  tag stig_id: 'PHTN-30-000098'
+  tag cci: ['CCI-000366']
+  tag nist: ['CM-6 b']
 
   describe kernel_parameter('net.ipv4.conf.all.accept_source_route') do
     its('value') { should eq 0 }

@@ -1,13 +1,12 @@
-# -*- encoding : utf-8 -*-
-control "PHTN-30-000031" do
-  title "The Photon operating system must require authentication upon booting into single-user and maintenance modes."
+control 'PHTN-30-000031' do
+  title 'The Photon operating system must require authentication upon booting into single-user and maintenance modes.'
   desc  "
     If the system does not require authentication before it boots into single-user mode, anyone with console access to the system can trivially access all files on the system. GRUB2 is the boot loader for Photon OS and is can be configured to require a password to boot into single-user mode or make modifications to the boot menu.
 
     Note: Photon does not support building grub changes via grub2-mkconfig.
   "
-  desc  "rationale", ""
-  desc  "check", "
+  desc  'rationale', ''
+  desc  'check', "
     At the command line, execute the following command:
 
     # grep -i ^password_pbkdf2 /boot/grub2/grub.cfg
@@ -16,7 +15,7 @@ control "PHTN-30-000031" do
 
     If the output does not begin with \"password_pbkdf2 root\", this is a finding.
   "
-  desc  "fix", "
+  desc 'fix', "
     At the command line, execute the following command:
 
     # grub2-mkpasswd-pbkdf2
@@ -85,13 +84,13 @@ control "PHTN-30-000031" do
     }
   "
   impact 0.7
-  tag severity: "high"
-  tag gtitle: "SRG-OS-000080-GPOS-00048"
+  tag severity: 'high'
+  tag gtitle: 'SRG-OS-000080-GPOS-00048'
   tag gid: nil
   tag rid: nil
-  tag stig_id: "PHTN-30-000031"
-  tag cci: ["CCI-000213"]
-  tag nist: ["AC-3"]
+  tag stig_id: 'PHTN-30-000031'
+  tag cci: ['CCI-000213']
+  tag nist: ['AC-3']
 
   describe command('grep -i ^password_pbkdf2 /boot/grub2/grub.cfg') do
     its('stdout.strip') { should match /.*password_pbkdf2 root.*/ }

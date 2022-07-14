@@ -1,5 +1,13 @@
 # Change Log
 
+## [3.0 Version 1 Release 5] (2022-06-27)
+
+#### Release Notes
+- Updated backup steps to not fail if file doesn't exist and to not be displayed as a change
+- Misc improvements
+- PHTN-30-000053 Removed
+- PHTN-30-000077 Removed
+
 ## [3.0 Version 1 Release 4] (2022-04-18)
 
 #### Release Notes

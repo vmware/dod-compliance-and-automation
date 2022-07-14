@@ -1,6 +1,6 @@
 # vmware-photon-3.0-stig-ansible-hardening
 VMware Photon OS 3.0 STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 4: 18 April 2022  
+Version: Version 1 Release 5: 27 June 2022  
 STIG Type: STIG Readiness Guide  
 
 ## Requirements
@@ -9,7 +9,7 @@ STIG Type: STIG Readiness Guide
 - Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 10 to run an Unbuntu box for example
 
 ## Backups
-The first item in the photon.yml task is to backup files that may be changed to a folder under /tmp.
+The first item in the photon.yml task is to backup files that may be changed under a folder in the /tmp folder with a timestamp for each ansible run.  
 This can be turned on/off by updating the create_backups variable to true or false in the defaults main.yml file.
 
 ## Playbook Structure
@@ -19,9 +19,8 @@ This can be turned on/off by updating the create_backups variable to true or fal
 - /roles/photon/handlers/main.yaml - handlers referenced in the photon task
 - /roles/photon/tasks/main.yml - Default role playbook
 - /roles/photon/tasks/photon.yml - Photon STIG playbook
-- /roles/photon/templates/audit.STIG.rules.j2 - Auditd rules file template
-- /roles/photon/templates/issue.j2 - Issue file template with DoD login banner
-- /roles/photon/templates/umask.sh.j2 - umask.sh file template
+- /roles/photon/templates/audit.STIG.rules - Auditd rules file template
+- /roles/photon/templates/issue - Issue file template with DoD login banner
 - /roles/photon/vars/main.yml - variables reference by photon task.  Update these variables as needed for your environment.
 
 ## How to run
@@ -31,14 +30,14 @@ Run all controls on a single host. Prompts for user password and displays verbos
 ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v  
 ```
 
-Run all controls on a single host in check mode and does not change anything. Prompts for user password and displays verbose output  
+Run all controls on a single host and also supply variables at the command line via a vars file. Prompts for user password and displays verbose output
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --check  
+ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --tags photon --extra-vars @vars-vcenter-7.0.yml
 ```
 
 Run all controls on a single host and only for a specific control PHTN-OS-000001. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --tags PHTN-OS-000001  
+ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --tags PHTN-30-000001  
 ```
 
 Run all controls on a single host and only for a specific group of controls for ssh. Prompts for user password and displays verbose output  
@@ -115,7 +114,6 @@ Enabling FIPS mode for the kernel is disabled by default. Update the run_fips_ke
 | PHTN-30-000049 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000050 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000051 | :heavy_check_mark: |         :x:        |
-| PHTN-30-000053 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000054 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000055 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000056 | :heavy_check_mark: |         :x:        |
@@ -138,7 +136,6 @@ Enabling FIPS mode for the kernel is disabled by default. Update the run_fips_ke
 | PHTN-30-000074 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000075 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000076 | :heavy_check_mark: |         :x:        |
-| PHTN-30-000077 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000078 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000079 | :heavy_check_mark: |         :x:        |
 | PHTN-30-000080 | :heavy_check_mark: |         :x:        |

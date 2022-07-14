@@ -1,16 +1,15 @@
-# -*- encoding : utf-8 -*-
-control "PHTN-30-000048" do
-  title "The Photon operating system must protect audit tools from unauthorized modification and deletion."
-  desc  "Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operations on audit information."
-  desc  "rationale", ""
-  desc  "check", "
+control 'PHTN-30-000048' do
+  title 'The Photon operating system must protect audit tools from unauthorized modification and deletion.'
+  desc  'Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operations on audit information.'
+  desc  'rationale', ''
+  desc  'check', "
     At the command line, execute the following command:
 
     # stat -c \"%n is owned by %U and group owned by %G and permissions are %a\" /usr/sbin/auditctl /usr/sbin/auditd /usr/sbin/aureport /usr/sbin/ausearch /usr/sbin/autrace
 
     If any file is not owned by root or group owned by root or permissions are more permissive than 750, this is a finding.
   "
-  desc  "fix", "
+  desc 'fix', "
     At the command line, execute the following command for each file returned for user and group ownership:
 
     # chown root:root <file>
@@ -20,14 +19,14 @@ control "PHTN-30-000048" do
     # chmod 750 <file>
   "
   impact 0.5
-  tag severity: "medium"
-  tag gtitle: "SRG-OS-000257-GPOS-00098"
-  tag satisfies: ["SRG-OS-000258-GPOS-00099"]
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000257-GPOS-00098'
+  tag satisfies: ['SRG-OS-000258-GPOS-00099']
   tag gid: nil
   tag rid: nil
-  tag stig_id: "PHTN-30-000048"
-  tag cci: ["CCI-001494", "CCI-001495"]
-  tag nist: ["AU-9", "AU-9"]
+  tag stig_id: 'PHTN-30-000048'
+  tag cci: ['CCI-001494', 'CCI-001495']
+  tag nist: ['AU-9', 'AU-9']
 
   describe file('/usr/sbin/auditctl') do
     its('owner') { should cmp 'root' }

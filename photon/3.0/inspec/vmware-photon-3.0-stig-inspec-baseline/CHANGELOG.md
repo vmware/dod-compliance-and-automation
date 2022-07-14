@@ -1,5 +1,14 @@
 # Change Log
 
+## [3.0 Version 1 Release 5] (2022-06-27)
+
+#### Release Notes
+- Additional style rubocop fixes
+- Updated regex for PAM controls to validate more scenarios
+-	PHTN-30-000053 was removed
+-	PHTN-30-000077 was removed
+-	PHTN-30-000245 was updated
+
 ## [3.0 Version 1 Release 4] (2022-04-18)
 
 #### Release Notes

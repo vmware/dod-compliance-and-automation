@@ -1,9 +1,8 @@
-# -*- encoding : utf-8 -*-
-control "PHTN-30-000078" do
-  title "The Photon operating system must configure sshd to disallow Generic Security Service Application Program Interface (GSSAPI) authentication."
+control 'PHTN-30-000078' do
+  title 'The Photon operating system must configure sshd to disallow Generic Security Service Application Program Interface (GSSAPI) authentication.'
   desc  "GSSAPI authentication is used to provide additional authentication mechanisms to applications. Allowing GSSAPI authentication through SSH exposes the system's GSSAPI to remote hosts, increasing the attack surface of the system."
-  desc  "rationale", ""
-  desc  "check", "
+  desc  'rationale', ''
+  desc  'check', "
     At the command line, execute the following command:
 
     # sshd -T|&grep -i GSSAPIAuthentication
@@ -14,7 +13,7 @@ control "PHTN-30-000078" do
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  "fix", "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -28,15 +27,16 @@ control "PHTN-30-000078" do
     # systemctl restart sshd.service
   "
   impact 0.5
-  tag severity: "medium"
-  tag gtitle: "SRG-OS-000480-GPOS-00227"
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: nil
   tag rid: nil
-  tag stig_id: "PHTN-30-000078"
-  tag cci: ["CCI-000366"]
-  tag nist: ["CM-6 b"]
+  tag stig_id: 'PHTN-30-000078'
+  tag cci: ['CCI-000366']
+  tag nist: ['CM-6 b']
 
-  describe command('sshd -T|&grep -i GSSAPIAuthentication') do
+  sshdcommand = input('sshdcommand')
+  describe command("#{sshdcommand}|&grep -i GSSAPIAuthentication") do
     its('stdout.strip') { should cmp 'GSSAPIAuthentication no' }
   end
 end

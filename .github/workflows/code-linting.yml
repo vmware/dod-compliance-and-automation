@@ -48,14 +48,16 @@ jobs:
     steps:
       - name: Clone Repo
         uses: actions/checkout@v2
-      # - name: Copy Photon playbook to roles folder
-      #   run: |
-      #     echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
-      #     ls -la $GITHUB_WORKSPACE
-      #     mkdir -p /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening
-      #     cp -r $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/roles/*/* /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/
-      #     ls -la /usr/share/ansible/roles
-      #     ansible-galaxy role list
+      - name: Copy Photon playbook to roles folder
+        run: |
+          echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
+          ls -la $GITHUB_WORKSPACE
+          mkdir -p /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening
+          cp -r $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/roles/*/* /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/
+          mkdir -p /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/vmware-photon-3.0-stig-ansible-hardening
+          cp $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/*.* /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/vmware-photon-3.0-stig-ansible-hardening/
+          ls -la /usr/share/ansible/roles
+          ansible-galaxy role list
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/"  # <-- only one value is allowed
@@ -82,3 +84,36 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "photon/3.0/inspec/vmware-photon-3.0-stig-ansible-hardening/"  # <-- only one value is allowed
+  cookstyle-vcd104:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v2
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
+      - name: Install cookstyle and run
+        run: |
+          gem install cookstyle
+          cookstyle ./vcd/10.4/inspec
+  ansiblelint-vcd104:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v2
+      - name: Copy Photon playbook to roles folder
+        run: |
+          echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
+          ls -la $GITHUB_WORKSPACE
+          mkdir -p /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening
+          cp -r $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/roles/*/* /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/
+          mkdir -p /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/vmware-photon-3.0-stig-ansible-hardening
+          cp $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/*.* /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/vmware-photon-3.0-stig-ansible-hardening/
+          ls -la /usr/share/ansible/roles
+          ansible-galaxy role list
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vcd/10.4/ansible/vmware-cloud-director-10.4-stig-ansible-hardening/"  # <-- only one value is allowed

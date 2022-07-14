@@ -19,6 +19,8 @@
     src: "{{ item }}"
     dest: "/tmp/ansible-backups-{{ backup_timestamp }}/"
     mode: preserve
+  changed_when: false
+  ignore_errors: true
   with_items:
     - '{{ var_syslog_conf_path }}'
     - '{{ var_sshd_banner }}'
@@ -50,7 +52,7 @@
 
 - name: PHTN-30-000001 - Update/Create audit.STIG.rules file
   ansible.builtin.template:
-    src: audit.STIG.rules.j2
+    src: audit.STIG.rules
     dest: '{{ var_auditd_rule_file }}'
     owner: root
     group: root
@@ -93,7 +95,55 @@
   when:
     - run_pamd_lock | bool
 
-- name: PHTN-30-000002 - Create rule for pam_tally2.so if it doesn't exist after the pam_unix.so auth rule in system-account
+- name: PHTN-30-000002 - Check for bad location of existing pam_tally2.so rule in system-auth
+  ansible.builtin.lineinfile:
+    name: /etc/pam.d/system-auth
+    regexp: '^auth\s*required\s*pam_unix\.so.*\n^auth\s*required\s*pam_tally2\.so.*'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: authtallybad
+  tags:
+    - PHTN-30-000002
+    - pam
+  when:
+    - run_pamd_lock | bool
+    - authtally.found == 1
+
+- name: PHTN-30-000002 - Delete rule for pam_tally2.so if it doesn't exist after the pam_unix.so auth rule in system-auth
+  community.general.pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_tally2.so
+    state: absent
+  tags:
+    - PHTN-30-000002
+    - pam
+  when:
+    - run_pamd_lock | bool
+    - authtally.found == 1
+    - authtallybad.found == 0
+
+- name: PHTN-30-000002 - Create rule for pam_tally2.so if it doesn't exist after the pam_unix.so auth rule in system-auth if a bad one was deleted before pam_unix.so
+  community.general.pamd:
+    name: system-auth
+    type: auth
+    control: required
+    module_path: pam_unix.so
+    new_type: auth
+    new_control: required
+    new_module_path: pam_tally2.so
+    state: after
+  tags:
+    - PHTN-30-000002
+    - pam
+  when:
+    - run_pamd_lock | bool
+    - authtally.found == 1
+    - authtallybad.found == 0
+
+- name: PHTN-30-000002 - Create rule for pam_tally2.so if it doesn't exist after the pam_unix.so auth rule in system-auth
   community.general.pamd:
     name: system-auth
     type: auth
@@ -121,8 +171,7 @@
         audit
         even_deny_root
         unlock_time={{ var_pamd_unlock_time }}
-        root_unlock_time={{ var_pamd_root_unlock_time }}
-        file=/var/log/tallylog'
+        root_unlock_time={{ var_pamd_root_unlock_time }}'
     state: updated
   tags:
     - PHTN-30-000002
@@ -144,7 +193,55 @@
   when:
     - run_pamd_lock | bool
 
-- name: PHTN-30-000002 - Create rule for pam_tally2.so if it doesn't exist after the pam_unix.so auth rule in system-account
+- name: PHTN-30-000002 - Check for bad location of existing pam_tally2.so rule in system-account
+  ansible.builtin.lineinfile:
+    name: /etc/pam.d/system-account
+    regexp: '^account\s*required\s*pam_unix\.so.*\n^account\s*required\s*pam_tally2\.so.*'
+    state: absent
+  check_mode: true
+  changed_when: false
+  register: accounttallybad
+  tags:
+    - PHTN-30-000002
+    - pam
+  when:
+    - run_pamd_lock | bool
+    - accounttally.found == 1
+
+- name: PHTN-30-000002 - Delete rule for pam_tally2.so if it doesn't exist after the pam_unix.so account rule in system-account
+  community.general.pamd:
+    name: system-account
+    type: account
+    control: required
+    module_path: pam_tally2.so
+    state: absent
+  tags:
+    - PHTN-30-000002
+    - pam
+  when:
+    - run_pamd_lock | bool
+    - accounttally.found == 1
+    - accounttallybad.found == 0
+
+- name: PHTN-30-000002 - Create rule for pam_tally2.so if it doesn't exist after the pam_unix.so account rule in system-account if a bad one was deleted before pam_unix.so
+  community.general.pamd:
+    name: system-account
+    type: account
+    control: required
+    module_path: pam_unix.so
+    new_type: account
+    new_control: required
+    new_module_path: pam_tally2.so
+    state: after
+  tags:
+    - PHTN-30-000002
+    - pam
+  when:
+    - run_pamd_lock | bool
+    - accounttally.found == 1
+    - accounttallybad.found == 0
+
+- name: PHTN-30-000002 - Create rule for pam_tally2.so if it doesn't exist after the pam_unix.so account rule in system-account
   community.general.pamd:
     name: system-account
     type: account
@@ -169,8 +266,7 @@
     module_path: pam_tally2.so
     module_arguments: 'deny={{ var_pamd_lock }}
         onerr=fail
-        audit
-        file=/var/log/tallylog'
+        audit'
     state: updated
   tags:
     - PHTN-30-000002
@@ -199,7 +295,7 @@
 
 - name: PHTN-30-000003 - Update/Create /etc/issue file
   ansible.builtin.template:
-    src: issue.j2
+    src: issue
     dest: '{{ var_sshd_banner }}'
     owner: root
     group: root
@@ -235,7 +331,7 @@
 
 - name: PHTN-30-000005 - Create /etc/profile.d/tmout.sh
   ansible.builtin.template:
-    src: tmout.sh.j2
+    src: tmout.sh
     dest: /etc/profile.d/tmout.sh
     force: false
     group: root
@@ -368,7 +464,7 @@
 # Title: The Photon operating system must have the auditd service running.
 
 - name: PHTN-30-000013 - The Photon operating system must have the auditd service running.
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: auditd
     state: started
     enabled: true
@@ -1118,33 +1214,12 @@
 
 ############################################
 
-# Title: The Photon operating system must configure sshd with a specific ListenAddress.
-
-- name: PHTN-30-000053 - Configure sshd listen address
-  ansible.builtin.lineinfile:
-    path: '{{ var_sshd_config_file }}'
-    state: present
-    regexp: '^ListenAddress.*$'
-    line: ListenAddress {{ ansible_eth0.ipv4.address }}
-    firstmatch: true
-  tags:
-    - PHTN-30-000053
-    - sshd
-  notify:
-    - restart sshd
-  when:
-    - run_sshd_listenaddress | bool
-
-############################################
-
 # Title: The Photon operating system must configure auditd to keep five rotated log files.
 
 - name: PHTN-30-000055 - Configure auditd num_logs
   ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
-    regexp: '^num_logs.*$'
     line: num_logs = {{ var_auditd_num_logs }}
-    create: true
     state: present
   tags:
     - PHTN-30-000055
@@ -1161,9 +1236,7 @@
 - name: PHTN-30-000056 - Configure auditd max_log_file_action
   ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
-    regexp: '^max_log_file_action.*$'
     line: max_log_file_action = {{ var_auditd_max_log_file_action }}
-    create: true
     state: present
   tags:
     - PHTN-30-000056
@@ -1180,9 +1253,7 @@
 - name: PHTN-30-000057 - Configure auditd space_left
   ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
-    regexp: '^space_left.*$'
     line: space_left = {{ var_auditd_space_left }}
-    create: true
     state: present
   tags:
     - PHTN-30-000057
@@ -1478,9 +1549,7 @@
 - name: PHTN-30-000074 - Configure auditd flush
   ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
-    regexp: '^flush*$'
     line: flush = {{ var_auditd_flush }}
-    create: true
     state: present
   tags:
     - PHTN-30-000074
@@ -1491,9 +1560,7 @@
 - name: PHTN-30-000074 - Configure auditd freq
   ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
-    regexp: '^freq*$'
     line: freq = {{ var_auditd_freq }}
-    create: true
     state: present
   tags:
     - PHTN-30-000074
@@ -1532,24 +1599,6 @@
     - services
   when:
     - run_service_debug_shell | bool
-
-############################################
-
-# Title: The Photon operating system must configure a secure umask for all shells.
-
-- name: PHTN-30-000077 - Configure /etc/profile.d/umask.sh
-  ansible.builtin.template:
-    src: umask.sh.j2
-    dest: '{{ var_umask_file }}'
-    owner: root
-    group: root
-    mode: '0644'
-    force: true
-  tags:
-    - PHTN-30-000077
-    - umask
-  when:
-    - run_configure_default_umask | bool
 
 ############################################
 
@@ -1967,9 +2016,8 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: o-w
+    mode: 0644
     owner: root
-    group: root
   with_items: "{{ crondfiles.files }}"
   tags:
     - PHTN-30-000096
@@ -1993,9 +2041,8 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: o-w
+    mode: 0644
     owner: root
-    group: root
   with_items: "{{ crondailyfiles.files }}"
   tags:
     - PHTN-30-000096
@@ -2019,9 +2066,8 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: o-w
+    mode: 0644
     owner: root
-    group: root
   with_items: "{{ cronhourlyfiles.files }}"
   tags:
     - PHTN-30-000096
@@ -2045,9 +2091,8 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: o-w
+    mode: 0644
     owner: root
-    group: root
   with_items: "{{ cronmonthlyfiles.files }}"
   tags:
     - PHTN-30-000096
@@ -2071,9 +2116,8 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: o-w
+    mode: 0644
     owner: root
-    group: root
   with_items: "{{ cronweeklyfiles.files }}"
   tags:
     - PHTN-30-000096
@@ -2637,7 +2681,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: "0600"
+    mode: o-w
     owner: root
     group: root
   with_items: "{{ bootcfgfiles.files }}"
@@ -2684,7 +2728,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: "0600"
+    mode: o-w
     owner: root
     group: root
   with_items: "{{ sysctlfiles.files }}"
@@ -2698,7 +2742,7 @@
   ansible.builtin.file:
     path: '{{ var_sysctl_conf_file }}'
     state: file
-    mode: "0600"
+    mode: o-w
     owner: root
     group: root
   tags:
@@ -2849,10 +2893,11 @@
 # Title: The Photon operating system must disable systemd fallback DNS.
 
 - name: PHTN-30-000245 - Comment out fallback DNS in resolved
-  ansible.builtin.replace:
+  ansible.builtin.lineinfile:
     path: '{{ var_resolved_file }}'
-    regexp: '^FallbackDNS='
-    replace: '#FallbackDNS='
+    state: present
+    regexp: '^#?\s*FallbackDNS='
+    line: FallbackDNS=
   tags:
     - PHTN-30-000245
   notify:
