@@ -55,14 +55,14 @@ control 'CDAP-10-000038' do
     orgs = JSON.parse(result.body)
     orgs['org'].each do |org|
       orgid = org['href'].scan(%r{.*org/(.*)}).flatten[0]
+      orgsettings = http("https://#{input('vcdURL')}/api/admin/org/#{orgid}/settings",
+                  method: 'GET',
+                  headers: {
+                    'Accept' => "#{input('legacyapiVersion')}",
+                    'Authorization' => "#{input('bearerToken')}",
+                    },
+                  ssl_verify: false)
       if org['name'] == 'System'
-        orgsettings = http("https://#{input('vcdURL')}/api/admin/org/#{orgid}/settings",
-                          method: 'GET',
-                          headers: {
-                            'Accept' => "#{input('legacyapiVersion')}",
-                            'Authorization' => "#{input('bearerToken')}",
-                            },
-                          ssl_verify: false)
         providerLdapSettings = http("https://#{input('vcdURL')}/api/admin/extension/settings/ldapSettings",
                                   method: 'GET',
                                   headers: {
@@ -92,13 +92,6 @@ control 'CDAP-10-000038' do
           end
         end
       else
-        orgsettings = http("https://#{input('vcdURL')}/api/admin/org/#{orgid}/settings",
-                          method: 'GET',
-                          headers: {
-                            'Accept' => "#{input('legacyapiVersion')}",
-                            'Authorization' => "#{input('bearerToken')}",
-                            },
-                          ssl_verify: false)
         describe orgsettings do
           its('status') { should cmp 200 }
         end

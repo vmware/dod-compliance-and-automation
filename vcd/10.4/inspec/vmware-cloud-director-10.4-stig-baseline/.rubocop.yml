@@ -23,3 +23,5 @@ Layout/EmptyLinesAroundBlockBody:
   Enabled: true
 Style/StringLiterals:
   Enabled: true
+Style/IdenticalConditionalBranches:
+  Enabled: false

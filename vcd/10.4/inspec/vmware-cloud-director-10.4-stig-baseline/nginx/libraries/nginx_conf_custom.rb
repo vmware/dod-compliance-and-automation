@@ -1,14 +1,14 @@
-require "parslet"
-require "inspec/utils/find_files"
-require "inspec/utils/file_reader"
-require "forwardable" unless defined?(Forwardable)
+require 'parslet'
+require 'inspec/utils/find_files'
+require 'inspec/utils/file_reader'
+require 'forwardable' unless defined?(Forwardable)
 
 class NginxConf < Inspec.resource(1)
-  name "nginx_conf_custom"
-  supports platform: "unix"
-  desc "Use the nginx_conf_custom InSpec resource to test configuration data "\
-        "for the NginX web server located in /etc/nginx/nginx.conf on "\
-        "Linux and UNIX platforms."
+  name 'nginx_conf_custom'
+  supports platform: 'unix'
+  desc 'Use the nginx_conf_custom InSpec resource to test configuration data '\
+        'for the NginX web server located in /etc/nginx/nginx.conf on '\
+        'Linux and UNIX platforms.'
   example <<~EXAMPLE
     describe nginx_conf_custom.params ...
     describe nginx_conf_custom('/path/to/my/nginx.conf').params ...
@@ -22,9 +22,9 @@ class NginxConf < Inspec.resource(1)
   attr_reader :contents
 
   def initialize(conf_path = nil)
-    @conf_path = conf_path || "/etc/nginx/nginx.conf"
+    @conf_path = conf_path || '/etc/nginx/nginx.conf'
     @contents = {}
-    return skip_resource "The `nginx_conf_custom` resource is currently not supported on Windows." if inspec.os.windows?
+    return skip_resource 'The `nginx_conf_custom` resource is currently not supported on Windows.' if inspec.os.windows?
 
     read_content(@conf_path)
   end
@@ -37,7 +37,7 @@ class NginxConf < Inspec.resource(1)
   end
 
   def http
-    NginxConfHttp.new(params["http"], self)
+    NginxConfHttp.new(params['http'], self)
   end
 
   def_delegators :http, :servers, :locations
@@ -70,7 +70,7 @@ class NginxConf < Inspec.resource(1)
   end
 
   def parse_nginx(path)
-    return nil if inspec.os.windows?
+    return if inspec.os.windows?
 
     content = read_content(path)
 
@@ -104,12 +104,12 @@ class NginxConf < Inspec.resource(1)
 
     # Any call to `include` gets its data read, parsed, and merged back
     # into the current data structure
-    if data.key?("include")
-      data.delete("include").flatten
-        .map { |x| File.expand_path(x, rel_path) }
-        .map { |x| find_files(x) }.flatten
-        .map { |path| parse_nginx(path) }
-        .each { |conf| merge_config!(data, conf) }
+    if data.key?('include')
+      data.delete('include').flatten
+          .map { |x| File.expand_path(x, rel_path) }
+          .map { |x| find_files(x) }.flatten
+          .map { |path| parse_nginx(path) }
+          .each { |conf| merge_config!(data, conf) }
     end
 
     # Walk through the remaining hash fields to find more references
@@ -157,7 +157,7 @@ class NginxConfHttp
   end
 
   def to_s
-    @parent.to_s + ", http entries"
+    @parent.to_s + ', http entries'
   end
   alias inspect to_s
 end
@@ -170,15 +170,15 @@ class NginxConfHttpEntry
   end
 
   filter = FilterTable.create
-  filter.register_column(:servers, field: "server")
-    .install_filter_methods_on_resource(self, :server_table)
+  filter.register_column(:servers, field: 'server')
+        .install_filter_methods_on_resource(self, :server_table)
 
   def locations
     servers.map(&:locations).flatten
   end
 
   def to_s
-    @parent.to_s + ", http entry"
+    @parent.to_s + ', http entry'
   end
   alias inspect to_s
 
@@ -197,7 +197,7 @@ class NginxConfHttpEntry
   private
 
   def server_table
-    @server_table ||= (params["server"] || []).map { |x| { "server" => NginxConfServer.new(x, self) } }
+    @server_table ||= (params['server'] || []).map { |x| { 'server' => NginxConfServer.new(x, self) } }
   end
 end
 
@@ -209,15 +209,15 @@ class NginxConfServer # TODO: rename NginxServer
   end
 
   filter = FilterTable.create
-  filter.register_column(:locations, field: "location")
-    .install_filter_methods_on_resource(self, :location_table)
+  filter.register_column(:locations, field: 'location')
+        .install_filter_methods_on_resource(self, :location_table)
 
   def to_s
-    server = ""
-    name = Array(params["server_name"]).flatten.first
+    server = ''
+    name = Array(params['server_name']).flatten.first
     unless name.nil?
       server += name
-      listen = Array(params["listen"]).flatten.first
+      listen = Array(params['listen']).flatten.first
       server += ":#{listen}" unless listen.nil?
     end
 
@@ -241,7 +241,7 @@ class NginxConfServer # TODO: rename NginxServer
   private
 
   def location_table
-    @location_table ||= (params["location"] || []).map { |x| { "location" => NginxConfLocation.new(x, self) } }
+    @location_table ||= (params['location'] || []).map { |x| { 'location' => NginxConfLocation.new(x, self) } }
   end
 end
 
@@ -253,7 +253,7 @@ class NginxConfLocation
   end
 
   def to_s
-    location = Array(params["_"]).join(" ")
+    location = Array(params['_']).join(' ')
     # go three levels up: 1. to the server entry, 2. http entry and 3. to the root nginx conf
     # TODO: fix parent.parent.parent
     @parent.parent.parent.to_s + ", location #{location.inspect}"
@@ -269,7 +269,7 @@ class NginxParser < Parslet::Parser
   rule(:filler?) { one_filler.repeat }
   rule(:one_filler) { match('\s+') | match["\n"] | comment }
   rule(:space)   { match('\s+') }
-  rule(:comment) { str("#") >> (match["\n\r"].absent? >> any).repeat }
+  rule(:comment) { str('#') >> (match["\n\r"].absent? >> any).repeat }
 
   rule(:exp) do
     single | section | assignment
@@ -280,11 +280,11 @@ class NginxParser < Parslet::Parser
   end
 
   rule(:assignment) do
-    (identifier >> values.maybe.as(:args)).as(:assignment) >> str(";") >> filler?
+    (identifier >> values.maybe.as(:args)).as(:assignment) >> str(';') >> filler?
   end
 
   rule(:standard_identifier) do
-    (match("[a-zA-Z~*.]") >> match('\S').repeat).as(:identifier) >> space >> space.repeat
+    (match('[a-zA-Z~*.]') >> match('\S').repeat).as(:identifier) >> space >> space.repeat
   end
 
   rule(:quoted_identifier) do
@@ -297,19 +297,19 @@ class NginxParser < Parslet::Parser
 
   rule(:standard_value) do
     ((match(/[#;{'"]/).absent? >> any) >> (
-      str("\\") >> any | match('[#;{]|\s').absent? >> any
+      str('\\') >> any | match('[#;{]|\s').absent? >> any
     ).repeat).as(:value) >> space.repeat
   end
 
   rule(:single_quoted_value) do
     str("'") >> (
-      str("\\") >> any | str("'").absent? >> any
+      str('\\') >> any | str("'").absent? >> any
     ).repeat.as(:value) >> str("'") >> space.repeat
   end
 
   rule(:double_quoted_value) do
     str('"') >> (
-      str("\\") >> any | str('"').absent? >> any
+      str('\\') >> any | str('"').absent? >> any
     ).repeat.as(:value) >> str('"') >> space.repeat
   end
 
@@ -326,7 +326,7 @@ class NginxParser < Parslet::Parser
   end
 
   rule(:section) do
-    identifier.as(:section) >> values.maybe.as(:args) >> str("{") >> filler? >> exp.repeat.as(:expressions) >> str("}") >> filler?
+    identifier.as(:section) >> values.maybe.as(:args) >> str('{') >> filler? >> exp.repeat.as(:expressions) >> str('}') >> filler?
   end
 end
 
@@ -351,7 +351,7 @@ class NginxConfig
   def self.parse(content)
     lex = NginxParser.new.parse(content, reporter: Parslet::ErrorReporter::Deepest.new)
     tree = NginxTransform.new.apply(lex)
-    gtree = NginxTransform::Group.new(nil, "", tree)
+    gtree = NginxTransform::Group.new(nil, '', tree)
     read_nginx_group(gtree)
   rescue Parslet::ParseFailed => err
     raise "Failed to parse NginX config: #{err}"
@@ -369,7 +369,6 @@ class NginxConfig
     groups.each do |x|
       agg_conf[x.id] += [read_nginx_group(x)]
     end
-    return agg_conf
+    agg_conf
   end
-
 end

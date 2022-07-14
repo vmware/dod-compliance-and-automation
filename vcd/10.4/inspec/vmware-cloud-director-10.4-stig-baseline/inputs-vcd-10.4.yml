@@ -1,8 +1,8 @@
 # Application
 snmpEnabled: false
 vcdURL: '10.89.142.169'
-bearerToken: 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbmlzdHJhdG9yIiwiaXNzIjoiYTkzYzlkYjktNzQ3MS0zMTkyLThkMDktYThmN2VlZGE4NWY5QGQ1MmMzN2JmLTIwYTYtNDBiZC1iNjNkLTZjZWIxNGZkMWVjNiIsImV4cCI6MTY2MDIyNTM3NCwidmVyc2lvbiI6InZjbG91ZF8xLjAiLCJqdGkiOiJiNzNlZGZmMDM5ZWU0ZjU1YWY4YjhhOTU5ZjI0NWVhYiJ9.iay8Cmq0r_TJZbmnmrKtmivW2iWw86KqbK6vD6odn-Y_dcL0268CBURImk9ikFmVWWWZyReIVfQbpCovzGR8htOk9irMMqDccqouaQAJGINIXP0NvjPxg11OHQv2vyJ13GH7U96G_jNYrersJQMmjiYHg1e9RcEh3L3Blx1OLAYBb4VOszEL5L7Apv_cAS_QxNhk5gCl74kr-QkbCTask_WktRJdnOdAZibay8k_V9iwmZmqFraSODXMjMpLW_AQSM--n52XFj-GguKrsk7nCxwgR3_0Jx9c8esZL5VECqwWNIGXkCxY-VlG1TG0n-QtjKsD-Q9h16sjIXykQnQurA'
-applianceBearerToken: 'Bearer t1fdIwIUvwJpqAKjDqPs27vnj9LxhDHedUUo016E28k'
+bearerToken: 'Bearer eyJhbGc...kQnQurA'
+applianceBearerToken: 'Bearer t1f...E28k'
 apiVersion: 'application/*;version=37.0'
 legacyapiVersion: 'application/*+json;version=37.0'
 useNsxv: false
