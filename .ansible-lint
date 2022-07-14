@@ -3,4 +3,5 @@ skip_list:
   - role-name
 warn_list:
   - risky-file-permissions
-offline: true
+mock_roles:
+  - vmware-photon-3.0-stig-ansible-hardening

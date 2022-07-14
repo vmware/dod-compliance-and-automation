@@ -98,7 +98,7 @@ jobs:
       - name: Install cookstyle and run
         run: |
           gem install cookstyle
-          cookstyle ./vcd/10.4/inspec
+          cookstyle ./vcd/10.4
   ansiblelint-vcd104:
     runs-on: ubuntu-latest
     steps:
