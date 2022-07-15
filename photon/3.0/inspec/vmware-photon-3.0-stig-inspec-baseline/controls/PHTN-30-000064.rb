@@ -1,6 +1,5 @@
-# -*- encoding : utf-8 -*-
-control "PHTN-30-000064" do
-  title "The Photon operating system must configure sshd to use FIPS 140-2 ciphers."
+control 'PHTN-30-000064' do
+  title 'The Photon operating system must configure sshd to use FIPS 140-2 ciphers.'
   desc  "
     Privileged access contains control and configuration information and is particularly sensitive, so additional protections are necessary. This is maintained by using cryptographic mechanisms such as encryption to protect confidentiality.
 
@@ -10,8 +9,8 @@ control "PHTN-30-000064" do
 
     The operating system can meet this requirement through leveraging a cryptographic module.
   "
-  desc  "rationale", ""
-  desc  "check", "
+  desc  'rationale', ''
+  desc  'check', "
     At the command line, execute the following command:
 
     # sshd -T|&grep -i Ciphers
@@ -24,7 +23,7 @@ control "PHTN-30-000064" do
 
     If the ciphers in the output contain any ciphers not listed in the expected result, this is a finding.
   "
-  desc  "fix", "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
@@ -38,16 +37,23 @@ control "PHTN-30-000064" do
     # systemctl restart sshd.service
   "
   impact 0.3
-  tag severity: "low"
-  tag gtitle: "SRG-OS-000394-GPOS-00174"
-  tag satisfies: ["SRG-OS-000424-GPOS-00188"]
+  tag severity: 'low'
+  tag gtitle: 'SRG-OS-000394-GPOS-00174'
+  tag satisfies: ['SRG-OS-000424-GPOS-00188']
   tag gid: nil
   tag rid: nil
-  tag stig_id: "PHTN-30-000064"
-  tag cci: ["CCI-003123", "CCI-002421"]
-  tag nist: ["MA-4 (6)", "SC-8 (1)"]
+  tag stig_id: 'PHTN-30-000064'
+  tag cci: ['CCI-003123', 'CCI-002421']
+  tag nist: ['MA-4 (6)', 'SC-8 (1)']
 
-  describe command('sshd -T|&grep -i Ciphers') do
-    its('stdout.strip') { should cmp 'ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr' }
+  sshdcommand = input('sshdcommand')
+  describe.one do
+    describe command("#{sshdcommand}|&grep -i Ciphers") do
+      its('stdout.strip') { should cmp 'ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr' }
+      # ^ciphers\s(?=.*\baes256-gcm@openssh\.com\b)(?=.*\baes128-gcm@openssh\.com\b)(?=.*\baes256-ctr\b)(?=.*\baes192-ctr\b)(?=.*\baes128-ctr\b)$
+    end
+    describe command("#{sshdcommand}|&grep -i Ciphers") do
+      its('stdout.strip') { should cmp 'ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com' }
+    end
   end
 end

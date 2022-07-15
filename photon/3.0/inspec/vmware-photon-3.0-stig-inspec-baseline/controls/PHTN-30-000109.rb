@@ -1,9 +1,8 @@
-# -*- encoding : utf-8 -*-
-control "PHTN-30-000109" do
-  title "The Photon operating system must be configured to protect the SSH private host key from unauthorized access."
-  desc  "If an unauthorized user obtains the private SSH host key file, the host could be impersonated."
-  desc  "rationale", ""
-  desc  "check", "
+control 'PHTN-30-000109' do
+  title 'The Photon operating system must be configured to protect the SSH private host key from unauthorized access.'
+  desc  'If an unauthorized user obtains the private SSH host key file, the host could be impersonated.'
+  desc  'rationale', ''
+  desc  'check', "
     At the command line, execute the following command:
 
     # stat -c \"%n permissions are %a and owned by %U:%G\" /etc/ssh/*key
@@ -17,20 +16,20 @@ control "PHTN-30-000109" do
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  "fix", "
+  desc 'fix', "
     At the command line, execute the following command(s) for each returned file:
 
     # chmod 600 <file>
     # chown root:root <file>
   "
   impact 0.5
-  tag severity: "medium"
-  tag gtitle: "SRG-OS-000480-GPOS-00227"
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: nil
   tag rid: nil
-  tag stig_id: "PHTN-30-000109"
-  tag cci: ["CCI-000366"]
-  tag nist: ["CM-6 b"]
+  tag stig_id: 'PHTN-30-000109'
+  tag cci: ['CCI-000366']
+  tag nist: ['CM-6 b']
 
   command('find /etc/ssh/ -maxdepth 1 -name "*key"').stdout.split.each do |fname|
     describe file(fname) do

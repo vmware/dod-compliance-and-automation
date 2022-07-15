@@ -1,9 +1,8 @@
-# -*- encoding : utf-8 -*-
-control "PHTN-30-000090" do
-  title "The Photon operating system must be configured so that the /etc/skel default scripts are protected from unauthorized modification."
-  desc  "If the skeleton files are not protected, unauthorized personnel could change user startup parameters and possibly jeopardize user files."
-  desc  "rationale", ""
-  desc  "check", "
+control 'PHTN-30-000090' do
+  title 'The Photon operating system must be configured so that the /etc/skel default scripts are protected from unauthorized modification.'
+  desc  'If the skeleton files are not protected, unauthorized personnel could change user startup parameters and possibly jeopardize user files.'
+  desc  'rationale', ''
+  desc  'check', "
     At the command line, execute the following command:
 
     # stat -c \"%n permissions are %a and owned by %U:%G\" /etc/skel/.[^.]*
@@ -16,7 +15,7 @@ control "PHTN-30-000090" do
 
     If the output does not match the expected result, this is a finding.
   "
-  desc  "fix", "
+  desc 'fix', "
     At the command line, execute the following command(s):
 
     # chmod 750 /etc/skel/.bash_logout
@@ -27,13 +26,13 @@ control "PHTN-30-000090" do
     # chown root:root /etc/skel/.bashrc
   "
   impact 0.5
-  tag severity: "medium"
-  tag gtitle: "SRG-OS-000480-GPOS-00227"
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: nil
   tag rid: nil
-  tag stig_id: "PHTN-30-000090"
-  tag cci: ["CCI-000366"]
-  tag nist: ["CM-6 b"]
+  tag stig_id: 'PHTN-30-000090'
+  tag cci: ['CCI-000366']
+  tag nist: ['CM-6 b']
 
   describe file('/etc/skel/.bash_logout') do
     its('owner') { should cmp 'root' }

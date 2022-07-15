@@ -1,0 +1,68 @@
+# Application
+snmpEnabled: false
+vcdURL: '10.89.142.169'
+bearerToken: 'Bearer eyJhbGc...kQnQurA'
+applianceBearerToken: 'Bearer t1f...E28k'
+apiVersion: 'application/*;version=37.0'
+legacyapiVersion: 'application/*+json;version=37.0'
+useNsxv: false
+approvedPlugins:
+  - 'Customize Portal'
+  - 'Guided Tours plugin'
+approvedDenyLists:
+  - '10.0.0.0/8'
+  - 'internal.com'
+syslogHost: '10.150.175.12'
+syslogPort: '514'
+ntpServers: 'time.vmware.com'
+approvedFeatureFlags:
+  - 'Branding API'
+trustedCertificates:
+  - 'star_eng_vmware_com_3rd_0'
+  - 'star_eng_vmware_com_3rd_1'
+# NGINX
+nginx_conf_path: /etc/nginx/nginx.conf
+limit_conn_server_limit: "1000"
+nginx_error_log_file: /var/log/nginx/error.log
+nginx_access_log_file: /var/log/nginx/access.log
+nginx_access_log_format_name: custom
+nginx_log_dir: /var/log/nginx/
+approved_modules:
+  - http_v2
+  - http_ssl
+  - http_auth_request
+  - http_sub
+  - http_stub_status
+nginx_user: nginx
+nginx_group: nginx
+listen_addresses_ports:
+  - 10.89.130.224:5480
+nginx_limit_req_rate: "100r/s"
+nginx_limit_req_zone: "req_per_ip:10m"
+nginx_limit_req_burst: "100"
+nginx_syslog_enabled: false
+nginx_ssl_ciphers: "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256"
+approved_sites:
+  - vcd_ova_ui.conf
+  - 99-stig.conf
+nginx_keepalive_timeout: '65'
+nginx_content_security_policy: ["Content-Security-Policy", "default-src 'self'; font-src 'self' data:; img-src 'self' data:; style-src 'self' 'unsafe-inline';"]
+
+# Photon
+authprivlog: /var/log/messages
+
+# PostgreSQL
+postgres_user: postgres
+postgres_pass: 'Welcome%401234'
+postgres_host: localhost
+syslog_enabled: false
+pg_data_dir: /var/vmware/vpostgres/current/pgdata/
+pg_log_dir: /var/vmware/vpostgres/current/pgdata/log
+pg_owner: postgres
+pg_group: users
+ssl_enabled: true
+pg_ssl_key:  /opt/vmware/appliance/etc/ssl/vcd_ova.key
+allowed_object_owners:
+  - postgres
+  - vcloud
+  - repmgr

@@ -1,6 +1,5 @@
-# -*- encoding : utf-8 -*-
-control "PHTN-30-000058" do
-  title "The Photon operating system must be configured to synchronize with an approved DoD time source."
+control 'PHTN-30-000058' do
+  title 'The Photon operating system must be configured to synchronize with an approved DoD time source.'
   desc  "
     Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.
 
@@ -8,9 +7,9 @@ control "PHTN-30-000058" do
 
     Organizations should consider endpoints that may not have regular access to the authoritative time server (e.g., mobile, teleworking, and tactical endpoints).
   "
-  desc  "rationale", ""
-  desc  "check", "
-    If ntpd is used to sync time do the following:
+  desc  'rationale', ''
+  desc  'check', "
+    If ntpd is used to sync time, do the following:
 
     At the command line, execute the following command:
 
@@ -20,7 +19,7 @@ control "PHTN-30-000058" do
 
     If a time source is not set, is not set to an authoritative DoD time source, or is commented out, this is a finding.
 
-    If timesyncd is used to sync time do the following:
+    If timesyncd is used to sync time, do the following:
 
     At the command line, execute the following command:
 
@@ -28,7 +27,7 @@ control "PHTN-30-000058" do
 
     If a time source is not set, is not set to an authoritative DoD time source, or is commented out, this is a finding.
 
-    If chrony is used to sync time do the following:
+    If chrony is used to sync time, do the following:
 
     At the command line, execute the following command:
 
@@ -36,8 +35,8 @@ control "PHTN-30-000058" do
 
     If the parameter \"server\" is not set, is not set to an authoritative DoD time source, or is commented out, this is a finding.
   "
-  desc  "fix", "
-    If ntpd is used to sync time do the following:
+  desc 'fix', "
+    If ntpd is used to sync time, do the following:
 
     Navigate to and open:
 
@@ -56,7 +55,7 @@ control "PHTN-30-000058" do
 
     # systemctl restart ntp.service
 
-    If ntpd is used to sync time do the following:
+    If timesyncd is used to sync time, do the following:
 
     Navigate to and open:
 
@@ -70,7 +69,7 @@ control "PHTN-30-000058" do
 
     systemctl restart systemd-timesyncd.service
 
-    If chrony is used to sync time do the following:
+    If chrony is used to sync time, do the following:
 
     Navigate to and open:
 
@@ -86,20 +85,20 @@ control "PHTN-30-000058" do
     # systemctl restart chrony.service
   "
   impact 0.5
-  tag severity: "medium"
-  tag gtitle: "SRG-OS-000355-GPOS-00143"
-  tag satisfies: ["SRG-OS-000356-GPOS-00144"]
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000355-GPOS-00143'
+  tag satisfies: ['SRG-OS-000356-GPOS-00144']
   tag gid: nil
   tag rid: nil
-  tag stig_id: "PHTN-30-000058"
-  tag cci: ["CCI-001891", "CCI-002046"]
-  tag nist: ["AU-8 (1) (a)", "AU-8 (1) (b)"]
+  tag stig_id: 'PHTN-30-000058'
+  tag cci: ['CCI-001891', 'CCI-002046']
+  tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)']
 
   ntptype = input('ntptype')
   ntpserver1 = input('ntpServer1')
   ntpserver2 = input('ntpServer2')
 
-  if ntptype == "ntpd"
+  if ntptype == 'ntpd'
     describe ntp_conf do
       its('server') { should be_in ["#{ntpserver1}", "#{ntpserver2}"] }
     end
@@ -110,7 +109,7 @@ control "PHTN-30-000058" do
     end
   end
 
-  if ntptype == "timesyncd"
+  if ntptype == 'timesyncd'
     describe.one do
       describe file('/etc/systemd/timesyncd.conf') do
         its('content') { should match /^NTP=#{ntpserver1} #{ntpserver2}/ }
@@ -126,7 +125,7 @@ control "PHTN-30-000058" do
     end
   end
 
-  if ntptype == "chrony"
+  if ntptype == 'chrony'
     describe chrony_conf do
       its('server') { should be_in ["#{ntpserver1}", "#{ntpserver2}"] }
     end

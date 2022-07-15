@@ -11,7 +11,7 @@ run_auditd_rules: true
 run_pamd_lock: true
 # PHTN-30-000003
 run_sshd_banner: true
-run_sshd_banner_issue: true
+run_sshd_banner_issue: false  # false by default for internal use  should be true for customer use
 # PHTN-30-000004
 run_limits_maxlogins: true
 # PHTN-30-000005
@@ -220,7 +220,7 @@ run_ssh_config_file_permissions: true
 # PHTN-30-000113
 run_sysctl_file_permissions: true
 # PHTN-30-000114
-run_login_umask: false
+run_login_umask: true
 # PHTN-30-000115
 run_sshd_hostbasedauth: true
 # PHTN-30-000117

@@ -1,5 +1,5 @@
 # Photon OS 3.0 STIG auditd rules
-# Updated 9/20/2020
+# Updated 6/27/2023
 
 # First rule - delete all
 -D
@@ -35,7 +35,7 @@
 -w /usr/sbin/userdel -p x -k userdel
 -w /usr/sbin/groupdel -p x -k groupdel
 
-# PHTN-30-000056 SRG-OS-000327-GPOS-00127 sudo covered below
+# PHTN-30-000054 SRG-OS-000327-GPOS-00127 sudo covered below
 -a always,exit -F path=/usr/bin/chage -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
 -a always,exit -F path=/usr/bin/chfn -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
 -a always,exit -F path=/usr/bin/chsh -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged

@@ -1,16 +1,15 @@
-# -*- encoding : utf-8 -*-
-control "PHTN-30-000071" do
-  title "The Photon operating system must use the pam_cracklib module."
-  desc  "If the operating system allows the user to select passwords based on dictionary words, this increases the chances of password compromise by increasing the opportunity for successful guesses and brute-force attacks."
-  desc  "rationale", ""
-  desc  "check", "
+control 'PHTN-30-000071' do
+  title 'The Photon operating system must use the pam_cracklib module.'
+  desc  'If the operating system allows the user to select passwords based on dictionary words, this increases the chances of password compromise by increasing the opportunity for successful guesses and brute-force attacks.'
+  desc  'rationale', ''
+  desc  'check', "
     At the command line, execute the following command:
 
     # grep pam_cracklib /etc/pam.d/system-password
 
     If the output does not return at least \"password  requisite   pam_cracklib.so\", this is a finding.
   "
-  desc  "fix", "
+  desc 'fix', "
     Navigate to and open:
 
     /etc/pam.d/system-password
@@ -22,15 +21,15 @@ control "PHTN-30-000071" do
     Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
   "
   impact 0.5
-  tag severity: "medium"
-  tag gtitle: "SRG-OS-000480-GPOS-00225"
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000480-GPOS-00225'
   tag gid: nil
   tag rid: nil
-  tag stig_id: "PHTN-30-000071"
-  tag cci: ["CCI-000366"]
-  tag nist: ["CM-6 b"]
+  tag stig_id: 'PHTN-30-000071'
+  tag cci: ['CCI-000366']
+  tag nist: ['CM-6 b']
 
   describe file('/etc/pam.d/system-password') do
-    its('content') { should match /^(?=.*?\bpassword\b)(?=.*?\brequisite\b)(?=.*?\bpam_cracklib.so\b).*$/ }
+    its('content') { should match /^^password\s*requisite\s*pam_cracklib\.so.*$/ }
   end
 end
