@@ -246,7 +246,7 @@ $V94781 = $true  #log level
 
 
 #Modules needed to run script and load
-$modules = @("VMware.PowerCLI","ReportHTML")
+$modules = @("VMware.VimAutomation.Core","ReportHTML")
 
 #Check for correct modules
 Function checkModule ($m){

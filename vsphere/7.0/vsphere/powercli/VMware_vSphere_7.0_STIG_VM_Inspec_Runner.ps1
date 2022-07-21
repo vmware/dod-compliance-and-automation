@@ -39,7 +39,7 @@ param (
 $date = Get-Date
 
 #Modules needed to run script and load
-$modules = @("VMware.PowerCLI")
+$modules = @("VMware.VimAutomation.Core")
 
 #Check for correct modules
 Function checkModule ($m){

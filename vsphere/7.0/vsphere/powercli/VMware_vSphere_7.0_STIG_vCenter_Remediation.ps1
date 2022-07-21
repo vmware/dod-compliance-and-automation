@@ -125,7 +125,7 @@ $VCSA70000079 = $true  #Native Key Provider
 
 
 #Modules needed to run script and load
-$modules = @("VMware.PowerCLI","VMware.Vsphere.SsoAdmin")
+$modules = @("VMware.VimAutomation.Core","VMware.Vsphere.SsoAdmin")
 
 #Check for correct modules
 Function checkModule ($m){

@@ -185,7 +185,7 @@ Function Write-ToConsoleGreen ($Details){
 }
 
 #Modules needed to run script and load
-$modules = @("VMware.PowerCLI")
+$modules = @("VMware.VimAutomation.Core")
 
 #Function to check for correct modules
 Function checkModule ($m){
