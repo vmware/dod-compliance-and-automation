@@ -7,5 +7,5 @@
 
 - name: restart vami
   ansible.builtin.service:
-    name vami-lighttp
+    name: vami-lighttp
     state: restarted
