@@ -1,2 +1,10 @@
-- include: rhttpproxy.yaml
-  tags: rhttpproxy
+---
+
+- name: Include rhttpproxy
+  ansible.builtin.include_tasks:
+    file: rhttpproxy.yaml
+    apply:
+      tags:
+        - rhttpproxy
+  tags:
+    - always

@@ -1,7 +1,7 @@
 ---
 
 - name: Include VAMI
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: vami.yml
     apply:
       tags:

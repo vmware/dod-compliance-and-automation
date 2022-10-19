@@ -1,7 +1,9 @@
 ---
 
 - name: restart syslog
-  ansible.builtin.service: name=syslog state=restarted
+  ansible.builtin.service:
+    name: syslog
+    state: restarted
 
 - name: restart lookupsvc
   ansible.builtin.command: vmon-cli --restart lookupsvc

@@ -118,3 +118,18 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vcd/10.4/ansible/vmware-cloud-director-10.4-stig-ansible-hardening/"  # <-- only one value is allowed
+  cookstyle-horizon-8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
+      - name: Install cookstyle and run
+        run: |
+          gem install cookstyle
+          cookstyle ./horizon/8.0

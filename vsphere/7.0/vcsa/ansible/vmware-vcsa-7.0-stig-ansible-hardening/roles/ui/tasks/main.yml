@@ -1,7 +1,7 @@
 ---
 
 - name: Include vSphere UI
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: ui.yml
     apply:
       tags:

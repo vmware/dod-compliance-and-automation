@@ -1,2 +1,10 @@
-- include: vsphere-ui.yaml
-  tags: vsphere-ui
+---
+
+- name: Include vsphere-ui
+  ansible.builtin.include_tasks:
+    file: vsphere-ui.yaml
+    apply:
+      tags:
+        - vsphere-ui
+  tags:
+    - always

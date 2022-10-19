@@ -1,2 +1,10 @@
-- include: vcsa-vpostgres.yml
-  tags: vpostgres
+---
+
+- name: Include vpostgres
+  ansible.builtin.include_tasks:
+    file: vcsa-vpostgres.yml
+    apply:
+      tags:
+        - vpostgres
+  tags:
+    - always

@@ -1,6 +1,7 @@
 skip_list:
   - '602'
   - role-name
+  - name
 warn_list:
   - risky-file-permissions
 mock_roles:

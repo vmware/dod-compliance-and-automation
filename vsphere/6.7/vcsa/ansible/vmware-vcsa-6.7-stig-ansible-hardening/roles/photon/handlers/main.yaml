@@ -1,7 +1,9 @@
 ---
 
 - name: restart sshd
-  ansible.builtin.service: name=sshd state=restarted
+  ansible.builtin.service:
+    name: sshd
+    state: restarted
 
 - name: restart auditd
   ansible.builtin.command: killproc auditd -TERM && systemctl start auditd
@@ -10,7 +12,11 @@
   ansible.builtin.command: /sbin/augenrules --load
 
 - name: restart syslog
-  ansible.builtin.service: name=syslog state=restarted
+  ansible.builtin.service:
+    name: syslog
+    state: restarted
 
 - name: restart ntp
-  ansible.builtin.service: name=ntpd state=restarted
+  ansible.builtin.service:
+    name: ntpd
+    state: restarted

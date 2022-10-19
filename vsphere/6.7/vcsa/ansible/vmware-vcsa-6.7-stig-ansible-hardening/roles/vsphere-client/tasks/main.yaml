@@ -1,2 +1,10 @@
-- include: vsphere-client.yaml
-  tags: vsphere-client
+---
+
+- name: Include vSphere Client
+  ansible.builtin.include_tasks:
+    file: vsphere-client.yaml
+    apply:
+      tags:
+        - vsphere-client
+  tags:
+    - always

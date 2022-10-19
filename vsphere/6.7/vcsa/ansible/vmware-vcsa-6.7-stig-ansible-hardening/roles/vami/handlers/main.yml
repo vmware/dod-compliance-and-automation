@@ -1,7 +1,11 @@
 ---
 
 - name: restart syslog
-  ansible.builtin.service: name=syslog state=restarted
+  ansible.builtin.service:
+    name: syslog
+    state: restarted
 
 - name: restart vami
-  ansible.builtin.service: name=vami-lighttp state=restarted
+  ansible.builtin.service:
+    name: vami-lighttp
+    state: restarted
