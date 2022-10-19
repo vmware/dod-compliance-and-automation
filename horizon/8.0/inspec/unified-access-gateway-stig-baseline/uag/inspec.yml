@@ -1,0 +1,140 @@
+---
+name: Unified Access Gateway
+title: VMware UAG STIG Readiness Guide
+maintainer: 
+copyright: 2022
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.0
+
+
+###########################################################################################
+# Connection Parameters
+#  - Update values to match target of scan
+#  - Options are "fqdn", "user", and "password"
+#  - If any/all of those should not be hard-coded in this file, comment them out
+#      and they'll be prompted for at runtime, 
+#      if using the 'inspec exec .' syntax (without the transport defined)
+###########################################################################################
+
+inputs:
+- name: fqdn
+  description: FQDN and admin port of the UAG
+  type: string
+  value: "uag.domain.name:9443"
+
+- name: user
+  description: Username to connect to the UAG REST API with
+  type: string
+  value: "admin"
+
+# - name: password
+#   description: Password for the REST API user
+#   type: string
+#   value:
+
+
+###########################################################################################
+# Other parameters
+# - Update as necessary per environment
+###########################################################################################
+
+- name: connectionserver
+  description: The Connection Server configured for this UAG instance
+  type: string
+  value: 'hzn-cs.domain.name'
+
+- name: sessionTimeoutMilliseconds
+  description: Session Timeout value in milliseconds - default is 10 hours (36000000)
+  type: numeric
+  value: 36000000
+
+- name: allowedCertAuth
+  description: Certificate Authority Distinguished Name (Enter all UpperCase)
+  type: Array
+  value:
+  - "CN=DOMAIN-CA, DC=DOMAIN, DC=NAME"
+
+- name: warningBanner
+  description: DoD Warning Banner (check will be performed without spaces and line feeds)
+  type: string
+  value: "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
+    By using this IS (which includes any device attached to this IS), you consent to the following conditions:
+    -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, 
+        penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), 
+        and counterintelligence (CI) investigations.
+    -At any time, the USG may inspect and seize data stored on this IS.
+    -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, 
+        and search, and may be disclosed or used for any USG-authorized purpose.
+    -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your 
+        personal benefit or privacy.
+    -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or 
+        monitoring of the content of privileged communications, or work product, related to personal representation 
+        or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product 
+        are private and confidential. See User Agreement for details."
+
+- name: maxConnectionsPerUser
+  description: Maximum number of connections per user
+  type: numeric
+  value: 16
+
+- name: allowedCiphers
+  description: List of allowed FIPS-compatible cipher algorithms
+  type: array
+  value:
+  - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+  - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+
+- name: adminUsers
+  description: List of allowed users with the role 'ROLE_ADMIN'
+  type: array
+  value:
+  - admin
+
+- name: monitorUsers
+  description: List of allowed users with the role 'ROLE_MONITORING'
+  type: array
+  value:
+  - restadmin
+
+- name: allowPCOIP
+  description: Allow the PCoIP protocol
+  type: boolean
+  value: true
+
+- name: allowBLAST
+  description: Allow the Blast protocol
+  type: boolean
+  value: true
+
+- name: allowTUNNEL
+  description: Allow Tunnel to be created
+  type: boolean
+  value: true
+
+- name: allowUDPTUNNEL
+  description: Allow UDP Tunnel to be created
+  type: boolean
+  value: false
+
+- name: disableHTMLACCESS
+  description: Deny HTML Access (force Horizon Client access) - does not apply to admin interface
+  type: boolean
+  value: false
+
+- name: secureRandomSource
+  description: FIPS compatible Secure Random source (defaults to /dev/urandom if in FIPS mode)
+  type: string
+  value: /dev/urandom
+
+- name: clockSkewTolerance
+  description:  Maximum allowed value (in seconds) for clock skew between appliances on the network.
+  type: numeric
+  value: 300
+
+- name: authoritativeNTPServers
+  description: NTP servers to be used
+  type: array
+  value:
+  - time1.example.com
+  - time2.example.com
