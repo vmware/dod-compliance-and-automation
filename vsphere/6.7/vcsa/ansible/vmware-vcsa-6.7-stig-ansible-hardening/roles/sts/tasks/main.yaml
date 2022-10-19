@@ -1,2 +1,10 @@
-- include: sts.yaml
-  tags: sts
+---
+
+- name: Include sts
+  ansible.builtin.include_tasks:
+    file: sts.yaml
+    apply:
+      tags:
+        - sts
+  tags:
+    - always

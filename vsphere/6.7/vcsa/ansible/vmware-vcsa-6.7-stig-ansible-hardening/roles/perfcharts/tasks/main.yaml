@@ -1,2 +1,10 @@
-- include: perfcharts.yaml
-  tags: perfcharts
+---
+
+- name: Include perfcharts
+  ansibie.builtin.include_tasks:
+    file: perfcharts.yaml
+    apply:
+      tags:
+        - perfcharts
+  tags:
+    - always

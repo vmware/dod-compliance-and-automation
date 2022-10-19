@@ -1,2 +1,10 @@
-- include: photon.yaml
-  tags: photon
+---
+
+- name: Include photon
+  ansibie.builtin.include_tasks:
+    file: photon.yaml
+    apply:
+      tags:
+        - photon
+  tags:
+    - always

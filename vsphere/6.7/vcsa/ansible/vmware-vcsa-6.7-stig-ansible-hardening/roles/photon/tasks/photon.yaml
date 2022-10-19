@@ -739,7 +739,7 @@
 # Title: The Photon operating system must use TCP syncookies.
 
 - name: PHTN-67-000037 - Set kernel parameter net.ipv4.tcp_syncookies
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.tcp_syncookies
     value: '{{ var_sysctl_tcp_syncookies }}'
     state: present
@@ -1308,7 +1308,7 @@
 
 - name: PHTN-67-000066 - Set Fact
   ansible.builtin.set_fact:
-    lwcacheexpiryvalue: "{{ lwcacheentryexpiry.stdout | regex_search(regexplw,'\\1') }}"
+    lwcacheexpiryvalue: "{{ lwcacheentryexpiry.stdout | regex_search(regexplw, '\\1') }}"
   vars:
     regexplw: '\(([^\)]+)\)'
   tags:
@@ -1350,7 +1350,7 @@
 # Title: The Photon operating system must implement address space layout randomization to protect its memory from unauthorized code execution.
 
 - name: PHTN-67-000069 - Set kernel parameter randomize_va_space
-  sysctl:
+  ansible.posix.sysctl:
     name: kernel.randomize_va_space
     value: '{{ var_sysctl_randomize_va_space }}'
     state: present

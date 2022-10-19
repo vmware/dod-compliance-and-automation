@@ -1,7 +1,7 @@
 ---
 
 - name: Include Lookup
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: lookup.yml
     apply:
       tags:

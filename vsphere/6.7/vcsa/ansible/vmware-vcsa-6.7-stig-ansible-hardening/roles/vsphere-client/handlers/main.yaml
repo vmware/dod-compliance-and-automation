@@ -1,7 +1,9 @@
 ---
 
 - name: restart syslog
-  ansible.builtin.service: name=syslog state=restarted
+  ansible.builtin.service:
+    name: syslog
+    state: restarted
 
 - name: restart vsphere-client
   ansible.builtin.command: vmon-cli --restart vsphere-client

@@ -10,7 +10,7 @@
   block:
     - name: Create time stamp
       ansible.builtin.set_fact:
-        backup_timestamp: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
 
     - name: Backup files...if restoring be sure to restore permissions that original file had!!
       ansible.builtin.copy:

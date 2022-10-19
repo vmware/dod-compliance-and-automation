@@ -1,7 +1,7 @@
 ---
 
 - name: Include STS
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: sts.yml
     apply:
       tags:

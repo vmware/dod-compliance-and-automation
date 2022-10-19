@@ -474,7 +474,7 @@
     path: /opt/vmware/etc/lighttpd/lighttpd.conf
     state: present
     regexp: "{{ item }}"
-    line: "{{ item | regex_replace('\",$','') }}; charset=utf-8\","
+    line: "{{ item | regex_replace('\",$', '') }}; charset=utf-8\","
   with_items:
     - "{{ mimetypes }}"
   tags:

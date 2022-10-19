@@ -1,2 +1,10 @@
-- include: eam.yaml
-  tags: eam
+---
+
+- name: Include eam
+  ansibie.builtin.include_tasks:
+    file: eam.yaml
+    apply:
+      tags:
+        - eam
+  tags:
+    - always

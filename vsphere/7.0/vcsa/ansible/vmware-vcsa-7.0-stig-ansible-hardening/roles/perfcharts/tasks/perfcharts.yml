@@ -7,7 +7,7 @@
 
 - name: Create time stamp
   ansible.builtin.set_fact:
-    backup_timestamp: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+    backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
   when:
     - create_backups | bool
 
