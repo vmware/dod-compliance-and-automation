@@ -1257,7 +1257,7 @@
 - name: PHTN-30-000057 - Configure auditd space_left
   ansible.builtin.lineinfile:
     dest: '{{ var_auditd_conf_file }}'
-    regexp: '^space_left.*$'
+    regexp: '^space_left\s.*$'
     line: space_left = {{ var_auditd_space_left }}
     create: true
     state: present
