@@ -27,11 +27,12 @@ control 'VCSA-70-000009' do
   impact 0.3
   tag severity: 'low'
   tag gtitle: 'SRG-APP-000014'
+  tag satisfies: ['SRG-APP-000156', 'SRG-APP-000157', 'SRG-APP-000219', 'SRG-APP-000439', 'SRG-APP-000440', 'SRG-APP-000441', 'SRG-APP-000442', 'SRG-APP-000560', 'SRG-APP-000565', 'SRG-APP-000625', 'SRG-APP-000645']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCSA-70-000009'
-  tag cci: ['CCI-000068']
-  tag nist: ['AC-17 (2)']
+  tag cci: ['CCI-000068', 'CCI-000382', 'CCI-001184', 'CCI-001453', 'CCI-001941', 'CCI-001942', 'CCI-002418', 'CCI-002420', 'CCI-002421', 'CCI-002422', 'CCI-002450']
+  tag nist: ['AC-17 (2)', 'CM-7 b', 'IA-2 (8)', 'IA-2 (9)', 'SC-13', 'SC-23', 'SC-8', 'SC-8 (1)', 'SC-8 (2)']
 
   describe 'This check is a manual or policy based check' do
     skip 'This must be reviewed manually'

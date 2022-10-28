@@ -94,9 +94,13 @@ control 'VCSA-70-000271' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  unless input('ipfixCollectorAddress').empty?
+  if input('ipfixCollectorAddress').empty?
+    describe 'No ipFixCollectorAddress input given...skipping...' do
+      skip 'No ipFixCollectorAddress input given...skipping...'
+    end
+  else
     command = 'Get-VDSwitch | Select -ExpandProperty Name'
-    vdswitches = powercli_command(command).stdout.strip.split("\r\n")
+    vdswitches = powercli_command(command).stdout.strip.split("\n")
     if vdswitches.empty?
       describe '' do
         skip 'No distributed switches found to check.'

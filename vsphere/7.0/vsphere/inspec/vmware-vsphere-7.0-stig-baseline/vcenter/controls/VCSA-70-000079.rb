@@ -29,7 +29,8 @@ control 'VCSA-70-000079' do
   tag cci: ['CCI-000199']
   tag nist: ['IA-5 (1) (d)']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  command = '(Get-SsoPasswordPolicy).PasswordLifetimeDays'
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp '60' }
   end
 end

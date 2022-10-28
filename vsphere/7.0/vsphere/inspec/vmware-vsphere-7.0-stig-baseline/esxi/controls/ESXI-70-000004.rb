@@ -41,8 +41,8 @@ control 'ESXI-70-000004' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'ESXI-70-000004'
-  tag cci: ['CCI-000067', 'CCI-000154', 'CCI-000163', 'CCI-000164', 'CCI-001851', 'CCI-001851']
-  tag nist: ['AC-17 (1)', 'AU-6 (4)', 'AU-9', 'AU-9', 'AU-4 (1)', 'AU-4 (1)']
+  tag cci: ['CCI-000067', 'CCI-000154', 'CCI-000163', 'CCI-000164', 'CCI-001851']
+  tag nist: ['AC-17 (1)', 'AU-4 (1)', 'AU-6 (4)', 'AU-9']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

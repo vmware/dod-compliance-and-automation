@@ -12,7 +12,21 @@ mgtVlanId: "101"
 snmpEnabled: "false"
 esxiBuildNumber: "19482537"
 # vCenter
+vcURL: "10.1.1.1"
+vcApiToken: "f7b990a4d37c8830b0c1c78b530ec7c5"
+syslogServers:
+  - "loginsight.test.com"
+  - "syslog.server2.com"
+ntpServers:
+  - "time.test.com"
+  - "time2.test.com"
 ipfixCollectorAddress: ""
+bashShellAdminUsers:
+  - 'Administrator'
+bashShellAdminGroups: []
+trustedAdminUsers: []
+trustedAdminGroups: []
+backup3rdParty: false
 # VM
 vmName: ""
 allvms: true

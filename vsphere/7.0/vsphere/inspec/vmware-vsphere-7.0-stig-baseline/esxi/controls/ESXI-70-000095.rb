@@ -54,7 +54,7 @@ control 'ESXI-70-000095' do
   tag rid: nil
   tag stig_id: 'ESXI-70-000095'
   tag cci: ['CCI-000366', 'CCI-001494', 'CCI-001496', 'CCI-002699']
-  tag nist: ['CM-6 b', 'AU-9', 'AU-9 (3)', 'SI-6 b']
+  tag nist: ['AU-9', 'AU-9 (3)', 'CM-6 b', 'SI-6 b']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

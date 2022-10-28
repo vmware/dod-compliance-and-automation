@@ -9,7 +9,7 @@ control 'VCSA-70-000284' do
   "
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client, go to Administration >> Access Control >> Roles.
+    From the vSphere Client, go to Administration >> Access Control >> Roles.
 
     or
 

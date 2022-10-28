@@ -37,7 +37,67 @@ control 'VCSA-70-000158' do
   tag cci: ['CCI-001891']
   tag nist: ['AU-8 (1) (a)']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  # Check timesync mode
+  result = http("https://#{input('vcURL')}/api/appliance/timesync",
+              method: 'GET',
+              headers: {
+                'vmware-api-session-id' => "#{input('vcApiToken')}",
+                },
+              ssl_verify: false)
+
+  describe result do
+    its('status') { should cmp 200 }
+  end
+  unless result.status != 200
+    describe result.body do
+      it { should cmp '"NTP"' }
+    end
+  end
+
+  # Check NTP Servers
+  result = http("https://#{input('vcURL')}/api/appliance/ntp",
+              method: 'GET',
+              headers: {
+                'vmware-api-session-id' => "#{input('vcApiToken')}",
+                },
+              ssl_verify: false)
+
+  describe result do
+    its('status') { should cmp 200 }
+  end
+  unless result.status != 200
+    describe result.body do
+      it { should_not cmp '[]' }
+    end
+    servers = JSON.parse(result.body)
+    servers.each do |server|
+      describe server do
+        it { should be_in input('ntpServers') }
+      end
+    end
+  end
+  # Check status of ntp servers
+  result = http("https://#{input('vcURL')}/api/appliance/ntp?action=test",
+              method: 'POST',
+              headers: {
+                'vmware-api-session-id' => "#{input('vcApiToken')}",
+                'Content-Type' => 'application/json',
+                },
+              data: { "servers": input('ntpServers') }.to_json,
+              ssl_verify: false)
+
+  describe result do
+    its('status') { should cmp 200 }
+  end
+  unless result.status != 200
+    describe result.body do
+      it { should_not cmp '[]' }
+    end
+    servers = JSON.parse(result.body)
+    servers.each do |server|
+      describe server do
+        its(['status']) { should cmp 'SERVER_REACHABLE' }
+      end
+    end
   end
 end

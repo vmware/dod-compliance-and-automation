@@ -3,7 +3,7 @@ control 'VCSA-70-000285' do
   desc  'These permissions must be reserved for cryptographic administrators where VM encryption and/or vSAN encryption is in use. Catastrophic data loss can result from poorly administered cryptography.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client, go to Administration >> Access Control >>Â Roles.
+    From the vSphere Client, go to Administration >> Access Control >> Roles.
 
     Highlight each role and click the 'Privileges\" button in the right pane.
 

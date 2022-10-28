@@ -33,7 +33,19 @@ control 'VCSA-70-000283' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  if input('embeddedIdp')
+    describe powercli_command('(Get-SsoAuthenticationPolicy).SmartCardAuthnEnabled') do
+      its('stdout.strip') { should cmp 'true' }
+    end
+    describe powercli_command('(Get-SsoAuthenticationPolicy).PasswordAuthnEnabled') do
+      its('stdout.strip') { should cmp 'false' }
+    end
+    describe powercli_command('(Get-SsoAuthenticationPolicy).WindowsAuthnEnabled') do
+      its('stdout.strip') { should cmp 'false' }
+    end
+  else
+    describe 'This check is a manual or policy based check' do
+      skip 'This must be reviewed manually'
+    end
   end
 end

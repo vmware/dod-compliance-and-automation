@@ -19,7 +19,7 @@ control 'ESXI-70-000063' do
 
     From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VirtualPortGroup | Select Name, VLanId
+    Get-VirtualPortGroup -Standard | Select Name, VLanId
 
     If any port group is configured with the native VLAN of the attached physical switch, this is a finding.
   "
@@ -60,7 +60,7 @@ control 'ESXI-70-000063' do
 
   if !vmhosts.empty?
     vmhosts.each do |vmhost|
-      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup | Select-Object -ExpandProperty VlanId"
+      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup -Standard | Select-Object -ExpandProperty VlanId"
       describe powercli_command(command) do
         its('stdout.strip') { should_not match '1' }
       end

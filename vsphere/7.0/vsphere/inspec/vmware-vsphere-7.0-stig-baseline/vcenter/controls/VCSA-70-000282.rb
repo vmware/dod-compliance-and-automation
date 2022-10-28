@@ -57,7 +57,7 @@ control 'VCSA-70-000282' do
   tag nist: ['CM-6 b']
 
   command = 'Get-Cluster | Where-Object {$_.VsanEnabled} | Get-Datastore | Where-Object {$_.type -match "vsan"} | Select-Object -ExpandProperty Name'
-  vsandatastores = powercli_command(command).stdout.strip.split("\r\n")
+  vsandatastores = powercli_command(command).stdout.strip.split("\n")
 
   if vsandatastores.empty?
     describe '' do

@@ -14,6 +14,8 @@ control 'VCSA-70-000287' do
     VMware recommends a 60-day re-key task but this interval must be defined by the SA and the ISSO.
 
     If vSAN encryption is not in use, this is not a finding.
+
+    If vSAN encryption is in use, and a regular re-key procedure is not in place, this is a finding.
   "
   desc 'fix', 'If vSAN encryption is in use, ensure that a regular re-key procedure is in place.'
   impact 0.7

@@ -31,7 +31,8 @@ control 'VCSA-70-000071' do
   tag cci: ['CCI-000192']
   tag nist: ['IA-5 (1) (a)']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  command = '(Get-SsoPasswordPolicy).MinUppercaseCount'
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp '1' }
   end
 end

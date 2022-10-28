@@ -57,7 +57,31 @@ control 'VCSA-70-000292' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  if input('backup3rdParty')
+    describe 'This check is a manual or policy based check' do
+      skip 'This must be reviewed manually'
+    end
+  else
+    result = http("https://#{input('vcURL')}/api/appliance/recovery/backup/schedules",
+                method: 'GET',
+                headers: {
+                  'vmware-api-session-id' => "#{input('vcApiToken')}",
+                  },
+                ssl_verify: false)
+
+    describe result do
+      its('status') { should cmp 200 }
+    end
+    unless result.status != 200
+      describe result.body do
+        it { should_not cmp '{}' }
+      end
+      unless result.body == '{}'
+        describe json(content: result.body) do
+          its(['default', 'enable']) { should cmp 'true' }
+          its(['default', 'recurrence_info', 'days']) { should cmp [] }
+        end
+      end
+    end
   end
 end

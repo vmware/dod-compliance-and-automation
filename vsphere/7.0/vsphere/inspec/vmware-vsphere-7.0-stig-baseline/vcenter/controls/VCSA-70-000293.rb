@@ -33,7 +33,12 @@ control 'VCSA-70-000293' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  command = 'Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name event.maxAge | Select-Object -ExpandProperty Value'
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp '30' }
+  end
+  command = 'Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name task.maxAge | Select-Object -ExpandProperty Value'
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp '30' }
   end
 end

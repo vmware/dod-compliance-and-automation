@@ -63,11 +63,11 @@ control 'ESXI-70-000046' do
     vmhosts.each do |vmhost|
       command = "Get-VMHost -Name #{vmhost} | Get-VMHostService | Where {$_.Label -eq 'NTP Daemon'} | Select-Object -ExpandProperty Policy"
       describe powercli_command(command) do
-        its('stdout.strip') { should cmp 'off' }
+        its('stdout.strip') { should cmp 'on' }
       end
       command = "Get-VMHost -Name #{vmhost} | Get-VMHostService | Where {$_.Label -eq 'NTP Daemon'} | Select-Object -ExpandProperty Running"
       describe powercli_command(command) do
-        its('stdout.strip') { should cmp 'false' }
+        its('stdout.strip') { should cmp 'true' }
       end
       command = "Get-VMHost -Name #{vmhost} | Get-VMHostNTPServer"
       describe powercli_command(command) do

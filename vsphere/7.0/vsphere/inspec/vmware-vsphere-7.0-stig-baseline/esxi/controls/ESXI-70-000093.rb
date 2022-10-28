@@ -18,8 +18,6 @@ control 'ESXI-70-000093' do
 
     # \\cp /etc/vmware/config /etc/vmware/config.bak
     # grep -v \"^vmx\\.log\" /etc/vmware/config.bak>/etc/vmware/config
-
-    If the command produces any output, this is a finding.
   "
   impact 0.5
   tag severity: 'medium'

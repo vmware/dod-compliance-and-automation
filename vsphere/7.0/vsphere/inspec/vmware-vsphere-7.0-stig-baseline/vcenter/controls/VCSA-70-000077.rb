@@ -45,13 +45,26 @@ control 'VCSA-70-000077' do
   impact 0.3
   tag severity: 'low'
   tag gtitle: 'SRG-APP-000172'
+  tag satisfies: ['SRG-APP-000179', 'SRG-APP-000224', 'SRG-APP-000231', 'SRG-APP-000412', 'SRG-APP-000514', 'SRG-APP-000555', 'SRG-APP-000600', 'SRG-APP-000610', 'SRG-APP-000620', 'SRG-APP-000630', 'SRG-APP-000635']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCSA-70-000077'
-  tag cci: ['CCI-000197']
-  tag nist: ['IA-5 (1) (c)']
+  tag cci: ['CCI-000197', 'CCI-000803', 'CCI-001188', 'CCI-001199', 'CCI-001967', 'CCI-002450', 'CCI-003123']
+  tag nist: ['IA-3 (1)', 'IA-5 (1) (c)', 'IA-7', 'MA-4 (6)', 'SC-13', 'SC-23 (3)', 'SC-28']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  result = http("https://#{input('vcURL')}/api/appliance/system/global-fips",
+              method: 'GET',
+              headers: {
+                'vmware-api-session-id' => "#{input('vcApiToken')}",
+                },
+              ssl_verify: false)
+
+  describe result do
+    its('status') { should cmp 200 }
+  end
+  unless result.status != 200
+    describe json(content: result.body) do
+      its(['enabled']) { should cmp 'true' }
+    end
   end
 end

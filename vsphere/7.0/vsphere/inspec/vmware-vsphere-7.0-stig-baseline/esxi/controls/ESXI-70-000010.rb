@@ -36,6 +36,8 @@ control 'ESXI-70-000010' do
     $arguments = $esxcli.system.security.fips140.ssh.set.CreateArgs()
     $arguments.enable = $true
     $esxcli.system.security.fips140.ssh.set.Invoke($arguments)
+
+
   "
   impact 0.5
   tag severity: 'medium'

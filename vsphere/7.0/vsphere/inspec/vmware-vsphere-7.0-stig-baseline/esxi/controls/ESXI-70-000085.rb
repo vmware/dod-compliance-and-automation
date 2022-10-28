@@ -27,7 +27,7 @@ control 'ESXI-70-000085' do
   desc 'fix', "
     From an ESXi shell, run the following command(s):
 
-    # esxcli system syslog config set --x509-strict=”true”
+    # esxcli system syslog config set --x509-strict=\"true\"
     # esxcli system syslog reload
 
     or

@@ -23,13 +23,28 @@ control 'VCSA-70-000080' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000175'
+  tag satisfies: ['SRG-APP-000392', 'SRG-APP-000401', 'SRG-APP-000403']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCSA-70-000080'
-  tag cci: ['CCI-000185']
-  tag nist: ['IA-5 (2) (a)']
+  tag cci: ['CCI-000185', 'CCI-001954', 'CCI-001991', 'CCI-002010']
+  tag nist: ['IA-2 (12)', 'IA-5 (2) (a)', 'IA-5 (2) (d)', 'IA-8 (1)']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  if input('embeddedIdp')
+    describe.one do
+      describe powercli_command('(Get-SsoAuthenticationPolicy).OCSPEnabled') do
+        its('stdout.strip') { should cmp 'true' }
+      end
+      describe powercli_command('(Get-SsoAuthenticationPolicy).UseInCertCRL') do
+        its('stdout.strip') { should cmp 'true' }
+      end
+      describe powercli_command('(Get-SsoAuthenticationPolicy).CRLUrl') do
+        its('stdout.strip') { should_not cmp '' }
+      end
+    end
+  else
+    describe 'This check is a manual or policy based check' do
+      skip 'This must be reviewed manually'
+    end
   end
 end

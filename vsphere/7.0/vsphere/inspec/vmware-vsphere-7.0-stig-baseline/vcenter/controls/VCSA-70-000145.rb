@@ -27,7 +27,8 @@ control 'VCSA-70-000145' do
   tag cci: ['CCI-002238']
   tag nist: ['AC-7 b']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  command = '(Get-SsoLockoutPolicy).FailedAttemptIntervalSec'
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp '900' }
   end
 end
