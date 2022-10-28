@@ -25,6 +25,7 @@
     - '{{ var_catalina_props_path }}'
     - '{{ var_syslog_conf_path }}'
   changed_when: false
+  ignore_errors: true
   when:
     - create_backups | bool
 
@@ -122,7 +123,7 @@
     state: present
     regexp: '^.*"StreamRedirectFile".*$'
     line: '    "StreamRedirectFile": "{{ var_json_stream_redirect_file }}",'
-    insertbefore: ^.*WorkingDir.*$
+    insertafter: ^.*WorkingDir.*$
     firstmatch: true
   tags:
     - VCUI-70-000006
@@ -149,7 +150,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: "0600"
+    mode: "0644"
     owner: "vsphere-ui"
     group: "users"
   with_items: "{{ vspherelogs.files }}"
@@ -355,7 +356,7 @@
   register: files
   tags:
     - VCUI-70-000017
-  changed_when: files.stdout!=""
+  changed_when: files.stdout != ""
   when:
     - run_web_files_permissions | bool
 

@@ -22,6 +22,7 @@
     - '{{ var_conf_path_etc }}'
     - '{{ var_syslog_conf_path }}'
   changed_when: false
+  ignore_errors: true
   when:
     - create_backups | bool
 

@@ -3,7 +3,8 @@
     - role: vmware-photon-3.0-stig-ansible-hardening
       vars:
         var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
-        run_configure_default_umask: false # Setting this to false until umask issue is resolved
+        run_set_syslog_server: false
+        run_set_ntp_server: false
     - role: eam
     - role: lookup
     - role: perfcharts

@@ -26,6 +26,7 @@
     - '{{ var_perf_log4j_path }}'
     - '{{ var_syslog_conf_path }}'
   changed_when: false
+  ignore_errors: true
   when:
     - create_backups | bool
 
@@ -354,20 +355,20 @@
 # Title: Performance Charts directory tree must have permissions in an "out of the box" state.
 
 - name: VCPF-70-000017 - Find perfchart web files
-  ansible.builtin.shell: find {{ var_perfcharts_web_path }} -xdev -type f -a '(' -not -user perfcharts -o -not -group cis ')';
+  ansible.builtin.shell: find {{ var_perfcharts_web_path }} -xdev -type f -a '(' -not -user root -a -not -user perfcharts -o -not -group root ')';
   register: files
   tags:
     - VCPF-70-000017
-  changed_when: files.stdout!=""
+  changed_when: files.stdout != ""
   when:
     - run_web_files_permissions | bool
 
-- name: VCPF-70-000017 - Set perfchart web files owner and group
+- name: VCPF-70-000017 - Set perfcharts web files owner and group
   ansible.builtin.file:
     path: "{{ item }}"
     state: file
-    owner: "perfcharts"
-    group: "cis"
+    owner: "root"
+    group: "root"
   with_items: "{{ files.stdout_lines }}"
   tags:
     - VCPF-70-000017
