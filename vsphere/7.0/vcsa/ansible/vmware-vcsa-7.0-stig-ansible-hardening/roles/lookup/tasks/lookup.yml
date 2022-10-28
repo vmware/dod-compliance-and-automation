@@ -25,6 +25,7 @@
     - '{{ var_catalina_props_path }}'
     - '{{ var_syslog_conf_path }}'
   changed_when: false
+  ignore_errors: true
   when:
     - create_backups | bool
 
@@ -120,7 +121,7 @@
     path: '{{ var_json_path }}'
     state: present
     regexp: '^.*"StreamRedirectFile".*$'
-    line: '    "StreamRedirectFile" : "{{ var_stream_redirect_file }}",'
+    line: '    "StreamRedirectFile": "{{ var_stream_redirect_file }}",'
     insertbefore: ^.*WorkingDir.*$
     firstmatch: true
   tags:
@@ -356,7 +357,7 @@
   register: files
   tags:
     - VCLU-70-000017
-  changed_when: files.stdout!=""
+  changed_when: files.stdout != ""
   when:
     - run_web_files_permissions | bool
 

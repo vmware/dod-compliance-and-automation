@@ -35,7 +35,48 @@ control 'VCSA-70-000148' do
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  # Check syslog servers
+  result = http("https://#{input('vcURL')}/api/appliance/logging/forwarding",
+              method: 'GET',
+              headers: {
+                'vmware-api-session-id' => "#{input('vcApiToken')}",
+                },
+              ssl_verify: false)
+
+  describe result do
+    its('status') { should cmp 200 }
+  end
+  unless result.status != 200
+    describe result.body do
+      it { should_not cmp '[]' }
+    end
+    servers = JSON.parse(result.body)
+    servers.each do |server|
+      describe server do
+        its(['hostname']) { should be_in input('syslogServers') }
+      end
+    end
+  end
+  # Check status of syslog servers
+  result = http("https://#{input('vcURL')}/api/appliance/logging/forwarding?action=test",
+              method: 'POST',
+              headers: {
+                'vmware-api-session-id' => "#{input('vcApiToken')}",
+                },
+              ssl_verify: false)
+
+  describe result do
+    its('status') { should cmp 200 }
+  end
+  unless result.status != 200
+    describe result.body do
+      it { should_not cmp '[]' }
+    end
+    servers = JSON.parse(result.body)
+    servers.each do |server|
+      describe server do
+        its(['state']) { should cmp 'UP' }
+      end
+    end
   end
 end

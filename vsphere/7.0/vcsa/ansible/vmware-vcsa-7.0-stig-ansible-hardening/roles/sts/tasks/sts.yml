@@ -24,6 +24,7 @@
     - '{{ var_catalina_props_path }}'
     - '{{ var_syslog_conf_path }}'
   changed_when: false
+  ignore_errors: true
   when:
     - create_backups | bool
 
@@ -444,7 +445,7 @@
   register: files
   tags:
     - VCST-70-000017
-  changed_when: files.stdout!=""
+  changed_when: files.stdout != ""
   when:
     - run_web_files_permissions | bool
 

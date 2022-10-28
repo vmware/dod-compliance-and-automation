@@ -19,8 +19,8 @@ control 'ESXI-70-000059' do
 
     From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
 
-    Get-VirtualSwitch | Get-SecurityPolicy
-    Get-VirtualPortGroup | Get-SecurityPolicy
+    Get-VirtualSwitch -Standard | Get-SecurityPolicy
+    Get-VirtualPortGroup -Standard | Get-SecurityPolicy
 
     If the \"Forged Transmits\" policy is set to \"Accept\" (or true, via PowerCLI), this is a finding.
   "
@@ -33,8 +33,8 @@ control 'ESXI-70-000059' do
 
     From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
 
-    Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmits $false
-    Get-VirtualPortGroup | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmitsInherited $true
+    Get-VirtualSwitch -Standard | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmits $false
+    Get-VirtualPortGroup -Standard | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmitsInherited $true
   "
   impact 0.5
   tag severity: 'medium'
@@ -62,11 +62,11 @@ control 'ESXI-70-000059' do
 
   if !vmhosts.empty?
     vmhosts.each do |vmhost|
-      command = "Get-VMHost -Name #{vmhost} | Get-VirtualSwitch | Get-SecurityPolicy | Select-Object -ExpandProperty ForgedTransmits"
+      command = "Get-VMHost -Name #{vmhost} | Get-VirtualSwitch -Standard | Get-SecurityPolicy | Select-Object -ExpandProperty ForgedTransmits"
       describe powercli_command(command) do
         its('stdout.strip') { should_not match 'True' }
       end
-      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup | Get-SecurityPolicy | Select-Object -ExpandProperty ForgedTransmits"
+      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup -Standard | Get-SecurityPolicy | Select-Object -ExpandProperty ForgedTransmits"
       describe powercli_command(command) do
         its('stdout.strip') { should_not match 'True' }
       end

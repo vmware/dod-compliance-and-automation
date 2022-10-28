@@ -1,6 +1,6 @@
 # vmware-vsphere-esxi-7.0-stig-baseline
 VMware vSphere ESXi 7.0 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 3 Date: 3 May 2022  
+Version: Release 1 Version 4 Date: 28 October 2022  
 STIG Type: [STIG Readiness Guide](https://confluence.eng.vmware.com/pages/viewpage.action?pageId=1231779155)  
 Maintainers: SCOPE/VMTA  
 

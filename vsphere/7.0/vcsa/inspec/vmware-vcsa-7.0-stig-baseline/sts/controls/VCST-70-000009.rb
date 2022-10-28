@@ -29,7 +29,7 @@ control 'VCST-70-000009' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCST-70-000009'
-  tag cci: ['CCI-001749', 'CCI-000381']
+  tag cci: ['CCI-000381', 'CCI-001749']
   tag nist: ['CM-5 (3)', 'CM-7 a']
 
   describe command("ls -A '#{input('appPath')}'/*.war") do

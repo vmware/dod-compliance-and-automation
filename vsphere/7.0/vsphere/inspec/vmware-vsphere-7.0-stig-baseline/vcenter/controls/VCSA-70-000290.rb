@@ -39,7 +39,40 @@ control 'VCSA-70-000290' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  bashShellAdminUsers = input('bashShellAdminUsers')
+  users = powercli_command('Get-SsoGroup -Domain vsphere.local -Name SystemConfiguration.BashShellAdministrators | Get-SsoPersonUser | Select-Object -ExpandProperty Name')
+  if users.stdout.empty?
+    describe 'Stderr should be empty if no users found' do
+      subject { users.stderr }
+      it { should be_empty }
+    end
+    describe 'No users found in SystemConfiguration.BashShellAdministrators' do
+      subject { users.stdout }
+      it { should be_empty }
+    end
+  else
+    users.stdout.split.each do |user|
+      describe user do
+        it { should be_in bashShellAdminUsers }
+      end
+    end
+  end
+  bashShellAdminGroups = input('bashShellAdminGroups')
+  groups = powercli_command('Get-SsoGroup -Domain vsphere.local -Name SystemConfiguration.BashShellAdministrators | Get-SsoGroup | Select-Object -ExpandProperty Name')
+  if groups.stdout.empty?
+    describe 'Stderr should be empty if no groups found' do
+      subject { groups.stderr }
+      it { should be_empty }
+    end
+    describe 'No groups found in SystemConfiguration.BashShellAdministrators' do
+      subject { groups.stdout }
+      it { should be_empty }
+    end
+  else
+    groups.stdout.split.each do |group|
+      describe group do
+        it { should be_in bashShellAdminGroups }
+      end
+    end
   end
 end

@@ -37,8 +37,8 @@ control 'VCUI-70-000005' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCUI-70-000005'
-  tag cci: ['CCI-000067', 'CCI-000169', 'CCI-001462', 'CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000133', 'CCI-000134', 'CCI-001487', 'CCI-001890', 'CCI-001889']
-  tag nist: ['AC-17 (1)', 'AU-12 a', 'AU-14 (2)', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-8 b', 'AU-8 b']
+  tag cci: ['CCI-000067', 'CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000169', 'CCI-001462', 'CCI-001487', 'CCI-001889', 'CCI-001890']
+  tag nist: ['AC-17 (1)', 'AU-12 a', 'AU-14 (2)', 'AU-3', 'AU-8 b']
 
   describe xml("#{input('serverXmlPath')}") do
     its(['Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]/@pattern']) { should cmp ["#{input('accessValvePattern')}"] }

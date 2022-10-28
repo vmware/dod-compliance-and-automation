@@ -24,6 +24,7 @@
         - '{{ var_syslog_conf_path }}'
         - '{{ var_syslog_conf_path2 }}'
       changed_when: false
+      ignore_errors: true
 
 ############################################
 
@@ -68,7 +69,7 @@
         state: file
         mode: 0600
         owner: vpostgres
-        group: users
+        group: vpgmongrp
       with_items: "{{ pgconffiles.files }}"
 
 ###################################################################################################################################
@@ -112,7 +113,7 @@
     state: file
     mode: 0600
     owner: vpostgres
-    group: users
+    group: vpgmongrp
   with_items: "{{ pglogfiles.files }}"
   tags:
     - VCPG-70-000005
@@ -221,7 +222,7 @@
     state: file
     mode: 0600
     owner: vpostgres
-    group: users
+    group: vpgmongrp
   tags:
     - VCPG-70-000012
   when:

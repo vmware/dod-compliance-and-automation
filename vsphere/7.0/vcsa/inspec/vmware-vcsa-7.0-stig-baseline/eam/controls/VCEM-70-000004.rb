@@ -39,8 +39,8 @@ control 'VCEM-70-000004' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCEM-70-000004'
-  tag cci: ['CCI-000054', 'CCI-001664', 'CCI-002418', 'CCI-002418']
-  tag nist: ['AC-10', 'SC-23 (3)', 'SC-8', 'SC-8']
+  tag cci: ['CCI-000054', 'CCI-001664', 'CCI-002418']
+  tag nist: ['AC-10', 'SC-23 (3)', 'SC-8']
 
   describe xml("#{input('webXmlPath')}") do
     its(['/web-app/session-config/cookie-config/http-only']) { should cmp "#{input('cookieHttpOnly')}" }

@@ -1,7 +1,7 @@
 # vmware-vsphere-7.0-stig-baseline
 VMware vSphere vCenter Appliance 7.0 STIG Readiness Guide Chef InSpec Profile  
 InSpec profile for vSphere 7.0 vCenter, ESXi, and VM controls. Does not include appliance level controls  
-Version: Release 1 Version 3 Date: 29 April 2022  
+Version: Release 1 Version 4 Date: 28 October 2022  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
@@ -13,6 +13,9 @@ This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor 
 - Create an inputs file for your environment. See the inputs-example.yml file.  
 - For ESXi you can run it against a single host, all hosts in a cluster, or all hosts in a vCenter based on the inputs you provide.  
 - For VMs you can run against a single VM or all VMs in a vCenter based on the inputs you provide.  
+- This profile uses a custom InSpec vmware transport which must be installed by running "inspec plugin install /path/to/gem". The gem file is provided in this repo and is currently "train-vmware-0.1.8.gem"  
+- The "VMware.PowerCLI" and "VMware.Vsphere.SsoAdmin" Powershell modules must be installed where this profile is being ran from.  
+- When running the profile the custom vmware transport also connects to the sso admin server via "Connect-SsoAdminServer" and the credentials used to run the profile must also be an SSO admin.  
 
 ## vSphere InSpec Profiles
 

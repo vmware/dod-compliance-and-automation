@@ -21,11 +21,12 @@ control 'VCSA-70-000089' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000190'
+  tag satisfies: ['SRG-APP-000295', 'SRG-APP-000389']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCSA-70-000089'
-  tag cci: ['CCI-001133']
-  tag nist: ['SC-10']
+  tag cci: ['CCI-001133', 'CCI-002038', 'CCI-002361']
+  tag nist: ['AC-12', 'IA-11', 'SC-10']
 
   describe 'This check is a manual or policy based check' do
     skip 'This must be reviewed manually'

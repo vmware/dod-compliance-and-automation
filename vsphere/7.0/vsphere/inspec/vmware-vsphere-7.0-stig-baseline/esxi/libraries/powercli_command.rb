@@ -1,6 +1,6 @@
 class PowerCLICommand < Inspec.resource(1)
   name 'powercli_command'
-  supports platform: 'vmware'
+  # supports platform: 'vmware'
   desc 'Run PowerCLI commands via InSpec'
   example <<~EOX
     # Any output indicates TSM-SSH is enabled

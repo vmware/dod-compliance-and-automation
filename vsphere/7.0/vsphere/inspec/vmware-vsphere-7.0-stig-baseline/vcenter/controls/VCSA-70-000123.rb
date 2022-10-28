@@ -43,10 +43,11 @@ control 'VCSA-70-000123' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000291'
+  tag satisfies: ['SRG-APP-000292', 'SRG-APP-000293', 'SRG-APP-000294', 'SRG-APP-000320']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCSA-70-000123'
-  tag cci: ['CCI-001683']
+  tag cci: ['CCI-001683', 'CCI-001684', 'CCI-001685', 'CCI-001686', 'CCI-002132']
   tag nist: ['AC-2 (4)']
 
   command = 'Get-AlarmDefinition | Where-Object {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq "com.vmware.sso.PrincipalManagement"} | Select-Object -ExpandProperty Enabled'

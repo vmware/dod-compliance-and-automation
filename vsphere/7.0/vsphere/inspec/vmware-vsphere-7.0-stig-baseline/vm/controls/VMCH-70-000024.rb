@@ -1,7 +1,7 @@
 control 'VMCH-70-000024' do
   title 'Encryption must be enabled for vMotion on the virtual machine.'
   desc  "
-    vMotion migrations in vSphere 6.0 and earlier transferred working memory and CPU state information in clear text over the vMotion network. As of vSphere 6.5 this transfer can be transparently encrypted using 256bit AES-GCM with negligible performance impact.
+    vMotion migrations in vSphere 6.0 and earlier transferred working memory and CPU state information in clear text over the vMotion network. As of vSphere 6.5 this transfer can be transparently encrypted using 256bit AES-GCM with negligible performance impact.
 
     vSphere enables encrypted vMotion by default as \"Opportunistic\", meaning that encrypted channels are used where supported but the operation will continue in plain text where encryption is not supported.
 

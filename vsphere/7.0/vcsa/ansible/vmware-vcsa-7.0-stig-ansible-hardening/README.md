@@ -1,6 +1,6 @@
 # vmware-vcsa-7.0-stig-ansible-hardening
 VMware vSphere vCenter Appliance 7.0 STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 3: 29 April 2022  
+Version: Version 1 Release 4: 28 October 2022  
 STIG Type: STIG Readiness Guide  
 
 ## Requirements

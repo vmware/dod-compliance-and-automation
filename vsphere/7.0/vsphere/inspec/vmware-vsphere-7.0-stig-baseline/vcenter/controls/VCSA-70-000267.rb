@@ -43,7 +43,7 @@ control 'VCSA-70-000267' do
   tag nist: ['CM-6 b']
 
   command = 'Get-VDSwitch | Select -ExpandProperty Name'
-  vdswitches = powercli_command(command).stdout.strip.split("\r\n")
+  vdswitches = powercli_command(command).stdout.split("\n")
 
   if vdswitches.empty?
     describe '' do

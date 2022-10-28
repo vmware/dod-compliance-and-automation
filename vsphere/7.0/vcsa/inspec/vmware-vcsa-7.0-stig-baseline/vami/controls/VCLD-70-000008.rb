@@ -284,8 +284,8 @@ control 'VCLD-70-000008' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCLD-70-000008'
-  tag cci: ['CCI-001348', 'CCI-001851', 'CCI-001851']
-  tag nist: ['AU-9 (2)', 'AU-4 (1)', 'AU-4 (1)']
+  tag cci: ['CCI-001348', 'CCI-001851']
+  tag nist: ['AU-4 (1)', 'AU-9 (2)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-applmgmt.conf|grep "^..5......"') do
     its('stdout.strip') { should eq '' }

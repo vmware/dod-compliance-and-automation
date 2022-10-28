@@ -13,7 +13,7 @@ control 'ESXI-70-000064' do
 
     From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VirtualPortGroup | Select Name, VLanID
+    Get-VirtualPortGroup -Standard | Select Name, VLanID
 
     If any port group is configured with VLAN 4095 and is not documented as a needed exception, this is a finding.
   "
@@ -56,7 +56,7 @@ control 'ESXI-70-000064' do
 
   if !vmhosts.empty?
     vmhosts.each do |vmhost|
-      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup | Select-Object -ExpandProperty VlanId"
+      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup -Standard | Select-Object -ExpandProperty VlanId"
       describe powercli_command(command) do
         its('stdout.strip') { should_not match '4095' }
       end

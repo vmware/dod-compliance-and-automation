@@ -27,7 +27,20 @@ control 'VCSA-70-000265' do
   tag cci: ['CCI-001967']
   tag nist: ['IA-3 (1)']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  command = "(Get-View -Id 'OptionManager-VpxSettings').setting | Where-Object {$_.key -match 'snmp.receiver.1.enabled'} | Select-Object -ExpandProperty Value"
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp 'False' }
+  end
+  command = "(Get-View -Id 'OptionManager-VpxSettings').setting | Where-Object {$_.key -match 'snmp.receiver.2.enabled'} | Select-Object -ExpandProperty Value"
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp 'False' }
+  end
+  command = "(Get-View -Id 'OptionManager-VpxSettings').setting | Where-Object {$_.key -match 'snmp.receiver.3.enabled'} | Select-Object -ExpandProperty Value"
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp 'False' }
+  end
+  command = "(Get-View -Id 'OptionManager-VpxSettings').setting | Where-Object {$_.key -match 'snmp.receiver.4.enabled'} | Select-Object -ExpandProperty Value"
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp 'False' }
   end
 end

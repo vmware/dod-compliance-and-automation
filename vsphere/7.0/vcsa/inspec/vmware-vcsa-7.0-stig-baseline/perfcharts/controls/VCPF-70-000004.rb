@@ -25,11 +25,11 @@ control 'VCPF-70-000004' do
     Navigate to the <session-config> node and configure it as follows:
 
     <session-config>
-          <cookie-config>
-             <http-only>true</http-only>
-             <secure>true</secure>
-          </cookie-config>
-          <session-timeout>30</session-timeout>
+      <cookie-config>
+        <http-only>true</http-only>
+        <secure>true</secure>
+      </cookie-config>
+      <session-timeout>30</session-timeout>
     </session-config>
 
     Restart the service with the following command:

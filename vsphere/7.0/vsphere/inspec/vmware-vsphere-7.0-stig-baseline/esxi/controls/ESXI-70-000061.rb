@@ -17,8 +17,8 @@ control 'ESXI-70-000061' do
 
     From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
 
-    Get-VirtualSwitch | Get-SecurityPolicy
-    Get-VirtualPortGroup | Get-SecurityPolicy
+    Get-VirtualSwitch -Standard | Get-SecurityPolicy
+    Get-VirtualPortGroup -Standard | Get-SecurityPolicy
 
     If the \"Promiscuous Mode\" policy is set to \"Accept\" (or true, via PowerCLI), this is a finding.
   "
@@ -31,8 +31,8 @@ control 'ESXI-70-000061' do
 
     From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
 
-    Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -AllowPromiscuous $false
-    Get-VirtualPortGroup | Get-SecurityPolicy | Set-SecurityPolicy -AllowPromiscuousInherited $true
+    Get-VirtualSwitch -Standard | Get-SecurityPolicy | Set-SecurityPolicy -AllowPromiscuous $false
+    Get-VirtualPortGroup -Standard | Get-SecurityPolicy | Set-SecurityPolicy -AllowPromiscuousInherited $true
   "
   impact 0.5
   tag severity: 'medium'
@@ -60,11 +60,11 @@ control 'ESXI-70-000061' do
 
   if !vmhosts.empty?
     vmhosts.each do |vmhost|
-      command = "Get-VMHost -Name #{vmhost} | Get-VirtualSwitch | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
+      command = "Get-VMHost -Name #{vmhost} | Get-VirtualSwitch -Standard | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
       describe powercli_command(command) do
         its('stdout.strip') { should_not match 'True' }
       end
-      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
+      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup -Standard | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
       describe powercli_command(command) do
         its('stdout.strip') { should_not match 'True' }
       end

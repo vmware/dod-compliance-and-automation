@@ -28,14 +28,21 @@ control 'VCSA-70-000060' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000149'
-  tag satisfies: ['SRG-APP-000150']
+  tag satisfies: ['SRG-APP-000080', 'SRG-APP-000150', 'SRG-APP-000391', 'SRG-APP-000402']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCSA-70-000060'
-  tag cci: ['CCI-000765', 'CCI-000766']
-  tag nist: ['IA-2 (1)', 'IA-2 (2)']
+  tag cci: ['CCI-000166', 'CCI-000765', 'CCI-000766', 'CCI-001953', 'CCI-002009']
+  tag nist: ['AU-10', 'IA-2 (1)', 'IA-2 (12)', 'IA-2 (2)', 'IA-8 (1)']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  if input('embeddedIdp')
+    command = '(Get-SsoAuthenticationPolicy).SmartCardAuthnEnabled'
+    describe powercli_command(command) do
+      its('stdout.strip') { should cmp 'true' }
+    end
+  else
+    describe 'This check is a manual or policy based check' do
+      skip 'This must be reviewed manually'
+    end
   end
 end

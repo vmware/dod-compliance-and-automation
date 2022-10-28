@@ -13,7 +13,7 @@ control 'ESXI-70-000065' do
 
     From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VirtualPortGroup | Select Name, VLanId
+    Get-VirtualPortGroup -Standard | Select Name, VLanId
 
     If any port group is configured with a reserved VLAN ID, this is a finding.
   "
@@ -57,7 +57,7 @@ control 'ESXI-70-000065' do
   if !vmhosts.empty?
     vlanlist = ['1001', '1024', '3968', '4047', '4094']
     vmhosts.each do |vmhost|
-      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup | Select-Object -ExpandProperty VlanId"
+      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup -Standard | Select-Object -ExpandProperty VlanId"
       result = powercli_command(command).stdout.split("\r\n")
       describe result do
         it { should_not be_in vlanlist }

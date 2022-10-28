@@ -27,7 +27,25 @@ control 'VCSA-70-000286' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe 'This check is a manual or policy based check' do
-    skip 'This must be reviewed manually'
+  clusters = powercli_command('Get-Cluster | Where-Object {$_.VsanEnabled -eq $true} | Sort-Object Name | Select -ExpandProperty Name').stdout.split("\n")
+
+  if !clusters.empty?
+    clusters.each do |cluster|
+      iscsiEnabled = powercli_command("(Get-VsanClusterConfiguration -Cluster \"#{cluster}\").IscsiTargetServiceEnabled").stdout.strip
+      if iscsiEnabled == 'True'
+        command = "(Get-VsanClusterConfiguration -Cluster \"#{cluster}\").DefaultIscsiAuthenticationType"
+        describe powercli_command(command) do
+          its('stdout.strip') { should cmp 'MutualChap' }
+        end
+      else
+        describe "vSAN iSCSI service not enabled on cluster: #{cluster}...skipping" do
+          skip "vSAN iSCSI service not enabled on cluster: #{cluster}...skipping"
+        end
+      end
+    end
+  else
+    describe 'No vSAN enabled clusters found!' do
+      skip 'No vSAN enabled clusters found...skipping tests'
+    end
   end
 end

@@ -20,16 +20,16 @@ control 'ESXI-70-000084' do
     $esxcli = Get-EsxCli -v2
     $esxcli.system.auditrecords.get.invoke()|Format-List
 
-    Expected result:
+    Example result:
 
     Audit Record Storage Active: true
-    Audit Record Storage Capacity: 4100
+    Audit Record Storage Capacity: 100
     Audit Record Storage Directory: /scratch/auditLog
     Audit Remote Host Enabled: true
 
     Note: The \"Audit Record Storage Directory\" may differ from the default above but it must still be located on persistent storage.
 
-    If the output does not match the expected result, this is a finding.
+    If audit record storage is not active and configured, this is a finding.
   "
   desc 'fix', "
     From an ESXi shell, run the following command(s):
@@ -40,7 +40,7 @@ control 'ESXI-70-000084' do
 
     Mandatory:
 
-    # esxcli system auditrecords local set --size=4100
+    # esxcli system auditrecords local set --size=100
     # esxcli system auditrecords local enable
     # esxcli system auditrecords remote enable
     # esxcli system syslog reload
@@ -52,7 +52,7 @@ control 'ESXI-70-000084' do
     $esxcli = Get-EsxCli -v2
     $arguments = $esxcli.system.auditrecords.local.set.CreateArgs()
     *Optional* $arguments.directory = \"/full/path/here\"
-    $arguments.size=\"4100\"
+    $arguments.size=\"100\"
     $esxcli.system.auditrecords.local.set.Invoke($arguments)
     $esxcli.system.auditrecords.local.enable.Invoke()
     $esxcli.system.auditrecords.remote.enable.Invoke()
@@ -91,7 +91,8 @@ control 'ESXI-70-000084' do
 
       command = "$vmhost = Get-VMHost -Name #{vmhost}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.auditrecords.get.invoke() | Select-Object -ExpandProperty AuditRecordStorageCapacity"
       describe powercli_command(command) do
-        its('stdout.strip') { should cmp '4100' }
+        its('stdout.strip') { should cmp >= '4' }
+        its('stdout.strip') { should cmp <= '100' }
       end
 
       command = "$vmhost = Get-VMHost -Name #{vmhost}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.auditrecords.get.invoke() | Select-Object -ExpandProperty AuditRemoteHostEnabled"

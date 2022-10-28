@@ -37,12 +37,12 @@ control 'VCRP-70-000004' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000015-WSR-000014'
-  tag satisfies: ['SRG-APP-000172-WSR-000104', 'SRG-APP-000439-WSR-000151', 'SRG-APP-000439-WSR-000152', 'SRG-APP-000439-WSR-000156', 'SRG-APP-000442-WSR-000182', 'SRG-APP-000441-WSR-000181']
+  tag satisfies: ['SRG-APP-000172-WSR-000104', 'SRG-APP-000439-WSR-000151', 'SRG-APP-000439-WSR-000152', 'SRG-APP-000439-WSR-000156', 'SRG-APP-000441-WSR-000181', 'SRG-APP-000442-WSR-000182']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCRP-70-000004'
-  tag cci: ['CCI-001453', 'CCI-000197', 'CCI-002418', 'CCI-002418', 'CCI-002418', 'CCI-002422', 'CCI-002420']
-  tag nist: ['AC-17 (2)', 'IA-5 (1) (c)', 'SC-8', 'SC-8', 'SC-8', 'SC-8 (2)', 'SC-8 (2)']
+  tag cci: ['CCI-000197', 'CCI-001453', 'CCI-002418', 'CCI-002420', 'CCI-002422']
+  tag nist: ['AC-17 (2)', 'IA-5 (1) (c)', 'SC-8', 'SC-8 (2)']
 
   value = input('protocols')
 
