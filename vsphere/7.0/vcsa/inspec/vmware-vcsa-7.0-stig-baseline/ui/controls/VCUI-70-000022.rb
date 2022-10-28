@@ -14,9 +14,9 @@ control 'VCUI-70-000022' do
     Expected result:
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-        <welcome-file>index.htm</welcome-file>
-        <welcome-file>index.jsp</welcome-file>
+      <welcome-file>index.html</welcome-file>
+      <welcome-file>index.htm</welcome-file>
+      <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
     If the output of the command does not match the expected result, this is a finding.
@@ -28,11 +28,11 @@ control 'VCUI-70-000022' do
 
     Add the following section under the <web-apps> node:
 
-        <welcome-file-list>
-            <welcome-file>index.html</welcome-file>
-            <welcome-file>index.htm</welcome-file>
-            <welcome-file>index.jsp</welcome-file>
-        </welcome-file-list>
+    <welcome-file-list>
+      <welcome-file>index.html</welcome-file>
+      <welcome-file>index.htm</welcome-file>
+      <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 
     Restart the service with the following command:
 

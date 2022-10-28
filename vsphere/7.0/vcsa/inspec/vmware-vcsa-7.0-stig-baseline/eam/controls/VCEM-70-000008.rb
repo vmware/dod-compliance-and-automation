@@ -18,7 +18,7 @@ control 'VCEM-70-000008' do
   tag rid: nil
   tag stig_id: 'VCEM-70-000008'
   tag cci: ['CCI-001749', 'CCI-001849']
-  tag nist: ['CM-5 (3)', 'AU-4']
+  tag nist: ['AU-4', 'CM-5 (3)']
 
   describe command('rpm -V vmware-eam|grep "^..5......"|grep -v -E "\.installer|\.properties|\.xml"') do
     its('stdout.strip') { should eq '' }

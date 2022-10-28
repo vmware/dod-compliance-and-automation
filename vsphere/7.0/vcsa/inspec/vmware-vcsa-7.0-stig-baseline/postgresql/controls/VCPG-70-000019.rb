@@ -53,8 +53,8 @@ control 'VCPG-70-000019' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCPG-70-000019'
-  tag cci: ['CCI-001855', 'CCI-001858', 'CCI-001851']
-  tag nist: ['AU-5 (1)', 'AU-5 (2)', 'AU-4 (1)']
+  tag cci: ['CCI-001851', 'CCI-001855', 'CCI-001858']
+  tag nist: ['AU-4 (1)', 'AU-5 (1)', 'AU-5 (2)']
 
   describe command('rpm -V VMware-Postgres-cis-visl-scripts|grep -E "vmware-services-vmware-vpostgres.conf|vmware-services-vmware-postgres-archiver.conf" | grep "^..5......"') do
     its('stdout.strip') { should cmp '' }

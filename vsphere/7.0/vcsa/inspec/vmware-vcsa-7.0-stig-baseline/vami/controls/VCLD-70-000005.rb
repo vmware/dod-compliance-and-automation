@@ -1,6 +1,6 @@
 control 'VCLD-70-000005' do
   title 'VAMI must generate log records for system startup and shutdown.'
-  desc  'Logging must be started as soon as possible when a service starts and when a service is stopped.  Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops.  Also, by starting to log immediately after a service starts, it becomes more difficult for suspicous activity to go unlogged.'
+  desc  'Logging must be started as soon as possible when a service starts and when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:

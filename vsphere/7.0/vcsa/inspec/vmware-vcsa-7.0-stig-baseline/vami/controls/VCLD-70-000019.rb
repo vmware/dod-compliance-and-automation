@@ -10,7 +10,7 @@ control 'VCLD-70-000019' do
   desc  'check', "
     At the command prompt, execute the following command:
 
-    # /opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/mimetype\\.assign/,/\\)/'|grep \"text/\"|grep -v \"'charset=utf-8'\"|sed -e 's/^[ ]*//'
+    # /opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/mimetype\\.assign/,/\\)/'|grep \"text/\"|grep -v \"charset=utf-8\"|sed -e 's/^[ ]*//'
 
     If the command returns any value, this is a finding.
 
@@ -45,7 +45,6 @@ control 'VCLD-70-000019' do
   tag stig_id: 'VCLD-70-000019'
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']
-  tag mitigations: "Lighttpd is a heavily restricted web service.  It is only used for remote administration of the appliance.  Routine log analysis will reveal anomalously heavy traffic to the server, which provides one layer of defense.\n\nSite policy can also provide firewall protection to the Lighttpd port.  This provides a second layer of defense.\n\nAs the remote administration server, Lighttpd is expected to only receive data input from known system administrators on an isolated management enclave.  This further reduces the risk.\nResidual risk can be properly mitigated."
 
   describe command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/mimetype\\.assign/,/\\)/'|grep \"text/\"|grep -v \"charset=utf-8\"|sed -e 's/^[ ]*//'") do
     its('stdout') { should cmp '' }

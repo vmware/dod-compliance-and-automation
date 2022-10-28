@@ -32,8 +32,8 @@ control 'VCPG-70-000002' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCPG-70-000002'
-  tag cci: ['CCI-000169', 'CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-001487', 'CCI-000135', 'CCI-001889']
-  tag nist: ['AU-12 a', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3 (1)', 'AU-8 b']
+  tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000135', 'CCI-000169', 'CCI-001487', 'CCI-001889']
+  tag nist: ['AU-12 a', 'AU-3', 'AU-3 (1)', 'AU-8 b']
 
   sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = 'SHOW log_line_prefix;'

@@ -26,7 +26,7 @@ control 'VCEM-70-000017' do
   tag rid: nil
   tag stig_id: 'VCEM-70-000017'
   tag cci: ['CCI-001082', 'CCI-001813']
-  tag nist: ['SC-2', 'CM-5 (1)']
+  tag nist: ['CM-5 (1)', 'SC-2']
 
   describe command("find '#{input('rootPath')}' -xdev -type f -a \'(\' -not -user root -o -not -group root \')\' -exec ls -ld {} \\;") do
     its('stdout.strip') { should eq '' }

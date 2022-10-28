@@ -41,7 +41,7 @@ control 'VCLD-70-000002' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCLD-70-000002'
-  tag cci: ['CCI-000068', 'CCI-002450', 'CCI-002418']
+  tag cci: ['CCI-000068', 'CCI-002418', 'CCI-002450']
   tag nist: ['AC-17 (2)', 'SC-13', 'SC-8']
 
   runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout

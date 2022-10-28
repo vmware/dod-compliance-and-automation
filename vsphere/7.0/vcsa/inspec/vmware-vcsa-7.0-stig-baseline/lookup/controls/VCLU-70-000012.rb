@@ -1,6 +1,6 @@
 control 'VCLU-70-000012' do
   title 'Lookup Service must have Multipurpose Internet Mail Extensions (MIMEs) that invoke operating system shell programs disabled.'
-  desc  'MIME mappings tell the Lookup Service what type of program various file types and extensions are and what external utilities or programs are needed to execute the file type. By ensuring that various shell script MIME types are not included in web.xml, the server is protected against malicious users tricking the server into executing shell command files.'
+  desc  'MIME mappings tell the Lookup Service what type of program various file types and extensions are and what external utilities or programs are needed to execute the file type. By ensuring that various shell script MIME types are not included in web.xml, the server is protected against malicious users tricking the server into executing shell command files.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:

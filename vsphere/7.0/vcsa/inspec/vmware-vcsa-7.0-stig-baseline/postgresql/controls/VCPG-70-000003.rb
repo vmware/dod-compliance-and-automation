@@ -5,7 +5,7 @@ control 'VCPG-70-000003' do
   desc  'check', "
     At the command prompt, enter the following command:
 
-    # find /storage/db/vpostgres/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user vpostgres -o -not -group users ')' -exec ls -ld {} \\;
+    # find /storage/db/vpostgres/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user vpostgres -o -not -group vpgmongrp ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
@@ -13,7 +13,7 @@ control 'VCPG-70-000003' do
     At the command prompt, enter the following command:
 
     # chmod 600 <file>
-    # chown vpostgres:users <file>
+    # chown vpostgres:vpgmongrp <file>
 
     Note: Replace <file> with the file with incorrect permissions.
   "
@@ -25,13 +25,13 @@ control 'VCPG-70-000003' do
   tag rid: nil
   tag stig_id: 'VCPG-70-000003'
   tag cci: ['CCI-000171', 'CCI-001493', 'CCI-001494', 'CCI-001495', 'CCI-001813']
-  tag nist: ['AU-12 b', 'AU-9', 'AU-9', 'AU-9', 'CM-5 (1)']
+  tag nist: ['AU-12 b', 'AU-9', 'CM-5 (1)']
 
   command("find #{input('pg_install_dir')} -type f -maxdepth 1 -name '*conf*'").stdout.split.each do |fname|
     describe file(fname) do
       its('mode') { should cmp '0600' }
       its('owner') { should cmp 'vpostgres' }
-      its('group') { should cmp 'users' }
+      its('group') { should cmp 'vpgmongrp' }
     end
   end
 end
