@@ -1,7 +1,7 @@
 ---
 
 - name: Include eam
-  ansibie.builtin.include_tasks:
+  ansible.builtin.include_tasks:
     file: eam.yaml
     apply:
       tags:

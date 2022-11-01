@@ -1,7 +1,7 @@
 ---
 
 - name: Include perfcharts
-  ansibie.builtin.include_tasks:
+  ansible.builtin.include_tasks:
     file: perfcharts.yaml
     apply:
       tags:
