@@ -14,8 +14,8 @@ control 'VCUI-70-000027' do
     Expected result:
 
     <init-param>
-      <param-name>debug</param-name>
-      <param-value>0</param-value>
+          <param-name>debug</param-name>
+          <param-value>0</param-value>
     </init-param>
 
     If the output of the command does not match the expected result, this is a finding.
@@ -31,10 +31,10 @@ control 'VCUI-70-000027' do
 
     Note: The debug setting should look like the following:
 
-    <init-param>
-      <param-name>debug</param-name>
-      <param-value>0</param-value>
-    </init-param>
+                   <init-param>
+                      <param-name>debug</param-name>
+                      <param-value>0</param-value>
+                   </init-param>
 
     Restart the service with the following command:
 

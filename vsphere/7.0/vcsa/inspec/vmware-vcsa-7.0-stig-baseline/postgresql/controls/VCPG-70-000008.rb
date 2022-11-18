@@ -36,7 +36,7 @@ control 'VCPG-70-000008' do
   tag rid: nil
   tag stig_id: 'VCPG-70-000008'
   tag cci: ['CCI-000382', 'CCI-001762']
-  tag nist: ['CM-7 (1) (b)', 'CM-7 b']
+  tag nist: ['CM-7 b', 'CM-7 (1) (b)']
 
   sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = 'SHOW port;'

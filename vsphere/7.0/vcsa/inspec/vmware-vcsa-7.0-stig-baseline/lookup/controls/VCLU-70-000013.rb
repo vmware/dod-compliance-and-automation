@@ -28,16 +28,16 @@ control 'VCLU-70-000013' do
 
     /usr/lib/vmware-lookupsvc/conf/web.xml
 
-    Navigate to and locate the mapping for the JSP servlet. It is the <servlet-mapping> node that contains <servlet-name>jsp</servlet-name>.
+    Navigate to and locate the mapping for the JSP servlet.  It is the  <servlet-mapping> node that contains <servlet-name>jsp</servlet-name>.
 
     Configure the <servlet-mapping> node to look like the code snippet below:
 
-    <!-- The mappings for the JSP servlet -->
-    <servlet-mapping>
-      <servlet-name>jsp</servlet-name>
-      <url-pattern>*.jsp</url-pattern>
-      <url-pattern>*.jspx</url-pattern>
-    </servlet-mapping>
+        <!-- The mappings for the JSP servlet -->
+        <servlet-mapping>
+            <servlet-name>jsp</servlet-name>
+            <url-pattern>*.jsp</url-pattern>
+            <url-pattern>*.jspx</url-pattern>
+        </servlet-mapping>
 
     Restart the service with the following command:
 

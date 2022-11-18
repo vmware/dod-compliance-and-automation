@@ -1,0 +1,14 @@
+---
+- name: start_vms
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $vms = Get-VM | Select-Object -ExpandProperty Name;
+      ForEach($vm in $vms){
+        $powered_state = Get-VM $vm | Select-Object PowerState;
+        if($powered_state.PowerState -eq "PoweredOff"){
+          Start-VM -VM $vm -Confirm:$False;
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh

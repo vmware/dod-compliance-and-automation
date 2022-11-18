@@ -1,0 +1,19 @@
+---
+#vCenter Authentication Variables
+vcenter_username: user@example.com
+vcenter_password: "{{ vault_vcenter_password }}"
+vcenter_host: ip or fqdn
+
+#vCenter validate certificate (true/false)
+validate_certs: false
+
+#Global Exclusion Value
+exclusion_list: vm1|vm2|
+
+#STIG Variables 
+
+#VMCH-70-000006
+disk_mode_type: persistent
+
+#VMCH-70-000024
+vmotion_encryption: opportunistic

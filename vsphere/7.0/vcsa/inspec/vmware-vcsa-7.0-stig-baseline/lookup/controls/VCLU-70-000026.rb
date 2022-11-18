@@ -16,8 +16,8 @@ control 'VCLU-70-000026' do
     Expected result:
 
     <init-param>
-      <param-name>debug</param-name>
-      <param-value>0</param-value>
+          <param-name>debug</param-name>
+          <param-value>0</param-value>
     </init-param>
 
     If the output of the command does not match the expected result, this is a finding.
@@ -33,10 +33,10 @@ control 'VCLU-70-000026' do
 
     The debug setting should look like the below:
 
-    <init-param>
-      <param-name>debug</param-name>
-      <param-value>0</param-value>
-    </init-param>
+                   <init-param>
+                      <param-name>debug</param-name>
+                      <param-value>0</param-value>
+                   </init-param>
 
     Restart the service with the following command:
 

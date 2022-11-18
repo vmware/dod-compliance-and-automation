@@ -1,0 +1,34 @@
+---
+- name: Make sure requirements are met to run vmware modules
+  pip:
+    name: PyVmomi
+    state: present
+
+- name: Ensure PowerShell Core is present
+  ansible.builtin.yum:
+    name: "{{ role_path}}{{ file_location }}powershell-7.2.0-1.rh.x86_64.rpm"
+    state: present
+    disable_gpg_check: true
+  register: install_pwsh
+
+- name: Initiate PowerShell Core .local
+  ansible.builtin.shell:
+    cmd: /usr/bin/pwsh -c echo init
+  when: install_pwsh.changed
+
+- name: Copy PowerCLI Modules in Place
+  ansible.posix.synchronize:
+    src: "{{ role_path}}{{ file_location }}Modules/"
+    dest: /root/.local/share/powershell/Modules
+
+- name: Set PowerCLI to Accecpt Self-Signed Certs
+  ansible.builtin.shell:
+    cmd: |
+      Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
+  args:
+    executable: /usr/bin/pwsh
+
+- name: Make results directory for STIGs requiring manual remediation
+  ansible.builtin.file:
+    path: "{{ role_path }}/stig_findings"
+    state: directory

@@ -9,7 +9,7 @@ control 'VCPG-70-000005' do
   desc  'check', "
     At the command prompt, enter the following command:
 
-    # find /var/log/vmware/vpostgres/* -xdev -type f -a '(' -not -perm 600 -o -not -user vpostgres -o -not -group vpgmongrp ')' -exec ls -ld {} \\;
+    # find /var/log/vmware/vpostgres/* -xdev -type f -a '(' -not -perm 600 -o -not -user vpostgres -o -not -group users ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
@@ -17,7 +17,7 @@ control 'VCPG-70-000005' do
     At the command prompt, enter the following command:
 
     # chmod 600 <file>
-    # chown vpostgres:vpgmongrp <file>
+    # chown vpostgres:users <file>
 
     Note: Replace <file> with the file with incorrect permissions.
 
@@ -35,7 +35,7 @@ control 'VCPG-70-000005' do
   tag rid: nil
   tag stig_id: 'VCPG-70-000005'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9']
+  tag nist: ['AU-9', 'AU-9', 'AU-9']
 
   sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = 'SHOW log_file_mode;'
@@ -48,7 +48,7 @@ control 'VCPG-70-000005' do
     describe file(fname) do
       its('mode') { should cmp '0600' }
       its('owner') { should cmp 'vpostgres' }
-      its('group') { should cmp 'vpgmongrp' }
+      its('group') { should cmp 'users' }
     end
   end
 end

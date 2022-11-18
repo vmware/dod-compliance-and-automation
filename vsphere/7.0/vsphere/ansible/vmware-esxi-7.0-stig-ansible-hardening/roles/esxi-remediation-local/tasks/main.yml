@@ -1,0 +1,16 @@
+---
+#Include Encrypted Variables
+- include_vars: vault.yml
+  when:
+    - esx_local_vault | bool
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: prelim.yml
+  tags:
+    - always
+    - vm_deps
+
+- ansible.builtin.import_tasks: esxi.yml
+  tags:
+    - stig

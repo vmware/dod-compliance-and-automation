@@ -27,8 +27,8 @@ control 'VCLD-70-000009' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCLD-70-000009'
-  tag cci: ['CCI-001082', 'CCI-001749', 'CCI-001813']
-  tag nist: ['CM-5 (1)', 'CM-5 (3)', 'SC-2']
+  tag cci: ['CCI-001749', 'CCI-001082', 'CCI-001813']
+  tag nist: ['CM-5 (3)', 'SC-2', 'CM-5 (1)']
 
   describe command('rpm -V vmware-studio-vami-lighttpd|grep "^..5......"|grep -v -E "\.conf|\.service"') do
     its('stdout.strip') { should eq '' }

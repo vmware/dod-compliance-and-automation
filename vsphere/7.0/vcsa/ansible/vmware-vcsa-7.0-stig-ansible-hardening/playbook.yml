@@ -1,4 +1,26 @@
-- hosts: all
+# This is the main playbook for launching the vSphere VCSA 7.0 STIG
+- hosts: vcenter
+  remote_user: root
+  gather_facts: no
+  # Sets up the vcenter for following role execution
+  tasks:
+    - name: "Get Bash to be Default Terminal"
+      ansible.builtin.raw: shell.set --enabled true || true
+
+    - name: "Get Bash to be Default Terminal"
+      ansible.builtin.raw: shell command chsh -s /bin/bash root || true
+
+    - pause:
+        seconds: 120
+  tags: 
+    - remote
+
+- hosts: vcenter
+  remote_user: root
+  vars:
+    var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
+    run_set_syslog_server: false
+    run_set_ntp_server: false
   roles:
     - role: vmware-photon-3.0-stig-ansible-hardening
       vars:
@@ -14,3 +36,5 @@
     - role: vami
     - role: ui
     - role: misc
+  tags: 
+    - remote

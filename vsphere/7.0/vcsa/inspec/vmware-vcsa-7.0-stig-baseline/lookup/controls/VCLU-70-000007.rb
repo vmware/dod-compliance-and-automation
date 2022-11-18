@@ -29,7 +29,7 @@ control 'VCLU-70-000007' do
   tag rid: nil
   tag stig_id: 'VCLU-70-000007'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9']
+  tag nist: ['AU-9', 'AU-9', 'AU-9']
 
   command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
     describe file(fname) do

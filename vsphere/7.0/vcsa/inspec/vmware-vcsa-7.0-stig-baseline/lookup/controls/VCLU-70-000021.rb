@@ -28,11 +28,11 @@ control 'VCLU-70-000021' do
 
     Add the following section under the <web-apps> node:
 
-    <welcome-file-list>
-      <welcome-file>index.html</welcome-file>
-      <welcome-file>index.htm</welcome-file>
-      <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+        <welcome-file-list>
+            <welcome-file>index.html</welcome-file>
+            <welcome-file>index.htm</welcome-file>
+            <welcome-file>index.jsp</welcome-file>
+        </welcome-file-list>
 
     Restart the service with the following command:
 

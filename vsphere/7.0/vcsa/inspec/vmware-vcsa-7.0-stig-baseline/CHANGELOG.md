@@ -1,17 +1,5 @@
 # Change Log
 
-## [7.0 Version 1 Release 4] (2022-10-28)
-
-#### Release Notes
-- VCPG-70-000003 Updated group to reflect new group used for vPostgres
-- VCPG-70-000005 Updated group to reflect new group used for vPostgres
-- VCPG-70-000012 Updated group to reflect new group used for vPostgres
-- PHTN-30-000039 Excluded in favor of configuring syslog in the VAMI
-- PHTN-30-000058 Excluded in favor of configuring ntp in the VAMI
-- VCPF-70-000017 Updated check to accomodate new service permission defaults
-- VCUI-70-000007 Updated
-- Misc typo fixes
-
 ## [7.0 Version 1 Release 3] (2022-04-29)
 
 #### Release Notes

@@ -12,7 +12,7 @@ control 'VCST-70-000017' do
   desc 'fix', "
     At the command prompt, execute the following command:
 
-    # chown root:root <file_name>
+    # chown root:root <file_name>
 
     Repeat the command for each file that was returned.
 
@@ -26,7 +26,7 @@ control 'VCST-70-000017' do
   tag rid: nil
   tag stig_id: 'VCST-70-000017'
   tag cci: ['CCI-001082', 'CCI-001813']
-  tag nist: ['CM-5 (1)', 'SC-2']
+  tag nist: ['SC-2', 'CM-5 (1)']
 
   describe command("find '#{input('rootPath')}' -xdev -type f -a \'(\' -not -user root -o -not -group root \')\' -exec ls -ld {} \\;") do
     its('stdout.strip') { should eq '' }

@@ -1,0 +1,569 @@
+---
+- name: Make sure requirements are met to run vmware modules
+  ansible.builtin.pip:
+    name: PyVmomi
+    state: present
+  tags:
+    - always
+
+- name: Get All VM Hostnames Part 1 of 2
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms | Out-File /tmp/vm_machines.txt
+  args:
+    executable: /usr/bin/pwsh
+  tags:
+    - always
+
+- name: Get All VM Hostnames Part 2 of 2
+  ansible.builtin.shell:
+    cmd: cat /tmp/vm_machines.txt
+  register: vm_machines
+  args:
+    executable: /usr/bin/bash
+  tags:
+    - always
+
+- name: VMCH-70-000001 - Copy operations must be disabled on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: isolation.tools.copy.disable
+        value: "TRUE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000001 | bool
+  tags:
+    - VMCH-70-000001
+
+- name: VMCH-70-000002 - Drag and drop operations must be disabled on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: isolation.tools.dnd.disable
+        value: "TRUE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000002 | bool
+  tags:
+    - VMCH-70-000002
+
+- name: VMCH-70-000003 - Paste operations must be disabled on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: isolation.tools.paste.disable
+        value: "TRUE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000003 | bool
+  tags:
+    - VMCH-70-000003
+
+- name: VMCH-70-000004 - Virtual disk shrinking must be disabled on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: isolation.tools.diskShrink.disable
+        value: "TRUE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000004 | bool
+  tags:
+    - VMCH-70-000004
+
+- name: VMCH-70-000005 - Virtual disk shrinking must be disabled on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: isolation.tools.diskWiper.disable
+        value: "TRUE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000005 | bool
+  tags:
+    - VMCH-70-000005
+
+- name: VMCH-70-000006 - Independent, non-persistent disks must be not be used on the virtual machine
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      ForEach($vm in $vms){
+        Get-VM $vm | Get-HardDisk | Set-HardDisk -Persistence {{ disk_mode_type }} -Confirm:$false;
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000006 | bool
+  tags:
+    - VMCH-70-000006
+
+- name: VMCH-70-000007 - HGFS file transfers must be disabled on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: isolation.tools.hgfsServerSet.disable
+        value: "TRUE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000007 | bool
+  tags:
+    - VMCH-70-000007
+
+- name: VMCH-70-000008 - Unauthorized floppy devices must be disconnected on the virtual machine
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      ForEach($vm in $vms){
+        $floppy_status = Get-VM $vm | Get-FloppyDrive;
+        if($floppy_status -ne ""){
+          $powered_state = Get-VM $vm | Select-Object PowerState;
+          if($powered_state.PowerState -eq "PoweredOff"){
+            Get-VM $vm | Get-FloppyDrive | Remove-FloppyDrive -Confirm:$false;
+          }
+          else{
+            Stop-VM -VM $vm -Confirm:$False;
+            Get-VM $vm | Get-FloppyDrive | Remove-FloppyDrive -Confirm:$false;
+          }
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000008 | bool
+  notify:
+    - start_vms
+  tags:
+    - VMCH-70-000008
+
+- name: VMCH-70-000009 - Unauthorized CD/DVD devices must be disconnected on the virtual
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      ForEach($vm in $vms){
+        $cd_status = Get-VM $vm | Get-CDDrive | Where {$_.extensiondata.connectable.connected -eq $true} | Select Name;
+        if($cd_status -ne ""){
+          $powered_state = Get-VM $vm | Select-Object PowerState;
+          if($powered_state.PowerState -eq "PoweredOff"){
+            Get-VM $vm | Get-CDDrive | Set-CDDrive -NoMedia -Confirm:$false;
+          }
+          else{
+            Stop-VM -VM $vm -Confirm:$False;
+            Get-VM $vm | Get-CDDrive | Set-CDDrive -NoMedia -Confirm:$false;
+          }
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000009 | bool
+  notify:
+    - start_vms
+  tags:
+    - VMCH-70-000009
+
+- name: VMCH-70-000010 - Unauthorized parallel devices must be disconnected on the virtual machine
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $ConfigureVM = $true;
+      ForEach($vm in $vms){
+        $vUnwantedHw = @();
+        $vmx = Get-VM $vm | Get-View;
+        $vmx.Config.Hardware.Device | where {$_.DeviceInfo.Label -match "parallel"} | %{
+          $myObj = "" | select Hardware, Key, RemoveDev, Dev;
+          $myObj.Hardware = $_.DeviceInfo.Label;
+          $myObj.Key = $_.Key;
+          $myObj.Dev = $_;
+          if($vm.powerstate -notmatch "PoweredOn"){
+            $MyObj.RemoveDev = $true;
+          }
+          else{
+            $MyObj.RemoveDev = $false;
+          }
+          $vUnwantedHw += $myObj | Sort Hardware
+        }
+        if($ConfigureVM){
+          $vmConfigSpec = New-Object VMware.Vim.VirtualMachineConfigSpec;
+          ForEach($dev in $vUnwantedHw){
+            if($dev.RemoveDev -eq $true){
+              $vmConfigSpec.DeviceChange += New-Object VMware.Vim.VirtualDeviceConfigSpec;
+              $vmConfigSpec.DeviceChange[-1].device = $dev.Dev;
+              $vmConfigSpec.DeviceChange[-1].operation = "remove";
+            }
+          }
+          $vmx.ReconfigVM_Task($vmConfigSpec)
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000010 | bool
+  tags:
+    - VMCH-70-000010
+
+- name: VMCH-70-000011 - Unauthorized serial devices must be disconnected on the virtual machine
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $ConfigureVM = $true;
+      ForEach($vm in $vms){
+        $vUnwantedHw = @();
+        $vmx = Get-VM $vm | Get-View;
+        $vmx.Config.Hardware.Device | where {$_.DeviceInfo.Label -match "serial"} | %{
+          $myObj = "" | select Hardware, Key, RemoveDev, Dev;
+          $myObj.Hardware = $_.DeviceInfo.Label;
+          $myObj.Key = $_.Key;
+          $myObj.Dev = $_;
+          if($vm.powerstate -notmatch "PoweredOn"){
+            $MyObj.RemoveDev = $true;
+          }
+          else{
+            $MyObj.RemoveDev = $false;
+          }
+          $vUnwantedHw += $myObj | Sort Hardware;
+        }
+        if($ConfigureVM){
+          $vmConfigSpec = New-Object VMware.Vim.VirtualMachineConfigSpec;
+          ForEach($dev in $vUnwantedHw){
+            if($dev.RemoveDev -eq $true){
+              $vmConfigSpec.DeviceChange += New-Object VMware.Vim.VirtualDeviceConfigSpec;
+              $vmConfigSpec.DeviceChange[-1].device = $dev.Dev;
+              $vmConfigSpec.DeviceChange[-1].operation = "remove";
+            }
+          }
+          $vmx.ReconfigVM_Task($vmConfigSpec);
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000011 | bool
+  tags:
+    - VMCH-70-000011
+
+- name: VMCH-70-000012 - Unauthorized USB devices must be disconnected on the virtual machine
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $ConfigureVM = $true;
+      ForEach($vm in $vms){
+        $vUnwantedHw = @();
+        $vmx = Get-VM $vm | Get-View;
+        $vmx.Config.Hardware.Device | where {$_.DeviceInfo.Label -match "usb"} | %{
+          $myObj = "" | select Hardware, Key, RemoveDev, Dev;
+          $myObj.Hardware = $_.DeviceInfo.Label;
+          $myObj.Key = $_.Key;
+          $myObj.Dev = $_;
+          if($vm.powerstate -notmatch "PoweredOn"){
+            $MyObj.RemoveDev = $true;
+          }
+          else{
+            $MyObj.RemoveDev = $false;
+          }
+          $vUnwantedHw += $myObj | Sort Hardware
+        }
+        if($ConfigureVM){
+          $vmConfigSpec = New-Object VMware.Vim.VirtualMachineConfigSpec;
+          ForEach($dev in $vUnwantedHw){
+            if($dev.RemoveDev -eq $true){
+              $vmConfigSpec.DeviceChange += New-Object VMware.Vim.VirtualDeviceConfigSpec;
+              $vmConfigSpec.DeviceChange[-1].device = $dev.Dev;
+              $vmConfigSpec.DeviceChange[-1].operation = "remove";
+            }
+          }
+          $vmx.ReconfigVM_Task($vmConfigSpec)
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000012 | bool
+  tags:
+    - VMCH-70-000012
+
+- name: VMCH-70-000013 - Console connection sharing must be limited on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: RemoteDisplay.maxConnections
+        value: "1"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000013 | bool
+  tags:
+    - VMCH-70-000013
+
+- name: VMCH-70-000014 - Console access through the VNC protocol must be disabled on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: RemoteDisplay.vnc.enabled
+        value: "FALSE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000014 | bool
+  tags:
+    - VMCH-70-000014
+
+- name: VMCH-70-000015 - Informational messages from the virtual machine to the VMX file must be limited on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: tools.setinfo.sizeLimit
+        value: "1048576"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000015 | bool
+  tags:
+    - VMCH-70-000015
+
+- name: VMCH-70-000016 - Unauthorized removal, connection and modification of devices must be prevented on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: isolation.device.connectable.disable
+        value: "TRUE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000016 | bool
+  tags:
+    - VMCH-70-000016
+
+- name: VMCH-70-000017 - Unauthorized removal, connection and modification of devices must be prevented on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: tools.guestlib.enableHostInfo
+        value: "FALSE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000017 | bool
+  tags:
+    - VMCH-70-000017
+
+- name: VMCH-70-000018 - Shared salt values must be disabled on the virtual machine
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      ForEach($vm in $vms){
+        Get-VM $vm | Get-AdvancedSetting -Name sched.mem.pshare.salt | Remove-AdvancedSetting -Confirm:$false;
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000018 | bool
+  tags:
+    - VMCH-70-000018
+
+############################################
+
+# Title: Access to virtual machines through the dvfilter network APIs must be controlled
+# VMCH-70-000019 requires manual remediation
+
+############################################
+
+############################################
+
+# Title: System administrators must use templates to deploy virtual machines whenever possible
+# VMCH-70-000020 requires manual remediation
+
+############################################
+
+############################################
+
+# Title: Use of the virtual machine console must be minimized
+# VMCH-70-000021 requires manual remediation
+
+############################################
+
+- name: VMCH-70-000022 -The virtual machine guest operating system must be locked when the last console connection is closed
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: tools.guest.desktop.autolock
+        value: "TRUE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000022 | bool
+  tags:
+    - VMCH-70-000022
+
+- name: VMCH-70-000023 - 3D features on the virtual machine must be disabled when not required
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: mks.enable3d
+        value: "FALSE"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000023 | bool
+  tags:
+    - VMCH-70-000023
+
+- name: VMCH-70-000024 - Encryption must be enabled for vMotion on the virtual machine
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      ForEach($vm in $vms){
+        If($vm.extensiondata.Config.MigrateEncryption -eq $vmconfig.vmotionEncryption){
+          break;
+        }
+        else{
+          $vmv = $vm | Get-View;
+          $config = new-object VMware.Vim.VirtualMachineConfigSpec;
+          $config.MigrateEncryption = New-object VMware.Vim.VirtualMachineConfigSpecEncryptedVMotionModes;
+          $config.MigrateEncryption = "$({{ vmotion_encryption }})";
+          $vmv.ReconfigVM($config);
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000024 | bool
+  tags:
+    - VMCH-70-000024
+
+- name: VMCH-70-000025 - Logging must be enabled on the virtual machine
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $spec = New-Object VMware.Vim.VirtualMachineConfigSpec;
+      $spec.Flags = New-Object VMware.Vim.VirtualMachineFlagInfo;
+      $spec.Flags.enableLogging = $true;
+      ForEach($vm in $vms){
+        (Get-VM -Name $vm).ExtensionData.ReconfigVM($spec);
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000025 | bool
+  tags:
+    - VMCH-70-000025
+
+- name: VMCH-70-000026 - Log size must be properly configured on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: vmx.log.rotateSize
+        value: "2048000"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000026 | bool
+  tags:
+    - VMCH-70-000026
+
+- name: VMCH-70-000027 - Log retention must be properly configured on the virtual machine
+  community.vmware.vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    name: "{{ item[:] }}"
+    validate_certs: "{{ validate_certs }}"
+    advanced_settings:
+      - key: vmx.log.keepOld
+        value: "10"
+  with_items:
+    - "{{ vm_machines.stdout_lines }}"
+  when:
+    - VMCH_70_000027 | bool
+  tags:
+    - VMCH-70-000027
+
+############################################
+
+# Title:DirectPath I/O must be disabled on the virtual machine when not required
+# VMCH-70-000028 requires manual remediation
+
+############################################

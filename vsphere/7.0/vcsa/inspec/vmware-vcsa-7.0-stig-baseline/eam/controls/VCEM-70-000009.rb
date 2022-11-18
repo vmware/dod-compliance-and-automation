@@ -29,7 +29,7 @@ control 'VCEM-70-000009' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCEM-70-000009'
-  tag cci: ['CCI-000381', 'CCI-001749']
+  tag cci: ['CCI-001749', 'CCI-000381']
   tag nist: ['CM-5 (3)', 'CM-7 a']
 
   describe command("ls -A '#{input('appPath')}'") do

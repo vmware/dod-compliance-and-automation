@@ -50,7 +50,7 @@ control 'VCPF-70-000030' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCPF-70-000030'
-  tag cci: ['CCI-001348', 'CCI-001851']
+  tag cci: ['CCI-001851', 'CCI-001348']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-perfcharts.conf|grep "^..5......"') do

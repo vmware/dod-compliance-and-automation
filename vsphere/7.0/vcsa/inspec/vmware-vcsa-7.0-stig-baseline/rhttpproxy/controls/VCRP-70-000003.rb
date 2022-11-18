@@ -29,12 +29,12 @@ control 'VCRP-70-000003' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000014-WSR-000006'
-  tag satisfies: ['SRG-APP-000179-WSR-000110', 'SRG-APP-000179-WSR-000111', 'SRG-APP-000416-WSR-000118', 'SRG-APP-000439-WSR-000188']
+  tag satisfies: ['SRG-APP-000179-WSR-000111', 'SRG-APP-000416-WSR-000118', 'SRG-APP-000439-WSR-000188', 'SRG-APP-000179-WSR-000110']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCRP-70-000003'
-  tag cci: ['CCI-000068', 'CCI-000803', 'CCI-002418', 'CCI-002450']
-  tag nist: ['AC-17 (2)', 'IA-7', 'SC-13', 'SC-8']
+  tag cci: ['CCI-000068', 'CCI-000803', 'CCI-002450', 'CCI-002418', 'CCI-000803']
+  tag nist: ['AC-17 (2)', 'IA-7', 'SC-13', 'SC-8', 'IA-7']
 
   describe xml("#{input('configXmlPath')}") do
     its(['/config/vmacore/ssl/fips']) { should cmp "#{input('fips')}" }

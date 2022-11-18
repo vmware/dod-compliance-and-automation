@@ -1,0 +1,9 @@
+---
+#Localhost will run all Powershell Core commands
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.6
+  roles:
+    - vm-remediation

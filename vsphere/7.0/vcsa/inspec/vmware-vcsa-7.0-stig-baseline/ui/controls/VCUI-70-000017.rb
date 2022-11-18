@@ -25,7 +25,7 @@ control 'VCUI-70-000017' do
   tag rid: nil
   tag stig_id: 'VCUI-70-000017'
   tag cci: ['CCI-001082', 'CCI-001813']
-  tag nist: ['CM-5 (1)', 'SC-2']
+  tag nist: ['SC-2', 'CM-5 (1)']
 
   describe command("find '#{input('rootPath')}' /usr/lib/vmware-vsphere-ui/server/conf -xdev -type f -a \'(\' -perm -o+w -o -not -user root -o -not -group root \')\' -exec ls -ld {} \\;") do
     its('stdout.strip') { should eq '' }

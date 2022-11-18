@@ -125,7 +125,7 @@ control 'VCUI-70-000029' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCUI-70-000029'
-  tag cci: ['CCI-000139', 'CCI-001348', 'CCI-001851']
+  tag cci: ['CCI-001851', 'CCI-000139', 'CCI-001348']
   tag nist: ['AU-4 (1)', 'AU-5 a', 'AU-9 (2)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-vsphere-ui.conf|grep "^..5......"') do

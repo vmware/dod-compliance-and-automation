@@ -113,7 +113,7 @@ control 'VCST-70-000027' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCST-70-000027'
-  tag cci: ['CCI-001348', 'CCI-001851']
+  tag cci: ['CCI-001851', 'CCI-001348']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-sso-services.conf|grep "^..5......"') do

@@ -22,7 +22,7 @@ control 'VCST-70-000008' do
   tag rid: nil
   tag stig_id: 'VCST-70-000008'
   tag cci: ['CCI-001749', 'CCI-001849']
-  tag nist: ['AU-4', 'CM-5 (3)']
+  tag nist: ['CM-5 (3)', 'AU-4']
 
   describe command('rpm -V vmware-identity-sts|grep "^..5......"|grep -v -E "\.properties|\.xml|\.conf"') do
     its('stdout.strip') { should eq '' }

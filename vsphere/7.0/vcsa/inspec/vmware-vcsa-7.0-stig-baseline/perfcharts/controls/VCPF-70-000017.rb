@@ -5,7 +5,7 @@ control 'VCPF-70-000017' do
   desc  'check', "
     At the command prompt, execute the following command:
 
-    # find /usr/lib/vmware-perfcharts/tc-instance/webapps/ -xdev -type f -a '(' -not -user root -a -not -user perfcharts -o -not -group root ')' -exec ls -la {} \\;
+    # find /usr/lib/vmware-perfcharts/tc-instance/webapps/ -xdev -type f -a '(' -not -user perfcharts -o -not -group cis ')' -exec ls -A {} \\;
 
     If the command produces any output, this is a finding.
   "
@@ -26,9 +26,9 @@ control 'VCPF-70-000017' do
   tag rid: nil
   tag stig_id: 'VCPF-70-000017'
   tag cci: ['CCI-001082', 'CCI-001813']
-  tag nist: ['CM-5 (1)', 'SC-2']
+  tag nist: ['SC-2', 'CM-5 (1)']
 
-  describe command("find '#{input('rootPath')}'/webapps/ -xdev -type f -a \'(\' -not -user root -a -not -user perfcharts -o -not -group root \')\' -exec ls -la {} \\;") do
-    its('stdout.strip') { should cmp '' }
+  describe command("find '#{input('rootPath')}' -xdev -type f -a \'(\' -not -user perfcharts -o -not -group cis \')\' -exec ls -A {} \\;") do
+    its('stdout.strip') { should eq '' }
   end
 end
