@@ -133,3 +133,19 @@ jobs:
         run: |
           gem install cookstyle
           cookstyle ./horizon/8.0
+  ansiblelint-vsphere70-esxi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vsphere/7.0/vsphere/ansible/vmware-esxi-7.0-stig-ansible-hardening/"
+  ansiblelint-vsphere70-vm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vsphere/7.0/vsphere/ansible/vmware-vm-7.0-stig-ansible-hardening/"

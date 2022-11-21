@@ -17,10 +17,6 @@
 
 - hosts: vcenter
   remote_user: root
-  vars:
-    var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
-    run_set_syslog_server: false
-    run_set_ntp_server: false
   roles:
     - role: vmware-photon-3.0-stig-ansible-hardening
       vars:

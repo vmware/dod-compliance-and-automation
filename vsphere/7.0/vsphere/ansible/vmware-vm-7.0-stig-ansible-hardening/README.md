@@ -16,7 +16,7 @@ STIG Type: STIG Readiness Guide
 
 
 ## Playbook Structure
-- vm-stig.yml (the playbook to run both roles).
+- playbook.yml (the playbook to run both roles).
 - /roles/esxi-remediation-local (runs majority of lockdowns via Ansible ESXi Modules + a few PowerCLI calls.)
 - /roles/esxi-remediation-remote (runs STIG lockdowns by directly SSH-ing to endpoints.) 
 
@@ -25,12 +25,12 @@ STIG Type: STIG Readiness Guide
 
 Example of running role
 ```
-ansible-playbook -i inventory_file vm-stig.yml -v --ask-vault -K
+ansible-playbook -i inventory_file playbook.yml -v --ask-vault -K
 ```
 
 Example of running individual lockdowns
 ```
-ansible-playbook -i inventory_file esxi-stig.yml --tag VMCH-70-000001,VMCH-70-000002 -v --ask-vault -K
+ansible-playbook -i inventory_file playbook.yml --tag VMCH-70-000001,VMCH-70-000002 -v --ask-vault -K
 ```
 
 ## STIG Control Coverage
