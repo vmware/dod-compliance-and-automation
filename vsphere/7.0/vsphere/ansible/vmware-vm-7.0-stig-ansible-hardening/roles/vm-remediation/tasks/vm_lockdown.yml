@@ -11,7 +11,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $vms | Out-File /tmp/vm_machines.txt
   args:
     executable: /usr/bin/pwsh
@@ -117,7 +117,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
         Get-VM $vm | Get-HardDisk | Set-HardDisk -Persistence {{ disk_mode_type }} -Confirm:$false;
       }
@@ -150,7 +150,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
         $floppy_status = Get-VM $vm | Get-FloppyDrive;
         if($floppy_status -ne ""){
@@ -178,7 +178,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
         $cd_status = Get-VM $vm | Get-CDDrive | Where {$_.extensiondata.connectable.connected -eq $true} | Select Name;
         if($cd_status -ne ""){
@@ -206,7 +206,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $ConfigureVM = $true;
       ForEach($vm in $vms){
         $vUnwantedHw = @();
@@ -248,7 +248,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $ConfigureVM = $true;
       ForEach($vm in $vms){
         $vUnwantedHw = @();
@@ -290,7 +290,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $ConfigureVM = $true;
       ForEach($vm in $vms){
         $vUnwantedHw = @();
@@ -343,23 +343,6 @@
     - VMCH_70_000013 | bool
   tags:
     - VMCH-70-000013
-
-- name: VMCH-70-000014 - Console access through the VNC protocol must be disabled on the virtual machine
-  community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
-    username: "{{ vcenter_username }}"
-    password: "{{ vcenter_password }}"
-    name: "{{ item[:] }}"
-    validate_certs: "{{ validate_certs }}"
-    advanced_settings:
-      - key: RemoteDisplay.vnc.enabled
-        value: "FALSE"
-  with_items:
-    - "{{ vm_machines.stdout_lines }}"
-  when:
-    - VMCH_70_000014 | bool
-  tags:
-    - VMCH-70-000014
 
 - name: VMCH-70-000015 - Informational messages from the virtual machine to the VMX file must be limited on the virtual machine
   community.vmware.vmware_guest:
@@ -417,7 +400,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
         Get-VM $vm | Get-AdvancedSetting -Name sched.mem.pshare.salt | Remove-AdvancedSetting -Confirm:$false;
       }
@@ -488,7 +471,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
         If($vm.extensiondata.Config.MigrateEncryption -eq $vmconfig.vmotionEncryption){
           break;
@@ -513,7 +496,7 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $spec = New-Object VMware.Vim.VirtualMachineConfigSpec;
       $spec.Flags = New-Object VMware.Vim.VirtualMachineFlagInfo;
       $spec.Flags.enableLogging = $true;
@@ -567,3 +550,28 @@
 # VMCH-70-000028 requires manual remediation
 
 ############################################
+
+- name: VMCH-70-000029 - Encryption must be enabled for Fault Tolerance on the virtual machine
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $exclusion_list = "{{ exclusion_list }}";
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
+      ForEach($vm in $vms){
+        If($vm.extensiondata.Config.FtEncryptionMode -eq {{ FTEncryption }}){
+          break;
+        }
+        else{
+          $vmv = $vm | Get-View -ErrorAction Stop;
+          $config = New-Object VMware.Vim.VirtualMachineConfigSpec;
+          $config.FTEncryption = New-Object VMware.Vim.VMware.Vim.VirtualMachineConfigSpecEncryptedFtModes;
+          $config.FT = "$({{ FTEncryption }})";
+          $vmv.ReconfigVM($config);
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh
+  when:
+    - VMCH_70_000029 | bool
+  tags:
+    - VMCH-70-000029
