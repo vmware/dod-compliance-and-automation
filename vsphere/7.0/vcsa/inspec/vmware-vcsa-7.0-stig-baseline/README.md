@@ -1,6 +1,6 @@
 # vmware-vcsa-7.0-stig-baseline
 VMware vSphere vCenter Appliance 7.0 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 3 Date: 29 April 2022  
+Version: Release 1 Version 4 Date: 28 October 2022  
 STIG Type: STIG Readiness Guide    
 
 ## VCSA InSpec Profiles
