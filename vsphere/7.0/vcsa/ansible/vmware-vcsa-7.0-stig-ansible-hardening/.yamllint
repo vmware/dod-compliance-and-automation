@@ -1,4 +1,6 @@
 ---
+warn_list:
+  - no-changed-when # To enable the shell on vCenter you have to use raw to do so. (fire and forget)
 
 rules:
   line-length:

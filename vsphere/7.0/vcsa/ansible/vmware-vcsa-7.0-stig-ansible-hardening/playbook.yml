@@ -1,7 +1,7 @@
 # This is the main playbook for launching the vSphere VCSA 7.0 STIG
 - hosts: vcenter
   remote_user: root
-  gather_facts: no
+  gather_facts: false
   # Sets up the vcenter for following role execution
   tasks:
     - name: "Get Bash to be Default Terminal"
