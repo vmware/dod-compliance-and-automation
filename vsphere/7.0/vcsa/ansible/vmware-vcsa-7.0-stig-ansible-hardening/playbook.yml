@@ -4,15 +4,16 @@
   gather_facts: false
   # Sets up the vcenter for following role execution
   tasks:
-    - name: "Get Bash to be Default Terminal"
+    - name: Get Bash to be Default Terminal Part 1 of 2
       ansible.builtin.raw: shell.set --enabled true || true
 
-    - name: "Get Bash to be Default Terminal"
+    - name: Get Bash to be Default Terminal Part 2 of 2
       ansible.builtin.raw: shell command chsh -s /bin/bash root || true
 
-    - pause:
+    - name: Pausing for 120 Seconds
+      ansible.builtin.pause:
         seconds: 120
-  tags: 
+  tags:
     - remote
 
 - hosts: vcenter
