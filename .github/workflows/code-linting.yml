@@ -138,13 +138,15 @@ jobs:
     steps:
       - name: Clone Repo
         uses: actions/checkout@v3
-      - name: Install Collections
-        run: |
-          ansible-galaxy collection install -f -r vsphere/7.0/vsphere/ansible/vmware-esxi-7.0-stig-ansible-hardening/requirements.yml -p /usr/share/ansible/collections
-          ansible-galaxy collection list
+      # - name: Install Collections
+      #   run: |
+      #     ansible-galaxy collection install -f -r vsphere/7.0/vsphere/ansible/vmware-esxi-7.0-stig-ansible-hardening/requirements.yml -p /usr/share/ansible/collections
+      #     ansible-galaxy collection list
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/7.0/vsphere/ansible/vmware-esxi-7.0-stig-ansible-hardening/"
+      - name: post-run galaxy check
+        run: ansible-galaxy collection list
   ansiblelint-vsphere70-vm:
     runs-on: ubuntu-latest
     steps:
@@ -152,7 +154,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Install Collections
         run: |
-          ansible-galaxy collection install -f -r vsphere/7.0/vsphere/ansible/vmware-vm-7.0-stig-ansible-hardening/requirements.yml -p /opt/pipx/venvs/ansible-core/lib/python3.10/site-packages/ansible_collections
+          ansible-galaxy collection install -f -r vsphere/7.0/vsphere/ansible/vmware-vm-7.0-stig-ansible-hardening/requirements.yml
           ansible-galaxy collection list
       - uses: ansible-community/ansible-lint-action@main
         with:
