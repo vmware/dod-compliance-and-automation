@@ -141,8 +141,6 @@ jobs:
       - name: Install Collections
         run: ansible-galaxy collection install -f -r vsphere/7.0/vsphere/ansible/vmware-esxi-7.0-stig-ansible-hardening/requirements.yml
       - uses: ansible-community/ansible-lint-action@main
-        env:
-          ANSIBLE_COLLECTIONS_PATH: '/home/runner/.ansible/collections'
         with:
           path: "vsphere/7.0/vsphere/ansible/vmware-esxi-7.0-stig-ansible-hardening/"
   ansiblelint-vsphere70-vm:
@@ -153,7 +151,5 @@ jobs:
       - name: Install Collections
         run: ansible-galaxy collection install -f -r vsphere/7.0/vsphere/ansible/vmware-vm-7.0-stig-ansible-hardening/requirements.yml
       - uses: ansible-community/ansible-lint-action@main
-        env:
-          ANSIBLE_COLLECTIONS_PATH: '/home/runner/.ansible/collections'
         with:
           path: "vsphere/7.0/vsphere/ansible/vmware-vm-7.0-stig-ansible-hardening/"

@@ -7,3 +7,5 @@ warn_list:
   - ignore-errors
 mock_roles:
   - vmware-photon-3.0-stig-ansible-hardening
+  - vmware-esxi-7.0-stig-ansible-hardening
+  - vmware-vm-7.0-stig-ansible-hardening
