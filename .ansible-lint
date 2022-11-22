@@ -5,5 +5,6 @@ skip_list:
 warn_list:
   - risky-file-permissions
   - ignore-errors
+  - syntax-check[specific]
 mock_roles:
   - vmware-photon-3.0-stig-ansible-hardening
