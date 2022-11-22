@@ -1,40 +1,40 @@
 ---
-ESXI_70_000001: true #Lockdown Mode
-ESXI_70_000002: true #DCUI.Access List
-ESXI_70_000003: true #Lockdown Mode Exceptions
-ESXI_70_000004: true #Syslog
-ESXI_70_000005: true #Account Lock Failures
-ESXI_70_000006: true #Account Unlock Timeout
-ESXI_70_000007: true #Consent Banner Welcome
-ESXI_70_000030: true #Log Level
-ESXI_70_000031: true #Password Complexity
-ESXI_70_000032: true #Password Reuse
-ESXI_70_000034: true #Mob
-ESXI_70_000035: true #SSH Running
-ESXI_70_000036: true #Shell Running
-ESXI_70_000037: true #Active Directory
-ESXI_70_000039: true #AD Admin Group
-ESXI_70_000041: true #Shell Interactive Timeout
-ESXI_70_000042: true #Shell Timeout
-ESXI_70_000043: true #DCUI Timeout
-ESXI_70_000045: true #Persistent Logs
-ESXI_70_000046: true #NTP
-ESXI_70_000047: true #Acceptance Level
-ESXI_70_000054: true #iSCSI CHAP
-ESXI_70_000055: true #Memory Salting
-ESXI_70_000056: true #Firewall Rules - recommend setting to false as it broke vmotion
-ESXI_70_000058: true #BPDU
-ESXI_70_000059: true #Forged Transmits
-ESXI_70_000060: true #MAC Changes
-ESXI_70_000061: true #Prom Mode
-ESXI_70_000062: true #dvFilter
-ESXI_70_000074: true #TLS 1.2
-ESXI_70_000079: true #Suppress Shell Warning
-ESXI_70_000081: true #Suppress Hyperthreading Warning
-ESXI_70_000083: true #Disable SLPD Service
-ESXI_70_000086: true #Syslog Cert Verification
-ESXI_70_000087: true #The ESXi host must enable volatile key destruction.
-ESXI_70_000088: true #API Timeout
-ESXI_70_000089: true #Host Client Timeout
-ESXI_70_000091: true #The ESXi host must be configured with an appropriate maximum password age.
-ESXI_70_000097: true #The ESXi CIM service must be disabled.
+ESXI_70_000001: true # Lockdown Mode
+ESXI_70_000002: true # DCUI.Access List
+ESXI_70_000003: true # Lockdown Mode Exceptions
+ESXI_70_000004: true # Syslog
+ESXI_70_000005: true # Account Lock Failures
+ESXI_70_000006: true # Account Unlock Timeout
+ESXI_70_000007: true # Consent Banner Welcome
+ESXI_70_000030: true # Log Level
+ESXI_70_000031: true # Password Complexity
+ESXI_70_000032: true # Password Reuse
+ESXI_70_000034: true # Mob
+ESXI_70_000035: true # SSH Running
+ESXI_70_000036: true # Shell Running
+ESXI_70_000037: true # Active Directory
+ESXI_70_000039: true # AD Admin Group
+ESXI_70_000041: true # Shell Interactive Timeout
+ESXI_70_000042: true # Shell Timeout
+ESXI_70_000043: true # DCUI Timeout
+ESXI_70_000045: true # Persistent Logs
+ESXI_70_000046: true # NTP
+ESXI_70_000047: true # Acceptance Level
+ESXI_70_000054: true # iSCSI CHAP
+ESXI_70_000055: true # Memory Salting
+ESXI_70_000056: true # Firewall Rules - recommend setting to false as it broke vmotion
+ESXI_70_000058: true # BPDU
+ESXI_70_000059: true # Forged Transmits
+ESXI_70_000060: true # MAC Changes
+ESXI_70_000061: true # Prom Mode
+ESXI_70_000062: true # dvFilter
+ESXI_70_000074: true # TLS 1.2
+ESXI_70_000079: true # Suppress Shell Warning
+ESXI_70_000081: true # Suppress Hyperthreading Warning
+ESXI_70_000083: true # Disable SLPD Service
+ESXI_70_000086: true # Syslog Cert Verification
+ESXI_70_000087: true # The ESXi host must enable volatile key destruction.
+ESXI_70_000088: true # API Timeout
+ESXI_70_000089: true # Host Client Timeout
+ESXI_70_000091: true # The ESXi host must be configured with an appropriate maximum password age.
+ESXI_70_000097: true # The ESXi CIM service must be disabled.

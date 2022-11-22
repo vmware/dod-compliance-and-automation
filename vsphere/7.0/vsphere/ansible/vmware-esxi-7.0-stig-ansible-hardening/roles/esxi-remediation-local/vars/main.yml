@@ -2,12 +2,12 @@
 # Use role vault set false if no
 esx_local_vault: true
 
-#vCenter Accessibility Variables
+# vCenter Accessibility Variables
 vcenter_hostname: example.vsphere.local
 vcenter_username: administrator@vsphere.local
 vcenter_password: "{{ vault_vcenter_password }}"
 
-#vCenter validate certificate (true/false)
+# vCenter validate certificate (true/false)
 validate_certs: false
 
 file_location: /files/
@@ -52,22 +52,22 @@ domain_password: "{{ vault_domain_password }}"
 
 # STIG Variables
 
-#ESXI-70-000001
+# ESXI-70-000001
 esxi_lockdown_level: lockdownNormal
 
-#ESXI-70-000002 ('Comma-seperated list of users expected to have DCUI Access')
+# ESXI-70-000002 ('Comma-seperated list of users expected to have DCUI Access')
 dcui_access: root
 
-#ESXI-70-000004
+# ESXI-70-000004
 syslog_server_hostname: udp://changeme:514
 
-#ESXI-70-000005
+# ESXI-70-000005
 account_lock_failures: 3
 
-#ESXI-70-000006
+# ESXI-70-000006
 account_unlock_time: 900
 
-#ESXI-70-000007
+# ESXI-70-000007
 dod_welcome_banner: |
   You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
 
@@ -83,75 +83,75 @@ dod_welcome_banner: |
 
   -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
 
-#ESXI-70-000030
+# ESXI-70-000030
 log_level: info
 
-#ESXI-70-000031
+# ESXI-70-000031
 password_complexity: similar=deny retry=3 min=disabled,disabled,disabled,disabled,15
 
-#ESXI-70-000032
+# ESXI-70-000032
 password_history: 5
 
-#ESXI-70-000034 (lockdown requires value to be set to false if this is desired to be left as a finding, switch value to true.)
+# ESXI-70-000034 (lockdown requires value to be set to false if this is desired to be left as a finding, switch value to true.)
 set_managed_object_browser: "false"
 
-#ESXI-70-000039
+# ESXI-70-000039
 esx_admins_group: admins
 
-#ESXI-70-000041
+# ESXI-70-000041
 shell_int_timeout: 120
 
-#ESXI-70-000042
+# ESXI-70-000042
 shell_timeout: 600
 
-#ESXI-70-000043
+# ESXI-70-000043
 dcui_timeout: 120
 
-#ESXI-70-000045
+# ESXI-70-000045
 syslog_scratch: "[] /scratch/log"
 
-#ESXI-70-000046 - NTP Servers
+# ESXI-70-000046 - NTP Servers
 ntpserver1: changeme
 ntpserver2: changeme
 
-#ESXI-70-000047
+# ESXI-70-000047
 vib_accept_level: PartnerSupported
 
-#ESXI-70-000054 - CHAP Variables
+# ESXI-70-000054 - CHAP Variables
 chap_name: insert_chap_name
 chap_password: "{{ vault_chap_password }}"
 mutual_chap_name: insert_mutual_chap_name
 mutual_chap_password: "{{ vault_mutual_chap_password }}"
 
-#ESXI-70-000055
+# ESXI-70-000055
 share_force_salting: 2
 
-#ESXI-70-000058
+# ESXI-70-000058
 block_guest_bpdu: 1
 
-#ESXI-70-000062
+# ESXI-70-000062
 dvfilter_bind_ip_address: ""
 
-#ESXI-70-000074
+# ESXI-70-000074
 depracted_ssl_protocols: tlsv1,tlsv1.1,sslv3
 
-#ESXI-70-000079
+# ESXI-70-000079
 suppress_shell_warning: 0
 
-#ESXI-70-000081
+# ESXI-70-000081
 suppress_hyper_warning: 0
 
-#ESXI-70-000086
+# ESXI-70-000086
 syslog_cert_check: "true"
 
-#ESXI-70-000087
+# ESXI-70-000087
 mem_eager_zero: 1
 
-#ESXI-70-000088
+# ESXI-70-000088
 api_timeout: 30
 
-#ESXI-70-000089
+# ESXI-70-000089
 host_client_timeout: 600
 
-#ESXI-70-000091
+# ESXI-70-000091
 password_max_days: 90

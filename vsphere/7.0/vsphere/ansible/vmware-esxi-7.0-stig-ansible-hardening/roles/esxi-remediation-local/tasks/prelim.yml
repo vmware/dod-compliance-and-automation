@@ -1,6 +1,6 @@
 ---
 - name: Make sure requirements are met to run vmware modules
-  pip:
+  ansible.builtin.pip:
     name: PyVmomi
     state: present
 
