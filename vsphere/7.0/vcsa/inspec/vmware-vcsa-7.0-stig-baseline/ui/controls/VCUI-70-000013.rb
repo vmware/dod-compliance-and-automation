@@ -16,9 +16,9 @@ control 'VCUI-70-000013' do
     Expected result:
 
     <servlet-mapping>
-        <servlet-name>jsp</servlet-name>
-        <url-pattern>*.jsp</url-pattern>
-        <url-pattern>*.jspx</url-pattern>
+      <servlet-name>jsp</servlet-name>
+      <url-pattern>*.jsp</url-pattern>
+      <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
 
     If the jsp and jspx file url-patterns are not configured as in the expected result, this is a finding.
@@ -28,16 +28,16 @@ control 'VCUI-70-000013' do
 
     /usr/lib/vmware-vsphere-ui/server/conf/web.xml
 
-    Navigate to and locate the mapping for the JSP servlet.  It is the  <servlet-mapping> node that contains <servlet-name>jsp</servlet-name>
+    Navigate to and locate the mapping for the JSP servlet. It is the <servlet-mapping> node that contains <servlet-name>jsp</servlet-name>
 
     Configure the <servlet-mapping> node to look like the code snippet below:
 
-        <!-- The mappings for the JSP servlet -->
-        <servlet-mapping>
-            <servlet-name>jsp</servlet-name>
-            <url-pattern>*.jsp</url-pattern>
-            <url-pattern>*.jspx</url-pattern>
-        </servlet-mapping>
+    <!-- The mappings for the JSP servlet -->
+    <servlet-mapping>
+      <servlet-name>jsp</servlet-name>
+      <url-pattern>*.jsp</url-pattern>
+      <url-pattern>*.jspx</url-pattern>
+    </servlet-mapping>
 
     Restart the service with the following command:
 

@@ -67,7 +67,7 @@ control 'VCEM-70-000029' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCEM-70-000029'
-  tag cci: ['CCI-001851', 'CCI-001348']
+  tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']
 
   describe command('rpm -V VMware-visl-integration|grep vmware-services-eam.conf|grep "^..5......"') do

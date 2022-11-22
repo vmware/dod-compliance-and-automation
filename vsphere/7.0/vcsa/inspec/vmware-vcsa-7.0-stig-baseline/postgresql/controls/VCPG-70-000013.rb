@@ -32,8 +32,8 @@ control 'VCPG-70-000013' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'VCPG-70-000013'
-  tag cci: ['CCI-000803', 'CCI-002450', 'CCI-002450', 'CCI-002450']
-  tag nist: ['IA-7', 'SC-13', 'SC-13', 'SC-13']
+  tag cci: ['CCI-000803', 'CCI-002450']
+  tag nist: ['IA-7', 'SC-13']
 
   sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = 'SHOW ssl_ciphers;'

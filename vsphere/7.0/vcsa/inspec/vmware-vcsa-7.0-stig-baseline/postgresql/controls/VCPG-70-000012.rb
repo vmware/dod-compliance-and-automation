@@ -15,7 +15,7 @@ control 'VCPG-70-000012' do
 
     Expected result:
 
-    600:vpostgres:users
+    600:vpostgres:vpgmongrp
 
     If the output does not match the expected result, this is a finding.
   "
@@ -23,7 +23,7 @@ control 'VCPG-70-000012' do
     At the command prompt, execute the following commands:
 
     # chmod 600 /storage/db/vpostgres_ssl/server.key
-    # chown vpostgres:users /storage/db/vpostgres_ssl/server.key
+    # chown vpostgres:vpgmongrp /storage/db/vpostgres_ssl/server.key
   "
   impact 0.7
   tag severity: 'high'
@@ -37,6 +37,6 @@ control 'VCPG-70-000012' do
   describe file("#{input('pg_ssl_key')}") do
     its('mode') { should cmp '0600' }
     its('owner') { should cmp 'vpostgres' }
-    its('group') { should cmp 'users' }
+    its('group') { should cmp 'vpgmongrp' }
   end
 end
