@@ -1,5 +1,5 @@
 ---
-#Include Encrypted Variables
+# Include Encrypted Variables
 - ansible.builtin.include_vars: vault.yml
   when:
     - esx_local_vault | bool

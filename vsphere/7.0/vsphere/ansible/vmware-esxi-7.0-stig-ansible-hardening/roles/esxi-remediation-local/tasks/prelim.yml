@@ -6,7 +6,7 @@
 
 - name: Ensure PowerShell Core is present
   ansible.builtin.yum:
-    name: "{{ role_path}}{{ file_location }}powershell-7.2.0-1.rh.x86_64.rpm"
+    name: '{{ role_path}}{{ file_location }}powershell-7.2.0-1.rh.x86_64.rpm'
     state: present
     disable_gpg_check: true
   register: install_pwsh
@@ -18,13 +18,14 @@
 
 - name: Copy PowerCLI Modules in Place
   ansible.posix.synchronize:
-    src: "{{ role_path}}{{ file_location }}Modules/"
+    src: '{{ role_path}}{{ file_location }}Modules/'
     dest: /root/.local/share/powershell/Modules
 
 - name: Set PowerCLI to Accecpt Self-Signed Certs
   ansible.builtin.shell:
     cmd: |
       Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
+  when: install_pwsh.changed
   args:
     executable: /usr/bin/pwsh
 

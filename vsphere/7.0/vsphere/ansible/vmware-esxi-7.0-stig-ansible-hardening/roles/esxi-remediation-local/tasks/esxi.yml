@@ -164,7 +164,7 @@
   ansible.builtin.shell:
     cmd: |
       Connect-VIServer -Server {{ vcenter_hostname }} -User {{ vcenter_username }} -Password {{ vcenter_password }};
-      Get-VMHost -Name {{ item.value.hostname }} | Get-VMHostHba | Where {$_.Type -eq "iscsi"} | Set-VMHostHba -ChapType Required -ChapName "{{ chap_name }}" 
+      Get-VMHost -Name {{ item.value.hostname }} | Get-VMHostHba | Where {$_.Type -eq "iscsi"} | Set-VMHostHba -ChapType Required -ChapName "{{ chap_name }}"
       -ChapPassword "{{ chap_password }}" -MutualChapEnabled $true -MutualChapName "{{ mutual_chap_name }}" -MutualChapPassword "{{ mutual_chap_password }}"
   args:
     executable: /usr/bin/pwsh
@@ -780,10 +780,10 @@
 - name: ESXI-70-000001 - Access to the ESXi host must be limited by enabling Lockdown Mode
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_hostname }} -User {{ vcenter_username }} -Password {{ vcenter_password }}; 
+      Connect-VIServer -Server {{ vcenter_hostname }} -User {{ vcenter_username }} -Password {{ vcenter_password }};
       $vmhost = Get-VMHost -Name {{ item.value.hostname }} | Get-View;
       $level = "{{ esxi_lockdown_level }}"
-      $lockdown = Get-View $vmhost.ConfigManager.HostAccessManager; 
+      $lockdown = Get-View $vmhost.ConfigManager.HostAccessManager;
       $lockdown.ChangeLockdownMode($level)
   args:
     executable: /usr/bin/pwsh
