@@ -25,4 +25,4 @@ esxi_70_000092: true # VM Override
 esxi_70_000093: true # Vm Override Logger
 esxi_70_000094: true # The ESXi host must require TPM-based configuration encryption.
 esxi_70_000095: true # The ESXi host must implement Secure Boot enforcement.
-esxi_70-000274: true # The ESXi host SSH daemon must be configured to only use FIPS 140-2 validated ciphers.
+esxi_70_000274: true # The ESXi host SSH daemon must be configured to only use FIPS 140-2 validated ciphers.

@@ -558,14 +558,14 @@
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
-        If($vm.extensiondata.Config.FtEncryptionMode -eq {{ FTEncryption }}){
+        If($vm.extensiondata.Config.FtEncryptionMode -eq {{ ft_encryption }}){
           break;
         }
         else{
           $vmv = $vm | Get-View -ErrorAction Stop;
           $config = New-Object VMware.Vim.VirtualMachineConfigSpec;
           $config.FTEncryption = New-Object VMware.Vim.VMware.Vim.VirtualMachineConfigSpecEncryptedFtModes;
-          $config.FT = "$({{ FTEncryption }})";
+          $config.FT = "$({{ ft_encryption }})";
           $vmv.ReconfigVM($config);
         }
       }
