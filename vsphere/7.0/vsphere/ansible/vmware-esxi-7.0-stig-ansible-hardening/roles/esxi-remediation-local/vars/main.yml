@@ -10,7 +10,7 @@ vcenter_password: "{{ vault_vcenter_password }}"
 # vCenter validate certificate (true/false)
 validate_certs: false
 
-file_location: /files/
+file_location: files
 
 # Ansible VMware Collection Dictionary variables (add/delete/modify groups as needed)
 # ESXi Hosts (Add as many as you have)

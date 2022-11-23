@@ -1,5 +1,5 @@
 ---
-#Turn STIGs on or off via true/false
+# Turn STIGs on or off via true/false
 VMCH_70_000001: true
 VMCH_70_000002: true
 VMCH_70_000003: true

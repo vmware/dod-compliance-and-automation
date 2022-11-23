@@ -10,7 +10,7 @@ validate_certs: false
 # Global Exclusion Value
 exclusion_list: vm1|vm2|
 
-# STIG Variables 
+# STIG Variables
 
 # VMCH-70-000006
 disk_mode_type: persistent

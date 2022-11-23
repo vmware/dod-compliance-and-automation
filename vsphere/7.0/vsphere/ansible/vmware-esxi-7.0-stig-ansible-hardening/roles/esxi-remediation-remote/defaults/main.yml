@@ -4,7 +4,7 @@ ESXI_70_000009: true # SSH Banner
 ESXI_70_000010: true # SSH FipsMode
 ESXI_70_000012: true # SSH IgnoreRhosts yes
 ESXI_70_000013: true # SSH HostbasedAuthentication no
-ESXI_70_000014: false  # SSH PermitRootLogin no
+ESXI_70_000014: false # SSH PermitRootLogin no
 ESXI_70_000015: true # SSH PermitEmptyPasswords no
 ESXI_70_000016: true # SSH PermitUserEnvironment no
 ESXI_70_000020: true # SSH StrictModes yes
