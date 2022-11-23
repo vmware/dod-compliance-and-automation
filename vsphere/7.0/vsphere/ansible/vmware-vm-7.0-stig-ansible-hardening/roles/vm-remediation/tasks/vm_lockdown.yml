@@ -13,6 +13,8 @@
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $vms | Out-File /tmp/vm_machines.txt
+  when:
+    - get_vms | bool
   args:
     executable: /usr/bin/pwsh
   tags:
@@ -22,6 +24,8 @@
   ansible.builtin.shell:
     cmd: cat /tmp/vm_machines.txt
   register: vm_machines
+  when:
+    - get_vms | bool
   args:
     executable: /usr/bin/bash
   tags:

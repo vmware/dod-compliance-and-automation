@@ -12,7 +12,7 @@
   register: install_pwsh
 
 - name: Initiate PowerShell Core .local
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: /usr/bin/pwsh -c echo init
   when: install_pwsh.changed
 

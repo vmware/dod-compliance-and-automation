@@ -7,7 +7,10 @@ vcenter_host: ip or fqdn
 # vCenter validate certificate (true/false)
 validate_certs: false
 
-# Global Exclusion Value
+# Get List of VM's (if this value is false, a list of vm's needs to reside in /tmp/vm_machines.txt)
+get_vms: true
+
+# Global VM Exclusion list
 exclusion_list: vm1|vm2|
 
 # STIG Variables
