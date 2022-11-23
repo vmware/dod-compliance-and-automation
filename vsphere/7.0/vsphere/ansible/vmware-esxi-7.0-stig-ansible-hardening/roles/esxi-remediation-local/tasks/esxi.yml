@@ -11,7 +11,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000002 | bool
+    - esxi_70_000002 | bool
   tags:
     - ESXI-70-000002
 
@@ -28,7 +28,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000003 | bool
+    - esxi_70_000003 | bool
   tags:
     - ESXI-70-000003
 
@@ -44,7 +44,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000004 | bool
+    - esxi_70_000004 | bool
   tags:
     - ESXI-70-000004
 
@@ -60,7 +60,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000005 | bool
+    - esxi_70_000005 | bool
   tags:
     - ESXI-70-000005
 
@@ -76,7 +76,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000006 | bool
+    - esxi_70_000006 | bool
   tags:
     - ESXI-70-000006
 
@@ -92,7 +92,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000007 | bool
+    - esxi_70_000007 | bool
   tags:
     - ESXI-70-000007
 
@@ -108,7 +108,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000030 | bool
+    - esxi_70_000030 | bool
   tags:
     - ESXI-70-000030
 
@@ -124,7 +124,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000031 | bool
+    - esxi_70_000031 | bool
   tags:
     - ESXI-70-000031
 
@@ -140,7 +140,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000032 | bool
+    - esxi_70_000032 | bool
   tags:
     - ESXI-70-000032
 
@@ -156,7 +156,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000034 | bool
+    - esxi_70_000034 | bool
   tags:
     - ESXI-70-000034
 
@@ -171,7 +171,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000054 | bool
+    - esxi_70_000054 | bool
   tags:
     - ESXI-70-000054
 
@@ -188,7 +188,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000035 | bool
+    - esxi_70_000035 | bool
   tags:
     - ESXI-70-000035
 
@@ -205,7 +205,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000036 | bool
+    - esxi_70_000036 | bool
   tags:
     - ESXI-70-000036
 
@@ -223,7 +223,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000037 | bool
+    - esxi_70_000037 | bool
   tags:
     - ESXI-70-000037
 
@@ -246,7 +246,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000039 | bool
+    - esxi_70_000039 | bool
   tags:
     - ESXI-70-000039
 
@@ -262,7 +262,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000041 | bool
+    - esxi_70_000041 | bool
   tags:
     - ESXI-70-000041
 
@@ -278,7 +278,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000042 | bool
+    - esxi_70_000042 | bool
   tags:
     - ESXI-70-000042
 
@@ -294,7 +294,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000043 | bool
+    - esxi_70_000043 | bool
   tags:
     - ESXI-70-000043
 
@@ -310,7 +310,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000045 | bool
+    - esxi_70_000045 | bool
   tags:
     - ESXI-70-000045
 
@@ -328,7 +328,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000046 | bool
+    - esxi_70_000046 | bool
   tags:
     - ESXI-70-000046
 
@@ -345,7 +345,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000046 | bool
+    - esxi_70_000046 | bool
   tags:
     - ESXI-70-000046
 
@@ -360,7 +360,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000047 | bool
+    - esxi_70_000047 | bool
   tags:
     - ESXI-70-000047
 
@@ -395,7 +395,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000053 | bool
+    - esxi_70_000053 | bool
   tags:
     - ESXI-70-000053
 
@@ -411,7 +411,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000055 | bool
+    - esxi_70_000055 | bool
   tags:
     - ESXI-70-000055
 
@@ -440,7 +440,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000056 | bool
+    - esxi_70_000056 | bool
   tags:
     - ESXI-70-000056
 
@@ -456,7 +456,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000058 | bool
+    - esxi_70_000058 | bool
   tags:
     - ESXI-70-000058
 
@@ -472,7 +472,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000059 | bool
+    - esxi_70_000059 | bool
   tags:
     - ESXI-70-000059
 
@@ -489,7 +489,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000059 | bool
+    - esxi_70_000059 | bool
   tags:
     - ESXI-70-000059
 
@@ -505,7 +505,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000060 | bool
+    - esxi_70_000060 | bool
   tags:
     - ESXI-70-000060
 
@@ -522,7 +522,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000060 | bool
+    - esxi_70_000060 | bool
   tags:
     - ESXI-70-000060
 
@@ -538,7 +538,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000061 | bool
+    - esxi_70_000061 | bool
   tags:
     - ESXI-70-000061
 
@@ -555,7 +555,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000061 | bool
+    - esxi_70_000061 | bool
   tags:
     - ESXI-70-000061
 
@@ -571,7 +571,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000062 | bool
+    - esxi_70_000062 | bool
   tags:
     - ESXI-70-000062
 
@@ -621,7 +621,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000074 | bool
+    - esxi_70_000074 | bool
   tags:
     - ESXI-70-000074
 
@@ -643,7 +643,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000079 | bool
+    - esxi_70_000079 | bool
   tags:
     - ESXI-70-000079
 
@@ -659,7 +659,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000081 | bool
+    - esxi_70_000081 | bool
   tags:
     - ESXI-70-000081
 
@@ -676,7 +676,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000083 | bool
+    - esxi_70_000083 | bool
   tags:
     - ESXI-70-000083
 
@@ -692,7 +692,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000086 | bool
+    - esxi_70_000086 | bool
   tags:
     - ESXI-70-000086
 
@@ -708,7 +708,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000087 | bool
+    - esxi_70_000087 | bool
   tags:
     - ESXI-70-000087
 
@@ -724,7 +724,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000088 | bool
+    - esxi_70_000088 | bool
   tags:
     - ESXI-70-000088
 
@@ -740,7 +740,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000089 | bool
+    - esxi_70_000089 | bool
   tags:
     - ESXI-70-000089
 
@@ -756,7 +756,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000091 | bool
+    - esxi_70_000091 | bool
   tags:
     - ESXI-70-000091
 
@@ -773,7 +773,7 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000097 | bool
+    - esxi_70_000097 | bool
   tags:
     - ESXI-70-000097
 
@@ -790,6 +790,6 @@
   with_dict:
     - "{{ esxi_hosts }}"
   when:
-    - ESXI_70_000001 | bool
+    - esxi_70_000001 | bool
   tags:
     - ESXI-70-000001

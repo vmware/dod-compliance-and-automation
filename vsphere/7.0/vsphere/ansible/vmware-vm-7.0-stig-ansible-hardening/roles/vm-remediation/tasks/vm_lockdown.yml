@@ -40,7 +40,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000001 | bool
+    - vmch_70_000001 | bool
   tags:
     - VMCH-70-000001
 
@@ -57,7 +57,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000002 | bool
+    - vmch_70_000002 | bool
   tags:
     - VMCH-70-000002
 
@@ -74,7 +74,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000003 | bool
+    - vmch_70_000003 | bool
   tags:
     - VMCH-70-000003
 
@@ -91,7 +91,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000004 | bool
+    - vmch_70_000004 | bool
   tags:
     - VMCH-70-000004
 
@@ -108,7 +108,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000005 | bool
+    - vmch_70_000005 | bool
   tags:
     - VMCH-70-000005
 
@@ -124,7 +124,7 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000006 | bool
+    - vmch_70_000006 | bool
   tags:
     - VMCH-70-000006
 
@@ -141,7 +141,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000007 | bool
+    - vmch_70_000007 | bool
   tags:
     - VMCH-70-000007
 
@@ -167,7 +167,7 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000008 | bool
+    - vmch_70_000008 | bool
   notify:
     - start_vms
   tags:
@@ -195,7 +195,7 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000009 | bool
+    - vmch_70_000009 | bool
   notify:
     - start_vms
   tags:
@@ -239,7 +239,7 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000010 | bool
+    - vmch_70_000010 | bool
   tags:
     - VMCH-70-000010
 
@@ -281,7 +281,7 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000011 | bool
+    - vmch_70_000011 | bool
   tags:
     - VMCH-70-000011
 
@@ -323,7 +323,7 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000012 | bool
+    - vmch_70_000012 | bool
   tags:
     - VMCH-70-000012
 
@@ -340,7 +340,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000013 | bool
+    - vmch_70_000013 | bool
   tags:
     - VMCH-70-000013
 
@@ -357,7 +357,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000015 | bool
+    - vmch_70_000015 | bool
   tags:
     - VMCH-70-000015
 
@@ -374,7 +374,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000016 | bool
+    - vmch_70_000016 | bool
   tags:
     - VMCH-70-000016
 
@@ -391,7 +391,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000017 | bool
+    - vmch_70_000017 | bool
   tags:
     - VMCH-70-000017
 
@@ -407,7 +407,7 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000018 | bool
+    - vmch_70_000018 | bool
   tags:
     - VMCH-70-000018
 
@@ -445,7 +445,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000022 | bool
+    - vmch_70_000022 | bool
   tags:
     - VMCH-70-000022
 
@@ -462,7 +462,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000023 | bool
+    - vmch_70_000023 | bool
   tags:
     - VMCH-70-000023
 
@@ -487,7 +487,7 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000024 | bool
+    - vmch_70_000024 | bool
   tags:
     - VMCH-70-000024
 
@@ -506,7 +506,7 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000025 | bool
+    - vmch_70_000025 | bool
   tags:
     - VMCH-70-000025
 
@@ -523,7 +523,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000026 | bool
+    - vmch_70_000026 | bool
   tags:
     - VMCH-70-000026
 
@@ -540,7 +540,7 @@
   with_items:
     - "{{ vm_machines.stdout_lines }}"
   when:
-    - VMCH_70_000027 | bool
+    - vmch_70_000027 | bool
   tags:
     - VMCH-70-000027
 
@@ -572,6 +572,6 @@
   args:
     executable: /usr/bin/pwsh
   when:
-    - VMCH_70_000029 | bool
+    - vmch_70_000029 | bool
   tags:
     - VMCH-70-000029

@@ -1,28 +1,28 @@
 ---
-ESXI_70_000008: true # Consent Banner /etc/issue
-ESXI_70_000009: true # SSH Banner
-ESXI_70_000010: true # SSH FipsMode
-ESXI_70_000012: true # SSH IgnoreRhosts yes
-ESXI_70_000013: true # SSH HostbasedAuthentication no
-ESXI_70_000014: false # SSH PermitRootLogin no
-ESXI_70_000015: true # SSH PermitEmptyPasswords no
-ESXI_70_000016: true # SSH PermitUserEnvironment no
-ESXI_70_000020: true # SSH StrictModes yes
-ESXI_70_000021: true # SSH Compression no
-ESXI_70_000022: true # SSH GatewayPorts no
-ESXI_70_000023: true # SSH X11Forwarding no
-ESXI_70_000025: true # SSH PermitTunnel no
-ESXI_70_000026: true # SSH ClientAliveCountMax 3
-ESXI_70_000027: true # SSH ClientAliveInterval 200
-ESXI_70_000053: true # SNMP
-ESXI_70_000057: false # Default Firewall
-ESXI_70_000076: true # The ESXi host must enable Secure Boot.
-ESXI_70_000082: true # SSH AllowTCPForwarding
-ESXI_70_000084: true # The ESXi host must enable audit logging.
-ESXI_70_000085: true # The ESXi host must enable strict x509 verification for SSL syslog endpoints.
-ESXI_70_000090: true # Rhttpproxy FIPs
-ESXI_70_000092: true # VM Override
-ESXI_70_000093: true # Vm Override Logger
-ESXI_70_000094: true # The ESXi host must require TPM-based configuration encryption.
-ESXI_70_000095: true # The ESXi host must implement Secure Boot enforcement.
-ESXI-70-000274: true # The ESXi host SSH daemon must be configured to only use FIPS 140-2 validated ciphers.
+esxi_70_000008: true # Consent Banner /etc/issue
+esxi_70_000009: true # SSH Banner
+esxi_70_000010: true # SSH FipsMode
+esxi_70_000012: true # SSH IgnoreRhosts yes
+esxi_70_000013: true # SSH HostbasedAuthentication no
+esxi_70_000014: false # SSH PermitRootLogin no
+esxi_70_000015: true # SSH PermitEmptyPasswords no
+esxi_70_000016: true # SSH PermitUserEnvironment no
+esxi_70_000020: true # SSH StrictModes yes
+esxi_70_000021: true # SSH Compression no
+esxi_70_000022: true # SSH GatewayPorts no
+esxi_70_000023: true # SSH X11Forwarding no
+esxi_70_000025: true # SSH PermitTunnel no
+esxi_70_000026: true # SSH ClientAliveCountMax 3
+esxi_70_000027: true # SSH ClientAliveInterval 200
+esxi_70_000053: true # SNMP
+esxi_70_000057: false # Default Firewall
+esxi_70_000076: true # The ESXi host must enable Secure Boot.
+esxi_70_000082: true # SSH AllowTCPForwarding
+esxi_70_000084: true # The ESXi host must enable audit logging.
+esxi_70_000085: true # The ESXi host must enable strict x509 verification for SSL syslog endpoints.
+esxi_70_000090: true # Rhttpproxy FIPs
+esxi_70_000092: true # VM Override
+esxi_70_000093: true # Vm Override Logger
+esxi_70_000094: true # The ESXi host must require TPM-based configuration encryption.
+esxi_70_000095: true # The ESXi host must implement Secure Boot enforcement.
+esxi_70-000274: true # The ESXi host SSH daemon must be configured to only use FIPS 140-2 validated ciphers.

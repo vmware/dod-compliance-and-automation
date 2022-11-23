@@ -8,7 +8,7 @@
     mode: "0644"
     force: true
   when:
-    - ESXI_70_000008 | bool
+    - esxi_70_000008 | bool
   tags:
     - ESXI-70-000008
 
@@ -19,7 +19,7 @@
     regex: (?i)Banner.*$
     line: Banner /etc/issue
   when:
-    - ESXI_70_000009 | bool
+    - esxi_70_000009 | bool
   tags:
     - ESXI-70-000009
 
@@ -29,7 +29,7 @@
   args:
     executable: /bin/sh
   when:
-    - ESXI_70_000010 | bool
+    - esxi_70_000010 | bool
   tags:
     - ESXI-70-000010
 
@@ -40,7 +40,7 @@
     regex: (?i)IgnoreRhosts.*$
     line: IgnoreRhosts yes
   when:
-    - ESXI_70_000012 | bool
+    - esxi_70_000012 | bool
   tags:
     - ESXI-70-000012
 
@@ -51,7 +51,7 @@
     regex: (?i)HostbasedAuthentication.*$
     line: HostbasedAuthentication no
   when:
-    - ESXI_70_000013 | bool
+    - esxi_70_000013 | bool
   tags:
     - ESXI-70-000013
 
@@ -62,7 +62,7 @@
     regex: (?i)PermitRootLogin.*$
     line: PermitRootLogin no
   when:
-    - ESXI_70_000014 | bool
+    - esxi_70_000014 | bool
   tags:
     - ESXI-70-000014
 
@@ -73,7 +73,7 @@
     regex: (?i)PermitEmptyPasswords.*$
     line: PermitEmptyPasswords no
   when:
-    - ESXI_70_000015 | bool
+    - esxi_70_000015 | bool
   tags:
     - ESXI-70-000015
 
@@ -84,7 +84,7 @@
     regex: (?i)PermitUserEnvironment.*$
     line: PermitUserEnvironment no
   when:
-    - ESXI_70_000016 | bool
+    - esxi_70_000016 | bool
   tags:
     - ESXI-70-000016
 
@@ -95,7 +95,7 @@
     regex: (?i)StrictModes.*$
     line: StrictModes yes
   when:
-    - ESXI_70_000020 | bool
+    - esxi_70_000020 | bool
   tags:
     - ESXI-70-000020
 
@@ -106,7 +106,7 @@
     regex: (?i)Compression.*$
     line: Compression no
   when:
-    - ESXI_70_000021 | bool
+    - esxi_70_000021 | bool
   tags:
     - ESXI-70-000021
 
@@ -117,7 +117,7 @@
     regex: (?i)GatewayPorts.*$
     line: GatewayPorts no
   when:
-    - ESXI_70_000022 | bool
+    - esxi_70_000022 | bool
   tags:
     - ESXI-70-000022
 
@@ -128,7 +128,7 @@
     regex: (?i)X11Forwarding.*$
     line: X11Forwarding no
   when:
-    - ESXI_70_000023 | bool
+    - esxi_70_000023 | bool
   tags:
     - ESXI-70-000023
 
@@ -139,7 +139,7 @@
     regex: (?i)PermitTunnel.*$
     line: PermitTunnel no
   when:
-    - ESXI_70_000025 | bool
+    - esxi_70_000025 | bool
   tags:
     - ESXI-70-000025
 
@@ -150,7 +150,7 @@
     regex: (?i)ClientAliveCountMax.*$
     line: ClientAliveCountMax 3
   when:
-    - ESXI_70_000026 | bool
+    - esxi_70_000026 | bool
   tags:
     - ESXI-70-000026
 
@@ -161,7 +161,7 @@
     regex: (?i)ClientAliveInterval.*$
     line: ClientAliveInterval 200
   when:
-    - ESXI_70_000027 | bool
+    - esxi_70_000027 | bool
   tags:
     - ESXI-70-000027
 
@@ -171,7 +171,7 @@
   args:
     executable: /bin/sh
   when:
-    - ESXI_70_000053 | bool
+    - esxi_70_000053 | bool
   tags:
     - ESXI-70-000053
 
@@ -181,7 +181,7 @@
   args:
     executable: /bin/sh
   when:
-    - ESXI_70_000057 | bool
+    - esxi_70_000057 | bool
   tags:
     - ESXI-70-000057
 
@@ -192,7 +192,7 @@
     executable: /bin/sh
   register: secure_boot_status
   when:
-    - ESXI_70_000076 | bool
+    - esxi_70_000076 | bool
   tags:
     - ESXI-70-000076
 
@@ -203,7 +203,7 @@
     executable: /bin/sh
   register: secure_boot_status
   when:
-    - ESXI_70_000076 | bool
+    - esxi_70_000076 | bool
     - secure_boot_status.stdout is search("Disabled")
   tags:
     - ESXI-70-000076
@@ -215,7 +215,7 @@
     regex: (?i)AllowTcpForwarding.*$
     line: AllowTcpForwarding no
   when:
-    - ESXI_70_000082 | bool
+    - esxi_70_000082 | bool
   tags:
     - ESXI-70-000082
 
@@ -230,7 +230,7 @@
     - esxcli system auditrecords remote enable
     - esxcli system syslog reload
   when:
-    - ESXI_70_000084 | bool
+    - esxi_70_000084 | bool
   tags:
     - ESXI-70-000084
 
@@ -243,7 +243,7 @@
     - esxcli system syslog config set --x509-strict="true"
     - esxcli system syslog reload
   when:
-    - ESXI_70_000085 | bool
+    - esxi_70_000085 | bool
   tags:
     - ESXI-70-000085
 
@@ -253,7 +253,7 @@
   args:
     executable: /bin/sh
   when:
-    - ESXI_70_000090 | bool
+    - esxi_70_000090 | bool
   tags:
     - ESXI-70-000090
 
@@ -263,7 +263,7 @@
   args:
     executable: /bin/sh
   when:
-    - ESXI_70_000092 | bool
+    - esxi_70_000092 | bool
   tags:
     - ESXI-70-000092
 
@@ -273,7 +273,7 @@
     state: absent
     regex: (?i)^vmx.*\.log.*$
   when:
-    - ESXI_70_000093 | bool
+    - esxi_70_000093 | bool
   tags:
     - ESXI-70-000093
 
@@ -283,7 +283,7 @@
   args:
     executable: /bin/sh
   when:
-    - ESXI_70_000094 | bool
+    - esxi_70_000094 | bool
   tags:
     - ESXI-70-000094
 
@@ -293,7 +293,7 @@
   args:
     executable: /bin/sh
   when:
-    - ESXI_70_000095 | bool
+    - esxi_70_000095 | bool
   tags:
     - ESXI-70-000095
 
@@ -304,7 +304,7 @@
     regex: ^Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr.*$
     line: Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
   when:
-    - ESXI_70_000010 | bool
-    - ESXI_70_000274 | bool
+    - esxi_70_000010 | bool
+    - esxi_70_000274 | bool
   tags:
     - ESXI-70-000274
