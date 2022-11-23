@@ -19,4 +19,4 @@ disk_mode_type: persistent
 vmotion_encryption: opportunistic
 
 # VMCH-70-000029
-FTEncryption: ftEncryptionOpportunistic
+ft_encryption: ftEncryptionOpportunistic
