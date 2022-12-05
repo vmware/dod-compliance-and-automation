@@ -1,0 +1,38 @@
+---
+- name: Make sure requirements are met to run vmware modules
+  ansible.builtin.pip:
+    name: PyVmomi
+    state: present
+
+- name: Ensure PowerShell Core is present
+  ansible.builtin.yum:
+    name: "{{ role_path }}/{{ file_location }}/{{ powershell_rpm }}"
+    state: present
+    disable_gpg_check: true
+  when:
+    - not pwsh_repo
+  notify:
+    - init pwsh
+    - self signed certs
+
+- name: Ensure PowerShell Core is present
+  ansible.builtin.yum:
+    name: powershell
+    state: present
+  when:
+    - pwsh_repo
+  notify:
+    - init pwsh
+    - self signed certs
+
+- name: Copy PowerCLI Modules in Place
+  ansible.posix.synchronize:
+    src: "{{ role_path }}/{{ file_location }}/Modules/"
+    dest: /root/.local/share/powershell/Modules\
+  when:
+    - copy_powercli_modules
+
+- name: Make results directory for STIGs requiring manual remediation
+  ansible.builtin.file:
+    path: "{{ role_path }}/stig_findings"
+    state: directory

@@ -1,17 +1,10 @@
 ---
-- name: Make sure requirements are met to run vmware modules
-  ansible.builtin.pip:
-    name: PyVmomi
-    state: present
-  tags:
-    - always
-
 - name: Get All VM Hostnames Part 1 of 2
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
-      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
       $vms | Out-File /tmp/vm_machines.txt
   when:
     - get_vms | bool
@@ -25,7 +18,7 @@
     cmd: cat /tmp/vm_machines.txt
   register: vm_machines
   when:
-    - get_vms | bool
+    - vm_list is defined
   args:
     executable: /usr/bin/bash
   tags:
@@ -33,7 +26,7 @@
 
 - name: VMCH-70-000001 - Copy operations must be disabled on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -50,7 +43,7 @@
 
 - name: VMCH-70-000002 - Drag and drop operations must be disabled on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -67,7 +60,7 @@
 
 - name: VMCH-70-000003 - Paste operations must be disabled on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -84,7 +77,7 @@
 
 - name: VMCH-70-000004 - Virtual disk shrinking must be disabled on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -101,7 +94,7 @@
 
 - name: VMCH-70-000005 - Virtual disk shrinking must be disabled on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -119,7 +112,7 @@
 - name: VMCH-70-000006 - Independent, non-persistent disks must be not be used on the virtual machine
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
@@ -134,7 +127,7 @@
 
 - name: VMCH-70-000007 - HGFS file transfers must be disabled on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -152,7 +145,7 @@
 - name: VMCH-70-000008 - Unauthorized floppy devices must be disconnected on the virtual machine
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
@@ -180,7 +173,7 @@
 - name: VMCH-70-000009 - Unauthorized CD/DVD devices must be disconnected on the virtual
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
@@ -208,7 +201,7 @@
 - name: VMCH-70-000010 - Unauthorized parallel devices must be disconnected on the virtual machine
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $ConfigureVM = $true;
@@ -250,7 +243,7 @@
 - name: VMCH-70-000011 - Unauthorized serial devices must be disconnected on the virtual machine
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $ConfigureVM = $true;
@@ -292,7 +285,7 @@
 - name: VMCH-70-000012 - Unauthorized USB devices must be disconnected on the virtual machine
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $ConfigureVM = $true;
@@ -333,7 +326,7 @@
 
 - name: VMCH-70-000013 - Console connection sharing must be limited on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -350,7 +343,7 @@
 
 - name: VMCH-70-000015 - Informational messages from the virtual machine to the VMX file must be limited on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -367,7 +360,7 @@
 
 - name: VMCH-70-000016 - Unauthorized removal, connection and modification of devices must be prevented on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -384,7 +377,7 @@
 
 - name: VMCH-70-000017 - Unauthorized removal, connection and modification of devices must be prevented on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -402,7 +395,7 @@
 - name: VMCH-70-000018 - Shared salt values must be disabled on the virtual machine
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
@@ -438,7 +431,7 @@
 
 - name: VMCH-70-000022 -The virtual machine guest operating system must be locked when the last console connection is closed
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -455,7 +448,7 @@
 
 - name: VMCH-70-000023 - 3D features on the virtual machine must be disabled when not required
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -473,7 +466,7 @@
 - name: VMCH-70-000024 - Encryption must be enabled for vMotion on the virtual machine
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
@@ -498,7 +491,7 @@
 - name: VMCH-70-000025 - Logging must be enabled on the virtual machine
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       $spec = New-Object VMware.Vim.VirtualMachineConfigSpec;
@@ -516,7 +509,7 @@
 
 - name: VMCH-70-000026 - Log size must be properly configured on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -533,7 +526,7 @@
 
 - name: VMCH-70-000027 - Log retention must be properly configured on the virtual machine
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_host }}"
+    hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     name: "{{ item[:] }}"
@@ -558,11 +551,11 @@
 - name: VMCH-70-000029 - Encryption must be enabled for Fault Tolerance on the virtual machine
   ansible.builtin.shell:
     cmd: |
-      Connect-VIServer -Server {{ vcenter_host }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
       $exclusion_list = "{{ exclusion_list }}";
       $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Sort-Object Name;
       ForEach($vm in $vms){
-        If($vm.extensiondata.Config.FtEncryptionMode -eq {{ ft_encryption }}){
+        If($vm.extensiondata.Config.FtEncryptionMode -eq "{{ ft_encryption }}"){
           break;
         }
         else{
@@ -579,3 +572,5 @@
     - vmch_70_000029 | bool
   tags:
     - VMCH-70-000029
+  notify:
+    - delete exclusion list

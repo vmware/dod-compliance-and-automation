@@ -1,14 +1,31 @@
 ---
+# Is the server connected to the proper repository to download PowerShell Core (default true)
+# If the server is not connected, ensure the rpm for powershell is located within the files directory of the role.
+pwsh_repo: true
+
+# For when installed via RPM (set name when needed);
+powershell_rpm: powershell-7.2.0-1.rh.x86_64.rpm
+
+# Do you need to copy PowerCLI modules into place? (default false)
+# If you need to copy PowerCLI modules into place, set to true and ensure modules are in ~/esxi-remediation-local/file_location/Modules
+copy_powercli_modules: false
+
+# Is ~/vm-remediation/file_location (in this case, the files directory of the role.)
+file_location: files
+
 # vCenter Authentication Variables
+vcenter_hostname: ip or fqdn
 vcenter_username: user@example.com
 vcenter_password: "{{ vault_vcenter_password }}"
-vcenter_host: ip or fqdn
 
 # vCenter validate certificate (true/false)
 validate_certs: false
 
 # Get List of VM's (if this value is false, a list of vm's needs to reside in /tmp/vm_machines.txt)
 get_vms: true
+
+# where the vm dump will be placed (will be cleaned up after VMCH-70-000029 has been completed)
+vm_list: /tmp/vm_machines.txt
 
 # Global VM Exclusion list
 exclusion_list: vm1|vm2|
