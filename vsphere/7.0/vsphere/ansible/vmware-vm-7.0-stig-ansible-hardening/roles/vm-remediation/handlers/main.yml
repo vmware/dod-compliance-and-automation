@@ -25,6 +25,6 @@
     executable: /usr/bin/pwsh
 
 - name: delete exclusion list
-  file:
+  ansible.builtin.file:
     path: "{{ vm_list }}"
     state: absent
