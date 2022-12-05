@@ -287,7 +287,7 @@
   tags:
     - ESXI-70-000094
 
-- name: ESXI-70-000095 - The ESXi host must require TPM-based configuration encryption.
+- name: ESXI-70-000095 - The ESXi host must enable Secure Boot.
   ansible.builtin.shell:
     cmd: esxcli system settings encryption set --require-secure-boot=true
   args:
@@ -297,7 +297,7 @@
   tags:
     - ESXI-70-000095
 
-- name: ESXI-70-000274 - The ESXi host must require TPM-based configuration encryption.
+- name: ESXI-70-000274 - The ESXi host SSH daemon must be configured to only use FIPS 140-2 validated ciphers.
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     state: present

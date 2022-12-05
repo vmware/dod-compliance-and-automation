@@ -420,7 +420,8 @@
     cmd: |
       Connect-VIServer -Server {{ vcenter_hostname }} -User {{ vcenter_username }} -Password {{ vcenter_password }};
       $allowedips = {{ item.value.allowed_ip }};
-      $fwservices = Get-VMHost -Name {{ item.value.hostname }} | Get-VMHostFirewallException | Where-Object {($_.Enabled -eq $True) -and ($_.extensiondata.allowedhosts.allip -eq 'enabled') -and ($_.Name -ne 'vSphere Web Client') -and ($_.Name -ne 'dellptagenttcp') -and ($_.Name -ne 'dellsshServer') -and ($_.Name -ne 'VMware vCenter Agent')};
+      $fwservices = Get-VMHost -Name {{ item.value.hostname }} | Get-VMHostFirewallException | Where-Object {($_.Enabled -eq $True) -and ($_.extensiondata.allowedhosts.allip -eq 'enabled') -and ($_.Name -ne 'vSphere Web Client') `
+      -and ($_.Name -ne 'dellptagenttcp') -and ($_.Name -ne 'dellsshServer') -and ($_.Name -ne 'VMware vCenter Agent')};
       $esxcli = Get-EsxCli -VMHost {{ item.value.hostname }} -V2;
       ForEach($fwservice in $fwservices){
         $fwsvcname = $fwservice.extensiondata.key;
@@ -467,6 +468,9 @@
     password: "{{ item.value.password }}"
     validate_certs: "{{ validate_certs }}"
     switch: "{{ item.value.vswitch }}"
+    nics: "{{ item.value.nics }}"
+    number_of_ports: "{{ item.value.number_of_ports }}"
+    mtu: "{{ item.value.mtu }}"
     security:
       forged_transmits: false
   with_dict:
@@ -481,9 +485,11 @@
     hostname: "{{ item.value.hostname }}"
     username: "{{ item.value.username }}"
     password: "{{ item.value.password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
     validate_certs: "{{ validate_certs }}"
     switch: "{{ item.value.vswitch }}"
     portgroup: "{{ item.value.portgroup }}"
+    vlan_id: "{{ item.value.vlan_id }}"
     security:
       forged_transmits: false
   with_dict:
@@ -500,6 +506,9 @@
     password: "{{ item.value.password }}"
     validate_certs: "{{ validate_certs }}"
     switch: "{{ item.value.vswitch }}"
+    nics: "{{ item.value.nics }}"
+    number_of_ports: "{{ item.value.number_of_ports }}"
+    mtu: "{{ item.value.mtu }}"
     security:
       mac_changes: false
   with_dict:
@@ -514,9 +523,11 @@
     hostname: "{{ item.value.hostname }}"
     username: "{{ item.value.username }}"
     password: "{{ item.value.password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
     validate_certs: "{{ validate_certs }}"
     switch: "{{ item.value.vswitch }}"
     portgroup: "{{ item.value.portgroup }}"
+    vlan_id: "{{ item.value.vlan_id }}"
     security:
       mac_changes: false
   with_dict:
@@ -533,6 +544,9 @@
     password: "{{ item.value.password }}"
     validate_certs: "{{ validate_certs }}"
     switch: "{{ item.value.vswitch }}"
+    nics: "{{ item.value.nics }}"
+    number_of_ports: "{{ item.value.number_of_ports }}"
+    mtu: "{{ item.value.mtu }}"
     security:
       promiscuous_mode: false
   with_dict:
@@ -547,9 +561,11 @@
     hostname: "{{ item.value.hostname }}"
     username: "{{ item.value.username }}"
     password: "{{ item.value.password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
     validate_certs: "{{ validate_certs }}"
     switch: "{{ item.value.vswitch }}"
     portgroup: "{{ item.value.portgroup }}"
+    vlan_id: "{{ item.value.vlan_id }}"
     security:
       promiscuous_mode: false
   with_dict:

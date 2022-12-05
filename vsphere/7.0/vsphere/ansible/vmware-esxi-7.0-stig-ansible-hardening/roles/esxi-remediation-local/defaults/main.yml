@@ -20,6 +20,7 @@ esxi_70_000043: true # DCUI Timeout
 esxi_70_000045: true # Persistent Logs
 esxi_70_000046: true # NTP
 esxi_70_000047: true # Acceptance Level
+esxi_70_000053: true # SNMP must be configured preoperly on the ESXi host.
 esxi_70_000054: true # iSCSI CHAP
 esxi_70_000055: true # Memory Salting
 esxi_70_000056: true # Firewall Rules - recommend setting to false as it broke vmotion

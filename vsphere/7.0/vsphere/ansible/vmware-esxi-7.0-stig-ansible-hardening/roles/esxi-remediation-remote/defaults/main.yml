@@ -14,7 +14,7 @@ esxi_70_000023: true # SSH X11Forwarding no
 esxi_70_000025: true # SSH PermitTunnel no
 esxi_70_000026: true # SSH ClientAliveCountMax 3
 esxi_70_000027: true # SSH ClientAliveInterval 200
-esxi_70_000053: true # SNMP
+esxi_70_000053: true # SNMP must be configured preoperly on the ESXi host.
 esxi_70_000057: false # Default Firewall
 esxi_70_000076: true # The ESXi host must enable Secure Boot.
 esxi_70_000082: true # SSH AllowTCPForwarding

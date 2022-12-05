@@ -6,28 +6,31 @@
 
 - name: Ensure PowerShell Core is present
   ansible.builtin.yum:
-    name: "{{ role_path}}/{{ file_location }}/powershell-7.2.0-1.rh.x86_64.rpm"
+    name: "{{ role_path }}/{{ file_location }}/{{ powershell_rpm }}"
     state: present
     disable_gpg_check: true
-  register: install_pwsh
+  when: 
+    - not pwsh_repo
+  notify:
+    - init pwsh
+    - self signed certs
 
-- name: Initiate PowerShell Core .local
-  ansible.builtin.command:
-    cmd: /usr/bin/pwsh -c echo init
-  when: install_pwsh.changed
+- name: Ensure PowerShell Core is present
+  ansible.builtin.yum:
+    name: powershell
+    state: present
+  when: 
+    - pwsh_repo
+  notify:
+    - init pwsh
+    - self signed certs
 
 - name: Copy PowerCLI Modules in Place
   ansible.posix.synchronize:
-    src: "{{ role_path}}/{{ file_location }}/Modules/"
-    dest: /root/.local/share/powershell/Modules
-
-- name: Set PowerCLI to Accecpt Self-Signed Certs
-  ansible.builtin.shell:
-    cmd: |
-      Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
-  when: install_pwsh.changed
-  args:
-    executable: /usr/bin/pwsh
+    src: "{{ role_path }}/{{ file_location }}/Modules/"
+    dest: /root/.local/share/powershell/Modules\
+  when:
+    - copy_powercli_modules
 
 - name: Make results directory for STIGs requiring manual remediation
   ansible.builtin.file:

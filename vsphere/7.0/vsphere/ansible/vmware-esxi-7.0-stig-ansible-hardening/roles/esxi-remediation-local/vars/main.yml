@@ -1,4 +1,15 @@
 ---
+# Is the server connected to the proper repository to download PowerShell Core (default true)
+# If the server is not connected, ensure the rpm for powershell is located within the files directory of the role.
+pwsh_repo: true
+
+# For when installed via RPM (set name when needed);
+powershell_rpm: powershell-7.2.0-1.rh.x86_64.rpm
+
+# Do you need to copy PowerCLI modules into place? (default false)
+# If you need to copy PowerCLI modules into place, set to true and ensure modules are in ~/esxi-remediation-local/file_location/Modules
+copy_powercli_modules: false
+
 # Use role vault set false if no
 esx_local_vault: true
 
@@ -10,6 +21,7 @@ vcenter_password: "{{ vault_vcenter_password }}"
 # vCenter validate certificate (true/false)
 validate_certs: false
 
+# Is ~/esxi-remediation-local/file_location (in this case, the files directory of the role.)
 file_location: files
 
 # Ansible VMware Collection Dictionary variables (add/delete/modify groups as needed)
@@ -23,6 +35,10 @@ esxi_hosts:
     allowed_ip: 192.168.x.x # ESXI-70-000056
     vswitch: vswitch_name # ESXI-70-000059
     portgroup: portgroup_name # ESXI-70-000059
+    nics: vmnic0 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    mtu: 1500 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    number_of_ports: 128 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    vlan_id: 0 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
   esxi_two:
     hostname: example.domain.com # ESXi Hostname (switch to IP if hostname is not supported/setup)
     username: root # Needed for ansible module call
@@ -30,6 +46,10 @@ esxi_hosts:
     allowed_ip: 192.168.x.x # ESXI-70-000056
     vswitch: vswitch_name # ESXI-70-000059
     portgroup: portgroup_name # ESXI-70-000059
+    nics: vmnic0 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    mtu: 1500 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    number_of_ports: 128 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    vlan_id: 0 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
   esxi_three:
     hostname: example.domain.com # ESXi Hostname (switch to IP if hostname is not supported/setup)
     username: root # Needed for ansible module call
@@ -37,6 +57,10 @@ esxi_hosts:
     allowed_ip: 192.168.x.x # ESXI-70-000056
     vswitch: vswitch_name # ESXI-70-000059
     portgroup: portgroup_name # ESXI-70-000059
+    nics: vmnic0 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    mtu: 1500 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    number_of_ports: 128 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    vlan_id: 0 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
   esxi_four:
     hostname: example.domain.com # ESXi Hostname (switch to IP if hostname is not supported/setup)
     username: root # Needed for ansible module call
@@ -44,6 +68,10 @@ esxi_hosts:
     allowed_ip: 192.168.x.x # ESXI-70-000056
     vswitch: vswitch_name # ESXI-70-000059
     portgroup: portgroup_name # ESXI-70-000059
+    nics: vmnic0 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    mtu: 1500 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    number_of_ports: 128 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
+    vlan_id: 0 # Change this value as needed (it is passed as an argument in ESXI-70-000059,60,61 but is not a STIG item)
 
 # ESXI-70-000037
 domain_name: example.local
@@ -81,7 +109,8 @@ dod_welcome_banner: |
 
   -This IS includes security measures (e.g., authentication and access controls) to protect USG interests- -not for your personal benefit or privacy.
 
-  -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
+  -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, 
+   and their assistants. Such communications and work product are private and confidential. See User Agreement for details.
 
 # ESXI-70-000030
 log_level: info
