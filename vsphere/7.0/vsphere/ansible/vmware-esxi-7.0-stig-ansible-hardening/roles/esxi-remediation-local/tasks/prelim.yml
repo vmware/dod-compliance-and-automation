@@ -9,7 +9,7 @@
     name: "{{ role_path }}/{{ file_location }}/{{ powershell_rpm }}"
     state: present
     disable_gpg_check: true
-  when: 
+  when:
     - not pwsh_repo
   notify:
     - init pwsh
@@ -19,7 +19,7 @@
   ansible.builtin.yum:
     name: powershell
     state: present
-  when: 
+  when:
     - pwsh_repo
   notify:
     - init pwsh
