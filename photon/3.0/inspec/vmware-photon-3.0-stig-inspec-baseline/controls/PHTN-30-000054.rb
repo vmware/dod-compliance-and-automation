@@ -54,7 +54,7 @@ control 'PHTN-30-000054' do
   tag cci: ['CCI-002234', 'CCI-000172']
   tag nist: ['AC-6 (9)', 'AU-12 c']
 
-  results = command('find / -xdev -perm -4000 -type f -o -perm -2000 -type f').stdout.split("\n")
+  results = command('find / -xdev -path /var/lib/containerd -prune -o \( -perm -4000 -type f -o -perm -2000 \) -type f -print').stdout.split("\n")
   results.each do |path|
     describe.one do
       describe auditd do

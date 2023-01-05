@@ -36,26 +36,41 @@ control 'PHTN-30-000105' do
   tag nist: ['CM-6 b']
 
   describe kernel_parameter('net.ipv4.conf.all.mc_forwarding') do
-    its('value') { should eq 0 }
+    its('value') { should cmp 0 }
   end
 
   describe kernel_parameter('net.ipv4.conf.default.mc_forwarding') do
-    its('value') { should eq 0 }
+    its('value') { should cmp 0 }
   end
 
   describe kernel_parameter('net.ipv4.conf.eth0.mc_forwarding') do
-    its('value') { should eq 0 }
+    its('value') { should cmp 0 }
   end
 
-  describe kernel_parameter('net.ipv6.conf.all.mc_forwarding') do
-    its('value') { should eq 0 }
+  describe.one do
+    describe kernel_parameter('net.ipv6.conf.all.mc_forwarding') do
+      its('value') { should cmp 0 }
+    end
+    describe kernel_parameter('net.ipv6.conf.all.mc_forwarding') do
+      its('value') { should be nil }
+    end
   end
 
-  describe kernel_parameter('net.ipv6.conf.default.mc_forwarding') do
-    its('value') { should eq 0 }
+  describe.one do
+    describe kernel_parameter('net.ipv6.conf.default.mc_forwarding') do
+      its('value') { should cmp 0 }
+    end
+    describe kernel_parameter('net.ipv6.conf.default.mc_forwarding') do
+      its('value') { should be nil }
+    end
   end
 
-  describe kernel_parameter('net.ipv6.conf.eth0.mc_forwarding') do
-    its('value') { should eq 0 }
+  describe.one do
+    describe kernel_parameter('net.ipv6.conf.eth0.mc_forwarding') do
+      its('value') { should cmp 0 }
+    end
+    describe kernel_parameter('net.ipv6.conf.eth0.mc_forwarding') do
+      its('value') { should be nil }
+    end
   end
 end

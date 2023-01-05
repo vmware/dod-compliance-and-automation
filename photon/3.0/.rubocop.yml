@@ -12,4 +12,16 @@
 Style/WordArray:
   Enabled: false
 Layout/EndOfLine:
+  Enabled: true
+Style/Encoding:
+  Enabled: true
+Layout/TrailingWhitespace:
+  Enabled: true
+Layout/ExtraSpacing:
+  Enabled: true
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: true
+Style/StringLiterals:
+  Enabled: true
+Style/RegexpLiteral:
   Enabled: false

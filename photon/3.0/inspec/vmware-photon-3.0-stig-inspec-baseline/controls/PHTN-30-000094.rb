@@ -5,7 +5,7 @@ control 'PHTN-30-000094' do
   desc  'check', "
     At the command line, execute the following command:
 
-    # find / -fstype ext4 -nouser -o -nogroup -exec ls -ld {} \\; 2>/dev/null
+    # find / -xdev -path /var/lib/containerd -prune -o \\( -nouser -o -nogroup \\) -exec ls -ld {} \\; 2>/dev/null
 
     If any files are returned, this is a finding.
   "
@@ -31,8 +31,8 @@ control 'PHTN-30-000094' do
     command("df -t #{fs} --output=target | tail +2").stdout.split("\n").each do |mp|
       # If verbose is 'true' find and list (ls) all files with unknown owner/group
       if verbose
-        user_cmd = command("find #{mp} -xdev -fstype #{fs} -nouser -exec ls -ld {} \\; 2>/dev/null").stdout
-        group_cmd = command("find #{mp} -xdev -fstype #{fs} -nogroup -exec ls -ld {} \\; 2>/dev/null").stdout
+        user_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nouser -exec ls -ld {} \\; 2>/dev/null").stdout
+        group_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nogroup -exec ls -ld {} \\; 2>/dev/null").stdout
         # The resulting string should be empty
         describe "The set of files (#{fs}:#{mp}) with unknown owner" do
           subject { user_cmd }
@@ -44,8 +44,8 @@ control 'PHTN-30-000094' do
         end
       # If verbose is 'false' find all files with unknown owner/group and count them (wc)
       else
-        user_cmd = command("find #{mp} -xdev -fstype #{fs} -nouser 2>/dev/null | wc -l").stdout.to_i
-        group_cmd = command("find #{mp} -xdev -fstype #{fs} -nogroup 2>/dev/null | wc -l").stdout.to_i
+        user_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nouser 2>/dev/null | wc -l").stdout.to_i
+        group_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nogroup 2>/dev/null | wc -l").stdout.to_i
         # The length of the result set should be 0
         describe "The set of files (#{fs}:#{mp}) with unknown owner" do
           subject { user_cmd }

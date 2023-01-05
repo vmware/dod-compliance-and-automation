@@ -7,7 +7,7 @@
 
 - name: Create time stamp
   ansible.builtin.set_fact:
-    backup_timestamp: "{{ lookup('pipe','date +%Y-%m-%d-%H-%M-%S') }}"
+    backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
   tags:
     - photon
   when:
@@ -285,6 +285,8 @@
     regexp: '^Banner.*$'
     line: Banner {{ var_sshd_banner }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000003
     - sshd
@@ -354,6 +356,8 @@
     regexp: '^SyslogFacility.*$'
     line: SyslogFacility {{ var_sshd_syslogfacility }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000006
     - sshd
@@ -392,6 +396,8 @@
     regexp: '^LogLevel.*$'
     line: LogLevel {{ var_sshd_loglevel }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000008
     - sshd
@@ -430,7 +436,6 @@
     regexp: '^write_logs.*$'
     line: write_logs = {{ var_auditd_write_logs }}
     state: present
-    create: true
     backrefs: true
   tags:
     - PHTN-30-000010
@@ -450,7 +455,6 @@
     regexp: '^log_format.*$'
     line: log_format = {{ var_auditd_log_format }}
     state: present
-    create: true
   tags:
     - PHTN-30-000011
     - auditd
@@ -483,7 +487,6 @@
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^space_left_action.*$'
     line: space_left_action = {{ var_auditd_space_left_action }}
-    create: true
     state: present
   tags:
     - PHTN-30-000014
@@ -502,7 +505,6 @@
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^disk_full_action.*$'
     line: disk_full_action = {{ var_auditd_disk_full_action }}
-    create: true
     state: present
   tags:
     - PHTN-30-000015
@@ -517,7 +519,6 @@
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^disk_error_action.*$'
     line: disk_error_action = {{ var_auditd_disk_error_action }}
-    create: true
     state: present
   tags:
     - PHTN-30-000015
@@ -532,7 +533,6 @@
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^admin_space_left_action.*$'
     line: admin_space_left_action = {{ var_auditd_admin_space_left_action }}
-    create: true
     state: present
   tags:
     - PHTN-30-000015
@@ -958,6 +958,8 @@
     regexp: '^ClientAliveInterval.*$'
     line: ClientAliveInterval {{ var_sshd_clientaliveinterval }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000037
     - sshd
@@ -977,6 +979,8 @@
     regexp: '^ClientAliveCountMax.*$'
     line: ClientAliveCountMax {{ var_sshd_clientalivecountmax }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000038
     - sshd
@@ -1095,6 +1099,7 @@
     state: directory
     owner: root
     group: root
+    mode: "0755"
   tags:
     - PHTN-30-000040
     - perms
@@ -1193,6 +1198,27 @@
   when:
     - run_audit_tools_permissions | bool
 
+###################################################################################################################################
+- name: PHTN-30-000049 - Update permissions on files under /usr/lib
+  tags: [PHTN-30-000049]
+  when: run_usr_lib_perms | bool
+  block:
+    - name: PHTN-30-000049 - Find files under /usr/lib with incorrect permissions
+      ansible.builtin.command: find /usr/lib/ -type f "(" ! -user root -o ! -group root -o -perm /022 ")"
+      register: badfiles
+      changed_when: false
+      failed_when: false
+
+    - name: PHTN-30-000049 - Set ownership of system libraries to root
+      ansible.builtin.file:
+        path: '{{ item }}'
+        owner: root
+        group: root
+        mode: 0755
+      with_items: '{{ badfiles.stdout_lines }}'
+      when:
+        - badfiles.stdout != ""
+
 ############################################
 
 # Title: The Photon operating system must enforce password complexity by requiring that at least one special character be used.
@@ -1221,7 +1247,6 @@
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^num_logs.*$'
     line: num_logs = {{ var_auditd_num_logs }}
-    create: true
     state: present
   tags:
     - PHTN-30-000055
@@ -1240,7 +1265,6 @@
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^max_log_file_action.*$'
     line: max_log_file_action = {{ var_auditd_max_log_file_action }}
-    create: true
     state: present
   tags:
     - PHTN-30-000056
@@ -1259,7 +1283,6 @@
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^space_left\s.*$'
     line: space_left = {{ var_auditd_space_left }}
-    create: true
     state: present
   tags:
     - PHTN-30-000057
@@ -1349,7 +1372,6 @@
     regexp: '^gpgcheck.*'
     line: gpgcheck=1
     state: present
-    create: true
   tags:
     - PHTN-30-000060
     - packages
@@ -1392,7 +1414,9 @@
 # Could use some more tuning to further filter out service accounts with no password set with NOPASSWD in sudoers
 
 - name: PHTN-30-000062 - Get sudoers with NOPASSWD set
-  ansible.builtin.shell: grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v "^#"|grep -v "^%"|awk '{print $1}'
+  ansible.builtin.shell: |
+    set -o pipefail
+    grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v "^#"|grep -v "^%"|awk '{print $1}'
   register: nopasswd_sudo_users
   tags:
     - PHTN-30-000062
@@ -1400,6 +1424,7 @@
   when:
     - run_sudo_nopasswd | bool
   changed_when: false
+  failed_when: nopasswd_sudo_users.rc == 2
 
 - name: PHTN-30-000062 - User account should not be configured with NOPASSWD.
   ansible.builtin.fail:
@@ -1557,7 +1582,6 @@
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^flush*$'
     line: flush = {{ var_auditd_flush }}
-    create: true
     state: present
   tags:
     - PHTN-30-000074
@@ -1570,7 +1594,6 @@
     dest: '{{ var_auditd_conf_file }}'
     regexp: '^freq*$'
     line: freq = {{ var_auditd_freq }}
-    create: true
     state: present
   tags:
     - PHTN-30-000074
@@ -1621,6 +1644,8 @@
     regexp: '^GSSAPIAuthentication.*$'
     line: GSSAPIAuthentication {{ var_sshd_gssapiauthentication }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000078
     - sshd
@@ -1640,6 +1665,8 @@
     regexp: '^PermitUserEnvironment.*$'
     line: PermitUserEnvironment {{ var_sshd_permituserenvironment }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000079
     - sshd
@@ -1659,6 +1686,8 @@
     regexp: '^X11Forwarding.*$'
     line: X11Forwarding {{ var_sshd_x11forwarding }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000080
     - sshd
@@ -1678,6 +1707,8 @@
     regexp: '^StrictModes.*$'
     line: StrictModes {{ var_sshd_strictmodes }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000081
     - sshd
@@ -1697,6 +1728,8 @@
     regexp: '^KerberosAuthentication.*$'
     line: KerberosAuthentication {{ var_sshd_kerberosauth }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000082
     - sshd
@@ -1716,6 +1749,8 @@
     regexp: '^PermitEmptyPasswords.*$'
     line: PermitEmptyPasswords {{ var_sshd_permitemptypasswords }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000083
     - sshd
@@ -1735,6 +1770,8 @@
     regexp: '^Compression.*$'
     line: Compression {{ var_sshd_compression }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000084
     - sshd
@@ -1754,6 +1791,8 @@
     regexp: '^PrintLastLog.*$'
     line: PrintLastLog {{ var_sshd_printlastlog }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000085
     - sshd
@@ -1773,6 +1812,8 @@
     regexp: '^IgnoreRhosts.*$'
     line: IgnoreRhosts {{ var_sshd_ignorerhosts }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000086
     - sshd
@@ -1792,6 +1833,8 @@
     regexp: '^IgnoreUserKnownHosts.*$'
     line: IgnoreUserKnownHosts {{ var_sshd_ignoreuserknownhosts }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000087
     - sshd
@@ -1811,12 +1854,15 @@
     regexp: '^MaxAuthTries.*$'
     line: MaxAuthTries {{ var_sshd_maxauthtries }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000088
     - sshd
   notify:
     - restart sshd
   when:
+    - run_sshd_maxauthtries | bool
 
 ############################################
 
@@ -2788,6 +2834,8 @@
     regexp: '^HostbasedAuthentication.*$'
     line: HostbasedAuthentication {{ var_sshd_hostbasedauth }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000115
     - sshd
@@ -2845,6 +2893,8 @@
     regexp: '^AllowTcpForwarding.*$'
     line: AllowTcpForwarding {{ var_sshd_allowtcpforwarding }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000119
     - sshd
@@ -2864,6 +2914,8 @@
     regexp: '^LoginGraceTime.*$'
     line: LoginGraceTime {{ var_sshd_logingracetime }}
     firstmatch: true
+    # Needed in case any Match rules exist for users. Adding configuration after match rules would only apply to that user.
+    insertbefore: '^Match'
   tags:
     - PHTN-30-000120
     - sshd
@@ -2874,7 +2926,7 @@
 
 ############################################
 
-# Title: The Photon operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.
+# Title: The Photon operating system must implement NIST FIPS-validated cryptography
 
 - name: PHTN-30-000240 - Add fips=1 in /boot/grub2/grub.cfg
   ansible.builtin.replace:

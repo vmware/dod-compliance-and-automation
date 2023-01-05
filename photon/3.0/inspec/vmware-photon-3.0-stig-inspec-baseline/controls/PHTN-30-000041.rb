@@ -25,9 +25,17 @@ control 'PHTN-30-000041' do
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
 
-  describe file('/var/log/messages') do
-    its('owner') { should cmp 'root' }
-    its('group') { should cmp 'root' }
-    it { should_not be_more_permissive_than('0640') }
+  messages = file('/var/log/messages')
+
+  if messages.exist?
+    describe messages do
+      its('owner') { should cmp 'root' }
+      its('group') { should cmp 'root' }
+      it { should_not be_more_permissive_than('0640') }
+    end
+  else
+    describe 'No /var/log/messages file found...skipping...' do
+      skip 'No /var/log/messages file found...skipping...'
+    end
   end
 end
