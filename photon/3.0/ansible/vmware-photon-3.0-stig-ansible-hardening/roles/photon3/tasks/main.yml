@@ -1,4 +1,9 @@
 ---
-# tasks file for photon3
-- include: photon.yml
-  tags: photon
+- name: Include Photon
+  ansible.builtin.include_tasks:
+    file: photon.yml
+    apply:
+      tags:
+        - photon
+  tags:
+    - always

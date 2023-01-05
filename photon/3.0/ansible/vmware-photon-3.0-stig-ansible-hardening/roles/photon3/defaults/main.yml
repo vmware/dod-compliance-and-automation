@@ -88,6 +88,8 @@ run_grub_enable_audit: true
 run_audit_conf_permissions: true
 # PHTN-30-000048
 run_audit_tools_permissions: true
+# PHTN-30-000049
+run_usr_lib_perms: false
 # PHTN-30-000050
 run_pamd_complexchars: true
 # PHTN-30-000052

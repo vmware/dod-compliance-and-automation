@@ -40,9 +40,15 @@ control 'PHTN-30-000062' do
   results = command("awk '/NOPASSWD/ && /^[^#%].*/ {print $1}' /etc/sudoers /etc/sudoers.d/*").stdout.split("\n")
 
   # Compare results to shadow file to verify their password is set to !
-  results.each do |result|
-    describe shadow.where(password: '!') do
-      its('users') { should include(result) }
+  if !results.empty?
+    results.each do |result|
+      describe shadow.where(password: '!') do
+        its('users') { should include(result) }
+      end
+    end
+  else
+    describe 'No users found in sudoers with NOPASSWD flag...skipping...' do
+      skip 'No users found in sudoers with NOPASSWD flag...skipping...'
     end
   end
 end

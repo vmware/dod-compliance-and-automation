@@ -25,7 +25,7 @@ control 'PHTN-30-000019' do
   tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
 
-  command(' find /etc/audit/* -maxdepth 1 -type f').stdout.split.each do |fname|
+  command('find /etc/audit/* -maxdepth 1 -type f').stdout.split.each do |fname|
     describe file(fname) do
       it { should_not be_more_permissive_than('0640') }
     end
