@@ -30,15 +30,15 @@ control 'PHTN-30-000009' do
 
     # systemctl restart sshd.service
   "
-  impact 0.3
-  tag severity: 'low'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-OS-000033-GPOS-00014'
-  tag satisfies: ['SRG-OS-000250-GPOS-00093', 'SRG-OS-000393-GPOS-00173', 'SRG-OS-000423-GPOS-00187', 'SRG-OS-000396-GPOS-00176']
+  tag satisfies: ['SRG-OS-000250-GPOS-00093', 'SRG-OS-000393-GPOS-00173', 'SRG-OS-000396-GPOS-00176', 'SRG-OS-000423-GPOS-00187']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'PHTN-30-000009'
-  tag cci: ['CCI-000068', 'CCI-001453', 'CCI-002890', 'CCI-002418', 'CCI-002450']
-  tag nist: ['AC-17 (2)', 'AC-17 (2)', 'MA-4 (6)', 'SC-8', 'SC-13']
+  tag cci: ['CCI-000068', 'CCI-001453', 'CCI-002418', 'CCI-002450', 'CCI-002890']
+  tag nist: ['AC-17 (2)', 'MA-4 (6)', 'SC-13', 'SC-8']
 
   sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i FipsMode") do

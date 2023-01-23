@@ -19,6 +19,7 @@ control 'PHTN-30-000105' do
     If the output does not match the expected result, this is a finding.
 
     Note: The number of \"ethx\" lines returned is dependant on the number of interfaces. Every \"ethx\" entry must be set to \"0\".
+    Note: The ipv6 entries may not be present on some systems and is not a finding.
   "
   desc 'fix', "
     At the command line, execute the following command:

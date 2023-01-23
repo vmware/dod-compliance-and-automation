@@ -33,8 +33,8 @@ control 'PHTN-30-000062' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'PHTN-30-000062'
-  tag cci: ['CCI-002038', 'CCI-002038', 'CCI-002038']
-  tag nist: ['IA-11', 'IA-11', 'IA-11']
+  tag cci: ['CCI-002038']
+  tag nist: ['IA-11']
 
   # Find users in sudoers with NOPASSWD flag and extract username
   results = command("awk '/NOPASSWD/ && /^[^#%].*/ {print $1}' /etc/sudoers /etc/sudoers.d/*").stdout.split("\n")

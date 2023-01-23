@@ -35,7 +35,7 @@ control 'PHTN-30-000038' do
   tag cci: ['CCI-001133']
   tag nist: ['SC-10']
 
-  describe sshdcommand = input('sshdcommand')
+  sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i ClientAliveCountMax") do
     its('stdout.strip') { should cmp 'ClientAliveCountMax 0' }
   end

@@ -46,12 +46,12 @@ control 'PHTN-30-000020' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000064-GPOS-00033'
-  tag satisfies: ['SRG-OS-000462-GPOS-00206', 'SRG-OS-000392-GPOS-00172', 'SRG-OS-000466-GPOS-00210', 'SRG-OS-000468-GPOS-00212']
+  tag satisfies: ['SRG-OS-000392-GPOS-00172', 'SRG-OS-000462-GPOS-00206', 'SRG-OS-000466-GPOS-00210', 'SRG-OS-000468-GPOS-00212']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'PHTN-30-000020'
-  tag cci: ['CCI-000172', 'CCI-000172', 'CCI-002884', 'CCI-000172', 'CCI-000172']
-  tag nist: ['AU-12 c', 'AU-12 c', 'MA-4 (1) (a)', 'AU-12 c', 'AU-12 c']
+  tag cci: ['CCI-000172', 'CCI-002884']
+  tag nist: ['AU-12 c', 'MA-4 (1) (a)']
 
   describe auditd do
     its('lines') { should include /-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=-1 -F key=perm_mod/ }

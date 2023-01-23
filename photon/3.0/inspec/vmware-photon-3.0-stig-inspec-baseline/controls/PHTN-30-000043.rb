@@ -46,7 +46,7 @@ control 'PHTN-30-000043' do
   tag rid: nil
   tag stig_id: 'PHTN-30-000043'
   tag cci: ['CCI-001403', 'CCI-002130']
-  tag nist: ['AC-2 (4)', 'AC-2 (4)']
+  tag nist: ['AC-2 (4)']
 
   describe auditd do
     its('lines') { should include %r{-w /etc/passwd -p wa -k passwd} }

@@ -83,8 +83,8 @@ control 'PHTN-30-000031' do
         fi
     }
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-OS-000080-GPOS-00048'
   tag gid: nil
   tag rid: nil
