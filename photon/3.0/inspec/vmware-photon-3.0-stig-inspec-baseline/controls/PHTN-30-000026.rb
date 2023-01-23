@@ -13,12 +13,12 @@ control 'PHTN-30-000026' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000074-GPOS-00042'
-  tag satisfies: ['SRG-OS-000125-GPOS-00065', 'SRG-OS-000112-GPOS-00057', 'SRG-OS-000113-GPOS-00058', 'SRG-OS-000120-GPOS-00061', 'SRG-OS-000395-GPOS-00175', 'SRG-OS-000425-GPOS-00189', 'SRG-OS-000426-GPOS-00190']
+  tag satisfies: ['SRG-OS-000112-GPOS-00057', 'SRG-OS-000113-GPOS-00058', 'SRG-OS-000120-GPOS-00061', 'SRG-OS-000125-GPOS-00065', 'SRG-OS-000395-GPOS-00175', 'SRG-OS-000425-GPOS-00189', 'SRG-OS-000426-GPOS-00190']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'PHTN-30-000026'
-  tag cci: ['CCI-000197', 'CCI-000877', 'CCI-001941', 'CCI-001942', 'CCI-000803', 'CCI-002891', 'CCI-002420', 'CCI-002422']
-  tag nist: ['IA-5 (1) (c)', 'MA-4 c', 'IA-2 (8)', 'IA-2 (9)', 'IA-7', 'MA-4 (7)', 'SC-8 (2)', 'SC-8 (2)']
+  tag cci: ['CCI-000197', 'CCI-000803', 'CCI-000877', 'CCI-001941', 'CCI-001942', 'CCI-002420', 'CCI-002422', 'CCI-002891']
+  tag nist: ['IA-2 (8)', 'IA-2 (9)', 'IA-5 (1) (c)', 'IA-7', 'MA-4 (7)', 'MA-4 c', 'SC-8 (2)']
 
   describe command("rpm -qa | grep 'openssh-server' | cut -f3 -d'-'") do
     its('stdout.strip') { should_not eq '' }

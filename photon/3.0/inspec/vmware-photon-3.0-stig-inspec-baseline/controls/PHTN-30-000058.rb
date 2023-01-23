@@ -23,7 +23,7 @@ control 'PHTN-30-000058' do
 
     At the command line, execute the following command:
 
-    # grep -E '^NTP' timesyncd.conf
+    # grep -E '^NTP' /etc/systemd/timesyncd.conf
 
     If a time source is not set, is not set to an authoritative DoD time source, or is commented out, this is a finding.
 

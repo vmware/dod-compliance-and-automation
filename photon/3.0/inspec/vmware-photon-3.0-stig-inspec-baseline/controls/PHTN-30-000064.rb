@@ -36,14 +36,14 @@ control 'PHTN-30-000064' do
 
     # systemctl restart sshd.service
   "
-  impact 0.3
-  tag severity: 'low'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-OS-000394-GPOS-00174'
   tag satisfies: ['SRG-OS-000424-GPOS-00188']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'PHTN-30-000064'
-  tag cci: ['CCI-003123', 'CCI-002421']
+  tag cci: ['CCI-002421', 'CCI-003123']
   tag nist: ['MA-4 (6)', 'SC-8 (1)']
 
   sshdcommand = input('sshdcommand')

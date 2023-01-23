@@ -1,5 +1,21 @@
 # Change Log
 
+## [3.0 Version 1 Release 6] (2023-01-23)
+
+#### Release Notes
+- Updated source SRG to GPOS V2R4
+- PHTN-30-000009, PHTN-30-000064 severity updated to CAT I. Were mistakingly CAT III due to bug in mapping code.
+- PHTN-30-000031 severity updated to CAT II.
+- PHTN-30-000038 test fixed
+- PHTN-30-000041 updated test to work if messages file doesn't exist
+- PHTN-30-000054 updated find command to exclude container files for some use cases
+- PHTN-30-000058 fixed check command for timesyncd
+- PHTN-30-000061 title updated
+- PHTN-30-000062 updated test to handle if no users with NOPASSWD set
+- PHTN-30-000094 updated find command to exclude container files for some use cases
+- PHTN-30-000105 added additional note in check, updated tests
+-	Tags for controls that satisfy multiple requirements sorted and deduped
+
 ## [3.0 Version 1 Release 5] (2022-06-27)
 
 #### Release Notes

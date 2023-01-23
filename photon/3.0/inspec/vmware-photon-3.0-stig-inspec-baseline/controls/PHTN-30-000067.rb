@@ -45,8 +45,8 @@ control 'PHTN-30-000067' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'PHTN-30-000067'
-  tag cci: ['CCI-000172', 'CCI-000172']
-  tag nist: ['AU-12 c', 'AU-12 c']
+  tag cci: ['CCI-000172']
+  tag nist: ['AU-12 c']
 
   describe.one do
     describe auditd do

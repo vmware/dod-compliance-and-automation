@@ -1,5 +1,12 @@
 # Change Log
 
+## [3.0 Version 1 Release 6] (2023-01-23)
+
+#### Release Notes
+- Misc bug fixes
+- updated auditd.STIG.rules file
+- updated handlers to reload auditd conf and rules
+
 ## [3.0 Version 1 Release 5] (2022-06-27)
 
 #### Release Notes

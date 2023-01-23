@@ -73,7 +73,7 @@
     - PHTN-30-000070
     - auditd
   notify:
-    - reload auditd
+    - reload auditdrules
   when:
     - run_auditd_rules | bool
 
@@ -441,7 +441,7 @@
     - PHTN-30-000010
     - auditd
   notify:
-    - restart auditd
+    - reload auditdconf
   when:
     - run_auditd_write_logs | bool
 
@@ -459,7 +459,7 @@
     - PHTN-30-000011
     - auditd
   notify:
-    - restart auditd
+    - reload auditdconf
   when:
     - run_auditd_log_format | bool
 
@@ -492,7 +492,7 @@
     - PHTN-30-000014
     - auditd
   notify:
-    - restart auditd
+    - reload auditdconf
   when:
     - run_auditd_space_left_action | bool
 
@@ -510,7 +510,7 @@
     - PHTN-30-000015
     - auditd
   notify:
-    - restart auditd
+    - reload auditdconf
   when:
     - run_auditd_disk_full_action | bool
 
@@ -524,7 +524,7 @@
     - PHTN-30-000015
     - auditd
   notify:
-    - restart auditd
+    - reload auditdconf
   when:
     - run_auditd_disk_error_action | bool
 
@@ -538,7 +538,7 @@
     - PHTN-30-000015
     - auditd
   notify:
-    - restart auditd
+    - reload auditdconf
   when:
     - run_auditd_admin_space_left_action | bool
 
@@ -1252,7 +1252,7 @@
     - PHTN-30-000055
     - auditd
   notify:
-    - restart auditd
+    - reload auditdconf
   when:
     - run_auditd_num_logs | bool
 
@@ -1270,7 +1270,7 @@
     - PHTN-30-000056
     - auditd
   notify:
-    - restart auditd
+    - reload auditdconf
   when:
     - run_auditd_max_log_file_action | bool
 
@@ -1288,7 +1288,7 @@
     - PHTN-30-000057
     - auditd
   notify:
-    - restart auditd
+    - reload auditdconf
   when:
     - run_auditd_space_left | bool
 

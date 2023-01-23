@@ -26,7 +26,7 @@ control 'PHTN-30-000048' do
   tag rid: nil
   tag stig_id: 'PHTN-30-000048'
   tag cci: ['CCI-001494', 'CCI-001495']
-  tag nist: ['AU-9', 'AU-9']
+  tag nist: ['AU-9']
 
   describe file('/usr/sbin/auditctl') do
     its('owner') { should cmp 'root' }

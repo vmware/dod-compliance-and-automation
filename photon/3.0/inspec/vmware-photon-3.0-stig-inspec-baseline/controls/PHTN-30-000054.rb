@@ -5,7 +5,7 @@ control 'PHTN-30-000054' do
   desc  'check', "
     At the command line, execute the following command to obtain a list of setuid files:
 
-    # find / -xdev -perm -4000 -type f -o -perm -2000 -type f | sort
+    # find / -xdev -path /var/lib/containerd -prune -o \\( -perm -4000 -type f -o -perm -2000 \\) -type f -print | sort
 
     Execute the following command for each setuid file found in the first command:
 
@@ -24,7 +24,7 @@ control 'PHTN-30-000054' do
   desc 'fix', "
     At the command line, execute the following command to obtain a list of setuid files:
 
-    # find / -xdev -perm -4000 -type f -o -perm -2000 -type f | sort
+    # find / -xdev -path /var/lib/containerd -prune -o \\( -perm -4000 -type f -o -perm -2000 \\) -type f -print | sort
 
     Execute the following for each setuid file found in the first command that does not have a corresponding line in the audit rules:
 
@@ -51,7 +51,7 @@ control 'PHTN-30-000054' do
   tag gid: nil
   tag rid: nil
   tag stig_id: 'PHTN-30-000054'
-  tag cci: ['CCI-002234', 'CCI-000172']
+  tag cci: ['CCI-000172', 'CCI-002234']
   tag nist: ['AC-6 (9)', 'AU-12 c']
 
   results = command('find / -xdev -path /var/lib/containerd -prune -o \( -perm -4000 -type f -o -perm -2000 \) -type f -print').stdout.split("\n")

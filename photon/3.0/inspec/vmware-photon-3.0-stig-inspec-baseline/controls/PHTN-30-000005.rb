@@ -36,7 +36,7 @@ control 'PHTN-30-000005' do
   tag rid: nil
   tag stig_id: 'PHTN-30-000005'
   tag cci: ['CCI-000057', 'CCI-000879', 'CCI-002361']
-  tag nist: ['AC-11 a', 'MA-4 e', 'AC-12']
+  tag nist: ['AC-11 a', 'AC-12', 'MA-4 e']
 
   describe file('/etc/profile.d/tmout.sh') do
     it { should exist }

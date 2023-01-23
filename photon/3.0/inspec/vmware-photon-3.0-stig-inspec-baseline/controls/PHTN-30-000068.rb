@@ -43,12 +43,12 @@ control 'PHTN-30-000068' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000470-GPOS-00214'
-  tag satisfies: ['SRG-OS-000473-GPOS-00218', 'SRG-OS-000472-GPOS-00217']
+  tag satisfies: ['SRG-OS-000472-GPOS-00217', 'SRG-OS-000473-GPOS-00218']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'PHTN-30-000068'
-  tag cci: ['CCI-000172', 'CCI-000172', 'CCI-000172']
-  tag nist: ['AU-12 c', 'AU-12 c', 'AU-12 c']
+  tag cci: ['CCI-000172']
+  tag nist: ['AU-12 c']
 
   describe auditd do
     its('lines') { should include %r{-w /var/log/faillog -p wa} }

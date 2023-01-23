@@ -45,12 +45,12 @@ control 'PHTN-30-000039' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000205-GPOS-00083'
-  tag satisfies: ['SRG-OS-000447-GPOS-00201', 'SRG-OS-000274-GPOS-00104', 'SRG-OS-000275-GPOS-00105', 'SRG-OS-000276-GPOS-00106', 'SRG-OS-000342-GPOS-00133', 'SRG-OS-000479-GPOS-00224', 'SRG-OS-000277-GPOS-00107', 'SRG-OS-000304-GPOS-00121']
+  tag satisfies: ['SRG-OS-000274-GPOS-00104', 'SRG-OS-000275-GPOS-00105', 'SRG-OS-000276-GPOS-00106', 'SRG-OS-000277-GPOS-00107', 'SRG-OS-000304-GPOS-00121', 'SRG-OS-000342-GPOS-00133', 'SRG-OS-000447-GPOS-00201', 'SRG-OS-000479-GPOS-00224']
   tag gid: nil
   tag rid: nil
   tag stig_id: 'PHTN-30-000039'
-  tag cci: ['CCI-001312', 'CCI-002702', 'CCI-001683', 'CCI-001684', 'CCI-001685', 'CCI-001851', 'CCI-001851', 'CCI-001686', 'CCI-002132']
-  tag nist: ['SI-11 a', 'SI-6 d', 'AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)', 'AU-4 (1)', 'AU-4 (1)', 'AC-2 (4)', 'AC-2 (4)']
+  tag cci: ['CCI-001312', 'CCI-001683', 'CCI-001684', 'CCI-001685', 'CCI-001686', 'CCI-001851', 'CCI-002132', 'CCI-002702']
+  tag nist: ['AC-2 (4)', 'AU-4 (1)', 'SI-11 a', 'SI-6 d']
 
   describe file('/etc/rsyslog.conf') do
     its('content') { should match /^.*#{input('syslogServer')}.*$/ }

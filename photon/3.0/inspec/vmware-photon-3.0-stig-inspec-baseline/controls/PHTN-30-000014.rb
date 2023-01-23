@@ -35,7 +35,7 @@ control 'PHTN-30-000014' do
   tag rid: nil
   tag stig_id: 'PHTN-30-000014'
   tag cci: ['CCI-000139', 'CCI-001858']
-  tag nist: ['AU-5 a', 'AU-5 (2)']
+  tag nist: ['AU-5 (2)', 'AU-5 a']
 
   describe auditd_conf do
     its('space_left_action') { should cmp 'SYSLOG' }

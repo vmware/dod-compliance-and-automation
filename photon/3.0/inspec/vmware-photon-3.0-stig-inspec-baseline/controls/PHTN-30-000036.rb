@@ -28,7 +28,7 @@ control 'PHTN-30-000036' do
   tag rid: nil
   tag stig_id: 'PHTN-30-000036'
   tag cci: ['CCI-001095', 'CCI-002385']
-  tag nist: ['SC-5 (2)', 'SC-5']
+  tag nist: ['SC-5', 'SC-5 (2)']
 
   describe kernel_parameter('net.ipv4.tcp_syncookies') do
     its('value') { should eq 1 }

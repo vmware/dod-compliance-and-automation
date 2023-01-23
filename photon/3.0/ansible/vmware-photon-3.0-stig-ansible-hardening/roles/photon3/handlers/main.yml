@@ -6,10 +6,16 @@
     name: sshd
     state: restarted
 
-- name: restart auditd
-  ansible.builtin.command: killproc auditd -TERM && systemctl start auditd
+- name: reload auditdconf
+  ansible.builtin.command: pkill -SIGHUP auditd
+  notify: start auditd
 
-- name: reload auditd
+- name: start auditd
+  ansible.builtin.systemd:
+    name: auditd
+    state: started
+
+- name: reload auditdrules
   ansible.builtin.command: /sbin/augenrules --load
 
 - name: restart syslog
