@@ -5,8 +5,9 @@ allesxi: true
 exceptionUsers: []
 syslogServer: "tcp://log.test.local:514"
 adAdminGroup: "MyAdAdminGroup"
-ntpServer1: "ntp1.test.local"
-ntpServer2: "ntp2.test.local"
+esxiNtpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
 vMotionVlanId: "100"
 mgtVlanId: "101"
 snmpEnabled: "false"
@@ -18,8 +19,8 @@ syslogServers:
   - "loginsight.test.com"
   - "syslog.server2.com"
 ntpServers:
-  - "time.test.com"
-  - "time2.test.com"
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
 ipfixCollectorAddress: ""
 bashShellAdminUsers:
   - 'Administrator'

@@ -69,10 +69,19 @@ control 'ESXI-70-000046' do
       describe powercli_command(command) do
         its('stdout.strip') { should cmp 'true' }
       end
-      command = "Get-VMHost -Name #{vmhost} | Get-VMHostNTPServer"
-      describe powercli_command(command) do
-        its('stdout.strip') { should cmp "#{input('ntpServer1')}" }
-        its('stdout.strip') { should cmp "#{input('ntpServer2')}" }
+      results = powercli_command("Get-VMHost -Name #{vmhost} | Get-VMHostNTPServer").stdout
+      if !results.empty?
+        results.gsub("\r\n", "\n").split("\n").each do |result|
+          describe "NTP Server: #{result} for VMHost: #{vmhost}" do
+            subject { result }
+            it { should be_in "#{input('esxiNtpServers')}" }
+          end
+        end
+      else
+        describe "No NTP servers found on VMhost: #{vmhost}" do
+          subject { results }
+          it { should_not be_empty }
+        end
       end
     end
   else

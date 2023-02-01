@@ -33,14 +33,12 @@ inputs:
     value: "MyAdminGroup"
     type: string
     description: "ESXI-70-000039 ESXi AD Admin Group"  
-  - name: ntpServer1
-    value: "time1.test.local"
-    type: string
-    description: "ESXI-70-000046 Primary NTP server for host"
-  - name: ntpServer2
-    value: "time2.test.local"
-    type: string
-    description: "ESXI-70-000046 Secondary NTP server for host" 
+  - name: esxiNtpServers
+    value:
+      - 'time1.test.local'
+      - 'time2.test.local'
+    type: array
+    description: "ESXI-70-000046 Enter at least 2 NTP servers for hosts."
   - name: vMotionVlanId
     value: "99"
     type: string
