@@ -65,7 +65,7 @@ control 'VMCH-70-000016' do
 
   if !vms.empty?
     vms.each do |vm|
-      command = "Get-VM -Name #{vm} | Get-AdvancedSetting -Name isolation.device.connectable.disable | Select-Object -ExpandProperty Value"
+      command = "Get-VM -Name '#{vm}' | Get-AdvancedSetting -Name isolation.device.connectable.disable | Select-Object -ExpandProperty Value"
       describe powercli_command(command) do
         its('stdout.strip') { should cmp 'true' }
       end

@@ -56,7 +56,7 @@ control 'VMCH-70-000024' do
   if !vms.empty?
     list = ['opportunistic', 'required']
     vms.each do |vm|
-      command = "(Get-VM -Name #{vm}).ExtensionData.Config.MigrateEncryption"
+      command = "(Get-VM -Name '#{vm}').ExtensionData.Config.MigrateEncryption"
       describe powercli_command(command) do
         its('stdout.strip') { should be_in list }
       end

@@ -44,7 +44,7 @@ control 'VMCH-70-000011' do
 
   if !vms.empty?
     vms.each do |vm|
-      command = "(Get-VM -Name #{vm}).ExtensionData.Config.Hardware.Device.DeviceInfo.label"
+      command = "(Get-VM -Name '#{vm}').ExtensionData.Config.Hardware.Device.DeviceInfo.label"
       describe powercli_command(command) do
         its('stdout') { should_not match 'Serial' }
       end

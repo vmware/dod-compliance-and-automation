@@ -60,7 +60,7 @@ control 'VMCH-70-000026' do
 
   if !vms.empty?
     vms.each do |vm|
-      command = "Get-VM -Name #{vm} | Get-AdvancedSetting -Name log.rotateSize | Select-Object -ExpandProperty Value"
+      command = "Get-VM -Name '#{vm}' | Get-AdvancedSetting -Name log.rotateSize | Select-Object -ExpandProperty Value"
       describe powercli_command(command) do
         its('stdout.strip') { should cmp '2048000' }
       end

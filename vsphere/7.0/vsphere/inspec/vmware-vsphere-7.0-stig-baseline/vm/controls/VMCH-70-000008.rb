@@ -42,7 +42,7 @@ control 'VMCH-70-000008' do
 
   if !vms.empty?
     vms.each do |vm|
-      command = "Get-VM -Name #{vm} | Get-FloppyDrive"
+      command = "Get-VM -Name '#{vm}' | Get-FloppyDrive"
       describe powercli_command(command) do
         its('stdout.strip') { should be_empty }
       end

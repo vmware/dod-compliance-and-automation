@@ -56,7 +56,7 @@ control 'VMCH-70-000006' do
 
   if !vms.empty?
     vms.each do |vm|
-      command = "Get-VM -Name #{vm} | Get-HardDisk | Select-Object -ExpandProperty Persistence"
+      command = "Get-VM -Name '#{vm}' | Get-HardDisk | Select-Object -ExpandProperty Persistence"
       results = powercli_command(command)
       results.stdout.split.each do |disk|
         describe 'Checking the VM for Non-Persistent Hard Disks' do

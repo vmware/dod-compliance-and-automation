@@ -48,7 +48,7 @@ control 'VMCH-70-000009' do
 
   if !vms.empty?
     vms.each do |vm|
-      command = "(Get-VM -Name #{vm} | Get-CDDrive).ExtensionData.connectable.connected"
+      command = "(Get-VM -Name '#{vm}' | Get-CDDrive).ExtensionData.connectable.connected"
       results = powercli_command(command).stdout.strip
       describe.one do
         describe 'Checking the VM for connected CD/DVD drives' do

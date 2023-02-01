@@ -53,7 +53,7 @@ control 'VMCH-70-000018' do
 
   if !vms.empty?
     vms.each do |vm|
-      command = "Get-VM -Name #{vm} | Get-AdvancedSetting -Name sched.mem.pshare.salt | Select-Object -ExpandProperty Value"
+      command = "Get-VM -Name '#{vm}' | Get-AdvancedSetting -Name sched.mem.pshare.salt | Select-Object -ExpandProperty Value"
       describe powercli_command(command) do
         its('stdout.strip') { should be_empty }
       end

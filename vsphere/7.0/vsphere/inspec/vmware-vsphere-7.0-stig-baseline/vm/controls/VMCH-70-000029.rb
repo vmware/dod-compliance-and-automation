@@ -58,7 +58,7 @@ control 'VMCH-70-000029' do
   if !vms.empty?
     list = ['ftEncryptionOpportunistic', 'ftEncryptionRequired']
     vms.each do |vm|
-      command = "(Get-VM -Name #{vm}).ExtensionData.Config.FtEncryptionMode"
+      command = "(Get-VM -Name '#{vm}').ExtensionData.Config.FtEncryptionMode"
       describe powercli_command(command) do
         its('stdout.strip') { should be_in list }
       end

@@ -62,7 +62,7 @@ control 'VMCH-70-000013' do
 
   if !vms.empty?
     vms.each do |vm|
-      command = "Get-VM -Name #{vm} | Get-AdvancedSetting -Name RemoteDisplay.maxConnections | Select-Object -ExpandProperty Value"
+      command = "Get-VM -Name '#{vm}' | Get-AdvancedSetting -Name RemoteDisplay.maxConnections | Select-Object -ExpandProperty Value"
       describe powercli_command(command) do
         its('stdout.strip') { should cmp '1' }
       end

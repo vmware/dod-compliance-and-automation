@@ -51,7 +51,7 @@ control 'VMCH-70-000025' do
 
   if !vms.empty?
     vms.each do |vm|
-      command = "(Get-VM -Name #{vm}).ExtensionData.Config.Flags.EnableLogging"
+      command = "(Get-VM -Name '#{vm}').ExtensionData.Config.Flags.EnableLogging"
       describe powercli_command(command) do
         its('stdout.strip') { should cmp 'true' }
       end
