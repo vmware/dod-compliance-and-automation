@@ -51,7 +51,7 @@ control 'VCSA-70-000290' do
       it { should be_empty }
     end
   else
-    users.stdout.split.each do |user|
+    users.stdout.gsub("\r\n", "\n").split("\n").each do |user|
       describe user do
         it { should be_in bashShellAdminUsers }
       end
@@ -69,7 +69,7 @@ control 'VCSA-70-000290' do
       it { should be_empty }
     end
   else
-    groups.stdout.split.each do |group|
+    groups.stdout.gsub("\r\n", "\n").split("\n").each do |group|
       describe group do
         it { should be_in bashShellAdminGroups }
       end

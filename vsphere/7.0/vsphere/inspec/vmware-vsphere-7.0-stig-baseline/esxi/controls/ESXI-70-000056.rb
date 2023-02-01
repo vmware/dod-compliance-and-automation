@@ -74,7 +74,7 @@ control 'ESXI-70-000056' do
   if !vmhosts.empty?
     vmhosts.each do |vmhost|
       command = "(Get-VMHost -Name #{vmhost} | Get-VMHostFirewallException | Where {$_.Enabled -eq $true}).ExtensionData.AllowedHosts.AllIP"
-      powercli_command(command).stdout.split("\r\n").each do |result|
+      powercli_command(command).stdout.gsub("\r\n", "\n").split("\n").each do |result|
         describe result do
           it { should_not cmp 'True' }
         end

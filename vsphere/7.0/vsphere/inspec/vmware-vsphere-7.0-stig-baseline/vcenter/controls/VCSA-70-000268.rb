@@ -52,7 +52,7 @@ control 'VCSA-70-000268' do
   tag nist: ['CM-6 b']
 
   command = 'Get-VDSwitch | Select -ExpandProperty Name'
-  vdswitches = powercli_command(command).stdout.split("\n")
+  vdswitches = powercli_command(command).stdout.gsub("\r\n", "\n").split("\n")
 
   if vdswitches.empty?
     describe '' do
@@ -68,7 +68,7 @@ control 'VCSA-70-000268' do
   end
 
   command = 'Get-VDPortgroup | Where-Object {$_.IsUplink -eq $false} | Select -ExpandProperty Name'
-  vdportgroups = powercli_command(command).stdout.split("\n")
+  vdportgroups = powercli_command(command).stdout.gsub("\r\n", "\n").split("\n")
 
   if vdportgroups.empty?
     describe '' do

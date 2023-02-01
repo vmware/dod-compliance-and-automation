@@ -24,7 +24,7 @@ inputs:
   - name: exceptionUsers
     value: []
     type: array
-    description: "ESXI-70-000003 Users allowed to bypass lockdown mode. Normally empty."
+    description: "ESXI-70-000003 Users allowed to bypass lockdown mode. Normally empty...use double quotes if including AD users with a /"
   - name: syslogServer
     value: "tcp://log.test.local:514"
     type: string

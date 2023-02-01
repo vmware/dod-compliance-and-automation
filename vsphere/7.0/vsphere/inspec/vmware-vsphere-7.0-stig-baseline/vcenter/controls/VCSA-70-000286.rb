@@ -27,7 +27,7 @@ control 'VCSA-70-000286' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  clusters = powercli_command('Get-Cluster | Where-Object {$_.VsanEnabled -eq $true} | Sort-Object Name | Select -ExpandProperty Name').stdout.split("\n")
+  clusters = powercli_command('Get-Cluster | Where-Object {$_.VsanEnabled -eq $true} | Sort-Object Name | Select -ExpandProperty Name').stdout.gsub("\r\n", "\n").split("\n")
 
   if !clusters.empty?
     clusters.each do |cluster|

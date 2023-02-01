@@ -58,7 +58,7 @@ control 'VCSA-70-000273' do
   tag nist: ['CM-6 b']
 
   command = 'Get-VDPortgroup | Where-Object {(($_.IsUplink -eq $false) -and ($_.VlanConfiguration -match "Trunk"))} | Select-Object -ExpandProperty Name'
-  vdportgroups = powercli_command(command).stdout.split("\n")
+  vdportgroups = powercli_command(command).stdout.gsub("\r\n", "\n").split("\n")
 
   if vdportgroups.empty?
     describe '' do

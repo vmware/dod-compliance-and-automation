@@ -54,10 +54,10 @@ control 'VMCH-70-000013' do
   vms = []
 
   unless vmName.empty?
-    vms = powercli_command("Get-VM -Name #{vmName} | Sort-Object Name | Select -ExpandProperty Name").stdout.split
+    vms = powercli_command("Get-VM -Name #{vmName} | Sort-Object Name | Select -ExpandProperty Name").stdout.gsub("\r\n", "\n").split("\n")
   end
   unless allvms == false
-    vms = powercli_command('Get-VM | Sort-Object Name | Select -ExpandProperty Name').stdout.split
+    vms = powercli_command('Get-VM | Sort-Object Name | Select -ExpandProperty Name').stdout.gsub("\r\n", "\n").split("\n")
   end
 
   if !vms.empty?
