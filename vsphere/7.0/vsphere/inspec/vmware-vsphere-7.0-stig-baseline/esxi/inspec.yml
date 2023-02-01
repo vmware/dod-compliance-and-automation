@@ -22,8 +22,8 @@ inputs:
     type: boolean
     description: "Set to true to audit all hosts"
   - name: exceptionUsers
-    value: ""
-    type: string
+    value: []
+    type: array
     description: "ESXI-70-000003 Users allowed to bypass lockdown mode. Normally empty."
   - name: syslogServer
     value: "tcp://log.test.local:514"

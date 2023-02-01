@@ -56,7 +56,7 @@ control 'ESXI-70-000008' do
 
   if !vmhosts.empty?
     vmhosts.each do |vmhost|
-      result = powercli_command("Get-VMHost -Name #{vmhost} | Get-AdvancedSetting -Name Get-AdvancedSetting -Name Config.Etc.issue | Select-Object -ExpandProperty Value")
+      result = powercli_command("Get-VMHost -Name #{vmhost} | Get-AdvancedSetting -Name Config.Etc.issue | Select-Object -ExpandProperty Value")
       describe.one do
         describe result do
           its('stdout.strip') { should match 'You are accessing a U.S. Government' }

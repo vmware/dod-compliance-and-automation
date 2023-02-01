@@ -53,8 +53,19 @@ control 'ESXI-70-000003' do
   if !vmhosts.empty?
     vmhosts.each do |vmhost|
       command = "$vmhost = Get-VMHost -Name #{vmhost} | Get-View; (Get-View $vmhost.ConfigManager.HostAccessManager).QueryLockdownExceptions()"
-      describe powercli_command(command) do
-        its('stdout.strip') { should cmp "#{input('exceptionUsers')}" }
+      results = powercli_command(command).stdout
+      if !results.empty?
+        results.split.each do |exceptionUser|
+          describe "Exception user: #{exceptionUser} on host: #{vmhost}" do
+            subject { exceptionUser }
+            it { should be_in "#{input('exceptionUsers')}" }
+          end
+        end
+      else
+        describe "Exception users for host: #{vmhost}" do
+          subject { results }
+          it { should be_empty }
+        end
       end
     end
   else

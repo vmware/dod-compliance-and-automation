@@ -2,7 +2,7 @@
 vmhostName: ""
 cluster: ""
 allesxi: true
-exceptionUsers: ""
+exceptionUsers: []
 syslogServer: "tcp://log.test.local:514"
 adAdminGroup: "MyAdAdminGroup"
 ntpServer1: "ntp1.test.local"
