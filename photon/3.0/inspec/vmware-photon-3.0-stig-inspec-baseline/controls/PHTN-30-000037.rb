@@ -29,8 +29,8 @@ control 'PHTN-30-000037' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000163-GPOS-00072'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000037'
+  tag rid: 'SV-PHTN-30-000037'
   tag stig_id: 'PHTN-30-000037'
   tag cci: ['CCI-001133']
   tag nist: ['SC-10']

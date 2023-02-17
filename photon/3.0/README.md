@@ -9,7 +9,7 @@ This project contains content for compliance auditing and remediation of the VMw
 
 Note - Some content may be absent such as Vulnerability IDs for draft content and will be added once released by DISA  
 
-The VMware Photon OS 3.0 Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of Photon OS 3.0 in the Department of Defense (DoD). The Photon OS 3.0 STIG is based on the General Purpose Operating System (GPOS) SRG V1R6.
+The VMware Photon OS 3.0 Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of Photon OS 3.0 in the Department of Defense (DoD). The Photon OS 3.0 STIG is based on the General Purpose Operating System (GPOS) SRG V2R5.
 
 The VMware Photon OS 3.0 STIGs presume operation in an environment compliant with all applicable DoD guidance.
 

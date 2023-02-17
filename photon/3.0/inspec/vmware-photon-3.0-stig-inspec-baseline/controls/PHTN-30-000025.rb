@@ -22,11 +22,11 @@ control 'PHTN-30-000025' do
 
     ENCRYPT_METHOD SHA512
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-OS-000073-GPOS-00041'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000025'
+  tag rid: 'SV-PHTN-30-000025'
   tag stig_id: 'PHTN-30-000025'
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']

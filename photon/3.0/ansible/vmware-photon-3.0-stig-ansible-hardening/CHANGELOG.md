@@ -1,5 +1,10 @@
 # Change Log
 
+## [3.0 Version 1 Release 7] (2023-02-17)
+
+#### Release Notes
+- PHTN-30-00029 Updated
+
 ## [3.0 Version 1 Release 6] (2023-01-23)
 
 #### Release Notes

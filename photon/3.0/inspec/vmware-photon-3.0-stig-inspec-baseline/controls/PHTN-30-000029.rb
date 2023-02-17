@@ -7,11 +7,11 @@ control 'PHTN-30-000029' do
 
     # grep pam_pwhistory /etc/pam.d/system-password|grep --color=always \"remember=.\"
 
-    Expected result:
+    Example result:
 
-    password requisite pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
+    password required pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
 
-    If the output does include the \"remember=5\" setting as shown in the expected result, this is a finding.
+    If the output does not include the \"remember=5\" setting as shown in the expected result, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -20,20 +20,28 @@ control 'PHTN-30-000029' do
 
     Add the following line after the \"password requisite pam_cracklib.so\" statement:
 
-    password requisite pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
+    password required pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
+
+    Note: Either \"required\" or \"requisite\" is acceptable in the control field.
 
     Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000077-GPOS-00045'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000029'
+  tag rid: 'SV-PHTN-30-000029'
   tag stig_id: 'PHTN-30-000029'
   tag cci: ['CCI-000200']
   tag nist: ['IA-5 (1) (e)']
 
-  describe file('/etc/pam.d/system-password') do
-    its('content') { should match /^password\s*requisite\s*pam_cracklib\.so.*\n(^password\s*requisite\s*pam_pwhistory\.so\s*(?=.*\bremember=5\b).*$)/ }
+  # regex makes sure the pam_pwhistory.so line is after the pam_cracklib.so line
+  describe.one do
+    describe file('/etc/pam.d/system-password') do
+      its('content') { should match /^password\s*requisite\s*pam_cracklib\.so.*\n(^password\s*requisite\s*pam_pwhistory\.so\s*(?=.*\bremember=5\b).*$)/ }
+    end
+    describe file('/etc/pam.d/system-password') do
+      its('content') { should match /^password\s*requisite\s*pam_cracklib\.so.*\n(^password\s*required\s*pam_pwhistory\.so\s*(?=.*\bremember=5\b).*$)/ }
+    end
   end
 end
