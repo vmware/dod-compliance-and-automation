@@ -40,8 +40,8 @@ control 'PHTN-30-000064' do
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000394-GPOS-00174'
   tag satisfies: ['SRG-OS-000424-GPOS-00188']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000064'
+  tag rid: 'SV-PHTN-30-000064'
   tag stig_id: 'PHTN-30-000064'
   tag cci: ['CCI-002421', 'CCI-003123']
   tag nist: ['MA-4 (6)', 'SC-8 (1)']

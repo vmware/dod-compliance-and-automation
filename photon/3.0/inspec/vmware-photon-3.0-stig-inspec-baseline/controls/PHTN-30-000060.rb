@@ -18,11 +18,11 @@ control 'PHTN-30-000060' do
 
     gpgcheck=1
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-OS-000366-GPOS-00153'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000060'
+  tag rid: 'SV-PHTN-30-000060'
   tag stig_id: 'PHTN-30-000060'
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']

@@ -1,5 +1,13 @@
 # Change Log
 
+## [3.0 Version 1 Release 7] (2023-02-17)
+
+#### Release Notes
+- Updated source SRG to GPOS V2R5
+- PHTN-30-000025, PHTN-30-000026, PHTN-30-000051, PHTN-30-000059, PHTN-30-000060, PHTN-30-000061, PHTN-30-000115, PHTN-30-000117, PHTN-30-000240 severity updated to CAT I
+- PHTN-30-000004, PHTN-30-000055, PHTN-30-000056, PHTN-30-000057 severity updated to CAT III
+- PHTN-30-000029 was updated
+
 ## [3.0 Version 1 Release 6] (2023-01-23)
 
 #### Release Notes
@@ -14,16 +22,16 @@
 - PHTN-30-000062 updated test to handle if no users with NOPASSWD set
 - PHTN-30-000094 updated find command to exclude container files for some use cases
 - PHTN-30-000105 added additional note in check, updated tests
--	Tags for controls that satisfy multiple requirements sorted and deduped
+- Tags for controls that satisfy multiple requirements sorted and deduped
 
 ## [3.0 Version 1 Release 5] (2022-06-27)
 
 #### Release Notes
 - Additional style rubocop fixes
 - Updated regex for PAM controls to validate more scenarios
--	PHTN-30-000053 was removed
--	PHTN-30-000077 was removed
--	PHTN-30-000245 was updated
+- PHTN-30-000053 was removed
+- PHTN-30-000077 was removed
+- PHTN-30-000245 was updated
 
 ## [3.0 Version 1 Release 4] (2022-04-18)
 

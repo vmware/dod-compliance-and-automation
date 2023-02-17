@@ -20,11 +20,11 @@ control 'PHTN-30-000117' do
 
     Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-OS-000073-GPOS-00041'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000117'
+  tag rid: 'SV-PHTN-30-000117'
   tag stig_id: 'PHTN-30-000117'
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']

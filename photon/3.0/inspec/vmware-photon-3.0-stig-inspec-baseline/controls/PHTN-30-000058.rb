@@ -88,8 +88,8 @@ control 'PHTN-30-000058' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000355-GPOS-00143'
   tag satisfies: ['SRG-OS-000356-GPOS-00144']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000058'
+  tag rid: 'SV-PHTN-30-000058'
   tag stig_id: 'PHTN-30-000058'
   tag cci: ['CCI-001891', 'CCI-002046']
   tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)']

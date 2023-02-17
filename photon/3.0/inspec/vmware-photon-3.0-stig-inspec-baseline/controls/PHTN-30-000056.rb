@@ -35,11 +35,11 @@ control 'PHTN-30-000056' do
     # killproc auditd -TERM
     # systemctl start auditd
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-OS-000341-GPOS-00132'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000056'
+  tag rid: 'SV-PHTN-30-000056'
   tag stig_id: 'PHTN-30-000056'
   tag cci: ['CCI-001849']
   tag nist: ['AU-4']

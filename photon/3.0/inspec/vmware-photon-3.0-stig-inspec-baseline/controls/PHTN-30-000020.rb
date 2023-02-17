@@ -47,8 +47,8 @@ control 'PHTN-30-000020' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000064-GPOS-00033'
   tag satisfies: ['SRG-OS-000392-GPOS-00172', 'SRG-OS-000462-GPOS-00206', 'SRG-OS-000466-GPOS-00210', 'SRG-OS-000468-GPOS-00212']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000020'
+  tag rid: 'SV-PHTN-30-000020'
   tag stig_id: 'PHTN-30-000020'
   tag cci: ['CCI-000172', 'CCI-002884']
   tag nist: ['AU-12 c', 'MA-4 (1) (a)']

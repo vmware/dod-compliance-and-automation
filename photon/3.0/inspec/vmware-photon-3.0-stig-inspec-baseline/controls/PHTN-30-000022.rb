@@ -27,8 +27,8 @@ control 'PHTN-30-000022' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000070-GPOS-00038'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000022'
+  tag rid: 'SV-PHTN-30-000022'
   tag stig_id: 'PHTN-30-000022'
   tag cci: ['CCI-000193']
   tag nist: ['IA-5 (1) (a)']

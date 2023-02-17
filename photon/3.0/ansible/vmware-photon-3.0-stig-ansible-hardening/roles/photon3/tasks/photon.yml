@@ -338,7 +338,7 @@
     force: false
     group: root
     owner: root
-    mode: 0644
+    mode: '0644'
   tags:
     - PHTN-30-000005
     - tmout.sh
@@ -771,11 +771,11 @@
 # Title: The Photon operating system must prohibit password reuse for a minimum of five generations.
 # password required pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
 
-- name: PHTN-30-000029 - Remove password required pam_pwhistory.so if exists
+- name: PHTN-30-000029 - Remove password requisite pam_pwhistory.so if exists
   ansible.builtin.lineinfile:
     path: /etc/pam.d/system-password
     state: absent
-    regexp: "^password.*required.*pam_pwhistory\\.so.*$"
+    regexp: "^password.*requisite.*pam_pwhistory\\.so.*$"
   tags:
     - PHTN-30-000029
     - pam
@@ -789,7 +789,7 @@
     control: requisite
     module_path: pam_cracklib.so
     new_type: password
-    new_control: requisite
+    new_control: required
     new_module_path: pam_pwhistory.so
     state: after
   tags:
@@ -802,7 +802,7 @@
   community.general.pamd:
     name: system-password
     type: password
-    control: requisite
+    control: required
     module_path: pam_pwhistory.so
     module_arguments:
       - enforce_for_root
@@ -1126,7 +1126,7 @@
   ansible.builtin.file:
     path: /var/log/messages
     state: file
-    mode: 0640
+    mode: '0640'
   tags:
     - PHTN-30-000041
     - perms
@@ -1185,7 +1185,7 @@
     state: file
     owner: root
     group: root
-    mode: 0750
+    mode: '0750'
   with_items:
     - {file: '/usr/sbin/auditctl'}
     - {file: '/usr/sbin/auditd'}
@@ -1214,7 +1214,7 @@
         path: '{{ item }}'
         owner: root
         group: root
-        mode: 0755
+        mode: '0755'
       with_items: '{{ badfiles.stdout_lines }}'
       when:
         - badfiles.stdout != ""
@@ -2041,7 +2041,7 @@
   ansible.builtin.file:
     path: /etc/cron.allow
     state: touch
-    mode: 0600
+    mode: '0600'
     owner: root
     group: root
     access_time: preserve
@@ -2072,7 +2072,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: 0644
+    mode: '0644'
     owner: root
   with_items: "{{ crondfiles.files }}"
   tags:
@@ -2097,7 +2097,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: 0644
+    mode: '0644'
     owner: root
   with_items: "{{ crondailyfiles.files }}"
   tags:
@@ -2122,7 +2122,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: 0644
+    mode: '0644'
     owner: root
   with_items: "{{ cronhourlyfiles.files }}"
   tags:
@@ -2147,7 +2147,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: 0644
+    mode: '0644'
     owner: root
   with_items: "{{ cronmonthlyfiles.files }}"
   tags:
@@ -2172,7 +2172,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: 0644
+    mode: '0644'
     owner: root
   with_items: "{{ cronweeklyfiles.files }}"
   tags:
@@ -2189,7 +2189,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0755
+    mode: '0755'
     owner: root
     group: root
   loop:
@@ -2873,7 +2873,7 @@
     state: touch
     group: root
     owner: root
-    mode: 0600
+    mode: '0600'
     access_time: preserve
     modification_time: preserve
   tags:

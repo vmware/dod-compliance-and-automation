@@ -20,11 +20,11 @@ control 'PHTN-30-000051' do
 
     Reinstalling the audit tools is not supported. The appliance should be restored from a backup or redeployed once the root cause is remediated.
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-OS-000278-GPOS-00108'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000051'
+  tag rid: 'SV-PHTN-30-000051'
   tag stig_id: 'PHTN-30-000051'
   tag cci: ['CCI-001496']
   tag nist: ['AU-9 (3)']

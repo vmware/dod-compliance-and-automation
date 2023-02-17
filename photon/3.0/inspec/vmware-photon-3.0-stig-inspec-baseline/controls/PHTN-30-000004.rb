@@ -20,11 +20,11 @@ control 'PHTN-30-000004' do
 
     # echo '*       hard    maxlogins       10' >> /etc/security/limits.conf
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-OS-000027-GPOS-00008'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000004'
+  tag rid: 'SV-PHTN-30-000004'
   tag stig_id: 'PHTN-30-000004'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']

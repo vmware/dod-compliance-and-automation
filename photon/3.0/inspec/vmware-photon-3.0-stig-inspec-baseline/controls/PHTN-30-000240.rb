@@ -22,11 +22,11 @@ control 'PHTN-30-000240' do
 
     Note: The fipsify package must be installed in order for FIPS mode to work properly.
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-OS-000478-GPOS-00223'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PHTN-30-000240'
+  tag rid: 'SV-PHTN-30-000240'
   tag stig_id: 'PHTN-30-000240'
   tag cci: ['CCI-002450']
   tag nist: ['SC-13']
