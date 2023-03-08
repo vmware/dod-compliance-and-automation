@@ -2,5 +2,5 @@
 
 rules:
   line-length:
-    max: 280
+    max: 1500
     level: warning
