@@ -1,0 +1,4 @@
+# Controls to waiver for internal scans that should are environment or customer specific.
+NMGR-4X-000013:
+  run: false
+  justification: 'DoD Banner will not be configured out of the box.'

@@ -1,0 +1,17 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# NDFW-4X-000001
+run_dfw_verify_time_based_rules: true
+# NDFW-4X-000004
+run_dfw_enable_rule_logging: true
+# NDFW-4X-000015
+run_dfw_flood_protection: true
+# NDFW-4X-000016
+run_dfw_default_rule_action: false
+# NDFW-4X-000027
+run_dfw_app_based_rules: true
+# NDFW-4X-000029
+run_dfw_spoofguard_profile: true
+# NDFW-4X-000034
+run_dfw_ip_discovery_profile: true

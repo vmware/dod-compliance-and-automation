@@ -83,7 +83,7 @@ jobs:
         uses: actions/checkout@v3
       - uses: ansible-community/ansible-lint-action@main
         with:
-          path: "photon/3.0/inspec/vmware-photon-3.0-stig-ansible-hardening/"  # <-- only one value is allowed
+          path: "photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/"  # <-- only one value is allowed
   cookstyle-vcd104:
     runs-on: ubuntu-latest
     steps:
@@ -149,6 +149,30 @@ jobs:
           gem install cookstyle
           ls -la
           cookstyle ./vcf/4.x
+  cookstyle-nsx4:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
+      - name: Install cookstyle and run
+        run: |
+          gem install cookstyle
+          ls -la
+          cookstyle ./nsx/4.x/inspec/vmware-nsx-4.x-stig-baseline
+  ansiblelint-nsx4:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "nsx/4.x/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
   ansiblelint-vsphere70-esxi:
     runs-on: ubuntu-latest
     steps:

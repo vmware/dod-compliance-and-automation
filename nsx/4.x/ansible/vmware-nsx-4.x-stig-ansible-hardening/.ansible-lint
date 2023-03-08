@@ -1,0 +1,9 @@
+offline: true
+skip_list:
+  - name
+  - meta-no-info
+warn_list:
+  - ignore-errors
+  - command-instead-of-module
+  - risky-file-permissions
+  - no-changed-when
