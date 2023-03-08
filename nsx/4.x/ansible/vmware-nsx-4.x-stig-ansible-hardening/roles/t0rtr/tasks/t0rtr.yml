@@ -1,0 +1,450 @@
+---
+
+###################################################################################################################################
+- name: Get all Tier-0 Gateways for use in tasks
+  tags: [always]
+  block:
+    - name: Get all Tier-0 Gateways for use in tasks
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-0s"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: t0gateways
+      changed_when: false
+
+###################################################################################################################################
+- name: NT0R-4X-000013 - The NSX Tier-0 Gateway must be configured to disable Protocol Independent Multicast (PIM) on all interfaces that are not required to support multicast routing.
+  tags: [NT0R-4X-000013]
+  when: run_t0rtr_disable_pim_on_interfaces | bool
+  block:
+    - name: NT0R-4X-000013 - The NSX Tier-0 Gateway must be configured to disable Protocol Independent Multicast (PIM) on all interfaces that are not required to support multicast routing. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000013 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000013 - Loop through Tier-0 Gateways and disable multicast if needed
+      ansible.builtin.include_tasks:
+        file: t0rtr_disable_multicast_on_interfaces.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: NT0R-4X-000016 - The NSX Tier-0 Gateway must be configured to have all inactive interfaces removed.
+  tags: [NT0R-4X-000016]
+  when: run_t0rtr_remove_inactive_interfaces | bool
+  block:
+    - name: NT0R-4X-000016 - The NSX Tier-0 Gateway must be configured to have all inactive interfaces removed. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000016 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000016 - The NSX Tier-0 Gateway must be configured to have all inactive interfaces removed.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000016 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+###################################################################################################################################
+- name: NT0R-4X-000027 - The NSX Tier-0 Gateway must be configured to have the DHCP service disabled if not in use.
+  tags: [NT0R-4X-000027]
+  when: run_t0rtr_disable_dhcp | bool
+  block:
+    - name: NT0R-4X-000027 - The NSX Tier-0 Gateway must be configured to have the DHCP service disabled if not in use. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000027 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000027 - Loop through Tier-0 Gateways and disable dhcp if needed
+      ansible.builtin.include_tasks:
+        file: t0rtr_disable_dhcp.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+        - var_outer_t0.dhcp_config_paths is defined
+        - var_outer_t0.id not in var_t0rtr_gateways_with_dhcp_enabled
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: NT0R-4X-000051 - The NSX Tier-0 Gateway must be configured to restrict it from accepting outbound IP packets that contain an illegitimate address in the source address field by enabling Unicast Reverse Path Forwarding (uRPF).
+  tags: [NT0R-4X-000051]
+  when: run_t0rtr_configure_urpf_interfaces | bool
+  block:
+    - name: NT0R-4X-000051 - The NSX Tier-0 Gateway must be configured to restrict it from accepting outbound IP packets that contain an illegitimate address in the source address field by enabling Unicast Reverse Path Forwarding (uRPF). No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000051 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000051 - Loop through Tier-0 Gateways and configure URPF on interfaces if needed
+      ansible.builtin.include_tasks:
+        file: t0rtr_configure_urpf_on_interfaces.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: NT0R-4X-000054 - The NSX Tier-0 Gateway must be configured to implement message authentication for all control plane protocols.
+  tags: [NT0R-4X-000054]
+  when: run_t0rtr_routing_protocol_auth | bool
+  block:
+    - name: NT0R-4X-000054 - The NSX Tier-0 Gateway must be configured to implement message authentication for all control plane protocols. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000054 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000054 - The NSX Tier-0 Gateway must be configured to implement message authentication for all control plane protocols.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000054 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+###################################################################################################################################
+- name: NT0R-4X-000055 - The NSX Tier-0 Gateway must be configured to use a unique key for each autonomous system (AS) with which it peers.
+  tags: [NT0R-4X-000055]
+  when: run_t0rtr_bgp_unique_auth | bool
+  block:
+    - name: NT0R-4X-000055 - The NSX Tier-0 Gateway must be configured to use a unique key for each autonomous system (AS) with which it peers. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000055 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000055 - The NSX Tier-0 Gateway must be configured to use a unique key for each autonomous system (AS) with which it peers.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000055 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+###################################################################################################################################
+- name: NT0R-4X-000064 - The NSX Tier-0 Gateway must be configured to have Internet Control Message Protocol (ICMP) unreachable notifications disabled on all external interfaces.
+  tags: [NT0R-4X-000064, NT0R-4X-000065, NT0R-4X-000066]
+  when: run_t0rtr_icmp_firewall_rules | bool
+  block:
+    - name: NT0R-4X-000064 - The NSX Tier-0 Gateway must be configured to have Internet Control Message Protocol (ICMP) unreachable notifications disabled on all external interfaces. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000064 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: "NT0R-4X-000064 - Search for existing {{ var_t0rtr_icmp_policy_name }}"
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:GatewayPolicy%20AND%20id:{{ var_t0rtr_icmp_policy_name }})"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: icmppolicy
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: NT0R-4X-000064 - Get external interfaces on Tier-0s
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:Tier0Interface%20AND%20type:EXTERNAL)"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: t0interfaces
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: NT0R-4X-000064 - Create fact to use for scope in new firewall rule of all T0 interface paths
+      ansible.builtin.set_fact:
+        interfacepaths: "{{ interfacepaths | default([]) + [item.path] }}"
+      changed_when: false
+      with_items:
+        - "{{ t0interfaces.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: NT0R-4X-000064 - Create Tier-0 gateway icmp policy
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/domains/default/gateway-policies/{{ var_t0rtr_icmp_policy_name }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0rtr_add_policy_icmp.json.j2') }}"
+        body_format: json
+        status_code: 200
+      register: t0gateway_policies_icmp
+      when:
+        - t0gateways.json.result_count != 0
+        - t0interfaces.json.result_count != 0
+        - icmppolicy.json.result_count == 0
+      changed_when:
+        - t0gateway_policies_icmp.status == 200
+
+###################################################################################################################################
+- name: NT0R-4X-000067 - The NSX Tier-0 Gateway must be configured to use the BGP maximum prefixes feature to protect against route table flooding and prefix de-aggregation attacks.
+  tags: [NT0R-4X-000067]
+  when: run_t0rtr_bgp_max_prefixes | bool
+  block:
+    - name: NT0R-4X-000067 - The NSX Tier-0 Gateway must be configured to use the BGP maximum prefixes feature to protect against route table flooding and prefix de-aggregation attacks. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000067 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: "NT0R-4X-000067 - Get BGP Neighbors with maximum routes not configured to {{ var_t0rtr_bgp_max_prefixes }}"
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:BgpNeighborConfig%20AND%20!route_filtering.maximum_routes:{{ var_t0rtr_bgp_max_prefixes }})"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: bgpnbrsmaxprefixes
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: NT0R-4X-000067 - Update BGP neighbours route filtering maximum routes
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1{{ item.path }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0rtr_update_bgp_nbr_route_filter.json.j2') }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ bgpnbrsmaxprefixes.json.results }}"
+      register: bgpnbrupdate
+      when:
+        - t0gateways.json.result_count != 0
+        - bgpnbrsmaxprefixes.json.result_count != 0
+      changed_when:
+        - bgpnbrupdate.status == 200
+
+###################################################################################################################################
+- name: NT0R-4X-000091 - The NSX Tier-0 Gateway must be configured to use its loopback address as the source address for iBGP peering sessions.
+  tags: [NT0R-4X-000091]
+  when: run_t0rtr_ibgp_loopback | bool
+  block:
+    - name: NT0R-4X-000091 - The NSX Tier-0 Gateway must be configured to use its loopback address as the source address for iBGP peering sessions. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000091 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000091 - The NSX Tier-0 Gateway must be configured to use its loopback address as the source address for iBGP peering sessions.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000091 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+###################################################################################################################################
+- name: NT0R-4X-000102 - The NSX Tier-0 Gateway must be configured to advertise a hop limit of at least 32 in Router Advertisement messages for IPv6 stateless auto-configuration deployments.
+  tags: [NT0R-4X-000102]
+  when: run_t0rtr_ipv6_hop_limit | bool
+  block:
+    - name: NT0R-4X-000102 - The NSX Tier-0 Gateway must be configured to advertise a hop limit of at least 32 in Router Advertisement messages for IPv6 stateless auto-configuration deployments. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000102 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000102 - Check to see if IPv6 forwarding is enabled
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/global-config"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: ipv6enabled
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: NT0R-4X-000102 - Find IPv6 ND Profiles with a hop limit set incorrectly
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:Ipv6NdraProfile%20AND%20!ra_config.hop_limit:(64%20OR%20{{ var_t0rtr_ipv6_hop_limit }}))"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: badipv6profiles
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+        - ipv6enabled.json.l3_forwarding_mode == "IPV4_AND_IPV6"
+
+    - name: "NT0R-4X-000102 - Update IPv6 profiles with a hop limit set incorrectly to {{ var_t0rtr_ipv6_hop_limit }}"
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1{{ item.path }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0rtr_update_ipv6_ndra_profile.json.j2') | to_json }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ badipv6profiles.json.results }}"
+      register: ipv6ndraupdate
+      when:
+        - t0gateways.json.result_count != 0
+        - ipv6enabled.json.l3_forwarding_mode == "IPV4_AND_IPV6"
+        - badipv6profiles.json.result_count != 0
+      changed_when:
+        - ipv6ndraupdate.status == 200
+
+###################################################################################################################################
+- name: NT0R-4X-000106 - The NSX Tier-0 Gateway must be configured to have routing protocols disabled if not in use.
+  tags: [NT0R-4X-000106]
+  when: run_t0rtr_disable_routing_protocols | bool
+  block:
+    - name: NT0R-4X-000106 - The NSX Tier-0 Gateway must be configured to have routing protocols disabled if not in use. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000106 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000106 - Find Tier-0s with BGP enabled
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:BgpRoutingConfig%20AND%20enabled:true)"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: bgpenabled
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: NT0R-4X-000106 - Loop through BGP configs and disable if no neighbors configured
+      ansible.builtin.include_tasks:
+        file: t0rtr_disable_bgp_with_no_neighbors.yml
+      with_items:
+        - "{{ bgpenabled.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+        - bgpenabled.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_bgp
+
+    - name: NT0R-4X-000106 - Find Tier-0s with OSPF enabled
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:OspfRoutingConfig%20AND%20enabled:true)"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: ospfenabled
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: NT0R-4X-000106 - Loop through OSPF configs and disable if no areas configured
+      ansible.builtin.include_tasks:
+        file: t0rtr_disable_ospf_with_no_areas.yml
+      with_items:
+        - "{{ ospfenabled.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+        - ospfenabled.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_ospf
+
+###################################################################################################################################
+- name: NT0R-4X-000107 - The NSX Tier-0 Gateway must be configured to have multicast disabled if not in use.
+  tags: [NT0R-4X-000107]
+  when: run_t0rtr_disable_multicast | bool
+  block:
+    - name: NT0R-4X-000107 - The NSX Tier-0 Gateway must be configured to have multicast disabled if not in use. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0R-4X-000107 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0R-4X-000107 - Find enabled Tier-0 Multicast Policies
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:PolicyMulticastConfig%20AND%20enabled:true)"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: multicastenabled
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: NT0R-4X-000107 - Disable multicast on Tier-0s
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1{{ item.path }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0rtr_disable_multicast_gateway.json.j2') }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ multicastenabled.json.results }}"
+      register: multicastupdate
+      when:
+        - t0gateways.json.result_count != 0
+        - multicastenabled.json.result_count != 0
+        # extract T0 ID from path and see if it's in list given
+        - item.path | regex_search('\/infra\/tier-0s\/(.*?)\/', '\\1') | first not in var_t0rtr_gateways_with_multicast_enabled
+      changed_when:
+        - multicastupdate.status == 200

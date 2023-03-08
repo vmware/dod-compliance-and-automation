@@ -1,0 +1,15 @@
+# General
+nsxManager: '10.218.132.63'
+sessionToken: 'a5928386...'
+sessionCookieId: 'JSESSIONID=2037BE72AC484...'
+# Manager
+syslogServers:
+  - 'loginsight.vmware.com'
+ntpServer1: 'time-a-g.nist.gov'
+ntpServer2: 'time-b-g.nist.gov'
+nsxtVersion: '4.1.0.0'
+t0multicastlist: []
+t0mcinterfacelist: []
+t0dhcplist: []
+t1dhcplist: []
+t1multicastlist: []

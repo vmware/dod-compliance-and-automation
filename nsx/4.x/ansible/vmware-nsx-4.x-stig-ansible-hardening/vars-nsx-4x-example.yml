@@ -1,0 +1,42 @@
+# Example vars file
+# Connection information
+var_nsx_manager: '10.218.132.63'
+var_jsession_id: 'JSESSIONID=2037BE72AC484BD...'
+var_session_token: 'a592838...'
+
+# Manager
+var_ntp_server1: 'tick.usno.navy.mil'
+var_ntp_server2: 'tock.usno.navy.mil'
+
+# DFW
+run_dfw_default_rule_action: true
+var_dfw_default_rule_action: 'DROP'
+
+# T0 Firewall
+run_t0fw_default_rule_action: true
+var_t0fw_default_rule_action: 'DROP'
+
+# T0 Router
+# array of t0 ids that should have multicast enabled
+var_t0rtr_gateways_with_multicast_enabled:
+  - Tier0Gateway1
+# array of t0 interface ids that should have PIM enabled
+var_t0rtr_gateway_interfaces_with_multicast_enabled:
+  - Tier0Interface1
+# array of t0 ids that should have dhcp enabled
+var_t0rtr_gateways_with_dhcp_enabled: []
+var_t0rtr_interface_urpf: 'STRICT'
+var_t0rtr_bgp_max_prefixes: 200
+var_t0rtr_ipv6_hop_limit: 64
+var_t0rtr_icmp_policy_name: 'stig_icmp_policy'
+
+# T1 Firewall
+run_t1fw_default_rule_action: true
+var_t1fw_default_rule_action: 'DROP'
+
+# T1 Router
+# array of t1 ids that should have multicast enabled
+var_t1rtr_gateways_with_multicast_enabled:
+  - Tier1Gateway1
+# array of t1 ids that should have dhcp enabled
+var_t1rtr_gateways_with_dhcp_enabled: []
