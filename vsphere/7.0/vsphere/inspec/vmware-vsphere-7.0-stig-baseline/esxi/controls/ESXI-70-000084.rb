@@ -95,7 +95,7 @@ control 'ESXI-70-000084' do
         its('stdout.strip') { should cmp <= '100' }
       end
 
-      command = "$vmhost = Get-VMHost -Name #{vmhost}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.auditrecords.get.invoke() | Select-Object -ExpandProperty AuditRemoteHostEnabled"
+      command = "$vmhost = Get-VMHost -Name #{vmhost}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.auditrecords.get.invoke() | Select-Object -ExpandProperty AuditRecordRemoteTransmissionActive"
       describe powercli_command(command) do
         its('stdout.strip') { should cmp 'true' }
       end
