@@ -1,13 +1,13 @@
 # Table of contents
 
 - [vCenter](#vcenter)
-  - [VCSA-70-000285 Other default roles have cryptographic permissions](#[VCSA-70-000285]-other-default-roles-have-cryptographic-permissions)
+  - [VCSA-70-000285 Other default roles have cryptographic permissions](#vcsa-70-000285-other-default-roles-have-cryptographic-permissions)
 - [ESXi](#esxi)
-  - [ESXI-70-000084 Incorrect property shown in check](#[ESXI-70-000084]-incorrect-property-shown-in-check)
+  - [ESXI-70-000084 Incorrect property shown in check](#esxi-70-000084-incorrect-property-shown-in-check)
 - [Virtual Machines](#vm)
 - [VCSA](#vcsa)
-  - [VCEM-70-000008 The check command displays files that have changed](#[VCEM-70-000008]the-check-command-displays-files-that-have-changed)
-  - [VCST-70-000028 New port for smartcard authentication in 7.0 U3i](#[VCST-70-000028]new-port-for-smartcard-authentication-in-7.0-u3i)
+  - [VCEM-70-000008 The check command displays files that have changed](#vcem-70-000008-the-check-command-displays-files-that-have-changed)
+  - [VCST-70-000028 New port for smartcard authentication in 7.0 U3i](#vcst-70-000028-new-port-for-smartcard-authentication-in-7.0-u3i)
 
 # Known Issues
 
@@ -27,7 +27,7 @@ Please check the [open](https://github.com/vmware/dod-compliance-and-automation/
 
 ### [VCSA-70-000285] Other default roles have cryptographic permissions
 
-Related issue: [#3263](https://github.com/desktop/desktop/issues/3263)
+Related issue: [#137](https://github.com/vmware/dod-compliance-and-automation/issues/137)
 
 In the check and fix only the Administrator role is listed as having cryptographic permissions by default.
 
