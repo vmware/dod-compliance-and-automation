@@ -7,7 +7,7 @@
 - [Virtual Machines](#vm)
 - [VCSA](#vcsa)
   - [VCEM-70-000008 The check command displays files that have changed](#vcem-70-000008-the-check-command-displays-files-that-have-changed)
-  - [VCST-70-000028 New port for smartcard authentication in 7.0 U3i](#vcst-70-000028-new-port-for-smartcard-authentication-in-7.0-u3i)
+  - [VCST-70-000028 New port for smartcard authentication in 7.0 U3i](#vcst-70-000028-new-port-for-smartcard-authentication-in-70-u3i)
 
 # Known Issues
 
@@ -63,14 +63,14 @@ This issue is seen after some upgrades where some files may be replaced or confi
 
 **Workaround:**
 
-- Run the following command to exclude files marked as configuration files for the service.
+- Run the following command to exclude files marked as configuration files for the service.  
 ```rpm -V vmware-eam|grep "^..5......" | grep -v 'c /' | grep -v -E ".installer|.properties|.xml"```
 
 ### [VCST-70-000028] New port for smartcard authentication in 7.0 U3i
 
 Related issue: [#135](https://github.com/vmware/dod-compliance-and-automation/issues/135)
 
-As of vCenter 7.0 U3i the port for smartcard authentication has been updated to 3128. [See documentation(https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-DE48ED27-E48B-4FDA-B3C8-DD7127BF6879.html)]
+As of vCenter 7.0 U3i the port for smartcard authentication has been updated to 3128. [See documentation](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-DE48ED27-E48B-4FDA-B3C8-DD7127BF6879.html)]
 
 **Workaround:**
 
