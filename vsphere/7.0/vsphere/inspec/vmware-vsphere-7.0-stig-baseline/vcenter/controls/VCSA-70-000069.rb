@@ -22,13 +22,13 @@ control 'VCSA-70-000069' do
 
     Click \"Edit\".
 
-    Set the Minimum Length to \"15\" and click \"Save\".
+    Set the \"Minimum Length\" to \"15\" and click \"Save\".
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000164'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256325'
+  tag rid: 'SV-256325r885586_rule'
   tag stig_id: 'VCSA-70-000069'
   tag cci: ['CCI-000205']
   tag nist: ['IA-5 (1) (a)']

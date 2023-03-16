@@ -1,9 +1,9 @@
 control 'VCSA-70-000292' do
   title 'The vCenter server configuration must be backed up on a regular basis.'
   desc  "
-    vCenter server is the control plane for the vSphere infrastructure and all the workloads it hosts. As such, vCenter itself is usually a highly critical system in it's own right. Backups of vCenter can now be made at a data and configuration level vs traditional storage/image-based backups. This reduces recovery time by letting the SA spin up a new vCenter while simultaneously importing the backed up data.
+    vCenter server is the control plane for the vSphere infrastructure and all the workloads it hosts. As such, vCenter is usually a highly critical system in its own right. Backups of vCenter can now be made at a data and configuration level versus traditional storage/image-based backups. This reduces recovery time by letting the system administrator (SA) spin up a new vCenter while simultaneously importing the backed-up data.
 
-    For sites that implement the Native Key Provider (NKP), introduced in 7.0 Update 2, regular vCenter backups are critical. In a recovery scenario where the VM files are intact but vCenter was lost, the encrypted VMs will not be able to boot as their private keys were stored in vCenter after it was last backed up. When using the NKP, vCenter becomes critical to the VM workloads and ceases to just be the control plane.
+    For sites that implement the Native Key Provider (NKP), introduced in 7.0 Update 2, regular vCenter backups are critical. In a recovery scenario where the virtual machine files are intact but vCenter was lost, the encrypted virtual machines will not be able to boot as their private keys were stored in vCenter after it was last backed up. When using the NKP, vCenter becomes critical to the virtual machine workloads and ceases to be just the control plane.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -15,13 +15,13 @@ control 'VCSA-70-000292' do
 
     For vCenter native backup functionality, open the Virtual Appliance Management Interface (VAMI) by navigating to https://<vCenter server>:5480.
 
-    Log in with local OS administrative credentials or with an SSO account that is a member of the \"SystemConfiguration.BashShellAdministrator\" group.
+    Log in with local operating system administrative credentials or with a Single Sign-On (SSO) account that is a member of the \"SystemConfiguration.BashShellAdministrator\" group.
 
     Select \"Backup\" on the left navigation pane.
 
     On the resulting pane on the right, verify the \"Status\" is \"Enabled\".
 
-    Click to \"Status\" expand the backup details.
+    Click \"Status\" to expand the backup details.
 
     If vCenter server backups are not configured and there is no other vCenter backup system, this is a finding.
 
@@ -34,9 +34,9 @@ control 'VCSA-70-000292' do
 
     Option 2:
 
-    To configure vCenter native backup functionality, open the Virtual Appliance Management Interface (VAMI) by navigating to https://<vCenter server>:5480.
+    To configure vCenter native backup functionality, open the VAMI by navigating to https://<vCenter server>:5480.
 
-    Log in with local OS administrative credentials or with an SSO account that is a member of the \"SystemConfiguration.BashShellAdministrator\" group.
+    Log in with local operating system administrative credentials or with an SSO account that is a member of the \"SystemConfiguration.BashShellAdministrator\" group.
 
     Select \"Backup\" on the left navigation pane.
 
@@ -44,15 +44,15 @@ control 'VCSA-70-000292' do
 
     Enter site-specific information for the backup job.
 
-    Ensure that the \"Schedule\" is set to \"Daily\". Limiting the number of retained backups is recommended but not required.
+    Ensure \"Schedule\" is set to \"Daily\". Limiting the number of retained backups is recommended but not required.
 
     Click \"Create\".
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256372'
+  tag rid: 'SV-256372r885727_rule'
   tag stig_id: 'VCSA-70-000292'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

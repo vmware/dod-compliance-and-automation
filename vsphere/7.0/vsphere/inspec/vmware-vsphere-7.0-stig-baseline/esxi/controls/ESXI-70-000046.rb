@@ -1,33 +1,43 @@
 control 'ESXI-70-000046' do
   title 'The ESXi host must configure NTP time synchronization.'
-  desc  'To ensure the accuracy of the system clock, it must be synchronized with an authoritative time source within DoD. Many system functions, including time-based logon and activity restrictions, automated reports, system logs, and audit records, depend on an accurate system clock. If there is no confidence in the correctness of the system clock, time-based functions may not operate as intended and records may be of diminished value.'
+  desc  'To ensure the accuracy of the system clock, it must be synchronized with an authoritative time source within DOD. Many system functions, including time-based logon and activity restrictions, automated reports, system logs, and audit records, depend on an accurate system clock. If there is no confidence in the correctness of the system clock, time-based functions may not operate as intended and records may be of diminished value.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Time Configuration.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Under \"Current Time Configuration\", verify that \"Time Synchronization\" is set to \"Network Time Protocol\". Under \"Network Time Protocol\", ensure that the \"NTP Servers\" are authorized DoD time sources.
+    Select the ESXi Host >> Configure >> System >> Time Configuration.
 
-    If the ESXi host is not configured to pull time from authoritative DoD time sources, this is a finding.
+    Under \"Current Time Configuration\", verify \"Time Synchronization\" is set to \"Network Time Protocol\".
+
+    Under \"Network Time Protocol\", verify the \"NTP Servers\" are authorized DOD time sources.
+
+    If the ESXi host is not configured to pull time from authoritative DOD time sources, this is a finding.
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
     Get-VMHost | Get-VMHostNTPServer
     Get-VMHost | Get-VMHostService | Where {$_.Label -eq \"NTP Daemon\"}
 
-    If the NTP service is not configured with authoritative DoD time sources or the service does not have a \"Policy\" of \"on\" or is stopped, this is a finding.
+    If the NTP service is not configured with authoritative DOD time sources or the service does not have a \"Policy\" of \"on\" or is stopped, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Time Configuration.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Under \"Network Time Protocol\", click \"Edit...\". Ensure that the \"NTP Servers\" are authorized DoD time sources. Ensure that the \"NTP Service Startup Policy\" is set to \"Start and stop with host\". Ensure that the \"Enable\" checkbox is ticker, in the upper left. Click \"OK\".
+    Select the ESXi Host >> Configure >> System >> Time Configuration.
 
-    Click Edit to configure the NTP service to start and stop with the host and with authoritative DoD time sources.
+    Under \"Network Time Protocol\", click \"Edit...\". Ensure the \"NTP Servers\" are authorized DOD time sources.
+
+    Ensure the \"NTP Service Startup Policy\" is set to \"Start and stop with host\".
+
+    Ensure the \"Enable\" checkbox, in the upper left, is checked. Click \"OK\".
+
+    Click \"Edit\" to configure the NTP service to start and stop with the host and with authoritative DOD time sources.
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
     $NTPServers = \"ntpserver1\",\"ntpserver2\"
     Get-VMHost | Add-VMHostNTPServer $NTPServers
@@ -38,8 +48,8 @@ control 'ESXI-70-000046' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000355-VMM-001330'
   tag satisfies: ['SRG-OS-000356-VMM-001340']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256409'
+  tag rid: 'SV-256409r886008_rule'
   tag stig_id: 'ESXI-70-000046'
   tag cci: ['CCI-001891', 'CCI-002046']
   tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)']

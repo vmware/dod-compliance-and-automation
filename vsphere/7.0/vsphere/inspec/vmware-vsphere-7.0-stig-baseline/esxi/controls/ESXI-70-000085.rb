@@ -7,13 +7,13 @@ control 'ESXI-70-000085' do
   "
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # esxcli system syslog config get|grep 509
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
     $esxcli = Get-EsxCli -v2
     $esxcli.system.syslog.config.get.invoke()|Select StrictX509Compliance
@@ -25,14 +25,14 @@ control 'ESXI-70-000085' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following commands:
 
     # esxcli system syslog config set --x509-strict=\"true\"
     # esxcli system syslog reload
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
     $esxcli = Get-EsxCli -v2
     $arguments = $esxcli.system.syslog.config.set.CreateArgs()
@@ -43,8 +43,8 @@ control 'ESXI-70-000085' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256437'
+  tag rid: 'SV-256437r886092_rule'
   tag stig_id: 'ESXI-70-000085'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

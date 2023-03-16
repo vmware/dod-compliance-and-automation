@@ -1,9 +1,9 @@
 control 'ESXI-70-000027' do
-  title 'The ESXi host SSH daemon must set a timeout interval on idle sessions.'
+  title 'The ESXi host Secure Shell (SSH) daemon must set a timeout interval on idle sessions.'
   desc  'Automatically logging out idle users guards against compromises via hijacked administrative sessions.'
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # /usr/lib/vmware/openssh/bin/sshd -T|grep clientaliveinterval
 
@@ -18,11 +18,11 @@ control 'ESXI-70-000027' do
 
     ClientAliveInterval 200
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256395'
+  tag rid: 'SV-256395r885966_rule'
   tag stig_id: 'ESXI-70-000027'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

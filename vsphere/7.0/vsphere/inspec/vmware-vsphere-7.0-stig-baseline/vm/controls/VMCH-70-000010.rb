@@ -1,9 +1,9 @@
 control 'VMCH-70-000010' do
-  title 'Unauthorized parallel devices must be disconnected on the virtual machine.'
-  desc  'Ensure that no device is connected to a virtual machine if it is not required. For example, floppy, serial and parallel ports are rarely used for virtual machines in a datacenter environment, and CD/DVD drives are usually connected only temporarily during software installation.'
+  title 'Unauthorized parallel devices must be disconnected on the virtual machine (VM).'
+  desc  'Ensure no device is connected to a virtual machine if it is not required. For example, floppy, serial, and parallel ports are rarely used for virtual machines in a data center environment, and CD/DVD drives are usually connected only temporarily during software installation.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client right-click the Virtual Machine and go to Edit Settings.
+    From the vSphere Client, right-click the Virtual Machine and go to \"Edit Settings\".
 
     Review the VMs hardware and verify no parallel devices exist.
 
@@ -16,17 +16,17 @@ control 'VMCH-70-000010' do
     If a virtual machine has a parallel device present, this is a finding.
   "
   desc  'fix', "
-    The VM must be powered off in order to remove a parallel device.
+    The VM must be powered off to remove a parallel device.
 
-    From the vSphere Client right-click the Virtual Machine and go to Edit Settings.
+    From the vSphere Client, right-click the Virtual Machine and go to \"Edit Settings\".
 
-    Select the parallel device and click the circle-x to remove then OK.
+    Select the parallel device, click the circled \"X\" to remove it, and click \"OK\".
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256459'
+  tag rid: 'SV-256459r886420_rule'
   tag stig_id: 'VMCH-70-000010'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

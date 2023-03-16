@@ -1,11 +1,13 @@
 control 'ESXI-70-000007' do
-  title 'The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system via the DCUI.'
-  desc  'Failure to display the DoD logon banner prior to a logon attempt will negate legal proceedings resulting from unauthorized access to system resources.'
+  title 'The ESXi host must display the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via the Direct Console User Interface (DCUI).'
+  desc  'Failure to display the DOD logon banner prior to a logon attempt will negate legal proceedings resulting from unauthorized access to system resources.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Select the \"Annotations.WelcomeMessage\" value and verify it contains the DoD logon banner below.
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+
+    Select the \"Annotations.WelcomeMessage\" value and verify it contains the DOD logon banner below.
 
     or
 
@@ -63,7 +65,9 @@ control 'ESXI-70-000007' do
     If \"Annotations.WelcomeMessage\" setting is not set to the specified banner, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings. Click \"Edit\".
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings. Click \"Edit\".
 
     Select the \"Annotations.WelcomeMessage\" value and set it to the following. Click \"OK\".
 
@@ -122,8 +126,8 @@ control 'ESXI-70-000007' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000023-VMM-000060'
   tag satisfies: ['SRG-OS-000024-VMM-000070']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256381'
+  tag rid: 'SV-256381r885924_rule'
   tag stig_id: 'ESXI-70-000007'
   tag cci: ['CCI-000048', 'CCI-000050']
   tag nist: ['AC-8 a', 'AC-8 b']

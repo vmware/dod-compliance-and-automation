@@ -1,9 +1,9 @@
 control 'ESXI-70-000021' do
-  title 'The ESXi host SSH daemon must not allow compression or must only allow compression after successful authentication.'
+  title 'The ESXi host Secure Shell (SSH) daemon must not allow compression or must only allow compression after successful authentication.'
   desc  'If compression is allowed in an SSH connection prior to authentication, vulnerabilities in the compression software could result in compromise of the system from an unauthenticated connection, potentially with root privileges.'
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # /usr/lib/vmware/openssh/bin/sshd -T|grep compression
 
@@ -21,8 +21,8 @@ control 'ESXI-70-000021' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256390'
+  tag rid: 'SV-256390r885951_rule'
   tag stig_id: 'ESXI-70-000021'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

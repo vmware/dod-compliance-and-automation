@@ -1,17 +1,17 @@
 control 'VMCH-70-000029' do
-  title 'Encryption must be enabled for Fault Tolerance on the virtual machine.'
+  title 'Encryption must be enabled for Fault Tolerance on the virtual machine (VM).'
   desc  "
-    You can encrypt Fault Tolerance log traffic which could contain sensitive data from the protected machines memory or cpu instructions.
+    Fault Tolerance log traffic can be encrypted. This could contain sensitive data from the protected machine's memory or CPU instructions.
 
-    vSphere Fault Tolerance performs frequent checks between a primary VM and secondary VM so that the secondary VM can quickly resume from the last successful checkpoint. The checkpoint contains the VM state that has been modified since the previous checkpoint.
+    vSphere Fault Tolerance performs frequent checks between a primary VM and secondary VM so the secondary VM can quickly resume from the last successful checkpoint. The checkpoint contains the VM state that has been modified since the previous checkpoint.
 
-    When you turn on Fault Tolerance, FT encryption is set to \"Opportunistic\" by default, which means it enables encryption only if both the primary and secondary host are capable of encryption.
+    When Fault Tolerance is turned on, FT encryption is set to \"Opportunistic\" by default, which means it enables encryption only if both the primary and secondary host are capable of encryption.
   "
   desc  'rationale', ''
   desc  'check', "
-    If the Virtual Machine does not have Fault Tolerance enabled, this is Not Applicable.
+    If the Virtual Machine does not have Fault Tolerance enabled, this is not applicable.
 
-    From the vSphere Client select the Virtual Machine, right click and go to Edit Settings >> VM Options Tab >> Encryption >> Encrypted FT.
+    From the vSphere Client, select the Virtual Machine, right click and go to Edit Settings >> VM Options tab >> Encryption >> Encrypted FT.
 
     or
 
@@ -22,13 +22,13 @@ control 'VMCH-70-000029' do
     If the setting does not have a value of \"Opportunistic\" or \"Required\", this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client select the Virtual Machine, right click and go to Edit Settings >> VM Options Tab >> Encryption >> FT Encryption.
+    From the vSphere Client, select the Virtual Machine, right click and go to Edit Settings >> VM Options tab >> Encryption >> FT Encryption.
 
     Set the value to \"Opportunistic\" or \"Required\".
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command(s):
+    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following commands:
 
     $spec = New-Object VMware.Vim.VirtualMachineConfigSpec
     $spec.FTEncryption = New-Object VMware.Vim.VMware.Vim.VirtualMachineConfigSpecEncryptedFtModes
@@ -38,8 +38,8 @@ control 'VMCH-70-000029' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256477'
+  tag rid: 'SV-256477r886474_rule'
   tag stig_id: 'VMCH-70-000029'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

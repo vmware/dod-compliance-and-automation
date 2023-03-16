@@ -1,9 +1,9 @@
 control 'VCSA-70-000284' do
   title 'The vCenter Server must restrict access to the cryptographic role.'
   desc  "
-    In vSphere, the built-in \"Administrator\" role contains permission to perform cryptographic operations such as KMS functions and encrypting and decrypting virtual machine disks. This role must be reserved for cryptographic administrators where VM encryption and/or vSAN encryption is in use.
+    In vSphere, the built-in \"Administrator\" role contains permission to perform cryptographic operations such as Key Management Server (KMS) functions and encrypting and decrypting virtual machine disks. This role must be reserved for cryptographic administrators where virtual machine encryption and/or vSAN encryption is in use.
 
-    A new built-in role called 'No Cryptography Administrator' exists to provide all administrative permissions except cryptographic operations. Permissions must be restricted such that normal vSphere administrators are assigned the \"No Cryptography Administrator\" role or more restrictive.
+    A new built-in role called \"No Cryptography Administrator\" exists to provide all administrative permissions except cryptographic operations. Permissions must be restricted such that normal vSphere administrators are assigned the \"No Cryptography Administrator\" role or more restrictive.
 
     The \"Administrator\" role must be tightly controlled and must not be applied to administrators who will not be doing cryptographic work. Catastrophic data loss can result from poorly administered cryptography.
   "
@@ -27,8 +27,8 @@ control 'VCSA-70-000284' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256364'
+  tag rid: 'SV-256364r885703_rule'
   tag stig_id: 'VCSA-70-000284'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

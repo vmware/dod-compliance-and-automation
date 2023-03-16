@@ -3,7 +3,9 @@ control 'ESXI-70-000030' do
   desc  'Without establishing what types of events occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Select the \"Config.HostAgent.log.level\" value and verify it is set to \"info\".
 
@@ -18,22 +20,24 @@ control 'ESXI-70-000030' do
     Note: Verbose logging level is acceptable for troubleshooting purposes.
   "
   desc 'fix', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings. Click \"Edit\".
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings. Click \"Edit\".
 
     Select the \"Config.HostAgent.log.level\" value and configure it to \"info\".
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
+    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
     Get-VMHost | Get-AdvancedSetting -Name Config.HostAgent.log.level | Set-AdvancedSetting -Value \"info\"
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-OS-000037-VMM-000150'
   tag satisfies: ['SRG-OS-000063-VMM-000310']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256396'
+  tag rid: 'SV-256396r885969_rule'
   tag stig_id: 'ESXI-70-000030'
   tag cci: ['CCI-000130', 'CCI-000171']
   tag nist: ['AU-12 b', 'AU-3']

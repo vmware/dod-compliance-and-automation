@@ -3,15 +3,17 @@ control 'VCSA-70-000110' do
   desc  "
     DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity.
 
-    Managing excess capacity ensures that sufficient capacity is available to counter flooding attacks. Employing increased capacity and service redundancy may reduce the susceptibility to some DoS attacks. Managing excess capacity may include, for example, establishing selected usage priorities, quotas, or partitioning.
+    Managing excess capacity ensures sufficient capacity is available to counter flooding attacks. Employing increased capacity and service redundancy may reduce the susceptibility to some DoS attacks. Managing excess capacity may include, for example, establishing selected usage priorities, quotas, or partitioning.
   "
   desc  'rationale', ''
   desc  'check', "
-    If distributed switches are not used, this is Not Applicable.
+    If distributed switches are not used, this is not applicable.
 
-    From the vSphere Client, go to Networking >> Select a distributed switch >> Configure >> Settings >> Properties.
+    From the vSphere Client, go to Networking.
 
-    View the Properties pane and verify that \"Network I/O Control\" is \"Enabled\".
+    Select a distributed switch >> Configure >> Settings >> Properties.
+
+    View the \"Properties\" pane and verify \"Network I/O Control\" is \"Enabled\".
 
     or
 
@@ -19,12 +21,14 @@ control 'VCSA-70-000110' do
 
     Get-VDSwitch | select Name,@{N=\"NIOC Enabled\";E={$_.ExtensionData.config.NetworkResourceManagementEnabled}}
 
-    If Network I/O Control is disabled, this is a finding.
+    If \"Network I/O Control\" is disabled, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client, go to Networking >> Select a distributed switch >> Configure >> Settings >> Properties.
+    From the vSphere Client, go to Networking.
 
-    In the Properties pane click \"Edit\". Change Network I/O Control to enabled. Click \"OK\".
+    Select a distributed switch >> Configure >> Settings >> Properties.
+
+    In the \"Properties\" pane, click \"Edit\". Change \"Network I/O Control\" to \"Enabled\". Click \"OK\".
 
     or
 
@@ -35,8 +39,8 @@ control 'VCSA-70-000110' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000247'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256336'
+  tag rid: 'SV-256336r885619_rule'
   tag stig_id: 'VCSA-70-000110'
   tag cci: ['CCI-001095']
   tag nist: ['SC-5 (2)']

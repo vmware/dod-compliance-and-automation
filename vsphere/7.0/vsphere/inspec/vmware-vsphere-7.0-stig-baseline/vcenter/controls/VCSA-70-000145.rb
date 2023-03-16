@@ -5,7 +5,7 @@ control 'VCSA-70-000145' do
   desc  'check', "
     From the vSphere Client, go to Administration >> Single Sign On >> Configuration >> Local Accounts >> Lockout Policy.
 
-    The following lockout policy should be set at follows:
+    Verify the following lockout policy is set as follows:
 
     Time interval between failures: 900 seconds
 
@@ -16,13 +16,13 @@ control 'VCSA-70-000145' do
 
     Click \"Edit\".
 
-    Set the Time interval between failures to \"900\" and click \"Save\".
+    Set the \"Time interval between failures\" to \"900\" and click \"Save\".
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000345'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256338'
+  tag rid: 'SV-256338r885625_rule'
   tag stig_id: 'VCSA-70-000145'
   tag cci: ['CCI-002238']
   tag nist: ['AC-7 b']

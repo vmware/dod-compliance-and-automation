@@ -1,9 +1,9 @@
 control 'ESXI-70-000009' do
-  title 'The ESXi host SSH daemon must be configured with the DoD logon banner.'
+  title 'The ESXi host SSH daemon must be configured with the DOD logon banner.'
   desc  'The warning message reinforces policy awareness during the logon process and facilitates possible legal action against attackers. Alternatively, systems whose ownership should not be obvious should ensure usage of a banner that does not provide easy attribution.'
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # /usr/lib/vmware/openssh/bin/sshd -T|grep banner
 
@@ -21,8 +21,8 @@ control 'ESXI-70-000009' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000023-VMM-000060'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256383'
+  tag rid: 'SV-256383r885930_rule'
   tag stig_id: 'ESXI-70-000009'
   tag cci: ['CCI-000048']
   tag nist: ['AC-8 a']

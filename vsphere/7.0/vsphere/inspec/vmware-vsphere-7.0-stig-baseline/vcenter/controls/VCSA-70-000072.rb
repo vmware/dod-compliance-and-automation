@@ -9,7 +9,7 @@ control 'VCSA-70-000072' do
   desc  'check', "
     From the vSphere Client, go to Administration >> Single Sign On >> Configuration >> Local Accounts >> Password Policy.
 
-    The following password requirement should be set with at least the stated value:
+    Set the following password requirement with at least the stated value:
 
     Lower-case Characters: At least 1
 
@@ -20,13 +20,13 @@ control 'VCSA-70-000072' do
 
     Click \"Edit\".
 
-    Set Lower-case Characters to at least \"1\" and click \"Save\".
+    Set \"Lower-case Characters\" to at least \"1\" and click \"Save\".
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000167'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256328'
+  tag rid: 'SV-256328r885595_rule'
   tag stig_id: 'VCSA-70-000072'
   tag cci: ['CCI-000193']
   tag nist: ['IA-5 (1) (a)']

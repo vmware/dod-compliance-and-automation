@@ -1,13 +1,15 @@
 control 'VCSA-70-000271' do
   title 'The vCenter Server must only send NetFlow traffic to authorized collectors.'
-  desc  'The distributed virtual switch can export NetFlow information about traffic crossing the switch. NetFlow exports are not encrypted and can contain information about the virtual network, making it easier for a MitM attack to be executed successfully. If NetFlow export is required, verify that all NetFlow target IPs are correct.'
+  desc  'The distributed virtual switch can export NetFlow information about traffic crossing the switch. NetFlow exports are not encrypted and can contain information about the virtual network, making it easier for a man-in-the-middle attack to be executed successfully. If NetFlow export is required, verify that all NetFlow target Internet Protocols (IPs) are correct.'
   desc  'rationale', ''
   desc  'check', "
-    If distributed switches are not used, this is Not Applicable.
+    If distributed switches are not used, this is not applicable.
 
     To view NetFlow Collector IPs configured on distributed switches:
 
-    From the vSphere Client, go to Networking >> Select a distributed switch >> Configure >> Settings >> NetFlow.
+    From the vSphere Client, go to \"Networking\".
+
+    Select a distributed switch >> Configure >> Settings >> NetFlow.
 
     View the NetFlow pane and verify any collector IP addresses are valid and in use for troubleshooting.
 
@@ -19,9 +21,11 @@ control 'VCSA-70-000271' do
 
     To view if NetFlow is enabled on any distributed port groups:
 
-    From the vSphere Client, go to Networking >> Select a distributed port group >> Manage >> Settings >> Policies.
+    From the vSphere Client, go to Networking.
 
-    Go to Monitoring and view the NetFlow status.
+    Select a distributed port group >> Manage >> Settings >> Policies.
+
+    Go to \"Monitoring\" and view the NetFlow status.
 
     or
 
@@ -32,9 +36,11 @@ control 'VCSA-70-000271' do
     If NetFlow is configured and the collector IP is not known and documented, this is a finding.
   "
   desc 'fix', "
-    To remove collector IPs do the following:
+    To remove collector IPs, do the following:
 
-    From the vSphere Client, go to Networking >> Select a distributed switch >> Configure >> Settings >> NetFlow.
+    From the vSphere Client, go to \"Networking\".
+
+    Select a distributed switch >> Configure >> Settings >> NetFlow.
 
     Click \"Edit\".
 
@@ -42,7 +48,7 @@ control 'VCSA-70-000271' do
 
     or
 
-    From a PowerCLI command prompt while connected to the vCenter server, run the following command(s):
+    From a PowerCLI command prompt while connected to the vCenter server, run the following commands:
 
     $dvs = Get-VDSwitch dvswitch | Get-View
     ForEach($vs in $dvs){
@@ -60,9 +66,11 @@ control 'VCSA-70-000271' do
 
     Note: This will reset the NetFlow collector configuration back to the defaults.
 
-    To disable NetFlow on a distributed port group do the following:
+    To disable NetFlow on a distributed port group, do the following:
 
-    From the vSphere Client, go to Networking >> Select a distributed port group >> Configure >> Settings >> Policies.
+    From the vSphere Client, go to Networking.
+
+    Select a distributed port group >> Configure >> Settings >> Policies.
 
     Click \"Edit\".
 
@@ -72,7 +80,7 @@ control 'VCSA-70-000271' do
 
     or
 
-    From a PowerCLI command prompt while connected to the vCenter server, run the following command(s):
+    From a PowerCLI command prompt while connected to the vCenter server, run the following commands:
 
     $pgs = Get-VDPortgroup | Get-View
     ForEach($pg in $pgs){
@@ -88,8 +96,8 @@ control 'VCSA-70-000271' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256351'
+  tag rid: 'SV-256351r885664_rule'
   tag stig_id: 'VCSA-70-000271'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

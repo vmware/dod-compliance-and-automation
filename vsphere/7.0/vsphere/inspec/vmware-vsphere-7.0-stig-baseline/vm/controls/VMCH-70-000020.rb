@@ -1,18 +1,18 @@
 control 'VMCH-70-000020' do
-  title 'System administrators must use templates to deploy virtual machines whenever possible.'
-  desc  'By capturing a hardened base operating system image (with no applications installed) in a template, ensure all virtual machines are created with a known baseline level of security. Then use this template to create other, application-specific templates, or use the application template to deploy virtual machines. Manual installation of the OS and applications into a VM introduces the risk of misconfiguration due to human or process error.'
+  title 'System administrators must use templates to deploy virtual machines (VMs) whenever possible.'
+  desc  'Capture a hardened base operating system image (with no applications installed) in a template to ensure all VMs are created with a known baseline level of security. Use this template to create other, application-specific templates, or use the application template to deploy VMs. Manual installation of the operating system and applications into a VM introduces the risk of misconfiguration due to human or process error.'
   desc  'rationale', ''
   desc  'check', "
-    Ask the SA if hardened, patched templates are used for VM creation, properly configured OS deployments, including applications both dependent and non-dependent on VM-specific configurations.
+    Ask the system administrator if hardened, patched templates are used for VM creation and properly configured operating system deployments, including applications dependent and nondependent on VM-specific configurations.
 
     If hardened, patched templates are not used for VM creation, this is a finding.
   "
-  desc 'fix', 'Create hardened virtual machine templates to use for OS deployments.'
-  impact 0.7
-  tag severity: 'high'
+  desc 'fix', 'Create hardened VM templates to use for operating system deployments.'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256468'
+  tag rid: 'SV-256468r886447_rule'
   tag stig_id: 'VMCH-70-000020'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

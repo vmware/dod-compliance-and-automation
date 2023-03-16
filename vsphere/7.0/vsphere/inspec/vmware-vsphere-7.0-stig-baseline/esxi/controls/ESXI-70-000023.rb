@@ -1,9 +1,9 @@
 control 'ESXI-70-000023' do
-  title 'The ESXi host SSH daemon must be configured to not allow X11 forwarding.'
+  title 'The ESXi host Secure Shell (SSH) daemon must be configured to not allow X11 forwarding.'
   desc  'X11 forwarding over SSH allows for the secure remote execution of X11-based applications. This feature can increase the attack surface of an SSH connection.'
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # /usr/lib/vmware/openssh/bin/sshd -T|grep x11forwarding
 
@@ -21,8 +21,8 @@ control 'ESXI-70-000023' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256392'
+  tag rid: 'SV-256392r885957_rule'
   tag stig_id: 'ESXI-70-000023'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

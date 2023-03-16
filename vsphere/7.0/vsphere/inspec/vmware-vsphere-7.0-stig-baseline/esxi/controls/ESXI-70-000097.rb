@@ -1,15 +1,17 @@
 control 'ESXI-70-000097' do
-  title 'The ESXi CIM service must be disabled.'
+  title 'The ESXi Common Information Model (CIM) service must be disabled.'
   desc  "
-    The Common Information Model (CIM) system provides an interface that enables hardware-level management from remote applications via a set of standard APIs. These APIs are consumed by external applications such as HP SIM or Dell OpenManage for agentless, remote hardware monitoring of the ESXi host.
+    The CIM system provides an interface that enables hardware-level management from remote applications via a set of standard application programming interfaces (APIs). These APIs are consumed by external applications such as HP SIM or Dell OpenManage for agentless, remote hardware monitoring of the ESXi host.
 
-    In order to reduce attack surface area and following the minimum functionality principal, the CIM service must be disabled unless explicitly needed and approved.
+    To reduce attack surface area and following the minimum functionality principal, the CIM service must be disabled unless explicitly needed and approved.
   "
   desc  'rationale', ''
   desc  'check', "
-    Fom the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Services.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Locate the \"CIM Server\" service and verify that the \"Daemon\" is \"Stopped\" and the \"Startup Policy\" is set to \"Start and stop manually\".
+    Select the ESXi Host >> Configure >> System >> Services.
+
+    Locate the \"CIM Server\" service and verify the \"Daemon\" is \"Stopped\" and the \"Startup Policy\" is set to \"Start and stop manually\".
 
     or
 
@@ -19,14 +21,17 @@ control 'ESXI-70-000097' do
 
     If the slpd service does not have a \"Policy\" of \"off\" or is running, this is a finding.
   "
-  desc  'fix', "
-    Fom the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Services.
+  desc 'fix', "
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Select the \"CIM Server\" service. If the service is started, click \"Stop\". Click \"Edit Startup Policy...\". Select \"Start and stop manually\". Click \"OK\".
+    Select the ESXi Host >> Configure >> System >> Services.
 
+    Select the \"CIM Server\" service. If the service is started, click \"Stop\".
+
+    Click \"Edit Startup Policy...\". Select \"Start and stop manually\". Click \"OK\".
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
     Get-VMHost | Get-VMHostService | Where {$_.Label -eq \"CIM Server\"} | Set-VMHostService -Policy Off
     Get-VMHost | Get-VMHostService | Where {$_.Label -eq \"CIM Server\"} | Stop-VMHostService
@@ -34,8 +39,8 @@ control 'ESXI-70-000097' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256448'
+  tag rid: 'SV-256448r886125_rule'
   tag stig_id: 'ESXI-70-000097'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

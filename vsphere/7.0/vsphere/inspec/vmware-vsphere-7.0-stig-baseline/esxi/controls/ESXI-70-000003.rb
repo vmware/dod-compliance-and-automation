@@ -1,13 +1,19 @@
 control 'ESXI-70-000003' do
-  title 'The ESXi host must verify the exception users list for Lockdown Mode.'
-  desc  'While a host is in lockdown mode (strict or normal), only users on the "Exception Users" list are allowed access. These users do not lose their permissions when the host enters lockdown mode. Usually you may want to add service accounts such as a backup agent to the Exception Users list. Verify that the list of users who are exempted from losing permissions is legitimate and as needed per your environment. Adding unnecessary users to the exception list defeats the purpose of Lockdown Mode.'
+  title 'The ESXi host must verify the exception users list for lockdown lode.'
+  desc  "
+    While a host is in lockdown mode (strict or normal), only users on the \"Exception Users\" list are allowed access. These users do not lose their permissions when the host enters lockdown mode.
+
+    The organization may want to add service accounts such as a backup agent to the Exception Users list. Verify the list of users exempted from losing permissions is legitimate and as needed per the environment. Adding unnecessary users to the exception list defeats the purpose of lockdown mode.
+  "
   desc  'rationale', ''
   desc  'check', "
-    For environments that do not use vCenter server to manage ESXi, this is Not Applicable.
+    For environments that do not use vCenter server to manage ESXi, this is not applicable.
 
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Security Profile.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Under Lockdown Mode, review the Exception Users list.
+    Select the ESXi Host >> Configure >> System >> Security Profile.
+
+    Under \"Lockdown Mode\", review the Exception Users list.
 
     or
 
@@ -19,18 +25,20 @@ control 'ESXI-70-000003' do
 
     If the Exception Users list contains accounts that do not require special permissions, this is a finding.
 
-    Note: The Exception Users list is empty by default and should remain that way except under site specific circumstances.
+    Note: The Exception Users list is empty by default and should remain that way except under site-specific circumstances.
   "
   desc 'fix', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Security Profile.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Under Lockdown Mode, click Edit and remove unnecessary users from the exceptions list.
+    Select the ESXi Host >> Configure >> System >> Security Profile.
+
+    Under \"Lockdown Mode\", click \"Edit\" and remove unnecessary users from the Exception Users list.
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256377'
+  tag rid: 'SV-256377r885912_rule'
   tag stig_id: 'ESXI-70-000003'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

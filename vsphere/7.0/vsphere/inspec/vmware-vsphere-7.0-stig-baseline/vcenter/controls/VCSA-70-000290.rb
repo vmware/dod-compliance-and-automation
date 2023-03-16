@@ -1,15 +1,15 @@
 control 'VCSA-70-000290' do
-  title 'The vCenter Server must limit membership to the SystemConfiguration.BashShellAdministrators SSO group.'
+  title 'The vCenter Server must limit membership to the "SystemConfiguration.BashShellAdministrators" Single Sign-On (SSO) group.'
   desc  "
-    vCenter SSO integrates with PAM in the underlying Photon operating system so that members of the SystemConfiguration.BashShellAdministrators SSO group can log on to the operating system without needing a separate account. The caveat to this is that even though unique SSO users log on, they are transparently using a group account named \"sso-user\" as far as Photon auditing is concerned. While the audit trail can still be traced back to the individual SSO user, it is a more involved process.
+    vCenter SSO integrates with PAM in the underlying Photon operating system so members of the \"SystemConfiguration.BashShellAdministrators\" SSO group can log on to the operating system without needing a separate account. However, even though unique SSO users log on, they are transparently using a group account named \"sso-user\" as far as Photon auditing is concerned. While the audit trail can still be traced back to the individual SSO user, it is a more involved process.
 
-    In order to force accountability and non-repudiation, the SSO group SystemConfiguration.BashShellAdministrators must be severly restricted.
+    To force accountability and nonrepudiation, the SSO group \"SystemConfiguration.BashShellAdministrators\" must be severely restricted.
   "
   desc  'rationale', ''
   desc  'check', "
     From the vSphere Client, go to Administration >> Single Sign On >> Users and Groups >> Groups.
 
-    Click the next page arrow until you see the \"SystemConfiguration.BashShellAdministrators\" group.
+    Click the next page arrow until the \"SystemConfiguration.BashShellAdministrators\" group appears.
 
     Click \"SystemConfiguration.BashShellAdministrators\".
 
@@ -22,7 +22,7 @@ control 'VCSA-70-000290' do
   desc 'fix', "
     From the vSphere Client, go to Administration >> Single Sign On >> Users and Groups >> Groups.
 
-    Click the next page arrow until you see the \"SystemConfiguration.BashShellAdministrators\" group.
+    Click the next page arrow until the \"SystemConfiguration.BashShellAdministrators\" group appears.
 
     Click \"SystemConfiguration.BashShellAdministrators\".
 
@@ -33,8 +33,8 @@ control 'VCSA-70-000290' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256370'
+  tag rid: 'SV-256370r885721_rule'
   tag stig_id: 'VCSA-70-000290'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

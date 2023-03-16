@@ -1,6 +1,6 @@
 control 'VCSA-70-000248' do
   title 'The vCenter Server must disable the Customer Experience Improvement Program (CEIP).'
-  desc  'The VMware Customer Experience Improvement Program (CEIP) sends VMware anonymized system information that is used to improve the quality, reliability, and functionality of VMware products and services. For confidentiality purposes this feature must be disabled.'
+  desc  'The VMware CEIP sends VMware anonymized system information that is used to improve the quality, reliability, and functionality of VMware products and services. For confidentiality purposes this feature must be disabled.'
   desc  'rationale', ''
   desc  'check', "
     From the vSphere Client, go to Administration >> Deployment >> Customer Experience Improvement Program.
@@ -15,8 +15,8 @@ control 'VCSA-70-000248' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256343'
+  tag rid: 'SV-256343r885640_rule'
   tag stig_id: 'VCSA-70-000248'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
