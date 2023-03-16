@@ -1,17 +1,17 @@
 control 'VCSA-70-000277' do
-  title 'The vCenter Server must be isolated from the public Internet but must still allow for patch notification and delivery.'
+  title 'The vCenter Server must be isolated from the public internet but must still allow for patch notification and delivery.'
   desc  "
-    vCenter and the embedded Lifecycle Manager system must never have a direct route to the Internet. Despite this, updates and patches sourced from VMware on the Internet must be delivered in a timeley manner.
+    vCenter and the embedded Lifecycle Manager system must never have a direct route to the internet. Despite this, updates and patches sourced from VMware on the internet must be delivered in a timely manner.
 
-    There are two methods to accomplish this, a proxy server and the Update Manager Download Service (UMDS). UMDS is an optional module for Lifecycle Manager that fetches upgrades for virtual appliances, patch metadata, patch binaries and notifications that would not otherwise be available to an isolated Lifecycle Manager directly.
+    There are two methods to accomplish this: a proxy server and the Update Manager Download Service (UMDS). UMDS is an optional module for Lifecycle Manager that fetches upgrades for virtual appliances, patch metadata, patch binaries, and notifications that would not otherwise be available to an isolated Lifecycle Manager directly.
 
-    Alternatively, a proxy for Lifecycle Manager can be configured to allowed controlled, limited access to the public internet for the sole purpose of patch gathering. Either solution mitigates the risk of Internet connectivity by limiting it's scope and usage.
+    Alternatively, a proxy for Lifecycle Manager can be configured to allow controlled, limited access to the public internet for the sole purpose of patch gathering. Either solution mitigates the risk of internet connectivity by limiting its scope and use.
   "
   desc  'rationale', ''
   desc  'check', "
     Check the following conditions:
 
-    1. Lifecycle Manager must be configured to use the Update Manager Download Server.
+    1. Lifecycle Manager must be configured to use the UMDS.
 
     OR
 
@@ -27,7 +27,7 @@ control 'VCSA-70-000277' do
 
     Click the \"Change Download Source\" button.
 
-    Verify that the \"Download patches from a UMDS shared repository\" radio button is selected and that a valid UMDS repository is supplied.
+    Verify the \"Download patches from a UMDS shared repository\" radio button is selected and that a valid UMDS repository is supplied.
 
     Click \"Cancel\".
 
@@ -39,7 +39,7 @@ control 'VCSA-70-000277' do
 
     Click the \"Change Download Source\" button.
 
-    Verify that the \"Download patches directly from the internet\" radio button is selected.
+    Verify the \"Download patches directly from the internet\" radio button is selected.
 
     Click \"Cancel\".
 
@@ -49,7 +49,7 @@ control 'VCSA-70-000277' do
 
     Click the \"HTTPS\" row.
 
-    Verify that the proxy server configuration is accurate.
+    Verify the proxy server configuration is accurate.
 
     If this is not set, this is a finding.
 
@@ -100,13 +100,15 @@ control 'VCSA-70-000277' do
 
     From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Downloads.
 
-    Click \"Edit\" and uncheck \"Download patches\". Then under \"Patch Setup\" select each download source and click Disable.
+    Click \"Edit\" and uncheck \"Download patches\".
+
+    Under \"Patch Setup\" select each download source and click \"Disable\".
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256357'
+  tag rid: 'SV-256357r885682_rule'
   tag stig_id: 'VCSA-70-000277'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

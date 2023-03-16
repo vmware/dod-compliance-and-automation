@@ -9,13 +9,13 @@ control 'ESXI-70-000084' do
   "
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # esxcli system auditrecords get
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
     $esxcli = Get-EsxCli -v2
     $esxcli.system.auditrecords.get.invoke()|Format-List
@@ -32,7 +32,7 @@ control 'ESXI-70-000084' do
     If audit record storage is not active and configured, this is a finding.
   "
   desc 'fix', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following commands:
 
     Optional: Set the audit log location to persistent storage. This is set to '/scratch/auditLog' by default and does not normally need to be changed.
 
@@ -47,7 +47,7 @@ control 'ESXI-70-000084' do
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
     $esxcli = Get-EsxCli -v2
     $arguments = $esxcli.system.auditrecords.local.set.CreateArgs()
@@ -61,8 +61,8 @@ control 'ESXI-70-000084' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256436'
+  tag rid: 'SV-256436r886089_rule'
   tag stig_id: 'ESXI-70-000084'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

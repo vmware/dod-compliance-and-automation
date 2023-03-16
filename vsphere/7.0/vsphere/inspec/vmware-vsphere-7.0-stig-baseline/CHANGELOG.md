@@ -1,3 +1,8 @@
+## [7.0 Version 1 Release 5 SRG/Version 1 Release 1 Official STIG] (2026-03-16)
+
+#### Release Notes
+- Updated metadata to match release of official STIG for vSphere 7
+
 ## [7.0 Version 1 Release 4] (2022-10-28)
 
 #### Release Notes

@@ -1,9 +1,9 @@
 control 'VMCH-70-000025' do
-  title 'Logging must be enabled on the virtual machine.'
+  title 'Logging must be enabled on the virtual machine (VM).'
   desc  'The ESXi hypervisor maintains logs for each individual VM by default. These logs contain information including, but not limited to, power events, system failure information, tools status and activity, time sync, virtual hardware changes, vMotion migrations and machine clones. Due to the value these logs provide for the continued availability of each VM and potential security incidents, these logs must be enabled.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client select the Virtual Machine, right click and go to Edit Settings >> VM Options Tab >> Advanced >> Settings.
+    From the vSphere Client, select the Virtual Machine, right click and go to Edit Settings >> VM Options tab >> Advanced >> Settings.
 
     Ensure that the checkbox next to \"Enable logging\" is checked.
 
@@ -16,7 +16,7 @@ control 'VMCH-70-000025' do
     If logging is not enabled, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client select the Virtual Machine, right click and go to Edit Settings >> VM Options Tab >> Advanced >> Settings.
+    From the vSphere Client, select the Virtual Machine, right click and go to Edit Settings >> VM Options tab >> Advanced >> Settings.
 
     Click the checkbox next to \"Enable logging\". Click \"OK\".
 
@@ -32,8 +32,8 @@ control 'VMCH-70-000025' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256473'
+  tag rid: 'SV-256473r886462_rule'
   tag stig_id: 'VMCH-70-000025'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

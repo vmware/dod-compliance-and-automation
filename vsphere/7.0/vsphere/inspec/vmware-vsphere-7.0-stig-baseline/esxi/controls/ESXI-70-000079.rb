@@ -1,9 +1,11 @@
 control 'ESXI-70-000079' do
   title 'The ESXi host must not suppress warnings that the local or remote shell sessions are enabled.'
-  desc  'Warnings that local or remote shell sessions are enabled alert administrators to activity that they may not be aware of and need to investigate.'
+  desc  'Warnings that local or remote shell sessions are enabled alert administrators to activity they may not be aware of and need to investigate.'
   desc  'rationale', ''
   desc  'check', "
-    Fom the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Select the \"UserVars.SuppressShellWarning\" value and verify that it is set to \"0\".
 
@@ -15,8 +17,10 @@ control 'ESXI-70-000079' do
 
     If the \"UserVars.SuppressShellWarning\" setting is not set to \"0\" or the setting does not exist, this is a finding.
   "
-  desc  'fix', "
-    Fom the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+  desc 'fix', "
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Select the \"UserVars.SuppressShellWarning\" value and set it to \"0\".
 
@@ -29,8 +33,8 @@ control 'ESXI-70-000079' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256432'
+  tag rid: 'SV-256432r886077_rule'
   tag stig_id: 'ESXI-70-000079'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

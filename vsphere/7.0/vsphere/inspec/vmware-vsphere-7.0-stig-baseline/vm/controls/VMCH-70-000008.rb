@@ -1,9 +1,9 @@
 control 'VMCH-70-000008' do
-  title 'Unauthorized floppy devices must be disconnected on the virtual machine.'
-  desc  'Ensure that no device is connected to a virtual machine if it is not required. For example, floppy, serial and parallel ports are rarely used for virtual machines in a datacenter environment, and CD/DVD drives are usually connected only temporarily during software installation.'
+  title 'Unauthorized floppy devices must be disconnected on the virtual machine (VM).'
+  desc  'Ensure no device is connected to a virtual machine if it is not required. For example, floppy, serial, and parallel ports are rarely used for virtual machines in a data center environment, and CD/DVD drives are usually connected only temporarily during software installation.'
   desc  'rationale', ''
   desc  'check', "
-    Floppy drives are no longer visible through the vSphere Client and must be done via the API or PowerCLI.
+    Floppy drives are no longer visible through the vSphere Client and must be done via the Application Programming Interface (API) or PowerCLI.
 
     From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
 
@@ -23,8 +23,8 @@ control 'VMCH-70-000008' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256457'
+  tag rid: 'SV-256457r886414_rule'
   tag stig_id: 'VMCH-70-000008'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

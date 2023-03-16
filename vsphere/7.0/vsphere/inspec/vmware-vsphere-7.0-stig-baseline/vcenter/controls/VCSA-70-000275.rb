@@ -1,15 +1,17 @@
 control 'VCSA-70-000275' do
-  title 'The vCenter Server must configure the vpxuser auto-password to be changed every 30 days.'
+  title 'The vCenter Server must configure the "vpxuser" auto-password to be changed every 30 days.'
   desc  "
-    By default, the vpxuser password will be automatically changed by vCenter every 30 days. Ensure this setting meets site policies; if not, configure to meet password aging policies.
+    By default, vCenter will change the \"vpxuser\" password automatically every 30 days. Ensure this setting meets site policies. If it does not, configure it to meet password aging policies.
 
-    Note: It is very important the password aging policy not be shorter than the default interval that is set to automatically change the vpxuser password, to preclude the possibility that vCenter might be locked out of an ESXi host.
+    Note: It is very important the password aging policy is not shorter than the default interval that is set to automatically change the \"vpxuser\" password to preclude the possibility that vCenter might be locked out of an ESXi host.
   "
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client, go to Host and Clusters >> Select a vCenter Server >> Configure >> Settings >> Advanced Settings.
+    From the vSphere Client, go to Host and Clusters.
 
-    Verify that \"VirtualCenter.VimPasswordExpirationInDays\" is set to \"30\".
+    Select a vCenter Server >> Configure >> Settings >> Advanced Settings.
+
+    Verify \"VirtualCenter.VimPasswordExpirationInDays\" is set to \"30\".
 
     or
 
@@ -20,9 +22,11 @@ control 'VCSA-70-000275' do
     If the \"VirtualCenter.VimPasswordExpirationInDays\" is set to a value other than \"30\" or does not exist, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client, go to Host and Clusters >> Select a vCenter Server >> Configure >> Settings >> Advanced Settings.
+    From the vSphere Client, go to Host and Clusters.
 
-    Click \"Edit Settings\" and configure the \"VirtualCenter.VimPasswordExpirationInDays\" value to \"30\" or if the value does not exist create it by entering the values in the \"Key\" and \"Value\" fields and clicking \"Add\".
+    Select a vCenter Server >> Configure >> Settings >> Advanced Settings.
+
+    Click \"Edit Settings\" and configure the \"VirtualCenter.VimPasswordExpirationInDays\" value to \"30\", or if the value does not exist, create it by entering the values in the \"Key\" and \"Value\" fields and clicking \"Add\".
 
     or
 
@@ -39,8 +43,8 @@ control 'VCSA-70-000275' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256355'
+  tag rid: 'SV-256355r885676_rule'
   tag stig_id: 'VCSA-70-000275'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

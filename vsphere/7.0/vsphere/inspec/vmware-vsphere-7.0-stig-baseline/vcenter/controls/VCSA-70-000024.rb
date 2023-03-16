@@ -1,9 +1,9 @@
 control 'VCSA-70-000024' do
-  title 'The vCenter Server must display the Standard Mandatory DoD Notice and Consent Banner before logon.'
+  title 'The vCenter Server must display the Standard Mandatory DOD Notice and Consent Banner before login.'
   desc  "
-    Display of the DoD-approved use notification before granting access to the application ensures privacy and security notification verbiage used is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.
+    Display of the DOD-approved use notification before granting access to the application ensures privacy and security notification verbiage used is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.
 
-    System use notifications are required only for access via logon interfaces with human users and are not required when such human interfaces do not exist.
+    System use notifications are required only for access via login interfaces with human users and are not required when such human interfaces do not exist.
 
     The banner must be formatted in accordance with DTM-08-060. Use the following verbiage for applications that can accommodate banners of 1300 characters:
 
@@ -29,9 +29,9 @@ control 'VCSA-70-000024' do
   desc  'check', "
     From the vSphere Client, go to Administration >> Single Sign On >> Configuration >> Login Message.
 
-    If selection boxes next to \"Show login message\" is disabled or if \"Details of login message\" is not configured to the standard DoD User Agreement or if the \"Consent checkbox\" is disabled, this is a finding.
+    If the selection box next to \"Show login message\" is disabled, \"Details of login message\" is not configured to the standard DOD User Agreement, or the \"Consent checkbox\" is disabled, this is a finding.
 
-    Note: See vulnerability discussion for user agreement language.
+    Note: Refer to vulnerability discussion for user agreement language.
   "
   desc 'fix', "
     From the vSphere Client, go to Administration >> Single Sign On >> Configuration >> Login Message.
@@ -40,11 +40,11 @@ control 'VCSA-70-000024' do
 
     Click the \"Show login message\" slider to enable.
 
-    Configure the \"Login message\" to \"DoD User Agreement\".
+    Configure the \"Login message\" to \"DOD User Agreement\".
 
     Click the \"Consent checkbox\" slider to enable.
 
-    Set the \"Details of login message\" to the Standard Mandatory DoD Notice and Consent Banner text.
+    Set the \"Details of login message\" to the Standard Mandatory DOD Notice and Consent Banner text.
 
     Click \"Save\".
   "
@@ -52,8 +52,8 @@ control 'VCSA-70-000024' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000068'
   tag satisfies: ['SRG-APP-000069', 'SRG-APP-000070']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256320'
+  tag rid: 'SV-256320r885571_rule'
   tag stig_id: 'VCSA-70-000024'
   tag cci: ['CCI-000048', 'CCI-000050', 'CCI-001384']
   tag nist: ['AC-8 a', 'AC-8 b', 'AC-8 c 1']

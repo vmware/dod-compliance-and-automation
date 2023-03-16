@@ -1,9 +1,9 @@
 control 'ESXI-70-000015' do
-  title 'The ESXi host SSH daemon must not allow authentication using an empty password.'
+  title 'The ESXi host Secure Shell (SSH) daemon must not allow authentication using an empty password.'
   desc  'Configuring this setting for the SSH daemon provides additional assurance that remote logon via SSH will require a password, even in the event of misconfiguration elsewhere.'
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # /usr/lib/vmware/openssh/bin/sshd -T|grep permitemptypasswords
 
@@ -21,8 +21,8 @@ control 'ESXI-70-000015' do
   impact 0.3
   tag severity: 'low'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256387'
+  tag rid: 'SV-256387r885942_rule'
   tag stig_id: 'ESXI-70-000015'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

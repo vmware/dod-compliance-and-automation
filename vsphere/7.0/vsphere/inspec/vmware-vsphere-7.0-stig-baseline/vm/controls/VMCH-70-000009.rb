@@ -1,9 +1,9 @@
 control 'VMCH-70-000009' do
-  title 'Unauthorized CD/DVD devices must be disconnected on the virtual machine.'
-  desc  'Ensure that no device is connected to a virtual machine if it is not required. For example, floppy, serial and parallel ports are rarely used for virtual machines in a datacenter environment, and CD/DVD drives are usually connected only temporarily during software installation.'
+  title 'Unauthorized CD/DVD devices must be disconnected on the virtual machine (VM).'
+  desc  'Ensure no device is connected to a virtual machine if it is not required. For example, floppy, serial, and parallel ports are rarely used for virtual machines in a data center environment, and CD/DVD drives are usually connected only temporarily during software installation.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client right-click the Virtual Machine and go to Edit Settings.
+    From the vSphere Client, right-click the Virtual Machine and go to \"Edit Settings\".
 
     Review the VMs hardware and verify no CD/DVD drives are connected.
 
@@ -16,9 +16,9 @@ control 'VMCH-70-000009' do
     If a virtual machine has a CD/DVD drive connected other than temporarily, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client right-click the Virtual Machine and go to Edit Settings.
+    From the vSphere Client, right-click the Virtual Machine and go to \"Edit Settings\".
 
-    Select the CD/DVD drive and uncheck \"Connected\" and \"Connect at power on\" and remove any attached ISOs..
+    Select the CD/DVD drive and uncheck \"Connected\" and \"Connect at power on\" and remove any attached ISOs.
 
     or
 
@@ -26,11 +26,11 @@ control 'VMCH-70-000009' do
 
     Get-VM \"VM Name\" | Get-CDDrive | Set-CDDrive -NoMedia
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256458'
+  tag rid: 'SV-256458r886417_rule'
   tag stig_id: 'VMCH-70-000009'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

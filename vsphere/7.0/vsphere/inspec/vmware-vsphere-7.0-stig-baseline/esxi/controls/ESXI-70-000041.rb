@@ -1,11 +1,13 @@
 control 'ESXI-70-000041' do
   title 'The ESXi host must set a timeout to automatically disable idle shell sessions after two minutes.'
-  desc  'If a user forgets to log out of their local or remote ESXi Shell session, the idle connection will remain open indefinitely and increase the likelihood of inapprioriate host access via session hijacking. The "ESXiShellInteractiveTimeOut" allows the automatic termination of idle shell sessions.'
+  desc  'If a user forgets to log out of their local or remote ESXi Shell session, the idle connection will remain open indefinitely and increase the likelihood of inappropriate host access via session hijacking. The "ESXiShellInteractiveTimeOut" allows the automatic termination of idle shell sessions.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Select the \"UserVars.ESXiShellInteractiveTimeOut\" value and verify it is set to \"120\" (2 minutes).
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+
+    Select the \"UserVars.ESXiShellInteractiveTimeOut\" value and verify it is set to \"120\" (two minutes).
 
     or
 
@@ -16,13 +18,15 @@ control 'ESXI-70-000041' do
     If the \"UserVars.ESXiShellInteractiveTimeOut\" setting is not set to \"120\", this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Click \"Edit\". Select the \"UserVars.ESXiShellInteractiveTimeOut\" value and configure it to \"120\".
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
+    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
     Get-VMHost | Get-AdvancedSetting -Name UserVars.ESXiShellInteractiveTimeOut | Set-AdvancedSetting -Value 120
   "
@@ -30,8 +34,8 @@ control 'ESXI-70-000041' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000163-VMM-000700'
   tag satisfies: ['SRG-OS-000279-VMM-001010']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256405'
+  tag rid: 'SV-256405r885996_rule'
   tag stig_id: 'ESXI-70-000041'
   tag cci: ['CCI-001133', 'CCI-002361']
   tag nist: ['AC-12', 'SC-10']

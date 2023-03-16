@@ -1,17 +1,19 @@
 control 'VCSA-70-000273' do
   title 'The vCenter Server must not configure VLAN Trunking unless Virtual Guest Tagging (VGT) is required and authorized.'
   desc  "
-    When a port group is set to VLAN Trunking, the vSwitch passes all network frames in the specified range to the attached VMs without modifying the VLAN tags. In vSphere, this is referred to as Virtual Guest Tagging (VGT).
+    When a port group is set to VLAN Trunking, the vSwitch passes all network frames in the specified range to the attached virtual machines without modifying the virtual local area network (VLAN) tags. In vSphere, this is referred to as VGT.
 
-    The VM must process the VLAN information itself via an 802.1Q driver in the OS. VLAN Trunking must only be implemented if the attached VMs have been specifically authorized and are capable of managing VLAN tags themselves.
+    The virtual machine must process the VLAN information itself via an 802.1Q driver in the operating system. VLAN Trunking must only be implemented if the attached virtual machines have been specifically authorized and are capable of managing VLAN tags themselves.
 
-    If VLAN Trunking is enabled inappropriately, it may cause denial of service or allow a VM to interact with traffic on an unauthorized VLAN.
+    If VLAN Trunking is enabled inappropriately, it may cause a denial of service or allow a virtual machine to interact with traffic on an unauthorized VLAN.
   "
   desc  'rationale', ''
   desc  'check', "
-    If distributed switches are not used, this is Not Applicable.
+    If distributed switches are not used, this is not applicable.
 
-    From the vSphere Client, go to Networking >> Select a distributed switch >> Select a distributed port group >> Configure >> Settings >> Policies.
+    From the vSphere Client, go to \"Networking\".
+
+    Select a distributed switch >> distributed port group >> Configure >> Settings >> Policies.
 
     Review the port group \"VLAN Type\" and \"VLAN trunk range\", if present.
 
@@ -26,7 +28,9 @@ control 'VCSA-70-000273' do
     If any port group is authorized to be configured with \"VLAN trunking\" but is not configured with the most limited range necessary, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client, go to Networking >> Select a distributed switch >> Select a distributed port group >> Configure >> Settings >> Policies.
+    From the vSphere Client, go to \"Networking\".
+
+    Select a distributed switch >> distributed port group >> Configure >> Settings >> Policies.
 
     Click \"Edit\".
 
@@ -51,8 +55,8 @@ control 'VCSA-70-000273' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256353'
+  tag rid: 'SV-256353r885670_rule'
   tag stig_id: 'VCSA-70-000273'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

@@ -1,7 +1,7 @@
 control 'VCSA-70-000253' do
   title 'The vCenter server must enforce SNMPv3 security features where SNMP is required.'
   desc  "
-    SNMPv3 supports commercial-grade security, including authentication, authorization, access control, and privacy while previous versions of the protocol contained well-known security weaknesses that were easily exploited. SNMPv3 can be configured for identification and cryptographically based authentication.
+    SNMPv3 supports commercial-grade security, including authentication, authorization, access control, and privacy. Previous versions of the protocol contained well-known security weaknesses that were easily exploited. SNMPv3 can be configured for identification and cryptographically based authentication.
 
     SNMPv3 defines a user-based security model (USM) and a view-based access control model (VACM). SNMPv3 USM provides data integrity, data origin authentication, message replay protection, and protection against disclosure of the message payload. SNMPv3 VACM provides access control to determine whether a specific type of access (read or write) to the management information is allowed. Implement both VACM and USM for full protection.
 
@@ -9,7 +9,7 @@ control 'VCSA-70-000253' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt on the vCenter Server Appliance, execute the following command(s):
+    At the command prompt on the vCenter Server Appliance, run the following commands:
 
     # appliancesh
     # snmp.get
@@ -25,7 +25,7 @@ control 'VCSA-70-000253' do
     If any \"Users\" are configured with a \"Sec_level\" that does not equal \"priv\", this is a finding.
   "
   desc 'fix', "
-    At the command prompt on the vCenter Server Appliance, execute the following command(s):
+    At the command prompt on the vCenter Server Appliance, run the following commands:
 
     # appliancesh
     # snmp.set --authentication SHA1
@@ -38,8 +38,8 @@ control 'VCSA-70-000253' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000575'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256344'
+  tag rid: 'SV-256344r885643_rule'
   tag stig_id: 'VCSA-70-000253'
   tag cci: ['CCI-001967']
   tag nist: ['IA-3 (1)']

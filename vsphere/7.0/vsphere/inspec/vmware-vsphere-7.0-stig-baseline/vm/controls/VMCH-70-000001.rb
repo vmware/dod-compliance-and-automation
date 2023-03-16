@@ -1,9 +1,9 @@
 control 'VMCH-70-000001' do
-  title 'Copy operations must be disabled on the virtual machine.'
-  desc  'Copy and paste operations are disabled by default; however, by explicitly disabling this feature it will enable audit controls to check that this setting is correct. Copy, paste, drag and drop, or GUI copy/paste operations between the guest OS and the remote console could provide the means for an attacker to compromise the VM.'
+  title 'Copy operations must be disabled on the virtual machine (VM).'
+  desc  'Copy and paste operations are disabled by default; however, explicitly disabling this feature will enable audit controls to verify this setting is correct. Copy, paste, drag and drop, or GUI copy/paste operations between the guest operating system and the remote console could provide the means for an attacker to compromise the VM.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client right-click the Virtual Machine and go to Edit Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit Configuration.
+    From the vSphere Client, right-click the Virtual Machine and go to Edit Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit Configuration.
 
     Verify the \"isolation.tools.copy.disable\" value is set to true.
 
@@ -16,17 +16,17 @@ control 'VMCH-70-000001' do
     If the virtual machine advanced setting \"isolation.tools.copy.disable\" does not exist or is not set to \"true\", this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client right-click the Virtual Machine and go to Edit Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit Configuration.
+    From the vSphere Client, right-click the Virtual Machine and go to Edit Settings >> VM Options >> Advanced >> Configuration Parameters >> Edit Configuration.
 
     Find the \"isolation.tools.copy.disable\" value and set it to \"true\".
 
     If the setting does not exist, add the Name and Value setting at the bottom of screen.
 
-    Note: The VM must be powered off to configure the advanced settings through the vSphere Client so it is recommended to configure these settings with PowerCLI as it can be done while the VM is powered on. Settings do not take effect via either method until the virtual machine is cold started, not rebooted.
+    Note: The VM must be powered off to configure the advanced settings through the vSphere Client. Therefore, it is recommended to configure these settings with PowerCLI as this can be done while the VM is powered on. Settings do not take effect via either method until the virtual machine is cold started, not rebooted.
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
+    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the provided commands as noted below.
 
     If the setting does not exist, run:
 
@@ -36,11 +36,11 @@ control 'VMCH-70-000001' do
 
     Get-VM \"VM Name\" | Get-AdvancedSetting -Name isolation.tools.copy.disable | Set-AdvancedSetting -Value true
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256450'
+  tag rid: 'SV-256450r886393_rule'
   tag stig_id: 'VMCH-70-000001'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

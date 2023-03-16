@@ -1,13 +1,19 @@
 control 'ESXI-70-000002' do
   title 'The ESXi host must verify the DCUI.Access list.'
-  desc  'Lockdown mode disables direct host access, requiring that admins manage hosts from vCenter Server. However, if a host becomes isolated from vCenter, the administrator is locked out and can no longer manage the host. The DCUI.Access advanced setting allows specified users to exit lockdown mode in such a scenario. If the DCUI is running in strict lockdown mode, this setting is ineffective.'
+  desc  "
+    Lockdown mode disables direct host access, requiring that administrators manage hosts from vCenter Server. However, if a host becomes isolated from vCenter, the administrator is locked out and can no longer manage the host.
+
+    The \"DCUI.Access\" advanced setting allows specified users to exit lockdown mode in such a scenario. If the Direct Console User Interface (DCUI) is running in strict lockdown mode, this setting is ineffective.
+  "
   desc  'rationale', ''
   desc  'check', "
-    For environments that do not use vCenter server to manage ESXi, this is Not Applicable.
+    For environments that do not use vCenter server to manage ESXi, this is not applicable.
 
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Select the DCUI.Access value and verify that only the root user is listed.
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+
+    Select the \"DCUI.Access\" value and verify only the root user is listed.
 
     or
 
@@ -15,14 +21,16 @@ control 'ESXI-70-000002' do
 
     Get-VMHost | Get-AdvancedSetting -Name DCUI.Access and verify it is set to root.
 
-    If the DCUI.Access is not restricted to root, this is a finding.
+    If the \"DCUI.Access\" is not restricted to \"root\", this is a finding.
 
     Note: This list is only for local user accounts and should only contain the root user.
   "
   desc 'fix', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Click \"Edit\". Select the DCUI.Access value and configure it to root.
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+
+    Click \"Edit\". Select the \"DCUI.Access\" value and configure it to \"root\".
 
     or
 
@@ -30,11 +38,11 @@ control 'ESXI-70-000002' do
 
     Get-VMHost | Get-AdvancedSetting -Name DCUI.Access | Set-AdvancedSetting -Value \"root\"
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256376'
+  tag rid: 'SV-256376r885909_rule'
   tag stig_id: 'ESXI-70-000002'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

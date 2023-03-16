@@ -1,8 +1,8 @@
 # vmware-vsphere-7.0-stig-baseline
-VMware vSphere vCenter Appliance 7.0 STIG Readiness Guide Chef InSpec Profile  
+VMware vSphere vCenter Appliance 7.0 STIG Chef InSpec Profile  
 InSpec profile for vSphere 7.0 vCenter, ESXi, and VM controls. Does not include appliance level controls  
-Version: Release 1 Version 4 Date: 28 October 2022  
-STIG Type: STIG Readiness Guide  
+Version: Release 1 Version 1 Date: 15 March 2023  
+STIG Type: Official STIG 
 
 ## Overview
 This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the vSphere 7.0 vCenter, ESXi, and VM STIG Readiness Guide controls. Does not include appliance level controls.  

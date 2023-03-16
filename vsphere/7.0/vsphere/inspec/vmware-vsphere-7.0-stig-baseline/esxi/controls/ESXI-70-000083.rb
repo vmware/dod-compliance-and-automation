@@ -1,13 +1,15 @@
 control 'ESXI-70-000083' do
   title 'The ESXi host OpenSLP service must be disabled.'
   desc  "
-    OpenSLP implements the Service Location Protocol to help CIM clients discover CIM servers over TCP 427. This service is not widely needed and has had vulnerabilities exposed in the past. In order to reduce attack surface area and following the minimum functionality principal, the OpenSLP service must be disabled unless explicitly needed and approved.
+    OpenSLP implements the Service Location Protocol to help CIM clients discover CIM servers over TCP 427. This service is not widely needed and has had vulnerabilities exposed in the past. To reduce attack surface area and following the minimum functionality principal, the OpenSLP service must be disabled unless explicitly needed and approved.
 
     Note: Disabling the OpenSLP service may affect monitoring and third-party systems that use the WBEM DTMF protocols.
   "
   desc  'rationale', ''
   desc  'check', "
-    Fom the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Services.
+    From the vSphere Client go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Services.
 
     Locate the \"slpd\" service and verify that the \"Daemon\" is \"Stopped\" and the \"Startup Policy\" is set to \"Start and stop manually\".
 
@@ -19,14 +21,18 @@ control 'ESXI-70-000083' do
 
     If the slpd service does not have a \"Policy\" of \"off\" or is running, this is a finding.
   "
-  desc  'fix', "
-    Fom the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Services.
+  desc 'fix', "
+    From the vSphere Client go to Hosts and Clusters.
 
-    Select the \"slpd\" service. If the service is started, click \"Stop\". Click \"Edit Startup Policy...\". Select \"Start and stop manually\". Click \"OK\".
+    Select the ESXi Host >> Configure >> System >> Services.
+
+    Select the \"slpd\" service. If the service is started, click \"Stop\".
+
+    Click \"Edit Startup Policy...\". Select \"Start and stop manually\". Click \"OK\".
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command(s):
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
     Get-VMHost | Get-VMHostService | Where {$_.Label -eq \"slpd\"} | Set-VMHostService -Policy Off
     Get-VMHost | Get-VMHostService | Where {$_.Label -eq \"slpd\"} | Stop-VMHostService
@@ -34,8 +40,8 @@ control 'ESXI-70-000083' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256435'
+  tag rid: 'SV-256435r886086_rule'
   tag stig_id: 'ESXI-70-000083'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

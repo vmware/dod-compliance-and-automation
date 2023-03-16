@@ -3,7 +3,9 @@ control 'ESXI-70-000056' do
   desc  'Unrestricted access to services running on an ESXi host can expose a host to outside attacks and unauthorized access. Reduce the risk by configuring the ESXi firewall to only allow access from authorized networks.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Firewall.
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Firewall.
 
     Under the \"Allowed IP addresses\" column, review the allowed IPs for each service.
 
@@ -18,9 +20,11 @@ control 'ESXI-70-000056' do
     If for an enabled service \"Allow connections from any IP address\" is selected, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Firewall.
+    From the vSphere Client, go to Hosts and Clusters.
 
-    Click \"Edit...\". For each enabled service, uncheck the check box to “Allow connections from any IP address” and input the site specific network(s) required.
+    Select the ESXi Host >> Configure >> System >> Firewall.
+
+    Click \"Edit...\". For each enabled service, uncheck the check box to \"Allow connections from any IP address\" and input the site-specific network(s) required.
 
     The following example formats are acceptable:
 
@@ -50,8 +54,8 @@ control 'ESXI-70-000056' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256417'
+  tag rid: 'SV-256417r886032_rule'
   tag stig_id: 'ESXI-70-000056'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

@@ -3,7 +3,9 @@ control 'ESXI-70-000006' do
   desc  'By enforcing a reasonable unlock timeout after multiple failed logon attempts, the risk of unauthorized access via user password guessing, otherwise known as brute forcing, is reduced. Users must wait for the timeout period to elapse before subsequent logon attempts are allowed.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Select the \"Security.AccountUnlockTime\" value and verify it is set to \"900\".
 
@@ -16,7 +18,9 @@ control 'ESXI-70-000006' do
     If the \"Security.AccountUnlockTime\" setting is set to a value other than 900, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Click \"Edit\". Select the \"Security.AccountUnlockTime\" value and configure it to \"900\".
 
@@ -29,8 +33,8 @@ control 'ESXI-70-000006' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000329-VMM-001180'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256380'
+  tag rid: 'SV-256380r885921_rule'
   tag stig_id: 'ESXI-70-000006'
   tag cci: ['CCI-002238']
   tag nist: ['AC-7 b']

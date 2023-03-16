@@ -1,9 +1,9 @@
 control 'ESXI-70-000057' do
   title 'The ESXi host must configure the firewall to block network traffic by default.'
-  desc  'In addition to service-specific firewall rules, ESXi has a default firewall rule policy to allow or deny incoming and outgoing traffic. Reduce the risk of attack by making sure this is set to deny incoming and outgoing traffic.'
+  desc  'In addition to service-specific firewall rules, ESXi has a default firewall rule policy to allow or deny incoming and outgoing traffic. Reduce the risk of attack by ensuring this is set to deny incoming and outgoing traffic.'
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # esxcli network firewall get
 
@@ -18,7 +18,7 @@ control 'ESXI-70-000057' do
     If the Incoming or Outgoing policies are \"True\", this is a finding.
   "
   desc 'fix', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # esxcli network firewall set --default-action=false
 
@@ -31,8 +31,8 @@ control 'ESXI-70-000057' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256418'
+  tag rid: 'SV-256418r886035_rule'
   tag stig_id: 'ESXI-70-000057'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

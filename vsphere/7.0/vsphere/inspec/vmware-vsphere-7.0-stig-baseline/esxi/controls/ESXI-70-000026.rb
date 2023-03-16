@@ -1,9 +1,9 @@
 control 'ESXI-70-000026' do
-  title 'The ESXi host SSH daemon must set a timeout count on idle sessions.'
+  title 'The ESXi host Secure Shell (SSH) daemon must set a timeout count on idle sessions.'
   desc  'Setting a timeout ensures that a user login will be terminated as soon as the "ClientAliveCountMax" is reached.'
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # /usr/lib/vmware/openssh/bin/sshd -T|grep clientalivecountmax
 
@@ -18,11 +18,11 @@ control 'ESXI-70-000026' do
 
     ClientAliveCountMax 3
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256394'
+  tag rid: 'SV-256394r885963_rule'
   tag stig_id: 'ESXI-70-000026'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

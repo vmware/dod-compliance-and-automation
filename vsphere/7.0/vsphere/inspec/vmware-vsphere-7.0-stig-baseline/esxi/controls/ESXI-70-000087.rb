@@ -1,7 +1,7 @@
 control 'ESXI-70-000087' do
   title 'The ESXi host must enable volatile key destruction.'
   desc  "
-    By default, pages allocated for virtual machines, userspace applications, and kernel threads are zeroed out at allocation time. ESXi will always ensure that no non-zero pages are exposed to VMs or userspace applications. While this prevents exposing cryptographic keys from VMs or userworlds to other clients, these keys can stay present in host memory for a long time if the memory isn't re-used.
+    By default, pages allocated for virtual machines (VMs), userspace applications, and kernel threads are zeroed out at allocation time. ESXi will always ensure that no nonzero pages are exposed to VMs or userspace applications. While this prevents exposing cryptographic keys from VMs or userworlds to other clients, these keys can stay present in host memory for a long time if the memory is not reused.
 
     The NIAP Virtualization Protection Profile and Server Virtualization Extended Package require that memory that may contain cryptographic keys be zeroed upon process exit.
 
@@ -9,7 +9,9 @@ control 'ESXI-70-000087' do
   "
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Select the \"Mem.MemEagerZero\" value and verify it is set to \"1\".
 
@@ -21,8 +23,10 @@ control 'ESXI-70-000087' do
 
     If the \"Mem.MemEagerZero\" setting is not set to \"1\", this is a finding
   "
-  desc  'fix', "
-    Fom the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+  desc 'fix', "
+    From the vSphere Client go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Select the \"Mem.MemEagerZero\" value and set it to \"1\".
 
@@ -35,8 +39,8 @@ control 'ESXI-70-000087' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256439'
+  tag rid: 'SV-256439r886098_rule'
   tag stig_id: 'ESXI-70-000087'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

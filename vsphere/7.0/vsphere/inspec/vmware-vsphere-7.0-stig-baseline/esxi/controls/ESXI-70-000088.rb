@@ -7,7 +7,9 @@ control 'ESXI-70-000088' do
   "
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+    From the vSphere Client, go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Select the \"Config.HostAgent.vmacore.soap.sessionTimeout\" value and verify it is set to \"30\".
 
@@ -19,8 +21,10 @@ control 'ESXI-70-000088' do
 
     If the \"Config.HostAgent.vmacore.soap.sessionTimeout\" setting is not set to \"30\", this is a finding
   "
-  desc  'fix', "
-    Fom the vSphere Client go to Hosts and Clusters >> Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+  desc 'fix', "
+    From the vSphere Client go to Hosts and Clusters.
+
+    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
     Select the \"Config.HostAgent.vmacore.soap.sessionTimeout\" value and set it to \"30\".
 
@@ -33,8 +37,8 @@ control 'ESXI-70-000088' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256440'
+  tag rid: 'SV-256440r886101_rule'
   tag stig_id: 'ESXI-70-000088'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

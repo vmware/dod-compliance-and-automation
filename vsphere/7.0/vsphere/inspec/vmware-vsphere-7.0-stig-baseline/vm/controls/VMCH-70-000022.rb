@@ -1,9 +1,9 @@
 control 'VMCH-70-000022' do
-  title 'The virtual machine guest operating system must be locked when the last console connection is closed.'
-  desc  'When accessing the VM console the guest OS must be locked when the last console user disconnects, limiting the possibility of session hijacking. This setting only applies to Windows-based VMs with VMware tools installed.'
+  title 'The virtual machine (VM) guest operating system must be locked when the last console connection is closed.'
+  desc  'When accessing the VM console, the guest operating system must be locked when the last console user disconnects, limiting the possibility of session hijacking. This setting only applies to Windows-based VMs with VMware tools installed.'
   desc  'rationale', ''
   desc  'check', "
-    From the vSphere Client select the Virtual Machine, right click and go to Edit Settings >> VM Options Tab >> Advanced >> Configuration Parameters >> Edit Configuration.
+    From the vSphere Client, select the Virtual Machine, right click and go to Edit Settings >> VM Options tab >> Advanced >> Configuration Parameters >> Edit Configuration.
 
     Find the \"tools.guest.desktop.autolock\" value and verify that it is set to \"true\".
 
@@ -18,15 +18,15 @@ control 'VMCH-70-000022' do
     If the VM is not Windows-based, this is not a finding.
   "
   desc 'fix', "
-    From the vSphere Client select the Virtual Machine, right click and go to Edit Settings >> VM Options Tab >> Advanced >> Configuration Parameters >> Edit Configuration.
+    From the vSphere Client, select the Virtual Machine, right click and go to Edit Settings >> VM Options tab >> Advanced >> Configuration Parameters >> Edit Configuration.
 
     Find or create the \"tools.guest.desktop.autolock\" value and set it to \"true\".
 
-    Note: The VM must be powered off to modify the advanced settings through the vSphere Client. It is recommended to configure these settings with PowerCLI as this can be done while the VM is powered on. In this case, the modified settings will not take effect until a cold boot of the VM.
+    Note: The VM must be powered off to configure the advanced settings through the vSphere Client. Therefore, it is recommended to configure these settings with PowerCLI as this can be done while the VM is powered on. Settings do not take effect via either method until the virtual machine is cold started, not rebooted.
 
     or
 
-    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
+    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the provided commands as noted below.
 
     If the setting does not exist, run:
 
@@ -39,8 +39,8 @@ control 'VMCH-70-000022' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256470'
+  tag rid: 'SV-256470r886453_rule'
   tag stig_id: 'VMCH-70-000022'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

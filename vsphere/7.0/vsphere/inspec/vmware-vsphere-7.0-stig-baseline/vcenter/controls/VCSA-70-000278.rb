@@ -1,9 +1,9 @@
 control 'VCSA-70-000278' do
   title 'The vCenter Server must use unique service accounts when applications connect to vCenter.'
-  desc  'In order to not violate non-repudiation (i.e., deny the authenticity of who is connecting to vCenter), when applications need to connect to vCenter they must use unique service accounts.'
+  desc  'To not violate nonrepudiation (i.e., deny the authenticity of who is connecting to vCenter), when applications need to connect to vCenter they must use unique service accounts.'
   desc  'rationale', ''
   desc  'check', "
-    Verify that each external application that connects to vCenter has a unique service account dedicated to that application.
+    Verify each external application that connects to vCenter has a unique service account dedicated to that application.
 
     For example, there should be separate accounts for Log Insight, Operations Manager, or anything else that requires an account to access vCenter.
 
@@ -17,8 +17,8 @@ control 'VCSA-70-000278' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256358'
+  tag rid: 'SV-256358r885685_rule'
   tag stig_id: 'VCSA-70-000278'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

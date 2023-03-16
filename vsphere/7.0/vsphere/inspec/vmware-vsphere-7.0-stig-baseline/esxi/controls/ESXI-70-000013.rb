@@ -1,9 +1,9 @@
 control 'ESXI-70-000013' do
-  title 'The ESXi host SSH daemon must not allow host-based authentication.'
+  title 'The ESXi host Secure Shell (SSH) daemon must not allow host-based authentication.'
   desc  "SSH trust relationships mean a compromise on one host can allow an attacker to move trivially to other hosts. SSH's cryptographic host-based authentication is more secure than \".rhosts\" authentication, since hosts are cryptographically authenticated. However, it is not recommended that hosts unilaterally trust one another, even within an organization."
   desc  'rationale', ''
   desc  'check', "
-    From an ESXi shell, run the following command(s):
+    From an ESXi shell, run the following command:
 
     # /usr/lib/vmware/openssh/bin/sshd -T|grep hostbasedauthentication
 
@@ -21,8 +21,8 @@ control 'ESXI-70-000013' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256386'
+  tag rid: 'SV-256386r885939_rule'
   tag stig_id: 'ESXI-70-000013'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
