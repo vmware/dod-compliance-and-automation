@@ -7,16 +7,16 @@ control 'PHTN-30-000016' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # (audit_log_file=$(grep \"^log_file\" /etc/audit/auditd.conf|sed s/^[^\\/]*//) && if [ -f \"${audit_log_file}\" ] ; then printf \"Log(s) found in \"${audit_log_file%/*}\":\
     \"; stat -c \"%n permissions are %a\" ${audit_log_file%}*; else printf \"audit log file(s) not found\
     \"; fi)
 
-    If the permissions on any audit log file is more permissive than 0600, this is a finding.
+    If the permissions on any audit log file are more permissive than \"0600\", this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     #  chmod 0600 <audit log file>
 

@@ -1,9 +1,9 @@
 control 'PHTN-30-000057' do
   title 'The Photon operating system must configure auditd to log space limit problems to syslog.'
-  desc  'If security personnel are not notified immediately when storage volume reaches 75% utilization, they are unable to plan for audit record storage capacity expansion.'
+  desc  'If security personnel are not notified immediately when storage volume reaches 75 percent utilization, they are unable to plan for audit record storage capacity expansion.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep \"^space_left \" /etc/audit/auditd.conf
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000057' do
 
     /etc/audit/auditd.conf
 
-    Ensure that the \"space_left\" line is uncommented and set to the following:
+    Ensure the \"space_left\" line is uncommented and set to the following:
 
     space_left = 75
 
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # killproc auditd -TERM
     # systemctl start auditd

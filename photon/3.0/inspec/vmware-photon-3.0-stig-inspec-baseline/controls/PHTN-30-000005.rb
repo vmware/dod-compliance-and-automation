@@ -3,7 +3,7 @@ control 'PHTN-30-000005' do
   desc  'A session timeout is an action taken when a session goes idle for any reason. Rather than relying on the user to manually disconnect their session prior to going idle, the Photon operating system must be able to identify when a session has idled and take action to terminate the session.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # cat /etc/profile.d/tmout.sh
 

@@ -1,9 +1,9 @@
 control 'PHTN-30-000059' do
   title 'The Photon operating system RPM package management tool must cryptographically verify the authenticity of all software packages during installation.'
-  desc  "Installation of any non-trusted software, patches, service packs, device drivers, or operating system components can significantly affect the overall security of the operating system. Ensuring all packages' cryptographic signatures are valid prior to installation ensures the provenance of the software and protects against malicious tampering."
+  desc  "Installation of any nontrusted software, patches, service packs, device drivers, or operating system components can significantly affect the overall security of the operating system. Ensuring all packages' cryptographic signatures are valid prior to installation ensures the provenance of the software and protects against malicious tampering."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep -s nosignature /usr/lib/rpm/rpmrc /etc/rpmrc ~root/.rpmrc
 

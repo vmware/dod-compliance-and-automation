@@ -3,7 +3,7 @@ control 'PHTN-30-000080' do
   desc  'X11 is an older, insecure graphics forwarding protocol. It is not used by Photon and should be disabled as a general best practice to limit attack surface area and communication channels.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i X11Forwarding
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000080' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"X11Forwarding\" line is uncommented and set to the following:
+    Ensure the \"X11Forwarding\" line is uncommented and set to the following:
 
     X11Forwarding no
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

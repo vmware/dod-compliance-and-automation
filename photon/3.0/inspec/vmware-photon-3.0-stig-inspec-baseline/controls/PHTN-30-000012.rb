@@ -3,7 +3,7 @@ control 'PHTN-30-000012' do
   desc  'Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing all actions by superusers is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # auditctl -l | grep execve
 
@@ -30,13 +30,13 @@ control 'PHTN-30-000012' do
     -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -F key=execpriv
     -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -F key=execpriv
 
-    At the command line, execute the following command to load the new audit rules.
+    At the command line, run the following command to load the new audit rules:
 
     # /sbin/augenrules --load
 
-    Note: A new audit.STIG.rules file is provided as a supplemental document that can be placed in /etc/audit/rules.d that contains all rules needed for auditd.
+    Note: A new \"audit.STIG.rules\" file is provided for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
 
-    Note: An older audit.STIG.rules may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
+    Note: An older \"audit.STIG.rules\" may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
   "
   impact 0.5
   tag severity: 'medium'

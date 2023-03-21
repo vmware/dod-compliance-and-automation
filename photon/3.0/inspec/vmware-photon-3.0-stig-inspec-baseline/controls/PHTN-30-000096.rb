@@ -3,14 +3,14 @@ control 'PHTN-30-000096' do
   desc  'If cron files and folders are accessible to unauthorized users, malicious jobs may be created.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # find /etc/cron.d/ /etc/cron.daily/ /etc/cron.hourly/ /etc/cron.monthly/ /etc/cron.weekly/ -xdev -type f -a '(' -perm -022 -o -not -user root ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s) for each returned file:
+    At the command line, run the following commands for each returned file:
 
     # chmod 644 <file>
     # chown root <file>

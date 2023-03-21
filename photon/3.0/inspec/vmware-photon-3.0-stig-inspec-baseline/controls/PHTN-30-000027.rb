@@ -3,18 +3,18 @@ control 'PHTN-30-000027' do
   desc  "Enforcing a minimum password lifetime helps to prevent repeated password changes to defeat the password reuse or history enforcement requirement. If users are allowed to immediately and continually change their password, the password could be repeatedly changed in a short period of time to defeat the organization's policy regarding password reuse."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep \"^PASS_MIN_DAYS\" /etc/login.defs
 
-    If \"PASS_MIN_DAYS\" is not set to 1, this is a finding.
+    If \"PASS_MIN_DAYS\" is not set to \"1\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
 
     /etc/login.defs
 
-    Modify the PASS_MIN_DAYS line to the following:
+    Modify the \"PASS_MIN_DAYS\" line to the following:
 
     PASS_MIN_DAYS   1
   "

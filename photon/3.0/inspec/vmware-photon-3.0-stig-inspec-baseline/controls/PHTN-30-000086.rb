@@ -1,9 +1,9 @@
 control 'PHTN-30-000086' do
   title 'The Photon operating system must configure sshd to ignore user-specific trusted hosts lists.'
-  desc  'SSH trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled. Individual users can have a local list of trusted remote machines, which must also be ignored while disabling host-based authentication generally.'
+  desc  'Secure Shell (SSH) trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled. Individual users can have a local list of trusted remote machines, which must also be ignored while disabling host-based authentication generally.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i IgnoreRhosts
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000086' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"IgnoreRhosts\" line is uncommented and set to the following:
+    Ensure the \"IgnoreRhosts\" line is uncommented and set to the following:
 
     IgnoreRhosts yes
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

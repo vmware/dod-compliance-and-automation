@@ -7,10 +7,9 @@ control 'PHTN-30-000062' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v \"^#\"|grep -v \"^%\"|awk '{print $1}'
-
     # awk -F: '($2 != \"x\" && $2 != \"!\") {print $1}' /etc/shadow
 
     If any account listed in the first output is also listed in the second output and is not documented, this is a finding.

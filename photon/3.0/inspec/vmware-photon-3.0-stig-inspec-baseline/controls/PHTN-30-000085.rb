@@ -1,9 +1,9 @@
 control 'PHTN-30-000085' do
   title 'The Photon operating system must configure sshd to display the last login immediately after authentication.'
-  desc  'Providing users with feedback on the alst time they logged on via SSH facilitates user recognition and reporting of unauthorized account use.'
+  desc  'Providing users with feedback on the last time they logged on via Secure Shell (SSH) facilitates user recognition and reporting of unauthorized account use.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i PrintLastLog
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000085' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"PrintLastLog\" line is uncommented and set to the following:
+    Ensure the \"PrintLastLog\" line is uncommented and set to the following:
 
     PrintLastLog yes
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

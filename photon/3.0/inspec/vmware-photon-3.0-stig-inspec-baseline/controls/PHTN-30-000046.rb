@@ -3,7 +3,7 @@ control 'PHTN-30-000046' do
   desc  'Each process on the system carries an "auditable" flag, which indicates whether its activities can be audited. Although auditd takes care of enabling this for all processes that launch after it starts, adding the kernel argument ensures the flag is set at boot for every process on the system. This includes processes created before auditd starts.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep \"audit=1\" /proc/cmdline
 

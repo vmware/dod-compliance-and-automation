@@ -3,24 +3,24 @@ control 'PHTN-30-000015' do
   desc  'It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without this notification, the security personnel may be unaware of an impending failure of the audit capability, and system operation may be adversely affected.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep -E \"^disk_full_action|^disk_error_action|^admin_space_left_action\" /etc/audit/auditd.conf
 
-    If any of the above parameters are not set to SYSLOG or are missing, this is a finding.
+    If any of the above parameters are not set to \"SYSLOG\" or are missing, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
 
     /etc/audit/auditd.conf
 
-    Ensure that the following lines are present, not duplicated, and not commented:
+    Ensure the following lines are present, not duplicated, and not commented:
 
     disk_full_action = SYSLOG
     disk_error_action = SYSLOG
     admin_space_left_action = SYSLOG
 
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # killproc auditd -TERM
     # systemctl start auditd

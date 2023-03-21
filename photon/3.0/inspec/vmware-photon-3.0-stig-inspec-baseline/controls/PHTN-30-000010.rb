@@ -7,7 +7,7 @@ control 'PHTN-30-000010' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep \"^write_logs\" /etc/audit/auditd.conf
 
@@ -24,11 +24,11 @@ control 'PHTN-30-000010' do
 
     /etc/audit/auditd.conf
 
-    Ensure that the \"write_logs\" line is uncommented and set to the following:
+    Ensure the \"write_logs\" line is uncommented and set to the following:
 
     write_logs = yes
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # killproc auditd -TERM
     # systemctl start auditd

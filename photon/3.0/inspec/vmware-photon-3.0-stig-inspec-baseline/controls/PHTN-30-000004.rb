@@ -3,7 +3,7 @@ control 'PHTN-30-000004' do
   desc  'Operating system management includes the ability to control the number of users and user sessions that utilize an operating system. Limiting the number of allowed users and sessions per user is helpful in reducing the risks related to denial-of-service attacks.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     #  grep \"^[^#].*maxlogins.*\" /etc/security/limits.conf
 
@@ -16,7 +16,7 @@ control 'PHTN-30-000004' do
     Note: The expected result may be repeated multiple times.
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # echo '*       hard    maxlogins       10' >> /etc/security/limits.conf
   "

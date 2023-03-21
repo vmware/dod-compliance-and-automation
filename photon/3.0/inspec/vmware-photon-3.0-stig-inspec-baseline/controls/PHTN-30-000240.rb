@@ -1,9 +1,9 @@
 control 'PHTN-30-000240' do
-  title 'The Photon operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'
-  desc  'Use of weak or untested encryption algorithms undermines the purposes of utilizing encryption to protect data. The operating system must implement cryptographic modules adhering to the higher standards approved by the federal government since this provides assurance they have been tested and validated.'
+  title 'The Photon operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, generate cryptographic hashes, and protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'
+  desc  'Use of weak or untested encryption algorithms undermines the purposes of using encryption to protect data. The operating system must implement cryptographic modules adhering to the higher standards approved by the federal government because this provides assurance they have been tested and validated.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # cat /proc/sys/crypto/fips_enabled
 
@@ -14,13 +14,13 @@ control 'PHTN-30-000240' do
 
     /boot/grub2/grub.cfg
 
-    Location the kernel command line which will start with \"linux\" and add \"fips=1\" to the end, for example:
+    Locate the kernel command line, which will start with \"linux\", and add \"fips=1\" to the end. For example:
 
     linux /$photon_linux audit=1 root=$rootpartition $photon_cmdline coredump_filter=0x37 consoleblank=0 $systemd_cmdline fips=1
 
-    Reboot the system in order for the change to take effect.
+    Reboot the system for the change to take effect.
 
-    Note: The fipsify package must be installed in order for FIPS mode to work properly.
+    Note: The \"fipsify\" package must be installed for FIPS mode to work properly.
   "
   impact 0.7
   tag severity: 'high'

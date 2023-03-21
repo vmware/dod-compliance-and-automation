@@ -3,18 +3,18 @@ control 'PHTN-30-000028' do
   desc  'Any password, no matter how complex, can eventually be cracked. Therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep \"^PASS_MAX_DAYS\" /etc/login.defs
 
-    If the value of \"PASS_MAX_DAYS\" is greater than 90, this is a finding.
+    If the value of \"PASS_MAX_DAYS\" is greater than \"90\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
 
     /etc/login.def
 
-    Modify the PASS_MAX_DAYS line to the following:
+    Modify the \"PASS_MAX_DAYS\" line to the following:
 
     PASS_MAX_DAYS   90
   "

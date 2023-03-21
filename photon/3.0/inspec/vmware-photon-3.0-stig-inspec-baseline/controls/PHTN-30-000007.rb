@@ -7,7 +7,7 @@ control 'PHTN-30-000007' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep \"^authpriv\" /etc/rsyslog.conf
 
@@ -15,7 +15,7 @@ control 'PHTN-30-000007' do
 
     authpriv.*   /var/log/auth.log
 
-    If authpriv is not configured to be logged, this is a finding.
+    If \"authpriv\" is not configured to be logged, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -28,7 +28,7 @@ control 'PHTN-30-000007' do
 
     Note: The path can be substituted for another suitable log destination.
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart rsyslog.service
   "

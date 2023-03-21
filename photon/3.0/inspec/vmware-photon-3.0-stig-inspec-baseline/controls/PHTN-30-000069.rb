@@ -1,5 +1,5 @@
 control 'PHTN-30-000069' do
-  title 'The Photon operating system must audit the insmod module.'
+  title 'The Photon operating system must audit the "insmod" module.'
   desc  "
     Without generating audit records that are specific to the security and mission needs of the organization, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
 
@@ -7,7 +7,7 @@ control 'PHTN-30-000069' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, Run the following command:
 
     # auditctl -l | grep \"/sbin/insmod\"
 
@@ -17,7 +17,7 @@ control 'PHTN-30-000069' do
 
     If the output does not match the expected result, this is a finding.
 
-    Note: This check depends on the auditd service to be in a running state for accurate results. Enabling the auditd service is done in control PHTN-30-000013.
+    Note: This check depends on the auditd service to be in a running state for accurate results. The auditd service is enabled in control PHTN-30-000013.
   "
   desc 'fix', "
     Navigate to and open:
@@ -28,13 +28,13 @@ control 'PHTN-30-000069' do
 
     -w /sbin/insmod -p x
 
-    Execute the following command to load the new audit rules:
+    Run the following command to load the new audit rules:
 
     # /sbin/augenrules --load
 
-    Note: A new audit.STIG.rules file is provided as a supplemental document that can be placed in /etc/audit/rules.d that contains all rules needed for auditd.
+    Note: A new \"audit.STIG.rules\" file is provided for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
 
-    Note: An older audit.STIG.rules may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
+    Note: An older \"audit.STIG.rules\" may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
   "
   impact 0.5
   tag severity: 'medium'

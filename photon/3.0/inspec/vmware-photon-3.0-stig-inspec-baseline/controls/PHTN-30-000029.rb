@@ -3,7 +3,7 @@ control 'PHTN-30-000029' do
   desc  'Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed as per policy requirements.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep pam_pwhistory /etc/pam.d/system-password|grep --color=always \"remember=.\"
 
@@ -11,7 +11,7 @@ control 'PHTN-30-000029' do
 
     password required pam_pwhistory.so enforce_for_root use_authtok remember=5 retry=3
 
-    If the output does not include the \"remember=5\" setting as shown in the expected result, this is a finding.
+    If the output does not include the \"remember=5\" setting as shown in the example result, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -24,7 +24,7 @@ control 'PHTN-30-000029' do
 
     Note: Either \"required\" or \"requisite\" is acceptable in the control field.
 
-    Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
+    Note: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.
   "
   impact 0.5
   tag severity: 'medium'

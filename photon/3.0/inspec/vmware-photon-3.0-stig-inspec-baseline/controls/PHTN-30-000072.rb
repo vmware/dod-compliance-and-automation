@@ -1,9 +1,9 @@
 control 'PHTN-30-000072' do
-  title 'The Photon operating system must set the FAIL_DELAY parameter.'
+  title 'The Photon operating system must set the "FAIL_DELAY" parameter.'
   desc  'Limiting the number of logon attempts over a certain time interval reduces the chances that an unauthorized user may gain access to an account.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep FAIL_DELAY /etc/login.defs
 

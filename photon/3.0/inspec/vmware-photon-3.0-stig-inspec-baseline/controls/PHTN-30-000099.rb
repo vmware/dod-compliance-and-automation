@@ -3,7 +3,7 @@ control 'PHTN-30-000099' do
   desc  'Responding to broadcast (ICMP) echoes facilitates network mapping and provides a vector for amplification attacks.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # /sbin/sysctl -a --pattern ignore_broadcasts
 
@@ -14,7 +14,7 @@ control 'PHTN-30-000099' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # sed -i -e \"/^net.ipv4.icmp_echo_ignore_broadcasts/d\" /etc/sysctl.conf
     # echo net.ipv4.icmp_echo_ignore_broadcasts=1>>/etc/sysctl.conf

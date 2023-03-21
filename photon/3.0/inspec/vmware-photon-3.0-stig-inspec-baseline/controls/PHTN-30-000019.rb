@@ -1,16 +1,16 @@
 control 'PHTN-30-000019' do
-  title 'The Photon operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.'
+  title 'The Photon operating system must allow only the information system security manager (ISSM) (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.'
   desc  "Without the capability to restrict the roles and individuals that can select which events are audited, unauthorized personnel may be able to prevent the auditing of critical events. Misconfigured audits may degrade the system's performance by overwhelming the audit log. Misconfigured audits may also make it more difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # find /etc/audit/* -type f -exec stat -c \"%n permissions are %a\" {} $1\\;
 
-    If the permissions of any files are more permissive than 640, then this is a finding.
+    If the permissions of any files are more permissive than \"640\", this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # chmod 640 <file>
 

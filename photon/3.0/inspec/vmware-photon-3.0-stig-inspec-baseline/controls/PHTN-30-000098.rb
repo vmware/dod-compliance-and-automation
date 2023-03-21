@@ -7,7 +7,7 @@ control 'PHTN-30-000098' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # /sbin/sysctl -a --pattern \"net.ipv[4|6].conf.(all|default|eth.*).accept_source_route\"
 
@@ -22,10 +22,10 @@ control 'PHTN-30-000098' do
 
     If the output does not match the expected result, this is a finding.
 
-    Note: The number of \"ethx\" lines returned is dependant on the number of interfaces. Every \"ethx\" entry must be set to \"0\".
+    Note: The number of \"ethx\" lines returned is dependent on the number of interfaces. Every \"ethx\" entry must be set to \"0\".
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # for SETTING in $(/sbin/sysctl -aN --pattern \"net.ipv[4|6].conf.(all|default|eth.*).accept_source_route\"); do sed -i -e \"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=0>>/etc/sysctl.conf; done
     # /sbin/sysctl --load

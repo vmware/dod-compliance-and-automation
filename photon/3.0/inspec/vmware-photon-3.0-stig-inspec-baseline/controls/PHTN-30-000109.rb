@@ -1,9 +1,9 @@
 control 'PHTN-30-000109' do
-  title 'The Photon operating system must be configured to protect the SSH private host key from unauthorized access.'
+  title 'The Photon operating system must be configured to protect the Secure Shell (SSH) private host key from unauthorized access.'
   desc  'If an unauthorized user obtains the private SSH host key file, the host could be impersonated.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # stat -c \"%n permissions are %a and owned by %U:%G\" /etc/ssh/*key
 
@@ -17,7 +17,7 @@ control 'PHTN-30-000109' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s) for each returned file:
+    At the command line, run the following commands for each returned file:
 
     # chmod 600 <file>
     # chown root:root <file>

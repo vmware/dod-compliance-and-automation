@@ -1,20 +1,20 @@
 control 'PHTN-30-000048' do
   title 'The Photon operating system must protect audit tools from unauthorized modification and deletion.'
-  desc  'Protecting audit information also includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operations on audit information.'
+  desc  'Protecting audit information includes identifying and protecting the tools used to view and manipulate log data. Therefore, protecting audit tools is necessary to prevent unauthorized operations on audit information.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # stat -c \"%n is owned by %U and group owned by %G and permissions are %a\" /usr/sbin/auditctl /usr/sbin/auditd /usr/sbin/aureport /usr/sbin/ausearch /usr/sbin/autrace
 
-    If any file is not owned by root or group owned by root or permissions are more permissive than 750, this is a finding.
+    If any file is not owned by root or group owned by root or permissions are more permissive than \"750\", this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command for each file returned for user and group ownership:
+    At the command line, run the following command for each file returned for user and group ownership:
 
     # chown root:root <file>
 
-    At the command line, execute the following command for each file returned for file permissions:
+    At the command line, run the following command for each file returned for file permissions:
 
     # chmod 750 <file>
   "

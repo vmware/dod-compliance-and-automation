@@ -1,9 +1,9 @@
 control 'PHTN-30-000107' do
-  title 'The Photon operating system must send TCP timestamps.'
+  title 'The Photon operating system must send Transmission Control Protocol (TCP) timestamps.'
   desc  'TCP timestamps are used to provide protection against wrapped sequence numbers. It is possible to calculate system uptime (and boot time) by analyzing TCP timestamps. These calculated uptimes can help a bad actor in determining likely patch levels for vulnerabilities.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # /sbin/sysctl -a --pattern \"net.ipv4.tcp_timestamps$\"
 
@@ -14,7 +14,7 @@ control 'PHTN-30-000107' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # sed -i -e \"/^net.ipv4.tcp_timestamps/d\" /etc/sysctl.conf
     # echo net.ipv4.tcp_timestamps=1>>/etc/sysctl.conf

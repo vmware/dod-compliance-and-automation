@@ -1,9 +1,9 @@
 control 'PHTN-30-000114' do
-  title 'The Photon operating system must set the UMASK parameter correctly.'
-  desc  "The umask value influences the permissions assigned to files when they are created. The umask setting in login.defs controls the permissions for a new user's home directory. By setting the proper umask, home directories will only allow the new user to read and write files there."
+  title 'The Photon operating system must set the "umask" parameter correctly.'
+  desc  "The \"umask\" value influences the permissions assigned to files when they are created. The \"umask\" setting in \"login.defs\" controls the permissions for a new user's home directory. By setting the proper \"umask\", home directories will only allow the new user to read and write files there."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep UMASK /etc/login.defs
 
@@ -18,7 +18,7 @@ control 'PHTN-30-000114' do
 
     /etc/login.defs
 
-    Ensure that the \"UMASK\" line is uncommented and set to the following:
+    Ensure the \"UMASK\" line is uncommented and set to the following:
 
     UMASK 077
   "

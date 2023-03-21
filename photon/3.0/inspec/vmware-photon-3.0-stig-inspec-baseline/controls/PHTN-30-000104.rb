@@ -3,7 +3,7 @@ control 'PHTN-30-000104' do
   desc  'Enabling reverse path filtering drops packets with source addresses that should not have been able to be received on the interface they were received on. It should not be used on systems that are routers for complicated networks but is helpful for end hosts and routers serving small networks.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # /sbin/sysctl -a --pattern \"net.ipv4.conf.(all|default|eth.*)\\.rp_filter\"
 
@@ -15,10 +15,10 @@ control 'PHTN-30-000104' do
 
     If the output does not match the expected result, this is a finding.
 
-    Note: The number of \"ethx\" lines returned is dependant on the number of interfaces. Every \"ethx\" entry must be set to \"1\".
+    Note: The number of \"ethx\" lines returned is dependent on the number of interfaces. Every \"ethx\" entry must be set to \"1\".
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # for SETTING in $(/sbin/sysctl -aN --pattern \"net.ipv4.conf.(all|default|eth.*)\\.rp_filter\"); do sed -i -e \"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=1>>/etc/sysctl.conf; done
     # /sbin/sysctl --load

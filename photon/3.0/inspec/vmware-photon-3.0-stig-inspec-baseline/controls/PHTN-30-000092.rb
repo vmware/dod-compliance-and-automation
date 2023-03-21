@@ -3,14 +3,14 @@ control 'PHTN-30-000092' do
   desc  "Local initialization files are used to configure the user's shell environment upon login. Malicious modification of these files could compromise accounts upon login."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # find /etc/bash.bashrc /etc/profile /etc/profile.d/ -xdev -type f -a '(' -perm -002 -o -not -user root -o -not -group root ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following commands for each returned file:
+    At the command line, run the following commands for each returned file:
 
     # chmod o-w <file>
     # chown root:root <file>

@@ -1,9 +1,9 @@
 control 'PHTN-30-000081' do
   title 'The Photon operating system must configure sshd to perform strict mode checking of home directory configuration files.'
-  desc  'If other users have access to modify user-specific SSH configuration files, they may be able to log on to the system as another user.'
+  desc  'If other users have access to modify user-specific Secure Shell (SSH) configuration files, they may be able to log on to the system as another user.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i StrictModes
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000081' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"StrictModes\" line is uncommented and set to the following:
+    Ensure the \"StrictModes\" line is uncommented and set to the following:
 
     StrictModes yes
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

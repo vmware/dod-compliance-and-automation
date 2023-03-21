@@ -1,9 +1,9 @@
 control 'PHTN-30-000038' do
-  title 'The Photon operating system must configure sshd to disconnect idle SSH sessions.'
-  desc  'Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended.'
+  title 'The Photon operating system must configure sshd to disconnect idle Secure Shell (SSH) sessions.'
+  desc  'Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on a console or console port that has been left unattended.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i ClientAliveCountMax
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000038' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"ClientAliveCountMax\" line is uncommented and set to the following:
+    Ensure the \"ClientAliveCountMax\" line is uncommented and set to the following:
 
     ClientAliveCountMax 0
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

@@ -1,9 +1,9 @@
 control 'PHTN-30-000084' do
   title 'The Photon operating system must configure sshd to disallow compression of the encrypted session stream.'
-  desc  'If compression is allowed in an SSH connection prior to authentication, vulnerabilities in the compression software could result in compromise of the system from an unauthenticated connection.'
+  desc  'If compression is allowed in a Secure Shell (SSH) connection prior to authentication, vulnerabilities in the compression software could result in compromise of the system from an unauthenticated connection.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i Compression
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000084' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"Compression\" line is uncommented and set to the following:
+    Ensure the \"Compression\" line is uncommented and set to the following:
 
     Compression no
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

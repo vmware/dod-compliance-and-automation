@@ -1,5 +1,10 @@
 # Change Log
 
+## [3.0 Version 1 Release 8] (2023-03-21)
+
+#### Release Notes
+- General tech editing updates. No technical updates.
+
 ## [3.0 Version 1 Release 7] (2023-02-17)
 
 #### Release Notes

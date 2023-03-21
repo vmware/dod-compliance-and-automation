@@ -1,9 +1,9 @@
 control 'PHTN-30-000120' do
   title 'The Photon operating system must configure sshd to restrict LoginGraceTime.'
-  desc  'By default, sshd unauthenticated connections are left open for two minutes before being closed. This setting is too permissive as no legitimate login would need such an amount of time to complete a login. Quickly terminating idle or incomplete login attempts will free up resources and reduce the exposure any partial logon attempts may create.'
+  desc  'By default, sshd unauthenticated connections are left open for two minutes before being closed. This setting is too permissive as no legitimate login would need such an amount of time to complete a login. Quickly terminating idle or incomplete login attempts will free resources and reduce the exposure any partial logon attempts may create.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i LoginGraceTime
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000120' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"LoginGraceTime\" line is uncommented and set to the following:
+    Ensure the \"LoginGraceTime\" line is uncommented and set to the following:
 
     LoginGraceTime 30
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

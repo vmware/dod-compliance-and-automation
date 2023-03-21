@@ -7,7 +7,7 @@ control 'PHTN-30-000031' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep -i ^password_pbkdf2 /boot/grub2/grub.cfg
 
@@ -16,11 +16,11 @@ control 'PHTN-30-000031' do
     If the output does not begin with \"password_pbkdf2 root\", this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grub2-mkpasswd-pbkdf2
 
-    Enter a secure password and ensure this password is stored for break-glass situations. You will not be able to recover the vCenter root account without knowing this separate password. Copy the resulting encrypted string.
+    Enter a secure password and ensure this password is stored for break-glass situations. The vCenter root account cannot be recovered without knowing this separate password. Copy the resulting encrypted string.
 
     An example string is below:
 
@@ -34,7 +34,7 @@ control 'PHTN-30-000031' do
 
     set superusers=\"root\"
 
-    Below this paste the following, substituting your own encrypted string from the steps above:
+    Below this paste the following, substituting the encrypted string from the steps above:
 
     password_pbkdf2 root <YOUR-LONG-STRING-FROM-ABOVE>
 
@@ -58,11 +58,11 @@ control 'PHTN-30-000031' do
 
     menuentry \"Photon\" --unrestricted {
 
-    Modify the second menuentry block to add the allowed user as follows
+    Modify the second menuentry block to add the allowed user as follows:
 
     menuentry \"Recover Photon\" --users root {
 
-    This concludes the fix. To verify, here is an example grub.cfg snippet.
+    This concludes the fix. To verify, here is an example grub.cfg snippet:
 
     ...
     set rootpartition=PARTUUID=326e5b0f-42fb-471a-8209-18964c4a2ed3

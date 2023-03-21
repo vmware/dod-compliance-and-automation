@@ -1,5 +1,5 @@
 control 'PHTN-30-000058' do
-  title 'The Photon operating system must be configured to synchronize with an approved DoD time source.'
+  title 'The Photon operating system must be configured to synchronize with an approved DOD time source.'
   desc  "
     Inaccurate time stamps make it more difficult to correlate events and can lead to an inaccurate analysis. Determining the correct time a particular event occurred on a system is critical when conducting forensic analysis and investigating system events. Sources outside the configured acceptable allowance (drift) may be inaccurate.
 
@@ -11,29 +11,29 @@ control 'PHTN-30-000058' do
   desc  'check', "
     If ntpd is used to sync time, do the following:
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep -E '^\\s*(server|peer|multicastclient)' /etc/ntp.conf
 
     Confirm the servers and peers or multicastclient (as applicable) are local or an authoritative DoD source.
 
-    If a time source is not set, is not set to an authoritative DoD time source, or is commented out, this is a finding.
+    If a time source is not set, is not set to an authoritative DOD time source, or is commented out, this is a finding.
 
     If timesyncd is used to sync time, do the following:
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep -E '^NTP' /etc/systemd/timesyncd.conf
 
-    If a time source is not set, is not set to an authoritative DoD time source, or is commented out, this is a finding.
+    If a time source is not set, is not set to an authoritative DOD time source, or is commented out, this is a finding.
 
     If chrony is used to sync time, do the following:
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep -E '^server' /etc/chrony/chrony.conf
 
-    If the parameter \"server\" is not set, is not set to an authoritative DoD time source, or is commented out, this is a finding.
+    If the parameter \"server\" is not set, is not set to an authoritative DOD time source, or is commented out, this is a finding.
   "
   desc 'fix', "
     If ntpd is used to sync time, do the following:
@@ -51,7 +51,7 @@ control 'PHTN-30-000058' do
     driftfile /var/lib/ntp/drift/ntp.drift
     server <site-specific-time-source-IP>
 
-    Resetart the ntpd service by executing the following command(s):
+    Resetart the ntpd service by running the following command:
 
     # systemctl restart ntp.service
 
@@ -65,7 +65,7 @@ control 'PHTN-30-000058' do
 
     NTP=tick.usno.navy.mil
 
-    Restart the timesyncd service by executing the following command:
+    Restart the timesyncd service by running the following command:
 
     systemctl restart systemd-timesyncd.service
 
@@ -80,7 +80,7 @@ control 'PHTN-30-000058' do
     server tick.usno.navy.mil iburst maxpoll 16
     server tock.usno.navy.mil iburst maxpoll 16
 
-    Restart the chrony service by executing the following command:
+    Restart the chrony service by running the following command:
 
     # systemctl restart chrony.service
   "

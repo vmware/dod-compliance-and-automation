@@ -3,7 +3,7 @@ control 'PHTN-30-000074' do
   desc  'Without setting a balance between performance and ensuring all audit events are written to disk, performance of the system may suffer or the risk of missing audit entries may be too high.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep -E \"freq|flush\" /etc/audit/auditd.conf
 
@@ -13,15 +13,13 @@ control 'PHTN-30-000074' do
     freq = 50
 
     If the output does not match the expected result, this is a finding.
-
-
   "
   desc 'fix', "
     Navigate to and open:
 
     /etc/audit/auditd.conf
 
-    Ensure that the below line is present and any existing \"flush\" and \"freq\" settings are removed.
+    Ensure the following line is present and any existing \"flush\" and \"freq\" settings are removed:
 
     flush = INCREMENTAL_ASYNC
     freq = 50

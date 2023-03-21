@@ -7,7 +7,7 @@ control 'PHTN-30-000008' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i LogLevel
 
@@ -22,11 +22,11 @@ control 'PHTN-30-000008' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"LogLevel\" line is uncommented and set to the following:
+    Ensure the \"LogLevel\" line is uncommented and set to the following:
 
     LogLevel INFO
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

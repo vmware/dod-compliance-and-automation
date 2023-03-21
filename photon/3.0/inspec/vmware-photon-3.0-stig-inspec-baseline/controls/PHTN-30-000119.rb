@@ -1,9 +1,9 @@
 control 'PHTN-30-000119' do
   title 'The Photon operating system must configure sshd to restrict AllowTcpForwarding.'
-  desc  'While enabling TCP tunnels is a valuable function of sshd, this feature is not appropriate for use on single purpose appliances.'
+  desc  'While enabling Transmission Control Protocol (TCP) tunnels is a valuable function of sshd, this feature is not appropriate for use on single-purpose appliances.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i AllowTcpForwarding
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000119' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"AllowTcpForwarding\" line is uncommented and set to the following:
+    Ensure the \"AllowTcpForwarding\" line is uncommented and set to the following:
 
     AllowTcpForwarding no
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "
