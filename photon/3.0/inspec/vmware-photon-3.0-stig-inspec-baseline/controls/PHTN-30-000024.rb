@@ -3,7 +3,7 @@ control 'PHTN-30-000024' do
   desc  'Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep pam_cracklib /etc/pam.d/system-password|grep --color=always \"difok=.\"
 
@@ -22,7 +22,7 @@ control 'PHTN-30-000024' do
 
     password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
-    Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
+    Note: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.
   "
   impact 0.5
   tag severity: 'medium'

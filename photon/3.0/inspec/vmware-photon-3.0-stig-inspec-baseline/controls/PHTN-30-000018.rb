@@ -7,16 +7,16 @@ control 'PHTN-30-000018' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # (audit_log_file=$(grep \"^log_file\" /etc/audit/auditd.conf|sed s/^[^\\/]*//) && if [ -f \"${audit_log_file}\" ] ; then printf \"Log(s) found in \"${audit_log_file%/*}\":\
     \"; stat -c \"%n is group owned by %G\" ${audit_log_file%}*; else printf \"audit log file(s) not found\
     \"; fi)
 
-    If any audit log file is not group-owned by root, this is a finding.
+    If any audit log file is not group owned by root, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     #  chown root:root <audit log file>
 

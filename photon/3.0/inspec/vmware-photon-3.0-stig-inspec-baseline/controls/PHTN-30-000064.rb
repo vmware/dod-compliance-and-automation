@@ -3,15 +3,15 @@ control 'PHTN-30-000064' do
   desc  "
     Privileged access contains control and configuration information and is particularly sensitive, so additional protections are necessary. This is maintained by using cryptographic mechanisms such as encryption to protect confidentiality.
 
-    Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the Internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.
+    Nonlocal maintenance and diagnostic activities are conducted by individuals communicating through an external network (e.g., the internet) or internal network. Local maintenance and diagnostic activities are carried out by individuals physically present at the information system or information system component and not communicating across a network connection.
 
-    This requirement applies to hardware/software diagnostic test equipment or tools. This requirement does not cover hardware/software components that may support information system maintenance, yet are a part of the system (e.g., the software implementing \"ping,\" \"ls,\" \"ipconfig,\" or the hardware and software implementing the monitoring port of an Ethernet switch).
+    This requirement applies to hardware/software diagnostic test equipment or tools. It does not cover hardware/software components that may support information system maintenance, yet are a part of the system (e.g., the software implementing \"ping,\" \"ls,\" \"ipconfig,\" or the hardware and software implementing the monitoring port of an Ethernet switch).
 
-    The operating system can meet this requirement through leveraging a cryptographic module.
+    The operating system can meet this requirement by leveraging a cryptographic module.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i Ciphers
 
@@ -28,11 +28,11 @@ control 'PHTN-30-000064' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"Ciphers\" line is uncommented and set to the following:
+    Ensure the \"Ciphers\" line is uncommented and set to the following:
 
     Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

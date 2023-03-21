@@ -3,7 +3,7 @@ control 'PHTN-30-000105' do
   desc  'Routing protocol daemons are typically used on routers to exchange network topology information with other routers. If this software is used when not required, system network information may be unnecessarily transmitted across the network.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # /sbin/sysctl -a --pattern \"net.ipv[4|6].conf.(all|default|eth.*).mc_forwarding\"
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000105' do
 
     If the output does not match the expected result, this is a finding.
 
-    Note: The number of \"ethx\" lines returned is dependant on the number of interfaces. Every \"ethx\" entry must be set to \"0\".
+    Note: The number of \"ethx\" lines returned is dependent on the number of interfaces. Every \"ethx\" entry must be set to \"0\".
     Note: The ipv6 entries may not be present on some systems and is not a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # for SETTING in $(/sbin/sysctl -aN --pattern \"net.ipv[4|6].conf.(all|default|eth.*).mc_forwarding\"); do sed -i -e \"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=0>>/etc/sysctl.conf; done
     # /sbin/sysctl --load

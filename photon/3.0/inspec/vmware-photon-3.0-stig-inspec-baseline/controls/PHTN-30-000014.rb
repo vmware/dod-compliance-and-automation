@@ -3,7 +3,7 @@ control 'PHTN-30-000014' do
   desc  'It is critical for the appropriate personnel to be aware if a system is at risk of failing to process audit logs as required. Without this notification, the security personnel may be unaware of an impending failure of the audit capability, and system operation may be adversely affected.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep \"^space_left_action\" /etc/audit/auditd.conf
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000014' do
 
     /etc/audit/auditd.conf
 
-    Ensure that the \"space_left_action\" line is uncommented and set to the following:
+    Ensure the \"space_left_action\" line is uncommented and set to the following:
 
     space_left_action = SYSLOG
 
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # killproc auditd -TERM
     # systemctl start auditd

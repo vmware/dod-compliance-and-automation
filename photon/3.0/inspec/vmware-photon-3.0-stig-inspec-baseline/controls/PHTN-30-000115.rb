@@ -1,9 +1,9 @@
 control 'PHTN-30-000115' do
   title 'The Photon operating system must configure sshd to disallow HostbasedAuthentication.'
-  desc  'SSH trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled.'
+  desc  'Secure Shell (SSH) trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i HostbasedAuthentication
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000115' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"HostbasedAuthentication\" line is uncommented and set to the following:
+    Ensure the \"HostbasedAuthentication\" line is uncommented and set to the following:
 
     HostbasedAuthentication no
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

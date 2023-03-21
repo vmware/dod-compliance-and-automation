@@ -3,7 +3,9 @@ control 'PHTN-30-000106' do
   desc  'Routing protocol daemons are typically used on routers to exchange network topology information with other routers. If this software is used when not required, system network information may be unnecessarily transmitted across the network.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    If the system is intended to operate as a router, this is not applicable.
+
+    At the command line, run the following command:
 
     # /sbin/sysctl -a --pattern \"net.ipv4.ip_forward$\"
 
@@ -11,12 +13,10 @@ control 'PHTN-30-000106' do
 
     net.ipv4.ip_forward = 0
 
-    If the system is intended to operate as a router, this is N/A.
-
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # sed -i -e \"/^net.ipv4.ip_forward/d\" /etc/sysctl.conf
     # echo net.ipv4.ip_forward=0>>/etc/sysctl.conf

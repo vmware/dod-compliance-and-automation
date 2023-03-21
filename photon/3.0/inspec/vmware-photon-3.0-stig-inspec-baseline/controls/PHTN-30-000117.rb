@@ -1,9 +1,9 @@
 control 'PHTN-30-000117' do
   title 'The Photon operating system must store only encrypted representations of passwords.'
-  desc  'Passwords must be protected at all times via strong, one way encryption. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. If they are encrypted with a weak cipher, those password are much more vulnerability to offline bute forcing attacks'
+  desc  'Passwords must be protected at all times via strong, one-way encryption. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. If they are encrypted with a weak cipher, those passwords are much more vulnerable to offline brute-force attacks.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep password /etc/pam.d/system-password|grep --color=always \"sha512\"
 
@@ -18,7 +18,7 @@ control 'PHTN-30-000117' do
 
     password required pam_unix.so sha512 shadow try_first_pass
 
-    Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
+    Note: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.
   "
   impact 0.7
   tag severity: 'high'

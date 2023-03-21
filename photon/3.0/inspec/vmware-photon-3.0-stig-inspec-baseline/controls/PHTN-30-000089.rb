@@ -1,9 +1,9 @@
 control 'PHTN-30-000089' do
-  title 'The Photon operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled on the command line.'
-  desc  'When the Ctrl-Alt-Del target is enabled, a locally logged-on user who presses Ctrl-Alt-Delete, when at the console, can reboot the system. If accidentally pressed, as could happen in the case of a mixed OS environment, this can create the risk of short-term loss of systems availability due to unintentional reboot.'
+  title 'The Photon operating system must be configured so the x86 Ctrl-Alt-Delete key sequence is disabled on the command line.'
+  desc  'When the Ctrl-Alt-Del target is enabled, a locally logged-on user who presses Ctrl-Alt-Delete, when at the console, can reboot the system. If accidentally pressed, as could happen in the case of a mixed operating system environment, this can create the risk of short-term loss of systems availability due to unintentional reboot.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl status ctrl-alt-del.target
 
@@ -16,7 +16,7 @@ control 'PHTN-30-000089' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl mask ctrl-alt-del.target
   "

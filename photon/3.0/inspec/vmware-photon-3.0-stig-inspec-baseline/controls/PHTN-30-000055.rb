@@ -1,9 +1,9 @@
 control 'PHTN-30-000055' do
   title 'The Photon operating system must configure auditd to keep five rotated log files.'
-  desc  'Audit logs are most useful when accessible by date, rather than size. This can be accomplished through a combination of an audit log rotation cron job, setting a reasonable number of logs to keep and configuring auditd to not rotate the logs on its own. This ensures that audit logs are accessible to the ISSO in the event of a central log processing failure.'
+  desc  'Audit logs are most useful when accessible by date, rather than size. This can be accomplished through a combination of an audit log rotation cron job, setting a reasonable number of logs to keep, and configuring auditd to not rotate the logs on its own. This ensures audit logs are accessible to the information system security officer (ISSO) in the event of a central log processing failure.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep \"^num_logs\" /etc/audit/auditd.conf
 
@@ -22,7 +22,7 @@ control 'PHTN-30-000055' do
 
     num_logs = 5
 
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # killproc auditd -TERM
     # systemctl start auditd

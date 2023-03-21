@@ -3,7 +3,7 @@ control 'PHTN-30-000002' do
   desc  'By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # grep pam_tally2 /etc/pam.d/system-auth
 
@@ -17,14 +17,14 @@ control 'PHTN-30-000002' do
 
     account    required pam_tally2.so onerr=fail audit
 
-    If the output does not list the pam_tally2 options as configured in the expected results, this is a finding.
+    If the output does not list the \"pam_tally2\" options as configured in the expected results, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
 
     /etc/pam.d/system-auth
 
-    Remove any existing \"pam_tally2.so\" line and add the following line after the pam_unix.so statement:
+    Remove any existing \"pam_tally2.so\" line and add the following line after the \"pam_unix.so\" statement:
 
     auth       required pam_tally2.so deny=3 onerr=fail audit even_deny_root unlock_time=900 root_unlock_time=300
 
@@ -32,11 +32,11 @@ control 'PHTN-30-000002' do
 
     /etc/pam.d/system-account
 
-    Remove any existing \"pam_tally2.so\" line and add the following line after the pam_unix.so statement:
+    Remove any existing \"pam_tally2.so\" line and add the following line after the \"pam_unix.so\" statement:
 
     account    required pam_tally2.so onerr=fail audit
 
-    Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
+    Note: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.
   "
   impact 0.5
   tag severity: 'medium'

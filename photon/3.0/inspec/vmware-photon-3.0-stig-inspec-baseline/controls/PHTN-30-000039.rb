@@ -3,7 +3,7 @@ control 'PHTN-30-000039' do
   desc  'Information stored in one location is vulnerable to accidental or incidental deletion or alteration. Proper configuration of rsyslog ensures that information critical to forensic analysis of security events is available for future action without any manual offloading or cron jobs.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
      # cat /etc/rsyslog.conf
 
@@ -38,7 +38,7 @@ control 'PHTN-30-000039' do
 
      *.* @@(o)<syslog server:port>;RSYSLOG_syslogProtocol23Format
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
      # systemctl restart rsyslog.service
   "

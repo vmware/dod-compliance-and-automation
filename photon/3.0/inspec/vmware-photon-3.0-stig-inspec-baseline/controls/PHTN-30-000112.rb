@@ -1,9 +1,9 @@
 control 'PHTN-30-000112' do
   title 'The Photon operating system must protect sshd configuration from unauthorized access.'
-  desc  'The sshd_config file contains all the configuration items for sshd. Incorrect or malicious configuration of sshd can allow unauthorized access to the system, insecure communication, limited forensic trail, etc.'
+  desc  'The "sshd_config" file contains all the configuration items for sshd. Incorrect or malicious configuration of sshd can allow unauthorized access to the system, insecure communication, limited forensic trail, etc.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # stat -c \"%n permissions are %a and owned by %U:%G\" /etc/ssh/sshd_config
 
@@ -14,7 +14,7 @@ control 'PHTN-30-000112' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # chmod 600 /etc/ssh/sshd_config
     # chown root:root /etc/ssh/sshd_config

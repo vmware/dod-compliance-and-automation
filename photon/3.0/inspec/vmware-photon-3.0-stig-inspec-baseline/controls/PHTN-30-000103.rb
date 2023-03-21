@@ -3,7 +3,7 @@ control 'PHTN-30-000103' do
   desc  'The presence of "martian" packets (which have impossible addresses) as well as spoofed packets, source-routed packets, and redirects could be a sign of nefarious network activity. Logging these packets enables this activity to be detected.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # /sbin/sysctl -a --pattern \"net.ipv4.conf.(all|default|eth.*).log_martians\"
 
@@ -15,10 +15,10 @@ control 'PHTN-30-000103' do
 
     If the output does not match the expected result, this is a finding.
 
-    Note: The number of \"ethx\" lines returned is dependant on the number of interfaces. Every \"ethx\" entry must be set to \"1\".
+    Note: The number of \"ethx\" lines returned is dependent on the number of interfaces. Every \"ethx\" entry must be set to \"1\".
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # for SETTING in $(/sbin/sysctl -aN --pattern \"net.ipv4.conf.(all|default|eth.*).log_martians\"); do sed -i -e \"/^${SETTING}/d\" /etc/sysctl.conf;echo $SETTING=1>>/etc/sysctl.conf; done
     # /sbin/sysctl --load

@@ -1,16 +1,16 @@
 control 'PHTN-30-000118' do
-  title 'The Photon operating system must ensure that the old passwords are being stored.'
-  desc  'Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed as per policy requirements.'
+  title 'The Photon operating system must ensure the old passwords are being stored.'
+  desc  'Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the result is a password that is not changed per policy requirements.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # ls -al /etc/security/opasswd
 
     If /etc/security/opasswd does not exist, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # touch /etc/security/opasswd
     # chown root:root /etc/security/opasswd

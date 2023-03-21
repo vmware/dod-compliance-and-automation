@@ -3,7 +3,7 @@ control 'PHTN-30-000066' do
   desc  'Previous versions of software components that are not removed from the information system after updates have been installed may be exploited by adversaries. Some information technology products may remove older versions of software automatically from the information system.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep -i \"^clean_requirements_on_remove\" /etc/tdnf/tdnf.conf
 

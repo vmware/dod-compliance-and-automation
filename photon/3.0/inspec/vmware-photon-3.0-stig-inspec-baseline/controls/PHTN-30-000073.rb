@@ -3,7 +3,7 @@ control 'PHTN-30-000073' do
   desc  'Limiting the number of logon attempts over a certain time interval reduces the chances that an unauthorized user may gain access to an account.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep pam_faildelay /etc/pam.d/system-auth|grep --color=always \"delay=\"
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000073' do
 
     /etc/pam.d/system-auth
 
-    Remove any existing \"pam_faildelay\" line and add the follwing line at the end of the file:
+    Remove any existing \"pam_faildelay\" line and add the following line at the end of the file:
 
     auth       optional pam_faildelay.so delay=4000000
 
-    Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
+    Note: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.
   "
   impact 0.5
   tag severity: 'medium'

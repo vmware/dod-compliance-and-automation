@@ -3,7 +3,7 @@ control 'PHTN-30-000075' do
   desc  'If local interactive users are not assigned a valid home directory, there is no place for the storage and control of files they should own.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep -i \"^create_home\" /etc/login.defs
 
@@ -14,7 +14,7 @@ control 'PHTN-30-000075' do
 
     /etc/login.defs
 
-    Ensure that the following is present and any exising CREATE_HOME line is removed:
+    Ensure the following is present and any existing \"CREATE_HOME\" line is removed:
 
     CREATE_HOME     yes
   "

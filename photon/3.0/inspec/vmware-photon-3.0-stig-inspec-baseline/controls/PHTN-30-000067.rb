@@ -7,7 +7,7 @@ control 'PHTN-30-000067' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # auditctl -l | grep sudo
 
@@ -17,9 +17,9 @@ control 'PHTN-30-000067' do
 
     If the output does not match the expected result, this is a finding.
 
-    Note: The auid!= parameter may display as 4294967295 or -1 which are equivalent.
+    Note: The auid!= parameter may display as 4294967295 or -1, which are equivalent.
 
-    Note: This check depends on the auditd service to be in a running state for accurate results. Enabling the auditd service is done in control PHTN-30-000013.
+    Note: This check depends on the auditd service to be in a running state for accurate results. The auditd service is enabled in control PHTN-30-000013.
   "
   desc 'fix', "
     Navigate to and open:
@@ -30,13 +30,13 @@ control 'PHTN-30-000067' do
 
     -a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
 
-    Execute the following command to load the new audit rules:
+    Run the following command to load the new audit rules:
 
     # /sbin/augenrules --load
 
-    Note: A new audit.STIG.rules file is provided as a supplemental document that can be placed in /etc/audit/rules.d that contains all rules needed for auditd.
+    Note: A new \"audit.STIG.rules\" file is provided for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
 
-    Note: An older audit.STIG.rules may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
+    Note: An older \"audit.STIG.rules\" may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
   "
   impact 0.5
   tag severity: 'medium'

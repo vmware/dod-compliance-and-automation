@@ -3,11 +3,11 @@ control 'PHTN-30-000054' do
   desc  'Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command to obtain a list of setuid files:
+    At the command line, run the following command to obtain a list of setuid files:
 
     # find / -xdev -path /var/lib/containerd -prune -o \\( -perm -4000 -type f -o -perm -2000 \\) -type f -print | sort
 
-    Execute the following command for each setuid file found in the first command:
+    Run the following command for each setuid file found in the first command:
 
     # auditctl -l | grep <setuid_path>
 
@@ -15,18 +15,18 @@ control 'PHTN-30-000054' do
 
     If each <setuid_path> does not have a corresponding line in the audit rules, this is a finding.
 
-    A typical corresponding line will look like the below:
+    A typical corresponding line will look like the following:
 
     -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
 
-    Note: This check depends on the auditd service to be in a running state for accurate results. Enabling the auditd service is done in control PHTN-30-000013.
+    Note: This check depends on the auditd service to be in a running state for accurate results. The auditd service is enabled in control PHTN-30-000013.
   "
   desc 'fix', "
-    At the command line, execute the following command to obtain a list of setuid files:
+    At the command line, run the following command to obtain a list of setuid files:
 
     # find / -xdev -path /var/lib/containerd -prune -o \\( -perm -4000 -type f -o -perm -2000 \\) -type f -print | sort
 
-    Execute the following for each setuid file found in the first command that does not have a corresponding line in the audit rules:
+    Run the following for each setuid file found in the first command that does not have a corresponding line in the audit rules:
 
     Navigate to and open:
 
@@ -36,13 +36,13 @@ control 'PHTN-30-000054' do
 
     -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
 
-    Execute the following command to load the new audit rules:
+    Run the following command to load the new audit rules:
 
     # /sbin/augenrules --load
 
-    Note: A new audit.STIG.rules file is provided as a supplemental document that can be placed in /etc/audit/rules.d that contains all rules needed for auditd.
+    Note: A new \"audit.STIG.rules\" file is provided for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
 
-    Note: An older audit.STIG.rules may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
+    Note: An older \"audit.STIG.rules\" may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
   "
   impact 0.5
   tag severity: 'medium'

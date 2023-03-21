@@ -1,16 +1,16 @@
 control 'PHTN-30-000013' do
   title 'The Photon operating system must have the auditd service running.'
-  desc  'Without the capability to generate audit records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one. To that end, the auditd service must be configured to start automatically and be running at all times.'
+  desc  'Event outcomes can include indicators of event success or failure and event-specific results (e.g., the security state of the information system after the event occurred). They also provide a means to measure the impact of an event and help authorized personnel to determine the appropriate response.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl status auditd
 
     If the service is not running, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # systemctl enable auditd
     # systemctl start auditd

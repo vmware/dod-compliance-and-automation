@@ -1,19 +1,18 @@
 control 'PHTN-30-000041' do
-  title 'The Photon operating system messages file have the correct ownership and file permissions.'
+  title 'The Photon operating system messages file must have the correct ownership and file permissions.'
   desc  "Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state and can provide sensitive information to an unprivileged attacker."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # stat -c \"%n is owned by %U and group owned by %G with %a permissions\" /var/log/messages
 
-    If the /var/log/messages directory is not owned by root or not group owned by root or the file permissions are more permission than 640, this is a finding.
+    If the \"/var/log/messages\" directory is not owned by root or not group owned by root, or the file permissions are more permission than \"640\", this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # chown root:root /var/log/messages
-
     # chmod 0640 /var/log/messages
   "
   impact 0.5

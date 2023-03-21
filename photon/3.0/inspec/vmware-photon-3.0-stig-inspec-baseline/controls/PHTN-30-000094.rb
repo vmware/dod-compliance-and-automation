@@ -3,14 +3,14 @@ control 'PHTN-30-000094' do
   desc  'If files do not have valid user and group owners, unintended access to files could occur.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # find / -xdev -path /var/lib/containerd -prune -o \\( -nouser -o -nogroup \\) -exec ls -ld {} \\; 2>/dev/null
 
     If any files are returned, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command for each returned file:
+    At the command line, run the following command for each returned file:
 
     # chown root:root <file>
   "

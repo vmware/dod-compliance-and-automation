@@ -1,6 +1,6 @@
 # vmware-photon-3.0-stig-baseline
 VMware Photon OS 3.0 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 7 Date: 17 February 2023  
+Version: Release 1 Version 8 Date: 21 March 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Overview

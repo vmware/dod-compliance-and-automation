@@ -7,7 +7,7 @@ control 'PHTN-30-000030' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep pam_cracklib /etc/pam.d/system-password|grep --color=always \"minlen=..\"
 
@@ -26,7 +26,7 @@ control 'PHTN-30-000030' do
 
     password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
-    Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
+    Note: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.
   "
   impact 0.5
   tag severity: 'medium'

@@ -1,9 +1,9 @@
 control 'PHTN-30-000082' do
   title 'The Photon operating system must configure sshd to disallow Kerberos authentication.'
-  desc  "If Kerberos is enabled through SSH, sshd provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementation may then be subject to exploitation. To reduce the attack surface of the system, the Kerberos authentication mechanism within SSH must be disabled."
+  desc  "If Kerberos is enabled through Secure Shell (SSH), sshd provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementation may then be subject to exploitation. To reduce the attack surface of the system, the Kerberos authentication mechanism within SSH must be disabled."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i KerberosAuthentication
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000082' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"KerberosAuthentication\" line is uncommented and set to the following:
+    Ensure the \"KerberosAuthentication\" line is uncommented and set to the following:
 
     KerberosAuthentication no
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

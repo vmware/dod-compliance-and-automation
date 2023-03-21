@@ -1,6 +1,6 @@
 # vmware-photon-3.0-stig-ansible-hardening
 VMware Photon OS 3.0 STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 7: 17 February 2023  
+Version: Version 1 Release 8: 21 March 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Requirements

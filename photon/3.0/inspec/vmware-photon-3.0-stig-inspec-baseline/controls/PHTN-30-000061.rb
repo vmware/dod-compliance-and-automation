@@ -1,9 +1,9 @@
 control 'PHTN-30-000061' do
   title 'The Photon operating system YUM repository must cryptographically verify the authenticity of all software packages during installation.'
-  desc  'Installation of any non-trusted software, patches, service packs, device drivers, or operating system components can significantly affect the overall security of the operating system. This requirement ensures the software has not been tampered with and has been provided by a trusted vendor. '
+  desc  'Installation of any nontrusted software, patches, service packs, device drivers, or operating system components can significantly affect the overall security of the operating system. Cryptographically verifying the authenticity of all software packages during installation ensures the software has not been tampered with and has been provided by a trusted vendor.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep gpgcheck /etc/yum.repos.d/*
 

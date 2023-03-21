@@ -1,9 +1,9 @@
 control 'PHTN-30-000095' do
-  title 'The Photon operating system must be configured so that the /etc/cron.allow file is protected from unauthorized modification.'
+  title 'The Photon operating system must be configured so that the "/etc/cron.allow" file is protected from unauthorized modification.'
   desc  'If cron files and folders are accessible to unauthorized users, malicious jobs may be created.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # stat -c \"%n permissions are %a and owned by %U:%G\" /etc/cron.allow
 
@@ -14,7 +14,7 @@ control 'PHTN-30-000095' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # chmod 600 /etc/cron.allow
     # chown root:root /etc/cron.allow

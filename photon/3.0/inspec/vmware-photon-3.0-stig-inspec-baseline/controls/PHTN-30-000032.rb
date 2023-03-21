@@ -3,7 +3,7 @@ control 'PHTN-30-000032' do
   desc  'To support the requirements and principles of least functionality, the operating system must provide only essential capabilities and limit the use of modules, protocols, and/or services to only those required for the proper functioning of the product.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # modprobe --showconfig | grep \"^install\" | grep \"/bin\"
 

@@ -3,11 +3,11 @@ control 'PHTN-30-000035' do
   desc  "
     Inactive identifiers pose a risk to systems and applications because attackers may exploit an inactive identifier and potentially obtain undetected access to the system. Owners of inactive accounts will not notice if unauthorized access to their user account has been obtained.
 
-    Disabling inactive accounts ensures that accounts that may not have been responsibly removed are not available to attackers who may have compromised their credentials.
+    Disabling inactive accounts ensures accounts that may not have been responsibly removed are not available to attackers who may have compromised their credentials.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep INACTIVE /etc/default/useradd
 
@@ -22,7 +22,7 @@ control 'PHTN-30-000035' do
 
     /etc/default/useradd
 
-    Remove and existing \"INACTIVE\" line and add the following line:
+    Remove an existing \"INACTIVE\" line and add the following line:
 
     INACTIVE=0
   "

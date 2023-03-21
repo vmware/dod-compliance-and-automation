@@ -3,7 +3,7 @@ control 'PHTN-30-000006' do
   desc  'Automated monitoring of remote access sessions allows organizations to detect cyberattacks and ensure ongoing compliance with remote access policies by auditing connection activities.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i SyslogFacility
 
@@ -11,18 +11,18 @@ control 'PHTN-30-000006' do
 
     syslogfacility AUTHPRIV
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If there is no output or if the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"SyslogFacility\" line is uncommented and set to the following:
+    Ensure the \"SyslogFacility\" line is uncommented and set to the following:
 
     SyslogFacility AUTHPRIV
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

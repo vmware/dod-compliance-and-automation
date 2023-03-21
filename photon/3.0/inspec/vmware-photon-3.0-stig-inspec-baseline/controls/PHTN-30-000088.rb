@@ -3,7 +3,7 @@ control 'PHTN-30-000088' do
   desc  'By setting the login attempt limit to a low value, an attacker will be forced to reconnect frequently, which severely limits the speed and effectiveness of brute-force attacks.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i MaxAuthTries
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000088' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"MaxAuthTries\" line is uncommented and set to the following:
+    Ensure the \"MaxAuthTries\" line is uncommented and set to the following:
 
     MaxAuthTries 6
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

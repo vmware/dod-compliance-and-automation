@@ -9,14 +9,14 @@ control 'PHTN-30-000051' do
   desc  'check', "
     Use the verification capability of rpm to check the MD5 hashes of the audit files on disk versus the expected ones from the installation package.
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # rpm -V audit | grep \"^..5\" | grep -v \"^...........c\"
 
     If there is any output, this is a finding.
   "
   desc 'fix', "
-    If the audit system binaries have been altered the system must be taken offline and your ISSM must be notified immediately.
+    If the audit system binaries have been altered, the system must be taken offline and the information system security manager (ISSM) notified immediately.
 
     Reinstalling the audit tools is not supported. The appliance should be restored from a backup or redeployed once the root cause is remediated.
   "

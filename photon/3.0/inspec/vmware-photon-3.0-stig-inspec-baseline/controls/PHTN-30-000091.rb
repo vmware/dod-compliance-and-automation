@@ -1,9 +1,9 @@
 control 'PHTN-30-000091' do
-  title 'The Photon operating system must be configured so that the /root path is protected from unauthorized access.'
-  desc  'If the /root path is accessible from users other than root, unauthorized users could change the root partitions files.'
+  title 'The Photon operating system must be configured so the "/root" path is protected from unauthorized access.'
+  desc  'If the "/root" path is accessible to users other than root, unauthorized users could change the root partitions files.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # stat -c \"%n permissions are %a and owned by %U:%G\" /root
 
@@ -14,7 +14,7 @@ control 'PHTN-30-000091' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command(s):
+    At the command line, run the following commands:
 
     # chmod 700 /root
     # chown root:root /root

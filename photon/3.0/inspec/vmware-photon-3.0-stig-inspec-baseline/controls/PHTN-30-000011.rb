@@ -1,9 +1,9 @@
 control 'PHTN-30-000011' do
   title 'The Photon operating system must configure auditd to use the correct log format.'
-  desc  'To compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know know exact, unfiltered details of the event in question.'
+  desc  'To compile an accurate risk assessment and provide forensic analysis, it is essential for security personnel to know exact, unfiltered details of the event in question.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep \"^log_format\" /etc/audit/auditd.conf
 
@@ -20,11 +20,11 @@ control 'PHTN-30-000011' do
 
     /etc/audit/auditd.conf
 
-    Ensure that the \"log_format\" line is uncommented and set to the following:
+    Ensure the \"log_format\" line is uncommented and set to the following:
 
     log_format = RAW
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # killproc auditd -TERM
     # systemctl start auditd

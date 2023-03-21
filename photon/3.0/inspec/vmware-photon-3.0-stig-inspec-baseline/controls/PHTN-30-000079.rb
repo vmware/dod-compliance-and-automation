@@ -3,7 +3,7 @@ control 'PHTN-30-000079' do
   desc  'Enabling environment processing may enable users to bypass access restrictions in some configurations and must therefore be disabled.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     sshd -T|&grep -i PermitUserEnvironment
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000079' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"PermitUserEnvironment\" line is uncommented and set to the following:
+    Ensure the \"PermitUserEnvironment\" line is uncommented and set to the following:
 
     PermitUserEnvironment no
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "

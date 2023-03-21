@@ -1,13 +1,13 @@
 control 'PHTN-30-000025' do
   title 'The Photon operating system must store only encrypted representations of passwords.'
-  desc  'Passwords must be protected at all times via strong, one way encryption. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised. If they are encrypted with a weak cipher, those password are much more vulnerability to offline bute forcing attacks'
+  desc  'Passwords need to be protected at all times, and encryption is the standard method for protecting passwords. If passwords are not encrypted, they can be plainly read (i.e., clear text) and easily compromised.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep SHA512 /etc/login.defs|grep -v \"#\"
 
-    Expected result :
+    Expected result:
 
     ENCRYPT_METHOD SHA512
 

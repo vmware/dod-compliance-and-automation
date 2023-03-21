@@ -1,9 +1,9 @@
 control 'PHTN-30-000071' do
-  title 'The Photon operating system must use the pam_cracklib module.'
+  title 'The Photon operating system must use the "pam_cracklib" module.'
   desc  'If the operating system allows the user to select passwords based on dictionary words, this increases the chances of password compromise by increasing the opportunity for successful guesses and brute-force attacks.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep pam_cracklib /etc/pam.d/system-password
 
@@ -18,7 +18,7 @@ control 'PHTN-30-000071' do
 
     password requisite pam_cracklib.so dcredit=-1 ucredit=-1 lcredit=-1 ocredit=-1 minlen=8 minclass=4 difok=4 retry=3 maxsequence=0 enforce_for_root
 
-    Note: On vCenter appliances you must edit the equivalent file under /etc/applmgmt/appliance if one exists for the changes to persist after a reboot.
+    Note: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.
   "
   impact 0.5
   tag severity: 'medium'

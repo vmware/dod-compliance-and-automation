@@ -1,9 +1,9 @@
 control 'PHTN-30-000083' do
   title 'The Photon operating system must configure sshd to disallow authentication with an empty password.'
-  desc  'Blank passwords are one of the first things an attacker checks for when probing a system. Even is the user somehow has a blank password on the OS, sshd must not allow that user to log in.'
+  desc  'Blank passwords are one of the first things an attacker checks for when probing a system. Even is the user somehow has a blank password on the operating system, sshd must not allow that user to log in.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # sshd -T|&grep -i PermitEmptyPasswords
 
@@ -18,11 +18,11 @@ control 'PHTN-30-000083' do
 
     /etc/ssh/sshd_config
 
-    Ensure that the \"PermitEmptyPasswords\" line is uncommented and set to the following:
+    Ensure the \"PermitEmptyPasswords\" line is uncommented and set to the following:
 
     PermitEmptyPasswords no
 
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # systemctl restart sshd.service
   "
