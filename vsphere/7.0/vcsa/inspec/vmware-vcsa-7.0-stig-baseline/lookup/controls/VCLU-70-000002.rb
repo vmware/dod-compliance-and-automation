@@ -7,7 +7,7 @@ control 'VCLU-70-000002' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/Server/Service/Connector[@port=\"${bio-custom.http.port}\"]/@maxThreads' /usr/lib/vmware-lookupsvc/conf/server.xml
 
@@ -31,8 +31,8 @@ control 'VCLU-70-000002' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256707'
+  tag rid: 'SV-256707r888712_rule'
   tag stig_id: 'VCLU-70-000002'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']

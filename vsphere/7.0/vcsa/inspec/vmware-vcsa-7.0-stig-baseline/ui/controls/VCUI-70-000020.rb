@@ -1,9 +1,9 @@
 control 'VCUI-70-000020' do
   title 'vSphere UI must limit the number of allowed connections.'
-  desc  'Limiting the number of established connections is a basic denial of service protection and a best practice. Servers where the limit is too high or unlimited can potentiall run out of system resources and negatively affect system availability.'
+  desc  'Limiting the number of established connections is a basic denial-of-service protection and a best practice. Servers where the limit is too high or unlimited can run out of system resources and negatively affect system availability.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/Server/Service/Connector[@port=\"${http.port}\"]/@acceptCount' /usr/lib/vmware-vsphere-ui/server/conf/server.xml
 
@@ -20,7 +20,7 @@ control 'VCUI-70-000020' do
 
     Navigate to the <Connector> configured with port=\"${http.port}\".
 
-    Add or change the folllowing value:
+    Add or change the following value:
 
     acceptCount=\"300\"
 
@@ -31,8 +31,8 @@ control 'VCUI-70-000020' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000246-WSR-000149'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256797'
+  tag rid: 'SV-256797r889390_rule'
   tag stig_id: 'VCUI-70-000020'
   tag cci: ['CCI-001094']
   tag nist: ['SC-5 (1)']

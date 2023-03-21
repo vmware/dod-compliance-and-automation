@@ -1,9 +1,9 @@
 control 'VCUI-70-000030' do
   title 'vSphere UI must be configured with the appropriate ports.'
-  desc  'Web servers provide numerous processes, features, and functionalities that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or too unsecure to run on a production system. The ports that vSphere UI listens on are configured in the catalina.properties file and must be veriified as accurate to their shipping state.'
+  desc  'Web servers provide numerous processes, features, and functionalities that use TCP/IP ports. Some of these processes may be deemed unnecessary or too unsecure to run on a production system. The ports that vSphere UI listens on are configured in the "catalina.properties" file and must be verified as accurate to their shipping state.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep '\\.port' /usr/lib/vmware-vsphere-ui/server/conf/catalina.properties
 
@@ -33,8 +33,8 @@ control 'VCUI-70-000030' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000383-WSR-000175'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256807'
+  tag rid: 'SV-256807r889420_rule'
   tag stig_id: 'VCUI-70-000030'
   tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']

@@ -9,14 +9,14 @@ control 'VCLD-70-000009' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # rpm -qa|grep lighttpd|xargs rpm -V|grep -v -E \"lighttpd.conf|vami-lighttp.service\"
 
     If the command returns any output, this is a finding.
   "
   desc 'fix', "
-    If the VAMI binaries have been modified from the default state when deployed as part of the VCSA then the system must be wiped and redeployed or restored from backup.
+    If the VAMI binaries have been modified from the default state when deployed as part of the vCenter Server Appliance (VCSA), the system must be wiped and redeployed or restored from backup.
 
     VMware does not recommend or support recovering from such a state by reinstalling RPMs or similar efforts.
   "
@@ -24,8 +24,8 @@ control 'VCLD-70-000009' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000131-WSR-000051'
   tag satisfies: ['SRG-APP-000211-WSR-000030', 'SRG-APP-000380-WSR-000072']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256653'
+  tag rid: 'SV-256653r888481_rule'
   tag stig_id: 'VCLD-70-000009'
   tag cci: ['CCI-001082', 'CCI-001749', 'CCI-001813']
   tag nist: ['CM-5 (1)', 'CM-5 (3)', 'SC-2']

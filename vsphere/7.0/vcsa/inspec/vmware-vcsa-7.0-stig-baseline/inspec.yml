@@ -1,11 +1,11 @@
 name: vmware-vcsa-7.0-stig-baseline
-title: InSpec Wrapper Profile for VMware vCenter Service Appliance 7.0 STIG Readiness Guide Version 1 Release 4
+title: InSpec Wrapper Profile for VMware vCenter Service Appliance 7.0 STIG Version 1 Release 1
 maintainer: VMTA
 copyright: VMware
 copyright_email: vmta-stigs@vmware.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.4
+version: 1.0.1
 
 depends:
   - name: eam
@@ -15,7 +15,7 @@ depends:
   - name: perfcharts
     path: perfcharts
   - name: photon
-    path: ../vmware-photon-3.0-stig-inspec-baseline
+    path: photon
   - name: postgres
     path: postgresql
   - name: rhttpproxy

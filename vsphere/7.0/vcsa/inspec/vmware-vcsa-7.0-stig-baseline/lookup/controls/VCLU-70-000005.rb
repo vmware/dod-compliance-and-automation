@@ -7,7 +7,7 @@ control 'VCLU-70-000005' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/Server/Service/Engine/Host/Valve[@className=\"org.apache.catalina.valves.AccessLogValve\"]/@pattern' /usr/lib/vmware-lookupsvc/conf/server.xml
 
@@ -34,8 +34,8 @@ control 'VCLU-70-000005' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000016-WSR-000005'
   tag satisfies: ['SRG-APP-000093-WSR-000053', 'SRG-APP-000095-WSR-000056', 'SRG-APP-000096-WSR-000057', 'SRG-APP-000097-WSR-000058', 'SRG-APP-000098-WSR-000059', 'SRG-APP-000098-WSR-000060', 'SRG-APP-000099-WSR-000061', 'SRG-APP-000100-WSR-000064', 'SRG-APP-000374-WSR-000172', 'SRG-APP-000375-WSR-000171']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256710'
+  tag rid: 'SV-256710r888721_rule'
   tag stig_id: 'VCLU-70-000005'
   tag cci: ['CCI-000067', 'CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-001462', 'CCI-001487', 'CCI-001889', 'CCI-001890']
   tag nist: ['AC-17 (1)', 'AU-14 (2)', 'AU-3', 'AU-8 b']

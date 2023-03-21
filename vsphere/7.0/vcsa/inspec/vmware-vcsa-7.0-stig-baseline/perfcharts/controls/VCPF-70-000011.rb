@@ -1,9 +1,13 @@
 control 'VCPF-70-000011' do
   title 'Performance Charts must be configured to limit access to internal packages.'
-  desc  'The "package.access" entry in the "catalina.properties" file implements access control at the package level. When properly configured, a Security Exception will be reported should an errant or malicious webapp attempt to access the listed internal classes directly, or if a new class is defined under the protected packages. Performance Charts comes pre-configured with the appropriate packages defined in "package.access" and this configuration must be maintained. '
+  desc  "
+    The \"package.access\" entry in the \"catalina.properties\" file implements access control at the package level. When properly configured, a Security Exception will be reported if an errant or malicious webapp attempts to access the listed internal classes directly or if a new class is defined under the protected packages.
+
+    Performance Charts comes preconfigured with the appropriate packages defined in \"package.access\", and this configuration must be maintained.
+  "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep \"package.access\" /usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties
 
@@ -29,8 +33,8 @@ control 'VCPF-70-000011' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000075'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256621'
+  tag rid: 'SV-256621r888354_rule'
   tag stig_id: 'VCPF-70-000011'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

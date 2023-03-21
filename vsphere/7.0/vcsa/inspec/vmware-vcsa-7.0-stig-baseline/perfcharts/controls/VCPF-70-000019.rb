@@ -1,9 +1,9 @@
 control 'VCPF-70-000019' do
   title 'Performance Charts must limit the number of allowed connections.'
-  desc  'Limiting the number of established connections to Performance Charts is a basic denial-of-service protection. Servers where the limit is too high or unlimited can potentially run out of system resources and negatively affect system availability.'
+  desc  'Limiting the number of established connections to Performance Charts is a basic denial-of-service protection. Servers where the limit is too high or unlimited could run out of system resources and negatively affect system availability.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/Server/Service/Connector/@acceptCount' /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
 
@@ -29,8 +29,8 @@ control 'VCPF-70-000019' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000246-WSR-000149'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256629'
+  tag rid: 'SV-256629r888378_rule'
   tag stig_id: 'VCPF-70-000019'
   tag cci: ['CCI-001094']
   tag nist: ['SC-5 (1)']

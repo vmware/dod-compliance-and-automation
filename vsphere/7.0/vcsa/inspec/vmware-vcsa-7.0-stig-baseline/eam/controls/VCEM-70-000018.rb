@@ -1,9 +1,9 @@
 control 'VCEM-70-000018' do
   title 'ESX Agent Manager must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.'
-  desc  'Determining a safe state for failure and weighing that against a potential denial of service for users depends on what type of application the web server is hosting. For the ESX Agent Manager, it is preferable that the service abort startup on any initialization failure rather than continuing in a degraded, and potentailly insecure, state.'
+  desc  'Determining a safe state for failure and weighing that against a potential denial of service for users depends on what type of application the web server is hosting. For the ESX Agent Manager, it is preferable that the service abort startup on any initialization failure rather than continuing in a degraded, and potentially insecure, state.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep EXIT_ON_INIT_FAILURE /etc/vmware-eam/catalina.properties
 
@@ -29,8 +29,8 @@ control 'VCEM-70-000018' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000225-WSR-000140'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256690'
+  tag rid: 'SV-256690r888626_rule'
   tag stig_id: 'VCEM-70-000018'
   tag cci: ['CCI-001190']
   tag nist: ['SC-24']

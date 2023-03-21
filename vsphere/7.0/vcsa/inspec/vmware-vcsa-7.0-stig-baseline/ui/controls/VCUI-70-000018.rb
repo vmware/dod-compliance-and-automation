@@ -1,13 +1,13 @@
 control 'VCUI-70-000018' do
-  title "vSphere UI must restrict it's cookie path."
+  title 'vSphere UI must restrict its cookie path.'
   desc  "
     Cookies are used to exchange data between the web server and the client. Cookies, such as a session cookie, may contain session information and user credentials used to maintain a persistent connection between the user and the hosted application since HTTP/HTTPS is a stateless protocol.
 
-    vSphere UI is bound to the \"/ui\" virtual path behind the reverse proxy and it's cookies are configured as such. This configuration must be confirmed and maintained.
+    vSphere UI is bound to the \"/ui\" virtual path behind the reverse proxy, and its cookies are configured as such. This configuration must be confirmed and maintained.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/context.xml | xmllint --xpath '/Context/@sessionCookiePath' -
 
@@ -37,8 +37,8 @@ control 'VCUI-70-000018' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000223-WSR-000011'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256795'
+  tag rid: 'SV-256795r889384_rule'
   tag stig_id: 'VCUI-70-000018'
   tag cci: ['CCI-001664']
   tag nist: ['SC-23 (3)']

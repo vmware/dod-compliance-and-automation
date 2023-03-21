@@ -3,7 +3,7 @@ control 'VCST-70-000006' do
   desc  'Logging must be started as soon as possible when a service starts and as late as possible when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep \"1catalina.org.apache.juli.FileHandler\" /usr/lib/vmware-sso/vmware-sts/conf/logging.properties
 
@@ -25,7 +25,7 @@ control 'VCST-70-000006' do
 
     /usr/lib/vmware-sso/vmware-sts/conf/logging.properties
 
-    Ensure that the 'handlers' and '.handlers' lines are configured as follows:
+    Ensure that the \"handlers\" and \".handlers\" lines are configured as follows:
 
     handlers = 1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler
     .handlers = 1catalina.org.apache.juli.FileHandler
@@ -44,8 +44,8 @@ control 'VCST-70-000006' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000089-WSR-000047'
   tag satisfies: ['SRG-APP-000092-WSR-000055']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256750'
+  tag rid: 'SV-256750r889220_rule'
   tag stig_id: 'VCST-70-000006'
   tag cci: ['CCI-000169', 'CCI-001464']
   tag nist: ['AU-12 a', 'AU-14 (1)']

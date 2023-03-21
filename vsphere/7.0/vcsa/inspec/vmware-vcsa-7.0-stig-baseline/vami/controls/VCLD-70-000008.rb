@@ -1,13 +1,13 @@
 control 'VCLD-70-000008' do
-  title 'Rsyslog must be configured to monitor VAMI logs.'
+  title 'The rsyslog must be configured to monitor VAMI logs.'
   desc  "
-    For performance reasons, rsyslog file monitoring is preferred over configuring VAMI to send events to a syslog facility. Without ensuring that logs are created, that rsyslog configs are created, that those configs are loaded, the log file monitoring and shipping will not be effective.
+    For performance reasons, rsyslog file monitoring is preferred over configuring VAMI to send events to a syslog facility. Without ensuring that logs are created, rsyslog configs are created, and those configs are loaded, the log file monitoring and shipping will not be effective.
 
-    VAMI syslog configuration is included by default, as part of the VMware-visl-integration package. The shipping state of the configuration file must be verified and maintained.
+    VAMI syslog configuration is included by default as part of the VMware-visl-integration package. The shipping state of the configuration file must be verified and maintained.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # rpm -V VMware-visl-integration|grep vmware-services-applmgmt.conf
 
@@ -281,8 +281,8 @@ control 'VCLD-70-000008' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000125-WSR-000071'
   tag satisfies: ['SRG-APP-000358-WSR-000063', 'SRG-APP-000358-WSR-000163']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256652'
+  tag rid: 'SV-256652r888478_rule'
   tag stig_id: 'VCLD-70-000008'
   tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']

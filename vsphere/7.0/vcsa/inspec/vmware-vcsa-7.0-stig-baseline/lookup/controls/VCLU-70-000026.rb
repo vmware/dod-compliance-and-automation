@@ -9,7 +9,7 @@ control 'VCLU-70-000026' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-lookupsvc/conf/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '//param-name[text()=\"debug\"]/..' -
 
@@ -31,7 +31,7 @@ control 'VCLU-70-000026' do
 
     Set the <param-value> to \"0\" in all <param-name>debug</param-name> nodes.
 
-    The debug setting should look like the below:
+    Note: The debug setting should look like the following:
 
     <init-param>
       <param-name>debug</param-name>
@@ -45,8 +45,8 @@ control 'VCLU-70-000026' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000160'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256731'
+  tag rid: 'SV-256731r888784_rule'
   tag stig_id: 'VCLU-70-000026'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

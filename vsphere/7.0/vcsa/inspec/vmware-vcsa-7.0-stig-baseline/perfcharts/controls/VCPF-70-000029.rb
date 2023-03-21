@@ -1,9 +1,9 @@
 control 'VCPF-70-000029' do
   title 'Performance Charts must properly configure log sizes and rotation.'
-  desc  'To ensure that the logging mechanism used by the web server has sufficient storage capacity in which to write the logs, the logging mechanism needs to be able to allocate log record storage capacity. Performance Charts properly sizes and configures log rotation during installation. This default configuration must be verified.'
+  desc  'To ensure the logging mechanism used by the web server has sufficient storage capacity in which to write the logs, the logging mechanism must be able to allocate log record storage capacity. Performance Charts properly sizes and configures log rotation during installation. This default configuration must be verified.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # rpm -V VMware-perfcharts|grep log4j|grep \"^..5......\"
 
@@ -12,9 +12,9 @@ control 'VCPF-70-000029' do
   desc 'fix', "
     Navigate to and open:
 
-    /etc/vmware-perfcharts/log4j.properties
+    /var/lib/vmware-perfcharts/config/log4j.properties
 
-    Ensure that the appender.rolling entries are configured as follows:
+    Ensure the appender.rolling entries are configured as follows:
 
     appender.rolling.type = RollingFile
     appender.rolling.name = FileLog
@@ -34,8 +34,8 @@ control 'VCPF-70-000029' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000357-WSR-000150'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256639'
+  tag rid: 'SV-256639r888408_rule'
   tag stig_id: 'VCPF-70-000029'
   tag cci: ['CCI-001849']
   tag nist: ['AU-4']

@@ -3,7 +3,7 @@ control 'VCPF-70-000010' do
   desc  'Performance Charts performs user authentication at the application level and not through Tomcat. Depending on the VCSA version, Performance Charts may come configured with a "UserDatabaseRealm". This should be removed as part of eliminating unnecessary features.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep UserDatabaseRealm /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
 
@@ -23,8 +23,8 @@ control 'VCPF-70-000010' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000015'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256620'
+  tag rid: 'SV-256620r888351_rule'
   tag stig_id: 'VCPF-70-000010'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

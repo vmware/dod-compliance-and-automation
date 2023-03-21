@@ -1,9 +1,9 @@
 control 'VCST-70-000028' do
   title 'The Security Token Service must be configured with the appropriate ports.'
-  desc  'Web servers provide numerous processes, features, and functionalities that utilize TCP/IP ports. Some of these processes may be deemed unnecessary or too unsecure to run on a production system. The ports that the Security Token Service listens on are configured in the catalina.properties file and must be veriified as accurate to their shipping state.'
+  desc  'Web servers provide numerous processes, features, and functionalities that use TCP/IP ports. Some of these processes may be deemed unnecessary or too unsecure to run on a production system. The ports that the Security Token Service listens on are configured in the "catalina.properties" file and must be verified as accurate to their shipping state.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep 'bio' /usr/lib/vmware-sso/vmware-sts/conf/catalina.properties
 
@@ -35,8 +35,8 @@ control 'VCST-70-000028' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000383-WSR-000175'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256771'
+  tag rid: 'SV-256771r889283_rule'
   tag stig_id: 'VCST-70-000028'
   tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']

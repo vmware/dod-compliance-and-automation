@@ -3,11 +3,11 @@ control 'VCST-70-000012' do
   desc  "
     MIME mappings tell the Security Token Service what type of program various file types and extensions are and what external utilities or programs are needed to execute the file type.
 
-    By ensuring that various shell script MIME types are not included in \"web.xml\", the server is protected against malicious users tricking the server into executing shell command files.
+    By ensuring various shell script MIME types are not included in \"web.xml\", the server is protected against malicious users tricking the server into executing shell command files.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep -En '(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)' /usr/lib/vmware-sso/vmware-sts/conf/web.xml
 
@@ -18,7 +18,7 @@ control 'VCST-70-000012' do
 
     /usr/lib/vmware-sso/vmware-sts/conf/web.xml
 
-    Remove any and all of the following nodes lines.
+    Remove all of the following nodes lines.
 
     <mime-type>application/x-csh</mime-type>
     <mime-type>application/x-shar</mime-type>
@@ -41,8 +41,8 @@ control 'VCST-70-000012' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000081'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256756'
+  tag rid: 'SV-256756r889238_rule'
   tag stig_id: 'VCST-70-000012'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

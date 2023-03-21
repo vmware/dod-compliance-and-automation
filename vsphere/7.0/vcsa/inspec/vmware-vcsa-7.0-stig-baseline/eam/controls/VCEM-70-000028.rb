@@ -9,7 +9,7 @@ control 'VCEM-70-000028' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '//param-name[text()=\"debug\"]/parent::init-param' -
 
@@ -22,7 +22,7 @@ control 'VCEM-70-000028' do
 
     If the output does not match the expected result, this is a finding.
 
-    If no lines is returned, this is NOT a finding.
+    If no lines are returned, this is not a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -47,8 +47,8 @@ control 'VCEM-70-000028' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000160'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256700'
+  tag rid: 'SV-256700r888656_rule'
   tag stig_id: 'VCEM-70-000028'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

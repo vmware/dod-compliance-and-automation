@@ -1,20 +1,20 @@
 control 'VCPG-70-000006' do
-  title "All VCDB tables must be owned by the 'vc' user account."
+  title 'All vCenter database (VCDB) tables must be owned by the "vc" user account.'
   desc  "
-    Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who utilizes the object to perform the actions if they were the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.
+    Within the database, object ownership implies full privileges to the owned object, including the privilege to assign access to the owned objects to other subjects. Database functions and procedures can be coded using definer's rights. This allows anyone who uses the object to perform the actions if they are the owner. If not properly managed, this can lead to privileged actions being taken by unauthorized individuals.
 
-    VCDB is configured out of the box to be owned by the 'vc' Postgres user. This configuration must be verified and maintained.
+    VCDB is configured out of the box to be owned by the \"vc\" Postgres user. This configuration must be verified and maintained.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # /opt/vmware/vpostgres/current/bin/psql -d VCDB -x -U postgres -c \"\\dt;\"|grep Owner|grep -v vc
 
     If any tables are returned, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER TABLE <tablename> OWNER TO vc;\"
 
@@ -23,8 +23,8 @@ control 'VCPG-70-000006' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000133-DB-000200'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256596'
+  tag rid: 'SV-256596r887574_rule'
   tag stig_id: 'VCPG-70-000006'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']

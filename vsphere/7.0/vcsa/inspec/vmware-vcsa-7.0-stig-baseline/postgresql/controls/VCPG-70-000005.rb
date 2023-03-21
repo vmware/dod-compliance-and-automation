@@ -1,27 +1,27 @@
 control 'VCPG-70-000005' do
-  title 'VMware Postgres database must protect log files from unauthorized access and modification.'
+  title 'The VMware Postgres database must protect log files from unauthorized access and modification.'
   desc  "
-    If audit data were to become compromised, then competent forensic analysis and discovery of the true source of potentially malicious system activity is difficult, if not impossible, to achieve. In addition, access to audit records provides information an attacker could potentially use to his or her advantage.
+    If audit data were to become compromised, competent forensic analysis and discovery of the true source of potentially malicious system activity would be difficult, if not impossible, to achieve. In addition, access to audit records provides information an attacker could use to their advantage.
 
-    To ensure the veracity of audit data, the information system and/or the application must protect audit information from any and all unauthorized access. This includes read, write, copy, etc.
+    To ensure the veracity of audit data, the information system and/or the application must protect audit information from all unauthorized access. This includes read, write, copy, etc.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, enter the following command:
+    At the command prompt, run the following command:
 
     # find /var/log/vmware/vpostgres/* -xdev -type f -a '(' -not -perm 600 -o -not -user vpostgres -o -not -group vpgmongrp ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, enter the following command:
+    At the command prompt, run the following commands:
 
     # chmod 600 <file>
     # chown vpostgres:vpgmongrp <file>
 
-    Note: Replace <file> with the file with incorrect permissions.
+    Note: Replace <file> with the file that has incorrect permissions.
 
-    At the command prompt, execute the following commands:
+    At the command prompt, run the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET log_file_mode TO '0600';\"
 
@@ -31,8 +31,8 @@ control 'VCPG-70-000005' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000118-DB-000059'
   tag satisfies: ['SRG-APP-000119-DB-000060', 'SRG-APP-000120-DB-000061']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256595'
+  tag rid: 'SV-256595r887571_rule'
   tag stig_id: 'VCPG-70-000005'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']

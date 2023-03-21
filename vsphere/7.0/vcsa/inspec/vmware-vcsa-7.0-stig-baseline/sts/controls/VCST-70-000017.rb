@@ -3,14 +3,14 @@ control 'VCST-70-000017' do
   desc  'As a rule, accounts on a web server are to be kept to a minimum. Only administrators, web managers, developers, auditors, and web authors require accounts on the machine hosting the web server. The resources to which these accounts have access must also be closely monitored and controlled. The Security Token Service files must be adequately protected with correct permissions as applied out of the box.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # find /usr/lib/vmware-sso/vmware-sts/ -xdev -type f -a '(' -not -user root -o -not -group root ')' -exec ls -ld {} \\;
 
     If the command produces any output, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # chown root:root <file_name>
 
@@ -22,8 +22,8 @@ control 'VCST-70-000017' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000211-WSR-000030'
   tag satisfies: ['SRG-APP-000380-WSR-000072']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256761'
+  tag rid: 'SV-256761r889253_rule'
   tag stig_id: 'VCST-70-000017'
   tag cci: ['CCI-001082', 'CCI-001813']
   tag nist: ['CM-5 (1)', 'SC-2']

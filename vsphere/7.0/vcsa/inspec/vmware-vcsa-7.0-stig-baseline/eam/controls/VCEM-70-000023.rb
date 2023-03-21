@@ -3,11 +3,11 @@ control 'VCEM-70-000023' do
   desc  "
     Enumeration techniques, such as URL parameter manipulation, rely on being able to obtain information about the web server's directory structure by locating directories without default pages. In this scenario, the web server will display to the user a listing of the files in the directory being accessed. Ensuring that directory listing is disabled is one approach to mitigating the vulnerability.
 
-    In Tomcat, directory listing is disabled by default but can be enabled via the \"listings\" parameter. Ensure that this node is not present in order to have the default effect.
+    In Tomcat, directory listing is disabled by default but can be enabled via the \"listings\" parameter. Ensure this node is not present to have the default effect.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '//param-name[text()=\"listings\"]/parent::init-param' -
 
@@ -38,8 +38,8 @@ control 'VCEM-70-000023' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000142'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256695'
+  tag rid: 'SV-256695r888641_rule'
   tag stig_id: 'VCEM-70-000023'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

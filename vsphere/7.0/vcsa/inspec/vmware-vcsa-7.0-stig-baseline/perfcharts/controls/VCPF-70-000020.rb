@@ -3,11 +3,13 @@ control 'VCPF-70-000020' do
   desc  "
     Invalid user input occurs when a user inserts data or characters into a hosted application's data entry field and the hosted application is unprepared to process that data. This results in unanticipated application behavior, potentially leading to an application compromise. Invalid user input is one of the primary methods employed when attempting to compromise an application.
 
-    An attacker can also enter Unicode characters into hosted applications in an effort to break out of the document home or root home directory or to bypass security checks. Performance Charts must be configured to use a consistent character set via the \"URIEncoding\" attribute on the Connector nodes.
+    An attacker can also enter Unicode characters into hosted applications in an effort to break out of the document home or root home directory or to bypass security checks.
+
+    Performance Charts must be configured to use a consistent character set via the \"URIEncoding\" attribute on the Connector nodes.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/Server/Service/Connector/@URIEncoding' /usr/lib/vmware-perfcharts/tc-instance/conf/server.xml
 
@@ -31,8 +33,8 @@ control 'VCPF-70-000020' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000251-WSR-000157'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256630'
+  tag rid: 'SV-256630r888381_rule'
   tag stig_id: 'VCPF-70-000020'
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']

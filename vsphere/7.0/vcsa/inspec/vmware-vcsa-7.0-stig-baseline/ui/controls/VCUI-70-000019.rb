@@ -1,13 +1,13 @@
 control 'VCUI-70-000019' do
   title 'vSphere UI must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.'
-  desc  'Determining a safe state for failure and weighing that against a potential denial of service for users depends on what type of application the web server is hosting. For the Security Token Service, it is preferable that the service abort startup on any initialization failure rather than continuing in a degraded, and potentailly insecure, state.'
+  desc  'Determining a safe state for failure and weighing that against a potential denial of service for users depends on what type of application the web server is hosting. For the Security Token Service, it is preferable that the service abort startup on any initialization failure rather than continuing in a degraded, and potentially insecure, state.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # grep EXIT_ON_INIT_FAILURE /usr/lib/vmware-vsphere-ui/server/conf/catalina.properties
 
-    Expected result :
+    Expected result:
 
     org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true
 
@@ -29,8 +29,8 @@ control 'VCUI-70-000019' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000225-WSR-000140'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256796'
+  tag rid: 'SV-256796r889387_rule'
   tag stig_id: 'VCUI-70-000019'
   tag cci: ['CCI-001190']
   tag nist: ['SC-24']

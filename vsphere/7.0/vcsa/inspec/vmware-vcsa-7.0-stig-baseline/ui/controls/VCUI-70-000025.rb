@@ -7,7 +7,7 @@ control 'VCUI-70-000025' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | xmllint --xpath '/Server/Service/Engine/Host/Valve[@className=\"org.apache.catalina.valves.ErrorReportValve\"]' -
 
@@ -39,8 +39,8 @@ control 'VCUI-70-000025' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000159'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256802'
+  tag rid: 'SV-256802r889405_rule'
   tag stig_id: 'VCUI-70-000025'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

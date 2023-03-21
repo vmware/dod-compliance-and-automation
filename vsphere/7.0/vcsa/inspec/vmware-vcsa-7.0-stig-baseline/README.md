@@ -1,7 +1,7 @@
 # vmware-vcsa-7.0-stig-baseline
-VMware vSphere vCenter Appliance 7.0 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 4 Date: 28 October 2022  
-STIG Type: STIG Readiness Guide    
+VMware vSphere vCenter Appliance 7.0 STIG Chef InSpec Profile  
+Version: Release 1 Version 1 Date: 15 March 2023  
+STIG Type: Official STIG
 
 ## VCSA InSpec Profiles
 
@@ -13,19 +13,15 @@ InSpec profiles for the VCSA are available for each component or can be run all 
 ## How to run InSpec locally from Powershell on Windows
 
 **Note - assumes vcsa profiles are downloaded to C:\Inspec\Profiles\vmware-vcsa-7.0-stig-baseline**  
-**Note - assumes photon profile is downloaded to C:\Inspec\Profiles\vmware-photon-3.0-stig-inspec-baseline**  
-**Note - inputs are only needed for the Photon Profile**
 
-It is recommended to utilize an inputs files for specifying vCenter and environment specific variables such as NTP, Syslog, etc. An example is provided for you to begin with.  
-
-Run all profiles against a target vCenter appliance with needed inputs and output results to CLI
+Run all profiles against a target vCenter appliance and output results to CLI
 ```
-inspec exec C:\Inspec\Profiles\vmware-vcsa-7.0-stig-baseline -t ssh://root@vcsa IP or FQDN --password 'password' --input syslogServer=test.local:514 ntpServer1=time.test.local ntpServer2=time2.test.local
+inspec exec C:\Inspec\Profiles\vmware-vcsa-7.0-stig-baseline -t ssh://root@vcsa IP or FQDN --password 'password'
 ```
 
-Run all profiles against a target vCenter appliance with needed inputs, show progress, and output results to CLI and JSON
+Run all profiles against a target vCenter appliance, show progress, and output results to CLI and JSON
 ```
-inspec exec C:\Inspec\Profiles\vmware-vcsa-7.0-stig-baseline -t ssh://root@vcsa IP or FQDN --password 'password' --input syslogServer=test.local:514 ntpServer1=time.test.local ntpServer2=time2.test.local --show-progress --reporter=cli json:C:\Inspec\Reports\vcsa.json
+inspec exec C:\Inspec\Profiles\vmware-vcsa-7.0-stig-baseline -t ssh://root@vcsa IP or FQDN --password 'password' --show-progress --reporter=cli json:C:\Inspec\Reports\vcsa.json
 ```
 
 Run a specific profile against a target vCenter appliance show progress, and output results to CLI and JSON

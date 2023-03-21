@@ -1,9 +1,9 @@
 control 'VCLU-70-000028' do
-  title 'Lookup Service log files must be be offloaded to a central log server in real time.'
-  desc  'Lookup Service produces a handful of logs that must be offloaded from the originating system. This information can then be used for diagnostic, forensics, or other purposes relevant to ensuring the availability and integrity of the hosted application.'
+  title 'Lookup Service log files must be offloaded to a central log server in real time.'
+  desc  'Lookup Service produces several logs that must be offloaded from the originating system. This information can then be used for diagnostic, forensics, or other purposes relevant to ensuring the availability and integrity of the hosted application.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # rpm -V VMware-visl-integration|grep vmware-services-lookupsvc.conf
 
@@ -59,8 +59,8 @@ control 'VCLU-70-000028' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000163'
   tag satisfies: ['SRG-APP-000108-WSR-000166', 'SRG-APP-000125-WSR-000071']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256733'
+  tag rid: 'SV-256733r888790_rule'
   tag stig_id: 'VCLU-70-000028'
   tag cci: ['CCI-000139', 'CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-5 a', 'AU-9 (2)']

@@ -7,14 +7,14 @@ control 'VCST-70-000007' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # find /storage/log/vmware/sso/ -xdev -type f -a '(' -perm -o+w -o -not -user root -o -not -group root ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, execute the following command(s):
+    At the command prompt, run the following commands:
 
     # chmod o-w <file>
     # chown root:root <file>
@@ -25,8 +25,8 @@ control 'VCST-70-000007' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000119-WSR-000069'
   tag satisfies: ['SRG-APP-000120-WSR-000070']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256751'
+  tag rid: 'SV-256751r889223_rule'
   tag stig_id: 'VCST-70-000007'
   tag cci: ['CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']

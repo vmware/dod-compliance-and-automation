@@ -5,11 +5,11 @@ control 'VCUI-70-000013' do
 
     By not specifying which files can and cannot be served to a user, the web server could deliver to a user web server configuration files, log files, password files, etc.
 
-    As Tomcat is a Java-based web server, the main file extension used is *.jsp. This check ensures that the *.jsp and *.jspx file types has been properly mapped to servlets.
+    As Tomcat is a Java-based web server, the main file extension used is *.jsp. This check ensures the *.jsp and *.jspx file types has been properly mapped to servlets.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/servlet-mapping/servlet-name[text()=\"jsp\"]/parent::servlet-mapping' -
 
@@ -21,7 +21,7 @@ control 'VCUI-70-000013' do
       <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
 
-    If the jsp and jspx file url-patterns are not configured as in the expected result, this is a finding.
+    If the .jsp and .jspx file url-patterns are not configured as in the expected result, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -46,8 +46,8 @@ control 'VCUI-70-000013' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000083'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256790'
+  tag rid: 'SV-256790r889369_rule'
   tag stig_id: 'VCUI-70-000013'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

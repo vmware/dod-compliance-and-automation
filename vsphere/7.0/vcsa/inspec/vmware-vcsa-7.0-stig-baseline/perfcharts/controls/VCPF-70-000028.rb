@@ -7,7 +7,7 @@ control 'VCPF-70-000028' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '//param-name[text()=\"debug\"]/parent::init-param' -
 
@@ -20,7 +20,7 @@ control 'VCPF-70-000028' do
 
     If the output of the command does not match the expected result, this is a finding.
 
-    If no lines is returned, this is NOT a finding.
+    If no lines is returned, this is not a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -45,8 +45,8 @@ control 'VCPF-70-000028' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000160'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256638'
+  tag rid: 'SV-256638r888405_rule'
   tag stig_id: 'VCPF-70-000028'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

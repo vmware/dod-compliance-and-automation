@@ -1,9 +1,9 @@
 control 'VCEM-70-000029' do
   title 'Rsyslog must be configured to monitor and ship ESX Agent Manager log files.'
-  desc  'ESX Agent Manager a number of logs that must be offloaded from the originating system. This information can then be used for diagnostic, forensics, or other purposes relevant to ensuring the availability and integrity of the hosted application.'
+  desc  'ESX Agent Manager has a number of logs that must be offloaded from the originating system. This information can then be used for diagnostic, forensics, or other purposes relevant to ensuring the availability and integrity of the hosted application.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # rpm -V VMware-visl-integration|grep vmware-services-eam.conf|grep \"^..5......\"
 
@@ -64,8 +64,8 @@ control 'VCEM-70-000029' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000163'
   tag satisfies: ['SRG-APP-000125-WSR-000071']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256701'
+  tag rid: 'SV-256701r888659_rule'
   tag stig_id: 'VCEM-70-000029'
   tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']

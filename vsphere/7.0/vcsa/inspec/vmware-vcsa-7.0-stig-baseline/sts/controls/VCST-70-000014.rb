@@ -7,7 +7,7 @@ control 'VCST-70-000014' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep -n 'webdav' /usr/lib/vmware-sso/vmware-sts/conf/web.xml
 
@@ -27,8 +27,8 @@ control 'VCST-70-000014' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000085'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256758'
+  tag rid: 'SV-256758r889244_rule'
   tag stig_id: 'VCST-70-000014'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

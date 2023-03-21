@@ -3,7 +3,7 @@ control 'VCEM-70-000032' do
   desc  'An attacker has at least two reasons to stop a web server. The first is to cause a denial of service, and the second is to put in place changes the attacker made to the web server configuration. If the Tomcat shutdown port feature is enabled, a shutdown signal can be sent to the ESX Agent Manager through this port. To ensure availability, the shutdown port must be disabled.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep 'base.shutdown.port' /etc/vmware-eam/catalina.properties
 
@@ -27,8 +27,8 @@ control 'VCEM-70-000032' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000435-WSR-000147'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256704'
+  tag rid: 'SV-256704r888668_rule'
   tag stig_id: 'VCEM-70-000032'
   tag cci: ['CCI-002385']
   tag nist: ['SC-5']

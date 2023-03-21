@@ -7,7 +7,7 @@ control 'VCPF-70-000032' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep base.shutdown.port /usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties
 
@@ -35,8 +35,8 @@ control 'VCPF-70-000032' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000435-WSR-000147'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256642'
+  tag rid: 'SV-256642r888417_rule'
   tag stig_id: 'VCPF-70-000032'
   tag cci: ['CCI-002385']
   tag nist: ['SC-5']

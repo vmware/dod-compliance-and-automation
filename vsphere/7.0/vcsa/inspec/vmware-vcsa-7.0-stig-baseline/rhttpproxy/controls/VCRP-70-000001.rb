@@ -3,11 +3,11 @@ control 'VCRP-70-000001' do
   desc  "
     Envoy client connections that are established but no longer connected can consume resources that might otherwise be required by active connections. It is a best practice to terminate connections that are no longer connected to an active client.
 
-    Envoy is hard coded to drop connections after three minutes of idle time. The absence of any \"tcpKeepAliveTimeSec\" settings means that this default is effect. This configuration must be verified and maintained.
+    Envoy is hard coded to drop connections after three minutes of idle time. The absence of any \"tcpKeepAliveTimeSec\" settings means this default is in effect. This configuration must be verified and maintained.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/config/envoy/L4Filter/tcpKeepAliveTimeSec/text()' /etc/vmware-rhttpproxy/config.xml
 
@@ -37,8 +37,8 @@ control 'VCRP-70-000001' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256737'
+  tag rid: 'SV-256737r889149_rule'
   tag stig_id: 'VCRP-70-000001'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
