@@ -7,7 +7,7 @@ control 'VCUI-70-000002' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/Server/Service/Connector[@port=\"${http.port}\"]/@maxThreads' /usr/lib/vmware-vsphere-ui/server/conf/server.xml
 
@@ -37,8 +37,8 @@ control 'VCUI-70-000002' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256779'
+  tag rid: 'SV-256779r889336_rule'
   tag stig_id: 'VCUI-70-000002'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']

@@ -1,11 +1,11 @@
-name: vCenter Virtual Appliance 7.0 PostgreSQL Profile
-title: vCenter Virtual Appliance 7.0 PostgreSQL Profile
+name: vCenter Virtual Appliance 7.0 PostgreSQL STIG Profile
+title: vCenter Virtual Appliance 7.0 PostgreSQL STIG Profile
 maintainer: The Authors
 copyright: The Authors
 copyright_email: stigs@vmware.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.4
+version: 1.0.1
 
 inputs:
 - name: postgres_user

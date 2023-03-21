@@ -1,11 +1,11 @@
-name: vCenter Virtual Appliance 7.0 Lookup Service Profile
-title: vCenter Virtual Appliance 7.0 Lookup Service Profile
+name: vCenter Virtual Appliance 7.0 Lookup Service STIG Profile
+title: vCenter Virtual Appliance 7.0 Lookup Service STIG Profile
 maintainer: The Authors
 copyright: The Authors
 copyright_email: 
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.4
+version: 1.0.1
 
 inputs:
 - name: serverXmlPath

@@ -1,9 +1,9 @@
 control 'VCRP-70-000006' do
   title 'Envoy must exclusively use the HTTPS protocol for client connections.'
-  desc  'Remotely accessing vCenter via Envoy involves sensitive information going over the wire. To protect the confidentiality and integrity of these communications, Envoy must be configured to use an encrypted session of HTTPS rather than plain-text HTTP. The SSL configuration block inside the rhttproxy configuration must be present and correctly configured in order to safely enable TLS.'
+  desc  'Remotely accessing vCenter via Envoy involves sensitive information going over the wire. To protect the confidentiality and integrity of these communications, Envoy must be configured to use an encrypted session of HTTPS rather than plain-text HTTP. The Secure Sockets Layer (SSL) configuration block inside the rhttpproxy configuration must be present and correctly configured to safely enable Transport Layer Security (TLS).'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/config/ssl' /etc/vmware-rhttpproxy/config.xml
 
@@ -25,7 +25,7 @@ control 'VCRP-70-000006' do
 
     /etc/vmware-rhttpproxy/config.xml
 
-    Locate the first <ssl> block and set it's content to the following:
+    Locate the first <ssl> block and set its content to the following:
 
     <ssl>
         <!-- The server private key file -->
@@ -43,8 +43,8 @@ control 'VCRP-70-000006' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000315-WSR-000003'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256742'
+  tag rid: 'SV-256742r889164_rule'
   tag stig_id: 'VCRP-70-000006'
   tag cci: ['CCI-002314']
   tag nist: ['AC-17 (1)']

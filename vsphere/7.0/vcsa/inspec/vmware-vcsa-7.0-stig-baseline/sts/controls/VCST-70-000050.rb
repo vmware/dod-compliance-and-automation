@@ -1,9 +1,9 @@
-control 'VCST-70-000027' do
-  title 'Rsyslog must be configured to monitor and ship Security Token Service log files.'
-  desc  'The Security Token Service produces a number of logs that must be offloaded from the originating system. This information can then be used for diagnostic, forensics, or other purposes relevant to ensuring the availability and integrity of the hosted application.'
+control 'VCST-70-000050' do
+  title 'Security Token Service log data and records must be backed up onto a different system or media.'
+  desc  'Protection of Security Token Service log data includes ensuring log data is not accidentally lost or deleted. Backing up Security Token Service log records to an unrelated system or onto separate media than the system the web server is running on helps to ensure that, in the event of a catastrophic system failure, the log records will be retained.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # rpm -V VMware-visl-integration|grep vmware-services-sso-services.conf|grep \"^..5......\"
 
@@ -108,15 +108,11 @@ control 'VCST-70-000027' do
   "
   impact 0.5
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000358-WSR-000163'
-  tag satisfies: ['SRG-APP-000125-WSR-000071']
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: 'VCST-70-000027'
+  tag gtitle: 'SRG-APP-000125-WSR-000071'
+  tag satisfies: ['SRG-APP-000358-WSR-000163']
+  tag gid: 'V-256775'
+  tag rid: 'SV-256775r889295_rule'
+  tag stig_id: 'VCST-70-000050'
   tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']
-
-  describe command('rpm -V VMware-visl-integration|grep vmware-services-sso-services.conf|grep "^..5......"') do
-    its('stdout.strip') { should eq '' }
-  end
 end

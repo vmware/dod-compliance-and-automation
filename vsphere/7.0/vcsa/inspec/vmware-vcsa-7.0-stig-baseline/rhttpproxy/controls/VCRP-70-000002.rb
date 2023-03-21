@@ -1,13 +1,13 @@
 control 'VCRP-70-000002' do
   title 'Envoy must set a limit on established connections.'
   desc  "
-    Envoy client connections must be limited in order to preserve system resources and to continue servicing connections without interruption. Without a limit, set the system would be vulnerable to a trivial denial of service attack where connections are created en masse and vCenter resources are entirely consumed.
+    Envoy client connections must be limited to preserve system resources and continue servicing connections without interruption. Without a limit set, the system would be vulnerable to a trivial denial-of-service attack where connections are created en masse and vCenter resources are entirely consumed.
 
     Envoy comes hard coded with a tested and supported value for \"maxHttpsConnections\" that must be verified and maintained.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/config/envoy/L4Filter/maxHttpsConnections/text()' /etc/vmware-rhttpproxy/config.xml
 
@@ -37,8 +37,8 @@ control 'VCRP-70-000002' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256738'
+  tag rid: 'SV-256738r889152_rule'
   tag stig_id: 'VCRP-70-000002'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']

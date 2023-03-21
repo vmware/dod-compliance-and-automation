@@ -3,7 +3,7 @@ control 'VCUI-70-000023' do
   desc  "Enumeration techniques, such as URL parameter manipulation, rely on being able to obtain information about the web server's directory structure by locating directories without default pages. In this scenario, the web server will display to the user a listing of the files in the directory being accessed. Ensuring that directory listing is disabled is one approach to mitigating the vulnerability."
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '//param-name[text()=\"listings\"]/parent::init-param' -
 
@@ -37,8 +37,8 @@ control 'VCUI-70-000023' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000142'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256800'
+  tag rid: 'SV-256800r889399_rule'
   tag stig_id: 'VCUI-70-000023'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

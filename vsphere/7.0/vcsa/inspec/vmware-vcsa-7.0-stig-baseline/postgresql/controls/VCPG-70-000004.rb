@@ -1,9 +1,9 @@
 control 'VCPG-70-000004' do
   title 'VMware Postgres must be configured to overwrite older logs when necessary.'
-  desc  'Without proper configuration, log files for VMware Postgres can grow without bound, filling the partition and potentially affecting the availability of the VCSA. One part of this configuration is to ensure that the logging subsystem overwrites, rather than appending to, any previous logs that would share the same name. This is avoided in other configuration steps but this best practice should be followed for good measure.'
+  desc  'Without proper configuration, log files for VMware Postgres can grow without bound, filling the partition and potentially affecting the availability of the vCenter Server Appliance (VCSA). One part of this configuration is to ensure the logging subsystem overwrites, rather than appends to, any previous logs that would share the same name. This is avoided in other configuration steps, but this best practice should be followed for good measure.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW log_truncate_on_rotation;\"
 
@@ -14,7 +14,7 @@ control 'VCPG-70-000004' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, execute the following commands:
+    At the command prompt, run the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET log_truncate_on_rotation TO 'on';\"
 
@@ -23,8 +23,8 @@ control 'VCPG-70-000004' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000109-DB-000321'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256594'
+  tag rid: 'SV-256594r887568_rule'
   tag stig_id: 'VCPG-70-000004'
   tag cci: ['CCI-000140']
   tag nist: ['AU-5 b']

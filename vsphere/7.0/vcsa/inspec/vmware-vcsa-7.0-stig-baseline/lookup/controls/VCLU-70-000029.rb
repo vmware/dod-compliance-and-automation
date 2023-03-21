@@ -1,9 +1,9 @@
 control 'VCLU-70-000029' do
-  title 'Lookup Service must must be configured with the appropriate ports.'
+  title 'Lookup Service must be configured with the appropriate ports.'
   desc  'Web servers provide numerous processes, features, and functionalities that use TCP/IP ports. Some of these processes may be deemed unnecessary or too unsecure to run on a production system. The ports that Lookup Service listens on are configured in the "catalina.properties" file and must be veriified as accurate to their shipping state.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep '\\.port' /usr/lib/vmware-lookupsvc/conf/catalina.properties
 
@@ -21,7 +21,7 @@ control 'VCLU-70-000029' do
 
     /usr/lib/vmware-lookupsvc/conf/catalina.properties
 
-    Navigate to the ports specification section.
+    Navigate to the port's specification section.
 
     Set the Lookup Service port specifications according to the shipping configuration below:
 
@@ -37,8 +37,8 @@ control 'VCLU-70-000029' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000383-WSR-000175'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256734'
+  tag rid: 'SV-256734r888793_rule'
   tag stig_id: 'VCLU-70-000029'
   tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']

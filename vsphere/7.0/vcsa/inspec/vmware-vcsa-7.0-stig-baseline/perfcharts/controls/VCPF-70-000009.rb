@@ -1,9 +1,9 @@
 control 'VCPF-70-000009' do
   title 'Performance Charts must only run one webapp.'
-  desc  'VMware ships Performance Charts on the VCSA with one webapp. Any other path is potentially malicious and must be removed.'
+  desc  'VMware ships Performance Charts on the vCenter Server Appliance (VCSA)with one webapp. Any other path is potentially malicious and must be removed.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # ls -A /usr/lib/vmware-perfcharts/tc-instance/webapps
 
@@ -25,8 +25,8 @@ control 'VCPF-70-000009' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000131-WSR-000073'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256619'
+  tag rid: 'SV-256619r888348_rule'
   tag stig_id: 'VCPF-70-000009'
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']

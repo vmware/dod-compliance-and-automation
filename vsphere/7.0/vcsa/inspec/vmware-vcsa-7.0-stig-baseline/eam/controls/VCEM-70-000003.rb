@@ -1,9 +1,9 @@
 control 'VCEM-70-000003' do
   title 'ESX Agent Manager must limit the maximum size of a POST request.'
-  desc  'The "maxPostSize" value is the maximum size in bytes of the POST which will be handled by the container FORM URL parameter parsing. Limit its size to reduce exposure to a denial-of-service attack. If "maxPostSize" is not set, the default value of 2097152 (2MB) is used. ESX Agent Manager is configured in its shipping state to not set a value for "maxPostSize".'
+  desc  'The "maxPostSize" value is the maximum size in bytes of the POST that will be handled by the container FORM URL parameter parsing. Limit its size to reduce exposure to a denial-of-service attack. If "maxPostSize" is not set, the default value of 2097152 (2MB) is used. ESX Agent Manager is configured in its shipping state to not set a value for "maxPostSize".'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/Server/Service/Connector/@maxPostSize' /usr/lib/vmware-eam/web/conf/server.xml
 
@@ -27,8 +27,8 @@ control 'VCEM-70-000003' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256674'
+  tag rid: 'SV-256674r888578_rule'
   tag stig_id: 'VCEM-70-000003'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']

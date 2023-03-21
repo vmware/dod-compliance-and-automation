@@ -1,20 +1,20 @@
 control 'VCPG-70-000015' do
   title 'VMware Postgres must not allow schema access to unauthorized accounts.'
   desc  "
-    Database Management Systems typically separate security functionality from non-security functionality via separate databases or schemas. Database objects or code implementing security functionality should not be commingled with objects or code implementing application logic. When security and non-security functionality are commingled, users who have access to non-security functionality may be able to access security functionality.
+    Database management systems typically separate security functionality from nonsecurity functionality via separate databases or schemas. Database objects or code implementing security functionality should not be commingled with objects or code implementing application logic. When security and nonsecurity functionality are commingled, users who have access to nonsecurity functionality may be able to access security functionality.
 
-    VMware Postgres contains a number of system configuration schema whose access must be strictly limited. By default, the pg_catalog and information_schema objects are configured to only be accessible in a read-only manner publicly and otherwise only accessible by the postgres user. This configuration must be verified and maintained.
+    VMware Postgres contains a number of system configuration schemas for which access must be strictly limited. By default, the \"pg_catalog\" and \"information_schema\" objects are configured to only be accessible in a read-only manner publicly and otherwise only accessible by the Postgres user. This configuration must be verified and maintained.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"\\dp .*.;\" |grep -E \"information_schema|pg_catalog\"|awk -F '|' '{print $4}'|awk -F '/' '{print $1}'|grep -v \"=r\" | grep -v \"^[[:space:]]*$\" | grep -v \"postgres\"
 
     If any lines are returned, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"REVOKE ALL PRIVILEGES ON <name> FROM <user>;\"
 
@@ -23,8 +23,8 @@ control 'VCPG-70-000015' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000233-DB-000124'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256605'
+  tag rid: 'SV-256605r887601_rule'
   tag stig_id: 'VCPG-70-000015'
   tag cci: ['CCI-001084']
   tag nist: ['SC-3']

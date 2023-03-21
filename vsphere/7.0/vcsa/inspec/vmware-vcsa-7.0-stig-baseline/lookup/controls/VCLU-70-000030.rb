@@ -3,7 +3,7 @@ control 'VCLU-70-000030' do
   desc  'An attacker has at least two reasons to stop a web server. The first is to cause a denial of service, and the second is to put in place changes the attacker made to the web server configuration. If the Tomcat shutdown port feature is enabled, a shutdown signal can be sent to the Lookup Service through this port. To ensure availability, the shutdown port must be disabled.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following commands:
+    At the command prompt, run the following commands:
 
     # xmllint --xpath '/Server/@port' /usr/lib/vmware-lookupsvc/conf/server.xml
 
@@ -18,7 +18,7 @@ control 'VCLU-70-000030' do
 
     /usr/lib/vmware-lookupsvc/conf/server.xml
 
-    Make sure that the server port is set as follows:
+    Ensure the server port is set as follows:
 
     <Server port=\"${base.shutdown.port}\" …>
 
@@ -29,8 +29,8 @@ control 'VCLU-70-000030' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000435-WSR-000147'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256735'
+  tag rid: 'SV-256735r888796_rule'
   tag stig_id: 'VCLU-70-000030'
   tag cci: ['CCI-002385']
   tag nist: ['SC-5']

@@ -1,5 +1,11 @@
 # Change Log
 
+## [7.0 Official STIG Version 1 Release 1] (2023-03-15)
+
+#### Release Notes
+- Updated metadata to match official STIG
+- Photon is now included in this profile since the official vCenter Photon 3.0 STIG differs slightly from the Photon 3.0 STIG Readiness Guide
+
 ## [7.0 Version 1 Release 4] (2022-10-28)
 
 #### Release Notes

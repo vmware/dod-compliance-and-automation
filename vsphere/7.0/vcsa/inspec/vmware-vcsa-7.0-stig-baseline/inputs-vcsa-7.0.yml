@@ -1,4 +1,1 @@
 authprivlog: /var/log/audit/sshinfo.log
-syslogServer: mysyslog.server:514
-ntpServer1: time.test.local
-ntpServer2: time2.test.local

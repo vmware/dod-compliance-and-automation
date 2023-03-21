@@ -1,13 +1,13 @@
 control 'VCLU-70-000001' do
-  title 'Lookup Service must limit the amount of time that each TCP connection is kept alive.'
+  title 'Lookup Service must limit the amount of time that each Transport Control Protocol (TCP) connection is kept alive.'
   desc  "
-    Denial of service (DoS) is one threat against web servers.  Many DoS attacks attempt to consume web server resources in such a way that no more resources are available to satisfy legitimate requests.
+    Denial of service (DoS) is one threat against web servers. Many DoS attacks attempt to consume web server resources in such a way that no more resources are available to satisfy legitimate requests.
 
-    In Tomcat, the \"connectionTimeout\" attribute sets the number of milliseconds the server will wait after accepting a connection for the request URI line to be presented. This timeout will also be used when reading the request body (if any). This prevents idle sockets that are not sending HTTP requests from consuming system resources and potentially denying new connections.
+    In Tomcat, the \"connectionTimeout\" attribute sets the number of milliseconds the server will wait after accepting a connection for the request Uniform Resource Identifier (URI) line to be presented. This timeout will also be used when reading the request body (if any). This prevents idle sockets that are not sending HTTP requests from consuming system resources and potentially denying new connections.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --xpath '/Server/Service/Connector[@port=\"${bio-custom.http.port}\"]/@connectionTimeout' /usr/lib/vmware-lookupsvc/conf/server.xml
 
@@ -22,7 +22,9 @@ control 'VCLU-70-000001' do
 
     /usr/lib/vmware-lookupsvc/conf/server.xml
 
-    Configure the <Connector> node with the value 'connectionTimeout=\"60000\"'
+    Configure the <Connector> node with the value:
+
+    connectionTimeout=\"60000\"
 
     Example:
 
@@ -35,8 +37,8 @@ control 'VCLU-70-000001' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256706'
+  tag rid: 'SV-256706r888709_rule'
   tag stig_id: 'VCLU-70-000001'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']

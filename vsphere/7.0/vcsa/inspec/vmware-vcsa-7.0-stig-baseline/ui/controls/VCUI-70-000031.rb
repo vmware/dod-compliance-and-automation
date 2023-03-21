@@ -1,12 +1,9 @@
 control 'VCUI-70-000031' do
   title 'vSphere UI must disable the shutdown port.'
-  desc  "
-    An attacker has at least two reasons to stop a web server. The first is to cause a DoS, and the second is to put in place changes the attacker made to the web server configuration. If the Tomcat shutdown port feature is enabled, a shutdown signal can be sent to vSphere UI through this port. To ensure availability, the shutdown port must be disabled.
-
-  "
+  desc  'An attacker has at least two reasons to stop a web server. The first is to cause a denial of service, and the second is to put in place changes the attacker made to the web server configuration. If the Tomcat shutdown port feature is enabled, a shutdown signal can be sent to vSphere UI through this port. To ensure availability, the shutdown port must be disabled.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following commands:
+    At the command prompt, run the following commands:
 
     # xmllint --format /usr/lib/vmware-vsphere-ui/server/conf/server.xml | sed '2 s/xmlns=\".*\"//g' |  xmllint --xpath '/Server/@port' -
 
@@ -31,7 +28,7 @@ control 'VCUI-70-000031' do
 
     Make sure that the server port is disabled:
 
-    <Server port=\"${shutdown.port}\" …>
+    <Server port=\"${shutdown.port}\">
 
     Restart the service with the following command:
 
@@ -40,8 +37,8 @@ control 'VCUI-70-000031' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000435-WSR-000147'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256808'
+  tag rid: 'SV-256808r889423_rule'
   tag stig_id: 'VCUI-70-000031'
   tag cci: ['CCI-002385']
   tag nist: ['SC-5']

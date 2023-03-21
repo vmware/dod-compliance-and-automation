@@ -1,9 +1,9 @@
 control 'VCEM-70-000010' do
   title 'ESX Agent Manager must not be configured with unsupported realms.'
-  desc  "ESX Agent Manager performs authentication at the application level and not through Tomcat. To eliminate unnecessary features and to ensure that ESX Agent Manager remains in it's shipping state, the lack of a UserDatabaseRealm configuration must be confirmed."
+  desc  'ESX Agent Manager performs authentication at the application level and not through Tomcat. To eliminate unnecessary features and ensure ESX Agent Manager remains in its shipping state, the lack of a "UserDatabaseRealm" configuration must be confirmed.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep UserDatabaseRealm /usr/lib/vmware-eam/web/conf/server.xml
 
@@ -23,8 +23,8 @@ control 'VCEM-70-000010' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000015'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256682'
+  tag rid: 'SV-256682r888602_rule'
   tag stig_id: 'VCEM-70-000010'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

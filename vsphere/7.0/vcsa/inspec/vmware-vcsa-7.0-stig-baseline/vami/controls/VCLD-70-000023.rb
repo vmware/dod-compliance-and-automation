@@ -1,5 +1,5 @@
 control 'VCLD-70-000023' do
-  title 'VAMI must be protected from being stopped by a non-privileged user.'
+  title 'VAMI must be protected from being stopped by a nonprivileged user.'
   desc  "
     An attacker has at least two reasons to stop a web server. The first is to cause a denial of service, and the second is to put in place changes the attacker made to the web server configuration. As such, only administrators should ever be able to stop VAMI.
 
@@ -7,7 +7,7 @@ control 'VCLD-70-000023' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # ps -f -U root | awk '$0 ~ /vami-lighttpd/ && $0 !~ /awk/ {print $1}'
 
@@ -31,8 +31,8 @@ control 'VCLD-70-000023' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000435-WSR-000147'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256667'
+  tag rid: 'SV-256667r888523_rule'
   tag stig_id: 'VCLD-70-000023'
   tag cci: ['CCI-002385']
   tag nist: ['SC-5']

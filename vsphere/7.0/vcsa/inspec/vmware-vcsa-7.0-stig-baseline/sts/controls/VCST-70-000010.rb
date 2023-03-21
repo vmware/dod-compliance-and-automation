@@ -1,9 +1,9 @@
 control 'VCST-70-000010' do
   title 'The Security Token Service must not be configured with unused realms.'
-  desc  "The Security Token Service performs user authentication at the application level and not through Tomcat. To eliminate unnecessary features and to ensure that the Security Token Service remains in it's shipping state, the lack of a \"UserDatabaseRealm\" configuration must be confirmed."
+  desc  'The Security Token Service performs user authentication at the application level and not through Tomcat. To eliminate unnecessary features and ensure the Security Token Service remains in its shipping state, the lack of a "UserDatabaseRealm" configuration must be confirmed.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep UserDatabaseRealm /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
@@ -23,8 +23,8 @@ control 'VCST-70-000010' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000015'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256754'
+  tag rid: 'SV-256754r889232_rule'
   tag stig_id: 'VCST-70-000010'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

@@ -1,15 +1,15 @@
 control 'VCPG-70-000012' do
-  title 'VMware Postgres must enforce authorized access to all PKI private keys.'
+  title 'VMware Postgres must enforce authorized access to all public key infrastructure (PKI) private keys.'
   desc  "
-    The DoD standard for authentication is DoD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.
+    The DOD standard for authentication is DOD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.
 
-    If the private key is stolen, an attacker can use the private key(s) to impersonate the certificate holder.  In cases where the DBMS-stored private keys are used to authenticate the DBMS to the system's clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man in the middle attacks against the DBMS system and its clients.
+    If a private key is stolen, an attacker can use it to impersonate the certificate holder. In cases where the database management system (DBMS)-stored private keys are used to authenticate the DBMS to the system's clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man-in-the-middle attacks against the DBMS system and its clients.
 
     All access to the private key(s) of the DBMS must be restricted to authorized and authenticated users.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # stat -c \"%a:%U:%G\" /storage/db/vpostgres_ssl/server.key
 
@@ -20,7 +20,7 @@ control 'VCPG-70-000012' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, execute the following commands:
+    At the command prompt, run the following commands:
 
     # chmod 600 /storage/db/vpostgres_ssl/server.key
     # chown vpostgres:vpgmongrp /storage/db/vpostgres_ssl/server.key
@@ -28,8 +28,8 @@ control 'VCPG-70-000012' do
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-APP-000176-DB-000068'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256602'
+  tag rid: 'SV-256602r887592_rule'
   tag stig_id: 'VCPG-70-000012'
   tag cci: ['CCI-000186']
   tag nist: ['IA-5 (2) (b)']

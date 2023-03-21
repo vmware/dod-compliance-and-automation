@@ -1,9 +1,9 @@
 control 'VCEM-70-000009' do
   title 'ESX Agent Manager must only run one webapp.'
-  desc  'VMware ships ESX Agent Managers on the VCSA with one webapp. Any other path is potentially malicious and must be removed.'
+  desc  'VMware ships ESX Agent Managers on the vCenter Server Appliance (VCSA) with one webapp. Any other path is potentially malicious and must be removed.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # ls -A /usr/lib/vmware-eam/web/webapps
 
@@ -26,8 +26,8 @@ control 'VCEM-70-000009' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000131-WSR-000073'
   tag satisfies: ['SRG-APP-000141-WSR-000075']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256681'
+  tag rid: 'SV-256681r888599_rule'
   tag stig_id: 'VCEM-70-000009'
   tag cci: ['CCI-000381', 'CCI-001749']
   tag nist: ['CM-5 (3)', 'CM-7 a']

@@ -1,13 +1,13 @@
 control 'VCLU-70-000021' do
   title 'Lookup Service must set the welcome-file node to a default web page.'
   desc  "
-    Enumeration techniques, such as URL parameter manipulation, rely upon being able to obtain information about the web server's directory structure by locating directories without default pages. In this scenario, the web server will display to the user a listing of the files in the directory being accessed.
+    Enumeration techniques, such as URL parameter manipulation, rely on being able to obtain information about the web server's directory structure by locating directories without default pages. In this scenario, the web server will display to the user a listing of the files in the directory being accessed.
 
-    By having a default hosted application web page, the anonymous web user will not obtain directory browsing information or an error message that reveals the server type and version. Ensuring that every document directory has an index.jsp (or equivalent) file is one approach to mitigating the vulnerability.
+    By having a default hosted application web page, the anonymous web user will not obtain directory browsing information or an error message that reveals the server type and version. Ensuring that every document directory has an \"index.jsp\" (or equivalent) file is one approach to mitigating the vulnerability.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-lookupsvc/conf/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/welcome-file-list' -
 
@@ -41,8 +41,8 @@ control 'VCLU-70-000021' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000142'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256726'
+  tag rid: 'SV-256726r888769_rule'
   tag stig_id: 'VCLU-70-000021'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

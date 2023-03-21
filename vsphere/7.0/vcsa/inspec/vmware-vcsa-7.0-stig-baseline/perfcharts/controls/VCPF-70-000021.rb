@@ -5,11 +5,11 @@ control 'VCPF-70-000021' do
 
     An attacker can also enter Unicode characters into hosted applications in an effort to break out of the document home or root home directory or to bypass security checks.
 
-    VMware uses the standard Tomcat \"SetCharacterEncodingFilter\" to provide a layer of defense against character encoding attacks. Filters are Java objects that performs filtering tasks on either the request to a resource (a servlet or static content), or on the response from a resource, or both.
+    VMware uses the standard Tomcat \"SetCharacterEncodingFilter\" to provide a layer of defense against character encoding attacks. Filters are Java objects that performs filtering tasks on the request to a resource (a servlet or static content), the response from a resource, or both.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     #  xmllint --format /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/filter-mapping/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter-mapping' -
 
@@ -22,7 +22,7 @@ control 'VCPF-70-000021' do
 
     If the output is does not match the expected result, this is a finding.
 
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '/web-app/filter/filter-name[text()=\"setCharacterEncodingFilter\"]/parent::filter' -
 
@@ -51,7 +51,7 @@ control 'VCPF-70-000021' do
 
     /usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml
 
-    Configure the <web-app> node with the child nodes listed below.
+    Configure the <web-app> node with the child nodes listed below:
 
     <filter-mapping>
         <filter-name>setCharacterEncodingFilter</filter-name>
@@ -81,8 +81,8 @@ control 'VCPF-70-000021' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000251-WSR-000157'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256631'
+  tag rid: 'SV-256631r888384_rule'
   tag stig_id: 'VCPF-70-000021'
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']

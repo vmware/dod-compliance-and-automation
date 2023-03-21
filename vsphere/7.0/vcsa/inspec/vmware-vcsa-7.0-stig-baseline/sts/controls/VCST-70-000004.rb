@@ -1,5 +1,5 @@
 control 'VCST-70-000004' do
-  title 'The Security Token Service must protect cookies from XSS.'
+  title 'The Security Token Service must protect cookies from cross-site scripting (XSS).'
   desc  "
     Cookies are a common way to save session state over the HTTP(S) protocol. If an attacker can compromise session data stored in a cookie, they are better able to launch an attack against the server and its applications.
 
@@ -7,7 +7,7 @@ control 'VCST-70-000004' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # xmllint --format /usr/lib/vmware-sso/vmware-sts/conf/web.xml | sed '2 s/xmlns=\".*\"//g' | xmllint --xpath '/web-app/session-config/cookie-config/http-only' -
 
@@ -40,8 +40,8 @@ control 'VCST-70-000004' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000002'
   tag satisfies: ['SRG-APP-000223-WSR-000011', 'SRG-APP-000439-WSR-000154']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256748'
+  tag rid: 'SV-256748r889214_rule'
   tag stig_id: 'VCST-70-000004'
   tag cci: ['CCI-000054', 'CCI-001664', 'CCI-002418']
   tag nist: ['AC-10', 'SC-23 (3)', 'SC-8']

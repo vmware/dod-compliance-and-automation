@@ -1,15 +1,15 @@
 control 'VCPG-70-000011' do
-  title 'VMware Postgres must be configured to use TLS.'
+  title 'VMware Postgres must be configured to use Transport Layer Security (TLS).'
   desc  "
-    The DoD standard for authentication is DoD-approved PKI certificates. Authentication based on User ID and Password may be used only when it is not possible to employ a PKI certificate.
+    The DOD standard for authentication is DOD-approved public key infrastructure (PKI) certificates. Authentication based on user ID and password may be used only when it is not possible to employ a PKI certificate.
 
-    In such cases, passwords need to be protected at all times, and encryption is the standard method for protecting passwords during transmission.
+    In such cases, passwords, must be protected at all times, and encryption is the standard method for protecting passwords during transmission.
 
-    VMware Postgres is configured out of the box to require TLS connections with remote clients. As an embedded database and available only on locahost for a standalone VCSAs, TLS connections are used only in high availability deployments for connections between a primary and a standby. This configuration must be verified and maintained.
+    VMware Postgres is configured out of the box to require TLS connections with remote clients. As an embedded database and available only on \"localhost\" for standalone vCenter Server Appliances (VCSAs), TLS connections are used only in high-availability deployments for connections between a primary and a standby. This configuration must be verified and maintained.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c \"SHOW ssl;\"
 
@@ -20,7 +20,7 @@ control 'VCPG-70-000011' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, execute the following commands:
+    At the command prompt, run the following commands:
 
     # /opt/vmware/vpostgres/current/bin/psql -U postgres -c \"ALTER SYSTEM SET ssl TO 'on';\"
 
@@ -30,8 +30,8 @@ control 'VCPG-70-000011' do
   tag severity: 'high'
   tag gtitle: 'SRG-APP-000172-DB-000075'
   tag satisfies: ['SRG-APP-000442-DB-000379']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256601'
+  tag rid: 'SV-256601r887589_rule'
   tag stig_id: 'VCPG-70-000011'
   tag cci: ['CCI-000197', 'CCI-002422']
   tag nist: ['IA-5 (1) (c)', 'SC-8 (2)']

@@ -1,9 +1,9 @@
 control 'VCPF-70-000030' do
   title 'Rsyslog must be configured to monitor and ship Performance Charts log files.'
-  desc  'The Performance Charts produces a handful of logs that must be offloaded from the originating system. This information can then be used for diagnostic purposes, forensics purposes, or other purposes relevant to ensuring the availability and integrity of the hosted application.'
+  desc  'Performance Charts produces several logs that must be offloaded from the originating system. This information can then be used for diagnostic purposes, forensics purposes, or other purposes relevant to ensuring the availability and integrity of the hosted application.'
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # rpm -V VMware-visl-integration|grep vmware-services-perfcharts.conf|grep \"^..5......\"
 
@@ -47,8 +47,8 @@ control 'VCPF-70-000030' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000163'
   tag satisfies: ['SRG-APP-000125-WSR-000071']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-256640'
+  tag rid: 'SV-256640r888411_rule'
   tag stig_id: 'VCPF-70-000030'
   tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']
