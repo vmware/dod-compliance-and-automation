@@ -6,6 +6,8 @@
 - [ESXi](#esxi)
   - [ESXI-70-000084 Incorrect property shown in check](#esxi-70-000084-incorrect-property-shown-in-check)
 - [Virtual Machines](#vm)
+  - [VMCH-70-000023 The 3D setting may not be displayed in the UI](#vmch-70-000023-the-3d-setting-may-not-be-displayed-in-the-ui)
+  - [VMCH-70-000024 Check command does not display the expected output](#vmch-70-000024-check-command-does-not-display-the-expected-output)
 - [VCSA](#vcsa)
   - [VCEM-70-000008 The check command displays files that have changed](#vcem-70-000008-the-check-command-displays-files-that-have-changed)
   - [VCLU-70-000007 Log file permissions do not persist](#vclu-70-000007-log-file-permissions-do-not-persist)
@@ -64,7 +66,28 @@ In the check exmaple output "Audit Remote Host Enabled" should read "Audit Recor
 
 ## VM
 
-**No issues reported at this time**
+### [VMCH-70-000023] The 3D setting may not be displayed in the UI
+
+Related issue: None
+
+By default the "mks.enable3d" parameter is not displayed in the vSphere UI when viewing the advanced settings list for a VM. If enabled or explicitly set to False it will then show up in the list.  
+The ESXI Host Client also doesn't display this setting in either case even if explicitly specified.  
+
+**Workaround:**
+
+- If the setting does not exist in the vSphere UI and/or PowerCLI it is equivalent to being set to False.  
+- The "Enable 3D Support" checkbox on a virtual machines video card can also be used to determine the status of this setting.    
+
+### [VMCH-70-000024] Check command does not display the expected output
+
+Related issue: [#146](https://github.com/vmware/dod-compliance-and-automation/issues/146)
+
+The check command logic is incorrectly using "or" instead of "and".
+
+**Workaround:**
+
+- Run the following command instead:  
+```Get-VM | Where {($_.ExtensionData.Config.MigrateEncryption -eq "disabled")}```  
 
 ## VCSA
 
@@ -83,7 +106,7 @@ This issue is seen after some upgrades where some files may be replaced or confi
 
 Related issue: [#133](https://github.com/vmware/dod-compliance-and-automation/issues/133)
 
-In vCenter versions 7.0 U3f and above the Lookup service logs are no longer owned by root and now owned by the "lookupsvc" service account.
+In vCenter versions 7.0 U3f and above the Lookup service logs are no longer owned by root and now owned by the "lookupsvc" service account. This is expected and the STIG will be updated for this change.
 
 **Workaround:**
 
@@ -99,6 +122,8 @@ This issue is seen after some upgrades where updates are made to the vCenter dat
 **Workaround:**
 
 - The tables can be left as is with the "postgres" owner or the owner can be updated to the "vc" user with the command in the fix text.  
+- The command in the fixtext should read as follows:
+```/opt/vmware/vpostgres/current/bin/psql -d VCDB -U postgres -c "ALTER TABLE <tablename> OWNER TO vc;"```
 
 ### [VCST-70-000028] New port for smartcard authentication in 7.0 U3i
 
