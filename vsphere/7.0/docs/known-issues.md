@@ -110,7 +110,7 @@ In vCenter versions 7.0 U3f and above the Lookup service logs are no longer owne
 
 **Workaround:**
 
-- The check command will be updated in a future STIG release as follows:
+- The check command will be updated in a future STIG release as follows:  
 ```find /var/log/vmware/lookupsvc -xdev -type f -a '(' -perm /137 -o -not -user lookupsvc -o -not -group lookupsvc ')' -exec ls -ld {} \;```
 
 ### [VCPG-70-000006] The check command output may display some tables not owned by vc
@@ -122,7 +122,7 @@ This issue is seen after some upgrades where updates are made to the vCenter dat
 **Workaround:**
 
 - The tables can be left as is with the "postgres" owner or the owner can be updated to the "vc" user with the command in the fix text.  
-- The command in the fixtext should read as follows:
+- The command in the fixtext should read as follows:  
 ```/opt/vmware/vpostgres/current/bin/psql -d VCDB -U postgres -c "ALTER TABLE <tablename> OWNER TO vc;"```
 
 ### [VCST-70-000028] New port for smartcard authentication in 7.0 U3i
