@@ -2815,7 +2815,7 @@
   ansible.builtin.lineinfile:
     path: '{{ var_login_defs_file }}'
     state: present
-    regexp: '^UMASK '
+    regexp: '#?\s*UMASK\s'
     line: UMASK {{ var_login_umask }}
   tags:
     - PHTN-30-000114
