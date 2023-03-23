@@ -1,7 +1,7 @@
 <# 
 .SYNOPSIS 
-    Remediates ESXi hosts against the vSphere ESXi 7.0 STIG Readiness Guide
-    Version 1 Release 4
+    Remediates ESXi hosts against the vSphere ESXi 7.0 STIG
+    Version 1 Release 1
 .DESCRIPTION
     -Remediates a single host or all hosts in a specified cluster.
     -Individual controls can be enabled/disabled in the $controlsenabled hash table
@@ -11,13 +11,13 @@
 .NOTES 
     File Name  : VMware_vSphere_7.0_STIG_ESXi_Remediation.ps1 
     Author     : VMware
-    Version    : 1 Release 4
+    Version    : 1 Release 1
     License    : Apache-2.0
 
     Tested against
-    -PowerCLI 12.6
-    -Powershell 5/Core 7.2.6
-    -vCenter/ESXi 7.0 U3g
+    -PowerCLI 13
+    -Powershell 5/Core 7.3.2
+    -vCenter/ESXi 7.0 U3k
 
     Example command to run script
     .\VMware_vSphere_7.0_STIG_ESXi_Remediation.ps1 -vcenter vcentername.test.local -hostname myhost.test.local -vccred $cred -esxAdminGroup "esxAdmins2" -allowedIPs "10.0.0.0/8" -syslogServer "tcp://log.test.local:514" -ntpServers "time.test.local","time2.test.local" -reportpath C:\Reports
@@ -120,6 +120,7 @@ $stigsettings = [ordered]@{
     syslogHost              = @{"Syslog.global.logHost" = $syslogServer}   #ESXI-70-000004
     stigVibRE               = "dod-esxi70-stig-re"   #Update with STIG VIB version used
     stigVibRD               = "dod-esxi70-stig-rd"   #Update with STIG VIB version used
+    issueBanner             = "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. By using this IS (which includes any device attached to this IS), you consent to the following conditions: -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations. -At any time, the USG may inspect and seize data stored on this IS. -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose. -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy. -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
     esxAdminsGroup          = @{"Config.HostAgent.plugins.hostsvc.esxAdminsGroup" = $esxAdminGroup} #ESXI-70-000039
     allowedips              = $allowedIPs  #ESXI-70-000056 Allows IP ranges for the ESXi firewall
     ntpServers              = $ntpServers #ESXI-70-000046
@@ -514,14 +515,22 @@ Try{
     If($controlsenabled.ESXI70000007){
         Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
-            $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
-            $results = $esxcli.software.vib.list.Invoke() | Where-Object {$_.Name -eq $stigsettings.stigVibRE -or $_.Name -eq $stigsettings.stigVibRD} -ErrorAction Stop
-            If($results){
-                Write-ToConsoleGreen "...VMware STIG VIB is installed on $($vmhost.name)"
+            $name = "Config.Etc.issue"
+            $value = $stigsettings.issueBanner
+            ## Checking to see if current setting exists
+            If($asetting = $vmhost | Get-AdvancedSetting -Name $name -ErrorAction Stop){
+              If($asetting.value -eq $value){
+                Write-ToConsoleGreen "...Setting $name is already configured correctly to $value on $vmhost"
                 $unchangedcount++
-            }Else{
-                Write-ToConsoleYellow "...!!VMware STIG VIB is NOT installed on $($vmhost.name) !!"
+              }Else{
+                Write-ToConsoleYellow "...Setting $name was incorrectly set to $($asetting.value) on $vmhost...setting to $value"
+                $asetting | Set-AdvancedSetting -Value $value -Confirm:$false -ErrorAction Stop
                 $changedcount++
+              }
+            }Else{
+              Write-ToConsoleYellow "...Setting $name does not exist on $vmhost...creating setting..."
+              $vmhost | New-AdvancedSetting -Name $name -Value $value -Confirm:$false -ErrorAction Stop
+              $changedcount++
             }
         }
     }
