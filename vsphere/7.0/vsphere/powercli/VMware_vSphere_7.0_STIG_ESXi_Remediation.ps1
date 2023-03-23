@@ -1104,7 +1104,7 @@ Try{
         Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
         ForEach($vmhost in $vmhosts){
             $name = $stigsettings.enableMob.Keys
-            $value = [boolean]$stigsettings.enableMob.Values
+            $value = [System.Convert]::ToBoolean([String]$stigsettings.enableMob.Values)
             ## Checking to see if current setting exists
             If($asetting = $vmhost | Get-AdvancedSetting -Name $name -ErrorAction Stop){
                 If($asetting.value -eq $value){
