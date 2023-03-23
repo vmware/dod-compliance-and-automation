@@ -1512,7 +1512,7 @@ Try{
         ForEach($vmhost in $vmhosts){
             $vmks = $vmhost | Get-VMHostNetworkAdapter -VMKernel -ErrorAction Stop
             ForEach($vmk in $vmks){
-                If(($vmk.VMotionEnabled -eq "True" -and $vmk.FaultToleranceLoggingEnabled -eq "True") -xor ($vmk.VMotionEnabled -eq "True" -and $vmk.ManagementTrafficEnabled -eq "True") -xor ($vmk.VMotionEnabled -eq "True" -and $vmk.VsanTrafficEnabled -eq "True")){
+                If(($vmk.VMotionEnabled -eq "True" -and $vmk.FaultToleranceLoggingEnabled -eq "True") -xor ($vmk.VMotionEnabled -eq "True" -and $vmk.ManagementTrafficEnabled -eq "True") -xor ($vmk.VMotionEnabled -eq "True" -and $vmk.VsanTrafficEnabled -eq "True") -xor ($vmk.VMotionEnabled -eq "True" -and $vmk.ProvisioningEnabled -eq "True") -xor ($vmk.VMotionEnabled -eq "True" -and $vmk.VSphereBackupNfcEnabled -eq "True") -xor ($vmk.VMotionEnabled -eq "True" -and $vmk.VSphereReplicationEnabled -eq "True") -xor ($vmk.VMotionEnabled -eq "True" -and $vmk.VSphereReplicationNfcEnabled -eq "True")){
                     Write-ToConsoleRed "...VMKernel $($vmk.name) appears to have vMotion and another function enabled on the same VMKernel on $($vmhost.name).  Investigate and separate functions to another network and VMKernel."
                     $failedcount++
                 }ElseIf($vmk.VMotionEnabled -eq "True"){
