@@ -32,17 +32,10 @@ control 'VCUI-70-000007' do
   tag nist: ['AU-9']
 
   command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
-    describe.one do
-      describe file(fname) do
-        it { should_not be_writable.by('others') }
-        its('owner') { should cmp 'vsphere-ui' }
-        its('group') { should cmp 'users' }
-      end
-      describe file(fname) do
-        it { should_not be_writable.by('others') }
-        its('owner') { should cmp 'vsphere-ui' }
-        its('group') { should cmp 'root' }
-      end
+    describe file(fname) do
+      it { should_not be_writable.by('others') }
+      its('owner') { should cmp 'vsphere-ui' }
+      its('group') { should cmp('root').or cmp('users') }
     end
   end
 end
