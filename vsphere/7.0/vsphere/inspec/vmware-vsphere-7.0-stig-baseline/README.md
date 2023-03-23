@@ -9,11 +9,11 @@ This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor 
 
 ## Requirements
 
-- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that has PowerCLI installed. If ran with PowerShell Core then the train-vmware plugin needs to be installed which fixes issues with running on core. Tested with version 4.52.9. Chef/CINC Workstation can also be installed and used.
+- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that has PowerCLI installed. If ran with PowerShell Core then the train-vmware plugin needs to be installed which fixes issues with running on core. Tested with version 5.17.4. Chef/CINC Workstation can also be installed and used.
 - Create an inputs file for your environment. See the inputs-example.yml file.  
 - For ESXi you can run it against a single host, all hosts in a cluster, or all hosts in a vCenter based on the inputs you provide.  
 - For VMs you can run against a single VM or all VMs in a vCenter based on the inputs you provide.  
-- This profile uses a custom InSpec vmware transport which must be installed by running "inspec plugin install /path/to/gem". The gem file is provided in this repo and is currently "train-vmware-0.1.8.gem"  
+- This profile uses a custom InSpec vmware transport which must be installed by running "inspec plugin install /path/to/gem". The gem file is provided in this repo and is currently "train-vmware-0.1.9.gem"  
 - The "VMware.PowerCLI" and "VMware.Vsphere.SsoAdmin" Powershell modules must be installed where this profile is being ran from.  
 - When running the profile the custom vmware transport also connects to the sso admin server via "Connect-SsoAdminServer" and the credentials used to run the profile must also be an SSO admin.  
 

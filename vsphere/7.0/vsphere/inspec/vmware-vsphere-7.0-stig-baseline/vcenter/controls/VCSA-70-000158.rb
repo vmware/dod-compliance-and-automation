@@ -37,67 +37,28 @@ control 'VCSA-70-000158' do
   tag cci: ['CCI-001891']
   tag nist: ['AU-8 (1) (a)']
 
-  # Check timesync mode
-  result = http("https://#{input('vcURL')}/api/appliance/timesync",
-              method: 'GET',
-              headers: {
-                'vmware-api-session-id' => "#{input('vcApiToken')}",
-                },
-              ssl_verify: false)
+  command = 'Invoke-GetTimesync'
+  timesync = powercli_command(command).stdout.strip
 
-  describe result do
-    its('status') { should cmp 200 }
-  end
-  unless result.status != 200
-    describe result.body do
-      it { should cmp '"NTP"' }
-    end
-  end
-
-  # Check NTP Servers
-  result = http("https://#{input('vcURL')}/api/appliance/ntp",
-              method: 'GET',
-              headers: {
-                'vmware-api-session-id' => "#{input('vcApiToken')}",
-                },
-              ssl_verify: false)
-
-  describe result do
-    its('status') { should cmp 200 }
-  end
-  unless result.status != 200
-    describe result.body do
-      it { should_not cmp '[]' }
-    end
-    servers = JSON.parse(result.body)
-    servers.each do |server|
+  if timesync == 'NTP'
+    ntpserverscommand = 'Invoke-GetNtp'
+    ntpservers = powercli_command(ntpserverscommand).stdout.gsub("\r\n", "\n").split("\n")
+    ntpservers.each do |server|
       describe server do
+        subject { server }
         it { should be_in input('ntpServers') }
       end
-    end
-  end
-  # Check status of ntp servers
-  result = http("https://#{input('vcURL')}/api/appliance/ntp?action=test",
-              method: 'POST',
-              headers: {
-                'vmware-api-session-id' => "#{input('vcApiToken')}",
-                'Content-Type' => 'application/json',
-                },
-              data: { "servers": input('ntpServers') }.to_json,
-              ssl_verify: false)
-
-  describe result do
-    its('status') { should cmp 200 }
-  end
-  unless result.status != 200
-    describe result.body do
-      it { should_not cmp '[]' }
-    end
-    servers = JSON.parse(result.body)
-    servers.each do |server|
-      describe server do
-        its(['status']) { should cmp 'SERVER_REACHABLE' }
+      ntpstatuscommand = "Initialize-NtpTestRequestBody -Servers #{server} | Invoke-TestNtp | Select-Object -ExpandProperty status"
+      ntpstatus = powercli_command(ntpstatuscommand).stdout.strip
+      describe ntpstatus do
+        subject { ntpstatus }
+        it { should cmp 'SERVER_REACHABLE' }
       end
+    end
+  else
+    describe "Timesync Configuration: #{timesync}" do
+      subject { timesync }
+      it { should cmp 'NTP' }
     end
   end
 end

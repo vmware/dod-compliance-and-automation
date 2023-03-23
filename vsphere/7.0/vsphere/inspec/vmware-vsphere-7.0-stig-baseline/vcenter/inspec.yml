@@ -9,15 +9,6 @@ summary: An InSpec Compliance Profile
 version: 1.1
 
 inputs:
-  - name: vcURL
-    value: ''
-    type: string
-    description: "Enter vCenter IP or FQDN for use with API calls."
-  - name: vcApiToken
-    value: ''
-    type: string
-    sensitive: true
-    description: "API token for use with API calls. Generated from https://vcURL/rest/com/vmware/cis/session  See: https://developer.vmware.com/apis/vsphere-automation/latest/cis/api/session/post/"
   - name: embeddedIdp
     type: boolean
     description: Is the embedded identity provider used? Set to true.  Leave false if a 3rd party identity provider is used.

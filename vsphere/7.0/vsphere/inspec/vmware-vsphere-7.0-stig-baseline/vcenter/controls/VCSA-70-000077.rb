@@ -52,19 +52,8 @@ control 'VCSA-70-000077' do
   tag cci: ['CCI-000197', 'CCI-000803', 'CCI-001188', 'CCI-001199', 'CCI-001967', 'CCI-002450', 'CCI-003123']
   tag nist: ['IA-3 (1)', 'IA-5 (1) (c)', 'IA-7', 'MA-4 (6)', 'SC-13', 'SC-23 (3)', 'SC-28']
 
-  result = http("https://#{input('vcURL')}/api/appliance/system/global-fips",
-              method: 'GET',
-              headers: {
-                'vmware-api-session-id' => "#{input('vcApiToken')}",
-                },
-              ssl_verify: false)
-
-  describe result do
-    its('status') { should cmp 200 }
-  end
-  unless result.status != 200
-    describe json(content: result.body) do
-      its(['enabled']) { should cmp 'true' }
-    end
+  command = 'Invoke-GetSystemGlobalFips | Select-Object -ExpandProperty enabled'
+  describe powercli_command(command) do
+    its('stdout.strip') { should cmp 'True' }
   end
 end

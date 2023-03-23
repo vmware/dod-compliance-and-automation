@@ -58,29 +58,25 @@ control 'VCSA-70-000292' do
   tag nist: ['CM-6 b']
 
   if input('backup3rdParty')
-    describe 'This check is a manual or policy based check' do
-      skip 'This must be reviewed manually'
+    describe '3rd party backups indicated. This check is a manual or policy based check and must be reviewed manually.' do
+      skip '3rd party backups indicated. This check is a manual or policy based check and must be reviewed manually.'
     end
   else
-    result = http("https://#{input('vcURL')}/api/appliance/recovery/backup/schedules",
-                method: 'GET',
-                headers: {
-                  'vmware-api-session-id' => "#{input('vcApiToken')}",
-                  },
-                ssl_verify: false)
+    command = '(Invoke-ListRecoveryBackupSchedules).default.enable'
+    backupsenabled = powercli_command(command).stdout.strip
 
-    describe result do
-      its('status') { should cmp 200 }
+    describe 'File based backups should be enabled.' do
+      subject { backupsenabled }
+      it { should cmp 'true' }
     end
-    unless result.status != 200
-      describe result.body do
-        it { should_not cmp '{}' }
-      end
-      unless result.body == '{}'
-        describe json(content: result.body) do
-          its(['default', 'enable']) { should cmp 'true' }
-          its(['default', 'recurrence_info', 'days']) { should cmp [] }
-        end
+
+    if backupsenabled == 'True'
+      # check that backups are scheduled daily. if so the days configuration will be empty
+      # if a custom schedule is specified and every day is selected this will fail and that should be changed to daily
+      backupschedule = powercli_command('(Invoke-ListRecoveryBackupSchedules).default.recurrence_info.days').stdout.strip
+      describe 'Backups should be scheduled daily.' do
+        subject { backupschedule }
+        it { should cmp '' }
       end
     end
   end

@@ -37,47 +37,27 @@ control 'VCSA-70-000148' do
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
-  # Check syslog servers
-  result = http("https://#{input('vcURL')}/api/appliance/logging/forwarding",
-              method: 'GET',
-              headers: {
-                'vmware-api-session-id' => "#{input('vcApiToken')}",
-                },
-              ssl_verify: false)
+  command = 'Invoke-GetLoggingForwarding | Select-Object -ExpandProperty hostname'
+  logservers = powercli_command(command).stdout.gsub("\r\n", "\n").split("\n")
 
-  describe result do
-    its('status') { should cmp 200 }
-  end
-  unless result.status != 200
-    describe result.body do
-      it { should_not cmp '[]' }
+  if logservers.empty?
+    describe "No log servers configured: #{logservers}" do
+      subject { logservers }
+      it { should_not be_empty }
     end
-    servers = JSON.parse(result.body)
-    servers.each do |server|
+  else
+    logservers.each do |server|
       describe server do
-        its(['hostname']) { should be_in input('syslogServers') }
+        subject { server }
+        it { should be_in input('syslogServers') }
       end
     end
-  end
-  # Check status of syslog servers
-  result = http("https://#{input('vcURL')}/api/appliance/logging/forwarding?action=test",
-              method: 'POST',
-              headers: {
-                'vmware-api-session-id' => "#{input('vcApiToken')}",
-                },
-              ssl_verify: false)
-
-  describe result do
-    its('status') { should cmp 200 }
-  end
-  unless result.status != 200
-    describe result.body do
-      it { should_not cmp '[]' }
-    end
-    servers = JSON.parse(result.body)
-    servers.each do |server|
-      describe server do
-        its(['state']) { should cmp 'UP' }
+    logserverstatuscommand = 'Invoke-TestLoggingForwarding | Select-Object -ExpandProperty state'
+    logserverstatus = powercli_command(logserverstatuscommand).stdout.gsub("\r\n", "\n").split("\n")
+    logserverstatus.each do |status|
+      describe status do
+        subject { status }
+        it { should cmp 'UP' }
       end
     end
   end
