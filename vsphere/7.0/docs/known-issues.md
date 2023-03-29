@@ -12,6 +12,7 @@
   - [VCEM-70-000008 The check command displays files that have changed](#vcem-70-000008-the-check-command-displays-files-that-have-changed)
   - [VCLU-70-000007 Log file permissions do not persist](#vclu-70-000007-log-file-permissions-do-not-persist)
   - [VCPG-70-000006 The check command output may display some tables not owned by vc](#vcpg-70-000006-the-check-command-output-may-display-some-tables-not-owned-by-vc)
+  - [VCST-70-000006 Max days line in output](#vcst-70-000006-max-days-line-in-output)
   - [VCST-70-000028 New port for smartcard authentication in 7.0 U3i](#vcst-70-000028-new-port-for-smartcard-authentication-in-70-u3i)
 
 # Known Issues
@@ -124,6 +125,16 @@ This issue is seen after some upgrades where updates are made to the vCenter dat
 - The tables can be left as is with the "postgres" owner or the owner can be updated to the "vc" user with the command in the fix text.  
 - The command in the fixtext should read as follows:  
 ```/opt/vmware/vpostgres/current/bin/psql -d VCDB -U postgres -c "ALTER TABLE <tablename> OWNER TO vc;"```
+
+### [VCST-70-000006] Max days line in output
+
+Related issue: None
+
+In the command output you may see an additional line "1catalina.org.apache.juli.FileHandler.maxDays = 10"  
+
+**Workaround:**
+
+- This line will be added to a future STIG update and should not be removed.
 
 ### [VCST-70-000028] New port for smartcard authentication in 7.0 U3i
 
