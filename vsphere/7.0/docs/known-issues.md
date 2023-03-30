@@ -9,6 +9,7 @@
   - [VMCH-70-000023 The 3D setting may not be displayed in the UI](#vmch-70-000023-the-3d-setting-may-not-be-displayed-in-the-ui)
   - [VMCH-70-000024 Check command does not display the expected output](#vmch-70-000024-check-command-does-not-display-the-expected-output)
 - [VCSA](#vcsa)
+  - [PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
   - [VCEM-70-000008 The check command displays files that have changed](#vcem-70-000008-the-check-command-displays-files-that-have-changed)
   - [VCLU-70-000007 Log file permissions do not persist](#vclu-70-000007-log-file-permissions-do-not-persist)
   - [VCPG-70-000006 The check command output may display some tables not owned by vc](#vcpg-70-000006-the-check-command-output-may-display-some-tables-not-owned-by-vc)
@@ -91,6 +92,17 @@ The check command logic is incorrectly using "or" instead of "and".
 ```Get-VM | Where {($_.ExtensionData.Config.MigrateEncryption -eq "disabled")}```  
 
 ## VCSA
+
+### [PHTN-30-000114] Multiple umask entries in check output
+
+Related issue: None
+
+The check command output may show multiple umask entries such as UMASK 022 and UMASK 077.  
+
+**Workaround:**
+
+- Resolution included in product roadmap.  
+- When multiple entries are present the last entry is enforced.  
 
 ### [VCEM-70-000008] The check command displays files that have changed
 
