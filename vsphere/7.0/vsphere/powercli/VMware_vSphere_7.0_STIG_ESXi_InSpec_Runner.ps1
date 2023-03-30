@@ -19,6 +19,7 @@
   -Powershell 5.1/Powershell Core 7.3.3
   -vCenter/ESXi 7.0 U3k
   -Inspec 5.18.14
+  -SAF CLI 1.2.7
 
   Example command to run script
     .\VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.1.2.3 -reportPath C:\Inspec\Reports\Runner -inspecPath C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\inspec\vmware-vsphere-7.0-stig-baseline\esxi\ -inputsFile C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-inputs-example.yml -attenstationFile C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-attestation-example.yml
