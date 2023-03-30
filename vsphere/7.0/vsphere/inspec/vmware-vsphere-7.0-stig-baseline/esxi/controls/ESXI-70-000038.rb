@@ -62,7 +62,8 @@ control 'ESXI-70-000038' do
       hostprofile = powercli_command(command).stdout
 
       if hostprofile.empty?
-        describe '' do
+        impact 0.0
+        describe 'There are no attached host profiles to this host so this control is not applicable' do
           skip 'There are no attached host profiles to this host so this control is not applicable'
         end
       else
@@ -75,7 +76,8 @@ control 'ESXI-70-000038' do
             its('stdout.strip') { should cmp 'FixedCAMConfigOption' }
           end
         else
-          describe '' do
+          impact 0.0
+          describe 'Active Directory is not enabled on this host so this control is not applicable' do
             skip 'Active Directory is not enabled on this host so this control is not applicable'
           end
         end

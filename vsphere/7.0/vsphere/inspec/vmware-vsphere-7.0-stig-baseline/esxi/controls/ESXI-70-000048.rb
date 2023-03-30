@@ -60,7 +60,8 @@ control 'ESXI-70-000048' do
       vmks = powercli_command(command).stdout
 
       if vmks.empty?
-        describe '' do
+        impact 0.0
+        describe 'There are no VMKernel adapters with vMotion enabled so this control is N/A.' do
           skip 'There are no VMKernel adapters with vMotion enabled so this control is N/A.'
         end
       else

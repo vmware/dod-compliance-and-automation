@@ -68,8 +68,9 @@ control 'ESXI-70-000054' do
       iscsi_hbas = powercli_command(command).stdout
 
       if iscsi_hbas.empty?
-        describe '' do
-          skip 'There are no iSCSI HBAs present so this control is Not Applicable'
+        impact 0.0
+        describe 'There are no iSCSI HBAs present so this control is not applicable' do
+          skip 'There are no iSCSI HBAs present so this control is not applicable'
         end
       else
         command1 = "Get-VMHost -Name #{vmhost} | Get-VMHostHba | Where {$_.Type -eq 'iscsi'} | Select-Object -ExpandProperty AuthenticationProperties | Select-Object -ExpandProperty MutualChapEnabled"
