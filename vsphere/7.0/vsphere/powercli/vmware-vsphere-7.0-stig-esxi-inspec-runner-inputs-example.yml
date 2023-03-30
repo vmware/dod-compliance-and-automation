@@ -1,0 +1,12 @@
+# ESXi
+allesxi: false
+exceptionUsers: []
+syslogServer: "tcp://log.test.local:514"
+adAdminGroup: "MyAdAdminGroup"
+esxiNtpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+vMotionVlanId: "100"
+mgtVlanId: "101"
+snmpEnabled: "false"
+esxiBuildNumber: "21313628"
