@@ -36,10 +36,12 @@ control 'NT0R-4X-000055' do
                 },
               ssl_verify: false)
 
-  describe t0s do
-    its('status') { should cmp 200 }
-  end
-  unless t0s.status != 200
+  # if status is not 200 return a failure but if it's 200 do not run the test so this control does not pass and is properly skipped as a manual review.
+  if t0s.status != 200
+    describe t0s do
+      its('status') { should cmp 200 }
+    end
+  else
     t0sjson = JSON.parse(t0s.body)
     if t0sjson['results'] == []
       impact 0.0
@@ -72,9 +74,6 @@ control 'NT0R-4X-000055' do
                       },
                     ssl_verify: false)
 
-          describe bgp do
-            its('status') { should cmp 200 }
-          end
           next unless bgp.status == 200
           bgpjson = JSON.parse(bgp.body)
           if bgpjson['enabled']

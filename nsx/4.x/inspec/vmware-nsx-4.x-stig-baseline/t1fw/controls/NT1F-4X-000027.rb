@@ -47,10 +47,12 @@ control 'NT1F-4X-000027' do
                 },
               ssl_verify: false)
 
-  describe t1s do
-    its('status') { should cmp 200 }
-  end
-  unless t1s.status != 200
+  # if status is not 200 return a failure but if it's 200 do not run the test so this control does not pass and is properly skipped as a manual review.
+  if t1s.status != 200
+    describe t1s do
+      its('status') { should cmp 200 }
+    end
+  else
     t1sjson = JSON.parse(t1s.body)
     if t1sjson['results'] == []
       impact 0.0
