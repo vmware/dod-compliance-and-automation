@@ -115,4 +115,8 @@ control 'VCST-70-000050' do
   tag stig_id: 'VCST-70-000050'
   tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']
+
+  describe command('rpm -V VMware-visl-integration|grep vmware-services-sso-services.conf|grep "^..5......"') do
+    its('stdout.strip') { should eq '' }
+  end
 end
