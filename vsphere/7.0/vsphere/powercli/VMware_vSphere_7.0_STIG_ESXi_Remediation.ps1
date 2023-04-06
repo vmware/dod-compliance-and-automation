@@ -1142,7 +1142,7 @@ Try{
         $servicename = "SSH"
         ForEach($vmhost in $vmhosts){
             $vmhostservice = $vmhost | Get-VMHostService | Where-Object {$_.Label -eq $servicename} -ErrorAction Stop
-            If($vmhostservice.Running -eq $true -or $vmhostservice.Policy -eq "on"){
+            If($vmhostservice.Running -eq $true -or $vmhostservice.Policy -ne "off"){
                 If($stigsettings.sshEnabled -eq $false){
                     Write-ToConsoleYellow "...Stopping service $servicename on $($vmhost.name)"
                     $vmhostservice | Set-VMHostService -Policy Off -Confirm:$false -ErrorAction Stop
@@ -1178,7 +1178,7 @@ Try{
         $servicename = "ESXi Shell"
         ForEach($vmhost in $vmhosts){
             $vmhostservice = $vmhost | Get-VMHostService | Where-Object {$_.Label -eq $servicename} -ErrorAction Stop
-            If($vmhostservice.Running -eq $true -or $vmhostservice.Policy -eq "on"){
+            If($vmhostservice.Running -eq $true -or $vmhostservice.Policy -ne "off"){
                 If($stigsettings.shellEnabled -eq $false){
                     Write-ToConsoleYellow "...Stopping service $servicename on $($vmhost.name)"
                     $vmhostservice | Set-VMHostService -Policy Off -Confirm:$false -ErrorAction Stop
@@ -2329,7 +2329,7 @@ Try{
         $servicename = "slpd"
         ForEach($vmhost in $vmhosts){
             $vmhostservice = $vmhost | Get-VMHostService -ErrorAction Stop | Where-Object {$_.Label -eq $servicename}
-            If($vmhostservice.Running -eq $true){
+            If($vmhostservice.Running -eq $true -or $vmhostservice.Policy -ne "off"){
                 If($stigsettings.slpdEnabled -eq $false){
                     Write-ToConsoleYellow "...Stopping service $servicename on $($vmhost.name)"
                     $vmhostservice | Set-VMHostService -Policy Off -Confirm:$false -ErrorAction Stop
@@ -2753,7 +2753,7 @@ Try{
         $servicename = "CIM Server"
         ForEach($vmhost in $vmhosts){
             $vmhostservice = $vmhost | Get-VMHostService -ErrorAction Stop | Where-Object {$_.Label -eq $servicename}
-            If($vmhostservice.Running -eq $true){
+            If($vmhostservice.Running -eq $true -or $vmhostservice.Policy -ne "off"){
                 If($stigsettings.cimEnabled -eq $false){
                     Write-ToConsoleYellow "...Stopping service $servicename on $($vmhost.name)"
                     $vmhostservice | Set-VMHostService -Policy Off -Confirm:$false -ErrorAction Stop
