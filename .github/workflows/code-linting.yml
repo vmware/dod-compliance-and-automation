@@ -5,29 +5,6 @@ on:
   pull_request:
 
 jobs:
-  cookstyle-vsphere67:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v3
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7
-          bundler-cache: true
-      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-      - name: Install cookstyle and run
-        run: |
-          gem install cookstyle
-          cookstyle ./vsphere/6.7
-  ansiblelint-vsphere67:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v3
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "vsphere/6.7/vcsa/ansible/vmware-vcsa-6.7-stig-ansible-hardening/"  # <-- only one value is allowed
   cookstyle-vsphere70:
     runs-on: ubuntu-latest
     steps:
