@@ -84,6 +84,7 @@
       ansible.builtin.template:
         src: update_node_http_loglevel.json.j2
         dest: "{{ role_path }}/templates/update_node_http_loglevel.json"
+        mode: "0640"
       with_items:
         - "{{ httpservice.json }}"
       when:
@@ -91,6 +92,7 @@
 
     - name: NMGR-4X-000007 - Prepare http service payload json for update
       ansible.builtin.command: sed -i 's/NEWLINESPLVAR/\\n/g' "{{ role_path }}/templates/update_node_http_loglevel.json"
+      changed_when: true
       when:
         - httpservice.json.service_properties.logging_level != "info"
 

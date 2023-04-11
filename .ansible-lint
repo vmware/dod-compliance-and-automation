@@ -2,10 +2,10 @@ skip_list:
   - '602'
   - role-name
   - name
+  - meta-no-info
 warn_list:
   - risky-file-permissions
   - ignore-errors
-  - meta-no-info
   - command-instead-of-module
 mock_roles:
   - vmware-photon-3.0-stig-ansible-hardening
