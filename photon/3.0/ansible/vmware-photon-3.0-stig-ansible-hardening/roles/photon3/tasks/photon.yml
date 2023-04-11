@@ -21,6 +21,7 @@
     mode: preserve
   changed_when: false
   ignore_errors: true
+  register: backups_result
   with_items:
     - '{{ var_syslog_conf_path }}'
     - '{{ var_sshd_banner }}'
@@ -1431,6 +1432,7 @@
     msg: User account {{ item }} is configured with NOPASSWD in the sudoers file.  If this is a service account with no password that cannot login interactively this can be ignored.  If not this needs to be remediated.
   loop: "{{ nopasswd_sudo_users.stdout_lines }}"
   ignore_errors: true
+  register: users_nopasswd_loop_result
   tags:
     - PHTN-30-000062
     - sudo
