@@ -9,6 +9,8 @@
 - name: reload auditdconf
   ansible.builtin.command: pkill -SIGHUP auditd
   notify: start auditd
+  register: output
+  changed_when: output.rc == 0
 
 - name: start auditd
   ansible.builtin.systemd:
@@ -17,6 +19,8 @@
 
 - name: reload auditdrules
   ansible.builtin.command: /sbin/augenrules --load
+  register: output
+  changed_when: output.rc == 0
 
 - name: restart syslog
   ansible.builtin.systemd:
