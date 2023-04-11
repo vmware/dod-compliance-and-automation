@@ -5,6 +5,7 @@
   - [VCSA-70-000285 Other default roles have cryptographic permissions](#vcsa-70-000285-other-default-roles-have-cryptographic-permissions)
 - [ESXi](#esxi)
   - [ESXI-70-000084 Incorrect property shown in check](#esxi-70-000084-incorrect-property-shown-in-check)
+  - [ESXI-70-000084 Audit storage capacity reverts on reboot](#esxi-70-000084-audit-storage-capacity-reverts-on-reboot)
 - [Virtual Machines](#vm)
   - [VMCH-70-000023 The 3D setting may not be displayed in the UI](#vmch-70-000023-the-3d-setting-may-not-be-displayed-in-the-ui)
   - [VMCH-70-000024 Check command does not display the expected output](#vmch-70-000024-check-command-does-not-display-the-expected-output)
@@ -65,6 +66,18 @@ In the check exmaple output "Audit Remote Host Enabled" should read "Audit Recor
 
 - None. Check text will be updated in a future release.
 - The InSpec test has been updated to reflect the correct value.
+
+### [ESXI-70-000084] Audit storage capacity reverts on reboot
+
+Related issue: None
+
+If audit storage capacity is configured to something other than 4, for example 100, after a reboot when querying the configuration it is reported as 4.
+
+**Workaround:**
+
+- The configuration is actually updated but the command is not reflecting the correct value. This can be confirmed by viewing the audit log folder and the number of files present.
+- Each audit log is 1Mb so if 100 is configured you will see 100 files in the folder.
+- Note you may see more than 100 files due to another bug but only 100 will be used.
 
 ## VM
 
