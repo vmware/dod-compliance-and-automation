@@ -16,6 +16,8 @@
 
     - name: PSQL-00-000001 - Set max_connections value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET max_connections = '{{ var_max_connections }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - restart vpostgres
       when:
@@ -59,7 +61,7 @@
       ansible.builtin.file:
         path: "{{ item.path }}"
         state: file
-        mode: 0600
+        mode: "0600"
         owner: postgres
         group: users
       with_items: "{{ pgconffiles.files }}"
@@ -184,6 +186,8 @@
 
     - name: PSQL-00-000009 - Set log_destination value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_destination = '{{ var_log_destination }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -206,6 +210,8 @@
 
     - name: PSQL-00-000010 - Set log_line_prefix value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_line_prefix = '{{ var_log_line_prefix }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -227,6 +233,8 @@
 
     - name: PSQL-00-000020 - Set log_file_mode value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_file_mode = '{{ var_log_file_mode }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -291,6 +299,8 @@
 
     - name: PSQL-00-000035 - Set port value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET port = '{{ var_port }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - restart vpostgres
       when:
@@ -303,7 +313,9 @@
   when: run_hba_auth | bool
   block:
     - name: PSQL-00-000036 - Check for trust or password configurations in pg_hba
-      ansible.builtin.shell: grep -v "^#" {{ var_pgdata_path }}/pg_hba.conf |grep '\S'|grep 'trust\|password'
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -v "^#" {{ var_pgdata_path }}/pg_hba.conf |grep '\S'|grep 'trust\|password'
       register: result
       changed_when: false
       failed_when:
@@ -337,6 +349,8 @@
 
     - name: PSQL-00-000038 - Set password_encryption value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET password_encryption = '{{ var_password_encryption }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -376,6 +390,8 @@
 
     - name: PSQL-00-000051 - Set fsync value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET fsync = '{{ var_fsync }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -391,6 +407,8 @@
 
     - name: PSQL-00-000051 - Set full_page_writes value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET full_page_writes = '{{ var_full_page_writes }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -406,6 +424,8 @@
 
     - name: PSQL-00-000051 - Set synchronous_commit value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET synchronous_commit = '{{ var_synchronous_commit }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -427,6 +447,8 @@
 
     - name: PSQL-00-000060 - Set client_min_messages value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET client_min_messages = '{{ var_client_min_messages }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -448,6 +470,8 @@
 
     - name: PSQL-00-000070 - Set logging_collector value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET logging_collector = '{{ var_logging_collector }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -469,6 +493,8 @@
 
     - name: PSQL-00-000075 - Set log_timezone value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_timezone = '{{ var_log_timezone }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -490,6 +516,8 @@
 
     - name: PSQL-00-000110 - Set log_connections value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_connections = '{{ var_log_connections }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
@@ -511,6 +539,8 @@
 
     - name: PSQL-00-000114 - Set log_disconnections value
       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_disconnections = '{{ var_log_disconnections }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
       notify:
         - reload vpostgres
       when:
