@@ -10,6 +10,7 @@
   - [VMCH-70-000023 The 3D setting may not be displayed in the UI](#vmch-70-000023-the-3d-setting-may-not-be-displayed-in-the-ui)
   - [VMCH-70-000024 Check command does not display the expected output](#vmch-70-000024-check-command-does-not-display-the-expected-output)
 - [VCSA](#vcsa)
+  - [PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
   - [PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
   - [VCEM-70-000008 The check command displays files that have changed](#vcem-70-000008-the-check-command-displays-files-that-have-changed)
   - [VCLU-70-000007 Log file permissions do not persist](#vclu-70-000007-log-file-permissions-do-not-persist)
@@ -106,6 +107,16 @@ The check command logic is incorrectly using "or" instead of "and".
 
 ## VCSA
 
+### [PHTN-30-000054/67] -S all is displayed in the check output
+
+Related issue: None
+
+Since we are not specifying a specific syscall(all is implied) in the audit rules for these controls the "-S all" is displayed in the auditctl command output which is not included in the expected output in the check.  
+
+**Workaround:**
+
+- The check output will be updated in a future update and the output with "-S all" added can be considered compliant.
+
 ### [PHTN-30-000114] Multiple umask entries in check output
 
 Related issue: None
@@ -165,7 +176,9 @@ In the command output you may see an additional line "1catalina.org.apache.juli.
 
 Related issue: [#135](https://github.com/vmware/dod-compliance-and-automation/issues/135)
 
-As of vCenter 7.0 U3i the port for smartcard authentication has been updated to 3128. [See documentation](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-DE48ED27-E48B-4FDA-B3C8-DD7127BF6879.html)]
+As of vCenter 7.0 U3i the port for smartcard authentication has been updated to 3128. [See documentation](https://docs.vmware.com/en/VMware-vSphere/7.0/com.vmware.vsphere.authentication.doc/GUID-DE48ED27-E48B-4FDA-B3C8-DD7127BF6879.html)  
+
+See also KB article: https://kb.vmware.com/s/article/90542  
 
 **Workaround:**
 
