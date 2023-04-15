@@ -7,7 +7,7 @@ control 'VRAA-8X-000009' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # vracli ntp show-config
 
@@ -16,7 +16,7 @@ control 'VRAA-8X-000009' do
     If the output does not show \"ntp_servers:\" with one or more authoritative NTP servers configured , this is a finding.
   "
   desc 'fix', "
-    At the command line, execute the following command:
+    At the command line, run the following command:
 
     # vracli ntp systemd --set <time_server_IP_or_FQDN>
 

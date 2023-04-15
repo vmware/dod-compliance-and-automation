@@ -12,8 +12,8 @@ depends:
   - name: vra
     path: ./vra
 
-  # - name: photon
-  #   path: ../vmware-photon-3.0-stig-inspec-baseline
+  - name: photon
+    path: ./photon
 
   - name: docker
     path: ./docker

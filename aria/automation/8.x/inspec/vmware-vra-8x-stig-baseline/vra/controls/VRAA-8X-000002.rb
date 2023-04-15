@@ -11,7 +11,7 @@ control 'VRAA-8X-000002' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # stat -c \"%a:%U:%G\" /usr/local/bin/vracli
 
@@ -22,7 +22,7 @@ control 'VRAA-8X-000002' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, execute the following command(s):
+    At the command prompt, run the following command(s):
 
     #  chmod 700 /usr/local/bin/vracli
     #  chown root:root /usr/local/bin/vracli

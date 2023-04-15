@@ -9,7 +9,7 @@ control 'VRAA-8X-000007' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, execute the following commands:
+    At the command line, run the following commands:
 
     1) # cat /etc/logrotate.prelude.services.conf
       Expected result:

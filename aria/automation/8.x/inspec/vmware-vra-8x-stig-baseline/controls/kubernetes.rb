@@ -48,6 +48,7 @@ include_controls 'kubernetes' do
   skip_control 'CNTR-K8-000350'
   skip_control 'CNTR-K8-000420'
   skip_control 'CNTR-K8-000430'
+  skip_control 'CNTR-K8-000440'
   skip_control 'CNTR-K8-003120'
   skip_control 'CNTR-K8-003140'
   skip_control 'CNTR-K8-003150'

@@ -9,7 +9,7 @@ control 'VRAA-8X-000125' do
 
     Example output:
 
-    FIPS mode: strict
+    FIPS mode: enabled
 
     If FIPS mode is not enabled, this is a finding.
   "

@@ -14,7 +14,7 @@ control 'VRAA-8X-000123' do
     If CEIP is enabled, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # vracli ceip off
 
