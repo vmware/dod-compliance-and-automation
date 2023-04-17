@@ -110,6 +110,21 @@ jobs:
         run: |
           gem install cookstyle
           cookstyle ./horizon/8.0
+  cookstyle-vra-8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
+      - name: Install cookstyle and run
+        run: |
+          gem install cookstyle
+          cookstyle ./aria/automation/8.x/
   cookstyle-vcf4:
     runs-on: ubuntu-latest
     steps:
