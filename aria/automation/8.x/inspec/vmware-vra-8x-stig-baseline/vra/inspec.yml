@@ -1,0 +1,51 @@
+---
+
+name: vRealize Automation Appliance 8.x Application Profile
+title: vRealize Automation Appliance 8.x Application  Profile
+maintainer: VMware Trust and Assurance (VMTA)
+copyright: VMTA
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.3.0
+
+inputs:
+
+- name: syslogHost
+  description: VRAA-8X-000008 - Configured syslog host name
+  type: string
+  value: "log.test.local"
+
+- name: syslogPort
+  description: VRAA-8X-000008 - Configured syslog port
+  type: string
+  value: "514"
+
+- name: syslogProtocol
+  description: VRAA-8X-000008 - Configured syslog protocol.  tcp,udp,ssl,https
+  type: string
+  value: "tcp"
+
+- name: syslogSslVerify
+  description: VRAA-8X-000008 - Verify SSL?
+  type: string
+  value: "true"
+
+- name: syslogUseSsl
+  description: VRAA-8X-000008 - Use SSL? Not needed for vRLI integration.
+  type: string
+  value: "false"
+
+- name: ntpServers
+  description: VRAA-8X-000009 - List NTP servers comma separated.
+  type: string
+  value: "['time.google.com']"
+
+- name: allowedCipherSuites
+  description: FIPS cipher suites allowed list
+  type: array
+  value:
+    - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+    - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+    - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
