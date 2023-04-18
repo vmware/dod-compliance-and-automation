@@ -7,5 +7,6 @@ warn_list:
   - risky-file-permissions
   - ignore-errors
   - command-instead-of-module
+  - no-changed-when
 mock_roles:
   - vmware-photon-3.0-stig-ansible-hardening

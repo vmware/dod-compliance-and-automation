@@ -1,0 +1,43 @@
+# ESXi
+vmhostName: '10.43.207.154'
+cluster: ''
+allesxi: false
+adJoined: false
+syslogServer: 'tcp://log.test.local:514'
+esxiNtpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+vMotionVlanId: '100'
+mgtVlanId: '101'
+exceptionUsers:
+  - root
+  - dcui
+snmpEnabled: 'false'
+esxiBuildNumber: '21495797'
+adAdminGroup: 'MyAdAdminGroup'
+# vCenter
+syslogServers:
+  - 'loginsight.vmware.com'
+  - 'syslog.server2.com'
+ntpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+ipfixCollectorAddress: ''
+vcCryptoAdmins:
+  - 'VSPHERE.LOCAL\Administrator'
+  - 'VSPHERE.LOCAL\Administrators'
+  - 'VSPHERE.LOCAL\vCLSAdmin'
+vcCryptoRoles:
+  - 'Admin'
+  - 'NoTrustedAdmin'
+  - 'vCLSAdmin'
+  - 'vSphereKubernetesManager'
+bashShellAdminUsers:
+  - 'Administrator'
+bashShellAdminGroups: []
+trustedAdminUsers: []
+trustedAdminGroups: []
+backup3rdParty: false
+# VM
+vmName: ''
+allvms: true

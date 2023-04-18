@@ -1,0 +1,16 @@
+name: vmware-vsphere-8.0-stig-baseline
+title: InSpec Wrapper Profile for VMware vSphere 8.0 STIG Readiness Guide Version 1 Release 1
+maintainer: VMware
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile that runs PowerCLI audit tests on ESXI, VMs, and vCenter
+version: 1.0.1
+
+depends:
+  - name: esxi
+    path: esxi
+  - name: vcenter
+    path: vcenter
+  - name: vm
+    path: vm

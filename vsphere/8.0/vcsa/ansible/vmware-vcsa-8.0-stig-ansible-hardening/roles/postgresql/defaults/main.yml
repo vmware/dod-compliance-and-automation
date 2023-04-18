@@ -1,0 +1,43 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# Create backups of files?
+run_create_backups: true
+
+# VCPG-80-000001
+# VCPG-80-000005
+# Run vmw_vpg_config script to enable STIG on PostgreSQL
+run_vmw_pg_config: true
+# VCPG-80-000006
+run_pg_conf_perms: true
+# VCPG-80-000007
+run_pgaudit_conf: true
+# VCPG-80-000009
+run_log_destination: true
+# VCPG-80-000010
+run_log_line_prefix: true
+# VCPG-80-000020
+run_log_file_mode: true
+# VCPG-80-000032
+# VCPG-80-000035
+run_port: false
+# VCPG-80-000036
+# VCPG-80-000038
+run_password_encryption: true
+# VCPG-80-000041
+run_ssl_key_perms: true
+# VCPG-80-000049
+# VCPG-80-000051
+run_pg_write_conf: true
+# VCPG-80-000060
+run_client_min_messages: true
+# VCPG-80-000070
+run_logging_collector: true
+# VCPG-80-000075
+run_log_timezone: true
+# VCPG-80-000110
+run_log_connections: true
+# VCPG-80-000114
+run_log_disconnections: true
+# VCPG-80-000022
+run_rsyslog_conf: true
