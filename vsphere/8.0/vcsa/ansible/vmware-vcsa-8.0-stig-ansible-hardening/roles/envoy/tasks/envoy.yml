@@ -1,0 +1,149 @@
+---
+# Ansible Playbook for vCenter Appliance 8.0 Envoy Service STIG Readiness Guide
+
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: run_create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vcsa-rhttpproxy-{{ backup_timestamp }}/"
+        mode: preserve
+      ignore_errors: true
+      changed_when: false
+      with_items:
+        - '{{ var_config_xml_path }}'
+        - '{{ var_rsyslog_conf_path }}'
+        - '{{ var_rsyslog_conf_path2 }}'
+
+###################################################################################################################################
+- name: VCRP-80-000019
+  tags: [VCRP-80-000019]
+  when: run_log_files_permissions | bool
+  block:
+    - name: VCRP-80-000019 - Find rhttpproxy logs with incorrect permissions
+      ansible.builtin.shell: find {{ var_log_dir }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ var_log_owner }} -o -not -group {{ var_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: VCRP-80-000019 - Update permissions on log files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ var_log_owner }}'
+        group: '{{ var_log_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+    - name: VCRP-80-000019 - Find envoy logs with incorrect permissions
+      ansible.builtin.shell: find {{ var_log_dir2 }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ var_log_owner2 }} -o -not -group {{ var_log_group2 }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: VCRP-80-000019 - Update permissions on log files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ var_log_owner2 }}'
+        group: '{{ var_log_group2 }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCRP-80-000040
+  tags: [VCRP-80-000040]
+  when: run_ssl_key_permissions | bool
+  block:
+    - name: VCRP-80-000040 - Update permissions on SSL key file
+      ansible.builtin.file:
+        path: '{{ var_ssl_key_path }}'
+        state: file
+        owner: 'rhttpproxy'
+        group: 'rhttpproxy'
+        mode: '0600'
+
+###################################################################################################################################
+- name: VCRP-80-000073
+  tags: [VCRP-80-000073]
+  when: run_rsyslog_conf | bool
+  block:
+    - name: VCRP-80-000073 - Configure rsyslog conf for rhttpproxy
+      ansible.builtin.template:
+        src: '{{ var_rsyslog_conf_name }}'
+        dest: '/etc/vmware-syslog/{{ var_rsyslog_conf_name }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - restart rsyslog
+
+###################################################################################################################################
+- name: VCRP-80-000097
+  tags: [VCRP-80-000097]
+  when: run_rsyslog_conf | bool
+  block:
+    - name: VCRP-80-000097 - Configure rsyslog conf for envoy
+      ansible.builtin.template:
+        src: '{{ var_rsyslog_conf_name2 }}'
+        dest: '/etc/vmware-syslog/{{ var_rsyslog_conf_name2 }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - restart rsyslog
+
+###################################################################################################################################
+- name: VCRP-80-000098
+  tags: [VCRP-80-000098]
+  when: run_max_http_connections | bool
+  block:
+    - name: VCRP-80-000098 - Find existing maxRemoteHttpsConnections
+      community.general.xml:
+        path: '{{ var_config_xml_path }}'
+        xpath: '/config/envoy/L4Filter/maxRemoteHttpsConnections'
+        count: true
+      register: maxhttpscount
+
+    - name: VCRP-80-000098 - Update maxRemoteHttpsConnections
+      community.general.xml:
+        path: '{{ var_config_xml_path }}'
+        xpath: '/config/envoy/L4Filter/maxRemoteHttpsConnections'
+        state: present
+        value: '2048'
+        pretty_print: true
+      notify:
+        - restart {{ var_notify_service_name }}
+      when:
+        - maxhttpscount.count != 0
+
+    - name: VCRP-80-000098 - Find existing maxRemoteHttpConnections
+      community.general.xml:
+        path: '{{ var_config_xml_path }}'
+        xpath: '/config/envoy/L4Filter/maxRemoteHttpConnections'
+        count: true
+      register: maxhttpcount
+
+    - name: VCRP-80-000098 - Update maxRemoteHttpConnections
+      community.general.xml:
+        path: '{{ var_config_xml_path }}'
+        xpath: '/config/envoy/L4Filter/maxRemoteHttpConnections'
+        state: present
+        value: '2048'
+        pretty_print: true
+      notify:
+        - restart {{ var_notify_service_name }}
+      when:
+        - maxhttpcount.count != 0

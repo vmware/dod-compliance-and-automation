@@ -38,6 +38,29 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/"  # <-- only one value is allowed
+  cookstyle-vsphere80:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
+      - name: Install cookstyle and run
+        run: |
+          gem install cookstyle
+          cookstyle ./vsphere/8.0
+  ansiblelint-vsphere80:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vsphere/8.0/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"  # <-- only one value is allowed
   cookstyle-photon30:
     runs-on: ubuntu-latest
     steps:
@@ -82,16 +105,6 @@ jobs:
     steps:
       - name: Clone Repo
         uses: actions/checkout@v3
-      # - name: Copy Photon playbook to roles folder
-      #   run: |
-      #     echo "GITHUB_WORKSPACE = $GITHUB_WORKSPACE"
-      #     ls -la $GITHUB_WORKSPACE
-      #     mkdir -p /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening
-      #     cp -r $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/roles/*/* /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/
-      #     mkdir -p /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/vmware-photon-3.0-stig-ansible-hardening
-      #     cp $GITHUB_WORKSPACE/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/*.* /usr/share/ansible/roles/vmware-photon-3.0-stig-ansible-hardening/vmware-photon-3.0-stig-ansible-hardening/
-      #     ls -la /usr/share/ansible/roles
-      #     ansible-galaxy role list
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vcd/10.4/ansible/vmware-cloud-director-10.4-stig-ansible-hardening/"  # <-- only one value is allowed
@@ -110,6 +123,21 @@ jobs:
         run: |
           gem install cookstyle
           cookstyle ./horizon/8.0
+  cookstyle-vra-8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
+      - name: Install cookstyle and run
+        run: |
+          gem install cookstyle
+          cookstyle ./aria/automation/8.x/
   cookstyle-vcf4:
     runs-on: ubuntu-latest
     steps:

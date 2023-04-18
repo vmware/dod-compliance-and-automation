@@ -1,0 +1,14 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# Create backups of files?
+run_create_backups: true
+
+# VCRP-80-000019
+run_log_files_permissions: true
+# VCRP-80-000040
+run_ssl_key_permissions: true
+# VCRP-80-000073 VCRP-80-000097
+run_rsyslog_conf: true
+# VCRP-80-000098
+run_max_http_connections: true

@@ -1,0 +1,14 @@
+- name: vmware-vcsa-8.0-stig-ansible-hardening
+  hosts: all
+  roles:
+    - role: vmware-photon-3.0-stig-ansible-hardening
+      vars:
+        var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
+    - role: eam
+    - role: envoy
+    - role: lookup
+    - role: perfcharts
+    - role: postgresql
+    - role: sts
+    - role: ui
+    - role: vami
