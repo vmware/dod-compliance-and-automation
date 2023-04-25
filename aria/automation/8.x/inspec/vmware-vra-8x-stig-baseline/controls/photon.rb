@@ -8,4 +8,9 @@ include_controls 'photon' do
 
   # The vRA appliances run Kubernetes/Docker to run containers that make up the services of vRA. In order to properly route traffic between containers this kernel setting cannot be disabled.
   skip_control 'PHTN-30-000106'
+
+  # Handled by vRA controls
+  skip_control 'PHTN-30-000094' # VRAA-8X-000126
+  skip_control 'PHTN-30-000088' # VRAA-8X-000127
+  skip_control 'PHTN-30-000245' # VRAA-8X-000128
 end

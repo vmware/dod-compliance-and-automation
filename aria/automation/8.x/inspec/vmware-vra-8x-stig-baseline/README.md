@@ -68,7 +68,7 @@ inspec exec C:\Inspec\Profiles\vmware-stig-baseline\vmware-vra-8x-stig-baseline 
 
 Run a single STIG Control against a target vRA appliance from a specific profile
 ```
-inspec exec C:\Inspec\Profiles\vmware-stig-baseline\vmware-vra-8x-stig-baseline -t ssh://root@vra IP or FQDN --password 'password' -t ssh://root@vcsa IP or FQDN --password 'password' --controls=VRAA-8X-000008
+inspec exec C:\Inspec\Profiles\vmware-stig-baseline\vmware-vra-8x-stig-baseline -t ssh://root@vra IP or FQDN --password 'password' --controls=VRAA-8X-000008
 ```
 
 ## Waivers
