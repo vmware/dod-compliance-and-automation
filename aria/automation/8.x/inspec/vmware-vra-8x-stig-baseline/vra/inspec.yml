@@ -41,6 +41,16 @@ inputs:
   type: string
   value: "['time.google.com']"
 
+- name: maxAuthTries
+  description: VRAA-8X-000126 - Define sshd maxAuthTries
+  type: string
+  value: "2"
+
+- name: verbose
+  description: When analyzing file owners and groups, return list of files or just a count.
+  type: boolean
+  value: True
+
 - name: allowedCipherSuites
   description: FIPS cipher suites allowed list
   type: array

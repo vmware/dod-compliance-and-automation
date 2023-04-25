@@ -6,6 +6,9 @@
 - General cleanup, linting fixes.
 - Switched to Official DISA Kubernetes v1r8 STIG content.
 - VRAA-8X-000125 - Changed check from 'strict' to 'enabled' for FIPS mode.
+- VRAA-8X-000126 - Moved from Photon to vRA to handle input value.
+- VRAA-8X-000127 - Moved from Photon to vRA to handle path changes.
+- VRAA-8X-000128 - Moved from Photon to vRA to handle config file option.
 
 ## [8.9 Version 1 Release 2] (2022-12-15)
 
