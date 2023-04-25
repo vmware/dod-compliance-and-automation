@@ -1,9 +1,9 @@
 control 'UAGA-8X-000144' do
-  title 'The UAG must initiate a session lock after a 15-minute period of inactivity.'
+  title 'The UAG must initiate a session idle timeout after a 15-minute period of inactivity.'
   desc  "
-    A session time-out lock is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system, but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their session prior to vacating the vicinity, network elements need to be able to identify when a user's session has gone idle and take action to initiate the session lock.
+    A session idle time-out is a temporary action taken when a user stops work and moves away from the immediate physical vicinity of the information system, but does not log out because of the temporary nature of the absence. Rather than relying on the user to manually lock their session prior to vacating the vicinity, network elements need to be able to identify when a user's session has gone idle and take action to initiate the session timeout.
 
-    The session lock must be implemented at the point where session activity can be determined and/or controlled.
+    The session timeout must be implemented at the point where session activity can be determined and/or controlled.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -29,8 +29,8 @@ control 'UAGA-8X-000144' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000514-ALG-000514'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000144'
+  tag rid: 'SV-UAGA-8X-000144'
   tag stig_id: 'UAGA-8X-000144'
   tag cci: ['CCI-000057']
   tag nist: ['AC-11 a']

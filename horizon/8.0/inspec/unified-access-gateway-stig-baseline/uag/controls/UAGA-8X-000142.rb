@@ -7,6 +7,8 @@ control 'UAGA-8X-000142' do
   "
   desc  'rationale', ''
   desc  'check', "
+    Note: If the UAG Horizon Edge Settings are not enabled, this control is Not Applicable.
+
     Login to the UAG administrative interface as an administrator.
 
     Select \"Configure Manually\".
@@ -18,6 +20,8 @@ control 'UAGA-8X-000142' do
     If the \"Response Security Headers\" do not contain an entry for \"X-Frame-Options\" with a value of \"SAMEORIGIN\", this is a finding.
   "
   desc 'fix', "
+    Note: If the UAG Horizon Edge Settings are not enabled, this control is Not Applicable.
+
     Login to the UAG administrative interface as an administrator.
 
     Select \"Configure Manually\".
@@ -33,8 +37,8 @@ control 'UAGA-8X-000142' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000512-ALG-000066'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000142'
+  tag rid: 'SV-UAGA-8X-000142'
   tag stig_id: 'UAGA-8X-000142'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

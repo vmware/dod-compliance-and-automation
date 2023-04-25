@@ -3,6 +3,17 @@ control 'HZNC-8X-000128' do
   desc  'While there may be legitimate reasons to pass USB devices to the desktop, these must be carefully analyzed for necessity. In general, USB devices must never be passed through, in keeping with long-standing DoD data loss prevention policies. As thumb drives are disallowed for physical PCs, so should they be for virtual desktops. Preventing USB pass-through can be accomplished in several ways, including natively in the Horizon Client.'
   desc  'rationale', ''
   desc  'check', "
+    USB can be blocked in a number of ways:
+
+    1. The desktop OS
+    2. A third party DLP solution
+    3. The \"USB Redirection\" optional Horizon Agent feature not being selected during install on any VDI image
+    4. On the Connection Server via individual pool policies or global policies
+
+    If any of these methods are already employed, the risk is already addressed and this control is not applicable.
+
+    If USB devices are not otherwise blocked, the Horizon Client must be configured to block USB devices.
+
     Ensure the vdm_client*.admx templates have been added to the Active Directory Domain.
 
     Open the \"Group Policy Management\" MMC snap-in, then open the applicable GPO that is applying the Horizon Client settings to the desktop machines.
@@ -25,8 +36,8 @@ control 'HZNC-8X-000128' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNC-8X-000128'
+  tag rid: 'SV-HZNC-8X-000128'
   tag stig_id: 'HZNC-8X-000128'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

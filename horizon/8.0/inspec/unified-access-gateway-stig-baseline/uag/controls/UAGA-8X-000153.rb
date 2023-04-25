@@ -35,11 +35,12 @@ control 'UAGA-8X-000153' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000164-ALG-000100'
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-NET-000355-ALG-000117']
+  tag gid: 'V-UAGA-8X-000153'
+  tag rid: 'SV-UAGA-8X-000153'
   tag stig_id: 'UAGA-8X-000153'
-  tag cci: ['CCI-000185']
-  tag nist: ['IA-5 (2) (a)']
+  tag cci: ['CCI-000185', 'CCI-002470']
+  tag nist: ['IA-5 (2) (a)', 'SC-23 (5)']
 
   result = uaghelper.runrestcommand('rest/v1/config/settings')
 

@@ -17,6 +17,8 @@ control 'UAGA-8X-000040' do
   "
   desc  'rationale', ''
   desc  'check', "
+    Note: If the UAG Horizon Edge Settings are not enabled, this control is Not Applicable.
+
     Login to the UAG administrative interface as an administrator.
 
     Select \"Configure Manually\".
@@ -28,6 +30,8 @@ control 'UAGA-8X-000040' do
     If the value of \"Auth Methods\" is anything other than \"X.509 Certificate\", this is a finding.
   "
   desc 'fix', "
+    Note: If the UAG Horizon Edge Settings are not enabled, this control is Not Applicable.
+
     Login to the UAG administrative interface as an administrator.
 
     Select \"Configure Manually\".
@@ -44,8 +48,8 @@ control 'UAGA-8X-000040' do
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000140-ALG-000094'
   tag satisfies: ['SRG-NET-000339-ALG-000090']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000040'
+  tag rid: 'SV-UAGA-8X-000040'
   tag stig_id: 'UAGA-8X-000040'
   tag cci: ['CCI-000766', 'CCI-001951']
   tag nist: ['IA-2 (11)', 'IA-2 (2)']

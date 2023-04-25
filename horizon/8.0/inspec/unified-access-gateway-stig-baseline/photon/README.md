@@ -1,6 +1,6 @@
 # uag-photon-3.0-stig-inspec-baseline
 Unified Access Gateway Photon 3.0 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 1 Date: 10 Oct 2022  
+Version: Release 1 Version 5 Date: 20 Apr 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Overview

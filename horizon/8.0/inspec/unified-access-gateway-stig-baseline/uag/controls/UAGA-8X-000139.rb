@@ -19,7 +19,9 @@ control 'UAGA-8X-000139' do
 
     Verify that the \"Syslog Include System Messages\" toggle is enabled.
 
-    If the \"Syslog Include System Messages\" toggle is not enabled, this is a finding.
+    Verify that \"All Events\" is selected for the \"Category\" dropdown.
+
+    If the \"Syslog Include System Messages\" toggle is not enabled, or the \"Category\" is not set to \"All Events\", this is a finding.
   "
   desc 'fix', "
     Login to the UAG administrative interface as an administrator.
@@ -32,13 +34,15 @@ control 'UAGA-8X-000139' do
 
     Ensure the \"Syslog Include System Messages\" toggle is enabled.
 
+    Ensure the \"Category\" dropdown is set to \"All Events\".
+
     Click \"Save\".
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000512-ALG-000062'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000139'
+  tag rid: 'SV-UAGA-8X-000139'
   tag stig_id: 'UAGA-8X-000139'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
@@ -52,8 +56,14 @@ control 'UAGA-8X-000139' do
   unless result.status != 200
     jsoncontent = json(content: result.body)
 
-    describe jsoncontent['syslogSettings']['syslogSystemMessagesEnabled'] do
-      it { should cmp true }
+    jsoncontent['syslogSettings']['syslogServerSettings'].each do |server|
+      describe server['syslogCategory'] do
+        it { should cmp 'ALL' }
+      end
+
+      describe server['syslogSystemMessagesEnabledV2'] do
+        it { should cmp true }
+      end
     end
   end
 end

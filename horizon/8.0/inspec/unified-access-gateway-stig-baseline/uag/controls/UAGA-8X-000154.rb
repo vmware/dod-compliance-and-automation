@@ -24,6 +24,8 @@ control 'UAGA-8X-000154' do
   "
   desc  'rationale', ''
   desc  'check', "
+    Note: If the UAG Horizon Edge Settings are not enabled, or \"Auth Methods\" is set to \"Passthrough\", this control is Not Applicable.
+
     Login to the UAG administrative interface as an administrator.
 
     Select \"Configure Manually\".
@@ -33,6 +35,8 @@ control 'UAGA-8X-000154' do
     If the \"Disclaimer Text\" field does not contain the Standard Mandatory DoD Notice and Consent Banner text, this is a finding.
   "
   desc 'fix', "
+    Note: If the UAG Horizon Edge Settings are not enabled, or \"Auth Methods\" is set to \"Passthrough\", this control is Not Applicable.
+
     Login to the UAG administrative interface as an administrator.
 
     Select \"Configure Manually\".
@@ -54,12 +58,11 @@ control 'UAGA-8X-000154' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000041-ALG-000022'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000154'
+  tag rid: 'SV-UAGA-8X-000154'
   tag stig_id: 'UAGA-8X-000154'
   tag cci: ['CCI-000048']
   tag nist: ['AC-8 a']
-
   result = uaghelper.runrestcommand('rest/v1/config/edgeservice')
 
   describe result do
@@ -72,17 +75,34 @@ control 'UAGA-8X-000154' do
 
     compareVal = input('warningBanner').gsub(/\s/, '')
 
+    horizonfound = false
+
     svclist.each do |svc|
-      next unless svc['identifier'] == 'VIEW'
-      if !svc['disclaimerText'].nil?
-        describe 'Checking Warning Banner configuration on end user interface' do
-          subject { svc['disclaimerText'].gsub!(/\s/, '') }
-          it { should cmp compareVal }
+      if svc['identifier'] == 'VIEW'
+        horizonfound = true
+        if svc['enabled'].eql? true
+          if !svc['disclaimerText'].nil?
+            describe 'Checking Warning Banner configuration on end user interface' do
+              subject { svc['disclaimerText'].gsub!(/\s/, '') }
+              it { should cmp compareVal }
+            end
+          else
+            describe svc['disclaimerText'] do
+              it { should_not cmp nil }
+            end
+          end
+        else
+          impact 0.0
+          describe 'Horizon Edge Services not enabled' do
+            skip 'Horizon Edge Services not enabled'
+          end
         end
-      else
-        describe svc['disclaimerText'] do
-          it { should_not cmp nil }
-        end
+      end
+
+      next if horizonfound
+      impact 0.0
+      describe 'Horizon Edge Services not found' do
+        skip 'Horizon Edge Services not found'
       end
     end
   end

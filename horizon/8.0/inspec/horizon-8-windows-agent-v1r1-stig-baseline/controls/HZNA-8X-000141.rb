@@ -1,5 +1,5 @@
 control 'HZNA-8X-000141' do
-  title 'The Horizon Agent must set an RDS connection to disconnect after a maximum of 10 hours.'
+  title 'The Horizon Agent must set an RDS connection to disconnect after an organization defined maximum time.'
   desc  'Horizon VDI is intended to provide remote desktops and applications, generally during working hours, and for no more than an extended workday. Leaving sessions active for more than what is reasonable for a work day opens the possibility of a session becoming unoccupied and insecure on the client side. For example, if a client connection is opened at 0900, there are few day-to-day reasons that the connection should still be open after 1900, therefore the connection must be terminated. If the user is still active, and environment settings allow it, they can re-authenticate immediately and continue the session.'
   desc  'rationale', ''
   desc  'check', "
@@ -33,8 +33,8 @@ control 'HZNA-8X-000141' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNA-8X-000141'
+  tag rid: 'SV-HZNA-8X-000141'
   tag stig_id: 'HZNA-8X-000141'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

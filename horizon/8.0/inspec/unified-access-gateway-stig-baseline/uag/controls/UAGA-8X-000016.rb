@@ -38,8 +38,8 @@ control 'UAGA-8X-000016' do
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000062-ALG-000011'
   tag satisfies: ['SRG-NET-000062-ALG-000092', 'SRG-NET-000063-ALG-000012', 'SRG-NET-000230-ALG-000113', 'SRG-NET-000510-ALG-000025', 'SRG-NET-000510-ALG-000040', 'SRG-NET-000510-ALG-000111']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000016'
+  tag rid: 'SV-UAGA-8X-000016'
   tag stig_id: 'UAGA-8X-000016'
   tag cci: ['CCI-000068', 'CCI-001184', 'CCI-001453', 'CCI-002450']
   tag nist: ['AC-17 (2)', 'SC-13', 'SC-23']

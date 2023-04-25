@@ -3,6 +3,8 @@ control 'UAGA-8X-000151' do
   desc  'HTTP Strict Transport Security (HSTS) instructs web browsers to only use secure connections for all future requests when communicating with a web site. Doing so helps prevent SSL protocol attacks, SSL stripping, cookie hijacking, and other attempts to circumvent SSL protection.'
   desc  'rationale', ''
   desc  'check', "
+    Note: If the UAG Horizon Edge Settings are not enabled, this control is Not Applicable.
+
     Login to the UAG administrative interface as an administrator.
 
     Select \"Configure Manually\".
@@ -16,6 +18,8 @@ control 'UAGA-8X-000151' do
     Note: The default UAG Strict-Transport-Security value is \"max-age=63072000; includeSubdomains; preload\".
   "
   desc 'fix', "
+    Note: If the UAG Horizon Edge Settings are not enabled, this control is Not Applicable.
+
     Login to the UAG administrative interface as an administrator.
 
     Select \"Configure Manually\".
@@ -31,8 +35,8 @@ control 'UAGA-8X-000151' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000512-ALG-000066'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000151'
+  tag rid: 'SV-UAGA-8X-000151'
   tag stig_id: 'UAGA-8X-000151'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

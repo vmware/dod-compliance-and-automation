@@ -34,8 +34,8 @@ control 'UAGA-8X-000047' do
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000213-ALG-000107'
   tag satisfies: ['SRG-NET-000344-ALG-000098', 'SRG-NET-000517-ALG-000006']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000047'
+  tag rid: 'SV-UAGA-8X-000047'
   tag stig_id: 'UAGA-8X-000047'
   tag cci: ['CCI-001133', 'CCI-002007', 'CCI-002361']
   tag nist: ['AC-12', 'IA-5 (13)', 'SC-10']
