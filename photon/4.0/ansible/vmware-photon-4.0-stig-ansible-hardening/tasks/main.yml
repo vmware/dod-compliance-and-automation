@@ -1,0 +1,9 @@
+---
+- name: Include Photon
+  ansible.builtin.include_tasks:
+    file: photon.yml
+    apply:
+      tags:
+        - photon
+  tags:
+    - always

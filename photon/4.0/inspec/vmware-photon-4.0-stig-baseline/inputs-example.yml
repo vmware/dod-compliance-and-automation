@@ -1,0 +1,8 @@
+useFaillockConf: true
+usePwqualityConf: true
+sshdcommand: 'sshd -T'
+authprivlog: /var/log/messages
+syslogServer: syslog.test.com:514
+ntptype: ntpd
+ntpServer1: time.vmware.com
+ntpServer2: time2.vmware.com
