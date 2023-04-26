@@ -7,11 +7,13 @@ control 'HZNV-8X-000125' do
 
     According to NIST and as of publication, TLS 1.1 must not be used and TLS 1.2 will be configured.
 
-    Note: Mandating TLS 1.2 may affect certain client types. Test and implement carefully. If the Horizon Connection Server is set to \"Do not use Blast Secure Gateway\", this control does not apply.
+    Note: Mandating TLS 1.2 may affect certain client types. Test and implement carefully.
   "
   desc  'rationale', ''
   desc  'check', "
-    On the Horizon Connection Server, navigate to \"<install_directory>\\Program Files\\VMware\\VMware View\\Server\\appblastgateway\".
+    If the Horizon Connection Server is set to \"Do not use Blast Secure Gateway\", this control does not apply.
+
+    On the Horizon Connection Server, navigate to \"<install_directory>\\appblastgateway\".
 
     If a file named \"absg.properties\" does not exist in this path, this is a finding.
 
@@ -24,10 +26,10 @@ control 'HZNV-8X-000125' do
 
     If the \"localHttpsProtocolLow\" or \"localHttpsProtocolHigh\" settings do not exist, or are not exactly as above, this is a finding.
 
-    Note: If the Horizon Connection Server is set to \"Do not use Blast Secure Gateway\", this control does not apply.
+    NOTE: \"<install_directory>\" defaults to \"%PROGRAMFILES%\\VMware\\VMware View\\Server\\\" unless changed during install.
   "
   desc 'fix', "
-    On the Horizon Connection Server, navigate to \"<install_directory>\\Program Files\\VMware\\VMware View\\Server\\appblastgateway\".
+    On the Horizon Connection Server, navigate to \"<install_directory>\\appblastgateway\".
 
     Open or create the \"absg.properties\" file in a text editor.
 
@@ -40,13 +42,13 @@ control 'HZNV-8X-000125' do
 
     Restart the \"VMware Horizon View Blast Secure Gateway\" service for changes to take effect.
 
-    Note: If the Horizon Connection Server is set to \"Do not use Blast Secure Gateway\", this control does not apply.
+    NOTE: \"<install_directory>\" defaults to \"%PROGRAMFILES%\\VMware\\VMware View\\Server\\\" unless changed during install.
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000015-AS-000010'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000125'
+  tag rid: 'SV-HZNV-8X-000125'
   tag stig_id: 'HZNV-8X-000125'
   tag cci: ['CCI-001453']
   tag nist: ['AC-17 (2)']

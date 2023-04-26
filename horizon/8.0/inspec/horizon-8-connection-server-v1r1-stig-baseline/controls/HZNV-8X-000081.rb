@@ -32,8 +32,8 @@ control 'HZNV-8X-000081' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-AS-000064'
   tag satisfies: ['SRG-APP-000125-AS-000084', 'SRG-APP-000515-AS-000203']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000081'
+  tag rid: 'SV-HZNV-8X-000081'
   tag stig_id: 'HZNV-8X-000081'
   tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']

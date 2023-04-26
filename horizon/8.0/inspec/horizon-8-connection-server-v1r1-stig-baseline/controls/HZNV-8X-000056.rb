@@ -32,8 +32,8 @@ control 'HZNV-8X-000056' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000220-AS-000148'
   tag satisfies: ['SRG-APP-000295-AS-000263', 'SRG-APP-000389-AS-000253']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000056'
+  tag rid: 'SV-HZNV-8X-000056'
   tag stig_id: 'HZNV-8X-000056'
   tag cci: ['CCI-001185', 'CCI-002038', 'CCI-002361']
   tag nist: ['AC-12', 'IA-11', 'SC-23 (1)']

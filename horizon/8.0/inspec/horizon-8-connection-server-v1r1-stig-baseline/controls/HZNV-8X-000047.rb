@@ -30,7 +30,7 @@ control 'HZNV-8X-000047' do
 
     If the \"CertificateRevocationCheckType\" key does not exist:
 
-    > Right-click on the \"Security\" folder and select \"New\" then \"DWORD (32 bit) Value\".
+    > Right-click on the \"Security\" folder and select \"New\" then \"String Value\".
 
     > Set the name to \"CertificateRevocationCheckType\" (without quotes).
 
@@ -43,8 +43,8 @@ control 'HZNV-8X-000047' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000175-AS-000124'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000047'
+  tag rid: 'SV-HZNV-8X-000047'
   tag stig_id: 'HZNV-8X-000047'
   tag cci: ['CCI-000185']
   tag nist: ['IA-5 (2) (a)']

@@ -1,10 +1,6 @@
 control 'HZNV-8X-000129' do
-  title 'The Horizon Connection Server must disconnect applications after two hours of idle time.'
-  desc  "
-    Horizon Connection Server is intended to provide remote desktops and applications for more or less continuous use. If an application is open and remains unused for more than two hours, that application must be closed in order to eliminate the risk of that idle application being usurped.
-
-    For desktops, sessions will not be disconnected after two hours but the credentials stored with Horizon must be invalidated. Subsequent desktop connection attempts will require reauthentication.
-  "
+  title 'The Horizon Connection Server must invalidate SSO Credentials after two hours of idle time.'
+  desc  'Horizon Connection Server is intended to provide remote desktops and applications for more or less continuous use. For desktop connections, the credentials stored with Horizon must be invalidated after two hours, which will force subsequent desktop connection attempts to require reauthentication.'
   desc  'rationale', ''
   desc  'check', "
     Log in to the Horizon Connection Server administrative console.
@@ -31,8 +27,8 @@ control 'HZNV-8X-000129' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000129'
+  tag rid: 'SV-HZNV-8X-000129'
   tag stig_id: 'HZNV-8X-000129'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

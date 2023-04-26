@@ -27,8 +27,8 @@ control 'HZNC-8X-000126' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNC-8X-000126'
+  tag rid: 'SV-HZNC-8X-000126'
   tag stig_id: 'HZNC-8X-000126'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

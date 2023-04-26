@@ -67,8 +67,8 @@ control 'HZNV-8X-000132' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000132'
+  tag rid: 'SV-HZNV-8X-000132'
   tag stig_id: 'HZNV-8X-000132'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
@@ -83,7 +83,7 @@ control 'HZNV-8X-000132' do
     if cs['general']['fqhn'].upcase == horizonhelper.getinput('fqdn').upcase
       describe 'CS fqdn matched - ' + cs['general']['fqhn'] do
         subject { cs['authentication']['smartCardSupport'] }
-        it { should cmp 'ON' }
+        it { should cmp 'REQUIRED' }
       end
     else
       describe 'CS not matched - ' + cs['general']['fqhn'] do

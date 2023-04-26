@@ -23,8 +23,8 @@ control 'HZNV-8X-000113' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000456-AS-000266'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000113'
+  tag rid: 'SV-HZNV-8X-000113'
   tag stig_id: 'HZNV-8X-000113'
   tag cci: ['CCI-002605']
   tag nist: ['SI-2 c']

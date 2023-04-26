@@ -44,8 +44,8 @@ control 'UAGA-8X-000018' do
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000062-ALG-000150'
   tag satisfies: ['SRG-NET-000147-ALG-000095', 'SRG-NET-000400-ALG-000097']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000018'
+  tag rid: 'SV-UAGA-8X-000018'
   tag stig_id: 'UAGA-8X-000018'
   tag cci: ['CCI-000068', 'CCI-000197', 'CCI-001942']
   tag nist: ['AC-17 (2)', 'IA-2 (9)', 'IA-5 (1) (c)']
@@ -56,14 +56,13 @@ control 'UAGA-8X-000018' do
     its('status') { should cmp 200 }
   end
 
-  # In current UAG version if FIPS is enabled, only TLSv1.2 is a valid option
   unless result.status != 200
     jsoncontent = json(content: result.body)
     describe jsoncontent do
       its(['systemSettings', 'tls10Enabled']) { should cmp false }
       its(['systemSettings', 'tls11Enabled']) { should cmp false }
-      its(['systemSettings', 'tls12Enabled']) { should cmp true }
-      its(['systemSettings', 'tls13Enabled']) { should cmp false }
+      its(['systemSettings', 'tls12Enabled']) { should cmp input('enableTLS12') }
+      its(['systemSettings', 'tls13Enabled']) { should cmp input('enableTLS13') }
     end
   end
 end

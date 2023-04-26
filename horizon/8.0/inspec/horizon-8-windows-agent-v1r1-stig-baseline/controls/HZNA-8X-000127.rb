@@ -47,8 +47,8 @@ control 'HZNA-8X-000127' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNA-8X-000127'
+  tag rid: 'SV-HZNA-8X-000127'
   tag stig_id: 'HZNA-8X-000127'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

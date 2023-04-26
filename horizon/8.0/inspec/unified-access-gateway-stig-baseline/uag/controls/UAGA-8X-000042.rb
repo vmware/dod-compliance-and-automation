@@ -67,8 +67,8 @@ control 'UAGA-8X-000042' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000164-ALG-000100'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000042'
+  tag rid: 'SV-UAGA-8X-000042'
   tag stig_id: 'UAGA-8X-000042'
   tag cci: ['CCI-000185']
   tag nist: ['IA-5 (2) (a)']

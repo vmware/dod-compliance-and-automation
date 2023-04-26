@@ -7,7 +7,7 @@ control 'HZNV-8X-000144' do
   "
   desc  'rationale', ''
   desc  'check', "
-    On the Horizon Connection Server, navigate to \"<install_directory>\\VMware\\VMware View\\Server\\sslgateway\\conf\".
+    On the Horizon Connection Server, navigate to \"<install_directory>\\sslgateway\\conf\".
 
     If a file named \"locked.properties\" does not exist in this path, this is not a finding.
 
@@ -15,26 +15,30 @@ control 'HZNV-8X-000144' do
 
     If there is no \"x-content-type-options\" setting, this is not a finding.
 
-    If \"x-content-type-options\" is present and set to \"false\", this is a finding.
+    If \"x-content-type-options\" is present and set to \"OFF\", this is a finding.
+
+    NOTE: \"<install_directory>\" defaults to \"%PROGRAMFILES%\\VMware\\VMware View\\Server\\\" unless changed during install.
   "
   desc 'fix', "
-    On the Horizon Connection Server, navigate to \"<install_directory>\\VMware\\VMware View\\Server\\sslgateway\\conf\".
+    On the Horizon Connection Server, navigate to \"<install_directory>\\sslgateway\\conf\".
 
     Open the \"locked.properties\" file in a text editor.
 
     Remove the following line:
 
-    x-content-type-options=false
+    x-content-type-options=OFF
 
     Save and close the file.
 
     Restart the \"VMware Horizon View Connection Server\" service for changes to take effect.
+
+    NOTE: \"<install_directory>\" defaults to \"%PROGRAMFILES%\\VMware\\VMware View\\Server\\\" unless changed during install.
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000144'
+  tag rid: 'SV-HZNV-8X-000144'
   tag stig_id: 'HZNV-8X-000144'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

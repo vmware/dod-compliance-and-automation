@@ -41,8 +41,8 @@ control 'UAGA-8X-000048' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-NET-000228-ALG-000108'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-UAGA-8X-000048'
+  tag rid: 'SV-UAGA-8X-000048'
   tag stig_id: 'UAGA-8X-000048'
   tag cci: ['CCI-001166']
   tag nist: ['SC-18 (1)']

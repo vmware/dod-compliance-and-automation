@@ -1,7 +1,7 @@
 control 'HZNA-8X-000138' do
   title 'The Horizon Agent must block USB mass storage.'
   desc  "
-    The Horizon Agent has the capability to granularly control what, if any, USB devices are allowed to be passed from the local client to the agent on the virtual desktop. By default, Horizon blocks certain device families from being redirected to the remote desktop or application. For example, HID (human interface devices) and keyboards are blocked from appearing in the guest as released BadUSB code targets USB keyboard devices.
+    The Horizon Agent has the capability to granularly control what, if any, USB devices are allowed to be passed from the local client to the agent on the virtual desktop. By default, Horizon blocks certain device families from being redirected to the remote desktop or application.
 
     While there are legitimate reasons to pass USB devices to the desktop, these must be carefully analyzed for necessity. At a minimum, USB Mass Storage devices must never be passed through, in keeping with long-standing DoD data loss prevention policies. As thumb drives are disallowed for physical PCs, so should they be for virtual desktops. This can be accomplished in several ways, including natively in the Horizon Agent.
   "
@@ -52,8 +52,8 @@ control 'HZNA-8X-000138' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNA-8X-000138'
+  tag rid: 'SV-HZNA-8X-000138'
   tag stig_id: 'HZNA-8X-000138'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

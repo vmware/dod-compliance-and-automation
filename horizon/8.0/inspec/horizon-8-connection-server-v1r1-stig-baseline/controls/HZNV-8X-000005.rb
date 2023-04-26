@@ -15,7 +15,7 @@ control 'HZNV-8X-000005' do
 
     From the \"Administrators and Groups\" tab, review each user and group in the left pane and their associated roles in the right pane.
 
-    Permissions must be as restrictive as possible and their scope (Access Group) as limited as possible. Ensure no user or group has unnecessary permissions and that their Access Group is appropriately limited. Pay special attention to the \"Local Administrator\" and \"Administrator\" roles on the root Access Group as those roles have total control over the local and global environment, respectively. Anyone with any privilege can log in to the Console and view potentially sensitive configurations, system details, and events.
+    Permissions must be as restrictive as possible and their scope (Access Group) as limited as possible. Ensure no user or group has unnecessary permissions and that their Access Group is appropriately limited. Pay special attention to the \"Local Administrator\" and \"Administrator\" roles on the root Access Group as those roles have total control over the local and global environment, respectively. Anyone with any administrative role can log in to the Console and view potentially sensitive configurations, system details, and events.
 
     If there are any users or groups that should not be treated as trusted \"Administrators\" of the Horizon system, this is a finding.
 
@@ -50,16 +50,16 @@ control 'HZNV-8X-000005' do
 
     > Click \"Add\" and find the relevant user(s).
 
-    >Click \"OK\".
+    > Click \"OK\".
 
-    >Click \"Finish\".
+    > Click \"Finish\".
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000033-AS-000024'
   tag satisfies: ['SRG-APP-000118-AS-000078', 'SRG-APP-000121-AS-000081', 'SRG-APP-000122-AS-000082', 'SRG-APP-000123-AS-000083', 'SRG-APP-000290-AS-000174', 'SRG-APP-000315-AS-000094', 'SRG-APP-000340-AS-000185', 'SRG-APP-000380-AS-000088']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000005'
+  tag rid: 'SV-HZNV-8X-000005'
   tag stig_id: 'HZNV-8X-000005'
   tag cci: ['CCI-000162', 'CCI-000213', 'CCI-001493', 'CCI-001494', 'CCI-001495', 'CCI-001496', 'CCI-001813', 'CCI-002235', 'CCI-002314']
   tag nist: ['AC-17 (1)', 'AC-3', 'AC-6 (10)', 'AU-9', 'AU-9 (3)', 'CM-5 (1)']

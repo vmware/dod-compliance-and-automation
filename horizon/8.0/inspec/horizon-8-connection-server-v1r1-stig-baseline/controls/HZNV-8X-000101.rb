@@ -20,7 +20,7 @@ control 'HZNV-8X-000101' do
     If the Horizon Connection Server broker certificate is not \"Issued By\" a trusted DoD CA, this is a finding.
   "
   desc 'fix', "
-    Obtain a web server certificate from a DoD authority, specifying the common name as the Horizon Connection server FQDN, the signing algorithm as \"SHA256\", and the key strength of at least \"1024 bits\".
+    Obtain a web server certificate from a DoD authority, specifying the common name as the Horizon Connection server FQDN, the signing algorithm as \"SHA384\" or \"SHA512\", and the key strength of at least \"1024 bits\".
 
     Export the certificate and private key to a password-protected PFX bundle.
 
@@ -49,13 +49,15 @@ control 'HZNV-8X-000101' do
     > Click \"OK\".
 
     Restart the Connection Server or the \"VMware Horizon View Connection Server\" service for changes to take effect.
+
+    NOTE: FIPS mode requires either \"SHA384\" or \"SHA512\" for the signing algorithm. If a UAG is in use in the environment, and it has been configured to meet NIAP / CFFC requirements, using a signing algorithm of \"SHA512\" may causes issues.
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000427-AS-000264'
   tag satisfies: ['SRG-APP-000514-AS-000137']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000101'
+  tag rid: 'SV-HZNV-8X-000101'
   tag stig_id: 'HZNV-8X-000101'
   tag cci: ['CCI-002450', 'CCI-002470']
   tag nist: ['SC-13', 'SC-23 (5)']

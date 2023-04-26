@@ -1,12 +1,12 @@
 # horizon-8-connection-server-stig-baseline
 Horizon 8 Connection Server STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 1 Date: 10 Oct 2022  
+Version: Release 1 Version 2 Date: 20 Apr 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
 This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the Horizon 8 Connection Server STIG Readiness Guide.
 
-It has been tested against versions 8.4 and 8.6 (2206). Note - Some content may be absent such as Vulnerability IDs for draft content and will be added once released by DISA. 
+It has been tested against versions 8.9 (2303). Note - Some content may be absent such as Vulnerability IDs for draft content and will be added once released by DISA. 
 
 All technical NIST SP 800-53 requirements were considered while developing this content. SRG requirements that are applicable and configurable are included in this content while other controls that are "Not Applicable", "Inherently Met" or "Does Not Meet" are not included.
 

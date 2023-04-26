@@ -1,5 +1,5 @@
-control 'UAGA-8X-000011' do
-  title 'The UAG administrative interface must display the Standard Mandatory DoD-approved Notice and Consent Banner before granting access to the network.'
+control 'HZNV-8X-000146' do
+  title 'The Horizon Connection Server admin interface must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system.'
   desc  "
     Application servers are required to display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system, providing privacy and security notices consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance that states that:
 
@@ -24,22 +24,30 @@ control 'UAGA-8X-000011' do
   "
   desc  'rationale', ''
   desc  'check', "
-    Login to the UAG administrative interface as an administrator.
+    Login to the Horizon Connection Server administrative interface as an administrator.
 
-    Select \"Configure Manually\".
+    Navigate to Settings >> Global Settings >> General Settings.
 
-    Navigate to Advanced Settings >>System Configuration >> Click the \"Gear\" icon to edit >> Scroll down to the \"Admin Disclaimer Text\" field.
+    Click the \"Edit\" button.
 
-    If the \"Admin Disclaimer Text\" field does not contain the Standard Mandatory DoD Notice and Consent Banner text, this is a finding.
+    Scroll down to the \"Display a Pre-Login Banner for Horizon Administrator Console\" checkbox.
+
+    If \"Display a Pre-Login Banner for Horizon Administrator Console\" is not checked, this is a finding.
+
+    If the \"Horizon Administrator Console Pre-Login Banner Message\" field does not contain the Standard Mandatory DoD Notice and Consent Banner text, this is a finding.
   "
   desc 'fix', "
-    Login to the UAG administrative interface as an administrator.
+    Login to the Horizon Connection Server administrative interface as an administrator.
 
-    Select \"Configure Manually\".
+    Navigate to Settings >> Global Settings >> General Settings.
 
-    Navigate to Advanced Settings >>System Configuration >> Click the \"Gear\" icon to edit >> Scroll down to the \"Admin Disclaimer Text\" field.
+    Click the \"Edit\" button.
 
-    In the \"Admin Disclaimer Text\" field, supply the Standard Mandatory DoD Notice and Consent Banner text:
+    Scroll down to the \"Display a Pre-Login Banner for Horizon Administrator Console\" checkbox.
+
+    Ensure the box next to \"Display a Pre-Login Banner for Horizon Administrator Console\" is checked.
+
+    In the \"Horizon Administrator Console Pre-Login Banner Message\" field, supply the Standard Mandatory DoD Notice and Consent Banner text:
 
     \"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
     By using this IS (which includes any device attached to this IS), you consent to the following conditions:
@@ -49,36 +57,40 @@ control 'UAGA-8X-000011' do
     -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.
     -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.\"
 
-    Click \"Save\".
+    Click \"OK\".
   "
   impact 0.5
   tag severity: 'medium'
-  tag gtitle: 'SRG-NET-000041-ALG-000022'
-  tag gid: 'V-UAGA-8X-000011'
-  tag rid: 'SV-UAGA-8X-000011'
-  tag stig_id: 'UAGA-8X-000011'
+  tag gtitle: 'SRG-APP-000068-AS-000035'
+  tag gid: 'V-HZNV-8X-000146'
+  tag rid: 'SV-HZNV-8X-000146'
+  tag stig_id: 'HZNV-8X-000146'
   tag cci: ['CCI-000048']
   tag nist: ['AC-8 a']
 
-  result = uaghelper.runrestcommand('rest/v1/config/settings')
+  horizonhelper.setconnection
 
-  compareVal = input('warningBanner').gsub(/\s/, '')
+  result = horizonhelper.getpowershellrestwithtoken('/rest/config/v3/settings/general')
 
-  describe result do
-    its('status') { should cmp 200 }
+  # Removing Spaces to do the compare
+  compareVal = input('warningBanner').gsub!(/\s/, '')
+
+  gensettings = JSON.parse(result.stdout)
+
+  describe 'Checking if warning banner is configured' do
+    subject { gensettings['display_pre_login_admin_banner'] }
+    it { should cmp true }
   end
 
-  unless result.status != 200
-    jsoncontent = json(content: result.body)
-    if !jsoncontent['systemSettings']['adminDisclaimerText'].nil?
-      describe 'Checking if warning banner is configured' do
-        subject { jsoncontent['systemSettings']['adminDisclaimerText'].gsub!(/\s/, '') }
-        it { should cmp compareVal }
-      end
-    else
-      describe jsoncontent['systemSettings']['adminDisclaimerText'] do
-        it { should_not cmp nil }
-      end
+  if !gensettings['pre_login_message'].nil?
+    describe 'Checking warning banner text' do
+      subject { gensettings['pre_login_admin_banner_message'].gsub!(/\s/, '') }
+      it { should cmp compareVal }
+    end
+  else
+    describe 'Checking warning banner text' do
+      subject { gensettings['pre_login_admin_banner_message'] }
+      it { should_not cmp nil }
     end
   end
 end

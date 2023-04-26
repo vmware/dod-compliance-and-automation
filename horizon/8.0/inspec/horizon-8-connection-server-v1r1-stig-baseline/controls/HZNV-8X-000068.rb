@@ -7,7 +7,7 @@ control 'HZNV-8X-000068' do
   "
   desc  'rationale', ''
   desc  'check', "
-    On the Horizon Connection Server, navigate to \"<install_directory>\\ProgramData\\VMware\\VDM\".
+    On the Horizon Connection Server, navigate to \"%PROGRAMDATA%\\VMware\\VDM\".
 
     Right-click the \"logs\" folder and select \"Properties\".
 
@@ -18,7 +18,7 @@ control 'HZNV-8X-000068' do
     If any other groups or users have any permissions on this folder, this is a finding.
   "
   desc 'fix', "
-    On the Horizon Connection Server, navigate to \"<install_directory>\\ProgramData\\VMware\\VDM\".
+    On the Horizon Connection Server, navigate to \"%PROGRAMDATA%\\VMware\\VDM\".
 
     Right-click the \"logs\" folder and select \"Properties\".
 
@@ -37,8 +37,8 @@ control 'HZNV-8X-000068' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000267-AS-000170'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-HZNV-8X-000068'
+  tag rid: 'SV-HZNV-8X-000068'
   tag stig_id: 'HZNV-8X-000068'
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']

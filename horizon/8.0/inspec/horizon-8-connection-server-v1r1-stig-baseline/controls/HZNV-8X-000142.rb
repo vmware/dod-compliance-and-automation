@@ -27,11 +27,12 @@ control 'HZNV-8X-000142' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000400-AS-000246']
+  tag gid: 'V-HZNV-8X-000142'
+  tag rid: 'SV-HZNV-8X-000142'
   tag stig_id: 'HZNV-8X-000142'
-  tag cci: ['CCI-000366']
-  tag nist: ['CM-6 b']
+  tag cci: ['CCI-000366', 'CCI-002007']
+  tag nist: ['CM-6 b', 'IA-5 (13)']
 
   horizonhelper.setconnection
 
