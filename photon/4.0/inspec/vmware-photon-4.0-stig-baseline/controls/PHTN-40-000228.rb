@@ -1,0 +1,48 @@
+control 'PHTN-40-000228' do
+  title 'The Photon operating system must log IPv4 packets with impossible addresses.'
+  desc  'The presence of "martian" packets (which have impossible addresses) as well as spoofed packets, source-routed packets, and redirects could be a sign of nefarious network activity. Logging these packets enables this activity to be detected.'
+  desc  'rationale', ''
+  desc  'check', "
+    At the command line, run the following command to verify martian packets are logged:
+
+    # /sbin/sysctl -a --pattern \"net.ipv4.conf.(all|default).log_martians\"
+
+    Expected result:
+
+    net.ipv4.conf.all.log_martians = 1
+    net.ipv4.conf.default.log_martians = 1
+
+    If the output does not match the expected result, this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
+
+    /etc/sysctl.conf
+
+    Add or update the following lines:
+
+    net.ipv4.conf.all.log_martians = 1
+    net.ipv4.conf.default.log_martians = 1
+
+    At the command line, run the following command to load the new configuration:
+
+    # /sbin/sysctl --load
+
+    Note: If the file sysctl.conf doesn't exist it must be created.
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag gid: 'V-PHTN-40-000228'
+  tag rid: 'SV-PHTN-40-000228'
+  tag stig_id: 'PHTN-40-000228'
+  tag cci: ['CCI-000366']
+  tag nist: ['CM-6 b']
+
+  describe kernel_parameter('net.ipv4.conf.all.log_martians') do
+    its('value') { should cmp 1 }
+  end
+  describe kernel_parameter('net.ipv4.conf.default.log_martians') do
+    its('value') { should cmp 1 }
+  end
+end
