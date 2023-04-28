@@ -372,7 +372,7 @@
   ansible.builtin.file:
     path: "{{ var_server_pem_file }}"
     state: file
-    mode: 0600
+    mode: "0600"
     owner: "root"
     group: "root"
   tags:
