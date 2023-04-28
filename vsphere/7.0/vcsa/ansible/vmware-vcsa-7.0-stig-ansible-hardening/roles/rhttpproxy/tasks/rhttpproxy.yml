@@ -22,7 +22,10 @@
     - '{{ var_syslog_conf_path }}'
     - '{{ var_syslog_conf_path2 }}'
   changed_when: false
-  ignore_errors: true
+  register: backupresult
+  failed_when:
+    - backupresult.msg is defined
+    - "'not found' not in backupresult.msg"
   when:
     - create_backups | bool
 
@@ -102,7 +105,7 @@
   ansible.builtin.file:
     path: "{{ var_key_path }}"
     state: file
-    mode: 0600
+    mode: "0600"
     owner: "root"
     group: "root"
   tags:

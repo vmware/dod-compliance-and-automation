@@ -7,3 +7,5 @@
 
 - name: restart sts
   ansible.builtin.command: service-control --restart vmware-stsd
+  register: output
+  changed_when: output.rc == 0

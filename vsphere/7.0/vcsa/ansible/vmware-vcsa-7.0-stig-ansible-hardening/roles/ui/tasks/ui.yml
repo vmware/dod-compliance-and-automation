@@ -25,7 +25,10 @@
     - '{{ var_catalina_props_path }}'
     - '{{ var_syslog_conf_path }}'
   changed_when: false
-  ignore_errors: true
+  register: backupresult
+  failed_when:
+    - backupresult.msg is defined
+    - "'not found' not in backupresult.msg"
   when:
     - create_backups | bool
 

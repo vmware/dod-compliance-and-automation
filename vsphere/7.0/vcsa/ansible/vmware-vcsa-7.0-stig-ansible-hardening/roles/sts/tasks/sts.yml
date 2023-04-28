@@ -24,7 +24,10 @@
     - '{{ var_catalina_props_path }}'
     - '{{ var_syslog_conf_path }}'
   changed_when: false
-  ignore_errors: true
+  register: backupresult
+  failed_when:
+    - backupresult.msg is defined
+    - "'not found' not in backupresult.msg"
   when:
     - create_backups | bool
 
@@ -124,7 +127,7 @@
     state: present
     option: 'handlers'
     value: '{{ var_logging_props_handlers }}'
-    mode: 0600
+    mode: "0600"
   tags:
     - VCST-70-000006
   when:
@@ -137,7 +140,7 @@
     state: present
     option: '.handlers'
     value: '{{ var_logging_props_dothandlers }}'
-    mode: 0600
+    mode: "0600"
   tags:
     - VCST-70-000006
   when:
@@ -150,7 +153,7 @@
     state: present
     option: '1catalina.org.apache.juli.FileHandler.level'
     value: '{{ var_logging_props_level }}'
-    mode: 0600
+    mode: "0600"
   tags:
     - VCST-70-000006
   when:
@@ -163,7 +166,7 @@
     state: present
     option: '1catalina.org.apache.juli.FileHandler.directory'
     value: '{{ var_logging_props_directory }}'
-    mode: 0600
+    mode: "0600"
   tags:
     - VCST-70-000006
   when:
@@ -176,7 +179,7 @@
     state: present
     option: '1catalina.org.apache.juli.FileHandler.prefix'
     value: '{{ var_logging_props_prefix }}'
-    mode: 0600
+    mode: "0600"
   tags:
     - VCST-70-000006
   when:
@@ -189,7 +192,7 @@
     state: present
     option: '1catalina.org.apache.juli.FileHandler.bufferSize'
     value: '{{ var_logging_props_buffersize }}'
-    mode: 0600
+    mode: "0600"
   tags:
     - VCST-70-000006
   when:
@@ -202,7 +205,7 @@
     state: present
     option: '1catalina.org.apache.juli.FileHandler.formatter'
     value: '{{ var_logging_props_formatter }}'
-    mode: 0600
+    mode: "0600"
   tags:
     - VCST-70-000006
   when:
@@ -215,7 +218,7 @@
     state: present
     option: 'org.apache.catalina.startup.Catalina.handlers'
     value: '{{ var_logging_props_handlers2 }}'
-    mode: 0600
+    mode: "0600"
   tags:
     - VCST-70-000006
   when:

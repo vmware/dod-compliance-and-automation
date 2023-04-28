@@ -7,3 +7,5 @@
 
 - name: restart perfcharts
   ansible.builtin.command: vmon-cli --restart perfcharts
+  register: output
+  changed_when: output.rc == 0

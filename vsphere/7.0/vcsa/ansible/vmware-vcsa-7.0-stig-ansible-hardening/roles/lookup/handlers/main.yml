@@ -7,3 +7,5 @@
 
 - name: restart lookupsvc
   ansible.builtin.command: vmon-cli --restart lookupsvc
+  register: output
+  changed_when: output.rc == 0
