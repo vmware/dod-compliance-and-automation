@@ -15,7 +15,9 @@
   - [VCEM-70-000008 The check command displays files that have changed](#vcem-70-000008-the-check-command-displays-files-that-have-changed)
   - [VCLU-70-000007 Log file permissions do not persist](#vclu-70-000007-log-file-permissions-do-not-persist)
   - [VCPG-70-000006 The check command output may display some tables not owned by vc](#vcpg-70-000006-the-check-command-output-may-display-some-tables-not-owned-by-vc)
+  - [VCPG-70-000020 The UTC timezone may be displayed in different formats](#vcpg-70-000020-the-utc-timezone-may-be-displayed-in-different-formats)
   - [VCST-70-000006 Max days line in output](#vcst-70-000006-max-days-line-in-output)
+  - [VCST-70-000021 async-supported location](#vcst-70-000021-async-supported-location)
   - [VCST-70-000028 New port for smartcard authentication in 7.0 U3i](#vcst-70-000028-new-port-for-smartcard-authentication-in-70-u3i)
 
 # Known Issues
@@ -162,6 +164,28 @@ This issue is seen after some upgrades where updates are made to the vCenter dat
 - The command in the fixtext should read as follows:  
 ```/opt/vmware/vpostgres/current/bin/psql -d VCDB -U postgres -c "ALTER TABLE <tablename> OWNER TO vc;"```
 
+### [VCPG-70-000020] The UTC timezone may be displayed in different formats
+
+Related issue: [#165](https://github.com/vmware/dod-compliance-and-automation/issues/165)
+
+The UTC timezone has multiple names in PostgreSQL and may be configured with any of them.  
+
+**Workaround:**
+
+- All of the timezone names below correlate to the UTC timezone abbreviation and are not a finding if configured.
+```
+     name      | abbrev | utc_offset | is_dst
+---------------+--------+------------+--------
+ Universal     | UTC    | 00:00:00   | f
+ UCT           | UTC    | 00:00:00   | f
+ Zulu          | UTC    | 00:00:00   | f
+ UTC           | UTC    | 00:00:00   | f
+ Etc/Universal | UTC    | 00:00:00   | f
+ Etc/UCT       | UTC    | 00:00:00   | f
+ Etc/Zulu      | UTC    | 00:00:00   | f
+ Etc/UTC       | UTC    | 00:00:00   | f
+```
+
 ### [VCST-70-000006] Max days line in output
 
 Related issue: None
@@ -171,6 +195,18 @@ In the command output you may see an additional line "1catalina.org.apache.juli.
 **Workaround:**
 
 - This line will be added to a future STIG update and should not be removed.
+
+### [VCST-70-000021] async-supported location
+
+Related issue: [#166](https://github.com/vmware/dod-compliance-and-automation/issues/166)
+
+The location of the `<async-supported>true</async-supported>` line differs in the ansible playbook and the check text.  
+This line is also not directly related to the filter being implemented and its purpose, but how the filter processes requests. See [Set_Character_Encoding_Filter](https://tomcat.apache.org/tomcat-10.0-doc/config/filter.html#Set_Character_Encoding_Filter)  
+
+**Workaround:**
+
+- The `<async-supported>true</async-supported>` will work in any location as long as it is properly indented and is not intended to be a finding based on this.
+- The location the ansible playbook places the line is in relation to the XML Schema and where it will pass validation should XML schema validation be enabled.
 
 ### [VCST-70-000028] New port for smartcard authentication in 7.0 U3i
 
