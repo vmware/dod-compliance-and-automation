@@ -32,28 +32,34 @@ control 'CFNG-4X-000004' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000014-WSR-000006'
   tag satisfies: ['SRG-APP-000416-WSR-000118', 'SRG-APP-000439-WSR-000151']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000004'
+  tag rid: 'SV-CFNG-4X-000004'
   tag stig_id: 'CFNG-4X-000004'
-  tag cci: ['CCI-000068', 'CCI-002450', 'CCI-002418']
+  tag cci: ['CCI-000068', 'CCI-002418', 'CCI-002450']
   tag nist: ['AC-17 (2)', 'SC-13', 'SC-8']
 
   # Check server blocks to ensure setting doesn't exist or is on
   servers = nginx_conf_custom(input('nginx_conf_path')).servers
 
-  servers.each do |server|
-    next unless server.params['listen'].flatten.include?('ssl')
-    describe.one do
-      describe "Checking server block: #{server.params['server_name']}" do
-        it 'its ssl_prefer_server_ciphers should be on' do
-          expect(server.params['ssl_prefer_server_ciphers']).to include(['on'])
+  if !servers.empty?
+    servers.each do |server|
+      next unless server.params['listen'].flatten.include?('ssl')
+      describe.one do
+        describe "Checking server block: #{server.params['server_name']}" do
+          it 'its ssl_prefer_server_ciphers should be on' do
+            expect(server.params['ssl_prefer_server_ciphers']).to include(['on'])
+          end
+        end
+        describe "Checking server block: #{server.params['server_name']}" do
+          it 'its ssl_prefer_server_ciphers should not exist' do
+            expect(server.params['ssl_prefer_server_ciphers']).to be nil
+          end
         end
       end
-      describe "Checking server block: #{server.params['server_name']}" do
-        it 'its ssl_prefer_server_ciphers should not exist' do
-          expect(server.params['ssl_prefer_server_ciphers']).to be nil
-        end
-      end
+    end
+  else
+    describe 'No NGINX server entries found...skipping...' do
+      skip 'No NGINX server entries found...skipping...'
     end
   end
 end

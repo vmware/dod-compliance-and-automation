@@ -22,21 +22,20 @@ control 'CFPG-4X-000013' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET port = '5432';\"
-
     # systemctl restart postgres.service
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000142-DB-000094'
   tag satisfies: ['SRG-APP-000383-DB-000364']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000013'
+  tag rid: 'SV-CFPG-4X-000013'
   tag stig_id: 'CFPG-4X-000013'
   tag cci: ['CCI-000382', 'CCI-001762']
-  tag nist: ['CM-7 b', 'CM-7 (1) (b)']
+  tag nist: ['CM-7 (1) (b)', 'CM-7 b']
 
   sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = 'SHOW port;'

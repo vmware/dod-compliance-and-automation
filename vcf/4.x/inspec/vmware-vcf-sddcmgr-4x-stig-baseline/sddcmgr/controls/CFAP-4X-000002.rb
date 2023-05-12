@@ -1,5 +1,5 @@
 control 'CFAP-4X-000002' do
-  title 'SDDC Manager components must use an authoritative time source.'
+  title 'The SDDC Manager components must use an authoritative time source.'
   desc  "
     Determining the correct time a particular application event occurred on a system is critical when conducting forensic analysis and investigating system events.
 
@@ -9,7 +9,7 @@ control 'CFAP-4X-000002' do
   desc  'check', "
     View the current NTP server configuration.
 
-    From the SDDC Manager UI navigate to Administration >> Network Settings >> NTP Configuration and review the NTP servers listed.
+    From the SDDC Manager UI, navigate to Administration >> Network Settings >> NTP Configuration and review the NTP servers listed.
 
     or
 
@@ -22,20 +22,22 @@ control 'CFAP-4X-000002' do
     If the NTP servers listed are not a site specific authoritative time source, this is a finding.
   "
   desc 'fix', "
-    From the SDDC Manager UI navigate to Administration >> Network Settings >> NTP Configuration and click Edit.
+    From the SDDC Manager UI, navigate to Administration >> Network Settings >> NTP Configuration
 
-    Review the information on updating NTP and click Next.
+    Click \"Edit\".
 
-    Review the prerequisites and click Next.
+    Review the information on updating NTP and click \"Next\".
 
-    Enter new authoritative NTP servers in the text box and click Save.
+    Review the prerequisites and click \"Next\".
+
+    Enter new authoritative NTP servers in the text box and click \"Save\".
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000371-AS-000077'
   tag satisfies: ['SRG-APP-000372-AS-000212']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFAP-4X-000002'
+  tag rid: 'SV-CFAP-4X-000002'
   tag stig_id: 'CFAP-4X-000002'
   tag cci: ['CCI-001891', 'CCI-002046']
   tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)']

@@ -46,11 +46,11 @@ control 'CFNG-4X-000016' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000159'
   tag satisfies: ['SRG-APP-000266-WSR-000160']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000016'
+  tag rid: 'SV-CFNG-4X-000016'
   tag stig_id: 'CFNG-4X-000016'
-  tag cci: ['CCI-001312', 'CCI-001312']
-  tag nist: ['SI-11 a', 'SI-11 a']
+  tag cci: ['CCI-001312']
+  tag nist: ['SI-11 a']
 
   # Check for setting in HTTP block
   describe nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['server_tokens'] do

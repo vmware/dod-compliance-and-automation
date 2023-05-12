@@ -16,7 +16,7 @@ control 'CFPG-4X-000002' do
     If any files are returned, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # chmod 600 <file>
     # chown postgres:users <file>
@@ -27,17 +27,24 @@ control 'CFPG-4X-000002' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000090-DB-000065'
   tag satisfies: ['SRG-APP-000121-DB-000202', 'SRG-APP-000122-DB-000203', 'SRG-APP-000123-DB-000204', 'SRG-APP-000380-DB-000360']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000002'
+  tag rid: 'SV-CFPG-4X-000002'
   tag stig_id: 'CFPG-4X-000002'
   tag cci: ['CCI-000171', 'CCI-001493', 'CCI-001494', 'CCI-001495', 'CCI-001813']
-  tag nist: ['AU-12 b', 'AU-9', 'AU-9', 'AU-9', 'CM-5 (1)']
+  tag nist: ['AU-12 b', 'AU-9', 'CM-5 (1)']
 
-  command("find #{input('pg_install_dir')} -type f -maxdepth 1 -name '*conf*'").stdout.split.each do |fname|
-    describe file(fname) do
-      its('mode') { should cmp '0600' }
-      its('owner') { should cmp 'postgres' }
-      its('group') { should cmp 'users' }
+  conffiles = command("find #{input('pg_install_dir')} -type f -maxdepth 1 -name '*conf*'").stdout
+  if !conffiles.empty?
+    conffiles.split.each do |fname|
+      describe file(fname) do
+        its('mode') { should cmp '0600' }
+        its('owner') { should cmp 'postgres' }
+        its('group') { should cmp 'users' }
+      end
+    end
+  else
+    describe 'No conf files found...skipping...' do
+      skip 'No conf files found...skipping...'
     end
   end
 end

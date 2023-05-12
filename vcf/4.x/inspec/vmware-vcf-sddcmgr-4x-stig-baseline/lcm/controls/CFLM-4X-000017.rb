@@ -9,7 +9,7 @@ control 'CFLM-4X-000017' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command prompt, execute the following command:
+    At the command prompt, run the following command:
 
     # grep -v \"^#\" /etc/rsyslog.d/stig-services-lcm.conf
 
@@ -22,8 +22,13 @@ control 'CFLM-4X-000017' do
           Severity=\"info\"
           Facility=\"local0\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/lcm/upgrade/*.log\"
-          Tag=\"vcf-lcm-upgrade\"
+          File=\"/var/log/vmware/vcf/lcm/lcm.out\"
+          Tag=\"vcf-lcm-out\"
+          Severity=\"info\"
+          Facility=\"local0\")
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vcf/lcm/tools/*.log\"
+          Tag=\"vcf-lcm-tools\"
           Severity=\"info\"
           Facility=\"local0\")
 
@@ -47,8 +52,13 @@ control 'CFLM-4X-000017' do
           Severity=\"info\"
           Facility=\"local0\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/lcm/upgrade/*.log\"
-          Tag=\"vcf-lcm-upgrade\"
+          File=\"/var/log/vmware/vcf/lcm/lcm.out\"
+          Tag=\"vcf-lcm-out\"
+          Severity=\"info\"
+          Facility=\"local0\")
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vcf/lcm/tools/*.log\"
+          Tag=\"vcf-lcm-tools\"
           Severity=\"info\"
           Facility=\"local0\")
 
@@ -59,8 +69,8 @@ control 'CFLM-4X-000017' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000163'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFLM-4X-000017'
+  tag rid: 'SV-CFLM-4X-000017'
   tag stig_id: 'CFLM-4X-000017'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']

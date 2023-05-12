@@ -1,6 +1,6 @@
 control 'CFOM-4X-000007' do
   title "The SDDC Manager Operations Manager service must not have any symbolic links in it's directory to outside directories."
-  desc  "A web server is designed to deliver content and execute scripts or applications on the request of a client or user.  Containing user requests to files in the directory tree of the hosted web application and limiting the execution of scripts and applications guarantees that the user is not accessing information protected outside the application's realm.  "
+  desc  "A web server is designed to deliver content and execute scripts or applications on the request of a client or user.  Containing user requests to files in the directory tree of the hosted web application and limiting the execution of scripts and applications guarantees that the user is not accessing information protected outside the application's realm."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, run the following command:
@@ -18,11 +18,11 @@ control 'CFOM-4X-000007' do
 
     Note: Replace <file_name> for the name of any files that were returned.
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-APP-000141-WSR-000087'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFOM-4X-000007'
+  tag rid: 'SV-CFOM-4X-000007'
   tag stig_id: 'CFOM-4X-000007'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

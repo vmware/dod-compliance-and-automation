@@ -14,17 +14,16 @@ control 'CFPG-4X-000001' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command:
+    At the command prompt, run the following commands:
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET max_connections = '100';\"
-
     # systemctl restart postgres.service
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-DB-000031'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000001'
+  tag rid: 'SV-CFPG-4X-000001'
   tag stig_id: 'CFPG-4X-000001'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']

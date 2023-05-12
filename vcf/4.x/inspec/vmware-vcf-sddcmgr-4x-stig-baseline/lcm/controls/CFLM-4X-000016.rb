@@ -16,7 +16,7 @@ control 'CFLM-4X-000016' do
   desc 'fix', "
     Navigate to and open:
 
-     /opt/vmware/vcf/lcm/lcm-app/conf/application-prod.properties
+    /opt/vmware/vcf/lcm/lcm-app/conf/application-prod.properties
 
     Add or edit the following line to match below:
 
@@ -29,8 +29,8 @@ control 'CFLM-4X-000016' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000160'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFLM-4X-000016'
+  tag rid: 'SV-CFLM-4X-000016'
   tag stig_id: 'CFLM-4X-000016'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

@@ -30,11 +30,11 @@ control 'CFNG-4X-000020' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000439-WSR-000154'
   tag satisfies: ['SRG-APP-000439-WSR-000155']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000020'
+  tag rid: 'SV-CFNG-4X-000020'
   tag stig_id: 'CFNG-4X-000020'
-  tag cci: ['CCI-002418', 'CCI-002418']
-  tag nist: ['SC-8', 'SC-8']
+  tag cci: ['CCI-002418']
+  tag nist: ['SC-8']
 
   describe nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['proxy_cookie_path'] do
     it { should include ['/', '/; HTTPOnly; Secure'] }

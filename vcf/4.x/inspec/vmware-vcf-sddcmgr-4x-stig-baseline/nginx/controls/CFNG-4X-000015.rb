@@ -1,6 +1,6 @@
 control 'CFNG-4X-000015' do
   title 'The SDDC Manager NGINX service must restrict the ability of users to launch Denial of Service (DoS) attacks.'
-  desc  'A web server can limit the ability of the web server being used in a DoS attack through several methods. The methods employed will depend upon the hosted applications and their resource needs for proper operation. '
+  desc  'A web server can limit the ability of the web server being used in a DoS attack through several methods. The methods employed will depend upon the hosted applications and their resource needs for proper operation.'
   desc  'rationale', ''
   desc  'check', "
     Verify a shared memory zone has been established in the http context to track requests per IP.
@@ -25,7 +25,7 @@ control 'CFNG-4X-000015' do
 
     limit_req zone=api_traffic burst=100 nodelay;
 
-    If the limit_req option is not configured to limit requests per IP, this is a finding.
+    If the \"limit_req\" option is not configured to limit requests per IP, this is a finding.
 
     Note: Per server or location limit_req directives are acceptable to modify limits based on application needs as long as they are not disabled.
   "
@@ -49,8 +49,8 @@ control 'CFNG-4X-000015' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000246-WSR-000149'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000015'
+  tag rid: 'SV-CFNG-4X-000015'
   tag stig_id: 'CFNG-4X-000015'
   tag cci: ['CCI-001094']
   tag nist: ['SC-5 (1)']

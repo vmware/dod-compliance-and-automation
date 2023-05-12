@@ -10,11 +10,11 @@ control 'CFOM-4X-000006' do
     If there is any output, this is a finding.
   "
   desc 'fix', 'Re-install the SDDC Manager or roll back to a snapshot or backup.  Modifying the installation files manually is not supported.'
-  impact 0.7
-  tag severity: 'high'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-APP-000131-WSR-000051'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFOM-4X-000006'
+  tag rid: 'SV-CFOM-4X-000006'
   tag stig_id: 'CFOM-4X-000006'
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']

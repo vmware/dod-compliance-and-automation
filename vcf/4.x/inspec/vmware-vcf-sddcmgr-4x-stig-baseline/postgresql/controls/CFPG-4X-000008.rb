@@ -22,21 +22,20 @@ control 'CFPG-4X-000008' do
     If the output does not include the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_min_error_statement = error';\"
-
     # psql -h localhost -U postgres -c \"SELECT pg_reload_conf();\"
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000095-DB-000039'
   tag satisfies: ['SRG-APP-000096-DB-000040', 'SRG-APP-000097-DB-000041', 'SRG-APP-000098-DB-000042', 'SRG-APP-000099-DB-000043', 'SRG-APP-000100-DB-000201', 'SRG-APP-000101-DB-000044']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000008'
+  tag rid: 'SV-CFPG-4X-000008'
   tag stig_id: 'CFPG-4X-000008'
-  tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-001487', 'CCI-000135']
-  tag nist: ['AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3 (1)']
+  tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000135', 'CCI-001487']
+  tag nist: ['AU-3', 'AU-3 (1)']
 
   sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = 'SHOW log_min_error_statement;'

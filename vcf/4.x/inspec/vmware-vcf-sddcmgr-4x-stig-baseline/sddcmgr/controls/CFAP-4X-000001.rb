@@ -1,5 +1,5 @@
 control 'CFAP-4X-000001' do
-  title 'SDDC Manager must be able to be restored to the last known good configuration.'
+  title 'The SDDC Manager must be able to be restored to the last known good configuration.'
   desc  "
     It is critically important that you back up the SDDC Manager regularly to avoid downtime and data loss in case of a system failure.
 
@@ -9,17 +9,17 @@ control 'CFAP-4X-000001' do
   desc  'check', "
     For image based backups:
 
-    Interview the SA and determine if regular image based backups are being taken of the SDDC Manager appliance.
+    Interview the system administrator and determine if regular image based backups are being taken of the SDDC Manager appliance.
 
     For file based backups:
 
     Check that an external SFTP server is registered with SDDC Manager.
 
-    From the SDDC Manager UI navigate to Administration >> Backup >> Site Settings and verify an external SFTP server is configured.
+    From the SDDC Manager UI, navigate to Administration >> Backup >> Site Settings and verify an external SFTP server is configured.
 
     Check that a backup schedule has been configured.
 
-    From the SDDC Manager UI navigate to Administration >> Backup >> SDDC Manager Configurations and review the backup configuration.
+    From the SDDC Manager UI, navigate to Administration >> Backup >> SDDC Manager Configurations and review the backup configuration.
 
     or
 
@@ -46,23 +46,25 @@ control 'CFAP-4X-000001' do
 
     File based backups:
 
-    Configure an external SFTP server as a target backup location.
+    Configure an external SFTP server as a target backup location by doing the following:
 
-    From the SDDC Manager UI navigate to Administration >> Backup >> Site Settings and click Register External.
+    From the SDDC Manager UI, navigate to Administration >> Backup >> Site Settings and click \"Register External\".
 
-    Provide the necessary information such as IP address, credentials, directory, and pass phrase and save.
+    Provide the necessary information such as IP address, credentials, directory, and pass phrase and click \"Save\".
 
-    Configure a backup schedule.
+    Configure a backup schedule by doing the following:
 
-    From the SDDC Manager UI navigate to Administration >> Backup >> SDDC Manager Configurations and click Edit next to Backup Schedule.
+    From the SDDC Manager UI, navigate to Administration >> Backup >> SDDC Manager Configurations.
 
-    Fill out the parameters for the backup schedule and click Save.
+    Click \"Edit\" next to \"Backup Schedule\".
+
+    Fill out the parameters for the backup schedule and click \"Save\".
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000133-AS-000093'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFAP-4X-000001'
+  tag rid: 'SV-CFAP-4X-000001'
   tag stig_id: 'CFAP-4X-000001'
   tag cci: ['CCI-001190']
   tag nist: ['SC-24']

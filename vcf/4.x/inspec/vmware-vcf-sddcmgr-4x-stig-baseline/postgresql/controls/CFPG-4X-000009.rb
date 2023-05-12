@@ -14,17 +14,16 @@ control 'CFPG-4X-000009' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_truncate_on_rotation = 'on';\"
-
     # psql -h localhost -U postgres -c \"SELECT pg_reload_conf();\"
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000109-DB-000321'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000009'
+  tag rid: 'SV-CFPG-4X-000009'
   tag stig_id: 'CFPG-4X-000009'
   tag cci: ['CCI-000140']
   tag nist: ['AU-5 b']

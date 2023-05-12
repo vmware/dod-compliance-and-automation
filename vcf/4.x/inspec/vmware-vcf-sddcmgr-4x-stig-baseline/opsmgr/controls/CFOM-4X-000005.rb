@@ -5,33 +5,40 @@ control 'CFOM-4X-000005' do
   desc  'check', "
     At the command prompt, run the following command:
 
-    # find /var/log/vmware/vcf/operationsmanager/ -xdev -type f -a '(' -not -perm 640 -o -not -user vcf_operationsmanager -o -not -group vcf ')' -exec ls -ld {} \\;
+    # find /var/log/vmware/vcf/operationsmanager/ -xdev -type f -a '(' -perm -o+w -o -not -user vcf_operationsmanager -o -not -group vcf ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
-    # chmod 640 <file>
+    # chmod o-w <file>
     # chown vcf_operationsmanager:vcf <file>
 
     Note: Substitute <file> with the listed file.
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000118-WSR-000068'
   tag satisfies: ['SRG-APP-000119-WSR-000069', 'SRG-APP-000120-WSR-000070']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFOM-4X-000005'
+  tag rid: 'SV-CFOM-4X-000005'
   tag stig_id: 'CFOM-4X-000005'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9', 'AU-9', 'AU-9']
+  tag nist: ['AU-9']
 
-  command('find /var/log/vmware/vcf/operationsmanager/ -xdev -type f').stdout.split.each do |fname|
-    describe file(fname) do
-      its('group') { should cmp 'vcf' }
-      its('owner') { should cmp 'vcf_operationsmanager' }
-      it { should_not be_more_permissive_than('0640') }
+  logfiles = command('find /var/log/vmware/vcf/operationsmanager/ -xdev -type f').stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('group') { should cmp 'vcf' }
+        its('owner') { should cmp 'vcf_operationsmanager' }
+      end
+    end
+  else
+    describe 'No log files found...skipping...' do
+      skip 'No log files found...skipping...'
     end
   end
 end

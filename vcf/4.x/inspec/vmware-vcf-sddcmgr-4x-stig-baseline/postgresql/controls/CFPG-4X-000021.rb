@@ -18,21 +18,20 @@ control 'CFPG-4X-000021' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_timezone TO 'UTC';\"
-
     # psql -h localhost -U postgres -c \"SELECT pg_reload_conf();\"
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000374-DB-000322'
   tag satisfies: ['SRG-APP-000375-DB-000323']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000021'
+  tag rid: 'SV-CFPG-4X-000021'
   tag stig_id: 'CFPG-4X-000021'
-  tag cci: ['CCI-001890', 'CCI-001889']
-  tag nist: ['AU-8 b', 'AU-8 b']
+  tag cci: ['CCI-001889', 'CCI-001890']
+  tag nist: ['AU-8 b']
 
   sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = 'SHOW log_timezone;'

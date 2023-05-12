@@ -30,11 +30,11 @@ control 'CFCS-4X-000009' do
 
     # systemctl restart commonsvcs.service
   "
-  impact 0.3
-  tag severity: 'low'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000142-WSR-000089'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFCS-4X-000009'
+  tag rid: 'SV-CFCS-4X-000009'
   tag stig_id: 'CFCS-4X-000009'
   tag cci: ['CCI-000382']
   tag nist: ['CM-7 b']

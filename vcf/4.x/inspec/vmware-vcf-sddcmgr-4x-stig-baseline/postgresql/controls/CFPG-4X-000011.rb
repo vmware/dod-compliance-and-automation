@@ -22,14 +22,12 @@ control 'CFPG-4X-000011' do
     If the correctly defined directory specified in the first command does not exist, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # mkdir /var/log/postgres
-
     # chown postgres:users /var/log/postgres
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_directory = '/var/log/postgres';\"
-
     # psql -h localhost -U postgres -c \"SELECT pg_reload_conf();\"
 
     Note: Destination could be different and acceptable if under /var/log or another dedicated log partition.
@@ -38,11 +36,11 @@ control 'CFPG-4X-000011' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000118-DB-000059'
   tag satisfies: ['SRG-APP-000119-DB-000060', 'SRG-APP-000120-DB-000061']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000011'
+  tag rid: 'SV-CFPG-4X-000011'
   tag stig_id: 'CFPG-4X-000011'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9', 'AU-9', 'AU-9']
+  tag nist: ['AU-9']
 
   sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
   sqlquery = 'SHOW log_directory;'

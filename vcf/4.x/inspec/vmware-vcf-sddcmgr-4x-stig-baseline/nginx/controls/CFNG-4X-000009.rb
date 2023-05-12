@@ -29,8 +29,8 @@ control 'CFNG-4X-000009' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000093-WSR-000053'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000009'
+  tag rid: 'SV-CFNG-4X-000009'
   tag stig_id: 'CFNG-4X-000009'
   tag cci: ['CCI-001462']
   tag nist: ['AU-14 (2)']

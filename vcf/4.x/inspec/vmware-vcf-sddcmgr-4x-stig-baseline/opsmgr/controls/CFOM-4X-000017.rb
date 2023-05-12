@@ -59,8 +59,8 @@ control 'CFOM-4X-000017' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000163'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFOM-4X-000017'
+  tag rid: 'SV-CFOM-4X-000017'
   tag stig_id: 'CFOM-4X-000017'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']

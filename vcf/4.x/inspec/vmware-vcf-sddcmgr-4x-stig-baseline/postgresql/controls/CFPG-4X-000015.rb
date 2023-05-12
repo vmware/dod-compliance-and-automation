@@ -1,7 +1,7 @@
 control 'CFPG-4X-000015' do
   title 'The SDDC Manager PostgreSQL database must encrypt passwords for user authentication.'
   desc  "
-    The DoD standard for authentication is DoD-approved PKI certificates.
+    The DOD standard for authentication is DoD-approved PKI certificates.
 
     Authentication based on User ID and Password may be used only when it is not possible to employ a PKI certificate, and requires AO approval.
 
@@ -23,14 +23,13 @@ control 'CFPG-4X-000015' do
     At the command prompt, run the following commands:
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET password_encryption TO 'md5';\"
-
     # psql -h localhost -U postgres -c \"SELECT pg_reload_conf();\"
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000171-DB-000074'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000015'
+  tag rid: 'SV-CFPG-4X-000015'
   tag stig_id: 'CFPG-4X-000015'
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']

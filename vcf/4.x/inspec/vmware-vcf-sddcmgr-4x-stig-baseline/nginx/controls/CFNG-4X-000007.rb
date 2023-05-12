@@ -29,12 +29,12 @@ control 'CFNG-4X-000007' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000016-WSR-000005'
-  tag satisfies: ['SRG-APP-000095-WSR-000056', 'SRG-APP-000375-WSR-000171', 'SRG-APP-000099-WSR-000061', 'SRG-APP-000100-WSR-000064', 'SRG-APP-000097-WSR-000058', 'SRG-APP-000098-WSR-000059', 'SRG-APP-000096-WSR-000057']
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000095-WSR-000056', 'SRG-APP-000096-WSR-000057', 'SRG-APP-000097-WSR-000058', 'SRG-APP-000098-WSR-000059', 'SRG-APP-000099-WSR-000061', 'SRG-APP-000100-WSR-000064', 'SRG-APP-000375-WSR-000171']
+  tag gid: 'V-CFNG-4X-000007'
+  tag rid: 'SV-CFNG-4X-000007'
   tag stig_id: 'CFNG-4X-000007'
-  tag cci: ['CCI-000067', 'CCI-000130', 'CCI-001889', 'CCI-000134', 'CCI-001487', 'CCI-000132', 'CCI-000133', 'CCI-000131']
-  tag nist: ['AC-17 (1)', 'AU-3', 'AU-8 b', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3']
+  tag cci: ['CCI-000067', 'CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-001487', 'CCI-001889']
+  tag nist: ['AC-17 (1)', 'AU-3', 'AU-8 b']
 
   log_format = nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['log_format']
   nginx_access_log_format_name = input('nginx_access_log_format_name')

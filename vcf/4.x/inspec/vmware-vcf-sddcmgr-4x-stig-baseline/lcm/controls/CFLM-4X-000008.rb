@@ -30,11 +30,11 @@ control 'CFLM-4X-000008' do
 
     # systemctl restart lcm.service
   "
-  impact 0.3
-  tag severity: 'low'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000142-WSR-000089'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFLM-4X-000008'
+  tag rid: 'SV-CFLM-4X-000008'
   tag stig_id: 'CFLM-4X-000008'
   tag cci: ['CCI-000382']
   tag nist: ['CM-7 b']
