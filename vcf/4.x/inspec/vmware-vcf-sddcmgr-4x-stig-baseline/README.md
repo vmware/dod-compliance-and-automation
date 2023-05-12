@@ -1,6 +1,6 @@
 # vmware-vcf-sddcmgr-4x-stig-baseline
 VMware Cloud Foundation SDDC Manager 4.x STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 3 Date: 10 May 2022  
+Version: Release 1 Version 4 Date: 2 May 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
@@ -8,7 +8,7 @@ This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor 
 
 ## Requirements
 
-- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH to the target. Tested with version 4.41.20. Chef/CINC Workstation can also be installed and used.
+- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH to the target. Tested with version 5.17.4. Chef/CINC Workstation can also be installed and used.
 - Administrative access to the target via root or sudo
 - Update the inputs in inputs file example as appropriate for your environment
 - assumes profile is downloaded to C:\Inspec\Profiles\vmware-vcf-sddcmgr-4x-stig-baseline**  

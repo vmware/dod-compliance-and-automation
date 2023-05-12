@@ -17,13 +17,13 @@ control 'CFCS-4X-000018' do
 
     module(load=\"imfile\" mode=\"inotify\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/commonsvcs/*.log\"
+          File=\"/var/log/vmware/vcf/commonsvcs/vcf-commonsvcs.log\"
           Tag=\"vcf-commonsvcs-runtime\"
           Severity=\"info\"
           Facility=\"local0\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/commonsvcs/upgrade/*.log\"
-          Tag=\"vcf-commonsvcs-upgrade\"
+          File=\"/var/log/vmware/vcf/commonsvcs/commonsvcs.out\"
+          Tag=\"vcf-commonsvcs-out\"
           Severity=\"info\"
           Facility=\"local0\")
 
@@ -38,17 +38,17 @@ control 'CFCS-4X-000018' do
 
     Create the file if it does not exist.
 
-    Set the contents of the file as follows:
+    Update the contents of the file as follows:
 
     module(load=\"imfile\" mode=\"inotify\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/commonsvcs/*.log\"
+          File=\"/var/log/vmware/vcf/commonsvcs/vcf-commonsvcs.log\"
           Tag=\"vcf-commonsvcs-runtime\"
           Severity=\"info\"
           Facility=\"local0\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/commonsvcs/upgrade/*.log\"
-          Tag=\"vcf-commonsvcs-upgrade\"
+          File=\"/var/log/vmware/vcf/commonsvcs/commonsvcs.out\"
+          Tag=\"vcf-commonsvcs-out\"
           Severity=\"info\"
           Facility=\"local0\")
 
@@ -59,8 +59,8 @@ control 'CFCS-4X-000018' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000163'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFCS-4X-000018'
+  tag rid: 'SV-CFCS-4X-000018'
   tag stig_id: 'CFCS-4X-000018'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']

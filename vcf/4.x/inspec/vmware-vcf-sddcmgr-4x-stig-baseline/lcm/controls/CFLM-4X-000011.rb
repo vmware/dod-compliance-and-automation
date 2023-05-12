@@ -33,8 +33,8 @@ control 'CFLM-4X-000011' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000251-WSR-000157'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFLM-4X-000011'
+  tag rid: 'SV-CFLM-4X-000011'
   tag stig_id: 'CFLM-4X-000011'
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']

@@ -9,12 +9,12 @@ control 'CFNG-4X-000012' do
 
     If there is any output, this is a finding.
   "
-  desc 'fix', 'Investigate any returned files and re-install Nginx if necessary.'
-  impact 0.5
-  tag severity: 'medium'
+  desc 'fix', 'Investigate any returned files and re-install NGINX if necessary.'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-APP-000131-WSR-000051'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000012'
+  tag rid: 'SV-CFNG-4X-000012'
   tag stig_id: 'CFNG-4X-000012'
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']

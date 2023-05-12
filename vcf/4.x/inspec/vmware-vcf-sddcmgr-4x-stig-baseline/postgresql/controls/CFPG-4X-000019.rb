@@ -18,17 +18,16 @@ control 'CFPG-4X-000019' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET logging_collector TO 'on';\"
-
     # systemctl restart postgres.service
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000356-DB-000314'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000019'
+  tag rid: 'SV-CFPG-4X-000019'
   tag stig_id: 'CFPG-4X-000019'
   tag cci: ['CCI-001844']
   tag nist: ['AU-3 (2)']

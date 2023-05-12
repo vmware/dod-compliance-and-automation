@@ -28,11 +28,11 @@ control 'CFNG-4X-000003' do
 
     # nginx -s reload
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000014-WSR-000006'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000003'
+  tag rid: 'SV-CFNG-4X-000003'
   tag stig_id: 'CFNG-4X-000003'
   tag cci: ['CCI-000068']
   tag nist: ['AC-17 (2)']

@@ -1,6 +1,6 @@
 control 'CFNG-4X-000017' do
   title 'The SDDC Manager NGINX service must set an inactive timeout for proxied sessions.'
-  desc  'Leaving sessions open indefinitely is a major security risk. An attacker can easily use an already authenticated session to access the hosted application as the previously authenticated user. By closing sessions after a set period of inactivity, the web server can make certain that those sessions that are not closed through the user logging out of an application are eventually closed. '
+  desc  'Leaving sessions open indefinitely is a major security risk. An attacker can easily use an already authenticated session to access the hosted application as the previously authenticated user. By closing sessions after a set period of inactivity, the web server can make certain that those sessions that are not closed through the user logging out of an application are eventually closed.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command:
@@ -19,7 +19,7 @@ control 'CFNG-4X-000017' do
 
     The nginx.conf (/etc/nginx/nginx.conf by default) file.
 
-    Add the following line(s) in the http context:
+    Add the following lines in the http context:
 
     proxy_send_timeout 600;
     proxy_read_timeout 600;
@@ -31,8 +31,8 @@ control 'CFNG-4X-000017' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000295-WSR-000134'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000017'
+  tag rid: 'SV-CFNG-4X-000017'
   tag stig_id: 'CFNG-4X-000017'
   tag cci: ['CCI-002361']
   tag nist: ['AC-12']

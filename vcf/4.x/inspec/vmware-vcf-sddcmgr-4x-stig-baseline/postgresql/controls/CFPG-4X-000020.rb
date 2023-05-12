@@ -50,11 +50,11 @@ control 'CFPG-4X-000020' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000356-DB-000314'
   tag satisfies: ['SRG-APP-000356-DB-000315', 'SRG-APP-000381-DB-000361', 'SRG-APP-000492-DB-000333', 'SRG-APP-000515-DB-000318']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000020'
+  tag rid: 'SV-CFPG-4X-000020'
   tag stig_id: 'CFPG-4X-000020'
-  tag cci: ['CCI-001844', 'CCI-001844', 'CCI-001814', 'CCI-000172', 'CCI-001851']
-  tag nist: ['AU-3 (2)', 'AU-3 (2)', 'CM-5 (1)', 'AU-12 c', 'AU-4 (1)']
+  tag cci: ['CCI-000172', 'CCI-001814', 'CCI-001844', 'CCI-001851']
+  tag nist: ['AU-12 c', 'AU-3 (2)', 'AU-4 (1)', 'CM-5 (1)']
 
   goodcontent = inspec.profile.file('stig-services-postgres.conf')
   describe file('/etc/rsyslog.d/stig-services-postgres.conf') do

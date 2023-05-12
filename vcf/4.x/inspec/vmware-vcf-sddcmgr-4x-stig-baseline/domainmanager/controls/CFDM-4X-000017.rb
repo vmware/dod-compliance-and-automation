@@ -22,8 +22,8 @@ control 'CFDM-4X-000017' do
           Severity=\"info\"
           Facility=\"local0\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/domainmanager/upgrades/*/*\"
-          Tag=\"vcf-domainmanager-upgrades\"
+          File=\"/var/log/vmware/vcf/domainmanager/domainmanager.out\"
+          Tag=\"vcf-domainmanager-out\"
           Severity=\"info\"
           Facility=\"local0\")
 
@@ -47,8 +47,8 @@ control 'CFDM-4X-000017' do
           Severity=\"info\"
           Facility=\"local0\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/domainmanager/upgrades/*/*\"
-          Tag=\"vcf-domainmanager-upgrades\"
+          File=\"/var/log/vmware/vcf/domainmanager/domainmanager.out\"
+          Tag=\"vcf-domainmanager-out\"
           Severity=\"info\"
           Facility=\"local0\")
 
@@ -59,8 +59,8 @@ control 'CFDM-4X-000017' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000163'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFDM-4X-000017'
+  tag rid: 'SV-CFDM-4X-000017'
   tag stig_id: 'CFDM-4X-000017'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']

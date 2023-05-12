@@ -14,7 +14,7 @@ control 'CFNG-4X-000018' do
     If the command produces any output, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # chmod o-w <file>
     # chown root:root <file>
@@ -24,8 +24,8 @@ control 'CFNG-4X-000018' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000380-WSR-000072'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000018'
+  tag rid: 'SV-CFNG-4X-000018'
   tag stig_id: 'CFNG-4X-000018'
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1)']

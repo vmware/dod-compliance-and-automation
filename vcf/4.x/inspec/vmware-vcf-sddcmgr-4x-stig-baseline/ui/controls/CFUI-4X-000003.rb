@@ -14,7 +14,7 @@ control 'CFUI-4X-000003' do
     If any output is returned indicating a webdav module is installed, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # cd /opt/vmware/vcf/sddc-manager-ui-app/server/node_modules
     # npm uninstall <webdav package name>
@@ -22,8 +22,8 @@ control 'CFUI-4X-000003' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000085'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFUI-4X-000003'
+  tag rid: 'SV-CFUI-4X-000003'
   tag stig_id: 'CFUI-4X-000003'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

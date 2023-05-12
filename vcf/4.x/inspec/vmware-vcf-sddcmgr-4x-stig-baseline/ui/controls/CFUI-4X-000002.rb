@@ -10,15 +10,15 @@ control 'CFUI-4X-000002' do
     If there is any output, this is a finding.
   "
   desc 'fix', 'Re-install the SDDC Manager or roll back to a snapshot or backup.  Modifying the installation files manually is not supported.'
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-APP-000131-WSR-000051'
   tag satisfies: ['SRG-APP-000131-WSR-000073']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFUI-4X-000002'
+  tag rid: 'SV-CFUI-4X-000002'
   tag stig_id: 'CFUI-4X-000002'
-  tag cci: ['CCI-001749', 'CCI-001749']
-  tag nist: ['CM-5 (3)', 'CM-5 (3)']
+  tag cci: ['CCI-001749']
+  tag nist: ['CM-5 (3)']
 
   describe command('rpm -V sddc-manager-ui-app | grep \"^..5......\"|grep -v -E "|\.properties"') do
     its('stdout.strip') { should eq '' }

@@ -1,6 +1,6 @@
 control 'CFSS-4X-000003' do
-  title "The SDDC Manager SOS service must not have any symbolic links in it's directory to outside directories."
-  desc  "A web server is designed to deliver content and execute scripts or applications on the request of a client or user.  Containing user requests to files in the directory tree of the hosted web application and limiting the execution of scripts and applications guarantees that the user is not accessing information protected outside the application's realm.  "
+  title 'The SDDC Manager SOS service must not have any symbolic links in its directory to outside directories.'
+  desc  "A web server is designed to deliver content and execute scripts or applications on the request of a client or user.  Containing user requests to files in the directory tree of the hosted web application and limiting the execution of scripts and applications guarantees that the user is not accessing information protected outside the application's realm."
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, run the following command:
@@ -18,11 +18,11 @@ control 'CFSS-4X-000003' do
 
     Note: Replace <file_name> for the name of any files that were returned.
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-APP-000141-WSR-000087'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFSS-4X-000003'
+  tag rid: 'SV-CFSS-4X-000003'
   tag stig_id: 'CFSS-4X-000003'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

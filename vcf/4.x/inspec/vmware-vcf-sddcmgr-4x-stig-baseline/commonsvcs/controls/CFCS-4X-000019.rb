@@ -33,8 +33,8 @@ control 'CFCS-4X-000019' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000435-WSR-000147'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFCS-4X-000019'
+  tag rid: 'SV-CFCS-4X-000019'
   tag stig_id: 'CFCS-4X-000019'
   tag cci: ['CCI-002385']
   tag nist: ['SC-5']

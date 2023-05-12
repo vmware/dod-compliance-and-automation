@@ -10,22 +10,22 @@ control 'CFOM-4X-000010' do
     If the command produces any output, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # chmod o-w <file>
     # chmod vcf_operationsmanager:vcf <file>
 
     Repeat the command for each file that was returned.
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000211-WSR-000030'
   tag satisfies: ['SRG-APP-000380-WSR-000072']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFOM-4X-000010'
+  tag rid: 'SV-CFOM-4X-000010'
   tag stig_id: 'CFOM-4X-000010'
   tag cci: ['CCI-001082', 'CCI-001813']
-  tag nist: ['SC-2', 'CM-5 (1)']
+  tag nist: ['CM-5 (1)', 'SC-2']
 
   describe command('find /opt/vmware/vcf/operationsmanager -xdev -type f -a \'(\' -perm -o+w -o -not -user vcf_operationsmanager -o -not -group vcf \')\' -exec ls -ld {} \\;') do
     its('stdout.strip') { should eq '' }

@@ -27,8 +27,8 @@ control 'CFPG-4X-000017' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000233-DB-000124'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000017'
+  tag rid: 'SV-CFPG-4X-000017'
   tag stig_id: 'CFPG-4X-000017'
   tag cci: ['CCI-001084']
   tag nist: ['SC-3']

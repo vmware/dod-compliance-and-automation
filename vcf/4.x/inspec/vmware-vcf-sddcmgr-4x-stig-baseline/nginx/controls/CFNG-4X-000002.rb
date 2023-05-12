@@ -1,6 +1,6 @@
 control 'CFNG-4X-000002' do
   title 'The SDDC Manager NGINX service must limit the number of concurrent connections per server.'
-  desc  'Web server management includes the ability to control the number of users and user sessions that utilize a web server. Limiting the number of allowed users and sessions per user is helpful in limiting risks related to several types of Denial of Service attacks. '
+  desc  'Web server management includes the ability to control the number of users and user sessions that utilize a web server. Limiting the number of allowed users and sessions per user is helpful in limiting risks related to several types of denial of service (DoS) attacks.'
   desc  'rationale', ''
   desc  'check', "
     Verify a shared memory zone has been established in the http context to track connections per server.
@@ -25,7 +25,7 @@ control 'CFNG-4X-000002' do
 
     limit_conn per_server 1000;
 
-    If the limit_conn option is not configured in the http context to limit connections per server, this is a finding.
+    If the \"limit_conn\" option is not configured in the http context to limit connections per server, this is a finding.
 
     Note: Per server or location limit_conn directives are acceptable to modify limits based on application needs as long as they are not disabled.
   "
@@ -47,8 +47,8 @@ control 'CFNG-4X-000002' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000001-WSR-000001'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000002'
+  tag rid: 'SV-CFNG-4X-000002'
   tag stig_id: 'CFNG-4X-000002'
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']

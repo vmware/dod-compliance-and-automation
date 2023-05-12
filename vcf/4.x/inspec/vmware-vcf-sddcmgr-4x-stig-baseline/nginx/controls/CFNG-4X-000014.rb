@@ -15,10 +15,10 @@ control 'CFNG-4X-000014' do
 
     stat -c \"%n is owned by %U and group %G permissions are %a\" <path to key file>;
 
-    If any key file is not owned by root or group root or permissions are more permissive than 640, this is a finding.
+    If any key file is not owned by root or group root or permissions are more permissive than \"640\", this is a finding.
   "
   desc 'fix', "
-    At the command line, run the following command(s):
+    At the command line, run the following commands:
 
     # chown root:root <key file>
     # chmod 640 <key file>
@@ -28,18 +28,24 @@ control 'CFNG-4X-000014' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000176-WSR-000096'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000014'
+  tag rid: 'SV-CFNG-4X-000014'
   tag stig_id: 'CFNG-4X-000014'
   tag cci: ['CCI-000186']
   tag nist: ['IA-5 (2) (b)']
 
   ssl_keys = command('nginx -T 2>&1 | grep "ssl_certificate_key" | cut -f 1 -d ";"').stdout.split.keep_if { |fname| fname != 'ssl_certificate_key' }
-  ssl_keys.each do |key|
-    describe file(key) do
-      its('group') { should cmp 'root' }
-      its('owner') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0640') }
+  if !ssl_keys.empty?
+    ssl_keys.each do |key|
+      describe file(key) do
+        its('group') { should cmp 'root' }
+        its('owner') { should cmp 'root' }
+        it { should_not be_more_permissive_than('0640') }
+      end
+    end
+  else
+    describe 'No key files found...skipping...' do
+      skip 'No key files found...skipping...'
     end
   end
 end

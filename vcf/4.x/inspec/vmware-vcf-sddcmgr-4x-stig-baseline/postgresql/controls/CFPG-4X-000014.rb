@@ -32,10 +32,10 @@ control 'CFPG-4X-000014' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000148-DB-000103'
   tag satisfies: ['SRG-APP-000172-DB-000075', 'SRG-APP-000442-DB-000379']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000014'
+  tag rid: 'SV-CFPG-4X-000014'
   tag stig_id: 'CFPG-4X-000014'
-  tag cci: ['CCI-000764', 'CCI-000197', 'CCI-002422']
+  tag cci: ['CCI-000197', 'CCI-000764', 'CCI-002422']
   tag nist: ['IA-2', 'IA-5 (1) (c)', 'SC-8 (2)']
 
   describe postgres_hba_conf("#{input('pg_install_dir')}/pg_hba.conf").where { type == 'local' } do

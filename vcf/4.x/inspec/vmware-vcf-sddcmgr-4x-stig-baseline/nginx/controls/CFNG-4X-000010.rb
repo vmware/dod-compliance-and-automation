@@ -52,11 +52,11 @@ control 'CFNG-4X-000010' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000108-WSR-000166'
   tag satisfies: ['SRG-APP-000125-WSR-000071', 'SRG-APP-000358-WSR-000063', 'SRG-APP-000358-WSR-000163']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000010'
+  tag rid: 'SV-CFNG-4X-000010'
   tag stig_id: 'CFNG-4X-000010'
-  tag cci: ['CCI-000139', 'CCI-001348', 'CCI-001851', 'CCI-001851']
-  tag nist: ['AU-5 a', 'AU-9 (2)', 'AU-4 (1)', 'AU-4 (1)']
+  tag cci: ['CCI-000139', 'CCI-001348', 'CCI-001851']
+  tag nist: ['AU-4 (1)', 'AU-5 a', 'AU-9 (2)']
 
   goodcontent = inspec.profile.file('stig-services-nginx.conf')
   describe file('/etc/rsyslog.d/stig-services-nginx.conf') do

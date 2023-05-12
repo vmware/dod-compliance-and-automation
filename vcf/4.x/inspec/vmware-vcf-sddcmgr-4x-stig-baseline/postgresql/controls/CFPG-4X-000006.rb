@@ -22,17 +22,16 @@ control 'CFPG-4X-000006' do
     If the output does not include the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_error_verbosity = 'default';\"
-
     # psql -h localhost -U postgres -c \"SELECT pg_reload_conf();\"
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000095-DB-000039'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000006'
+  tag rid: 'SV-CFPG-4X-000006'
   tag stig_id: 'CFPG-4X-000006'
   tag cci: ['CCI-000130']
   tag nist: ['AU-3']

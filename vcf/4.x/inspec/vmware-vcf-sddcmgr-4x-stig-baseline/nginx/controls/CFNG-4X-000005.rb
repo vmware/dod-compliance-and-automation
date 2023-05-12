@@ -28,11 +28,11 @@ control 'CFNG-4X-000005' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000015-WSR-000014'
   tag satisfies: ['SRG-APP-000172-WSR-000104', 'SRG-APP-000179-WSR-000111', 'SRG-APP-000439-WSR-000152', 'SRG-APP-000439-WSR-000156', 'SRG-APP-000439-WSR-000188', 'SRG-APP-000441-WSR-000181', 'SRG-APP-000442-WSR-000182']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFNG-4X-000005'
+  tag rid: 'SV-CFNG-4X-000005'
   tag stig_id: 'CFNG-4X-000005'
-  tag cci: ['CCI-001453', 'CCI-000197', 'CCI-000803', 'CCI-002418', 'CCI-002418', 'CCI-002418', 'CCI-002420', 'CCI-002422']
-  tag nist: ['AC-17 (2)', 'IA-5 (1) (c)', 'IA-7', 'SC-8', 'SC-8', 'SC-8', 'SC-8 (2)', 'SC-8 (2)']
+  tag cci: ['CCI-000197', 'CCI-000803', 'CCI-001453', 'CCI-002418', 'CCI-002420', 'CCI-002422']
+  tag nist: ['AC-17 (2)', 'IA-5 (1) (c)', 'IA-7', 'SC-8', 'SC-8 (2)']
 
   protocols = [['TLSv1.2'], ['TLSv1.3']]
   http_protocols = nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['ssl_protocols']

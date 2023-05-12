@@ -10,7 +10,7 @@ control 'CFUI-4X-000004' do
     If the command produces any output, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # chmod o-w <file>
     # chmod vcf_sddc_manager_ui_app:vcf <file>
@@ -21,11 +21,11 @@ control 'CFUI-4X-000004' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000211-WSR-000030'
   tag satisfies: ['SRG-APP-000380-WSR-000072']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFUI-4X-000004'
+  tag rid: 'SV-CFUI-4X-000004'
   tag stig_id: 'CFUI-4X-000004'
   tag cci: ['CCI-001082', 'CCI-001813']
-  tag nist: ['SC-2', 'CM-5 (1)']
+  tag nist: ['CM-5 (1)', 'SC-2']
 
   describe command('find /opt/vmware/vcf/sddc-manager-ui-app/ -xdev -type f -a \'(\' -perm -o+w -o -not -user vcf_sddc_manager_ui_app -o -not -group vcf \')\' -exec ls -ld {} \\;') do
     its('stdout.strip') { should eq '' }

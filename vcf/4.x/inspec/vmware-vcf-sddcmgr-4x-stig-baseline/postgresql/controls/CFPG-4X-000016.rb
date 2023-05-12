@@ -20,10 +20,9 @@ control 'CFPG-4X-000016' do
     If the output does not match the expected result, this is a finding.
   "
   desc 'fix', "
-    At the command prompt, run the following command(s):
+    At the command prompt, run the following commands:
 
     # psql -h localhost -U postgres -c \"ALTER SYSTEM SET <name> TO 'on';\"
-
     # psql -h localhost -U postgres -c \"SELECT pg_reload_conf();\"
 
     Note: Substitute <name> with the incorrectly set parameter (fsync, full_page_writes, synchronous_commit).
@@ -31,8 +30,8 @@ control 'CFPG-4X-000016' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000226-DB-000147'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CFPG-4X-000016'
+  tag rid: 'SV-CFPG-4X-000016'
   tag stig_id: 'CFPG-4X-000016'
   tag cci: ['CCI-001665']
   tag nist: ['SC-24']
