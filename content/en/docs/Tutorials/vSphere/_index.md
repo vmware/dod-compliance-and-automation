@@ -1,7 +1,7 @@
 ---
 title: "vSphere"
 linkTitle: "vSphere"
-date: 2017-01-05
+weight: 1
 description: >
   Performing compliance automation tasks for vSphere.
 ---
