@@ -2,7 +2,8 @@
 title: "Overview"
 linkTitle: "Overview"
 weight: 1
-description:
+description: >
+  Overview of the VMware DoD Compliance and Automation project.
 ---
 
 ## What is the VMware DoD Compliance and Automation Project for?
@@ -11,18 +12,11 @@ STIG documents are written to be portable, offline hardening documentation where
 
 ## Why do I want it?
 
-Help your user know if your project will help them. Useful information can include: 
-
-* **What is it good for?**: What types of problems does your project solve? What are the benefits of using it?
-
-* **What is it not good for?**: For example, point out situations that might intuitively seem suited for your project, but aren't for some reason. Also mention known limitations, scaling issues, or anything else that might let your users know if the project is not for them.
-
-* **What is it *not yet* good for?**: Highlight any useful features that are coming soon.
+The example automation provided will help with the following tasks:
+* Scanning VMware products for STIG compliance.
+* Generating artifacts such as compliance reports to visualize compliance status and CKL files for accredidation.
+* Remediating VMware products for STIG compliance.
 
 ## Where should I go next?
 
-Give your users next steps from the Overview. For example:
-
-* [Getting Started](/docs/getting-started/): Get started with $project
-* [Examples](/docs/examples/): Check out some example code!
-
+* [Automation Tools](/docs/automation-tools/): Learn about the tools we use for STIG automation.
