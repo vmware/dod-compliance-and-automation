@@ -37,7 +37,7 @@ curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 ### Offline
 Download the package for your OS [here](https://www.chef.io/downloads/tools/inspec).
 
-## Basics
+## Concepts
 ### Profiles
 In InSpec terms we offer "profiles" to audit products. Simple profiles have the following structure:
 ```
@@ -53,7 +53,7 @@ examples/profile
 └── inspec.yml
 ```
 
-The inspec.yml file includes some metadata about the profile and any inputs(variables) and dependencies.
+The `inspec.yml` file includes some metadata about the profile and any inputs(variables) and dependencies.
 
 Inputs provide a way for us to provide values to tests without having to update the test to do so. For example, we may have an input for a syslog server to check that the correct syslog server for your environment is configured. Inputs can be given as an argument at the cli or in an inputs file that is then provided at the cli as well. We recommend using an inputs file because it is easier to manage and provide at the cli.
 
@@ -213,7 +213,7 @@ For more information on reports, see [Reporters](https://docs.chef.io/inspec/rep
 ### Waivers
 Waivers allow you do document as code the controls have a waiver/poam for in your environment. This is done through a waivers file and provided as an argument at the command line.
 
-Example waivers.yml file
+Example `waivers.yml` file
 ```yaml
 PHTN-30-000053:
   expiration_date: 2024-12-31
@@ -227,7 +227,7 @@ PHTN-30-000106:
 
 For more information on reports, see [Waivers](https://docs.chef.io/inspec/waivers/)
 
-### Running InSpec Examples and Common Arguments
+## Running InSpec Examples and Common Arguments
 The examples below are for running InSpec from a Windows based machine with the vSphere 7 VCSA profile.
 
 ```powershell
@@ -252,9 +252,9 @@ inspec exec C:\Inspec\Profiles\vmware-vcsa-7.0-stig-baseline -t ssh://root@10.1.
 
 The arguments provided in the example can be combined as needed.
 
-For more options, see [InSpec Executable](https://docs.chef.io/inspec/cli/#exec)
+For more options, see [InSpec Executable](https://docs.chef.io/inspec/cli/#exec).
 
 ## References
 
-For the full InSpec documentation, see the [InSpec Installation Instructions](https://docs.chef.io/inspec/install/)
-For Cinc Auditor, see the [Cinc Project Download Page](https://cinc.sh/download/)
+For the full InSpec documentation, see the [InSpec Installation Instructions](https://docs.chef.io/inspec/install/).
+For Cinc Auditor, see the [Cinc Project Download Page](https://cinc.sh/download/).
