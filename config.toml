@@ -8,6 +8,9 @@ defaultContentLanguageInSubdir = false
 # Useful when translating.
 enableMissingTranslationPlaceholders = true
 
+# This is needed for GH pages to convert URLs correctly
+canonifyURLs = true
+
 enableRobotsTXT = true
 
 # Will give values to .Lastmod etc.

@@ -88,7 +88,74 @@ Now when we convert this to a CKL file this information will be carried forward.
 saf convert hdf2ckl -i .\My_new_report_with_attestations.json -o my_new_ckl.ckl --hostname myesxihost --fqdn myesxihost.local --ip 10.1.2.3 --mac 00:00:00:00:00:00
 ```
 
-![alt text](/images/safcli_ckl_findings_details.png)
-<img src="/images/safcli_ckl_findings_details.png">
+After importing into STIG viewer you can see the manual attestion on the ESXI-80-000006 in the finding details.  
+![alt text](/images/safcli_ckl_finding_details.png)
+
+The host info provided is also populated in the target data.  
+![alt text](/images/safcli_ckl_target_data.png)
 
 ### Converting XCCDF to InSpec
+When starting a new profile for a STIG it would not be feasible to manually populate all of a STIGs metadata (title,check,fix,discussion,ids,severity,etc) into the control files.
+
+SAF CLI offers a command to take an XCCDF xml file from a STIG as an input and output a stubbed out InSpec profile that includes all of this data where you then only need to add your tests for each control.
+
+```powershell
+# The -T argument sets which ID to use as the control ID for InSpec. In this case we prefer STIG IDs as they are easier to reference. Other options are rule(Rule ID) and group(Vul ID)
+saf generate xccdf_benchmark2inspec_stub -T version -i .\U_VMware_vSphere_8_ESXi_STIG_Readiness_Guide_V1R1-xccdf.xml -o my_esxi_profile
+```
+
+This will give us a profile with this folder structure:
+```
+my_esxi_profile
+├── controls
+│   ├── ESXI-80-000005.rb
+│   └── ESXI-80-000006.rb
+│   └── ...
+├── libraries
+└── inspec.yml
+```
+
+Control file example:
+```ruby
+control 'ESXI-80-000005' do
+  title 'The ESXi host must enforce the limit of three consecutive invalid logon attempts by a user.'
+  desc 'By limiting the number of failed logon attempts, the risk of unauthorized access via user password guessing, otherwise known as brute forcing, is reduced. Once the configured number of attempts is reached, the account is locked by the ESXi host.'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
+
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+
+Select the "Security.AccountLockFailures" value and verify it is set to "3".
+
+or
+
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+
+Get-VMHost | Get-AdvancedSetting -Name Security.AccountLockFailures
+
+If the "Security.AccountLockFailures" setting is set to a value other than "3", this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
+
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+
+Click "Edit". Select the "Security.AccountLockFailures" value and configure it to "3".
+
+or
+
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+
+Get-VMHost | Get-AdvancedSetting -Name Security.AccountLockFailures | Set-AdvancedSetting -Value 3'
+  impact 0.5
+  tag check_id: 'N/A'
+  tag severity: 'medium'
+  tag gid: 'V-ESXI-80-000005'
+  tag rid: 'SV-ESXI-80-000005'
+  tag stig_id: 'ESXI-80-000005'
+  tag gtitle: 'SRG-OS-000021-VMM-000050'
+  tag documentable: nil
+  tag cci: ['CCI-000044']
+  tag nist: ['AC-7 a']
+end
+```
+
+## References
+For the more information, see the [SAF CLI Documentation](https://saf-cli.mitre.org/)
