@@ -158,4 +158,4 @@ end
 ```
 
 ## References
-For the more information, see the [SAF CLI Documentation](https://saf-cli.mitre.org/)
+For the more information, see the [SAF CLI Documentation](https://saf-cli.mitre.org/).
