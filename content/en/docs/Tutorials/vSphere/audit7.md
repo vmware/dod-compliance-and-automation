@@ -126,7 +126,199 @@ In this example we will be scanning all ESXi hosts attached to the target vCente
   [N/R]  ESXI-70-000274: The ESXi host SSH daemon must be configured to only use FIPS 140-2 validated ciphers.
      [SKIP]  This must be reviewed manually
 
-
 Profile Summary: 25 successful controls, 27 control failures, 20 controls not reviewed, 3 controls not applicable, 0 controls have error
 Test Summary: 143 successful, 120 failures, 34 skipped
 ```
+
+## Auditing Virtual Machines
+### Update profile inputs
+Included in the `vmware-vsphere-7.0-stig-baseline` is an example [inputs-example.yml](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/inspec/vmware-vsphere-7.0-stig-baseline/inputs-example.yml) file with the following inputs relevant to VMs.
+
+Update the inputs as shown below with values relevant to your environment.
+```yaml
+# Choose whether to scan a single VM or all VMs in vCenter.
+vmName: ""
+allvms: true
+```
+
+### Setup environment variables for vCenter connection
+Connectivity to vCenter is established via environment variables. Take care to clear your history and close the Powershell session to avoid any credentials left in memory/history.
+
+If was done in the previous step it is not necessary to do again.
+```powershell
+# Note: VISERVER is referencing vCenter and not an ESXi host.
+> $env:VISERVER="10.182.131.166"
+> $env:VISERVER_USERNAME="Administrator@vsphere.local"
+> $env:VISERVER_PASSWORD="password"
+```
+
+### Run the audit
+In this example we will be scanning all VMs in the target vCenter, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
+```powershell
+# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+> inspec exec .\vm\ -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyVMsReport.json
+
+# Shown below is the last part of the output at the CLI.
+  [FAIL]  VMCH-70-000027: Log retention must be configured properly on the virtual machine (VM). (2 failed)
+     [FAIL]  PowerCLI Command: Get-VM -Name 'stig space test' | Get-AdvancedSetting -Name log.keepOld | Select-Object -ExpandProperty Value stdout.strip is expected to cmp == "10"
+
+     expected: 10
+          got:
+
+     (compared using `cmp` matcher)
+
+     [FAIL]  PowerCLI Command: Get-VM -Name 'stigvmtest1' | Get-AdvancedSetting -Name log.keepOld | Select-Object -ExpandProperty Value stdout.strip is expected to cmp == "10"
+
+     expected: 10
+          got:
+
+     (compared using `cmp` matcher)
+
+     [PASS]  PowerCLI Command: Get-VM -Name 'vCLS-189ef61c-56dc-4d5f-a255-ac43798a77b3' | Get-AdvancedSetting -Name log.keepOld | Select-Object -ExpandProperty Value stdout.strip is expected to cmp == "10"
+     [PASS]  PowerCLI Command: Get-VM -Name 'vCLS-6e74013e-53a1-4589-a2f7-47f11674d089' | Get-AdvancedSetting -Name log.keepOld | Select-Object -ExpandProperty Value stdout.strip is expected to cmp == "10"
+     [PASS]  PowerCLI Command: Get-VM -Name 'vCLS-d7018f26-8dab-48c7-8161-56311f5eb077' | Get-AdvancedSetting -Name log.keepOld | Select-Object -ExpandProperty Value stdout.strip is expected to cmp == "10"
+  [PASS]  VMCH-70-000028: DirectPath I/O must be disabled on the virtual machine (VM) when not required.
+     [PASS]  PowerCLI Command: Get-VM -Name 'stig space test' | Get-AdvancedSetting -Name pciPassthru*.present | Select-Object -ExpandProperty Value stdout.strip is expected to be empty
+     [PASS]  PowerCLI Command: Get-VM -Name 'stigvmtest1' | Get-AdvancedSetting -Name pciPassthru*.present | Select-Object -ExpandProperty Value stdout.strip is expected to be empty
+     [PASS]  PowerCLI Command: Get-VM -Name 'vCLS-189ef61c-56dc-4d5f-a255-ac43798a77b3' | Get-AdvancedSetting -Name pciPassthru*.present | Select-Object -ExpandProperty Value stdout.strip is expected to be empty
+     [PASS]  PowerCLI Command: Get-VM -Name 'vCLS-6e74013e-53a1-4589-a2f7-47f11674d089' | Get-AdvancedSetting -Name pciPassthru*.present | Select-Object -ExpandProperty Value stdout.strip is expected to be empty
+     [PASS]  PowerCLI Command: Get-VM -Name 'vCLS-d7018f26-8dab-48c7-8161-56311f5eb077' | Get-AdvancedSetting -Name pciPassthru*.present | Select-Object -ExpandProperty Value stdout.strip is expected to be empty
+  [PASS]  VMCH-70-000029: Encryption must be enabled for Fault Tolerance on the virtual machine (VM).
+     [PASS]  PowerCLI Command: (Get-VM -Name 'stig space test').ExtensionData.Config.FtEncryptionMode stdout.strip is expected to be in "ftEncryptionOpportunistic" and "ftEncryptionRequired"
+     [PASS]  PowerCLI Command: (Get-VM -Name 'stigvmtest1').ExtensionData.Config.FtEncryptionMode stdout.strip is expected to be in "ftEncryptionOpportunistic" and "ftEncryptionRequired"
+     [PASS]  PowerCLI Command: (Get-VM -Name 'vCLS-189ef61c-56dc-4d5f-a255-ac43798a77b3').ExtensionData.Config.FtEncryptionMode stdout.strip is expected to be in "ftEncryptionOpportunistic" and "ftEncryptionRequired"
+     [PASS]  PowerCLI Command: (Get-VM -Name 'vCLS-6e74013e-53a1-4589-a2f7-47f11674d089').ExtensionData.Config.FtEncryptionMode stdout.strip is expected to be in "ftEncryptionOpportunistic" and "ftEncryptionRequired"
+     [PASS]  PowerCLI Command: (Get-VM -Name 'vCLS-d7018f26-8dab-48c7-8161-56311f5eb077').ExtensionData.Config.FtEncryptionMode stdout.strip is expected to be in "ftEncryptionOpportunistic" and "ftEncryptionRequired"
+
+Profile Summary: 11 successful controls, 15 control failures, 2 controls not reviewed, 0 controls not applicable, 0 controls have error
+Test Summary: 75 successful, 55 failures, 2 skipped
+```
+
+## Auditing vCenter (Product Controls)
+### Update profile inputs
+Included in the `vmware-vsphere-7.0-stig-baseline` is an example [inputs-example.yml](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/inspec/vmware-vsphere-7.0-stig-baseline/inputs-example.yml) file with the following inputs relevant to vCenter.
+
+Update the inputs as shown below with values relevant to your environment.
+```yaml
+# Enter the environment specific syslog server vCenter should be forwarding logs to.
+syslogServers:
+  - "loginsight.test.com"
+  - "syslog.server2.com"
+# Enter the environment specific time servers.
+ntpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# If an IPfix collector is used enter the IP.
+ipfixCollectorAddress: ""
+# Enter any approved users in the bash shell administrators users group
+bashShellAdminUsers:
+  - 'Administrator'
+# Enter any approved group in the bash shell administrators group
+bashShellAdminGroups: []
+# Enter any approved users in the trusted admin users group
+trustedAdminUsers: []
+# Enter any approved users in the trusted admin group
+trustedAdminGroups: []
+# Set to false if file based backups are used via the VAMI
+backup3rdParty: false
+```
+
+### Setup environment variables for vCenter connection
+Connectivity to vCenter is established via environment variables. Take care to clear your history and close the Powershell session to avoid any credentials left in memory/history.
+
+If was done in the previous step it is not necessary to do again.
+```powershell
+# Note: VISERVER is referencing vCenter and not an ESXi host.
+> $env:VISERVER="10.182.131.166"
+> $env:VISERVER_USERNAME="Administrator@vsphere.local"
+> $env:VISERVER_PASSWORD="password"
+```
+
+### Run the audit
+In this example we will be scanning vCenter controls in the target vCenter, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
+```powershell
+# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+> inspec exec .\vcenter\ -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyvCenterReport.json
+
+# Shown below is the last part of the output at the CLI.
+  [PASS]  VCSA-70-000291: The vCenter Server must limit membership to the "TrustedAdmins" Single Sign-On (SSO) group.
+     [PASS]  Stderr should be empty if no users found is expected to be empty
+     [PASS]  No users found in TrustedAdmins is expected to be empty
+     [PASS]  Stderr should be empty if no groups found is expected to be empty
+     [PASS]  No groups found in TrustedAdmins is expected to be empty
+  [FAIL]  VCSA-70-000292: The vCenter server configuration must be backed up on a regular basis.
+     [FAIL]  File based backups should be enabled. is expected to cmp == "true"
+
+     expected: true
+          got:
+
+     (compared using `cmp` matcher)
+
+  [PASS]  VCSA-70-000293: vCenter task and event retention must be set to at least 30 days.
+     [PASS]  PowerCLI Command: Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name event.maxAge | Select-Object -ExpandProperty Value stdout.strip is expected to cmp == "30"
+     [PASS]  PowerCLI Command: Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name task.maxAge | Select-Object -ExpandProperty Value stdout.strip is expected to cmp == "30"
+  [N/R]  VCSA-70-000294: vCenter Native Key Providers must be backed up with a strong password.
+     [SKIP]  This must be reviewed manually
+
+Profile Summary: 19 successful controls, 16 control failures, 22 controls not reviewed, 0 controls not applicable, 0 controls have error
+Test Summary: 52 successful, 19 failures, 22 skipped
+```
+
+## Run a combined scan for all vSphere product controls
+Instead of running each STIG for product controls separately you can also run all of the vCenter, ESXi, and VM controls for a combined report.
+
+```powershell
+# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+> inspec exec . -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyvSphereReport.json
+```
+
+## Auditing vCenter (Appliance Controls)
+Auditing the vCenter appliance is done over SSH which must be enabled for the scan.
+
+### Update the default shell for root
+The default shell for root must be changed to `/bin/bash` before running. The appliance shell causes issues with some controls running.
+
+```bash
+# SSH to vCenter
+Connected to service
+
+    * List APIs: "help api list"
+    * List Plugins: "help pi list"
+    * Launch BASH: "shell"
+
+Command> shell.set --enabled true
+Command> shell
+Shell access is granted to root
+root@sc1-10-182-131-166 [ ~ ]# chsh -s /bin/bash root
+```
+
+### Run the audit
+In this example we will be scanning the vCenter appliance, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
+
+Updating the inputs file is not required for this profile but the `inputs-vcsa-7.0.yml` should be specified because it contains inputs for the Photon profile.  
+```powershell
+# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+> inspec exec . -t ssh://root@10.182.131.166 --password 'password' --show-progress --input-file .\inputs-vcsa-7.0.yml --reporter=cli json:C:\InSpec\Reports\MyVCSAReport.json
+
+# Shown below is the last part of the output at the CLI.
+  [PASS]  VCUI-70-000028: vSphere UI must use a logging mechanism that is configured to allocate log record storage capacity large enough to accommodate the logging requirements of the web server.
+     [PASS]  Command: `rpm -V vsphere-ui|grep serviceability.xml|grep "^..5......"` stdout.strip is expected to eq ""
+  [PASS]  VCUI-70-000029: vSphere UI log files must be moved to a permanent repository in accordance with site policy.
+     [PASS]  Command: `rpm -V VMware-visl-integration|grep vmware-services-vsphere-ui.conf|grep "^..5......"` stdout.strip is expected to eq ""
+  [PASS]  VCUI-70-000030: vSphere UI must be configured with the appropriate ports.
+     [PASS]  5090 is expected to eq "5090"
+     [PASS]  443 is expected to eq "443"
+  [PASS]  VCUI-70-000031: vSphere UI must disable the shutdown port.
+     [PASS]  XML /usr/lib/vmware-vsphere-ui/server/conf/server.xml ["/Server/@port"] is expected to cmp == "${shutdown.port}"
+     [PASS]  JSON /etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json StartCommandArgs is expected to include "-Dshutdown.port=-1"
+  [PASS]  VCUI-70-000032: vSphere UI must set the secure flag for cookies.
+     [PASS]  XML /usr/lib/vmware-vsphere-ui/server/conf/web.xml /web-app/session-config/cookie-config/secure is expected to cmp == "true"
+  [PASS]  VCUI-70-000033: The vSphere UI default servlet must be set to "readonly".
+     [PASS]  XML /usr/lib/vmware-vsphere-ui/server/conf/web.xml /web-app/servlet[servlet-name="default"]/init-param[param-name="readonly"]/param-value is expected to eq []
+
+
+Profile Summary: 313 successful controls, 17 control failures, 0 controls skipped
+Test Summary: 1516 successful, 106 failures, 0 skipped
+```
+
+## Convert the results to CKL
