@@ -272,6 +272,65 @@ Instead of running each STIG for product controls separately you can also run al
 > inspec exec . -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyvSphereReport.json
 ```
 
+## Using the InSpec runner script
+For accredidation purposes there may be a requirement to produce a CKL file for each ESXi host and/or VM.  
+
+We have also created a PowerCLI script that acts as a runner for InSpec to loop through a list of hosts or VMs and then produce a json report for each and if the SAF CLI is installed also create a CKL file. 
+
+Currently we have an example for doing this with ESXi hosts available [here](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1).
+
+With this script you can also provide an [attestation](/docs/automation-tools/safcli/#creating-and-applying-manual-attestations) file that will be applied to the results and incorporated into the CKL file.
+
+To use the runner script, do the following:
+```powershell
+# If not done already provide the credentials for InSpec to connect to vCenter.
+# Note: VISERVER is referencing vCenter and not an ESXi host.
+> $env:VISERVER="10.182.131.166"
+> $env:VISERVER_USERNAME="Administrator@vsphere.local"
+> $env:VISERVER_PASSWORD="password"
+# Adjust the paths in the command as needed. The inspec and inputs paths in the example are assuming this is being ran from the root of the InSpec profile folder.
+> C:\github\VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.182.131.166 -reportPath C:\Inspec\Reports\Runner -inspecPath .\esxi\ -inputsfile .\inputs-example.yml
+
+# You will be prompted for credentials to vCenter. This is to connect via PowerCLI before running InSpec to collect all of the host names to use as an input to InSpec for each individual host audit.
+8:48:29 AM ...Enter credentials to connect to vCenter
+
+PowerShell credential request
+Enter credentials for vCenter
+User: administrator@vsphere.local
+Password for user administrator@vsphere.local: ****************
+
+8:48:44 AM ...Connecting to vCenter Server 10.182.131.166
+8:48:47 AM ...Getting PowerCLI objects for all ESXi hosts in vCenter: 10.182.131.166
+8:48:48 AM ...Validated path for report at C:\Inspec\Reports\Runner
+8:48:48 AM ...Report path is C:\Inspec\Reports\Runner and report file is C:\Inspec\Reports\Runner\VMware_vSphere_7.0_STIG_ESXi_Inspec_Report_10.182.131.186-5-19-2023_8-48-29.json
+8:48:48 AM ...Running InSpec exec against 10.182.131.186 with inspec exec $inspecPath -t vmware:// --input vmhostName=$name --input-file $inputsFile --show-progress --reporter=json:$reportFile
+FFF......FFFFF....FFFF.FFFF.*...***********...FF.FF.....F.F..FFFF..FFF***FFFF.FFF.FF.FF....FFFFFF..F...***FF*FF*FF**...***...FFFFFFFFFFFFFFF.FFFFFFFFFFFFFFFFFFFF.FFFFF...................FF....FF...............................*......*FFF......*......F..FF..F....FF.***FF....FF....FF.**FFFFFFF.F...*
+8:51:49 AM ...Detected saf cli...generating STIG Viewer Checklist for 10.182.131.186
+8:51:53 AM ...Report path is C:\Inspec\Reports\Runner and report file is C:\Inspec\Reports\Runner\VMware_vSphere_7.0_STIG_ESXi_Inspec_Report_10.182.132.6-5-19-2023_8-48-29.json
+8:51:53 AM ...Running InSpec exec against 10.182.132.6 with inspec exec $inspecPath -t vmware:// --input vmhostName=$name --input-file $inputsFile --show-progress --reporter=json:$reportFile
+FFF......FFFFF....FFFF.FFFF.*...***********...FF.FF.....F.F..FFFF..FFF***FFFF.FFF.FF.FF....FFFFFF..F...***FF*FF*FF**...***...FFFFFFFFFFFFFFF.FFFFFFFFFFFFFFFFFFFF.FFFFF...................FF....FF...............................*......*FFF......*......F..FF..F....FF.***FF....FF....FF.**FFFFFFF.F...*
+8:54:54 AM ...Detected saf cli...generating STIG Viewer Checklist for 10.182.132.6
+8:54:59 AM ...Report path is C:\Inspec\Reports\Runner and report file is C:\Inspec\Reports\Runner\VMware_vSphere_7.0_STIG_ESXi_Inspec_Report_10.182.138.1-5-19-2023_8-48-29.json
+8:54:59 AM ...Running InSpec exec against 10.182.138.1 with inspec exec $inspecPath -t vmware:// --input vmhostName=$name --input-file $inputsFile --show-progress --reporter=json:$reportFile
+FFF......FFFFF....FFFF.FFFF.*...***********...FF.FF.....F.F..FFFF..FFF***FFFF.FFF.FF.FF....FFFFFF..F...***FF*FF*FF**...***...FFFFFFFFFFFFFFF.FFFFFFFFFFFFFFFFFFFF.FFFFF...................FF....FF...............................*......*FFF......*......F..FF..F....FF.***FF....FF....FF.**FFFFFFF.F...*
+8:57:50 AM ...Detected saf cli...generating STIG Viewer Checklist for 10.182.138.1
+8:57:54 AM ...Disconnecting from vCenter
+
+# Resulting output
+> dir C:\inspec\Reports\Runner\
+
+    Directory: C:\Inspec\Reports\Runner
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---           5/19/2023  8:51 AM         507413 VMware_vSphere_7.0_STIG_ESXi_Inspec_Report_10.182.131.186-5-19-2023_8-48-29.ckl
+-a---           5/19/2023  8:51 AM         580793 VMware_vSphere_7.0_STIG_ESXi_Inspec_Report_10.182.131.186-5-19-2023_8-48-29.json
+-a---           5/19/2023  8:54 AM         507403 VMware_vSphere_7.0_STIG_ESXi_Inspec_Report_10.182.132.6-5-19-2023_8-48-29.ckl
+-a---           5/19/2023  8:54 AM         580816 VMware_vSphere_7.0_STIG_ESXi_Inspec_Report_10.182.132.6-5-19-2023_8-48-29.json
+-a---           5/19/2023  8:57 AM         507403 VMware_vSphere_7.0_STIG_ESXi_Inspec_Report_10.182.138.1-5-19-2023_8-48-29.ckl
+-a---           5/19/2023  8:57 AM         580787 VMware_vSphere_7.0_STIG_ESXi_Inspec_Report_10.182.138.1-5-19-2023_8-48-29.json
+```
+
 ## Auditing vCenter (Appliance Controls)
 Auditing the vCenter appliance is done over SSH which must be enabled for the scan.
 
@@ -322,3 +381,12 @@ Test Summary: 1516 successful, 106 failures, 0 skipped
 ```
 
 ## Convert the results to CKL
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
+
+```powershell
+# Converting the VCSA scan results from the prior section to CKL
+saf convert hdf2ckl -i C:\inspec\Reports\MyVCSAReport.json -o C:\inspec\Reports\MyVCSAReport.ckl --hostname 10.182.131.166 --fqdn myvcenter.local --ip 10.182.131.166 --mac 00:00:00:00:00:00
+```
+
+Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.
+![alt text](/images/vsphere_audit7_ckl_screenshot.png)
