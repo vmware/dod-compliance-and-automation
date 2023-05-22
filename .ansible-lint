@@ -3,6 +3,7 @@ skip_list:
   - role-name
   - name
   - meta-no-info
+  - var-naming[no-role-prefix]
 warn_list:
   - risky-file-permissions
   - ignore-errors
