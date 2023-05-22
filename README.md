@@ -1,4 +1,5 @@
 ![Lint Tests](https://github.com/vmware/dod-compliance-and-automation/actions/workflows/code-linting.yml/badge.svg?master)
+![Docs Deployment](https://github.com/vmware/dod-compliance-and-automation/actions/workflows/deploy-docs.yml/badge.svg?docs)
 
 # dod-compliance-and-automation
 
