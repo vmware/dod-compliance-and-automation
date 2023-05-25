@@ -7,7 +7,7 @@ description: >
 ## Overview
 Auditing vSphere for STIG compliance involves scanning ESXi, Virtual Machines, vCenter, and the vCenter appliance.
 
-When auditing vSphere we will also split auditing up between product and appliance based controls which are defined as follows:
+When auditing vSphere we will split up tasks between product and appliance based controls which are defined as follows:
 * **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration effecting availability of the product is low but could impact how the environment is operated if not assessed.
 * **Appliance Control:** Appliance controls deal with the underlying components (databases, web servers, Photon OS, etc) that make up the product. Altering these add risk to product availability without precautionary steps and care in implementation. Identifying and relying on Default settings in this category makes this category less risky (Default Appliance Controls should be seen as a positive).
 
@@ -16,12 +16,14 @@ To audit vSphere using InSpec we utilize the VMware transport(train-vmware) whic
 ## Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
+* The [vmware-vsphere-7.0-stig-baseline](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vsphere/inspec/vmware-vsphere-7.0-stig-baseline) profile downloaded.
+* The [vmware-vcsa-7.0-stig-baseline](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/inspec/vmware-vcsa-7.0-stig-baseline) profile downloaded.
 * Powershell 7.3.4/PowerCLI 13.1
 * [VMware.Vsphere.SsoAdmin PowerCLI Module 1.3.9](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin)
 * InSpec/Cinc Auditor 5.22.3
 * train-vmware 0.2.0
-* The [vmware-vsphere-7.0-stig-baseline](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vsphere/inspec/vmware-vsphere-7.0-stig-baseline) profile downloaded.
-* The [vmware-vcsa-7.0-stig-baseline](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/inspec/vmware-vcsa-7.0-stig-baseline) profile downloaded.
+* SAF CLI 1.2.11
+* STIG Viewer 2.17
 * A vSphere 7.x environment. 7.0 U3l was used in these examples.
 * An account with sufficient privileges to view SSO configuration in vCenter.
 
