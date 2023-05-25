@@ -1,7 +1,7 @@
 <# 
 .SYNOPSIS 
-    Remediates virtual machines against the vSphere ESXi 7.0 STIG Readiness Guide
-    Version 1 Release 4
+    Remediates virtual machines against the vSphere ESXi 7.0 STIG
+    Version 1 Release 1
 .DESCRIPTION
     -This script assumes there is a vCenter server managing the virtual machines.
     -Please review the $vmsettings below and update as appropriate for your environment
@@ -19,7 +19,7 @@
 .NOTES 
     File Name  : VMware_vSphere_7.0_VM_STIG_Remediation.ps1 
     Author     : VMware
-    Version    : 1 Release 4
+    Version    : 1 Release 1
     License    : Apache-2.0
 
     Tested against

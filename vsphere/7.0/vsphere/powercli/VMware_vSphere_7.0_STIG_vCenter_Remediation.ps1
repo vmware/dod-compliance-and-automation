@@ -1,7 +1,7 @@
 <# 
 .SYNOPSIS 
-  Remediates vCenter Server against the vSphere vCenter 7.0 STIG Readiness Guide
-  Version 1 Release 4
+  Remediates vCenter Server against the vSphere vCenter 7.0 STIG
+  Version 1 Release 1
 .DESCRIPTION
   -Remediates a single host or all hosts in a specified cluster.
   -Individual controls can be enabled/disabled in the $controlsenabled hash table
@@ -13,7 +13,7 @@
 .NOTES 
   File Name  : VMware_vSphere_7.0_vCenter_STIG_Remediation.ps1 
   Author     : VMware
-  Version    : 1 Release 4
+  Version    : 1 Release 1
   License    : Apache-2.0
 
   Tested against
