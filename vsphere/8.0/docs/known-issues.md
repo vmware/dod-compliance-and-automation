@@ -6,6 +6,7 @@
 - [VCSA](#vcsa)
   - [PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
   - [PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
+  - [VCLU-80-000037 Path incorrect in check](vclu-80-000037-path-incorrect-in-check)
 
 # Known Issues
 
@@ -49,3 +50,14 @@ The check command output may show multiple umask entries such as UMASK 022 and U
 
 - Resolution included in product roadmap.  
 - When multiple entries are present the last entry is enforced.  
+
+### [VCLU-80-000037] Path incorrect in check
+
+Related issue: None
+
+In the check command the path to the server.xml file is incorrectly referencing the eam service instead of lookupsvc.  
+
+**Workaround:**
+
+- The check command will be updated in a future STIG release as follows:  
+```# xmllint --xpath "//Connector[(@port = '0') or not(@address)]" /usr/lib/vmware-lookupsvc/conf/server.xml```
