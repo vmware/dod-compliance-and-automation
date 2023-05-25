@@ -96,6 +96,15 @@ vmware-vcsa-7.0-stig-baseline
 
 For more information on dependent profiles, see [Profile Dependencies](https://docs.chef.io/inspec/profiles/#profile-dependencies).
 
+#### InSpec Vendoring
+Dependent profiles are "vendored" or cached into the /vendor folder in the profile. This is important to pay attention to because if changes are made to dependent profiles and this cache is not updated you will not see the changes when you run the profile though the parent.
+
+Update the vendor/cache.
+```bash
+inspec vendor --overwrite
+Dependencies for profile /vmware-vcsa-7.0-stig-baseline successfully vendored to /vmware-vcsa-7.0-stig-baseline/vendor
+```
+
 ### Controls
 For the profiles we develop, the controls folder contains a file for each STIG control that includes that controls metadata and a test for auditing.
 
