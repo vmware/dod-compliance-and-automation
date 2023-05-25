@@ -87,7 +87,7 @@ A format in which Ansible content is distributed that can contain playbooks, rol
 
 In this project we primarily use collections to install modules which are the code or binaries that Ansible copies to and executes on each managed node (when needed) to accomplish the action defined in each Task. Each module has a particular use, from administering users on a specific type of database to managing VLAN interfaces on a specific type of network device.
 
-In th3 example below we are using the `ansible.builtin.template` module.
+In the example below we are using the `ansible.builtin.template` module.
 ```yml
 ###################################################################################################################################
 - name: PHTN-40-000003 - Update audit.STIG.rules file
@@ -107,6 +107,9 @@ In th3 example below we are using the `ansible.builtin.template` module.
 ```
 
 For a list of all available modules, see [Index of all Modules](https://docs.ansible.com/ansible/latest/collections/index_module.html).
+
+#### Installing Collections/Modules
+To be added
 
 ### Tags
 Tags in Ansible offer a way to only run a specific task or exclude tasks. In the playbooks provided we tag tasks with STIG IDs and sometimes a category such as sshd if there are many tasks that touch ssh.
