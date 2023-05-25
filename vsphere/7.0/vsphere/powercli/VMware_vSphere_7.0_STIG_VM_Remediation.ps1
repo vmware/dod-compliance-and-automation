@@ -86,17 +86,6 @@ $vmconfig = [ordered]@{
     vmLogging = $true                                       #VMCH-70-000025
 }
 
-#Setup report output
-If($reportpath){
-    ## Capture Date variable
-    $Date = Get-Date
-    ## Start Transcript
-    $TranscriptName = $reportpath + "\VMware_vSphere_7.0_STIG_VM_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
-    Start-Transcript -Path $TranscriptName
-    ## Results file name for output to json
-    $resultjson = $reportpath + "\VMware_vSphere_7.0_STIG_VM_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"   
-}
-
 ##### Setup report variables ####
 $changedcount = 0
 $unchangedcount= 0
@@ -130,13 +119,13 @@ Function Write-ToConsoleBlue ($Details){
 
 #Setup report output
 If($reportpath){
-    ## Capture Date variable
-    $Date = Get-Date
-    ## Start Transcript
-    $TranscriptName = $reportpath + "\VMware_vSphere_7.0_STIG_ESXi_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
-    Start-Transcript -Path $TranscriptName
-    ## Results file name for output to json
-    $resultjson = $reportpath + "\VMware_vSphere_7.0_STIG_ESXi_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"   
+  ## Capture Date variable
+  $Date = Get-Date
+  ## Start Transcript
+  $TranscriptName = $reportpath + "\VMware_vSphere_7.0_STIG_VM_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
+  Start-Transcript -Path $TranscriptName
+  ## Results file name for output to json
+  $resultjson = $reportpath + "\VMware_vSphere_7.0_STIG_VM_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"   
 }
 
 #Modules needed to run script and load
