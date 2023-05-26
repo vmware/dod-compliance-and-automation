@@ -961,11 +961,11 @@
 
 - name: VCPF-70-000033 - Performance Charts must set the secure flag for cookies.
   community.general.xml:
-    path: '{{ var_web_xml_path }}'
+    path: '{{ var_web_stats_xml_path }}'
     xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
     value: '{{ var_web_xml_cookie_secure }}'
     namespaces:
-      x: http://xmlns.jcp.org/xml/ns/javaee
+      x: http://java.sun.com/xml/ns/javaee
   tags:
     - VCPF-70-000033
   notify:
