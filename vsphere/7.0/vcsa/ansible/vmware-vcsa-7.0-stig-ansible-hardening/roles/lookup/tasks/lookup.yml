@@ -124,7 +124,7 @@
     path: '{{ var_json_path }}'
     state: present
     regexp: '^.*"StreamRedirectFile".*$'
-    line: '    "StreamRedirectFile": "{{ var_stream_redirect_file }}",'
+    line: '  "StreamRedirectFile": "{{ var_stream_redirect_file }}",'
     insertbefore: ^.*WorkingDir.*$
     firstmatch: true
   tags:
