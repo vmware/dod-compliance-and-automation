@@ -41,10 +41,10 @@ param (
   [string]$vcenter,
   [Parameter(Mandatory=$true)]
   [pscredential]$vccred,
-  [Parameter(Mandatory=$true)]
-  [string]$ssouser,
-  [Parameter(Mandatory=$true)]
-  [securestring]$ssopass,
+#  [Parameter(Mandatory=$true)]
+#  [string]$ssouser,
+#  [Parameter(Mandatory=$true)]
+#  [securestring]$ssopass,
   [Parameter(Mandatory=$false,
   HelpMessage="Enter the path for the output report. Example /tmp")]
   [string]$reportpath,
@@ -176,10 +176,10 @@ If($reportpath){
   ## Capture Date variable
   $Date = Get-Date
   ## Start Transcript
-  $TranscriptName = $reportpath + "\VMware_vSphere_7.0_STIG_ESXi_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
+  $TranscriptName = $reportpath + "\VMware_vSphere_7.0_STIG_vCenter_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
   Start-Transcript -Path $TranscriptName
   ## Results file name for output to json
-  $resultjson = $reportpath + "\VMware_vSphere_7.0_STIG_ESXi_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
+  $resultjson = $reportpath + "\VMware_vSphere_7.0_STIG_vCenter_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
 }
 
 #Modules needed to run script and load
@@ -224,7 +224,8 @@ Try
   Write-ToConsole "...Connecting to vCenter Server $vcenter"
   Connect-VIServer -Server $vcenter -Credential $vccred -Protocol https -ErrorAction Stop | Out-Null
   Write-ToConsole "...Connecting to vCenter SSO Server $vcenter"
-  Connect-SsoAdminServer -Server $vcenter -User $ssouser -Password $ssopass -SkipCertificateCheck -ErrorAction Stop | Out-Null
+  Connect-SsoAdminServer -Server $vcenter -Credential $vccred -SkipCertificateCheck -ErrorAction Stop | Out-Null
+#  Connect-SsoAdminServer -Server $vcenter -User $ssouser -Password $ssopass -SkipCertificateCheck -ErrorAction Stop | Out-Null
 }
 Catch
 {
