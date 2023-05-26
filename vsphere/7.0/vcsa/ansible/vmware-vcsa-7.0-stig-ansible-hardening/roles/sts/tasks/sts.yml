@@ -934,25 +934,6 @@
 
 ############################################
 
-# Title: Rsyslog must be configured to monitor and ship Security Token Service log files.
-
-- name: VCST-70-000027 - Rsyslog must be configured to monitor and ship Security Token Service log files.
-  ansible.builtin.template:
-    src: vmware-services-sso-services.conf
-    dest: /etc/vmware-syslog/vmware-services-sso-services
-    owner: root
-    group: root
-    mode: '0644'
-    force: true
-  notify:
-    - restart syslog
-  tags:
-    - VCST-70-000027
-  when:
-    - run_sts_syslog_config | bool
-
-############################################
-
 # Title: The Security Token Service must must be configured with the appropriate ports.
 
 - name: VCST-70-000028 - The Security Token Service must must be configured with the appropriate ports.
@@ -1024,3 +1005,22 @@
     - restart sts
   when:
     - run_web_remove_readonly | bool
+
+############################################
+
+# Title: Rsyslog must be configured to monitor and ship Security Token Service log files.
+
+- name: VCST-70-000050 - Rsyslog must be configured to monitor and ship Security Token Service log files.
+  ansible.builtin.template:
+    src: vmware-services-sso-services.conf
+    dest: '{{ var_syslog_conf_path }}'
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  notify:
+    - restart syslog
+  tags:
+    - VCST-70-000050
+  when:
+    - run_sts_syslog_config | bool

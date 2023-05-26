@@ -50,8 +50,6 @@ run_web_error_page: true
 run_allow_trace: true
 # VCST-70-000026
 run_web_remove_debug: true
-# VCST-70-000027
-run_sts_syslog_config: true
 # VCST-70-000028
 run_catalina_props_ports: true
 # VCST-70-000029
@@ -60,3 +58,5 @@ run_catalina_properties_shutdownport: true
 run_web_cookie_secure: true
 # VCST-70-000031
 run_web_remove_readonly: true
+# VCST-70-000050
+run_sts_syslog_config: true
