@@ -32,7 +32,7 @@
   Enter the folder path for the InSpec Profile for the vSphere ESXi 7.0 baseline...!!CANNOT HAVE SPACES!!
 .PARAMETER inputsFile
   Enter the path for the InSpec inputs file, for example: C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-inputs-example.yml
-.PARAMETER attenstationFile
+.PARAMETER attestationFile
   Enter the path for the saf cli attestation file, for example: C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-attestation-example.yml
 #>
 [CmdletBinding()]
@@ -56,7 +56,7 @@ param (
   [Parameter(Mandatory=$false,
   HelpMessage="Enter the path for the saf cli attestation file.")]
   [ValidateNotNullOrEmpty()]
-  [string]$attenstationFile
+  [string]$attestationFile
 )
 
 #Get Current Date and Time
