@@ -1,0 +1,11 @@
+---
+
+- name: restart commonsvcs
+  ansible.builtin.systemd:
+    name: commonsvcs
+    state: restarted
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted

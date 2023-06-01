@@ -1,0 +1,10 @@
+---
+
+- name: Include SOS
+  ansible.builtin.include_tasks:
+    file: sos.yml
+    apply:
+      tags:
+        - sos
+  tags:
+    - always
