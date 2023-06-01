@@ -1,0 +1,17 @@
+---
+
+# files and paths
+var_app_properties_path: '/etc/vmware/vcf/domainmanager/application.properties'
+var_app_prod_properties_path: '/etc/vmware/vcf/domainmanager/application-prod.properties'
+var_log_dir: '/var/log/vmware/vcf/domainmanager/'
+var_app_dir: '/opt/vmware/vcf/domainmanager'
+var_app_conf_dir: '/etc/vmware/vcf/domainmanager'
+var_rsyslog_conf_path: '/etc/rsyslog.d/stig-services-domainmanager.conf'
+var_rsyslog_conf_name: 'stig-services-domainmanager.conf'
+
+# misc variables
+var_notify_service_name: 'domainmanager'
+var_app_owner: 'vcf_domainmanager'
+var_app_group: 'vcf'
+var_log_owner: 'vcf_domainmanager'
+var_log_group: 'vcf'

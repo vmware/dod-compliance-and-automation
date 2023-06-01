@@ -1,0 +1,21 @@
+# General
+run_create_backups: true
+
+# Photon OS
+var_syslog_authpriv_log: '/var/log/audit/auth.log'
+## Don't update banner with DoD banner
+run_sshd_banner_issue: false
+# NTP is covered in the Application controls
+run_set_ntp_server: false
+
+# Application
+# Enter SDDC Manager FQDN or IP for API Calls
+var_sddc_manager: 'sddc-manager.vrack.vsphere.local'
+# Enter generated bearer token here
+var_bearer_token: ''
+# Enter an array of 1 to 2 NTP servers
+var_time_servers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Between 30 and 90
+var_password_rotate_days: 90
