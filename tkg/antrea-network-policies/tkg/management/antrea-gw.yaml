@@ -1,0 +1,38 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: ClusterNetworkPolicy
+metadata:
+  name: allow-cp-antrea-gw-capi-webhook
+spec:
+  priority: 1
+  tier: securityops 
+  appliedTo:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: capi-system
+      podSelector:
+        matchLabels:
+          control-plane: controller-manager
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: capa-system
+      podSelector:
+        matchLabels:
+          control-plane: capa-controller-manager
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: capi-kubeadm-bootstrap-system
+      podSelector:
+        matchLabels:
+          control-plane: controller-manager
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: capi-kubeadm-control-plane-system
+      podSelector:
+        matchLabels:
+          control-plane: controller-manager
+  ingress:
+    - action: Allow  
+      from:
+      - ipBlock:
+          cidr: 100.96.0.1/32
+      name: allowCPAntreaGW

@@ -1,0 +1,17 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: ClusterNetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  priority: 500
+  tier: baseline
+  appliedTo:
+    - namespaceSelector: {}
+  ingress:
+    - action: Drop              # For all Pods in every namespace, drop and log all ingress traffic from anywhere
+      name: drop-all-ingress
+      enableLogging: true
+  egress:
+    - action: Drop              # For all Pods in every namesapces, drop and log all egress traffic towards anywhere
+      name: drop-all-egress
+      enableLogging: true

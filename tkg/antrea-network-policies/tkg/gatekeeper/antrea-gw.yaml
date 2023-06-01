@@ -1,0 +1,18 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: gatekeeper-antrea-gw
+  namespace: gatekeeper-system
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          gatekeeper.sh/operation: webhook
+  ingress:
+    - action: Allow 
+      from:
+      - ipBlock:
+          cidr: 100.96.0.1/32
+      name: allowCPAntreaGW

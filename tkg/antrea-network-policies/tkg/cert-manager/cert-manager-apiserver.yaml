@@ -1,0 +1,24 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: cert-manager-apiserver
+  namespace: cert-manager
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: cert-manager
+    - podSelector:
+        matchLabels:
+          app: cainjector
+    - podSelector:
+        matchLabels:
+          app: webhook
+  egress:
+    - action: Allow
+      toServices:
+        - name: kubernetes
+          namespace: default
+      name: AllowToKubeAPI

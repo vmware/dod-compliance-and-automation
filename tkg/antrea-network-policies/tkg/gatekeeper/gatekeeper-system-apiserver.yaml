@@ -1,0 +1,22 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: gatekeeper-apiserver
+  namespace: gatekeeper-system
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          gatekeeper.sh/system: "yes"
+    - podSelector:
+        matchLabels:
+          job-name: gatekeeper-update-namespace-label
+  egress:
+    - action: Allow
+      toServices:
+        - name: kubernetes
+          namespace: default
+        - name: kube-dns
+          namespace: kube-system 

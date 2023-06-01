@@ -1,0 +1,25 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: grafana
+  namespace: tanzu-system-dashboards
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector: {}
+  egress:
+    - action: Allow
+      toServices:
+        - name: prometheus-server
+          namespace: tanzu-system-monitoring
+        - name: kubernetes
+          namespace: default
+        - name: kube-dns
+          namespace: kube-system
+      name: AllowToK8sSVC
+    - action: Allow
+      to:
+        - fqdn: "*github.com"
+        - fqdn: "*.github.com"
+        - fqdn: "grafana.net"

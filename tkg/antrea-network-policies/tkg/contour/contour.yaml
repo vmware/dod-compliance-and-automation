@@ -1,0 +1,28 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: contour 
+  namespace: tanzu-system-ingress
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: contour
+  egress:
+    - action: Allow
+      toServices:
+      - name: kubernetes
+        namespace: default
+      - name: kube-dns
+        namespace: kube-system
+  ingress:
+  - action: Allow
+    from:
+    - podSelector:
+        matchLabels:
+          app: envoy
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: tanzu-system-ingress

@@ -1,0 +1,8 @@
+#@data/values
+---
+#@overlay/match missing_ok=True
+COMPLIANCE: "none"
+#@overlay/match missing_ok=True
+ENABLE_COMPLIANCE_SERVING_CERTS: false
+#@overlay/match missing_ok=True
+PROTECT_KERNEL_DEFAULTS: false

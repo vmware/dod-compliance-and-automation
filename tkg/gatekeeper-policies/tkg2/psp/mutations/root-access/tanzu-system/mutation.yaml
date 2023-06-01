@@ -1,0 +1,108 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-secgen-run-as-group
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces: 
+      - secretgen-controller
+      labelSelector:
+        matchLabels:
+         app: secretgen-controller
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532 
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-secgen-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - secretgen-controller
+      labelSelector:
+        matchLabels:
+         app: secretgen-controller
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-addons-mgr-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-featuregates-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-addons-mgr-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-featuregates-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---

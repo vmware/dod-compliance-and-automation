@@ -1,0 +1,21 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: ClusterNetworkPolicy
+metadata:
+  name: allow-from-prometheus
+spec:
+  priority: 499
+  tier: baseline
+  appliedTo:
+    - namespaceSelector: {}
+  ingress:
+    - action: Allow
+      from:
+      - podSelector:
+          matchLabels:
+            app: prometheus
+            component: server
+        namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: tanzu-system-monitoring
+      name: allow-from-prometheus
+      enableLogging: true

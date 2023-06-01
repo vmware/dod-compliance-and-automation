@@ -1,0 +1,23 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: ClusterNetworkPolicy
+metadata:
+  name: cert-manager-http-solvers-from-envoy
+spec:
+  priority: 499
+  tier: baseline
+  appliedTo:
+    - namespaceSelector: {}
+      podSelector:
+        matchLabels: 
+         acme.cert-manager.io/http01-solver: "true"
+  ingress:
+    - action: Allow
+      from:
+      - podSelector:
+          matchLabels:
+            app: envoy
+        namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: tanzu-system-ingress
+      name: allow-from-envoy
+      enableLogging: true

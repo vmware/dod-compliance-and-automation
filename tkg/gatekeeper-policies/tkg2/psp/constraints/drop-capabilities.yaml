@@ -1,0 +1,15 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPCapabilities
+metadata:
+  name: capabilities-drop
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    excludedNamespaces:
+      - tanzu-system-ingress
+      - tkg-system
+      - kube-system
+  parameters:
+    requiredDropCapabilities: ["ALL"]

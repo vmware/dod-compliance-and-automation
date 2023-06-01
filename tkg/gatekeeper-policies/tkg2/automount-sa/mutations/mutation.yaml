@@ -1,0 +1,23 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: default-automount-sa
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      excludedNamespaces: 
+      - kube-system
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.automountServiceAccountToken"
+    parameters:
+      pathTests:  
+      - subPath: "spec.automountServiceAccountToken"
+        condition: MustNotExist
+      assign:
+       value: false

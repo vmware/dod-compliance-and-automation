@@ -1,0 +1,39 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: ClusterNetworkPolicy
+metadata:
+  name: deny-iaas
+spec:
+  priority: 2 
+  tier: emergency
+  appliedTo:
+    - namespaceSelector: {}
+  egress:
+    - action: Drop
+      to:
+      - ipBlock:
+          cidr:  169.254.169.254/32
+      name: denyIaaSMetadata
+---
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: allow-iaas-ebs-controller
+  namespace: kube-system
+spec:
+  priority: 1
+  tier: emergency
+  appliedTo:
+  - podSelector:
+       matchLabels:
+         app.kubernetes.io/name: aws-ebs-csi-driver 
+  - podSelector:
+        matchLabels:
+          app: snapshot-controller
+  egress:
+    - action: Allow
+      to:
+      - ipBlock:
+          cidr: 169.254.169.254/32
+      - fqdn: "*.amazonaws.com"
+      name: AllowIaasMetadataForEBS
+      enableLogging: true

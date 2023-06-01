@@ -1,0 +1,25 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: run-as-non-root
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      excludedNamespaces: 
+      - kube-system
+      - pinniped-concierge
+      - tanzu-system-logging
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsNonRoot"
+    parameters:
+      pathTests:  
+      - subPath: "spec.containers[name:*].securityContext.runAsNonRoot"
+        condition: MustNotExist
+      assign:
+        value: true

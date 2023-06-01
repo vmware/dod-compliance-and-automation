@@ -1,0 +1,106 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkg-mgmt-mgr-run-as-group
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces: 
+      - tkr-system
+      - capi-webhook-system
+      - capi-system
+      - capi-kubeadm-bootstrap-system
+      - capi-kubeadm-control-plane-system
+      - capa-system
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:manager].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:manager].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65534 
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkg-mgmnt-mgr-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkr-system
+      - capi-webhook-system
+      - capi-system
+      - capi-kubeadm-bootstrap-system
+      - capi-kubeadm-control-plane-system
+      - capa-system
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:manager].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:manager].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65534
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkg-sys-tel-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system-telemetry
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65534
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkg-sys-tel-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system-telemetry
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65534
+---

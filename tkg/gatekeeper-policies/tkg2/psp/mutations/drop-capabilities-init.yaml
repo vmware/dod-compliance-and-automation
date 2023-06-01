@@ -1,0 +1,22 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: drop-capabilities-init
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      excludedNamespaces: 
+      - kube-system
+      - tkg-system
+      - tanzu-system-ingress
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.initContainers[name: *].securityContext.capabilities.drop"
+    parameters:
+      assign:
+        value: ["ALL"] 
