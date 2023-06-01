@@ -256,7 +256,7 @@ Mode                 LastWriteTime         Length Name
 ```
 
 ## Remediating vCenter server appliance controls
-To remediate vCenter we have provided an [Ansible playbook](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening) that will target a single vCenter server appliance over SSH and configure an non-compliant controls.  
+To remediate vCenter we have provided an [Ansible playbook](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening) that will target a single vCenter server appliance over SSH and configure any non-compliant controls.  
 
 Since Ansible can only be ran from Linux based systems, the examples below are being ran on an Ubuntu 22.04 WSL2 instance on Windows 11 for reference.  
 
