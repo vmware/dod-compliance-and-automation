@@ -1,16 +1,15 @@
 <# 
 .SYNOPSIS 
-  InSpec runner for the vSphere 7.0 ESXi STIG
+  InSpec runner for the vSphere 7.0 Virual Machine STIG
 .DESCRIPTION
-  -This script assumes there is a vCenter managing the ESXi host
-  -This script will iterate through ESXi hosts found in vCenter and run the InSpec ESXi STIG profile against them and output results to JSON for each host
+  -This script assumes there is a vCenter managing the virtual environment
+  -This script will iterate through VMs found in vCenter and run the InSpec VM STIG profile against them and output results to JSON for each VM
   -The environmental variables needed to run the vmware-vsphere-7.0-stig-baseline InSpec baseline must be configured before running this
   -Also outputs a STIG Viewer Checklist file if the saf cli exists on the system. See https://github.com/mitre/saf
   -If an attestation file is supplied it will be applied to the InSpec results before creating the CKL file. This allows you to provide a manual attestation to controls that cannot be audited via automation currently.
   -Example files for environment specific inputs and an attestation file are provided with this script.
-  -The items in the example attestation file example are accurate as of ESXi 7.0 U3k
 .NOTES 
-  File Name  : VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1 
+  File Name  : VMware_vSphere_7.0_STIG_VM_InSpec_Runner.ps1 
   Author     : Ryan Lakey
   Version    : 1.0
 
@@ -22,16 +21,14 @@
   -SAF CLI 1.2.7
 
   Example command to run script
-    .\VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.1.2.3 -reportPath C:\Inspec\Reports\Runner -inspecPath C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\inspec\vmware-vsphere-7.0-stig-baseline\esxi\ -inputsFile C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-inputs-example.yml -attenstationFile C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-attestation-example.yml
+    .\VMware_vSphere_7.0_STIG_VM_InSpec_Runner.ps1 -vcenter 10.1.2.3 -reportPath C:\Inspec\Reports\Runner -inspecPath C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\inspec\vmware-vsphere-7.0-stig-baseline\vm\ -attenstationFile C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-attestation-example.yml
 
 .PARAMETER vcenter
   Enter the vcenter to connect to and collect hosts to audit.
 .PARAMETER reportPath
   Enter the folder path to store reports, for example: C:\InSpec\Reports.
 .PARAMETER inspecPath
-  Enter the folder path for the InSpec Profile for the vSphere ESXi 7.0 baseline...!!CANNOT HAVE SPACES!!
-.PARAMETER inputsFile
-  Enter the path for the InSpec inputs file, for example: C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-inputs-example.yml
+  Enter the folder path for the InSpec Profile for the vSphere VM 7.0 baseline...!!CANNOT HAVE SPACES!!
 .PARAMETER attestationFile
   Enter the path for the saf cli attestation file, for example: C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-attestation-example.yml
 #>
@@ -49,10 +46,6 @@ param (
   HelpMessage="Enter the folder path for the InSpec Profile...!!CANNOT HAVE SPACES!!")]
   [ValidateNotNullOrEmpty()]
   [string]$inspecPath,
-  [Parameter(Mandatory=$true,
-  HelpMessage="Enter the path for the InSpec inputs file.")]
-  [ValidateNotNullOrEmpty()]
-  [string]$inputsFile,
   [Parameter(Mandatory=$false,
   HelpMessage="Enter the path for the saf cli attestation file.")]
   [ValidateNotNullOrEmpty()]
@@ -112,10 +105,10 @@ Catch
   Exit -1
 }
 
-#Get host objects
+#Get VM objects
 Try{
-  Write-ToConsole "...Getting PowerCLI objects for all ESXi hosts in vCenter: $vcenter"
-  $vmhosts = Get-VMHost | Sort-Object Name
+  Write-ToConsole "...Getting PowerCLI objects for all VMs hosts in vCenter: $vcenter"
+  $vms = Get-VM | Sort-Object Name
 }
 Catch{
   Write-Error "...Failed to get PowerCLI objects"
@@ -139,30 +132,26 @@ Catch{
   Exit -1
 }
 
-#Run InSpec profile against all ESXi hosts found
+#Run InSpec profile against all VMs found
 Try{
-  ForEach($vmhost in $vmhosts){
-    $name = $vmhost.Name
-    $reportFile = $reportPath + "\VMware_vSphere_7.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
-    $command = {inspec exec $inspecPath -t vmware:// --input vmhostName=$name --input-file $inputsFile --show-progress --reporter=json:$reportFile}
+  ForEach($vm in $vms){
+    $name = $vm.Name
+    $reportFile = $reportPath + "\VMware_vSphere_7.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
+    $command = {inspec exec $inspecPath -t vmware:// --input vmhostName=$name --show-progress --reporter=json:$reportFile}
     Write-ToConsole "...Report path is $reportPath and report file is $reportFile"
     Write-ToConsole "...Running InSpec exec against $name with $command"
     Invoke-Command -ScriptBlock $command
     If(Get-Command saf){
       Write-ToConsole "...Detected saf cli...generating STIG Viewer Checklist for $name"
-      #Get management IP for CKL report
-      $mgmtip = Get-VMHostNetworkAdapter -VMHost $vmhost | Where-Object {$_.Name -eq "vmk0"} | Select-Object -ExpandProperty IP
-      #Get management MAC Address for CKL report
-      $mgmtmac = Get-VMHostNetworkAdapter -VMHost $vmhost | Where-Object {$_.Name -eq "vmk0"} | Select-Object -ExpandProperty Mac
       If($attenstationFile){
-        $reportFileWithAttestations = $reportPath + "\VMware_vSphere_7.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.json"
+        $reportFileWithAttestations = $reportPath + "\VMware_vSphere_7.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.json"
         $attestCommand = {saf attest apply -i $reportFile $attenstationFile -o $reportFileWithAttestations}
         Invoke-Command -ScriptBlock $attestCommand
-        $cklFile = $reportPath + "\VMware_vSphere_7.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.ckl"
+        $cklFile = $reportPath + "\VMware_vSphere_7.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.ckl"
         $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
         Invoke-Command -ScriptBlock $cklCommand
       }Else{
-        $cklFile = $reportPath + "\VMware_vSphere_7.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".ckl"
+        $cklFile = $reportPath + "\VMware_vSphere_7.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".ckl"
         $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
         Invoke-Command -ScriptBlock $cklCommand
       }
@@ -170,7 +159,7 @@ Try{
   }
 }
 Catch{
-  Write-Error "Failed to run InSpec profile against hosts"
+  Write-Error "Failed to run InSpec profile against VMs"
   Write-Error $_.Exception
   Exit -1
 }
