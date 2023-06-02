@@ -1,0 +1,10 @@
+---
+
+- name: Include Commonsvcs
+  ansible.builtin.include_tasks:
+    file: commonsvcs.yml
+    apply:
+      tags:
+        - commonsvcs
+  tags:
+    - always
