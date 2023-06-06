@@ -9,9 +9,9 @@ control 'PHTN-40-000036' do
   desc  'check', "
     At the command line, run the following command to verify at least one lower-case character be used:
 
-    # grep ucredit /etc/security/pwquality.conf
+    # grep '^lcredit' /etc/security/pwquality.conf
 
-    Expected result:
+    Example result:
 
     lcredit = -1
 

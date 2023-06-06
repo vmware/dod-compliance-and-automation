@@ -5,9 +5,9 @@ control 'PHTN-40-000185' do
   desc  'check', "
     At the command line, run the following command to verify passwords are stored with only encrypted representations:
 
-    # grep ^FAIL_DELAY /etc/login.defs
+    # grep '^FAIL_DELAY' /etc/login.defs
 
-    Expected result:
+    Example result:
 
     FAIL_DELAY 4
 

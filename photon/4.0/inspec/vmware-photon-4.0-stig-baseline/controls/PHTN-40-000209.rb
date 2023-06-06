@@ -5,9 +5,9 @@ control 'PHTN-40-000209' do
   desc  'check', "
     At the command line, run the following command to verify a home directory is created for all new user accounts:
 
-    # grep ^CREATE_HOME /etc/login.defs
+    # grep '^CREATE_HOME' /etc/login.defs
 
-    Expected result:
+    Example result:
 
     CREATE_HOME yes
 

@@ -42,6 +42,8 @@ control 'PHTN-40-000046' do
 
     set superusers=\"root\"
 
+    Note: The superusers name can be a value other than root and is not tied to an OS account.
+
     Below this paste the following, substituting your own encrypted string from the steps above:
 
     password_pbkdf2 root <YOUR-LONG-STRING-FROM-ABOVE>
@@ -69,7 +71,7 @@ control 'PHTN-40-000046' do
   tag nist: ['AC-3']
 
   describe file('/boot/grub2/grub.cfg') do
-    its('content') { should match /^set\ssuperusers="root"$/ }
+    its('content') { should match /^set\ssuperusers=.*$/ }
     its('content') { should match /^password_pbkdf2\sroot\sgrub.pbkdf2.sha512/ }
   end
 end

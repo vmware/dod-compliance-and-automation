@@ -1,10 +1,10 @@
 # vmware-photon-4.0-stig-ansible-hardening
 VMware Photon OS 4.0 STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 2: 26 April 2023  
+Version: Version 1 Release 4: 06 June 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Requirements
-- Tested with Ansible 2.12.7
+- Tested with Ansible 2.14.4
 - Tested with Photon OS 4.0
 - Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 10 to run an Unbuntu box for example
 

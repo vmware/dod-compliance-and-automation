@@ -9,7 +9,7 @@ control 'PHTN-40-000197' do
   desc  'check', "
     At the command line, run the following command to verify the pam_pwquality.so module is used:
 
-    # grep ^password /etc/pam.d/system-password
+    # grep '^password' /etc/pam.d/system-password
 
     Example result:
 

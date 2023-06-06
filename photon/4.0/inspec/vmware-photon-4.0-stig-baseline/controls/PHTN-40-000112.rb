@@ -5,7 +5,7 @@ control 'PHTN-40-000112' do
   desc  'check', "
     At the command line, run the following command to verify auditd is alerting when low disk space is detected:
 
-    # grep \"^space_left\" /etc/audit/auditd.conf
+    # grep '^space_left' /etc/audit/auditd.conf
 
     Expected result:
 

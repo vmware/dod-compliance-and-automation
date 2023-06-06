@@ -1,5 +1,5 @@
 control 'PHTN-40-000219' do
-  title 'The Photon operating system must configure sshd to limit the number of allowed login attempts per connection.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to limit the number of allowed login attempts per connection.'
   desc  'By setting the login attempt limit to a low value, an attacker will be forced to reconnect frequently, which severely limits the speed and effectiveness of brute-force attacks.'
   desc  'rationale', ''
   desc  'check', "
@@ -7,11 +7,11 @@ control 'PHTN-40-000219' do
 
     # sshd -T|&grep -i MaxAuthTries
 
-    Expected result:
+    Example result:
 
-    MaxAuthTries 6
+    maxauthtries 6
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"MaxAuthTries\" is not set to \"6\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

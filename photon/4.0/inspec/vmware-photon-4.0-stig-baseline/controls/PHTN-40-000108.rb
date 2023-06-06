@@ -5,9 +5,9 @@ control 'PHTN-40-000108' do
   desc  'check', "
     At the command line, run the following commands to verify accounts are locked until the locked account is released by an administrator when three unsuccessful logon attempts in 15 minutes are made:
 
-    # grep 'unlock_time =' /etc/security/faillock.conf
+    # grep '^unlock_time =' /etc/security/faillock.conf
 
-    Expected result:
+    Example result:
 
     unlock_time = 0
 

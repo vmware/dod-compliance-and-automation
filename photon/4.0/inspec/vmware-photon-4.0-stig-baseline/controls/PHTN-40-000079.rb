@@ -43,8 +43,19 @@ control 'PHTN-40-000079' do
   tag cci: ['CCI-001453']
   tag nist: ['AC-17 (2)']
 
+  sshdCiphers = input('sshdCiphers')
   sshdcommand = input('sshdcommand')
-  describe command("#{sshdcommand}|&grep -i Ciphers") do
-    its('stdout.strip') { should cmp 'Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr' }
+  ciphers = command("#{sshdcommand}|&grep -i Ciphers").stdout.strip.delete_prefix('ciphers ').split(',')
+
+  if !ciphers.empty?
+    ciphers.each do |cipher|
+      describe cipher do
+        it { should be_in sshdCiphers }
+      end
+    end
+  else
+    describe 'No SSH ciphers found...skipping...' do
+      skip 'No SSH ciphers found...skipping...'
+    end
   end
 end

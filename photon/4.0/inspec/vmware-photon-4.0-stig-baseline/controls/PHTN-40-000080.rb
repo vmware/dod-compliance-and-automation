@@ -11,7 +11,7 @@ control 'PHTN-40-000080' do
 
     BOOT_IMAGE=/boot/vmlinuz-5.10.109-2.ph4-esx root=PARTUUID=6e6293c6-9ab6-49e9-aa97-9b212f2e037a init=/lib/systemd/systemd rcupdate.rcu_expedited=1 rw systemd.show_status=1 quiet noreplace-smp cpu_init_udelay=0 plymouth.enable=0 systemd.legacy_systemd_cgroup_controller=yes audit=1
 
-    If the \"audit\" parameter is not present with a value of 1, this is a finding.
+    If the \"audit\" parameter is not present with a value of \"1\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

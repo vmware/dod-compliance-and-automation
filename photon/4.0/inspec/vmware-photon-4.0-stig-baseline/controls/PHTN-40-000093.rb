@@ -43,8 +43,8 @@ control 'PHTN-40-000093' do
   tag cci: ['CCI-000879', 'CCI-002361']
   tag nist: ['AC-12', 'MA-4 e']
 
+  tmoutcontent = inspec.profile.file('tmout.sh')
   describe file('/etc/profile.d/tmout.sh') do
-    it { should exist }
-    its('content') { should match /TMOUT=900/ }
+    its('content') { should eq tmoutcontent }
   end
 end

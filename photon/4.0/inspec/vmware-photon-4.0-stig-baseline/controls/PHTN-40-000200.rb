@@ -1,5 +1,5 @@
 control 'PHTN-40-000200' do
-  title 'The Photon operating system must configure the sshd SyslogFacility.'
+  title 'The Photon operating system must configure the Secure Shell (SSH) SyslogFacility.'
   desc  "
     Automated monitoring of remote access sessions allows organizations to detect cyber attacks and ensure ongoing compliance with remote access policies by auditing connection activities.
 
@@ -11,11 +11,11 @@ control 'PHTN-40-000200' do
 
     # sshd -T|&grep -i SyslogFacility
 
-    Expected result:
+    Example result:
 
     syslogfacility AUTHPRIV
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"syslogfacility\" is not set to \"AUTH\" or \"AUTHPRIV\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -40,7 +40,12 @@ control 'PHTN-40-000200' do
   tag nist: ['AC-17 (1)']
 
   sshdcommand = input('sshdcommand')
-  describe command("#{sshdcommand}|&grep -i SyslogFacility") do
-    its('stdout.strip') { should cmp 'SyslogFacility AUTHPRIV' }
+  describe.one do
+    describe command("#{sshdcommand}|&grep -i SyslogFacility") do
+      its('stdout.strip') { should cmp 'SyslogFacility AUTHPRIV' }
+    end
+    describe command("#{sshdcommand}|&grep -i SyslogFacility") do
+      its('stdout.strip') { should cmp 'SyslogFacility AUTH' }
+    end
   end
 end

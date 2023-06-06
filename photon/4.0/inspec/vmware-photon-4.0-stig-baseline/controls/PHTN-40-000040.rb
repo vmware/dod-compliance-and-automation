@@ -25,5 +25,6 @@ control 'PHTN-40-000040' do
 
   describe command('rpm -qa | grep telnet') do
     its('stdout') { should cmp '' }
+    its('stderr') { should cmp '' }
   end
 end

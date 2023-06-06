@@ -13,13 +13,13 @@ control 'PHTN-40-000239' do
 
     # sshd -T|&grep -i MACs
 
-    Expected result:
+    Example result:
 
     macs hmac-sha2-512,hmac-sha2-256
 
-    If the output matches the ciphers in the expected result or a subset thereof, this is not a finding.
+    If the output matches the ciphers in the example result or a subset thereof, this is not a finding.
 
-    If the ciphers in the output contain any ciphers not listed in the expected result, this is a finding.
+    If the ciphers in the output contain any ciphers not listed in the example result, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -43,8 +43,19 @@ control 'PHTN-40-000239' do
   tag cci: ['CCI-001453']
   tag nist: ['AC-17 (2)']
 
+  sshdMacs = input('sshdMacs')
   sshdcommand = input('sshdcommand')
-  describe command("#{sshdcommand}|&grep -i MACs") do
-    its('stdout.strip') { should cmp 'MACs hmac-sha2-512,hmac-sha2-256' }
+  macs = command("#{sshdcommand}|&grep -i MACs").stdout.strip.delete_prefix('macs ').split(',')
+
+  if !macs.empty?
+    macs.each do |mac|
+      describe mac do
+        it { should be_in sshdMacs }
+      end
+    end
+  else
+    describe 'No SSH MACs found...skipping...' do
+      skip 'No SSH MACs found...skipping...'
+    end
   end
 end

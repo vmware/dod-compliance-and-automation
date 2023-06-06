@@ -1,5 +1,5 @@
 control 'PHTN-40-000201' do
-  title 'The Photon operating system must enable sshd authentication logging.'
+  title 'The Photon operating system must enable Secure Shell (SSH) authentication logging.'
   desc  "
     Automated monitoring of remote access sessions allows organizations to detect cyberattacks and ensure ongoing compliance with remote access policies by auditing connection activities.
 
@@ -11,11 +11,11 @@ control 'PHTN-40-000201' do
 
     # sshd -T|&grep -i LogLevel
 
-    Expected result:
+    Example result:
 
-    LogLevel INFO
+    loglevel INFO
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"LogLevel\" is not set to \"INFO\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

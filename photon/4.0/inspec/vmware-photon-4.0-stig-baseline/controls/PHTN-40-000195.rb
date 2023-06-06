@@ -9,9 +9,9 @@ control 'PHTN-40-000195' do
   desc  'check', "
     At the command line, run the following command to verify accounts are locked after three consecutive invalid logon attempts by a user during a 15-minute time period includes the root account:
 
-    # grep 'even_deny_root' /etc/security/faillock.conf
+    # grep '^even_deny_root' /etc/security/faillock.conf
 
-    Expected result:
+    Example result:
 
     even_deny_root
 

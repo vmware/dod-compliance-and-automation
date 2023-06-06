@@ -7,11 +7,11 @@ control 'PHTN-40-000182' do
 
     # cat /proc/sys/crypto/fips_enabled
 
-    Expected result:
+    Example result:
 
     1
 
-    If the output does match the expected result, this is a finding.
+    If \"fips_enabled\" is not set to \"1\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

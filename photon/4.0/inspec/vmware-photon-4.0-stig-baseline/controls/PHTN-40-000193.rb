@@ -9,9 +9,9 @@ control 'PHTN-40-000193' do
   desc  'check', "
     At the command line, run the following command to verify account information is not leaked during the login process:
 
-    # grep 'silent' /etc/security/faillock.conf
+    # grep '^silent' /etc/security/faillock.conf
 
-    Expected result:
+    Example result:
 
     silent
 

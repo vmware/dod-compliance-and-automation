@@ -1,17 +1,17 @@
 control 'PHTN-40-000221' do
-  title 'The Photon operating system must configure sshd to restrict LoginGraceTime.'
-  desc  'By default, sshd unauthenticated connections are left open for two minutes before being closed. This setting is too permissive as no legitimate login would need such an amount of time to complete a login. Quickly terminating idle or incomplete login attempts will free up resources and reduce the exposure any partial logon attempts may create.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to restrict LoginGraceTime.'
+  desc  'By default, SSH unauthenticated connections are left open for two minutes before being closed. This setting is too permissive as no legitimate login would need such an amount of time to complete a login. Quickly terminating idle or incomplete login attempts will free up resources and reduce the exposure any partial logon attempts may create.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:
 
     # sshd -T|&grep -i LoginGraceTime
 
-    Expected result:
+    Example result:
 
-    LoginGraceTime 30
+    logingracetime 30
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"LoginGraceTime\" is not set to \"30\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

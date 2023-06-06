@@ -1,5 +1,5 @@
 control 'PHTN-40-000208' do
-  title 'The Photon operating system must configure sshd to disable user environment processing.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to disable user environment processing.'
   desc  'Enabling user environment processing may enable users to bypass access restrictions in some configurations and must therefore be disabled.'
   desc  'rationale', ''
   desc  'check', "
@@ -7,11 +7,11 @@ control 'PHTN-40-000208' do
 
     # sshd -T|&grep -i PermitUserEnvironment
 
-    Expected result:
+    Example result:
 
-    PermitUserEnvironment no
+    permituserenvironment no
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"PermitUserEnvironment\" is not set to \"no\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

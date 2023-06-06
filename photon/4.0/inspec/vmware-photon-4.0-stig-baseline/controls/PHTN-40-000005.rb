@@ -27,15 +27,15 @@ control 'PHTN-40-000005' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify is configured to use the /etc/issue file for a banner:
+    At the command line, run the following command to verify SSH is configured to use the /etc/issue file for a banner:
 
     # sshd -T|&grep -i Banner
 
-    Expected result:
+    Example result:
 
     banner /etc/issue
 
-    If the output does not match the expected result, this is a finding.
+    If the \"banner\" setting is not configured to \"/etc/issue\", this is a finding.
 
     Next, open /etc/issue with a text editor.
 

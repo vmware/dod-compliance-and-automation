@@ -1,8 +1,9 @@
+useHistoryConf: true
 useFaillockConf: true
 usePwqualityConf: true
 sshdcommand: 'sshd -T'
 authprivlog: /var/log/messages
-syslogServer: syslog.test.com:514
+syslogServer: syslog.test.local:514
 ntptype: ntpd
-ntpServer1: time.vmware.com
-ntpServer2: time2.vmware.com
+ntpServer1: time-a-g.nist.gov
+ntpServer2: time-b-g.nist.gov

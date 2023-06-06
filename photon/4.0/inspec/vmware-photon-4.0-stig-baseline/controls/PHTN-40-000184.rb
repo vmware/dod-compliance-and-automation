@@ -5,9 +5,9 @@ control 'PHTN-40-000184' do
   desc  'check', "
     At the command line, run the following command to verify at least one upper-case character be used:
 
-    # grep dictcheck /etc/security/pwquality.conf
+    # grep '^dictcheck' /etc/security/pwquality.conf
 
-    Expected result:
+    Example result:
 
     dictcheck = 1
 

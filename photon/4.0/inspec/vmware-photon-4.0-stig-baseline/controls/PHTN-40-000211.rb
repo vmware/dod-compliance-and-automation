@@ -1,17 +1,17 @@
 control 'PHTN-40-000211' do
-  title 'The Photon operating system must configure sshd to disallow Generic Security Service Application Program Interface (GSSAPI) authentication.'
-  desc  "GSSAPI authentication is used to provide additional authentication mechanisms to applications. Allowing GSSAPI authentication through SSH exposes the system's GSSAPI to remote hosts, increasing the attack surface of the system."
+  title 'The Photon operating system must configure Secure Shell (SSH) to disallow Generic Security Service Application Program Interface (GSSAPI) authentication.'
+  desc  "GSSAPI authentication is used to provide additional authentication mechanisms to applications. Allowing GSSAPI authentication through Secure Shell (SSH) exposes the system's GSSAPI to remote hosts, increasing the attack surface of the system."
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:
 
     # sshd -T|&grep -i GSSAPIAuthentication
 
-    Expected result:
+    Example result:
 
-    GSSAPIAuthentication no
+    gssapiauthentication no
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"GSSAPIAuthentication\" is not set to \"no\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

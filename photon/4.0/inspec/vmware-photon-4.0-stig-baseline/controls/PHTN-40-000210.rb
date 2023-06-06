@@ -7,7 +7,7 @@ control 'PHTN-40-000210' do
 
     # systemctl status debug-shell.service
 
-    If the debug-shell service is not disabled, this is a finding.
+    If the debug-shell service is not stopped and disabled, this is a finding.
   "
   desc 'fix', "
     At the command line, run the following commands:

@@ -1,5 +1,5 @@
 control 'PHTN-40-000218' do
-  title 'The Photon operating system must configure sshd to ignore user-specific known_host files.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to ignore user-specific known_host files.'
   desc  'SSH trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled. Individual users can have a local list of trusted remote machines which must also be ignored while disabling host-based authentication generally.'
   desc  'rationale', ''
   desc  'check', "
@@ -9,9 +9,9 @@ control 'PHTN-40-000218' do
 
     Expected result:
 
-    IgnoreUserKnownHosts yes
+    ignoreuserknownhosts yes
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"IgnoreUserKnownHosts\" is not set to \"yes\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

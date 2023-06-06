@@ -42,6 +42,7 @@ var_pam_pwquality_dictcheck: 1
 var_pam_system_password_file: '/etc/pam.d/system-password'
 var_pam_system_auth_file: '/etc/pam.d/system-auth'
 var_pam_system_account_file: '/etc/pam.d/system-account'
+var_pam_pwhistory_conf_file: '/etc/security/pwhistory.conf'
 var_pam_pwhistory_remember: 5
 
 # limits.conf
@@ -56,7 +57,8 @@ var_login_defs_fail_delay: 4
 
 # rsyslog
 var_rsyslog_conf_file: '/etc/rsyslog.conf'
-var_rsyslog_authpriv_log: '/var/log/auth.log'
+var_rsyslog_authpriv_log: '/var/log/messages'
+var_rsyslog_umask: '0037'
 var_rsyslog_server_name: ''
 var_rsyslog_server_port: ''
 ## udp, tcp, or tls
@@ -91,7 +93,10 @@ var_sshd_logingracetime: 30
 var_sshd_macs: 'hmac-sha2-512,hmac-sha2-256'
 
 # sysctl kernel parameters
-var_sysctl_conf_file: '/etc/sysctl.conf'
+var_sysctl_conf_file: '/etc/sysctl.d/zz-stig-hardening.conf'
+
+# systemd
+var_systemd_tmp_mount_file: '/lib/systemd/system/tmp.mount'
 
 # misc
 var_etc_issue_file: '/etc/issue'

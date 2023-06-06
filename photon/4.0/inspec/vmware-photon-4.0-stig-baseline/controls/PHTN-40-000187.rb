@@ -5,7 +5,7 @@ control 'PHTN-40-000187' do
   desc  'check', "
     At the command line, run the following command to verify passwords are stored with only encrypted representations:
 
-    # grep ^UMASK /etc/login.defs
+    # grep '^UMASK' /etc/login.defs
 
     Expected result:
 

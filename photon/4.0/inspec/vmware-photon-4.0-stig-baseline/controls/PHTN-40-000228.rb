@@ -12,12 +12,12 @@ control 'PHTN-40-000228' do
     net.ipv4.conf.all.log_martians = 1
     net.ipv4.conf.default.log_martians = 1
 
-    If the output does not match the expected result, this is a finding.
+    If the \"log_martians\" kernel parameters are not set to \"1\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
 
-    /etc/sysctl.conf
+    /etc/sysctl.d/zz-stig-hardening.conf
 
     Add or update the following lines:
 
@@ -28,7 +28,7 @@ control 'PHTN-40-000228' do
 
     # /sbin/sysctl --load
 
-    Note: If the file sysctl.conf doesn't exist it must be created.
+    Note: If the file zz-stig-hardening.conf doesn't exist it must be created.
   "
   impact 0.5
   tag severity: 'medium'

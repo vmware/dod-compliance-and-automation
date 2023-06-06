@@ -1,5 +1,5 @@
 control 'PHTN-40-000220' do
-  title 'The Photon operating system must configure sshd to restrict AllowTcpForwarding.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to restrict AllowTcpForwarding.'
   desc  'While enabling TCP tunnels is a valuable function of sshd, this feature is not appropriate for use on single purpose appliances.'
   desc  'rationale', ''
   desc  'check', "
@@ -7,11 +7,11 @@ control 'PHTN-40-000220' do
 
     # sshd -T|&grep -i AllowTcpForwarding
 
-    Expected result:
+    Example result:
 
-    AllowTcpForwarding no
+    allowtcpforwarding no
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"AllowTcpForwarding\" is not set to \"no\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
