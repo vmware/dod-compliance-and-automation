@@ -1,21 +1,19 @@
 control 'PHTN-40-000012' do
   title 'The Photon operating system must monitor remote access logins.'
-  desc  "
-    Automated monitoring of remote access sessions allows organizations to detect cyber attacks and ensure ongoing compliance with remote access policies by auditing connection activities.
-
-    Shipping sshd authentication events to syslog allows organizations to use their log aggregators to correlate forensic activities among multiple systems.
-  "
+  desc  'Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk and make remote user access management difficult at best. Remote access is access to DoD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. Automated monitoring of remote access sessions allows organizations to detect cyber attacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify rsyslog is configured to log authentication requests for ssh:
+    If another package is used to offload logs, such as syslog-ng, and is properly configured, this is not applicable.
 
-    # grep \"^authpriv\" /etc/rsyslog.conf
+    At the command line, run the following command to verify rsyslog is configured to log authentication requests:
+
+    # sudo grep -E \"(auth.*|authpriv.*|daemon.*)\" /etc/rsyslog.conf
 
     Example result:
 
-    authpriv.*   /var/log/auth.log
+    auth.*;authpriv.*;daemon.* /var/log/messages
 
-    If \"authpriv.*\" is not configured, this is a finding.
+    If \"auth.*\", \"authpriv.*\", and \"daemon.*\" are not configured to be logged, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -24,7 +22,7 @@ control 'PHTN-40-000012' do
 
     Add or update the following line:
 
-    authpriv.*   /var/log/auth.log
+    auth.*;authpriv.*;daemon.* /var/log/messages
 
     Note: The path can be substituted for another suitable log destination dedicated to authentication logs.
 
@@ -41,7 +39,7 @@ control 'PHTN-40-000012' do
   tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
-  describe command('grep "^authpriv" /etc/rsyslog.conf') do
-    its('stdout.strip') { should match /authpriv\.\*[\s]*#{input('authprivlog')}/ }
+  describe command('grep -E "(auth.*|authpriv.*|daemon.*)" /etc/rsyslog.conf') do
+    its('stdout.strip') { should match /auth\.\*;authpriv\.\*;daemon\.\*[\s]*#{input('authprivlog')}/ }
   end
 end

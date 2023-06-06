@@ -33,6 +33,8 @@ control 'PHTN-40-000030' do
     auditfiles.split.each do |fname|
       describe file(fname) do
         it { should_not be_more_permissive_than('0640') }
+        its('owner') { should cmp 'root' }
+        its('group') { should cmp 'root' }
       end
     end
   else

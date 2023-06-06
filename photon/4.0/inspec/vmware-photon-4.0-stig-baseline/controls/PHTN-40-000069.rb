@@ -1,5 +1,5 @@
 control 'PHTN-40-000069' do
-  title 'The Photon operating system must terminate idle sshd sessions after 15 minutes.'
+  title 'The Photon operating system must terminate idle Secure Shell (SSH) sessions after 15 minutes.'
   desc  "
     Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element.
 
@@ -11,11 +11,11 @@ control 'PHTN-40-000069' do
 
     # sshd -T|&grep -i ClientAliveInterval
 
-    Expected result:
+    Example result:
 
     ClientAliveInterval 900
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If there is no output or if \"ClientAliveInterval\" is not set to \"900\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

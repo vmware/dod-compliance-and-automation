@@ -1,5 +1,5 @@
 control 'PHTN-40-000013' do
-  title 'The Photon operating system must have the OpenSSL FIPS provider installed.'
+  title 'The Photon operating system must have the OpenSSL FIPS provider installed to protect the confidentiality of remote access sessions.'
   desc  "
     Without confidentiality protection mechanisms, unauthorized individuals may gain access to sensitive information via a remote access session.
 
@@ -34,5 +34,10 @@ control 'PHTN-40-000013' do
 
   describe command('rpm -qa | grep openssl-fips') do
     its('stdout.strip') { should match /openssl-fips-provider/ }
+  end
+  # Test whether OpenSSL is operating in FIPS mode system wide
+  describe command('openssl md5 /etc/ssh/sshd_config') do
+    its('stdout.strip') { should cmp '' }
+    its('stderr.strip') { should match /unsupported:crypto/ }
   end
 end

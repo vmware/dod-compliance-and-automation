@@ -3,9 +3,9 @@ control 'PHTN-40-000206' do
   desc  'Limiting the number of logon attempts over a certain time interval reduces the chances that an unauthorized user may gain access to an account.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following commands to verify the pam_faildelay.so module is used:
+    At the command line, run the following command to verify the pam_faildelay.so module is used:
 
-    # grep ^auth /etc/pam.d/system-auth
+    # grep '^auth' /etc/pam.d/system-auth
 
     Example result:
 

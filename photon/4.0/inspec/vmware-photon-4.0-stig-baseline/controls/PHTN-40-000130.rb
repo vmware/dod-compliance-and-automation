@@ -5,9 +5,13 @@ control 'PHTN-40-000130' do
   desc  'check', "
     At the command line, run the following command to verify software packages are cryptographically verified during installation:
 
-    # grep \"^gpgcheck\" /etc/tdnf/tdnf.conf
+    # grep '^gpgcheck' /etc/tdnf/tdnf.conf
 
-    If \"gpgcheck\" is not set to \"1\", this is a finding.
+    Example result:
+
+    gpgcheck=1
+
+    If \"gpgcheck\" is not set to \"true\", \"1\", or \"yes\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -27,7 +31,16 @@ control 'PHTN-40-000130' do
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
-  describe command('grep "^gpgcheck" /etc/tdnf/tdnf.conf') do
-    its('stdout.strip') { should cmp 'gpgcheck=1' }
+  # This config file has a [main] section header at the top
+  describe.one do
+    describe parse_config_file('/etc/tdnf/tdnf.conf').params['main'] do
+      its('gpgcheck') { should cmp 1 }
+    end
+    describe parse_config_file('/etc/tdnf/tdnf.conf').params['main'] do
+      its('gpgcheck') { should cmp 'true' }
+    end
+    describe parse_config_file('/etc/tdnf/tdnf.conf').params['main'] do
+      its('gpgcheck') { should cmp 'yes' }
+    end
   end
 end

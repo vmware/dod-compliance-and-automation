@@ -5,7 +5,7 @@ control 'PHTN-40-000236' do
   desc  'check', "
     At the command line, run the following command to verify systemd fallback DNS is disabled:
 
-    # resolvectl status | grep 'Fallback DNS'
+    # resolvectl status | grep '^Fallback DNS'
 
     If the output indicates that Fallback DNS servers are configured, this is a finding.
   "
@@ -35,5 +35,6 @@ control 'PHTN-40-000236' do
 
   describe command("resolvectl status | grep 'Fallback DNS'") do
     its('stdout') { should cmp '' }
+    its('stderr') { should cmp '' }
   end
 end

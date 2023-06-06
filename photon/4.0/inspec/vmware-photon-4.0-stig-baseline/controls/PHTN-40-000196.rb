@@ -9,7 +9,7 @@ control 'PHTN-40-000196' do
   desc  'check', "
     At the command line, run the following command to verify account locking persists lockouts between system reboots
 
-    # grep 'dir' /etc/security/faillock.conf
+    # grep '^dir' /etc/security/faillock.conf
 
     Expected result:
 

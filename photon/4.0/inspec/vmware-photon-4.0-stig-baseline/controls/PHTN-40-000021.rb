@@ -11,7 +11,13 @@ control 'PHTN-40-000021' do
 
     # grep -E \"^disk_full_action|^disk_error_action|^admin_space_left_action\" /etc/audit/auditd.conf
 
-    If any of the above parameters are not set to SYSLOG or are missing, this is a finding.
+    Example result:
+
+    admin_space_left_action = SYSLOG
+    disk_full_action = SYSLOG
+    disk_error_action = SYSLOG
+
+    If \"disk_full_action\", \"disk_error_action\", and \"admin_space_left_action\" are not set to SYSLOG or are missing, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

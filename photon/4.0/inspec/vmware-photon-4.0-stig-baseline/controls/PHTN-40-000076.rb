@@ -11,12 +11,12 @@ control 'PHTN-40-000076' do
 
     # auditctl -l | grep -E \"(usermod|groupmod)\"
 
-    Expected result:
+    Example result:
 
     -w /usr/sbin/usermod -p x -k usermod
     -w /usr/sbin/groupmod -p x -k groupmod
 
-    If either usermod or groupmod are not listed with a permissions filter of at least 'x', this is a finding.
+    If either \"usermod\" or \"groupmod\" are not listed with a permissions filter of at least \"x\", this is a finding.
 
     Note: This check depends on the \"auditd\" service to be in a running state for accurate results. The \"auditd\" service is enabled in control PHTN-40-000016.
   "
@@ -34,7 +34,7 @@ control 'PHTN-40-000076' do
 
     # /sbin/augenrules --load
 
-    Note: A new \"audit.STIG.rules\" file is provided for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
+    Note: A \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
 
     Note: An older \"audit.STIG.rules\" may exist and may reference older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
   "

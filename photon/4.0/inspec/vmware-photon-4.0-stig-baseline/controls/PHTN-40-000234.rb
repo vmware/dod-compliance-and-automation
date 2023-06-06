@@ -1,5 +1,5 @@
 control 'PHTN-40-000234' do
-  title 'The Photon operating system must be configured to protect the SSH private host key from unauthorized access.'
+  title 'The Photon operating system must be configured to protect the Secure Shell (SSH) private host key from unauthorized access.'
   desc  'If an unauthorized user obtains the private SSH host key file, the host could be impersonated.'
   desc  'rationale', ''
   desc  'check', "
@@ -7,7 +7,7 @@ control 'PHTN-40-000234' do
 
     # stat -c \"%n permissions are %a and owned by %U:%G\" /etc/ssh/*key
 
-    Expected result:
+    Example result:
 
     /etc/ssh/ssh_host_dsa_key permissions are 600 and owned by root:root
     /etc/ssh/ssh_host_ecdsa_key permissions are 600 and owned by root:root

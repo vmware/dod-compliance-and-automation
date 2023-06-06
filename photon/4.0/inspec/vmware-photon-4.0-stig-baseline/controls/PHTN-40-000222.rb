@@ -3,16 +3,24 @@ control 'PHTN-40-000222' do
   desc  'When the Ctrl-Alt-Del target is enabled, a locally logged-on user who presses Ctrl-Alt-Delete, when at the console, can reboot the system. If accidentally pressed, as could happen in the case of a mixed OS environment, this can create the risk of short-term loss of systems availability due to unintentional reboot.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify the ctrl-alt-del target is disabled:
+    At the command line, run the following command to verify the ctrl-alt-del target is disabled and masked:
 
-    # systemctl status ctrl-alt-del.target
+    # systemctl status ctrl-alt-del.target --no-pager
 
-    If the ctrl-alt-del.target is not inactive and disabled, this is a finding.
+    Example output:
+
+    ctrl-alt-del.target
+    \tLoaded: masked (Reason: Unit ctrl-alt-del.target is masked.)
+    \tActive: inactive (dead)
+
+    If the \"ctrl-alt-del.target\" is not \"inactive\" and \"masked\", this is a finding.
   "
   desc 'fix', "
-    At the command line, run the following command:
+    At the command line, run the following commands:
 
+    # systemctl disable ctrl-alt-del.target
     # systemctl mask ctrl-alt-del.target
+    # systemctl daemon-reload
   "
   impact 0.5
   tag severity: 'medium'
@@ -23,9 +31,14 @@ control 'PHTN-40-000222' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  # ctrl-alt-del.target is really an alias for reboot.target so test uses reboot.target in order to work correctly
-  describe systemd_service('reboot.target') do
+  describe systemd_service('ctrl-alt-del.target') do
     it { should_not be_enabled }
     it { should_not be_running }
+  end
+  describe systemd_service('ctrl-alt-del.target').params['LoadState'] do
+    it { should cmp 'masked' }
+  end
+  describe systemd_service('ctrl-alt-del.target').params['UnitFileState'] do
+    it { should cmp 'masked' }
   end
 end

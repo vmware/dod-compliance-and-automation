@@ -15,23 +15,23 @@ control 'PHTN-40-000121' do
 
     # grep -E '^\\s*(server|peer|multicastclient)' /etc/ntp.conf
 
-    Confirm the servers and peers or multicastclient (as applicable) are local or an authoritative DoD source.
+    Confirm the servers and peers or multicastclient (as applicable) are local or an authoritative DOD source.
 
-    If a time source is not set, is not set to an authoritative DoD time source, or is commented out, this is a finding.
+    If a time source is not set, is not set to an authoritative DOD time source, or is commented out, this is a finding.
 
     If timesyncd is used to sync time, do the following:
 
     At the command line, run the following command:
 
-    # grep -E '^NTP' timesyncd.conf
+    # grep '^NTP' /etc/systemd/timesyncd.conf
 
-    If a time source is not set, is not set to an authoritative DoD time source, or is commented out, this is a finding.
+    If a time source is not set, is not set to an authoritative DOD time source, or is commented out, this is a finding.
 
     If chrony is used to sync time, do the following:
 
     At the command line, run the following command:
 
-    # grep -E '^server' /etc/chrony/chrony.conf
+    # grep '^server' /etc/chrony/chrony.conf
 
     If the parameter \"server\" is not set, is not set to an authoritative DOD time source, or is commented out, this is a finding.
   "

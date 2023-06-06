@@ -31,5 +31,6 @@ control 'PHTN-40-000085' do
 
   describe command("find /usr/lib/ -type f \"(\" ! -user root -o ! -group root -o -perm /022 \")\" -printf '%p, %u:%g:%m\\n'") do
     its('stdout') { should cmp '' }
+    its('stderr') { should cmp '' }
   end
 end

@@ -5,9 +5,9 @@ control 'PHTN-40-000235' do
   desc  'check', "
     At the command line, run the following command to verify password complexity is enforced for the root account:
 
-    # grep enforce_for_root /etc/security/pwquality.conf
+    # grep '^enforce_for_root' /etc/security/pwquality.conf
 
-    Expected result:
+    Example result:
 
     enforce_for_root
 

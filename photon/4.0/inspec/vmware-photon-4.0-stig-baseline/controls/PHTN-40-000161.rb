@@ -5,13 +5,13 @@ control 'PHTN-40-000161' do
   desc  'check', "
     At the command line, run the following command:
 
-    # grep -i \"^clean_requirements_on_remove\" /etc/tdnf/tdnf.conf
+    # grep -i '^clean_requirements_on_remove' /etc/tdnf/tdnf.conf
 
-    Expected result:
+    Example result:
 
-    clean_requirements_on_remove=true
+    clean_requirements_on_remove=1
 
-    If the output does not match the expected result, this is a finding.
+    If \"clean_requirements_on_remove\" is not set to \"true\", \"1\", or \"yes\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -20,7 +20,7 @@ control 'PHTN-40-000161' do
 
     Add or update the following line:
 
-    clean_requirements_on_remove=true
+    clean_requirements_on_remove=1
   "
   impact 0.5
   tag severity: 'medium'
@@ -31,7 +31,16 @@ control 'PHTN-40-000161' do
   tag cci: ['CCI-002617']
   tag nist: ['SI-2 (6)']
 
-  describe command('grep -i "^clean_requirements_on_remove" /etc/tdnf/tdnf.conf') do
-    its('stdout.strip') { should cmp 'clean_requirements_on_remove=true' }
+  # This config file has a [main] section header at the top
+  describe.one do
+    describe parse_config_file('/etc/tdnf/tdnf.conf').params['main'] do
+      its('clean_requirements_on_remove') { should cmp 1 }
+    end
+    describe parse_config_file('/etc/tdnf/tdnf.conf').params['main'] do
+      its('clean_requirements_on_remove') { should cmp 'true' }
+    end
+    describe parse_config_file('/etc/tdnf/tdnf.conf').params['main'] do
+      its('clean_requirements_on_remove') { should cmp 'yes' }
+    end
   end
 end

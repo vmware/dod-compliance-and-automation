@@ -39,5 +39,6 @@ control 'PHTN-40-000092' do
 
   describe command('rpm -V audit | grep "^..5" | grep -v /etc/audit/auditd.conf') do
     its('stdout.strip') { should cmp '' }
+    its('stderr') { should cmp '' }
   end
 end

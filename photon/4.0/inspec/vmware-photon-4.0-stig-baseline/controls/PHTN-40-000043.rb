@@ -3,26 +3,26 @@ control 'PHTN-40-000043' do
   desc  'Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed as per policy requirements.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify password reuse for a minimum of five generations is prohibited:
+    At the command line, run the following commands to verify accounts are locked after three consecutive invalid logon attempts by a user during a 15-minute time period:
 
-    # grep ^password /etc/pam.d/system-password
+    # grep '^remember' /etc/security/pwhistory.conf
 
     Example result:
 
-    password required pam_pwhistory.so remember=5 retry=3 enforce_for_root use_authtok
-    password required pam_pwquality.so use_authtok
-    password required pam_unix.so sha512 shadow use_authtok
+    remember = 5
 
-    If the pam_pwhistory.so module is not present with a parameter of \"remember=5\", this is a finding.
+    If the \"remember\" option is not set to \"5\" or greater, this is a finding.
+
+    Note: If pwhistory.conf is not used to configure the \"pam_pwhistory.so\" module, then these options may be specified on the pwhistory lines in the system-password PAM file.
   "
   desc 'fix', "
     Navigate to and open:
 
-    /etc/pam.d/system-password
+    /etc/security/pwhistory.conf
 
-    Add or update the following line:
+    Add or update the following lines:
 
-    password required pam_pwhistory.so remember=5 retry=3 enforce_for_root use_authtok
+    remember = 5
   "
   impact 0.5
   tag severity: 'medium'
@@ -33,8 +33,14 @@ control 'PHTN-40-000043' do
   tag cci: ['CCI-000200']
   tag nist: ['IA-5 (1) (e)']
 
-  describe pam('/etc/pam.d/system-password') do
-    its('lines') { should match_pam_rule('password required pam_pwhistory.so') }
-    its('lines') { should match_pam_rule('password required pam_pwhistory.so').all_with_integer_arg('remember', '==', 5) }
+  if input('useHistoryConf')
+    describe parse_config_file('/etc/security/pwhistory.conf') do
+      its('remember') { should cmp >= 5 }
+    end
+  else
+    describe pam('/etc/pam.d/system-password') do
+      its('lines') { should match_pam_rule('password required pam_pwhistory.so') }
+      its('lines') { should match_pam_rule('password required pam_pwhistory.so').all_with_integer_arg('remember', '==', 5) }
+    end
   end
 end

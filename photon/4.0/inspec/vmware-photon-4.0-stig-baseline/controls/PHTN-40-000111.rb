@@ -7,24 +7,24 @@ control 'PHTN-40-000111' do
   "
   desc  'rationale', ''
   desc  'check', "
+    If another package is used to offload logs, such as syslog-ng, and is properly configured, this is not applicable.
+
     At the command line, run the following command to verify audit records are off-loaded to a syslog server:
 
      # cat /etc/rsyslog.conf
 
      The output should be similar to the following where <syslog server:port> is set to the environments approved syslog server:
 
-     *.* @<syslog server:port>;RSYSLOG_syslogProtocol23Format
+     *.* @<syslog server:port>;RSYSLOG_SyslogProtocol23Format
 
      If no line is returned or if the line is commented or no valid syslog server is specified, this is a finding.
-
-    If another solution to off-load audit records is in use and configured, this is NOT a finding.
   "
   desc 'fix', "
     Examples are provided for UDP, TCP, and TLS configurations.  Substitute the environments approved syslog server for <syslog server:port> for the protocol of choice.
 
     For Example:
 
-    *.* @mysyslog.domain.local:514;RSYSLOG_syslogProtocol23Format
+    *.* @mysyslog.domain.local:514;RSYSLOG_SyslogProtocol23Format
 
     Navigate to and open:
 
@@ -34,22 +34,22 @@ control 'PHTN-40-000111' do
 
      For UDP
 
-     *.* @<syslog server:port>;RSYSLOG_syslogProtocol23Format
+     *.* @<syslog server:port>;RSYSLOG_SyslogProtocol23Format
 
      For TCP
 
-     *.* @@<syslog server:port>;RSYSLOG_syslogProtocol23Format
+     *.* @@<syslog server:port>;RSYSLOG_SyslogProtocol23Format
 
      For TLS
 
-     *.* @@(o)<syslog server:port>;RSYSLOG_syslogProtocol23Format
+     *.* @@(o)<syslog server:port>;RSYSLOG_SyslogProtocol23Format
 
     At the command line, run the following command:
 
      # systemctl restart rsyslog.service
   "
-  impact 0.3
-  tag severity: 'low'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-OS-000342-GPOS-00133'
   tag satisfies: ['SRG-OS-000274-GPOS-00104', 'SRG-OS-000275-GPOS-00105', 'SRG-OS-000276-GPOS-00106', 'SRG-OS-000277-GPOS-00107', 'SRG-OS-000304-GPOS-00121', 'SRG-OS-000447-GPOS-00201', 'SRG-OS-000479-GPOS-00224']
   tag gid: 'V-PHTN-40-000111'
@@ -59,6 +59,6 @@ control 'PHTN-40-000111' do
   tag nist: ['AC-2 (4)', 'AU-4 (1)', 'SI-6 d']
 
   describe file('/etc/rsyslog.conf') do
-    its('content') { should match /^\*\.\*.*#{input('syslogServer')};RSYSLOG_syslogProtocol23Format$/ }
+    its('content') { should match /^\*\.\*.*#{input('syslogServer')};RSYSLOG_SyslogProtocol23Format$/ }
   end
 end

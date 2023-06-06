@@ -7,15 +7,15 @@ control 'PHTN-40-000007' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify the limit for the number of concurrent sessions :
+    At the command line, run the following command to verify the limit for the number of concurrent sessions:
 
-    #  grep \"^[^#].*maxlogins.*\" /etc/security/limits.conf
+    # grep \"^[^#].*maxlogins.*\" /etc/security/limits.conf
 
-    Expected result:
+    Example result:
 
     *       hard    maxlogins       10
 
-    If the output does not match the expected result, this is a finding.
+    If \"* hard maxlogins\" is not configured to \"10\", this is a finding.
 
     Note: The expected result may be repeated multiple times.
   "

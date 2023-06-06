@@ -1,17 +1,17 @@
 control 'PHTN-40-000214' do
-  title 'The Photon operating system must configure sshd to disallow Kerberos authentication.'
-  desc  "If Kerberos is enabled through SSH, sshd provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementation may then be subject to exploitation. To reduce the attack surface of the system, the Kerberos authentication mechanism within SSH must be disabled."
+  title 'The Photon operating system must configure Secure Shell (SSH) to disallow Kerberos authentication.'
+  desc  "If Kerberos is enabled through Secure Shell (SSH), sshd provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementation may then be subject to exploitation. To reduce the attack surface of the system, the Kerberos authentication mechanism within SSH must be disabled."
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:
 
     # sshd -T|&grep -i KerberosAuthentication
 
-    Expected result:
+    Example result:
 
-    KerberosAuthentication no
+    kerberosauthentication no
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"KerberosAuthentication\" is not set to \"no\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

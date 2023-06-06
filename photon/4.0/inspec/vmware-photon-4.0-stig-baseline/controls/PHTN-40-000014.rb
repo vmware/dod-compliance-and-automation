@@ -9,15 +9,15 @@ control 'PHTN-40-000014' do
   desc  'check', "
     At the command line, run the following command to verify auditd is configured to write logs to disk:
 
-    # grep \"^write_logs\" /etc/audit/auditd.conf
+    # grep '^write_logs' /etc/audit/auditd.conf
 
-    Expected result:
+    Example result:
 
     write_logs = yes
 
     If there is no output, this is not a finding.
 
-    If the output does not match the expected result, this is a finding.
+    If \"write_logs\" exists and is not configured to \"yes\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

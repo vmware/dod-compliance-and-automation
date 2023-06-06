@@ -9,9 +9,9 @@ control 'PHTN-40-000044' do
   desc  'check', "
     At the command line, run the following command to verify a minimum 15-character password length:
 
-    # grep minlen /etc/security/pwquality.conf
+    # grep '^minlen' /etc/security/pwquality.conf
 
-    Expected result:
+    Example result:
 
     minlen = 15
 

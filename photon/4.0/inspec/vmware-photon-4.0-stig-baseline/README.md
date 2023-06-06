@@ -1,6 +1,6 @@
 # vmware-photon-4.0-stig-baseline
 Photon OS 4.0 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 2 Date: 26 April 2023  
+Version: Release 1 Version 3 Date: 06 June 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
@@ -8,7 +8,7 @@ This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor 
 
 ## Requirements
 
-- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH target node. Tested with version 5.17.4. Chef/CINC Workstation can also be installed and used.
+- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH target node. Tested with version 5.22.3. Chef/CINC Workstation can also be installed and used.
 - SSH access to Photon instance
 - Update the inputs in inspec-example.yml or make a new copy and update as appropriate for your environment
 
