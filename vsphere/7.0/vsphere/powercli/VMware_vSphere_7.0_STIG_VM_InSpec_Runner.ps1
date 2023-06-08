@@ -15,13 +15,13 @@
 
   Tested against
   -PowerCLI 13
-  -Powershell 5.1/Powershell Core 7.3.3
-  -vCenter/ESXi 7.0 U3k
-  -Inspec 5.18.14
-  -SAF CLI 1.2.7
+  -Powershell 5.1/Powershell Core 7.3.4
+  -vCenter/ESXi 7.0 U3l
+  -Inspec 5.22.3
+  -SAF CLI 1.2.15
 
   Example command to run script
-    .\VMware_vSphere_7.0_STIG_VM_InSpec_Runner.ps1 -vcenter 10.1.2.3 -reportPath C:\Inspec\Reports\Runner -inspecPath C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\inspec\vmware-vsphere-7.0-stig-baseline\vm\ -attenstationFile C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-attestation-example.yml
+    .\VMware_vSphere_7.0_STIG_VM_InSpec_Runner.ps1 -vcenter 10.1.2.3 -reportPath C:\Inspec\Reports\Runner -inspecPath C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\inspec\vmware-vsphere-7.0-stig-baseline\vm\ -attestationFile C:\github\dod-compliance-and-automation\vsphere\7.0\vsphere\powercli\vmware-vsphere-7.0-stig-esxi-inspec-runner-attestation-example.yml
 
 .PARAMETER vcenter
   Enter the vcenter to connect to and collect hosts to audit.
@@ -143,14 +143,16 @@ Try{
     Invoke-Command -ScriptBlock $command
     If(Get-Command saf){
       Write-ToConsole "...Detected saf cli...generating STIG Viewer Checklist for $name"
-      If($attenstationFile){
+      If($attestationFile){
+        Write-ToConsole "...Attestion file: $attestationFile detected...applying to results for $name"
         $reportFileWithAttestations = $reportPath + "\VMware_vSphere_7.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.json"
-        $attestCommand = {saf attest apply -i $reportFile $attenstationFile -o $reportFileWithAttestations}
+        $attestCommand = {saf attest apply -i $reportFile $attestationFile -o $reportFileWithAttestations}
         Invoke-Command -ScriptBlock $attestCommand
         $cklFile = $reportPath + "\VMware_vSphere_7.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.ckl"
         $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
         Invoke-Command -ScriptBlock $cklCommand
       }Else{
+        Write-ToConsole "...No attestion file provided for $name"
         $cklFile = $reportPath + "\VMware_vSphere_7.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".ckl"
         $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
         Invoke-Command -ScriptBlock $cklCommand
