@@ -18,22 +18,22 @@
   License    : Apache-2.0
 
   Tested against
-    -PowerCLI 13
-    -Powershell 5/Core 7.3.2
-    -vCenter/ESXi 8.0 U1
-    -Vmware.Vsphere.SsoAdmin 1.3.8
+  -PowerCLI 13
+  -Powershell 5/Core 7.3.4
+  -vCenter/ESXi 8.0 U1a
+  -Vmware.Vsphere.SsoAdmin 1.3.9
 
   Example command to run script
-  .\VMware_vSphere_8.0_STIG_vCenter_Remediation.ps1 -vcenter vcentername.test.local -vccred $cred -ssouser administrator@vsphere.local
+  .\VMware_vSphere_8.0_STIG_vCenter_Remediation.ps1 -vcenter vcentername.test.local -vccred $cred
 
   .PARAMETER vcenter
   Enter the FQDN or IP of the vCenter Server to connect to
   .PARAMETER vccred
   Enter the pscredential variable name to use for authentication to vCenter. This should be run before the script for example: $cred = get-pscredential
-  .PARAMETER ssouser
-  Enter the ssouser name that has permissions to perform SSO administrative tasks in vCenter.
-  .PARAMETER ssopass
-  Enter the sso user password. If this is not specified then it will be prompted for which is the preferred method.
+  #.PARAMETER ssouser
+  #Enter the ssouser name that has permissions to perform SSO administrative tasks in vCenter.
+  #.PARAMETER ssopass
+  #Enter the sso user password. If this is not specified then it will be prompted for which is the preferred method.
 #>
 
 [CmdletBinding()]
@@ -42,10 +42,10 @@ param (
   [string]$vcenter,
   [Parameter(Mandatory=$true)]
   [pscredential]$vccred,
-  [Parameter(Mandatory=$true)]
-  [string]$ssouser,
-  [Parameter(Mandatory=$true)]
-  [securestring]$ssopass,
+  # [Parameter(Mandatory=$true)]
+  # [string]$ssouser,
+  # [Parameter(Mandatory=$true)]
+  # [securestring]$ssopass,
   [Parameter(Mandatory=$false,
   HelpMessage="Enter the path for the output report. Example /tmp")]
   [string]$reportpath,
@@ -187,10 +187,10 @@ If($reportpath){
   ## Capture Date variable
   $Date = Get-Date
   ## Start Transcript
-  $TranscriptName = $reportpath + "\VMware_vSphere_8.0_STIG_ESXi_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
+  $TranscriptName = $reportpath + "\VMware_vSphere_8.0_STIG_vCenter_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
   Start-Transcript -Path $TranscriptName
   ## Results file name for output to json
-  $resultjson = $reportpath + "\VMware_vSphere_8.0_STIG_ESXi_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
+  $resultjson = $reportpath + "\VMware_vSphere_8.0_STIG_vCenter_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
 }
 
 #Modules needed to run script and load
@@ -235,7 +235,7 @@ Try
   Write-ToConsole "...Connecting to vCenter Server $vcenter"
   Connect-VIServer -Server $vcenter -Credential $vccred -Protocol https -ErrorAction Stop | Out-Null
   Write-ToConsole "...Connecting to vCenter SSO Server $vcenter"
-  Connect-SsoAdminServer -Server $vcenter -User $ssouser -Password $ssopass -SkipCertificateCheck -ErrorAction Stop | Out-Null
+  Connect-SsoAdminServer -Server $vcenter -Credential $vccred -SkipCertificateCheck -ErrorAction Stop | Out-Null
 }
 Catch
 {
