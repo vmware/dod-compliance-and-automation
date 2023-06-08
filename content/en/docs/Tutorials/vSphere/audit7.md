@@ -26,6 +26,7 @@ Versions listed below were used for this documentation. Other versions of these 
 * STIG Viewer 2.17
 * A vSphere 7.x environment. 7.0 U3l was used in these examples.
 * An account with sufficient privileges to view SSO configuration in vCenter.
+* Example distributed switches, VMs, and a content library were created in the testbed to produce audit results for those objects.  
 
 ### Install the custom VMware transport for InSpec
 To extend the functionality of the VMware transport that ships with InSpec we have created a custom one that also incorporates the `VMware.Vsphere.SsoAdmin` module to extend automation coverage to the vCenter SSO STIG controls.  
@@ -33,7 +34,7 @@ To extend the functionality of the VMware transport that ships with InSpec we ha
 To install the plugin that is included with the `vmware-vsphere-7.0-stig-baseline` profile, do the following:
 ```powershell
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
-> inspec plugin install C:\gitlab\vmware-vsphere-7.0-stig-baseline\train-vmware-0.2.0.gem
+> inspec plugin install C:\vmware-vsphere-7.0-stig-baseline\train-vmware-0.2.0.gem
 
 # To verify the installation
 > inspec plugin list
@@ -271,7 +272,7 @@ Instead of running each STIG for product controls separately you can also run al
 
 ```powershell
 # Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
-> inspec exec . -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyvSphereReport.json
+> inspec exec . -t vmware:// --show-progress --input-file .\inputs-example.yml --reporter=cli json:C:\InSpec\Reports\MyvSphereReport.json
 ```
 
 ## Using the InSpec runner script
@@ -390,5 +391,6 @@ If a STIG Viewer CKL file is needed then the results from the scans can be conve
 saf convert hdf2ckl -i C:\inspec\Reports\MyVCSAReport.json -o C:\inspec\Reports\MyVCSAReport.ckl --hostname 10.182.131.166 --fqdn myvcenter.local --ip 10.182.131.166 --mac 00:00:00:00:00:00
 ```
 
-Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.
+Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
+
 ![alt text](/images/vsphere_audit7_ckl_screenshot.png)
