@@ -64,8 +64,6 @@
       register: auditdinstalled
       failed_when: auditdinstalled.rc == 2
       changed_when: false
-      when:
-        - run_auditd_install | bool
 
     - name: PHTN-50-000016 - Install auditd
       ansible.builtin.command: tdnf -y install audit
@@ -80,6 +78,8 @@
         name: auditd
         state: started
         enabled: true
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 # This task is at the top so ensure rsyslog is installed for all other dependent tasks that configure rsyslog
@@ -94,15 +94,12 @@
       register: rsysloginstalled
       changed_when: false
       failed_when: rsysloginstalled.rc == 2
-      when:
-        - run_rsyslog_install | bool
 
     - name: PHTN-50-000241 - Install rsyslog
       ansible.builtin.command: tdnf -y install rsyslog
       register: output
       changed_when: output.rc == 0
       when:
-        - run_rsyslog_install | bool
         - rsysloginstalled.stdout == ""
 
 ###################################################################################################################################
@@ -111,11 +108,21 @@
   tags: [PHTN-50-000242, rsyslog]
   when: run_rsyslog_enable | bool
   block:
+    - name: PHTN-50-000242 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
     - name: PHTN-50-000242 - Enable and start the rsyslog service
       ansible.builtin.systemd:
         name: rsyslog
         state: started
         enabled: true
+      when:
+        - rsysloginstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-50-000003 - Update audit.STIG.rules file
@@ -200,6 +207,16 @@
         path: '{{ var_rsyslog_conf_file }}'
         state: present
         regexp: '^#?\s*authpriv\.\*'
+        line: auth.*;authpriv.*;daemon.* {{ var_rsyslog_authpriv_log }}
+        firstmatch: true
+      notify:
+        - restart rsyslog
+
+    - name: PHTN-50-000012 - Configure auth line if needed in rsyslog.conf
+      ansible.builtin.lineinfile:
+        path: '{{ var_rsyslog_conf_file }}'
+        state: present
+        regexp: '^#?\s*auth\.\*'
         line: auth.*;authpriv.*;daemon.* {{ var_rsyslog_authpriv_log }}
         firstmatch: true
       notify:
@@ -541,8 +558,6 @@
       register: selinuxinstalled
       failed_when: selinuxinstalled.rc == 2
       changed_when: false
-      when:
-        - run_selinux_install | bool
 
     - name: PHTN-50-000066 - Install SELinux Policy
       ansible.builtin.command: tdnf -y install selinux-policy
@@ -559,8 +574,6 @@
       register: selinuxutilsinstalled
       failed_when: selinuxutilsinstalled.rc == 2
       changed_when: false
-      when:
-        - run_selinux_install | bool
 
     - name: PHTN-50-000066 - Install SELinux utils
       ansible.builtin.command: tdnf -y install libselinux-utils
@@ -575,36 +588,48 @@
         path: '{{ var_grub_conf_file }}'
         regexp: '^(\s*linux(?!.* security=).*)'
         replace: '\1 security=selinux'
+      when:
+        - selinuxinstalled.stdout != ""
 
     - name: PHTN-50-000066 - Replace security=selinux in /boot/grub2/grub.cfg
       ansible.builtin.replace:
         path: '{{ var_grub_conf_file }}'
         regexp: '^(\s*linux.*? security=)(?!selinux)(\S*)(.*)'
         replace: '\g<1>selinux\3'
+      when:
+        - selinuxinstalled.stdout != ""
 
     - name: PHTN-50-000066 - Add selinux=1 in /boot/grub2/grub.cfg
       ansible.builtin.replace:
         path: '{{ var_grub_conf_file }}'
         regexp: '^(\s*linux(?!.* selinux=).*)'
         replace: '\1 selinux=1'
+      when:
+        - selinuxinstalled.stdout != ""
 
     - name: PHTN-50-000066 - Replace selinux=1 in /boot/grub2/grub.cfg
       ansible.builtin.replace:
         path: '{{ var_grub_conf_file }}'
         regexp: '^(\s*linux.*? selinux=)(?!1)(\S*)(.*)'
         replace: '\g<1>1\3'
+      when:
+        - selinuxinstalled.stdout != ""
 
     - name: PHTN-50-000066 - Add enforcing={{ var_selinux_enforcing }} in /boot/grub2/grub.cfg
       ansible.builtin.replace:
         path: '{{ var_grub_conf_file }}'
         regexp: '^(\s*linux(?!.* enforcing=).*)'
         replace: '\1 enforcing={{ var_selinux_enforcing }}'
+      when:
+        - selinuxinstalled.stdout != ""
 
     - name: PHTN-50-000066 - Replace enforcing={{ var_selinux_enforcing }} in /boot/grub2/grub.cfg
       ansible.builtin.replace:
         path: '{{ var_grub_conf_file }}'
         regexp: '^(\s*linux.*? enforcing=)(?!{{ var_selinux_enforcing }})(\S*)(.*)'
         replace: '\g<1>{{ var_selinux_enforcing }}\3'
+      when:
+        - selinuxinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-50-000067 - Configure kernel parameter kernel.dmesg_restrict
@@ -680,7 +705,7 @@
   tags: [PHTN-50-000074]
   when: run_rsyslog_umask | bool
   block:
-    - name: PHTN-50-000012 - Configure umask in rsyslog.conf
+    - name: PHTN-50-000074 - Configure umask in rsyslog.conf
       ansible.builtin.lineinfile:
         path: '{{ var_rsyslog_conf_file }}'
         state: present
@@ -948,7 +973,6 @@
       failed_when: ntpdinstalled.rc == 2
       changed_when: false
       when:
-        - run_time_install | bool
         - var_time_type == 'ntpd'
 
     - name: PHTN-50-000121 - NTPD - Install
@@ -969,6 +993,7 @@
         group: root
       when:
         - var_time_type == 'ntpd'
+        - ntpdinstalled.stdout != ""
 
     - name: PHTN-50-000121 - NTPD - Remove unknown time servers
       ansible.builtin.lineinfile:
@@ -981,6 +1006,7 @@
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
         - var_time_type == 'ntpd'
+        - ntpdinstalled.stdout != ""
 
     - name: PHTN-50-000121 - NTPD - Configure time Servers
       ansible.builtin.lineinfile:
@@ -996,6 +1022,7 @@
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
         - var_time_type == 'ntpd'
+        - ntpdinstalled.stdout != ""
 
     - name: PHTN-50-000121 - NTPD - Enable service
       ansible.builtin.systemd:
@@ -1006,6 +1033,7 @@
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
         - var_time_type == 'ntpd'
+        - ntpdinstalled.stdout != ""
 
     - name: PHTN-50-000121 - Chrony - Check to see if Chrony is installed
       ansible.builtin.shell: |
@@ -1015,7 +1043,6 @@
       failed_when: chronyinstalled.rc == 2
       changed_when: false
       when:
-        - run_time_install | bool
         - var_time_type == 'chrony'
 
     - name: PHTN-50-000121 - Chrony - Install
@@ -1036,6 +1063,7 @@
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
         - var_time_type == 'chrony'
+        - chronyinstalled.stdout != ""
 
     - name: PHTN-50-000121 - Chrony - Remove any pool configurations
       ansible.builtin.lineinfile:
@@ -1048,6 +1076,7 @@
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
         - var_time_type == 'chrony'
+        - chronyinstalled.stdout != ""
 
     - name: PHTN-50-000121 - Chrony - Remove Unknown time Servers
       ansible.builtin.lineinfile:
@@ -1060,6 +1089,7 @@
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
         - var_time_type == 'chrony'
+        - chronyinstalled.stdout != ""
 
     - name: PHTN-50-000121 - Chrony - Configure time Servers
       ansible.builtin.lineinfile:
@@ -1075,6 +1105,7 @@
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
         - var_time_type == 'chrony'
+        - chronyinstalled.stdout != ""
 
     - name: PHTN-50-000121 - Timesyncd - Configure time Servers
       ansible.builtin.lineinfile:
@@ -2276,6 +2307,14 @@
   tags: [PHTN-50-000237]
   when: run_aide_config | bool
   block:
+    - name: PHTN-50-000237 - Check to see if AIDE is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^aide-
+      register: aideinstalled
+      failed_when: aideinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-50-000237 - Copy aide.conf template
       ansible.builtin.template:
         src: aide.conf
@@ -2284,18 +2323,25 @@
         group: root
         mode: "0600"
         force: true
+      when:
+        - aideinstalled.stdout != ""
 
     - name: PHTN-50-000237 - Check to see if AIDE is initialized
       ansible.builtin.command: aide --check
       register: aidecheckoutput
       changed_when: false
       failed_when: aidecheckoutput.rc == 2
+      when:
+        - aideinstalled.stdout != ""
 
     - name: PHTN-50-000237 - Initialize AIDE database
       ansible.builtin.command: aide --init
       register: aideinitoutput
       changed_when: aideinitoutput.rc == 0
-      when: aidecheckoutput.rc != 0
+      when:
+        - aidecheckoutput.rc is defined
+        - aidecheckoutput.rc != 0
+        - aideinstalled.stdout != ""
 
     - name: PHTN-50-000237 - Copy AIDE database
       ansible.builtin.copy:
@@ -2307,4 +2353,6 @@
         remote_src: true
       when:
         - aideinitoutput is defined
+        - aidecheckoutput.rc is defined
         - aidecheckoutput.rc != 0
+        - aideinstalled.stdout != ""

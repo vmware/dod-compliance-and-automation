@@ -59,7 +59,7 @@ run_users_duplicate_uids: true
 run_pam_unix_sha512: true
 # PHTN-50-000066
 run_enable_selinux: true
-run_selinux_install: false
+run_selinux_install: true
 # PHTN-50-000067
 run_kernel_dmesg_restrict: true
 # PHTN-50-000068
@@ -98,7 +98,7 @@ run_auditd_conf_space_left: true
 run_time_sync: true
 run_time_install: false
 # PHTN-50-000127
-run_install_aide: false
+run_install_aide: true
 # PHTN-50-000130
 run_tdnf_conf_gpgcheck: true
 # PHTN-50-000133
