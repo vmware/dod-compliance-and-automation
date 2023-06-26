@@ -150,7 +150,8 @@ Starting in vCenter 7.0 U3L there is a 3rd entry for `url.access-deny` displayed
 
 **Workaround:**
 
-- Use the following new check and fix text for this control.  
+- Remove any duplicate `url.access-deny` entires added to `/opt/vmware/etc/lighttpd/lighttpd.conf`.  
+- Use the new check and fix text below for this control.  
 ```
 ## New Check
 
