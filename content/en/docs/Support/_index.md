@@ -1,7 +1,7 @@
 ---
 title: "Support"
 linkTitle: "Support"
-weight: 3
+weight: 5
 description: >
   Support for Official STIGs, STIG Readiness Guides, and automation is provided through a variety of channels depending on the situation. It is important to adhere to the supported scenarios detailed here to avoid issues in unsupported situations.  
 ---

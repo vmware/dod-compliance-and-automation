@@ -1,7 +1,7 @@
 ---
 title: "Automation Tools"
 linkTitle: "Automation Tools"
-weight: 2
+weight: 3
 description: >
   Automation tools used in this project.
 ---

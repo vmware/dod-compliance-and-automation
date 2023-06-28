@@ -19,4 +19,6 @@ The example automation provided will help with the following tasks:
 
 ## Where should I go next?
 
+* [Best Practices](/docs/best-practices/): Learn about general best practices for implementing STIGs.
 * [Automation Tools](/docs/automation-tools/): Learn about the tools we use for STIG automation.
+* [Tutorials](/docs/tutorials/): Product specific tutorials on implementing STIGs.
