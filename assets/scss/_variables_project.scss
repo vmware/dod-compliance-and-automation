@@ -7,3 +7,10 @@ Add styles or override variables from the theme here.
 .row {
   justify-content: center;
 }
+
+/*
+
+Update td-content to make reports look better
+
+*/
+.td-content { height: 80% !important; }
