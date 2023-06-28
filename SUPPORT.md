@@ -31,6 +31,7 @@ Examples:
 ## Unsupported Scenarios
 - Content and product version mismatched. For example applying the vSphere 7 STIG to vSphere 8.
 - Attempting to apply guidance from one STIG to a product it was not intended for.
+- A product that is no longer generally supported by VMware. See the [VMware Product Lifecycle Matrix](https://lifecycle.vmware.com/) for product end of general support dates.
 
 
 ## Automation Support
