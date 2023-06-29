@@ -1,0 +1,25 @@
+# Inputs for NGINX
+nginx_conf_path: /etc/nginx/nginx.conf
+limit_conn_ip_limit: '100'
+limit_conn_server_limit: '1000'
+nginx_ssl_ciphers: 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256'
+# Inputs for Photon OS.
+authprivlog: /var/log/audit/auth.log
+sshdcommand: "sshd -T -C 'user=vcf'"
+# Enter environment specific syslog server with port. replace.local:514
+syslogServer: 'replace.local:514'
+# SDDC Manager Application
+# Enter SDDC Manager FQDN/IP
+sddcManager: 'sddc-manager.vsphere.local'
+# Enter bearer token for API based tests
+bearerToken: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqd...'
+# Set to true if file based/sftp backups are used for SDDC Manager. Set to false if image based backups are used.
+sftpBackupsEnabled: true
+# Enter environment specific sftp server.
+sftpServer: '10.1.2.3'
+# Enter environment specific ntp servers. This is an array.
+ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
+# Enter latest version of SDDC manager with build. 4.5.1.0-21682411
+currentVersion: '4.5.1.0-21682411'
+# Enter myvmware account used to pull updates in SDDC Manager if used.
+myVmwareAccount: 'myvmwarevcfaccount@test.local'
