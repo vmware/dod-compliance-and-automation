@@ -1,15 +1,26 @@
 # General
-nsxManager: '10.218.132.63'
-sessionToken: 'a5928386...'
-sessionCookieId: 'JSESSIONID=2037BE72AC484...'
+# NSX Manager IP or FQDN
+nsxManager: '10.215.77.149'
+# Session token generated for access to NSX
+sessionToken: 'ead781b8-0e0c-456f-a04a-584e9ae2e45a'
+# Session cookie id generated for access to NSX. Example 'JSESSIONID=2A165FCF851CA50FCD038DFC8E770038'
+sessionCookieId: 'JSESSIONID=A6903A10F3AE7EB328F12EAF796053F5'
 # Manager
+# Enter the environment specific syslog server vCenter should be forwarding logs to.
 syslogServers:
-  - 'loginsight.vmware.com'
+  - 'loginsight.test.com'
+# Enter the environment specific time servers.
 ntpServer1: 'time-a-g.nist.gov'
 ntpServer2: 'time-b-g.nist.gov'
-nsxtVersion: '4.1.0.0'
+# Enter latest NSX version. Example '4.1.1.0'
+nsxtVersion: '4.1.1.0'
+# Enter an array of T0 Gateways that are approved to have multicast enabled.
 t0multicastlist: []
+# Enter an array of T0 Gateways interfaces that are approved to have multicast enabled.
 t0mcinterfacelist: []
+# Enter an array of T0 Gateways that are approved to have DHCP enabled.
 t0dhcplist: []
+# Enter an array of T1 Gateways that are approved to have DHCP enabled.
 t1dhcplist: []
+# Enter an array of T1 Gateways that are approved to have multicast enabled.
 t1multicastlist: []
