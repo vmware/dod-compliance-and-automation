@@ -1,0 +1,7 @@
+include_controls 'dfw'
+include_controls 'manager'
+include_controls 'sdn'
+include_controls 't0fw'
+include_controls 't0router'
+include_controls 't1fw'
+include_controls 't1router'

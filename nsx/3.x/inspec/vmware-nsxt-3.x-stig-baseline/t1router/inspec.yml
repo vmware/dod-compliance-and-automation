@@ -1,0 +1,33 @@
+name: VMware NSX-T Tier 1 Gateway RTR STIG InSpec Profile
+title: VMware NSX-T Tier 1 Gateway RTR STIG InSpec Profile
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.1
+
+inputs:
+- name: nsxManager
+  type: string
+  value: ""
+  description: "IP or FQDN of NSX-T Manager"
+# We use session based authentication in this profile to avoid username/pass   See https://code.vmware.com/apis/1124/nsx-t on how to generate the session token and you will also need the JSESSIONID cookie
+- name: sessionToken
+  type: string
+  value: ""
+  description: "X-XSRF-TOKEN session token for authentication"
+  sensitive: true
+- name: sessionCookieId
+  type: string
+  value: ""
+  description: "JSESSIONID Cookie in the format JSESSIONID=ECEF0CE603677B7FC5F34523714B7F5A for example"
+  sensitive: true
+- name: t1dhcplist
+  type: array
+  description: Provide a list of T1 IDs that should have a dhcp server enabled
+  value: []
+- name: t1multicastlist
+  type: array
+  description: Provide a list of T1 IDs that should have multicast enabled
+  value: []
