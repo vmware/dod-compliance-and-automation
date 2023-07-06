@@ -18,7 +18,7 @@ Versions listed below were used for this documentation. Other versions of these 
 * STIG Viewer 2.17
 * An NSX 4.x environment. 4.1.0.2 was used in these examples with 1 T0 Gateway configured with BGP to an upstream router and 1 T1 Gateway deployed.
 
-## Auditing NSX-T
+## Auditing NSX
 ### Generate API Session Token
 This profile uses Session-Based authentication to authenticate with NSX for auditing. A session token and cookie must be generated and provided an input for the profile. This can be generated in various ways via curl, tools like Postman, etc. For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1583/nsx-t).
 
