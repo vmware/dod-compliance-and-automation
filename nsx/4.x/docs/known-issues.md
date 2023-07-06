@@ -2,7 +2,7 @@
 
 # Known Issues
 
-This document outlines known issues with the VCF 5.x STIG Readiness Guide content, including workarounds if known.
+This document outlines known issues with the NSX 4.x STIG Readiness Guide content, including workarounds if known.
 
 ## What should I do if...
 
@@ -14,6 +14,6 @@ Each known issue links off to an existing GitHub issue. If you have additional q
 
 Please check the [open](https://github.com/vmware/dod-compliance-and-automation/issues) and [closed](https://github.com/vmware/dod-compliance-and-automation/issues?q=is%3Aissue+is%3Aclosed) issues in the issue tracker for the details of your bug. If you can't find it, or if you're not sure, open a new issue.
 
-## SDDC Manager
+## NSX Manager
 
 No known issues at this time.  

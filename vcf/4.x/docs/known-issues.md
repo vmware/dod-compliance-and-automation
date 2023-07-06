@@ -2,7 +2,7 @@
 
 # Known Issues
 
-This document outlines known issues with the VCF 5.x STIG Readiness Guide content, including workarounds if known.
+This document outlines known issues with the VCF 4.x STIG Readiness Guide content, including workarounds if known.
 
 ## What should I do if...
 
