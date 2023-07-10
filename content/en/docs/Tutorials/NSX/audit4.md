@@ -5,7 +5,7 @@ description: >
   Auditing NSX 4.x for STIG Compliance
 ---
 ## Overview
-Auditing NSX 4.x for STIG compliance involves scanning the NSX Managers and any gateways deployed.
+Auditing NSX 4.x for STIG compliance involves scanning the NSX Managers, DFW, and any gateways deployed.
 
 To audit NSX using InSpec we utilize the local transport to connect via the REST API and query it's configuration.  
 
