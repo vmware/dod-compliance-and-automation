@@ -1,0 +1,30 @@
+---
+
+- name: "T0FW-3X-000019-28 - Get existing flood protection profile mapping for Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:FloodProtectionProfileBindingMap%20AND%20parent_path:*{{ var_outer_t0.id }})"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: GET
+    status_code: 200
+  register: gateway_fpp_map
+  changed_when: false
+
+- name: "T0FW-3X-000019-28 - Apply flood protection profile mapping to Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-0s/{{ var_outer_t0.id }}/flood-protection-profile-bindings/default"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: PUT
+    body: "{{ lookup('template', './t0fw_apply_flood_prot_prof.json.j2') | to_json }}"
+    body_format: json
+    status_code: 200
+  register: gateway_fpp_map_apply
+  when:
+    - gateway_fpp_map.json.result_count == 0
+  changed_when:
+    - gateway_fpp_map_apply.status == 200

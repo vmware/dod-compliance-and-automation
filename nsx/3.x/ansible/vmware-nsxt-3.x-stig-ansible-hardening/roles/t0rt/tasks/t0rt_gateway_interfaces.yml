@@ -1,0 +1,21 @@
+- name: T0RT-3X-000051 Updating Interfaces - uRPF
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-0s/{{ t0id }}/locale-services/default/interfaces/{{ item_rule_inner.id }}?override=false"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: PUT
+    body: "{{ lookup('template', './t0rt_update_interface_urpf.json.j2') | to_json }}"
+    body_format: json
+    status_code: 200
+  when:
+    - obj.result_count > 0
+    - item_rule_inner.urpf_mode != "STRICT"
+  with_items:
+    - "{{ obj.results }}"
+  loop_control:
+    loop_var: item_rule_inner
+  register: response_urpf
+  changed_when:
+    - response_urpf.status == 200

@@ -1,0 +1,257 @@
+---
+###################################################################################################################################
+- name: Get all Tier-0 Gateways for use in tasks
+  tags: [always]
+  block:
+    - name: Get all Tier-0 Gateways for use in tasks
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-0s"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: t0gateways
+      changed_when: false
+
+###################################################################################################################################
+- name: T0FW-3X-000002
+  tags: [T0FW-3X-000002]
+  when: run_t0fw_unpublished_rules | bool
+  block:
+    - name: T0FW-3X-000002 - The NSX-T Tier-0 Gateway Firewall must not have any unpublished firewall policies or rules.
+      ansible.builtin.debug:
+        msg: "T0FW-3X-000002 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: T0FW-3X-000006 - The NSX-T Tier-0 Gateway Firewall must generate traffic log entries containing information to establish the details of the event.
+  tags: [T0FW-3X-000006]
+  when: run_t0fw_rule_logging | bool
+  block:
+    - name: T0FW-3X-000006 - The NSX-T Tier-0 Gateway Firewall must generate traffic log entries containing information to establish the details of the event. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "T0FW-3X-000006 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: T0FW-3X-000006 - Loop through Tier-0 Gateways and update firewall rules
+      ansible.builtin.include_tasks:
+        file: t0fw_update_rule_logging_get_policies.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+        - not var_outer_t0.disable_firewall
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: T0FW-3X-000011
+  tags: [T0FW-3X-000011]
+  when: run_t0fw_syslog_tls | bool
+  block:
+    - name: T0FW-3X-000011 - The NSX-T Tier-0 Gateway Firewall must be configured to use the TLS or LI-TLS protocols to configure and secure communications with the central audit server.
+      ansible.builtin.debug:
+        msg: "T0FW-3X-000011 - This control must be manually remediated."
+      changed_when: false
+
+##################################################################################################################################
+- name: T0FW-3X-000019 - The NSX-T Tier-0 Gateway Firewall must block outbound traffic containing denial-of-service (DoS) attacks to protect against the use of internal information systems to launch any DoS attacks against other networks or endpoints.
+  tags: [T0FW-3X-000019, T0FW-3X-000028]
+  when: run_t0fw_floodprotprof | bool
+  block:
+    - name: T0FW-3X-000019-28 - The NSX-T Tier-0 Gateway Firewall must block outbound traffic containing DoS attacks to protect against the use of internal information systems to launch any DoS attacks against other networks or endpoints. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "T0FW-3X-000019-28 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: T0FW-3X-000019-28 - Check if flood protection profiles exists
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:(GatewayFloodProtectionProfile))"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: t0_floodprot_prof
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: T0FW-3X-000019-28 - Create a flood protection profile if doesn't exist
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/flood-protection-profiles/{{ var_t0fw_fpp_name }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0fw_create_flood_prot_prof.json.j2') }}"
+        body_format: json
+        status_code: 200
+      register: response_create
+      when:
+        - t0gateways.json.result_count != 0
+        - t0_floodprot_prof.json.result_count == 0
+      changed_when:
+        - response_create.status == 200
+
+    - name: T0FW-3X-000019-28 - Update existing flood protection profiles
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/flood-protection-profiles/{{ item.id }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0fw_upd_flood_prot_prof.json.j2') | to_json }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ t0_floodprot_prof.json.results }}"
+      register: response_update
+      when:
+        - t0gateways.json.result_count != 0
+        - t0_floodprot_prof.json.result_count != 0
+        - (item.udp_active_flow_limit != var_t0fw_fpp_udp_active_flow_limit) or
+          (item.icmp_active_flow_limit != var_t0fw_fpp_icmp_active_flow_limit) or
+          (item.tcp_half_open_conn_limit != var_t0fw_fpp_tcp_half_open_conn_limit) or
+          (item.other_active_conn_limit != var_t0fw_fpp_other_active_conn_limit)
+      changed_when:
+        - response_update.status == 200
+
+    - name: T0FW-3X-000019-28 - Loop through Tier-0 Gateways and apply flood protection profile if needed
+      ansible.builtin.include_tasks:
+        file: t0fw_apply_flood_protection_profile.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: T0FW-3X-000021 - The NSX-T Distributed Firewall must deny network communications traffic by default and allow network communications traffic by exception.
+  tags: [T0FW-3X-000021]
+  when: run_t0fw_default_rule_action | bool
+  block:
+    - name: T0FW-3X-000021 - The NSX-T Distributed Firewall must deny network communications traffic by default and allow network communications traffic by exception. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "T0FW-3X-000021 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: T0FW-3X-000021 - Loop through Tier-0 Gateways and update default firewall rule action
+      ansible.builtin.include_tasks:
+        file: t0fw_update_default_rule_action.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: T0FW-3X-000030 - The NSX-T Tier-0 Gateway Firewall must apply ingress filters to traffic that is inbound to the network through any active external interface.
+  tags: [T0FW-3X-000030]
+  when: run_t0fw_gwfw_rules | bool
+  block:
+    - name: T0FW-3X-000030 - The NSX-T Tier-0 Gateway Firewall must apply ingress filters to traffic that is inbound to the network through any active external interface.
+      ansible.builtin.debug:
+        msg: "T0FW-3X-000030 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: T0FW-3X-000036 - The NSX-T Distributed Firewall must configure SpoofGuard to block outbound IP packets that contain illegitimate packet attributes.
+  tags: [T0FW-3X-000036]
+  when: run_t0fw_spoofguard_prof | bool
+  block:
+    - name: T0FW-3X-000036 - The NSX-T Distributed Firewall must configure SpoofGuard to block outbound IP packets that contain illegitimate packet attributes. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "T0FW-3X-000036 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: T0FW-3X-000036 - List SpoofGuard segment profiles excluding the default profile which cannot be modified
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:SpoofGuardProfile%20AND%20!id:default-spoofguard-profile)"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: t0fw_spfgrd_prof_list
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: T0FW-3X-000036 - Create SpoofGuard segment profile with port binding enabled if none exist
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/spoofguard-profiles/{{ var_t0fw_spoofguard_profile_name }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './t0fw_spoof_guard_prof_create.json.j2') }}"
+        body_format: json
+        status_code: 200
+      when:
+        - t0fw_spfgrd_prof_list.json.result_count == 0
+        - t0gateways.json.result_count != 0
+      register: t0fw_spfgrd_prof_wportbind_create
+      changed_when:
+        - t0fw_spfgrd_prof_wportbind_create.status == 200
+
+    - name: T0FW-3X-000036 - Update SpoofGuard segment profiles with port binding disabled
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/spoofguard-profiles/{{ item.id }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0fw_spoof_guard_prof_patch.json') }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ t0fw_spfgrd_prof_list.json.results }}"
+      when:
+        - t0fw_spfgrd_prof_list.json.result_count != 0
+        - not item.address_binding_allowlist
+        - t0gateways.json.result_count != 0
+      register: t0fw_spfgrd_prof_wportbind_update
+      changed_when:
+        - t0fw_spfgrd_prof_wportbind_update.status == 200
+
+    - name: T0FW-3X-000036 - Get all segments
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/segments"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: t0fwsegmentlist
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: T0FW-3X-000036 - Loop through segments and update Spoofguard profile if necessary
+      ansible.builtin.include_tasks:
+        file: t0fw_segments_update_spoofguard.yml
+      with_items: "{{ t0fwsegmentlist.json.results }}"
+      when:
+        - t0fwsegmentlist.json.result_count != 0
+        - t0gateways.json.result_count != 0

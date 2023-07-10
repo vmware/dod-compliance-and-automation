@@ -1,0 +1,49 @@
+---
+- name: "TDFW-3X-000036 - Get current spoofguard profile for segment: {{ item.display_name }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/segments/{{ item.id }}/segment-security-profile-binding-maps"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: GET
+    status_code: 200
+  register: segmaps
+  changed_when: false
+  failed_when:
+    - segmaps.status != 200
+
+- name: "TDFW-3X-000036 - Update spoofguard profile for segment: {{ item.display_name }} if using default spoofguard profile"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/segments/{{ item.id }}/segment-security-profile-binding-maps/{{ segmaps.json.results[0].id }}"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: PATCH
+    body: "{{ lookup('template', './dfw_spoof_guard_prof_segment_map.json.j2') | to_json }}"
+    body_format: json
+    status_code: 200
+  register: response
+  when:
+    - segmaps.json.result_count != 0
+    - segmaps.json.results[0].spoofguard_profile_path == "/infra/spoofguard-profiles/default-spoofguard-profile"
+  changed_when:
+    - response.status == 200
+
+- name: "TDFW-3X-000036 - Update spoofguard profile for segment: {{ item.display_name }} if mapping doesn't exist"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/segments/{{ item.id }}/segment-security-profile-binding-maps/{{ var_dfw_segment_security_map_name }}"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: PATCH
+    body: "{{ lookup('template', './dfw_spoof_guard_prof_segment_map.json.j2') | to_json }}"
+    body_format: json
+    status_code: 200
+  register: response
+  when:
+    - segmaps.json.result_count == 0
+  changed_when:
+    - response.status == 200

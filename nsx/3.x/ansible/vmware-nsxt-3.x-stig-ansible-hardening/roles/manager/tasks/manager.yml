@@ -1,0 +1,566 @@
+---
+
+###################################################################################################################################
+# TNDM-3X-000012 - The NSX-T Manager must be configured to enforce the limit of three consecutive invalid logon attempts, after which time it must block any login attempt for 15 minutes.
+- name: TNDM-3X-000012 - The NSX-T Manager must be configured to enforce the limit of three consecutive invalid logon attempts, after which time it must block any login attempt for 15 minutes.
+  tags: [TNDM-3X-000012, TNDM-3X-000041]
+  when: run_mgr_auth_policy | bool
+  block:
+    - name: TNDM-3X-000012 - Get current authentication policy
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/aaa/auth-policy"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: authpolicy
+      changed_when: false
+
+    - name: TNDM-3X-000012 - Update authentication policy
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/aaa/auth-policy"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_auth_policy.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - (authpolicy.json.api_failed_auth_lockout_period != 900) or
+          (authpolicy.json.api_failed_auth_reset_period != 900) or
+          (authpolicy.json.api_max_auth_failures != 3) or
+          (authpolicy.json.cli_failed_auth_lockout_period != 900) or
+          (authpolicy.json.cli_max_auth_failures != 3) or
+          (authpolicy.json.minimum_password_length != 15)
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: TNDM-3X-000012 - Pause for service restart when changes are made to auth policy
+      ansible.builtin.pause:
+        seconds: 30
+      when:
+        - (authpolicy.json.api_failed_auth_lockout_period != 900) or
+          (authpolicy.json.api_failed_auth_reset_period != 900) or
+          (authpolicy.json.api_max_auth_failures != 3) or
+          (authpolicy.json.cli_failed_auth_lockout_period != 900) or
+          (authpolicy.json.cli_max_auth_failures != 3) or
+          (authpolicy.json.minimum_password_length != 15)
+
+###################################################################################################################################
+# TNDM-3X-000052 - The NSX-T Manager must terminate the device management session at the end of the session or after 10 minutes of inactivity.
+# - name: TNDM-3X-000052 - The NSX-T Manager must terminate the device management session at the end of the session or after 10 minutes of inactivity.
+#   tags: [TNDM-3X-000052,TNDM-3X-000076,TNDM-3X-000080,TNDM-3X-000101]
+#   when: run_mgr_api_session_timeout | bool
+#   block:
+    # Moving this part to 83 and the http service log level update. This returns a 500 error for some reason when done via Ansible.
+    # - name: TNDM-3X-000052 - Get current API service session timeout
+    #   ansible.builtin.uri:
+    #     url: "https://{{ var_nsx_manager }}/api/v1/cluster/api-service"
+    #     validate_certs: false
+    #     headers:
+    #       Cookie: "{{ var_jsession_id }}"
+    #       X-XSRF-TOKEN: "{{ var_session_token }}"
+    #     method: GET
+    #   register: apisessiontimeout
+    #   changed_when: false
+
+    # - name: TNDM-3X-000052 - Update API service policy
+    #   ansible.builtin.uri:
+    #     url: "https://{{ var_nsx_manager }}/api/v1/cluster/api-service"
+    #     validate_certs: false
+    #     headers:
+    #       Cookie: "{{ var_jsession_id }}"
+    #       X-XSRF-TOKEN: "{{ var_session_token }}"
+    #     method: PUT
+    #     body: "{{ lookup('template', './update_api_session_timeout.json.j2') | to_json }}"
+    #     body_format: json
+    #     status_code:
+    #       - 200
+    #       - 202
+    #   register: response
+    #   when:
+    #     - (apisessiontimeout.json.session_timeout != 600) or
+    #       (apisessiontimeout.json.client_api_concurrency_limit != 40) or
+    #       (apisessiontimeout.json.client_api_rate_limit != 100) or
+    #       (apisessiontimeout.json.global_api_concurrency_limit != 199) or
+    #       (apisessiontimeout.json | community.general.json_query('protocol_versions[?name==`TLSv1.1`].enabled') == [true])
+    #   changed_when:
+    #     - response.status == 200 or response.status == 202
+
+    # - name: TNDM-3X-000052 - Pause for service restart when changes are made to API service policy
+    #   ansible.builtin.pause:
+    #     seconds: 30
+    #   when:
+    #     - (apisessiontimeout.json.session_timeout != 600) or
+    #       (apisessiontimeout.json.client_api_concurrency_limit != 40) or
+    #       (apisessiontimeout.json.client_api_rate_limit != 100) or
+    #       (apisessiontimeout.json.global_api_concurrency_limit != 199) or
+    #       apisessiontimeout.json | community.general.json_query('protocol_versions[?name==`TLSv1.1`].enabled') == "true"
+
+- name: TNDM-3X-000052 - The NSX-T Manager must terminate the device management session at the end of the session or after 10 minutes of inactivity.
+  tags: [TNDM-3X-000052, TNDM-3X-000076]
+  when: run_mgr_cli_timeout | bool
+  block:
+    - name: TNDM-3X-000052 - Get current node CLI timeout
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: clitimeout
+      changed_when: false
+
+    - name: TNDM-3X-000052 - Update node CLI timeout
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_cli_timeout.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - clitimeout.json.cli_timeout != 600
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+# TNDM-3X-000068 - The NSX-T Manager must be configured to synchronize internal information system clocks using redundant authoritative time sources.
+- name: TNDM-3X-000068 - The NSX-T Manager must be configured to synchronize internal information system clocks using redundant authoritative time sources.
+  tags: [TNDM-3X-000068]
+  when: run_mgr_ntp_servers | bool
+  block:
+    - name: TNDM-3X-000068 - Get node NTP configuration
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ntp"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: ntpservers
+      changed_when: false
+
+    - name: TNDM-3X-000068 - Update node NTP configuration
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ntp"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_ntp_servers.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+      register: response
+      when:
+        - (var_ntp_server1 not in ntpservers.json.service_properties.servers) or
+          (var_ntp_server2 not in ntpservers.json.service_properties.servers) or
+          (ntpservers.json.service_properties.servers | length < 2)
+      changed_when:
+        - response.status == 200
+
+###################################################################################################################################
+# TNDM-3X-000069 - The NSX-T Manager must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC).
+- name: TNDM-3X-000069 - The NSX-T Manager must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC).
+  tags: [TNDM-3X-000069]
+  when: run_mgr_timezone | bool
+  block:
+    - name: TNDM-3X-000069 - Get current timezone
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: timezone
+      changed_when: false
+
+    - name: TNDM-3X-000069 - Update node timezone
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_timezone.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - timezone.json.timezone != "Etc/UTC"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+# TNDM-3X-000069 - The NSX-T Manager must generate audit records when successful/unsuccessful attempts to delete administrator privileges occur.
+- name: TNDM-3X-000083 - The NSX-T Manager must generate audit records when successful/unsuccessful attempts to delete administrator privileges occur.
+  tags: [TNDM-3X-000083, TNDM-3X-000052]
+  when: run_service_log_levels | bool
+  block:
+    - name: TNDM-3X-000083 - Get current async_replicator service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/async_replicator"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: asyncservice
+      changed_when: false
+
+    - name: TNDM-3X-000083 - Update async_replicator service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/async_replicator"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_async_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - asyncservice.json.service_properties.logging_level != "INFO"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: TNDM-3X-000083 - Get current http service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/http"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: httpservice
+      changed_when: false
+
+    - name: TNDM-3X-000083 - Construct http service payload json from template
+      ansible.builtin.template:
+        src: update_node_http_loglevel.json.j2
+        dest: "{{ role_path }}/templates/update_node_http_loglevel.json"
+      with_items:
+        - "{{ httpservice.json }}"
+      when:
+        - (httpservice.json.service_properties.logging_level != "INFO") or
+          (httpservice.json.service_properties.session_timeout != 600) or
+          (httpservice.json.service_properties.client_api_concurrency_limit != 40) or
+          (httpservice.json.service_properties.client_api_rate_limit != 100) or
+          (httpservice.json.service_properties.global_api_concurrency_limit != 199) or
+          (httpservice.json | community.general.json_query('service_properties.protocol_versions[?name==`TLSv1.1`].enabled') == [true])
+
+    - name: TNDM-3X-000083 - Prepare http service payload json for update
+      ansible.builtin.command: sed -i 's/NEWLINESPLVAR/\\n/g' "{{ role_path }}/templates/update_node_http_loglevel.json"
+      when:
+        - (httpservice.json.service_properties.logging_level != "INFO") or
+          (httpservice.json.service_properties.session_timeout != 600) or
+          (httpservice.json.service_properties.client_api_concurrency_limit != 40) or
+          (httpservice.json.service_properties.client_api_rate_limit != 100) or
+          (httpservice.json.service_properties.global_api_concurrency_limit != 199) or
+          (httpservice.json | community.general.json_query('service_properties.protocol_versions[?name==`TLSv1.1`].enabled') == [true])
+
+    - name: TNDM-3X-000083 - Update http service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/http"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_http_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ httpservice.json }}"
+      register: response
+      when:
+        - (httpservice.json.service_properties.logging_level != "INFO") or
+          (httpservice.json.service_properties.session_timeout != 600) or
+          (httpservice.json.service_properties.client_api_concurrency_limit != 40) or
+          (httpservice.json.service_properties.client_api_rate_limit != 100) or
+          (httpservice.json.service_properties.global_api_concurrency_limit != 199) or
+          (httpservice.json | community.general.json_query('service_properties.protocol_versions[?name==`TLSv1.1`].enabled') == [true])
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: TNDM-3X-000083 - Clean up http service payload json file
+      ansible.builtin.command: rm -rf "{{ role_path }}/templates/update_node_http_loglevel.json"
+      when:
+        - (httpservice.json.service_properties.logging_level != "INFO") or
+          (httpservice.json.service_properties.session_timeout != 600) or
+          (httpservice.json.service_properties.client_api_concurrency_limit != 40) or
+          (httpservice.json.service_properties.client_api_rate_limit != 100) or
+          (httpservice.json.service_properties.global_api_concurrency_limit != 199) or
+          (httpservice.json | community.general.json_query('service_properties.protocol_versions[?name==`TLSv1.1`].enabled') == [true])
+
+    - name: TNDM-3X-000083 - Get current manager service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/manager"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: managerservice
+      changed_when: false
+
+    - name: TNDM-3X-000083 - Update manager service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/manager"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_manager_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - managerservice.json.service_properties.logging_level != "INFO"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: TNDM-3X-000083 - Get current policy service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/policy"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: policyservice
+      changed_when: false
+
+    - name: TNDM-3X-000083 - Update policy service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/policy"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_policy_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - policyservice.json.service_properties.logging_level != "INFO"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: TNDM-3X-000083 - Pause for service restarts
+      ansible.builtin.pause:
+        seconds: 30
+
+###################################################################################################################################
+# TNDM-3X-000098 - The NSX-T Manager must not provide environment information to third parties.
+- name: TNDM-3X-000098 - The NSX-T Manager must not provide environment information to third parties.
+  tags: [TNDM-3X-000098]
+  when: run_mgr_disable_ceip_acceptance | bool
+  block:
+    - name: TNDM-3X-000098 - Get telemetry config
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/telemetry/config"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: telemetry
+      changed_when: false
+
+    - name: TNDM-3X-000098 - Update ceip acceptance to false
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/telemetry/config"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_ceip_acceptance.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ telemetry.json }}"
+      register: response
+      when:
+        - telemetry.json.ceip_acceptance
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+# TNDM-3X-000099 - The NSX-T Manager must disable SSH.
+- name: TNDM-3X-000099 - The NSX-T Manager must disable SSH.
+  tags: [TNDM-3X-000099]
+  when: run_mgr_disable_ssh | bool
+  block:
+    - name: TNDM-3X-000099 - Get manager ssh service status
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ssh/status"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: sshsstatus
+      changed_when: false
+
+    - name: TNDM-3X-000099 - Stop SSH service
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ssh/notify_mpa?action=stop"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: POST
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - sshsstatus.json.runtime_state != "stopped"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: TNDM-3X-000099 - Get manager ssh service properties
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ssh"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: sshservice
+      changed_when: false
+
+    - name: TNDM-3X-000099 - Update manager ssh service properties
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ssh"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_ssh_service.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ sshservice.json }}"
+      register: response
+      when:
+        - sshservice.json.service_properties.start_on_boot
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+# TNDM-3X-000100 - The NSX-T Manager must disable unused local accounts.
+- name: TNDM-3X-000100 - The NSX-T Manager must disable unused local accounts.
+  tags: [TNDM-3X-000100]
+  when: run_mgr_disable_local_accounts | bool
+  block:
+    - name: TNDM-3X-000100 - Get all the users
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/users"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: localusers
+      changed_when: false
+
+     ## To-Do: TNDM-3X-000100 - Status is not a modifiable property, this needs to checked with nsx-team folks. (product team)
+    - name: TNDM-3X-000100 - Deactivate audit/guestuser1/guestuser2 accounts
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/users/{{ item.userid }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_local_users.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      when:
+        - item.username == 'audit' or
+          item.username == 'guestuser1' or
+          item.username == 'guestuser2'
+        - item.status == "ACTIVE"
+      with_items:
+        - "{{ localusers.json.results }}"
+      register: response
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+# TNDM-3X-000103 - The NSX-T Manager must enable the global FIPS compliance mode for load balancers.
+- name: TNDM-3X-000103 - The NSX-T Manager must enable the global FIPS compliance mode for load balancers.
+  tags: [TNDM-3X-000103]
+  when: run_mgr_enable_fips_for_lbs | bool
+  block:
+    - name: TNDM-3X-000103 - Get manager infra global config
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/global-config"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: globalconfig
+      changed_when: false
+
+    - name: TNDM-3X-000103 - Update manager infra global config with fips
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/global-config"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './enable_fips_for_lbs.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ globalconfig.json }}"
+      register: response
+      when:
+        - not globalconfig.json.fips.lb_fips_enabled
+      changed_when:
+        - response.status == 200 or response.status == 202

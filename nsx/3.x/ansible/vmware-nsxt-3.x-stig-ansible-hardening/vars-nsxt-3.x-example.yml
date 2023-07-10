@@ -1,0 +1,134 @@
+# Manager variables
+# NSX Manager IP or FQDN
+var_nsx_manager: '10.43.173.83'
+# Session cookie id generated for access to NSX. Example 'JSESSIONID=2A165FCF851CA50FCD038DFC8E770038'
+var_jsession_id: 'JSESSIONID=77EE4288C048073598F50493167A881A'
+# Session token generated for access to NSX
+var_session_token: 'cabda93b-f2e9-406d-bcfa-ec56b9a07bce'
+# Enter the environment specific time servers.
+var_ntp_server1: 'time-a-g.nist.gov'
+var_ntp_server2: 'time-b-g.nist.gov'
+
+## Set to true/false to enable or disable controls
+# DFW
+# TDFW-3X-000002
+run_dfw_unpublished_rules: true
+# TDFW-3X-000005
+run_dfw_rule_logging: true
+# TDFW-3X-000019-28
+run_dfw_floodprotprof: true
+# TDFW-3X-000021 !!Caution if set to true this will set the default DFW rule to DROP!!
+run_dfw_default_rule_action: false
+var_dfw_default_rule_action_desired: "DROP"
+# TDFW-3X-000026
+run_dfw_syslog: true
+# TDFW-3X-000036
+run_dfw_spoofguard_prof: false
+# TDFW-3X-000042
+run_dfw_verify_time_based_rules: true
+
+# Manager
+# TNDM-3X-000012 TNDM-3X-000041
+run_mgr_auth_policy: true
+# TNDM-3X-000052 TNDM-3X-000080 TNDM-3X-000101
+run_mgr_api_session_timeout: true
+run_mgr_cli_timeout: true
+# TNDM-3X-000068
+run_mgr_ntp_servers: true
+# TNDM-3X-000069
+run_mgr_timezone: true
+# TNDM-3X-000083
+run_service_log_levels: true
+# TNDM-3X-000098
+run_mgr_disable_ceip_acceptance: true
+# TNDM-3X-000099
+run_mgr_disable_ssh: true
+# TNDM-3X-000100
+run_mgr_disable_local_accounts: true
+# TNDM-3X-000103
+run_mgr_enable_fips_for_lbs: true
+
+# T0FW
+# T0FW-3X-000002
+run_t0fw_unpublished_rules: true
+# T0FW-3X-000006
+run_t0fw_rule_logging: true
+# T0FW-3X-000011
+run_t0fw_syslog_tls: true
+# T0FW-3X-000019-28
+run_t0fw_floodprotprof: true
+# T0FW-3X-000021
+run_t0fw_default_rule_action: false
+var_t0fw_default_rule_action_desired: "DROP"
+# T0FW-3X-000030
+run_t0fw_gwfw_rules: true
+# T0FW-3X-000036
+run_t0fw_spoofguard_prof: false
+
+# T0RT
+# T0RT-3X-000003
+run_t0rt_bgp_reject_advertisements: true
+# T0RT-3X-000013
+run_t0rt_gateway_interface_pim_multicast: true
+# array of t0 interface ids that should have multicast enabled
+var_t0rt_gateway_interfaces_with_multicast_enabled: []
+# T0RT-3X-000016
+run_t0rt_remove_inactive_interfaces: true
+# T0RT-3X-000027
+run_t0rt_disable_dhcp: true
+# array of t0 ids that should have dhcp enabled
+var_t0rt_gateways_with_dhcp_enabled: []
+# T0RT-3X-000034
+run_t0rt_qos_segment_profile: true
+# T0RT-3X-000038
+run_t0rt_restrict_traffic: true
+# T0RT-3X-000051
+run_t0rt_gateway_urpf: true
+# T0RT-3X-000054
+run_t0rt_auth_routing_protocols: true
+# T0RT-3X-000055
+run_t0rt_uniq_key_per_as: true
+# T0RT-3X-000064,65,66
+run_t0rt_gateway_icmp: true
+# T0RT-3X-000067
+run_t0rt_bgp_nbr_maxroutes: true
+var_t0rt_upd_bgp_nbr_route_filter_max_routes: 200
+# T0RT-3X-000084
+run_t0rt_loopback_source_ibgp: true
+# T0RT-3X-000095
+run_t0rt_gateway_bgp_ospf: true
+# T0RT-3X-000096
+run_t0rt_gateway_multicast: true
+# array of t0 ids that should have multicast enabled
+var_t0rt_gateways_with_multicast_enabled: []
+
+# T1FW
+# T1FW-3X-000002
+run_t1fw_unpublished_rules: true
+# T1FW-3X-000005-06
+run_t1fw_rule_logging: true
+# T1FW-3X-000011-26
+run_t1fw_syslog_tls: true
+# T1FW-3X-000019-28
+run_t1fw_floodprotprof: true
+# T1FW-3X-000021
+run_t1fw_default_rule_action: false
+var_t1fw_default_rule_action_desired: "DROP"
+# T1FW-3X-000030
+run_t1fw_gwfw_rules: true
+# T1FW-3X-000036
+run_t1fw_spoofguard_prof: false
+
+# T1RT
+# T1RT-3X-000016
+run_t1rt_remove_inactive_interfaces: true
+# T1RT-3X-000027
+run_t1rt_disable_dhcp: true
+# array of t1 ids that should have dhcp enabled
+var_t1rt_gateways_with_dhcp_enabled: []
+# T1RT-3X-000034
+run_t1rt_qos: true
+# T1RT-3X-000084
+run_t1rt_gateway_multicast: true
+# array of t1 ids that should have multicast enabled
+var_t1rt_gateways_with_multicast_enabled: []

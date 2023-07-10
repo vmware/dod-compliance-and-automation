@@ -1,0 +1,9 @@
+- name: Iterating over policies
+  ansible.builtin.include_tasks: "{{ loop_rules }}.yml obj_inner={{ item_policy_outer.rules }}"
+  with_items: "{{ obj.results }}"
+  loop_control:
+    loop_var: item_policy_outer
+  vars:
+    policy_id: "{{ item_policy_outer.id }}"
+  when:
+    - obj.result_count > 0

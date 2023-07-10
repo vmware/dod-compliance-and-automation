@@ -1,0 +1,16 @@
+---
+
+- name: "NT0R-4X-000027 - Disable DHCP for Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-0s/{{ var_outer_t0.id }}"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: PATCH
+    body: "{{ lookup('template', './t0rt_disable_dhcp.json.j2') }}"
+    body_format: json
+    status_code: 200
+  register: response
+  changed_when:
+    - response.status == 200

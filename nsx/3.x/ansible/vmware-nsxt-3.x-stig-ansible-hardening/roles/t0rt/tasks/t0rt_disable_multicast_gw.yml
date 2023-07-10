@@ -1,0 +1,31 @@
+- name: T0RT-3X-000096 - Disable the multicast at the gateway level if multicast is not in use at the interface level.
+  block:
+    - name: T0RT-3X-000096 - Confirm if multicast settings are not enabled at the interface level.
+      ansible.builtin.set_fact:
+        gw_int_multicast_bools: "{{ gw_int_multicast_map | dict2items | selectattr('key', 'match', '^' + item_outer + '__.*') | map(attribute='value') | list }}"
+    - name: T0RT-3X-000096 - Get Multicast configuration before updating it
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-0s/{{ t0id }}/locale-services/default/multicast"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: gw_multicast_config
+      changed_when: false
+    - name: T0RT-3X-000096 - Disable Multicast at the gateway level as none of the interfaces have multicast enabled.
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-0s/{{ t0id }}/locale-services/default/multicast"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0rt_update_multicast.json.j2') }}"
+        body_format: json
+        status_code: 200
+      when: not gw_int_multicast_bools is any
+      loop_control:
+        loop_var: item_inner
+      with_items:
+        - "{{ gw_multicast_config.json }}"

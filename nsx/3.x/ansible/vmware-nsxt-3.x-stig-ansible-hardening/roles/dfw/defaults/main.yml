@@ -1,0 +1,17 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# TDFW-3X-000002
+run_dfw_unpublished_rules: true
+# TDFW-3X-000005
+run_dfw_rule_logging: true
+# TDFW-3X-000019-28
+run_dfw_floodprotprof: true
+# TDFW-3X-000021
+run_dfw_default_rule_action: false
+# TDFW-3X-000026
+run_dfw_syslog: true
+# TDFW-3X-000036
+run_dfw_spoofguard_prof: false
+# TDFW-3X-000042
+run_dfw_verify_time_based_rules: true

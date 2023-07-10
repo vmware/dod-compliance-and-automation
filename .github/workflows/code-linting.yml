@@ -256,6 +256,14 @@ jobs:
           gem install cookstyle
           ls -la
           cookstyle ./nsx/4.x/inspec/vmware-nsx-4.x-stig-baseline
+  ansiblelint-nsx3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "nsx/3.x/ansible/vmware-nsxt-3.x-stig-ansible-hardening/"
   ansiblelint-nsx4:
     runs-on: ubuntu-latest
     steps:

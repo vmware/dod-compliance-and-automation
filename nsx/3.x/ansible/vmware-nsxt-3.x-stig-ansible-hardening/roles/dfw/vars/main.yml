@@ -1,0 +1,21 @@
+---
+
+var_nsx_manager: ''
+var_jsession_id: ''
+var_session_token: ''
+
+# flood protection
+var_dfw_fpp_name: 'stig-dfw-flood-protection-profile'
+var_dfw_fpp_syncache: true
+var_dfw_fpp_rst_spoofing: true
+var_dfw_fpp_udp_active_flow_limit: 100
+var_dfw_fpp_icmp_active_flow_limit: 30
+var_dfw_fpp_tcp_half_open_conn_limit: 200
+var_dfw_fpp_other_active_conn_limit: 50
+
+# dfw allow, drop, reject
+var_dfw_default_rule_action_desired: "DROP"
+
+# spoofguard
+var_dfw_spoofguard_profile_name: 'stig-spoofguard-profile'
+var_dfw_segment_security_map_name: 'stig-segment-security-map'

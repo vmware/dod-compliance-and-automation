@@ -1,0 +1,9 @@
+- name: T0RT-3X-000096 - Map the Tier-0 gateway ID and corresponding interfaces.
+  ansible.builtin.set_fact:
+    gw_interfaces_multicast_info: "{{ gw_interfaces_multicast_info | combine({(t0id + '__' + item_inner.id): item_inner.multicast.enabled}) }}"
+  when:
+    - obj.result_count > 0
+  with_items:
+    - "{{ obj.results }}"
+  loop_control:
+    loop_var: item_inner

@@ -1,0 +1,52 @@
+{
+  "rules": [
+    {
+      "action": "DROP",
+      "resource_type": "Rule",
+      "id": "stig-icmp-rule",
+      "display_name": "stig-icmp-rule",
+      "source_groups": [
+          "ANY"
+      ],
+      "destination_groups": [
+          "ANY"
+      ],
+      "services": [
+          "/infra/services/ICMP_Destination_Unreachable",
+          "/infra/services/ICMP_Redirect"
+      ],
+      "service_entries": [
+          {
+              "protocol": "ICMPv4",
+              "icmp_type": 18,
+              "icmp_code": 0,
+              "resource_type": "ICMPTypeServiceEntry",
+              "marked_for_delete": false,
+              "overridden": false,
+              "_protection": "NOT_PROTECTED"
+          }
+      ],
+      "profiles": [
+          "ANY"
+      ],
+      "logged": true,
+      "scope": [
+        {% for int in interfacepaths %}
+        "{{ int }}",
+        {% endfor %}
+      ],
+      "disabled": false,
+      "notes": "STIG Rules for T0 Gateway ICMP traffic",
+      "direction": "IN_OUT",
+      "tag": "",
+      "ip_protocol": "IPV4_IPV6",
+    }
+  ],
+  "resource_type": "GatewayPolicy",
+  "id": "{{ var_t0rt_icmp_policy_name }}",
+  "display_name": "{{ var_t0rt_icmp_policy_name }}",
+  "category": "SharedPreRules",
+  "stateful": true,
+  "tcp_strict": true,
+  "locked": false,
+}

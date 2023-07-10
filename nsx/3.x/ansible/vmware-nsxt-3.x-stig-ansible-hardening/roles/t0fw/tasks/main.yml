@@ -1,0 +1,9 @@
+---
+- name: Include t0fw
+  ansible.builtin.include_tasks:
+    file: t0fw.yml
+    apply:
+      tags:
+        - t0fw
+  tags:
+    - always
