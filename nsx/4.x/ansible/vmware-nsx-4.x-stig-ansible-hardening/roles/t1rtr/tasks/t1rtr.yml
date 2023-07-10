@@ -45,7 +45,7 @@
         msg: "NT1R-4X-000027 - No Tier-1 Gateways found."
       changed_when: false
       when:
-        - t0gateways.json.result_count == 0
+        - t1gateways.json.result_count == 0
 
     - name: NT1R-4X-000027 - Loop through Tier-1 Gateways and disable dhcp if needed
       ansible.builtin.include_tasks:
