@@ -2,11 +2,11 @@
 # Turn specific controls on/off by setting the value to true or false
 
 # NT0R-4X-000013
-run_t0rtr_disable_pim_on_interfaces: true
+run_t0rtr_disable_pim_on_interfaces: false
 # NT0R-4X-000016
 run_t0rtr_remove_inactive_interfaces: true
 # NT0R-4X-000027
-run_t0rtr_disable_dhcp: true
+run_t0rtr_disable_dhcp: false
 # NT0R-4X-000051
 run_t0rtr_configure_urpf_interfaces: true
 # NT0R-4X-000054
@@ -24,4 +24,4 @@ run_t0rtr_ipv6_hop_limit: true
 # NT0R-4X-000106
 run_t0rtr_disable_routing_protocols: true
 # NT0R-4X-000107
-run_t0rtr_disable_multicast: true
+run_t0rtr_disable_multicast: false

@@ -12,6 +12,6 @@ run_dfw_default_rule_action: false
 # NDFW-4X-000027
 run_dfw_app_based_rules: true
 # NDFW-4X-000029
-run_dfw_spoofguard_profile: true
+run_dfw_spoofguard_profile: false
 # NDFW-4X-000034
-run_dfw_ip_discovery_profile: true
+run_dfw_ip_discovery_profile: false
