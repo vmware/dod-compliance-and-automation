@@ -73,6 +73,14 @@
         - run_auditd_install | bool
         - auditdinstalled.stdout == ""
 
+    - name: PHTN-40-000016 - Recheck to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000016 - Enable and start the auditd service
       ansible.builtin.systemd:
         name: auditd
@@ -129,6 +137,14 @@
   tags: [PHTN-40-000003, PHTN-40-000019, PHTN-40-000031, PHTN-40-000076, PHTN-40-000078, PHTN-40-000107, PHTN-40-000173, PHTN-40-000175, PHTN-40-000204, PHTN-40-000238, auditd]
   when: run_auditd_rules | bool
   block:
+    - name: PHTN-40-000003 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000003 - Copy auditd rules template
       ansible.builtin.template:
         src: audit.STIG.rules
@@ -139,6 +155,8 @@
         force: true
       notify:
         - reload auditd
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000004 - Configure faillock.conf deny and fail_interval
@@ -202,6 +220,14 @@
   tags: [PHTN-40-000012]
   when: run_rsyslog_authpriv | bool
   block:
+    - name: PHTN-40-000012 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
     - name: PHTN-40-000012 - Configure authpriv in rsyslog.conf
       ansible.builtin.lineinfile:
         path: '{{ var_rsyslog_conf_file }}'
@@ -211,6 +237,8 @@
         firstmatch: true
       notify:
         - restart rsyslog
+      when:
+        - rsysloginstalled.stdout != ""
 
     - name: PHTN-40-000012 - Configure auth line if needed in rsyslog.conf
       ansible.builtin.lineinfile:
@@ -221,6 +249,8 @@
         firstmatch: true
       notify:
         - restart rsyslog
+      when:
+        - rsysloginstalled.stdout != ""
 
 ###################################################################################################################################
 # This must be before we install the OpenSSL FIPS Provider or the default OpenSSH Ciphers will cause issues with connecting over SSH
@@ -265,6 +295,14 @@
   tags: [PHTN-40-000014, auditd]
   when: run_auditd_conf_write_logs | bool
   block:
+    - name: PHTN-40-000014 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000014 - Configure auditd.conf write_logs
       ansible.builtin.lineinfile:
         path: '{{ var_auditd_conf_file }}'
@@ -272,12 +310,22 @@
         regexp: '^#?\s*write_logs\s'
         line: write_logs = yes
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000021 - Configure auditd.conf actions
   tags: [PHTN-40-000021, auditd]
   when: run_auditd_conf_actions | bool
   block:
+    - name: PHTN-40-000021 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000021 - Configure auditd.conf disk_full_action
       ansible.builtin.lineinfile:
         path: '{{ var_auditd_conf_file }}'
@@ -285,6 +333,8 @@
         regexp: '^#?\s*disk_full_action\s'
         line: disk_full_action = {{ var_auditd_conf_disk_full_action }}
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000021 - Configure auditd.conf disk_error_action
       ansible.builtin.lineinfile:
@@ -293,6 +343,8 @@
         regexp: '^#?\s*disk_error_action\s'
         line: disk_error_action = {{ var_auditd_conf_disk_error_action }}
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000021 - Configure auditd.conf admin_space_left_action
       ansible.builtin.lineinfile:
@@ -301,23 +353,36 @@
         regexp: '^#?\s*admin_space_left_action\s'
         line: admin_space_left_action = {{ var_auditd_conf_admin_space_left_action }}
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000026 - Configure auditd log permissions
   tags: [PHTN-40-000026, auditd]
   when: run_auditd_log_perms | bool
   block:
+    - name: PHTN-40-000026 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000026 - Find auditd log file in auditd.conf
       ansible.builtin.command: grep -iw log_file {{ var_auditd_conf_file }}
       register: auditlogoutput
       changed_when: false
       failed_when: auditlogoutput.rc == 2
+      when:
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000026 - Set audit log file fact
       ansible.builtin.set_fact:
         auditlog: "{{ auditlogoutput.stdout | regex_search('log_file\\s=\\s(.+$)', '\\1') | first }}"
       when:
         - auditlogoutput is defined
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000026 - Configure permissions on the auditd log file
       ansible.builtin.file:
@@ -328,6 +393,7 @@
         group: root
       when:
         - auditlog is defined
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000026 - Configure auditd.conf log_group
       ansible.builtin.lineinfile:
@@ -336,18 +402,30 @@
         regexp: '^#?\s*log_group\s'
         line: log_group = root
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000030 - Configure auditd file permissions
   tags: [PHTN-40-000030, auditd]
   when: run_auditd_file_perms | bool
   block:
+    - name: PHTN-40-000030 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000030 - Find auditd files
       ansible.builtin.find:
         paths: /etc/audit/
         file_type: file
         recurse: true
       register: auditdfiles
+      when:
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000030 - Configure permissions on auditd files
       ansible.builtin.file:
@@ -359,6 +437,7 @@
       with_items: "{{ auditdfiles.files }}"
       when:
         - auditdfiles.matched != 0
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000035 - Configure pwquality.conf ucredit
@@ -558,6 +637,8 @@
       register: selinuxinstalled
       failed_when: selinuxinstalled.rc == 2
       changed_when: false
+      when:
+        - run_selinux_install | bool
 
     - name: PHTN-40-000066 - Install SELinux Policy
       ansible.builtin.command: tdnf -y install selinux-policy
@@ -582,6 +663,14 @@
       when:
         - run_selinux_install | bool
         - selinuxutilsinstalled.stdout == ""
+
+    - name: PHTN-40-000066 - Recheck to see if SELinux Policy is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep selinux-policy
+      register: selinuxinstalled
+      failed_when: selinuxinstalled.rc == 2
+      changed_when: false
 
     - name: PHTN-40-000066 - Add security=selinux in /boot/grub2/grub.cfg
       ansible.builtin.replace:
@@ -705,6 +794,14 @@
   tags: [PHTN-40-000074]
   when: run_rsyslog_umask | bool
   block:
+    - name: PHTN-40-000074 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
     - name: PHTN-40-000074 - Configure umask in rsyslog.conf
       ansible.builtin.lineinfile:
         path: '{{ var_rsyslog_conf_file }}'
@@ -714,29 +811,51 @@
         firstmatch: true
       notify:
         - restart rsyslog
+      when:
+        - rsysloginstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000080 - Enable auditing on startup
   tags: [PHTN-40-000080]
   when: run_auditd_boot_enable | bool
   block:
+    - name: PHTN-40-000080 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000080 - Add audit=1 in /boot/grub2/grub.cfg
       ansible.builtin.replace:
         path: '{{ var_grub_conf_file }}'
         regexp: '^(\s*linux(?!.* audit=).*)'
         replace: '\1 audit=1'
+      when:
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000080 - Replace audit=1 in /boot/grub2/grub.cfg
       ansible.builtin.replace:
         path: '{{ var_grub_conf_file }}'
         regexp: '^(\s*linux.*? audit=)(?!1)(\S*)(.*)'
         replace: '\g<1>1\3'
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000082 - Update permissions on auditing tools
   tags: [PHTN-40-000082]
   when: run_auditd_tools_perms | bool
   block:
+    - name: PHTN-40-000082 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000082 - Update permissions on auditing tools 750
       ansible.builtin.file:
         path: "{{ item.file }}"
@@ -747,6 +866,8 @@
       with_items:
         - {file: '/usr/sbin/audispd'}
         - {file: '/usr/sbin/augenrules'}
+      when:
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000082 - Update permissions on auditing tools 755
       ansible.builtin.file:
@@ -761,6 +882,8 @@
         - {file: '/usr/sbin/aureport'}
         - {file: '/usr/sbin/ausearch'}
         - {file: '/usr/sbin/autrace'}
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000085 - Update permissions on files under /usr/lib
@@ -813,7 +936,7 @@
       ansible.builtin.template:
         src: tmout.sh
         dest: '{{ var_profile_tmout_sh }}'
-        force: false
+        force: true
         group: root
         owner: root
         mode: "0644"
@@ -856,6 +979,14 @@
   tags: [PHTN-40-000110, auditd]
   when: run_auditd_conf_num_logs | bool
   block:
+    - name: PHTN-40-000110 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000110 - Configure auditd.conf num_logs
       ansible.builtin.lineinfile:
         path: '{{ var_auditd_conf_file }}'
@@ -863,6 +994,8 @@
         regexp: '^#?\s*num_logs\s'
         line: num_logs = {{ var_auditd_conf_num_logs }}
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000110 - Configure auditd.conf max_log_file_action
       ansible.builtin.lineinfile:
@@ -871,12 +1004,22 @@
         regexp: '^#?\s*max_log_file_action\s'
         line: max_log_file_action = {{ var_auditd_conf_max_log_file_action }}
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000111 - Configure syslog server
   tags: [PHTN-40-000111]
   when: run_rsyslog_server | bool
   block:
+    - name: PHTN-40-000111 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
     - name: PHTN-40-000111 - Set syslog server when UDP is specified
       ansible.builtin.lineinfile:
         path: '{{ var_rsyslog_conf_file }}'
@@ -889,6 +1032,7 @@
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
         - var_rsyslog_server_protocol == 'udp'
+        - rsysloginstalled.stdout != ""
 
     - name: PHTN-40-000111 - Set syslog server when TCP is specified
       ansible.builtin.lineinfile:
@@ -902,6 +1046,7 @@
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
         - var_rsyslog_server_protocol == 'tcp'
+        - rsysloginstalled.stdout != ""
 
     - name: PHTN-40-000111 - Set syslog server when TLS is specified
       ansible.builtin.lineinfile:
@@ -915,6 +1060,7 @@
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
         - var_rsyslog_server_protocol == 'tls'
+        - rsysloginstalled.stdout != ""
 
     - name: PHTN-40-000111 - Set syslog server when TLS is specified other options 1
       ansible.builtin.lineinfile:
@@ -927,6 +1073,7 @@
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
         - var_rsyslog_server_protocol == 'tls'
+        - rsysloginstalled.stdout != ""
 
     - name: PHTN-40-000111 - Set syslog server when TLS is specified other options 2
       ansible.builtin.lineinfile:
@@ -939,12 +1086,21 @@
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
         - var_rsyslog_server_protocol == 'tls'
+        - rsysloginstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000112 - Configure auditd.conf space_left
   tags: [PHTN-40-000112, auditd]
   when: run_auditd_conf_space_left | bool
   block:
+    - name: PHTN-40-000112 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000112 - Configure auditd.conf space_left
       ansible.builtin.lineinfile:
         path: '{{ var_auditd_conf_file }}'
@@ -952,6 +1108,8 @@
         regexp: '^#?\s*space_left\s'
         line: space_left = {{ var_auditd_conf_space_left }}
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000112 - Configure auditd.conf space_left_action
       ansible.builtin.lineinfile:
@@ -960,6 +1118,8 @@
         regexp: '^#?\s*space_left_action\s'
         line: space_left_action = {{ var_auditd_conf_space_left_action }}
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000121 - Configure time sync
@@ -975,6 +1135,7 @@
       changed_when: false
       when:
         - var_time_type == 'ntpd'
+        - run_time_install | bool
 
     - name: PHTN-40-000121 - NTPD - Install
       ansible.builtin.command: tdnf -y install ntp
@@ -984,6 +1145,16 @@
         - run_time_install | bool
         - var_time_type == 'ntpd'
         - ntpdinstalled.stdout == ""
+
+    - name: PHTN-40-000121 - NTPD - Recheck to see if ntpd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^ntp-
+      register: ntpdinstalled
+      failed_when: ntpdinstalled.rc == 2
+      changed_when: false
+      when:
+        - var_time_type == 'ntpd'
 
     - name: PHTN-40-000121 - NTPD - Remove execute permissions on ntp.conf
       ansible.builtin.file:
@@ -1045,6 +1216,7 @@
       changed_when: false
       when:
         - var_time_type == 'chrony'
+        - run_time_install | bool
 
     - name: PHTN-40-000121 - Chrony - Install
       ansible.builtin.command: tdnf -y install chrony
@@ -1054,6 +1226,16 @@
         - run_time_install | bool
         - var_time_type == 'chrony'
         - chronyinstalled.stdout == ""
+
+    - name: PHTN-40-000121 - Chrony - Recheck to see if Chrony is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^chrony-
+      register: chronyinstalled
+      failed_when: chronyinstalled.rc == 2
+      changed_when: false
+      when:
+        - var_time_type == 'chrony'
 
     - name: PHTN-40-000121 - Chrony - Enable service
       ansible.builtin.systemd:
@@ -1268,6 +1450,14 @@
   tags: [PHTN-40-000186, auditd]
   when: run_auditd_conf_flush | bool
   block:
+    - name: PHTN-40-000186 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
     - name: PHTN-40-000186 - Configure auditd.conf flush
       ansible.builtin.lineinfile:
         path: '{{ var_auditd_conf_file }}'
@@ -1275,6 +1465,8 @@
         regexp: '^#?\s*flush\s'
         line: flush = {{ var_auditd_conf_flush }}
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
     - name: PHTN-40-000186 - Configure auditd.conf freq
       ansible.builtin.lineinfile:
@@ -1283,6 +1475,8 @@
         regexp: '^#?\s*freq\s'
         line: freq = {{ var_auditd_conf_freq }}
         backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000187 - Configure login.defs UMASK
