@@ -41,32 +41,32 @@ Example folder structure:
 
 It is recommended to utilize an inputs file for specifying environment specific variables such as NTP, Syslog, etc. An example is provided for you to begin with.  
 
-Run all profiles against a target vRA appliance and output results to CLI
+### Run all profiles against a target vRA appliance and output results to CLI
 ```
 inspec exec C:\Inspec\Profiles\vmware-stig-baseline\vmware-vra-8x-stig-baseline -t ssh://root@vra IP or FQDN --password 'password'
 ```
 
-Or if currently in the base directory ('vmware-vra-8x-stig-baseline')
+### Or if currently in the base directory ('vmware-vra-8x-stig-baseline')
 ```
 inspec exec . -t ssh://root@vra IP or FQDN --password 'password'
 ```
-
-Run all profiles against a target vRA appliance with needed inputs and output results to CLI
+### Run all profiles against a target vRA appliance with needed inputs and output results to CLI
 ```
 inspec exec C:\Inspec\Profiles\vmware-stig-baseline\vmware-vra-8x-stig-baseline -t ssh://root@vra IP or FQDN --password 'password' --input [nputname]=[inputvalue] [inputname]=[inputvalue]
 ```
-
-Run all profiles against a target vRA, show progress, and output results to CLI and JSON
+### Run all profiles against a target appliance with example inputs, show progress, and output results to CLI and JSON
+```
+inspec exec . -t ssh://root@IP or FQDN --password 'password' --input-file=inputs-example.yml --show-progress --reporter=cli json:path\to\report\report.json
+```
+### Run all profiles against a target vRA, show progress, and output results to CLI and JSON
 ```
 inspec exec C:\Inspec\Profiles\vmware-stig-baseline\vmware-vra-8x-stig-baseline -t ssh://root@vra IP or FQDN --password 'password' --show-progress --reporter=cli json:C:\Inspec\Reports\vra.json
 ```
-
-Run a specific profile (Docker in this case, using a Regex) against a target vRA appliance, show progress, and output results to CLI and JSON using the wrapper profile
+### Run a specific profile (Docker in this case, using a Regex) against a target vRA appliance, show progress, and output results to CLI and JSON using the wrapper profile
 ```
 inspec exec C:\Inspec\Profiles\vmware-stig-baseline\vmware-vra-8x-stig-baseline -t ssh://root@vra IP or FQDN --password 'password' --show-progress --reporter=cli json:C:\Inspec\Reports\vra.json --controls=/DKER/
 ```
-
-Run a single STIG Control against a target vRA appliance from a specific profile
+### Run a single STIG Control against a target vRA appliance from a specific profile
 ```
 inspec exec C:\Inspec\Profiles\vmware-stig-baseline\vmware-vra-8x-stig-baseline -t ssh://root@vra IP or FQDN --password 'password' --controls=VRAA-8X-000008
 ```
