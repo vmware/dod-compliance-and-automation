@@ -1,26 +1,26 @@
 # vmware-photon-4.0-stig-ansible-hardening
 VMware Photon OS 4.0 STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 4: 06 June 2023  
+Version: Version 1 Release 3: 06 June 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Requirements
 - Tested with Ansible 2.14.4
 - Tested with Photon OS 4.0
-- Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 10 to run an Unbuntu box for example
+- Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 11 to run an Unbuntu box for example
 
 ## Backups
 The first item in the photon.yml task is to backup files that may be changed under a folder in the /tmp folder with a timestamp for each ansible run.
-This can be turned on/off by updating the create_backups variable to true or false in the defaults main.yml file.
+This can be turned on/off by updating the `create_backups` variable to true or false in a vars file provided at the CLI as in the examples.
 
 ## Playbook Structure
 
 - playbook.yml - Main playbook to run
-- /defaults/main.yml - Default variables used to turn controls on/off in the playbook.  Set these to true/false
+- /defaults/main.yml - Default variables used to turn controls on/off in the playbook.  Set these to true/false by providing a vars file at the CLI
 - /handlers/main.yaml - handlers referenced in the photon task
 - /tasks/main.yml - Default role playbook
 - /tasks/photon.yml - Photon STIG playbook
 - /templates - Files used in template operations
-- /vars/main.yml - variables reference by photon task.  Update these variables as needed for your environment.
+- /vars/main.yml - variables referenced by photon task.  Reference these variables as needed for your environment and modify them by providing a vars file at the CLI.
 
 ## How to run
 
@@ -42,8 +42,10 @@ ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --tags photon
 ## Misc
 - To set syslog or NTP you must update the variables by specifiying them at the command line or by passing a vars file.
 - The DoD SSH banner update is disabled by default. Update the run_etc_issue_dod variable to enable or disable it.
-- Steps requiring installs are disabled by default. Enable by setting the following to true: run_rsyslog_install run_openssl_fips_install run_auditd_install run_time_install run_install_aide run_selinux_install
-- Enabling FIPS mode for the kernel is disabled by default. Update the run_fips_boot_enable variable to enable or disable it.
+- Steps requiring installs are enabled by default and should be disabled if internet access if not available.
+- Enabling FIPS mode for the kernel is enabled by default. Update the run_fips_boot_enable variable to enable or disable it.
+- SELinux is installed and enabled by default in permissive mode. Set to enforcing after testing for any issues.
+- For PAM configuration the playbook utilizes conf files for modules instead of adding properties directly to the `system-password`, `system-account`, and `system-auth` files.
 
 ## License
 Copyright 2019-2021 VMware, Inc.  
