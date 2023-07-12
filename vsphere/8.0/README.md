@@ -17,7 +17,7 @@ The VMware vSphere 8 Security Technical Implementation Guides (STIGs) provide se
     - EAM Service
     - Envoy
     - Lookup Service
-    - Perfcharts Servce
+    - Perfcharts Service
     - Photon OS
     - PostgreSQL
     - STS Service

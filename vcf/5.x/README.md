@@ -12,7 +12,7 @@ The VMware Cloud Foundation 5.x Security Technical Implementation Guides (STIGs)
   - SDDC Manager Appliance
     - Common Services Service
     - Domain Manager Service
-    - Lifecycle Manager Servce
+    - Lifecycle Manager Service
     - NGINX
     - Operations Manager Service
     - Photon OS 3.0

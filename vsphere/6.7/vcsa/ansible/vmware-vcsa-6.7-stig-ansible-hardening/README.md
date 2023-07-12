@@ -61,7 +61,7 @@ ansible-playbook -i 'IP or FQDN', -u 'username' vcsa-stig.yaml -k -v --tags phot
 
 
 ## Misc
-To set syslog or NTP you must update the variables at the top of /roles/photon/vars/main.yml or specifiy then at the command line
+To set syslog or NTP you must update the variables at the top of /roles/photon/vars/main.yml or specify then at the command line
 
 Disabling root ssh logins is set to false in the default variables yaml for Photon. You should configure other ssh access besides root before enabling this control if needed.  
 

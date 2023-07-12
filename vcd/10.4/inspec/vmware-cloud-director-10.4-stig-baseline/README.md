@@ -50,7 +50,7 @@ Please review the inspec.yml for input variables and specify at runtime or via a
 
 If changes are needed to skip controls or update checks it is recommended to create an overlay profile that has a dependency on this profile with the needed changes so they can be easily tracked 
 
-[See the InSpec docs for more info on Profile dependencies and inheritence](https://www.inspec.io/docs/reference/profiles/)
+[See the InSpec docs for more info on Profile dependencies and inheritance](https://www.inspec.io/docs/reference/profiles/)
 
 **Note**: Replace the profile's directory name - e.g. - `<Profile>` with `.` if currently in the profile's root directory.  
 

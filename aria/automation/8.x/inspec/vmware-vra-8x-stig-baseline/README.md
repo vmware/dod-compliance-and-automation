@@ -24,7 +24,7 @@ InSpec profiles for vRA are available for each component or can be run all or so
 Repository paths:
 * [Photon](https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/3.0/inspec/vmware-photon-3.0-stig-inspec-baseline)
 
-See the [InSpec docs](https://www.inspec.io/docs/reference/profiles/) for more info on profile dependencies and inheritence  
+See the [InSpec docs](https://www.inspec.io/docs/reference/profiles/) for more info on profile dependencies and inheritance  
 
 ## How to run InSpec locally from Powershell on Windows
 
