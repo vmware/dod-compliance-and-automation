@@ -1,5 +1,4 @@
 ---
----
 # Example vars file to use when running this playbook to update any required variables
 # To create backups of files modified under /tmp set to true
 create_backups: true
@@ -25,4 +24,3 @@ run_install_aide: true
 run_selinux_install: true
 # SELinux mode. 1 for enforcing and 0 for permissive
 var_selinux_enforcing: 0
-
