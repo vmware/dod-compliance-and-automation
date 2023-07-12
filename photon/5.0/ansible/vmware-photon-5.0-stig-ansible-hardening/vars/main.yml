@@ -66,7 +66,7 @@ var_rsyslog_server_protocol: 'tcp'
 
 # SELinux
 ## 1 for enforcing and 0 for permissive
-var_selinux_enforcing: 1
+var_selinux_enforcing: 0
 
 # sshd
 var_sshd_config_file: '/etc/ssh/sshd_config'
