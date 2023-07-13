@@ -1,0 +1,26 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: prometheus-egress-all
+  namespace: tanzu-system-monitoring
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: prometheus
+  egress:
+    - action: Allow
+      name: AllowAllForScraping
+  ingress:
+    - action: Allow
+      from:
+      - podSelector:
+          matchLabels:
+            app.kubernetes.io/name: grafana
+        namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: tanzu-system-dashboards
+      name: AllowFromGrafana
+      

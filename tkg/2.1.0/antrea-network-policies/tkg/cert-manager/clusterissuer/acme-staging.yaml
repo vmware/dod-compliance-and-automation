@@ -1,0 +1,23 @@
+---
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: acme-staging 
+  namespace: cert-manager
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: cert-manager 
+  egress:
+    - action: Allow
+      to:
+      - ipBlock:
+          cidr: 172.65.46.172/32
+      ports:
+      - port: 443
+        protocol: TCP
+      name: AllowToAcmeStaging
+

@@ -1,0 +1,20 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: falcosidekick-antrea-gw
+  namespace: falco
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: falcosidekick  
+  ingress:
+    - action: Allow 
+      from:
+      - ipBlock:
+          cidr: 100.96.0.1/32
+      - ipBlock:
+          cidr: 100.96.1.1/32
+      name: allowAntreaGW

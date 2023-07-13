@@ -1,0 +1,24 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: falco-ingress-controller
+  namespace: falco
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: falcosidekick-ui
+    - podSelector:
+        matchLabels:
+          acme.cert-manager.io/http01-solver: "true"
+  ingress:
+  - action: Allow
+    from:
+    - podSelector:
+        matchLabels:
+          app: envoy
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: tanzu-system-ingress

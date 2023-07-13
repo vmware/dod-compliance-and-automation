@@ -1,0 +1,33 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: envoy
+  namespace: tanzu-system-ingress
+spec:
+  priority: 5 
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: envoy
+  egress:
+    - action: Allow
+      to:
+      - podSelector: {}
+        namespaceSelector: {}
+      name: EgressAllPods
+  ingress:
+    - action: Allow
+      from:
+      - podSelector: 
+          matchLabels:
+            acme.cert-manager.io/http01-solver: "true"
+        namespaceSelector: {}
+      name: AllowFromCertManager
+    - action: Allow
+      from:
+      - ipBlock:
+          cidr: 100.96.0.1/32
+      - ipBlock:
+          cidr: 100.96.1.1/32
+      name: AllowFromAntreaGW

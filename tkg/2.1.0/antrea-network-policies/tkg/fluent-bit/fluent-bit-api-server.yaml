@@ -1,0 +1,20 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: fluent-bit-api-server 
+  namespace: tanzu-system-logging
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: fluent-bit
+  egress:
+    - action: Allow
+      toServices:
+        - name: kubernetes
+          namespace: default
+        - name: kube-dns
+          namespace: kube-system
+      name: AllowToKubeAPIDNS

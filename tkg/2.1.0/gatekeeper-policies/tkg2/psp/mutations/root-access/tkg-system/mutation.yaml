@@ -1,0 +1,485 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-object-propagation-controller-run-as-group
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces: 
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: object-propagation-controller 
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532 
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-object-propagation-controller-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: object-propagation-controller
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-cap-mgr-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-capabilities-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-cap-mgr-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-capabilities-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-addons-mgr-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-featuregates-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-addons-mgr-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-featuregates-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkr-conversion-webhook-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tkr-conversion-webhook
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkr-conversion-webhook-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tkr-conversion-webhook
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkr-resolver-cluster-webhook-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tkr-resolver-cluster-webhook
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkr-resolver-cluster-webhook-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tkr-resolver-cluster-webhook
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkr-source-controller-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tkr-source-controller
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkr-source-controller-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tkr-source-controller
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkr-status-controller-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tkr-status-controller
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tkr-status-controller-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tkr-status-controller
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-addons-controller-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-addons-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-addons-manager-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-addons-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-addons-controller-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-addons-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 65532
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-tanzu-addons-manager-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - tkg-system
+      labelSelector:
+        matchLabels:
+         app: tanzu-addons-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 65532

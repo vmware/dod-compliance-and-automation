@@ -1,0 +1,95 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: falcosidekick-to-outputs
+  namespace: falco
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: falcosidekick
+  egress:
+  - action: Allow
+    to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: falcosidekick-ui
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: falco 
+    name: AllowToFalcoUI
+  - action: Allow
+    to:
+    - ipBlock:
+        cidr: 34.139.154.202/32
+    ports:
+    - port: 9200
+      protocol: TCP
+    name: AllowToElastic
+---
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: ui-from-falco-sidekick
+  namespace: falco
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: falcosidekick-ui
+  ingress:
+  - action: Allow
+    from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: falcosidekick
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: falco
+    name: AllowFromFalcoSidekick
+---
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: falco-sidekick-ui-to-redis 
+  namespace: falco
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: falcosidekick-ui
+  egress:
+  - action: Allow
+    toServices:
+     - name: falcosidekick-ui-redis 
+       namespace: falco
+    name: AllowToFalcoSidekickRedis
+---
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: redis-from-falcosidekick-ui
+  namespace: falco
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: falcosidekick-ui-redis
+  ingress:
+  - action: Allow
+    from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: falcosidekick-ui
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: falco
+    name: AllowFromFalcoSidekickToRedis

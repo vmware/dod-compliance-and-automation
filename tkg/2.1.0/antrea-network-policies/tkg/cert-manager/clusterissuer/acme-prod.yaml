@@ -1,0 +1,17 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: cert-manager-letsencrypt
+  namespace: cert-manager
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: cert-manager
+  egress:
+    - action: Allow
+      to:
+      - fqdn: "*letsencrypt.org"
+      name: AllowLetsEncrypt

@@ -1,0 +1,38 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: pinniped
+  namespace: pinniped-supervisor
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector: {}
+  egress:
+    - action: Allow
+      toServices:
+        - name: kubernetes
+          namespace: default
+        - name: kube-dns
+          namespace: kube-system
+      name: AllowToK8sSVC
+    - action: Allow
+      to:
+        - fqdn: "YOUR OIDC.com"
+      name: EgressToOIDC
+  ingress:
+    - action: Allow
+      from:
+      - ipBlock:
+          cidr: 100.96.0.1/32
+      - ipBlock:
+          cidr: 100.96.1.1/32
+      name: AllowFromAntreaGW
+    - action: Allow
+      from:
+      - podSelector:
+          matchLabels:
+            app: envoy
+        namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: tanzu-system-ingress

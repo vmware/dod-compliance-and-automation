@@ -1,0 +1,35 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: ClusterNetworkPolicy
+metadata:
+  name: allow-tanzu-ns-egress
+spec:
+  priority: 1
+  tier: securityops
+  appliedTo: # Allow all access to falco, tanzu-system-ingress, tanzu-system-logging, cert-manager, and falco. To add others just copy each stanzy and change the value of the label to the namespace name(requires k8s 1.21+)
+    - namespaceSelector:
+        matchLabels:
+         kubernetes.io/metadata.name: capa-system
+    - namespaceSelector:
+        matchLabels:
+         kubernetes.io/metadata.name: capi-system
+    - namespaceSelector:
+        matchLabels:
+         kubernetes.io/metadata.name: tkg-system
+    - namespaceSelector:
+        matchLabels:
+         kubernetes.io/metadata.name: tkg-system-telemetry
+    - namespaceSelector:
+        matchLabels:
+         kubernetes.io/metadata.name: tkr-system
+    - namespaceSelector:
+        matchLabels:
+         kubernetes.io/metadata.name: capi-kubeadm-bootstrap-system
+    - namespaceSelector:
+        matchLabels:
+         kubernetes.io/metadata.name: capi-kubeadm-control-plane-system
+    - namespaceSelector:
+        matchLabels:
+         kubernetes.io/metadata.name: cert-manager
+  egress:
+    - action: Allow              # For all Pods in those Namespaces, drop and log all egress traffic towards anywhere
+      name: allow-all-egress

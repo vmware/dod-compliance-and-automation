@@ -1,0 +1,24 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: seccomp-default 
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      excludedNamespaces: 
+      - kube-system
+      - tanzu-system-ingress
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.seccompProfile.type"
+    parameters:
+      pathTests:  
+      - subPath: "spec.containers[name:*].securityContext.seccompProfile.type"
+        condition: MustNotExist
+      assign:
+        value: "RuntimeDefault"

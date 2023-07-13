@@ -1,0 +1,46 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: ClusterNetworkPolicy
+metadata:
+  name: allow-antrea-gw
+spec:
+  priority: 1
+  tier: securityops
+  appliedTo:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          k8s-app: metrics-server
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: cert-manager
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/component: webhook
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: secretgen-controller
+      podSelector:
+        matchLabels:
+          app: secretgen-controller
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: tkg-system
+      podSelector:
+        matchLabels:
+          app: tkr-resolver-cluster-webhook
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: tkg-system
+      podSelector:
+        matchLabels:
+          app: tkr-conversion-webhook
+  ingress:
+    - action: Allow 
+      from:
+      - nodeSelector:
+          matchLabels:
+              node-role.kubernetes.io/control-plane: ""
+      name: allowCPAntreaGW
+      enableLogging: true

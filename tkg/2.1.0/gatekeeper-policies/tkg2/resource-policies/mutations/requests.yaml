@@ -1,0 +1,25 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: default-requests
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      excludedNamespaces: 
+      - kube-system
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].resources.requests"
+    parameters:
+      pathTests:  
+      - subPath: "spec.containers[name:*].resources.requests"
+        condition: MustNotExist
+      assign:
+       value:
+        cpu: "200m"
+        memory: "100Mi"

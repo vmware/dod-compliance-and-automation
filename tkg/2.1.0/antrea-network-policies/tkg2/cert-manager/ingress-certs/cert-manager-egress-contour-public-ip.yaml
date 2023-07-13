@@ -1,0 +1,25 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: cert-manager-to-contour
+  namespace: cert-manager
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app: cert-manager
+  egress:
+    - action: Allow
+      to:
+      - ipBlock:
+          cidr: 52.71.154.137/32
+      - ipBlock:
+          cidr: 54.208.170.97/32
+      ports:
+      - port: 80
+        protocol: TCP
+      - port: 443 
+        protocol: TCP
+      name: AllowToContourPublicIP

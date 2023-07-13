@@ -1,0 +1,47 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: ClusterNetworkPolicy
+metadata:
+  name: kube-system-hardening 
+spec:
+  priority: 1
+  tier: securityops
+  appliedTo:
+    - namespaceSelector: 
+        matchLabels:
+         kubernetes.io/metadata.name: kube-system
+  ingress:
+    - action: Allow 
+      from:
+      - namespaceSelector:
+         matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      name: allow-all-ingress
+    - action: Allow
+      from:
+      - ipBlock:
+          cidr: 10.0.16.0/20
+  egress:
+    - action: Allow
+      toServices:
+        - name: kubernetes
+          namespace: default
+        - name: kube-dns
+          namespace: kube-system
+      name: AllowToK8sSVC
+    - action: Allow
+      to:
+      - namespaceSelector:
+         matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      name: AllowToKubeSystem
+    - action: Allow
+      to:
+      - ipBlock:
+          cidr: 10.0.16.0/20
+      ports:
+      - port: 10250
+        protocol: TCP
+      - port: 30000
+        endPort: 32767
+        protocol: TCP
+      name: AllowToWorkerNodes

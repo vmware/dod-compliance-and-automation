@@ -1,0 +1,21 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: falcosidekick-dns
+  namespace: falco 
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: falcosidekick
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: falcosidekick-ui
+  egress:
+    - action: Allow
+      toServices:
+        - name: kube-dns
+          namespace: kube-system
+      name: AllowFalcosidekickToDNS

@@ -1,0 +1,97 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-cert-manager-run-as-group
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces: 
+      - cert-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:  
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 1001
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-cert-manager-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces:
+      - cert-manager
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 1001
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-acme-solver-run-as-group
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      labelSelector:
+        matchLabels:
+         acme.cert-manager.io/http01-solver: "true"
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 1001
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-acme-solver-run-as-user
+spec:
+    match:
+      scope: Namespaced
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      labelSelector:
+        matchLabels:
+         acme.cert-manager.io/http01-solver: "true"
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsUser"
+    parameters:
+      pathTests:
+      - subPath: "spec.containers[name:*].securityContext.runAsUser"
+        condition: MustNotExist
+      assign:
+        value: 1001

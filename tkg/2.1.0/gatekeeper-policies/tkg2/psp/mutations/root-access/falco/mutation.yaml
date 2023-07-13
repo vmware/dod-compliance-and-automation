@@ -1,0 +1,23 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: assign-falco-run-as-group 
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      namespaces: 
+      - falco
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.containers[name:*].securityContext.runAsGroup"
+    parameters:
+      pathTests:  
+      - subPath: "spec.containers[name:*].securityContext.runAsGroup"
+        condition: MustNotExist
+      assign:
+        value: 1234

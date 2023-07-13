@@ -1,0 +1,26 @@
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: read-only-root-fs-init
+spec:
+    match:
+      scope: Namespaced 
+      kinds:
+        - apiGroups: ["*"]
+          kinds: ["Pod"]
+      excludedNamespaces: 
+      - kube-system
+      - tkg-system
+      - tanzu-system-ingress
+      - tkg-system-telemetry
+    applyTo:
+    - groups: [""]
+      kinds: ["Pod"]
+      versions: ["v1"]
+    location: "spec.initContainers[name:*].securityContext.readOnlyRootFilesystem"
+    parameters:
+      pathTests:  
+      - subPath: "spec.initContainers[name:*].securityContext.readOnlyRootFilesystem"
+        condition: MustNotExist
+      assign:
+        value: true 

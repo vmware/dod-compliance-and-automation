@@ -1,0 +1,29 @@
+---
+apiVersion: crd.antrea.io/v1alpha1
+kind: NetworkPolicy
+metadata:
+  name: pinniped
+  namespace: pinniped-concierge
+spec:
+  priority: 5
+  tier: securityops
+  appliedTo:
+    - podSelector: {}
+  egress:
+    - action: Allow
+      toServices:
+        - name: kubernetes
+          namespace: default
+        - name: kube-dns
+          namespace: kube-system
+        - name: pinniped-supervisor
+          namespace: pinniped-supervisor
+      name: AllowToK8sSVC
+    - action: Allow
+      to:
+        - fqdn: "lb_name"
+  ingress:
+    - action: Allow
+      from:
+      - nodeSelector: {}
+      name: AllowFromAntreaGW

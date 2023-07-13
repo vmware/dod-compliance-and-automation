@@ -1,0 +1,44 @@
+apiVersion: crd.antrea.io/v1alpha1
+kind: ClusterNetworkPolicy
+metadata:
+  name: core-dns
+spec:
+  priority: 1
+  tier: securityops
+  appliedTo:
+    - namespaceSelector: 
+        matchLabels:
+         kubernetes.io/metadata.name: kube-system
+    - podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+  ingress:
+   - action: Allow
+     from:
+     - namespaceSelector: {}
+     ports:
+     - port: 53
+       protocol: UDP
+     - port: 53
+       protocol: TCP
+   - action: Allow
+     from:
+     - nodeSelector: {}
+     name: AllowFromAntreaGW
+     enableLogging: true
+  egress:
+    - action: Allow
+      to:
+      - ipBlock:
+         cidr: 10.0.0.2/32
+      ports:
+      - port: 53
+        protocol: TCP
+      - port: 53
+        protocol: UDP
+      name: AllowNameserver
+    - action: Allow
+      toServices:
+      - name: kubernetes
+        namespace: default
+      name: api-server
