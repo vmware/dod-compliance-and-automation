@@ -4,7 +4,6 @@
 #@ load("@ytt:yaml", "yaml")
 #@ load("@ytt:data", "data")
 
-#@ if data.values.PROTECT_KERNEL_DEFAULTS:
 #@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"}),expects="1+"
 ---
 spec:

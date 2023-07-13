@@ -1,6 +1,5 @@
 #@ load("@ytt:overlay", "overlay")
 #@ load("@ytt:data", "data")
-#@ if data.values.COMPLIANCE == "stig":
 #@overlay/match missing_ok=True,by=overlay.subset({"kind":"KubeadmControlPlane"})
 ---
 spec:
