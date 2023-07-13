@@ -6,7 +6,7 @@ Version: 6.7.0 Version 1 Release 2
 
 InSpec profiles for the VCSA are available for each component or can be run all or some from the wrapper/overlay profile. Note the profile is setup to reference the other profiles from the same relative folder structure as seen here.  
 
-[See the InSpec docs for more info on Profile dependencies and inheritence](https://www.inspec.io/docs/reference/profiles/)
+[See the InSpec docs for more info on Profile dependencies and inheritance](https://www.inspec.io/docs/reference/profiles/)
 
 
 ## How to run InSpec locally from Powershell on Windows

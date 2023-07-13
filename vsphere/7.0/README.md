@@ -16,7 +16,7 @@ The VMware vSphere 7.0 Security Technical Implementation Guides (STIGs) provide 
   - vCenter Server Appliance
     - EAM Service
     - Lookup Service
-    - Perfcharts Servce
+    - Perfcharts Service
     - PostgreSQL
     - Reverse Proxy
     - STS Service

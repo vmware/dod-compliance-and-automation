@@ -10,7 +10,7 @@ This is a hardening playbook that utilizes Ansible to perform automated remediat
 ## !!Important!!
 - Please read through the README carefully and familiarize yourself with the playbook and ansible before running this playbook
 - As always please ensure you have a backout plan if needed you can roll back the changes
-- This playbook has not been tested for forward or backward compability beyond the version of NSX listed under requirements.
+- This playbook has not been tested for forward or backward compatibility beyond the version of NSX listed under requirements.
 - Some NSX-T STIG controls can be very impactful to your environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic. 
 
 ## Requirements

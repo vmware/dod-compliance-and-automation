@@ -6,7 +6,7 @@ STIG Type: STIG Readiness Guide
 ## SDDC Manager InSpec Profiles
 InSpec profiles for the SDDC Manager are available for each component or can be run all or some from the wrapper/overlay profile. Note the wrapper profile is setup to reference the other profiles from the same relative folder structure as seen here.  
 
-[See the InSpec docs for more info on Profile dependencies and inheritence](https://www.inspec.io/docs/reference/profiles/)
+[See the InSpec docs for more info on Profile dependencies and inheritance](https://www.inspec.io/docs/reference/profiles/)
 
 
 ## Requirements

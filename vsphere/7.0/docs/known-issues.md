@@ -64,7 +64,7 @@ In the check and fix only the Administrator role is listed as having cryptograph
 
 Related issue: [#122](https://github.com/vmware/dod-compliance-and-automation/issues/122)
 
-In the check exmaple output "Audit Remote Host Enabled" should read "Audit Record Remote Transmission Active". The fix steps are correct as is.
+In the check example output "Audit Remote Host Enabled" should read "Audit Record Remote Transmission Active". The fix steps are correct as is.
 
 **Workaround:**
 
@@ -150,7 +150,7 @@ Starting in vCenter 7.0 U3L there is a 3rd entry for `url.access-deny` displayed
 
 **Workaround:**
 
-- Remove any duplicate `url.access-deny` entires added to `/opt/vmware/etc/lighttpd/lighttpd.conf`.  
+- Remove any duplicate `url.access-deny` entries added to `/opt/vmware/etc/lighttpd/lighttpd.conf`.  
 - Use the new check and fix text below for this control.  
 ```
 ## New Check

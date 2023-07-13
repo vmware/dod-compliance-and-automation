@@ -60,7 +60,7 @@ A support request may be opened in these cases if a valid support agreement is i
 
 Support for issues related to content in a STIG Readiness Guide should be addressed by emailing: stigs@vmware.com 
 
-Requests recieved will be processed on a best effort basis and any needed content updates published in the next content release. In between releases, issues will be documented in a known issues document available in a products folder in this repository.  
+Requests received will be processed on a best effort basis and any needed content updates published in the next content release. In between releases, issues will be documented in a known issues document available in a products folder in this repository.  
 
 **Product Support**
 
