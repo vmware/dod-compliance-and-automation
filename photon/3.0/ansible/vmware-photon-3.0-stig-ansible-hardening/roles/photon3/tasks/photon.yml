@@ -1417,7 +1417,7 @@
 - name: PHTN-30-000062 - Get sudoers with NOPASSWD set
   ansible.builtin.shell: |
     set -o pipefail
-    grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v "^#"|grep -v "^%"|awk '{print $1}'
+    grep -ih nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v "^#"|grep -v "^%"|awk '{print $1}'
   register: nopasswd_sudo_users
   tags:
     - PHTN-30-000062
@@ -1425,7 +1425,9 @@
   when:
     - run_sudo_nopasswd | bool
   changed_when: false
-  failed_when: nopasswd_sudo_users.rc == 2
+  failed_when:
+    - "'No such file or directory' not in nopasswd_sudo_users.stderr"
+    - nopasswd_sudo_users.rc == 2
 
 - name: PHTN-30-000062 - User account should not be configured with NOPASSWD.
   ansible.builtin.fail:
