@@ -1,0 +1,16 @@
+- name: set Remove-Unused-Kernel-Packages
+  lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: "^(#)?Unattended-Upgrade::Remove-Unused-Kernel-Packages"
+    line: "Unattended-Upgrade{{ '::' }}Remove-Unused-Kernel-Packages \"true\";"
+    state: present
+    create: yes
+- name: set Remove-Unused-Dependencies
+  lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: "^(#)?Unattended-Upgrade::Remove-Unused-Dependencies"
+    line: "Unattended-Upgrade{{ '::' }}Remove-Unused-Dependencies \"true\";"
+    state: present
+    create: yes
+  tags:
+  - medium

@@ -1,0 +1,46 @@
+---
+- name: gather variables
+  include_vars: main.yml
+  tags:
+    - always
+- import_tasks: common-packages.yml
+- import_tasks: common-auditd-config.yml
+- import_tasks: common-audit-rules.yml
+- import_tasks: common-logindefs.yml
+- import_tasks: common-pwquality.yml
+- import_tasks: common-sshd-config.yml
+- import_tasks: common-sysctl.yml
+- import_tasks: V-238204.yml
+- import_tasks: V-238206.yml
+- import_tasks: V-238207.yml
+- import_tasks: V-238208.yml
+- import_tasks: V-238214.yml
+- import_tasks: V-238228.yml
+- import_tasks: V-238234.yml
+- import_tasks: V-238235.yml
+- import_tasks: V-238237.yml
+- import_tasks: V-238245-47.yml
+- import_tasks: V-238248-50.yml
+- import_tasks: V-238299.yml
+- import_tasks: V-238300-02.yml
+- import_tasks: V-238303.yml
+- import_tasks: V-238306.yml
+- import_tasks: V-238323.yml
+- import_tasks: V-238324.yml
+- import_tasks: V-238329.yml
+- import_tasks: V-238330.yml
+- import_tasks: V-238332.yml
+- import_tasks: V-238337.yml
+- import_tasks: V-238341-43.yml
+- import_tasks: V-238356.yml
+- import_tasks: V-238357.yml
+- import_tasks: V-238358.yml
+- import_tasks: V-238359.yml
+- import_tasks: V-238363.yml
+- import_tasks: V-238364.yml
+- import_tasks: V-238370.yml
+- import_tasks: V-238373.yml
+- import_tasks: V-238380.yml
+- import_tasks: V-251505.yml
+- import_tasks: common-file-perms.yml
+

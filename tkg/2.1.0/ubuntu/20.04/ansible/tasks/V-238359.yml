@@ -1,0 +1,14 @@
+- name: check AllowUnauthenticated in apt.conf.d
+  command: grep -r '^[^#].*AllowUnauthenticated \"true\"' /etc/apt/apt.conf.d/
+  register: gpgcheck_result
+  changed_when: False
+  failed_when: False
+  check_mode: no
+
+- name: print AllowUnauthenticated message
+  debug:
+    msg: "Remove AllowUnauthenticated from files in /etc/apt/apt.conf.d/ to ensure packages are verified."
+  when:
+    - gpgcheck_result.rc == 0
+  tags:
+    - medium

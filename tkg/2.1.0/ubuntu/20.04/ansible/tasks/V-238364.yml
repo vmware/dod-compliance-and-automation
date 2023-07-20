@@ -1,0 +1,38 @@
+- name: find ca certs in /etc/ssl/certs
+  command: find  /etc/ssl/certs ! -type l -a ! -type d
+  register: certs_files
+  notify:
+    - update trusted ca debian
+  when:
+    remove_existing_ca_certs | bool
+
+- name: delete ca certs in /etc/ssl/certs
+  file:
+    name: '{{ item }}'
+    state: absent
+  with_items: "{{ certs_files.stdout_lines }}"
+  notify:
+    - update trusted ca debian
+  when:
+    remove_existing_ca_certs | bool
+  
+- name: comment out existing ca certs in /etc/ca-certificates.conf
+  command: sed -i -E 's/^([^!#]+)/!\1/g' /etc/ca-certificates.conf
+  notify:
+    - update trusted ca debian
+  when:
+    remove_existing_ca_certs | bool
+
+- name: add dod ca cert
+  copy:
+    src: '{{ item }}'
+    dest: /usr/local/share/ca-certificates/
+    owner: root
+    group: root
+    mode: 0644
+  with_fileglob:
+    - files/ca/*.crt
+  notify:
+    - update trusted ca debian
+  tags:
+  - medium

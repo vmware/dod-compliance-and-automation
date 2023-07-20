@@ -1,0 +1,52 @@
+- name: restart auditd
+  service:
+    name: auditd
+    state: restarted
+
+- name: augenrules load
+  command: find /etc/audit/rules.d ! -name "audit.rules" -name "*.rules"
+  register: rules_files
+  notify:
+  - backup existing .rules files
+
+- name: backup existing .rules files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ item }}.bak"
+    remote_src: True
+  with_items: "{{ rules_files.stdout_lines }}"
+  notify:
+  - delete existing .rules files
+
+- name: delete existing .rules files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items: "{{ rules_files.stdout_lines }}"
+  notify:
+  - merge backed-up .rules files
+
+- name: merge backed-up .rules files
+  shell:  "awk '!seen[$0]++' /etc/audit/rules.d/*.bak"
+  register: merged_rules
+  notify:
+  - create merged.rules file
+
+- name: create merged.rules file
+  blockinfile:
+    block: "{{  merged_rules.stdout_lines | join('\n') }}"
+    path: "/etc/audit/rules.d/merged.rules"
+    create: yes
+  notify:
+  - augenrules --load
+
+- name: augenrules --load
+  command: augenrules --load
+  notify:
+  - restart auditd
+
+- name: update grub
+  command: update-grub 
+
+- name: update trusted ca debian
+  command: update-ca-certificates

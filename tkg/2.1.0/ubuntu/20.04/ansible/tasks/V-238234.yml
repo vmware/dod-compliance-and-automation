@@ -1,0 +1,9 @@
+- name: V-238234
+  lineinfile:
+    dest: "/etc/pam.d/common-password"
+    regexp: '^(password\s+[a-z0-9\=\[\] ]+\s+pam_unix\.so.+?)\s+(?:remember=\d+)?$'
+    line: '\1 remember=5'
+    backrefs: yes
+    state: present
+  tags:
+  - low

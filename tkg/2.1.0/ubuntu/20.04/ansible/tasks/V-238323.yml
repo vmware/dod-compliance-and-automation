@@ -1,0 +1,9 @@
+- name: set maxlogins
+  blockinfile:
+    dest: /etc/security/limits.conf
+    insertbefore: EOF
+    marker: "# {mark} tanzu compliance hardening"
+    block: |
+      * hard maxlogins {{ limits_maxlogins }}
+  tags:
+  - low

@@ -1,0 +1,9 @@
+- name: set enforce_for_root
+  lineinfile:
+    dest: "/etc/pam.d/common-password"
+    regexp: '^(password\s+requisite\s+pam_pwquality.so\s+retry=)(\d+)$'
+    line: '\1\2 enforce_for_root'
+    backrefs: yes
+    state: present
+  tags:
+  - low

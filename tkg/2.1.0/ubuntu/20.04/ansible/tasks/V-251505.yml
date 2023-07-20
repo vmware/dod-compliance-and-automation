@@ -1,0 +1,6 @@
+- name: V-251505-install-and-blacklist-usb-storage
+  copy:
+    content: "{{ usb_storage }}"
+    dest: /etc/modprobe.d/DISASTIG.conf
+  tags:
+  - medium

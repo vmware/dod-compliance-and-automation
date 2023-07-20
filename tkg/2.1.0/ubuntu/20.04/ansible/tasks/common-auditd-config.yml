@@ -1,0 +1,25 @@
+
+- name: "[Common] Auditd config"
+  lineinfile:
+    dest: /etc/audit/auditd.conf
+    regexp: '^#?{{ item.parameter }}\s*='
+    line: "{{ item.parameter }} = {{ item.value }}"
+  with_items:
+  - parameter: space_left
+    value: "{{ (ansible_mounts | selectattr('mount', 'equalto', '/') | map(attribute='size_total') | first * 0.27 / 1024 / 1024) | int }}"
+  - parameter: space_left_action
+    value: email
+  - parameter: action_mail_acct
+    value: root
+  - parameter: log_group
+    value: root
+  - parameter: disk_full_action
+    value: syslog
+  notify:
+    - restart auditd
+  tags:
+  - auditd.conf
+  - V-238244
+  - V-238307
+  - V-238243
+  - V-238247

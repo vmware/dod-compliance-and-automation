@@ -1,0 +1,18 @@
+- name: verify aide.conf exists
+  stat:
+    path: "/etc/aide/aide.conf"
+  register: aide_conf
+  tags:
+  - medium
+
+- name: set monitoring on audit tools aide.conf
+  lineinfile:
+    path: "/etc/aide/aide.conf"
+    line: "{{ item }} p+i+n+u+g+s+b+acl+xattrs+sha512"
+    state: present
+    insertafter: EOF
+  when:
+    - aide_conf.stat.exists | bool
+  with_items: "{{ audit_tools }}"
+  tags:
+  - medium

@@ -1,0 +1,13 @@
+- name: V-238207
+  blockinfile:
+    dest: /etc/profile.d/autologout.sh
+    state: present
+    create: yes
+    insertbefore: EOF
+    marker: "# {mark} tanzu compliance hardening"
+    block: |
+      TMOUT={{ autologout_timeout }}
+      readonly TMOUT
+      export TMOUT
+  tags:
+  - medium

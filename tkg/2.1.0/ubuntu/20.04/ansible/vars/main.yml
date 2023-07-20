@@ -1,0 +1,87 @@
+install_fips: yes
+install_aide: yes
+install_chrony: yes
+install_audispd_plugins: yes
+install_unattended_upgrades: yes
+remove_existing_ca_certs: no
+run_sshd_banner: yes
+set_sshd_config_ciphers: yes
+set_sshd_config_macs: yes
+hold_packages: no
+install_protect_kernel_defaults: true
+offline_install: "{{ lookup('env','OFFLINE_INSTALL') == 'yes' }}"
+UBUNTU_ADVANTAGE_PASSWORD: "{{ lookup('env','UBUNTU_ADVANTAGE_PASSWORD') }}"
+UBUNTU_ADVANTAGE_PASSWORD_UPDATES: "{{ lookup('env','UBUNTU_ADVANTAGE_PASSWORD_UPDATES') }}"
+UBUNTU_FIPS_SUBSCRIPTION_ID: "{{ lookup('env','UBUNTU_FIPS_SUBSCRIPTION_ID') }}"
+install_packages:
+- apparmor
+- apparmor-profiles
+- apparmor-utils
+- auditd
+- ca-certificates
+- libpam-pkcs11
+- libpam-pwquality
+- libpwquality-common
+- opensc-pkcs11
+- openssh-client
+- openssh-server
+- ufw
+- vlock
+remove_packages:
+- rsh-server
+- telnetd
+- tftpd
+- nis
+- at
+- landscape-client
+- landscape-common
+- mlocate
+- pollinate
+- postfix
+- screen
+- byobu
+- os-prober
+faillock_conf: |
+  audit
+  silent
+  deny = 3
+  fail_interval = 900
+  unlock_time = 0
+login_banner: |
+  You are accessing a U.S. Government (USG) Information System (IS) that is
+  provided for USG-authorized use only.
+  By using this IS (which includes any device attached to this IS), you consent
+  to the following conditions:
+  -The USG routinely intercepts and monitors communications on this IS for
+  purposes including, but not limited to, penetration testing, COMSEC monitoring,
+  network operations and defense, personnel misconduct (PM), law enforcement
+  (LE), and counterintelligence (CI) investigations.
+  -At any time, the USG may inspect and seize data stored on this IS.
+  -Communications using, or data stored on, this IS are not private, are subject
+  to routine monitoring, interception, and search, and may be disclosed or used
+  for any USG-authorized purpose.
+  -This IS includes security measures (e.g., authentication and access controls)
+  to protect USG interests--not for your personal benefit or privacy.
+  -Notwithstanding the above, using this IS does not constitute consent to PM, LE
+  or CI investigative searching or monitoring of the content of privileged
+  communications, or work product, related to personal representation or services
+  by attorneys, psychotherapists, or clergy, and their assistants. Such
+  communications and work product are private and confidential. See User
+  Agreement for details.
+limits_maxlogins: 10
+autologout_timeout: 600
+pam_fail_delay: 4
+audit_tools:
+- /sbin/audispd
+- /sbin/auditctl
+- /sbin/auditd
+- /sbin/augenrules
+- /sbin/aureport
+- /sbin/ausearch
+- /sbin/autrace
+usb_storage: |
+  install usb-storage /bin/true
+  blacklist usb-storage
+chrony_time_sources:
+- 169.254.169.123
+audit_sp_remote_server: 192.0.0.1

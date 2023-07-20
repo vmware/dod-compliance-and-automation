@@ -1,0 +1,8 @@
+- name: set /var/log/syslog permissions
+  file: 
+    path: /var/log/syslog
+    owner: syslog
+    group: adm
+    mode: 0640
+  tags:
+  - medium

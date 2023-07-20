@@ -1,0 +1,19 @@
+- name: log daemon events
+  lineinfile:
+    dest: "/etc/rsyslog.d/50-default.conf"
+    regexp: '^(#)(daemon\.)([^\s]*)(\s+)(.*)$'
+    line: '\2*\4\5'
+    backrefs: yes
+    state: present
+  tags:
+  - medium
+
+- name: log auth events
+  lineinfile:
+    dest: "/etc/rsyslog.d/50-default.conf"
+    regexp: '^(#)(auth,authpriv\.)([^\s]*)(\s+)(.*)$'
+    line: '\2*\4\5'
+    backrefs: yes
+    state: present
+  tags:
+  - medium

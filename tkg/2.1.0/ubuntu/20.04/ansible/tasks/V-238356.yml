@@ -1,0 +1,26 @@
+- name: verify chrony.conf exists
+  stat:
+    path: "/etc/chrony/chrony.conf"
+  register: chrony_conf
+  tags:
+  - medium
+
+- name: chrony.conf maxpoll - 1
+  replace:
+    path: "/etc/chrony/chrony.conf"
+    regexp: '^(pool|server)\s(.*)(maxpoll\s+\d+)\s(.*)$'
+    replace: '\1 \2 \4'
+  when:
+    - chrony_conf.stat.exists | bool
+  tags:
+  - medium
+
+- name: chrony.conf maxpoll - 2
+  replace:
+    path: "/etc/chrony/chrony.conf"
+    regexp: '^(pool|server)\s(.*)$'
+    replace: '\1 \2 maxpoll 16'
+  when:
+    - chrony_conf.stat.exists | bool
+  tags:
+  - medium

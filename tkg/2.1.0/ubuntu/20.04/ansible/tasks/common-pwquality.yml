@@ -1,0 +1,27 @@
+- name: "[Common] pwquality"
+  blockinfile:
+    dest: /etc/security/pwquality.conf
+    insertbefore: EOF
+    marker: "# {mark} tanzu compliance hardening"
+    state: present
+    block: |
+      ucredit = -1
+      lcredit = -1
+      dcredit = -1
+      ocredit = -1
+      difok = 8
+      minclass = 4
+      maxrepeat = 3
+      maxclassrepeat = 4
+      minlen = 15
+      dictcheck = 1
+      enforcing = 1
+  tags:
+  - V-238221
+  - V-238222
+  - V-238223
+  - V-238224
+  - V-238225
+  - V-238226
+  - V-238227
+  - V-238228
