@@ -7,7 +7,7 @@ control 'PHTN-40-000039' do
 
     # grep ^ENCRYPT_METHOD /etc/login.defs
 
-    Expected result:
+    Example result:
 
     ENCRYPT_METHOD SHA512
 

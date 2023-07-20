@@ -1,17 +1,17 @@
 control 'PHTN-40-000216' do
-  title 'The Photon operating system must configure sshd to display the last login immediately after authentication.'
-  desc  'Providing users with feedback on the last time they logged on via SSH facilitates user recognition and reporting of unauthorized account use.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to display the last login immediately after authentication.'
+  desc  'Providing users with feedback on the last time they logged on via Secure Shell (SSH) facilitates user recognition and reporting of unauthorized account use.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:
 
     # sshd -T|&grep -i PrintLastLog
 
-    Expected result:
+    Example result:
 
-    PrintLastLog yes
+    printlastlog yes
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"PrintLastLog\" is not set to \"yes\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

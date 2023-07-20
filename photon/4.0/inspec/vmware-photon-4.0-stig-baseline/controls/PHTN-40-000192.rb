@@ -9,7 +9,7 @@ control 'PHTN-40-000192' do
   desc  'check', "
     At the command line, run the following commands to verify the pam_faillock.so module is used:
 
-    # grep ^auth /etc/pam.d/system-auth
+    # grep '^auth' /etc/pam.d/system-auth
 
     Example result:
 
@@ -20,7 +20,7 @@ control 'PHTN-40-000192' do
     If the pam_faillock.so module is not present with the \"preauth\" line listed before pam_unix.so, this is a finding.
     If the pam_faillock.so module is not present with the \"authfail\" line listed after pam_unix.so, this is a finding.
 
-    # grep ^account /etc/pam.d/system-account
+    # grep '^account' /etc/pam.d/system-account
 
     Example result:
 

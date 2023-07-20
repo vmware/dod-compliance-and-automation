@@ -16,7 +16,7 @@ control 'PHTN-40-000160' do
   desc 'fix', "
     Navigate to and open:
 
-    /etc/sysctl.conf
+    /etc/sysctl.d/zz-stig-hardening.conf
 
     Add or update the following line:
 
@@ -26,7 +26,7 @@ control 'PHTN-40-000160' do
 
     # /sbin/sysctl --load
 
-    Note: If the file sysctl.conf doesn't exist it must be created.
+    Note: If the file zz-stig-hardening.conf doesn't exist it must be created.
   "
   impact 0.5
   tag severity: 'medium'

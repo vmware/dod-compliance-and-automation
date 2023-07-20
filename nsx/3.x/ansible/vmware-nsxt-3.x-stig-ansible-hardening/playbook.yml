@@ -1,0 +1,11 @@
+- name: NSX-T 3.x Remediation Automation
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: false
+  roles:
+    - role: dfw
+    - role: manager
+    - role: t0fw
+    - role: t0rt
+    - role: t1fw
+    - role: t1rt

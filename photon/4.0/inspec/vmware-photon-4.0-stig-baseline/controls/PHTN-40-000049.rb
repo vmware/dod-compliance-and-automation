@@ -27,5 +27,6 @@ control 'PHTN-40-000049' do
 
   describe command('awk -F ":" \'list[$3]++{print $1, $3}\' /etc/passwd') do
     its('stdout') { should cmp '' }
+    its('stderr') { should cmp '' }
   end
 end

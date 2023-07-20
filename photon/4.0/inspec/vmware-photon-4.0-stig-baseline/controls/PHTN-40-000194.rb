@@ -5,9 +5,9 @@ control 'PHTN-40-000194' do
   desc  'check', "
     At the command line, run the following command to verify that audit logon attempts for unknown users is performed:
 
-    # grep 'audit' /etc/security/faillock.conf
+    # grep '^audit' /etc/security/faillock.conf
 
-    Expected result:
+    Example result:
 
     audit
 

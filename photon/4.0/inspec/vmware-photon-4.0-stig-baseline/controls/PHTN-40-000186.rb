@@ -7,12 +7,13 @@ control 'PHTN-40-000186' do
 
     # grep -E \"freq|flush\" /etc/audit/auditd.conf
 
-    Expected result:
+    Example result:
 
     flush = INCREMENTAL_ASYNC
     freq = 50
 
-    If the output does not match the expected result, this is a finding.
+    If \"flush\" is not set to \"INCREMENTAL_ASYNC\", this is a finding.
+    If \"freq\" is not set to \"50\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

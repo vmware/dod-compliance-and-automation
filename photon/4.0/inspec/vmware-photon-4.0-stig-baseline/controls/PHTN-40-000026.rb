@@ -1,5 +1,5 @@
 control 'PHTN-40-000026' do
-  title 'The Photon operating system must protect audit logs from unauthorized read access.'
+  title 'The Photon operating system must protect audit logs from unauthorized access.'
   desc  "
     Unauthorized disclosure of audit records can reveal system and configuration data to attackers, thus compromising its confidentiality.
 
@@ -11,13 +11,21 @@ control 'PHTN-40-000026' do
 
     # grep -iw log_file /etc/audit/auditd.conf
 
-    At the command line, run the following command using the directory found in the previous step to verify auditd are protected from authorized access:
+    Example result:
 
-    # stat -c \"%n %U:%G %a\" /var/log/audit/*
+    log_file = /var/log/audit/audit.log
 
-    If any log files have permissions not \"0600\", this is a finding.
-    If any log files are not owned by root, this is a finding.
-    If any log files are not group owned by root, this is a finding.
+    At the command line, run the following command using the file found in the previous step to verify auditd logs are protected from authorized access:
+
+    # stat -c \"%n %U:%G %a\" /var/log/audit/audit.log
+
+    Example result:
+
+    /var/log/audit/audit.log root:root 600
+
+    If the audit log file does not have permissions set to \"0600\", this is a finding.
+    If the audit log file is not owned by root, this is a finding.
+    If the audit log file is not group owned by root, this is a finding.
   "
   desc 'fix', "
     At the command line, run the following commands:
@@ -26,6 +34,8 @@ control 'PHTN-40-000026' do
     #  chown root:root <audit log file>
 
     Replace <audit log file> with the target log file.
+
+    Note: If \"log_group\" is configured in the auditd.conf file and set to something other than \"root\", the permissions changes will not be persistent.
   "
   impact 0.5
   tag severity: 'medium'
@@ -37,12 +47,9 @@ control 'PHTN-40-000026' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  log_file = auditd_conf('/etc/audit/auditd.conf').log_file.scan(%r{^.*/})[0]
-  command("find #{log_file}* -maxdepth 1 -type f").stdout.split.each do |fname|
-    describe file(fname) do
-      its('mode') { should cmp '0600' }
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-    end
+  describe file(auditd_conf('/etc/audit/auditd.conf').log_file) do
+    its('mode') { should cmp '0600' }
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
   end
 end

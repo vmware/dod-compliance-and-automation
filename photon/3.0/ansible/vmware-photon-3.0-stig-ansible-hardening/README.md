@@ -51,7 +51,7 @@ ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --tags photon
 ```
 
 ## Misc
-To set syslog or NTP you must update the variables by specifiying them at the command line or by passing a vars file.
+To set syslog or NTP you must update the variables by specifying them at the command line or by passing a vars file.
 
 The DoD SSH banner update is disabled by default. Update the run_sshd_banner_issue variable to enable or disable it.
 

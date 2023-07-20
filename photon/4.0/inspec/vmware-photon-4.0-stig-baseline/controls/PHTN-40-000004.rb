@@ -5,23 +5,23 @@ control 'PHTN-40-000004' do
   desc  'check', "
     At the command line, run the following commands to verify accounts are locked after three consecutive invalid logon attempts by a user during a 15-minute time period:
 
-    # grep 'deny =' /etc/security/faillock.conf
+    # grep '^deny =' /etc/security/faillock.conf
 
-    Expected result:
+    Example result:
 
     deny = 3
 
     If the \"deny\" option is not set to \"3\" or less (but not \"0\"), is missing or commented out, this is a finding.
 
-    # grep 'fail_interval =' /etc/security/faillock.conf
+    # grep '^fail_interval =' /etc/security/faillock.conf
 
-    Expected result:
+    Example result:
 
     fail_interval = 900
 
     If the \"fail_interval\" option is not set to \"900\" or more, is missing or commented out, this is a finding.
 
-    Note: If faillock.conf is not used to configure pam_faillock.so then these options may be specified on the faillock lines in the system-auth and system-account files.
+    Note: If faillock.conf is not used to configure the \"pam_faillock.so\" module, then these options may be specified on the faillock lines in the system-auth and system-account PAM files.
   "
   desc 'fix', "
     Navigate to and open:

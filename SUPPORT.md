@@ -31,6 +31,7 @@ Examples:
 ## Unsupported Scenarios
 - Content and product version mismatched. For example applying the vSphere 7 STIG to vSphere 8.
 - Attempting to apply guidance from one STIG to a product it was not intended for.
+- A product that is no longer generally supported by VMware. See the [VMware Product Lifecycle Matrix](https://lifecycle.vmware.com/) for product end of general support dates.
 
 
 ## Automation Support
@@ -59,7 +60,7 @@ A support request may be opened in these cases if a valid support agreement is i
 
 Support for issues related to content in a STIG Readiness Guide should be addressed by emailing: stigs@vmware.com 
 
-Requests recieved will be processed on a best effort basis and any needed content updates published in the next content release. In between releases, issues will be documented in a known issues document available in a products folder in this repository.  
+Requests received will be processed on a best effort basis and any needed content updates published in the next content release. In between releases, issues will be documented in a known issues document available in a products folder in this repository.  
 
 **Product Support**
 

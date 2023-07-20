@@ -1,5 +1,5 @@
 control 'PHTN-40-000212' do
-  title 'The Photon operating system must configure sshd to disable X11 forwarding.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to disable X11 forwarding.'
   desc  'X11 is an older, insecure graphics forwarding protocol. It is not used by Photon and should be disabled as a general best practice to limit attack surface area and communication channels.'
   desc  'rationale', ''
   desc  'check', "
@@ -7,11 +7,11 @@ control 'PHTN-40-000212' do
 
     # sshd -T|&grep -i X11Forwarding
 
-    Expected result:
+    Example result:
 
-    X11Forwarding no
+    x11forwarding no
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"X11Forwarding\" is not set to \"no\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

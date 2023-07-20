@@ -1,0 +1,17 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# T0FW-3X-000002
+run_t0fw_unpublished_rules: true
+# T0FW-3X-000006
+run_t0fw_rule_logging: true
+# T0FW-3X-000011
+run_t0fw_syslog_tls: true
+# T0FW-3X-000019-28
+run_t0fw_floodprotprof: true
+# T0FW-3X-000021
+run_t0fw_default_rule_action: false
+# T0FW-3X-000030
+run_t0fw_gwfw_rules: true
+# T0FW-3X-000036
+run_t0fw_spoofguard_prof: false

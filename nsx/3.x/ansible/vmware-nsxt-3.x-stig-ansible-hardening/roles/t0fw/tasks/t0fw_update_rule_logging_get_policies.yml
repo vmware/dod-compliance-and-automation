@@ -1,0 +1,21 @@
+---
+
+- name: "T0FW-3X-000006 - Get firewall policies for Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-0s/{{ var_outer_t0.id }}/gateway-firewall"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: GET
+    status_code: 200
+  register: gateway_policies
+  changed_when: false
+
+- name: "T0FW-3X-000006 - Looping through rules for each Gateway Policy for Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.include_tasks:
+    file: t0fw_update_rule_logging.yml
+  with_items:
+    - "{{ gateway_policies.json.results }}"
+  loop_control:
+    loop_var: var_outer_gp

@@ -1,17 +1,17 @@
 control 'PHTN-40-000207' do
-  title 'The Photon operating system must configure sshd to disallow authentication with an empty password.'
-  desc  'Blank passwords are one of the first things an attacker checks for when probing a system. Even is the user somehow has a blank password on the OS, sshd must not allow that user to log in.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to disallow authentication with an empty password.'
+  desc  'Blank passwords are one of the first things an attacker checks for when probing a system. Even if the user somehow has a blank password on the OS, SSH must not allow that user to log in.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:
 
     # sshd -T|&grep -i PermitEmptyPasswords
 
-    Expected result:
+    Example result:
 
-    PermitEmptyPasswords no
+    permitemptypasswords no
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"PermitEmptyPasswords\" is not set to \"no\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

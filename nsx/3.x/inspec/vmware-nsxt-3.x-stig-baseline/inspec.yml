@@ -1,0 +1,45 @@
+name: vmware-nsxt-3.0-stig-inspec-baseline
+title: VMware NSX-T STIG InSpec Profile
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: InSpec Compliance Profile for NSX-T 3.x
+version: 1.2
+
+inputs:
+- name: nsxManager
+  type: string
+  value: "10.187.113.62"
+  description: "IP or FQDN of NSX-T Manager"
+# We use session based authentication in this profile to avoid username/pass   See https://developer.vmware.com/apis/1248/nsx-t on how to generate the session token and you will also need the JSESSIONID cookie
+- name: sessionToken
+  type: string
+  value: "fea5f9e8-10c9-4c58-bf86-4668828be556"
+  description: "X-XSRF-TOKEN session token for authentication"
+  sensitive: true
+- name: sessionCookieId
+  type: string
+  value: "JSESSIONID=CBA784EF0F7F27132752F72D4998ED56"
+  description: "JSESSIONID Cookie in the format JSESSIONID=ECEF0CE603677B7FC5F34523714B7F5A for example"
+  sensitive: true
+- name: syslogServers
+  type: array
+  value: ["loginsight.vmware.com","log.test.local"]
+  description: "TNDM-3X-000034 enter array of valid syslog servers"
+
+depends:
+  - name: dfw
+    path: dfw
+  - name: manager
+    path: manager
+  - name: sdn
+    path: sdn
+  - name: t0fw
+    path: t0fw
+  - name: t0router
+    path: t0router
+  - name: t1fw
+    path: t1fw
+  - name: t1router
+    path: t1router

@@ -1,0 +1,13 @@
+---
+
+var_nsx_manager: ''
+var_jsession_id: ''
+var_session_token: ''
+
+# multicast
+# array of t1 ids that should have multicast enabled
+var_t1rt_gateways_with_multicast_enabled: []
+
+# dhcp
+# array of t1 ids that should have dhcp enabled
+var_t1rt_gateways_with_dhcp_enabled: []

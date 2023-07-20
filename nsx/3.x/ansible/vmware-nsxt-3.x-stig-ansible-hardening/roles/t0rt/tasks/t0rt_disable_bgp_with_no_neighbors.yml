@@ -1,0 +1,28 @@
+- name: "T0RT-3X-000095 - Check to see if BGP neighbors exist for: {{ var_outer_bgp.path }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1{{ var_outer_bgp.path }}/neighbors"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: GET
+    status_code: 200
+  register: bgpneighbors
+  changed_when: false
+
+- name: "T0RT-3X-000095 - Disable BGP on the target tier-0 gateway."
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1{{ var_outer_bgp.path }}"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: PATCH
+    body: "{{ lookup('template', './t0rt_disable_bgp.json.j2') }}"
+    body_format: json
+    status_code: 200
+  when:
+    - bgpneighbors.json.result_count == 0
+  register: response
+  changed_when:
+    - response.status == 200

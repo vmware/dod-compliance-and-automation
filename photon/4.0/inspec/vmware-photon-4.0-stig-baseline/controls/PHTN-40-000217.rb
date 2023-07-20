@@ -1,5 +1,5 @@
 control 'PHTN-40-000217' do
-  title 'The Photon operating system must configure sshd to ignore user-specific trusted hosts lists.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to ignore user-specific trusted hosts lists.'
   desc  'SSH trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled. Individual users can have a local list of trusted remote machines, which must also be ignored while disabling host-based authentication generally.'
   desc  'rationale', ''
   desc  'check', "
@@ -7,11 +7,11 @@ control 'PHTN-40-000217' do
 
     # sshd -T|&grep -i IgnoreRhosts
 
-    Expected result:
+    Example result:
 
-    IgnoreRhosts yes
+    ignorerhosts yes
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"IgnoreRhosts\" is not set to \"yes\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

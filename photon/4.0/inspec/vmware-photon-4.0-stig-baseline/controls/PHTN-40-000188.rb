@@ -1,5 +1,5 @@
 control 'PHTN-40-000188' do
-  title 'The Photon operating system must configure sshd to disallow HostbasedAuthentication.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to disallow HostbasedAuthentication.'
   desc  'SSH trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled.'
   desc  'rationale', ''
   desc  'check', "
@@ -7,11 +7,11 @@ control 'PHTN-40-000188' do
 
     # sshd -T|&grep -i HostbasedAuthentication
 
-    Expected result:
+    Example result:
 
     hostbasedauthentication no
 
-    If there is no output or if the output does not match expected result, this is a finding.
+    If \"HostbasedAuthentication\" is not set to \"no\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

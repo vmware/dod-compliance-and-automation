@@ -11,7 +11,7 @@ This is a hardening playbook that utilizes Ansible to perform automated remediat
 - As always please ensure you have a backout plan if needed you can roll back the changes
 - This playbook does not cover the vSphere (ESXi,VM,vCenter) which are in a companion PowerCLI script
 - In order to run the Photon role it must be installed as a role so that this playbook may find it
-- This playbook has not been tested for forward or backward compability beyond the version of vCenter listed under requirements.
+- This playbook has not been tested for forward or backward compatibility beyond the version of vCenter listed under requirements.
 
 ## Requirements
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) installed on a machine that can SSH to the target node(s).  Tested with Ansible 2.12.8.

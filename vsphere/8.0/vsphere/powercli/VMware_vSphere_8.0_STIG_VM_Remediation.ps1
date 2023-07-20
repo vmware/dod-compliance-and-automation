@@ -24,8 +24,8 @@
 
     Tested against
     -PowerCLI 13
-    -Powershell 5/Core 7.3.2
-    -vCenter/ESXi 8.0 U1
+    -Powershell 5/Core 7.3.4
+    -vCenter/ESXi 8.0 U1a
 
     Example command to run script
     .\VMware_vSphere_8.0_STIG_VM_Remediation.ps1 -vcenter vcentername.test.local -all myhost.test.local -vccred $cred -reportpath C:\Reports

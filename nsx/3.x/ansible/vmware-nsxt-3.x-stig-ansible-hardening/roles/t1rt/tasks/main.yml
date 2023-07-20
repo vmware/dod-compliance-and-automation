@@ -1,0 +1,10 @@
+---
+
+- name: Include t1router
+  ansible.builtin.include_tasks:
+    file: t1rt.yml
+    apply:
+      tags:
+        - t1rt
+  tags:
+    - always

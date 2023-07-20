@@ -1,0 +1,110 @@
+---
+###################################################################################################################################
+- name: Get all Tier-1 Gateways for use in tasks
+  tags: [always]
+  block:
+    - name: Get all Tier-1 Gateways for use in tasks
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-1s"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: t1gateways
+      changed_when: false
+
+##################################################################################################################################
+- name: T1RT-3X-000016
+  tags: [T1RT-3X-000016]
+  when: run_t1rt_remove_inactive_interfaces | bool
+  block:
+    - name: T1RT-3X-000016 - The NSX-T Tier-1 Gateway must be configured to have all inactive interfaces removed.
+      ansible.builtin.debug:
+        msg: "T1RT-3X-000016 - This control must be manually remediated."
+      changed_when: false
+
+##################################################################################################################################
+- name: T1RT-3X-000027 - The NSX-T Tier-1 Gateway must be configured to have the DHCP service disabled if not in use.
+  tags: [T1RT-3X-000027]
+  when: run_t1rt_disable_dhcp | bool
+  block:
+    - name: T1RT-3X-000027 - The NSX-T Tier-1 Gateway must be configured to have the DHCP service disabled if not in use. No Tier-1 Gateways found.
+      ansible.builtin.debug:
+        msg: "T1RT-3X-000027 - No Tier-1 Gateways found."
+      changed_when: false
+      when:
+        - t1gateways.json.result_count == 0
+
+    - name: T1RT-3X-000027 - Loop through Tier-1 Gateways and disable dhcp if needed
+      ansible.builtin.include_tasks:
+        file: t1rt_disable_dhcp.yml
+      with_items:
+        - "{{ t1gateways.json.results }}"
+      when:
+        - t1gateways.json.result_count != 0
+        - var_outer_t1.dhcp_config_paths is defined
+        - var_outer_t1.id not in var_t1rt_gateways_with_dhcp_enabled
+      loop_control:
+        loop_var: var_outer_t1
+        label: "T1 Info: {{ var_outer_t1.id }}"
+
+##################################################################################################################################
+- name: T1RT-3X-000034
+  tags: [T1RT-3X-000034]
+  when: run_t1rt_qos | bool
+  block:
+    - name: T1RT-3X-000034 - The NSX-T Tier-1 Gateway must be configured to enforce a Quality-of-Service (QoS) policy to limit the effects of packet flooding denial-of-service (DoS) attacks.
+      ansible.builtin.debug:
+        msg: "T1RT-3X-000034 - This control must be manually remediated."
+      changed_when: false
+
+##################################################################################################################################
+# T1RT-3X-000084 - The NSX-T Tier-1 Gateway must be configured to have multicast disabled if not in use.
+- name: T1RT-3X-000084 - The NSX-T Tier-1 Gateway must be configured to have multicast disabled if not in use.
+  tags: [T1RT-3X-000084]
+  when: run_t1rt_gateway_multicast | bool
+  block:
+    - name: T1RT-3X-000084 - The NSX-T Tier-1 Gateway must be configured to have multicast disabled if not in use. No Tier-1 Gateways found.
+      ansible.builtin.debug:
+        msg: "T1RT-3X-000084 - No Tier-1 Gateways found."
+      changed_when: false
+      when:
+        - t1gateways.json.result_count == 0
+
+    - name: T1RT-3X-000084 - Find enabled Tier-1 Multicast Policies
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:PolicyMulticastConfig%20AND%20enabled:true)"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: multicastenabled
+      changed_when: false
+      when:
+        - t1gateways.json.result_count != 0
+
+    - name: T1RT-3X-000084 - Disable multicast on Tier-1s
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1{{ item.path }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t1rt_disable_multicast_gateway.json.j2') }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ multicastenabled.json.results }}"
+      register: multicastupdate
+      when:
+        - t1gateways.json.result_count != 0
+        - multicastenabled.json.result_count != 0
+        # extract T1 ID from path and see if it's in list given
+        - item.path | regex_search('\/infra\/tier-1s\/(.*?)\/', '\\1') | first not in var_t1rt_gateways_with_multicast_enabled
+      changed_when:
+        - multicastupdate.status == 200

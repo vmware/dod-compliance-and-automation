@@ -3,8 +3,6 @@ control 'PHTN-40-000232' do
   desc  'TCP timestamps are used to provide protection against wrapped sequence numbers. It is possible to calculate system uptime (and boot time) by analyzing TCP timestamps. These calculated uptimes can help a bad actor in determining likely patch levels for vulnerabilities.'
   desc  'rationale', ''
   desc  'check', "
-    If IP forwarding is required such as if Kubernetes is installed, this is Not Applicable.
-
     At the command line, run the following command to verify TCP timestamps are enabled:
 
     # /sbin/sysctl net.ipv4.tcp_timestamps
@@ -13,12 +11,12 @@ control 'PHTN-40-000232' do
 
     net.ipv4.tcp_timestamps = 1
 
-    If the output does not match the expected result, this is a finding.
+    If the \"net.ipv4.tcp_timestamps\" kernel parameter is not set to \"1\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
 
-    /etc/sysctl.conf
+    /etc/sysctl.d/zz-stig-hardening.conf
 
     Add or update the following line:
 
@@ -28,7 +26,7 @@ control 'PHTN-40-000232' do
 
     # /sbin/sysctl --load
 
-    Note: If the file sysctl.conf doesn't exist it must be created.
+    Note: If the file zz-stig-hardening.conf doesn't exist it must be created.
   "
   impact 0.5
   tag severity: 'medium'

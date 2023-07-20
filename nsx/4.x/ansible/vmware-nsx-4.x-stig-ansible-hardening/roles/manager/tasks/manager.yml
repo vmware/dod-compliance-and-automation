@@ -246,7 +246,7 @@
 
     - name: NMGR-4X-000012 - Pause for service restart when changes are made to auth policy
       ansible.builtin.pause:
-        seconds: 60
+        seconds: 90
       when:
         - (authpolicy.json.api_failed_auth_lockout_period != 900) or
           (authpolicy.json.api_failed_auth_reset_period != 900) or
@@ -388,7 +388,7 @@
 
     - name: NMGR-4X-000038 - Pause for service restart when changes are made to API service policy
       ansible.builtin.pause:
-        seconds: 60
+        seconds: 90
       when:
         - (apiservice.json.session_timeout != 600) or
           (apiservice.json.client_api_concurrency_limit != 40) or

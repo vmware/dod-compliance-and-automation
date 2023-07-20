@@ -18,12 +18,12 @@ control 'PHTN-40-000223' do
     net.ipv6.conf.all.accept_source_route = 0
     net.ipv6.conf.default.accept_source_route = 0
 
-    If the output does not match the expected result, this is a finding.
+    If the \"accept_source_route\" kernel parameters are not set to \"0\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
 
-    /etc/sysctl.conf
+    /etc/sysctl.d/zz-stig-hardening.conf
 
     Add or update the following lines:
 
@@ -36,7 +36,7 @@ control 'PHTN-40-000223' do
 
     # /sbin/sysctl --load
 
-    Note: If the file sysctl.conf doesn't exist it must be created.
+    Note: If the file zz-stig-hardening.conf doesn't exist it must be created.
   "
   impact 0.5
   tag severity: 'medium'

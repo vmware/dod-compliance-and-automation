@@ -21,7 +21,7 @@ This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor 
 
 InSpec profiles for vSphere are available for each component or can be run all or some from the overlay profile. Note the overlay profile is setup to reference the other profiles from the same relative folder structure as seen here.  
 
-[See the InSpec docs for more info on Profile dependencies and inheritence](https://www.inspec.io/docs/reference/profiles/)
+[See the InSpec docs for more info on Profile dependencies and inheritance](https://www.inspec.io/docs/reference/profiles/)
 
 
 ## How to run InSpec locally from Powershell on Windows

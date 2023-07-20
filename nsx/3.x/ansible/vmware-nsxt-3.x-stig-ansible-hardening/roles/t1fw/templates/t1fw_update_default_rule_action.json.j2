@@ -1,0 +1,13 @@
+{
+    "action": "{{ var_t1fw_default_rule_action_desired }}",
+    "resource_type": "{{ item.resource_type }}",
+    "source_groups": {{ item.source_groups }},
+    "destination_groups": {{ item.destination_groups }},
+    "services": {{ item.services }},
+    "profiles": {{ item.profiles }},
+    "logged": {{ item.logged }},
+    "scope": {{ item.scope }},
+    {% if item.ip_protocol is defined %}
+    "ip_protocol": "{{ item.ip_protocol }}"
+    {% endif %}
+}

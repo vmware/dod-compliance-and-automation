@@ -9,7 +9,7 @@ control 'PHTN-40-000127' do
   desc  'check', "
     At the command line, run the following commands to verify AIDE is installed and used to monitor for file changes:
 
-    # rpm -qa | grep aide
+    # rpm -qa | grep '^aide'
 
     Example result:
 
@@ -33,6 +33,6 @@ control 'PHTN-40-000127' do
   tag nist: ['CM-3 (5)', 'SI-6 b']
 
   describe command('rpm -qa | grep aide') do
-    its('stdout.strip') { should match /aide-/ }
+    its('stdout.strip') { should match /^aide-/ }
   end
 end

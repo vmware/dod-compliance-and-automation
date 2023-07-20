@@ -1,0 +1,11 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# T1RT-3X-000016
+run_t1rt_remove_inactive_interfaces: true
+# T1RT-3X-000027
+run_t1rt_disable_dhcp: true
+# T1RT-3X-000034
+run_t1rt_qos: true
+# T1RT-3X-000084
+run_t1rt_gateway_multicast: true

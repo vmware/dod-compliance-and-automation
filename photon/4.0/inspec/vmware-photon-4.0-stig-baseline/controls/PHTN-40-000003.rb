@@ -7,7 +7,7 @@ control 'PHTN-40-000003' do
 
     # auditctl -l | grep -E \"(useradd|groupadd)\"
 
-    Expected result:
+    Example result:
 
     -w /usr/sbin/useradd -p x -k useradd
     -w /usr/sbin/groupadd -p x -k groupadd
@@ -30,7 +30,7 @@ control 'PHTN-40-000003' do
 
     # /sbin/augenrules --load
 
-    Note: A new \"audit.STIG.rules\" file is provided for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
+    Note: A \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
 
     Note: An older \"audit.STIG.rules\" may exist and may reference older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
   "

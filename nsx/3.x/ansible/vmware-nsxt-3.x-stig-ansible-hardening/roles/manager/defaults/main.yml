@@ -1,0 +1,22 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# TNDM-3X-000012 TNDM-3X-000041
+run_mgr_auth_policy: true
+# TNDM-3X-000052 TNDM-3X-000080 TNDM-3X-000101
+run_mgr_api_session_timeout: true
+run_mgr_cli_timeout: true
+# TNDM-3X-000068
+run_mgr_ntp_servers: true
+# TNDM-3X-000069
+run_mgr_timezone: true
+# TNDM-3X-000083
+run_service_log_levels: true
+# TNDM-3X-000098
+run_mgr_disable_ceip_acceptance: true
+# TNDM-3X-000099
+run_mgr_disable_ssh: true
+# TNDM-3X-000100
+run_mgr_disable_local_accounts: true
+# TNDM-3X-000103
+run_mgr_enable_fips_for_lbs: true

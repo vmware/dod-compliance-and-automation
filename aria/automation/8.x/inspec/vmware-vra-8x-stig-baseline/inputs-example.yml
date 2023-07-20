@@ -1,0 +1,22 @@
+# VMware Aria Automation - Application
+syslogHost: "log.test.local"
+syslogPort: "514"
+syslogProtocol: "tcp"
+syslogSslVerify: "true"
+syslogUseSsl: "false"
+ntpServers: "['time.google.com']"
+maxAuthTries: "2"
+verbose: True
+allowedCipherSuites: ["TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384","TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256","TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384","TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"]
+
+# VMware Aria Automation - Kubernetes
+manifests_path: '/etc/kubernetes/manifests'
+pki_path: '/etc/kubernetes/pki'
+kubeadm_conf_path: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf'
+kubectl_path: '/usr/local/bin/kubectl'
+kubectl_minversion: 'v1.12.9'
+kubernetes_conf_files: ["/etc/kubernetes/admin.conf","/etc/kubernetes/scheduler.conf","/etc/kubernetes/controller-manager.conf"]
+kubectl_conf_path: '/etc/kubernetes/admin.conf'
+kubelet_conf_path: '/var/lib/kubelet/config.yaml'
+kubelet_kubeconf_path: ''
+k8s_min_supported_version: 'v1.20.13'

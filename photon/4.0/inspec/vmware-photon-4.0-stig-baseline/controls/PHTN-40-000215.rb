@@ -1,15 +1,15 @@
 control 'PHTN-40-000215' do
-  title 'The Photon operating system must configure sshd to disallow compression of the encrypted session stream.'
-  desc  'If compression is allowed in an SSH connection prior to authentication, vulnerabilities in the compression software could result in compromise of the system from an unauthenticated connection.'
+  title 'The Photon operating system must configure Secure Shell (SSH) to disallow compression of the encrypted session stream.'
+  desc  'If compression is allowed in a Secure Shell (SSH) connection prior to authentication, vulnerabilities in the compression software could result in compromise of the system from an unauthenticated connection.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:
 
     # sshd -T|&grep -i Compression
 
-    Expected result:
+    Example result:
 
-    Compression no
+    compression no
 
     If there is no output or if \"Compression\" is not set to \"delayed\" or \"no\", this is a finding.
   "
