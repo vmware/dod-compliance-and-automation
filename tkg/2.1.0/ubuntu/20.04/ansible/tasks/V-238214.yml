@@ -1,0 +1,9 @@
+- name: V-238214
+  copy:
+    content: "{{ login_banner }}"
+    dest: /etc/issue.net
+    owner: root
+    group: root
+  when: run_sshd_banner| bool
+  tags:
+  - medium

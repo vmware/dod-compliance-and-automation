@@ -1,0 +1,48 @@
+- name: "[Common] sshd_config"
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^{{ item.key }} "
+    validate: "/usr/sbin/sshd -T -f %s"
+    line: "{{ item.key }} {{ item.value }} "
+  with_items:
+    - key: Banner
+      value: /etc/issue.net
+    - key: ClientAliveCountMax
+      value: 1
+    - key: ClientAliveInterval
+      value: 600
+    - key: PermitEmptyPasswords
+      value: "no"
+    - key: PermitUserEnvironment
+      value: "no"
+    - key: Protocol
+      value: 2
+    - key: UsePAM
+      value: "yes"
+    - key: X11Forwarding
+      value: "no"
+    - key: X11UseLocalhost
+      value: "yes"
+    - key: PubkeyAuthentication
+      value: "yes"
+
+- name: "sshd_config ciphers"
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^Ciphers "
+    validate: "/usr/sbin/sshd -T -f %s"
+    line: "Ciphers aes256-ctr,aes192-ctr,aes128-ctr"
+  when:
+    - set_sshd_config_ciphers
+
+- name: "sshd_config macs"
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^MACs "
+    validate: "/usr/sbin/sshd -T -f %s"
+    line: "MACs hmac-sha2-512,hmac-sha2-256"
+  when:
+    - set_sshd_config_macs

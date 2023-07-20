@@ -1,0 +1,22 @@
+- name: "[Common] login.defs"
+  lineinfile:
+    dest: /etc/login.defs
+    regexp: "^{{ item.parameter }}"
+    line: "{{ item.parameter }} {{ item.value }}"
+    state: present
+  with_items: 
+  - parameter: ENCRYPT_METHOD
+    value: "SHA512"
+  - parameter: PASS_MIN_DAYS
+    value: "1"
+  - parameter: PASS_MAX_DAYS
+    value: "60"
+  - parameter: UMASK
+    value: "077"
+  - parameter: CREATE_HOME
+    value: "yes"
+  tags:
+  - V-238202
+  - V-238203
+  - V-238209
+  - V-238325

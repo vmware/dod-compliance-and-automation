@@ -1,0 +1,8 @@
+- name: "[Common] Audit rules"
+  copy:
+    src: "mci-audit.rules"
+    dest: /etc/audit/rules.d/mci.rules
+    mode: "0640"
+  notify:
+  - augenrules load
+  tags: []

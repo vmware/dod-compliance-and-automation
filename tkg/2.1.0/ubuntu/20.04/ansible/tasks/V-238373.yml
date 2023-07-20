@@ -1,0 +1,9 @@
+- name: V-238373
+  lineinfile:
+    dest: "/etc/pam.d/login"
+    regexp: '^(session)(\s+)([^\s]*)(\s+)(pam_lastlog\.so)'
+    line: '\1 required \5 showfailed'
+    backrefs: yes
+    state: present
+  tags:
+  - low

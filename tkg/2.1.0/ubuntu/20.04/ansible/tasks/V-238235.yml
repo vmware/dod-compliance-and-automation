@@ -1,0 +1,50 @@
+- name: V-238235-add-faillock-sufficient
+  pamd:
+    state: after
+    type: auth
+    control: optional
+    name: common-auth
+    module_path: pam_cap.so
+    new_module_path: pam_faillock.so
+    new_type: auth
+    new_control: sufficient
+  tags:
+  - low
+- name: V-238235-add-faillock-default-die
+  pamd:
+    state: before
+    type: auth
+    control: sufficient
+    name: common-auth
+    module_path: pam_faillock.so
+    new_module_path: pam_faillock.so
+    new_type: auth
+    new_control: "[default=die]"
+  tags:
+  - low
+- name: V-238235-add-args-faillock-default-die
+  pamd:
+    state: updated
+    name: common-auth
+    module_path: pam_faillock.so
+    type: auth
+    control: "[default=die]"
+    module_arguments: 'authfail'
+  tags:
+  - low
+- name: V-238235-add-args-faillock-sufficient
+  pamd:
+    state: updated
+    name: common-auth
+    module_path: pam_faillock.so
+    type: auth
+    control: sufficient
+    module_arguments: 'authsucc'
+  tags:
+  - low
+- name: V-238235-update-faillock-file
+  copy:
+    content: "{{ faillock_conf }}"
+    dest: /etc/security/faillock.conf
+  tags:
+  - low

@@ -1,0 +1,15 @@
+- name: search sudo in /etc/group
+  command: grep sudo /etc/group
+  register: sudo_users
+  tags:
+  - high
+  
+- name: print sudo user
+  debug:
+    msg: >
+      User(s) part of sudo group
+      {{ sudo_users.stdout }}
+  when:
+    sudo_users is defined
+  tags:
+  - high

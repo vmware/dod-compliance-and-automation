@@ -1,0 +1,15 @@
+- name: get audit log files
+  command: find /var/log/audit/ -type f
+  register: log_files
+  tags:
+  - medium
+
+- name: set permission on audit log files
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0600"
+  with_items: "{{ log_files.stdout_lines }}"
+  tags:
+  - medium

@@ -1,0 +1,9 @@
+- name: V-238299
+  lineinfile:
+    path: /etc/default/grub
+    regexp: ^GRUB_CMDLINE_LINUX=""
+    line: GRUB_CMDLINE_LINUX="audit=1"
+  notify:
+  - update grub
+  tags:
+  - medium

@@ -1,0 +1,30 @@
+- name: verify au-remote.conf exists
+  stat:
+    path: "/etc/audisp/plugins.d/au-remote.conf"
+  register: au_remote_conf
+  tags:
+  - low
+
+- name: set active in au-remote.conf
+  lineinfile:
+    path: "/etc/audisp/plugins.d/au-remote.conf"
+    regex: ^active\s+=
+    line: active = yes
+    state: present
+  when:
+    - au_remote_conf.stat.exists | bool
+    - audit_sp_remote_server != ""
+  tags:
+  - low
+
+- name: set remote_server in au-remote.conf
+  lineinfile:
+    path: "/etc/audisp/plugins.d/au-remote.conf"
+    regex: ^remote_server\s+=
+    line: "remote_server = {{ audit_sp_remote_server }}"
+    state: present
+  when:
+    - au_remote_conf.stat.exists | bool
+    - audit_sp_remote_server != ""
+  tags:
+  - low

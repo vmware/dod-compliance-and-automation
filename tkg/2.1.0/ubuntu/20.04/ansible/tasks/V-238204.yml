@@ -1,0 +1,10 @@
+- name: set password_pbkdf2 in grub
+  lineinfile:
+    path: /etc/grub.d/40_custom
+    insertbefore: EOF
+    line: password_pbkdf2 root grub.pbkdf2.sha512.10000.*
+    state: present
+  notify:
+    - update grub
+  tags:
+  - high

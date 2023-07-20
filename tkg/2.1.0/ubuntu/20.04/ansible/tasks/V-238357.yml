@@ -1,0 +1,10 @@
+- name: set makestep in chrony.conf
+  lineinfile:
+    dest: "/etc/chrony/chrony.conf"
+    regexp: '^makestep\s+\d+\s+\d+'
+    line: 'makestep 1 -1'
+    state: present
+  tags:
+  - low
+  when:
+    install_chrony | bool

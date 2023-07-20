@@ -1,0 +1,14 @@
+- name: enable ctrl-alt-del.target
+  systemd:
+    name: ctrl-alt-del.target
+    enabled: no
+  tags:
+  - high
+
+- name: reload ctrl-alt-del.target daemon
+  systemd:
+    name: ctrl-alt-del.target
+    masked: yes
+    daemon_reload: yes
+  tags:
+  - high

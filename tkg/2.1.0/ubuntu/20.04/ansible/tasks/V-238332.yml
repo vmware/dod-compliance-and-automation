@@ -1,0 +1,15 @@
+- name: check sticky bit on dirs
+  command: find / -type d -perm -002 ! -perm -1000
+  register: pub_dir_no_sticky_bit
+  tags:
+  - medium
+
+- name: print sticky bit message
+  debug:
+    msg: >
+      Public directories with sticky bit not set.
+      {{ pub_dir_no_sticky_bit.stdout }}
+  when:
+    pub_dir_no_sticky_bit is defined
+  tags:
+  - medium

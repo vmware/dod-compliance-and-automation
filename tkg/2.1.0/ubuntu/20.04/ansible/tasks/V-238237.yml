@@ -1,0 +1,7 @@
+- name: V-238237
+  lineinfile:
+    dest: /etc/pam.d/common-auth
+    line: 'auth       required   pam_faildelay.so  delay={{ (pam_fail_delay | int) * 10**6 }}'
+    state: present
+  tags:
+  - low

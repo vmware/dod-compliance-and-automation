@@ -1,0 +1,113 @@
+- name: "[Common] Get skel files wih bad permissions"
+  command: find  /etc/skel/ -type f -perm /137
+  register: skel_files
+
+- name: "[Common] Set skel file permissions"
+  file:
+    path: "{{ item }}"
+    mode: '0640'
+  with_items: "{{ skel_files.stdout_lines }}"
+
+- name: "[Common] Get files with bad user, group, or permissions"
+  command: |
+    find \
+    /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /lib /usr/lib /lib64 \
+    -type f \
+    ! -type l \
+    -a \( ! -group root -o ! -user root -o -perm /022 \)
+  register: sys_lib_files
+  
+- name: "[Common] Set correct user, group and permission for files"
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0755"
+    state: file
+  with_items: "{{ sys_lib_files.stdout_lines }}"
+  tags:
+  - V-238347
+
+- name: "[Common] Get directories with incorrect user, group, or permissions"
+  command: |
+    find \
+    /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /lib /usr/lib /lib64 \
+    -type d \
+    ! -type l \
+    -a \( ! -group root -o ! -user root -o -perm /022 \)
+  register: sys_lib_directories
+  
+- name: "[Common] Set correct user, group and permission for directories."
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0755"
+    state: directory
+  with_items: "{{ sys_lib_directories.stdout_lines }}"
+  tags:
+  - V-238344
+
+- name: "[Common] set umask"
+  lineinfile:
+    dest: "/etc/profile"
+    regexp: "^(#)?umask .*"
+    line: "umask 077"
+    state: present
+
+- name: "rsyslog.conf file permissions"
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    regex: "{{ item }}"
+    state: absent
+  with_items:
+    - \$FileOwner.*
+    - \$FileGroup.*
+    - \$FileCreateMode.*
+    - \$DirCreateMode.*
+    - \$Umask.*
+    - \$PrivDropToUser.*
+    - \$PrivDropToGroup.*
+    
+
+- name: "[Common] Get  audit configuration files"
+  command: find /etc/audit/audit.rules /etc/audit/auditd.conf /etc/audit/rules.d/ -type f
+  register: audit_conf_files
+  tags:
+  - medium
+
+- name: "[Common] Set audit configuration file permissions"
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0640"
+  with_items: "{{ audit_conf_files.stdout_lines }}"
+  tags:
+  - medium
+  - V-238249
+
+- name: V-219189
+  lineinfile:
+    path: '/usr/lib/tmpfiles.d/00rsyslog.conf'
+    regexp: '(^z \/var\/log)\s+(\d+)\s+(.*$)'
+    line: '\1 0750 root syslog -'
+    backrefs: yes
+  tags:
+    - medium
+- name: V-219189
+  lineinfile:
+    path: '/usr/lib/tmpfiles.d/var.conf'
+    regexp: '(^d \/var\/log)\s+(\d+)\s+(.*$)'
+    line: 'd /var/log 0750 root syslog -'
+    backrefs: yes
+  tags:
+    - medium
+- name: "[Common] Set permissions for /var/log" 
+  file:
+    path: "/var/log"
+    owner: root
+    group: syslog
+    mode: "0750"
+  tags:
+  - medium

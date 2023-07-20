@@ -1,0 +1,26 @@
+- name: find log files
+  command: find  /var/log/ -type f -perm /137
+  register: log_files
+  tags:
+  - medium
+
+- name: set log file permissions
+  file:
+    path: "{{ item }}"
+    mode: '0640'
+  with_items: "{{ log_files.stdout_lines }}"
+  tags:
+    - medium
+    
+- name: set permission in tmpfiles.d/var.conf
+  lineinfile:
+    path: '/usr/lib/tmpfiles.d/var.conf'
+    regexp: '(^f {{ item }})\s+(\d+)\s+(.*$)'
+    line: '\1 0640 \3'
+    backrefs: yes
+  with_items:
+    - /var/log/wtmp
+    - /var/log/btmp
+    - /var/log/lastlog
+  tags:
+    - medium

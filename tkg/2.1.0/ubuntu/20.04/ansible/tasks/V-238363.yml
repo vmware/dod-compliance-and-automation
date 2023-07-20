@@ -1,0 +1,271 @@
+- name: add keyserver.ubuntu.com key 
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: A166877412DAC26E73CEBF3FF6C280178D13028C
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    not offline_install | bool
+
+- name: Make sure apt-auth config directory exists.
+  file:
+    path: "/etc/apt/auth.conf.d/"
+    state: directory
+  when:
+    install_fips | bool and
+    ansible_os_family == "Debian" and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    not offline_install | bool
+
+- name: Create fips auth configuration
+  template:
+    src: "ubuntuadvantage.conf.j2"
+    dest: "/etc/apt/auth.conf.d/ubuntuadvantage.conf"
+    owner: "root"
+    group: "root"
+  when:
+    install_fips | bool and
+    ansible_os_family == "Debian" and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    not offline_install | bool
+
+- name: Create fips updates auth configuration
+  template:
+    src: "ubuntuadvantageupdates.conf.j2"
+    dest: "/etc/apt/auth.conf.d/ubuntuadvantageupdates.conf"
+    owner: "root"
+    group: "root"
+  when:
+    install_fips | bool and
+    ansible_os_family == "Debian" and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    not offline_install | bool
+
+- name: Add FIPS Repository sources
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+  - "deb https://private-ppa.launchpad.net/ubuntu-advantage/fips-updates/ubuntu {{ ansible_distribution_release }} main"
+  - "deb https://private-ppa.launchpad.net/ubuntu-advantage/fips/ubuntu {{ ansible_distribution_release }} main "
+  when:
+    install_fips | bool and
+    ansible_os_family == "Debian" and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    not offline_install | bool
+
+- name: "unhold fips packages"
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: install 
+  with_items:
+  - libssl1.1
+  - libssl1.1-hmac
+  - libgcrypt20
+  - libgcrypt20-hmac
+  when:
+    hold_packages | bool
+
+- name: install openssl packages
+  ansible.builtin.apt:
+    force_apt_get: True
+    dpkg_options: 'force-confnew'
+    name:
+    - libssl1.1
+    - libssl1.1-hmac
+    - libgcrypt20
+    - libgcrypt20-hmac
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == ''
+
+- name: install fips linux kernel AWS
+  ansible.builtin.apt:
+    force_apt_get: True
+    dpkg_options: 'force-confnew'
+    name:
+    - linux-aws-fips
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    packer_builder_type.startswith('amazon') and
+    ansible_os_family == "Debian"
+
+- name: "install fips linux kernel vSphere"
+  ansible.builtin.apt:
+    force_apt_get: True
+    dpkg_options: 'force-confnew'
+    name:
+    - linux-fips
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    (packer_builder_type is search('vmware') or
+    packer_builder_type is search('vsphere'))
+
+- name: "install fips linux kernel Azure"
+  ansible.builtin.apt:
+    force_apt_get: True
+    dpkg_options: 'force-confnew'
+    name:
+    - linux-azure-fips
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    packer_builder_type.startswith('azure') and
+    ansible_os_family == "Debian"
+
+- name: create grub dir
+  file:
+    state: directory
+    path: /etc/default/grub.d/
+    owner: root
+    group: root
+    mode: 0755
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == ''
+
+- name: copy grub config
+  copy:
+    src: 99-fips.cfg
+    dest: /etc/default/grub.d/99-fips.cfg
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == ''
+
+- name: get menuentry
+  command: awk -F"'" '/menuentry.*fips/ { print $(NF-1); exit }' /boot/grub/grub.cfg
+  register: fips_kernel
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == ''
+
+- name: update menuentry
+  lineinfile:
+    path: /etc/default/grub.d/99-fips.cfg
+    insertbefore: BOF
+    line: GRUB_DEFAULT="1>{{fips_kernel.stdout}}"
+  notify:
+    - update grub
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == ''
+
+- name: Remove FIPS Repository
+  no_log: true
+  apt_repository:
+    repo: "{{ item }}"
+    state: absent
+  with_items:
+  - "deb https://private-ppa.launchpad.net/ubuntu-advantage/fips-updates/ubuntu {{ ansible_distribution_release }} main"
+  - "deb https://private-ppa.launchpad.net/ubuntu-advantage/fips/ubuntu {{ ansible_distribution_release }} main "
+  when:
+    install_fips | bool and
+    ansible_os_family == "Debian" and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    not offline_install | bool
+
+- name: Remove fips auth configuration
+  file:
+    path: "/etc/apt/auth.conf.d/ubuntuadvantage.conf"
+    state: absent
+  when:
+    install_fips | bool and
+    ansible_os_family == "Debian" and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    not offline_install | bool
+
+- name: Remove fips updates auth configuration
+  file:
+    path: "/etc/apt/auth.conf.d/ubuntuadvantageupdates.conf"
+    state: absent
+  when:
+    install_fips | bool and
+    ansible_os_family == "Debian" and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    not offline_install | bool
+
+- name: install ubuntu-advantage-tools packages
+  ansible.builtin.apt:
+    force_apt_get: True
+    name:
+    - ubuntu-advantage-tools
+    state: present
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID != ''
+
+- name: attach ua sub token and install subs
+  command: ua attach {{ UBUNTU_FIPS_SUBSCRIPTION_ID }}
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID != ''
+
+- name: "delete ua files"
+  file: 
+    path: "{{ item }}"
+    state: absent
+  with_items:
+  - /var/lib/ubuntu-advantage/private/
+  - /var/log/ubuntu-advantage.log
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID != ''
+
+- name: get fips hmac files
+  command: find /usr/bin /usr/sbin /boot /usr/lib/ /usr/local/bin/  -type f -name "*.hmac"
+  register: fips_hmac_files
+  when:
+    install_fips | bool
+    
+- name: set permission on fips hmac files
+  file:
+    path: "{{ item }}"
+    mode: '0644'
+  with_items: "{{ fips_hmac_files.stdout_lines }}"
+  when:
+    install_fips | bool
+
+- name: "hold fips packages"
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold 
+  with_items:
+  - libssl1.1
+  - libssl1.1-hmac
+  - libgcrypt20
+  - libgcrypt20-hmac
+  when:
+    install_fips | bool and
+    hold_packages | bool
+
+- name: hold fips kernel AWS
+  dpkg_selections:
+    name: linux-aws-fips
+    selection: hold 
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    packer_builder_type.startswith('amazon') and
+    ansible_os_family == "Debian"
+
+- name: "hold fips kernel vSphere"
+  dpkg_selections:
+    name: linux-fips
+    selection: hold 
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    (packer_builder_type is search('vmware') or
+    packer_builder_type is search('vsphere'))
+
+- name: "hold fips kernel Azure"
+  dpkg_selections:
+    name: linux-azure-fips
+    selection: hold 
+  when:
+    install_fips | bool and
+    UBUNTU_FIPS_SUBSCRIPTION_ID == '' and
+    packer_builder_type.startswith('azure') and
+    ansible_os_family == "Debian"

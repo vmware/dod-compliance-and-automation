@@ -1,0 +1,91 @@
+- name: "[Common] perform a dist-upgrade"
+  apt:
+    force_apt_get: True
+    update_cache: True
+    upgrade: dist
+  register: apt_lock_status
+  until: apt_lock_status is not failed
+  retries: 5
+  delay: 10
+  when: not offline_install | bool
+
+    
+- name: "[Common] Install packages"
+  ansible.builtin.apt:
+    name: "{{ install_packages }}"
+    state: present
+  tags:
+  - V-238360
+  - V-238210
+  - V-238228
+  - V-238231
+  - V-238215
+  - V-238354
+  - V-238370
+  - V-238200
+
+- name: "[Common] apt: disable planner and history"
+  blockinfile:
+    dest: /etc/apt/apt.conf.d/99_disable_ext_planner_and_history
+    block: |
+      Dir::Log::History /dev/null;
+      Dir::Log::Planner /dev/null;
+    state: present
+    create: yes
+
+- name: "[Common] hold installed packages"
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold 
+  with_items: "{{ install_packages }}"
+  when:
+    hold_packages | bool
+
+- name: "[Common] unhold packages to be uninstalled"
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: install 
+  with_items: "{{ remove_packages }}"
+  when:
+    hold_packages | bool
+
+- name: "[Common] Uninstall packages"
+  ansible.builtin.apt:
+    name: "{{ remove_packages }}"
+    state: absent
+    purge: yes
+  tags:
+  - V-238326
+  - V-238327
+
+- name: "Install AIDE"
+  ansible.builtin.apt:
+    name: 
+    - aide 
+    - aide-common
+    state: present
+  when:
+    install_aide | bool
+  tags:
+  - V-238371
+
+- name: "Install chrony"
+  ansible.builtin.apt:
+    name: chrony
+    state: present
+  when:
+    install_chrony | bool
+
+- name: "Install audispd-plugins"
+  ansible.builtin.apt:
+    name: audispd-plugins
+    state: present
+  when:
+    install_audispd_plugins | bool
+
+- name: "Install unattended-upgrades"
+  ansible.builtin.apt:
+    name: unattended-upgrades
+    state: present
+  when:
+    install_unattended_upgrades | bool

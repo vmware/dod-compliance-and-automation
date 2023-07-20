@@ -1,0 +1,9 @@
+- name: set audit tools permissions
+  file: 
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: "0755"
+  with_items: "{{ audit_tools }}"
+  tags:
+  - medium
