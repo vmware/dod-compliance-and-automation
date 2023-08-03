@@ -1,51 +1,48 @@
 control 'ESXI-70-000085' do
   title 'The ESXi host must enable strict x509 verification for SSL syslog endpoints.'
-  desc  "
-    When sending syslog data to a remote host via SSL, the ESXi host is presented with the endpoint's SSL server certificate. In addition to trust verification, configured elsewhere, this \"x509-strict\" option performs additional validity checks on CA root certificates during verification.
+  desc %q(When sending syslog data to a remote host via SSL, the ESXi host is presented with the endpoint's SSL server certificate. In addition to trust verification, configured elsewhere, this "x509-strict" option performs additional validity checks on CA root certificates during verification.
 
-    These checks are generally not performed (CA roots are inherently trusted) and might cause incompatibilities with existing, misconfigured CA roots. The NIAP requirements in the Virtualization Protection Profile and Server Virtualization Extended Package, however, require even CA roots to pass validations.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From an ESXi shell, run the following command:
+These checks are generally not performed (CA roots are inherently trusted) and might cause incompatibilities with existing, misconfigured CA roots. The NIAP requirements in the Virtualization Protection Profile and Server Virtualization Extended Package, however, require even CA roots to pass validations.)
+  desc 'check', 'If SSL is not used for the syslog target, this is not applicable.
 
-    # esxcli system syslog config get|grep 509
+From an ESXi shell, run the following command:
 
-    or
+# esxcli system syslog config get|grep 509
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+or
 
-    $esxcli = Get-EsxCli -v2
-    $esxcli.system.syslog.config.get.invoke()|Select StrictX509Compliance
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    Expected result:
+$esxcli = Get-EsxCli -v2
+$esxcli.system.syslog.config.get.invoke()|Select StrictX509Compliance
 
-    Strict X509Compliance: true
+Expected result:
 
-    If the output does not match the expected result, this is a finding.
-  "
-  desc 'fix', "
-    From an ESXi shell, run the following commands:
+Strict X509Compliance: true
 
-    # esxcli system syslog config set --x509-strict=\"true\"
-    # esxcli system syslog reload
+If the output does not match the expected result, this is a finding.'
+  desc 'fix', 'From an ESXi shell, run the following commands:
 
-    or
+# esxcli system syslog config set --x509-strict="true"
+# esxcli system syslog reload
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+or
 
-    $esxcli = Get-EsxCli -v2
-    $arguments = $esxcli.system.syslog.config.set.CreateArgs()
-    $arguments.x509strict = $true
-    $esxcli.system.syslog.config.set.Invoke($arguments)
-    $esxcli.system.syslog.reload.Invoke()
-  "
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+
+$esxcli = Get-EsxCli -v2
+$arguments = $esxcli.system.syslog.config.set.CreateArgs()
+$arguments.x509strict = $true
+$esxcli.system.syslog.config.set.Invoke($arguments)
+$esxcli.system.syslog.reload.Invoke()'
   impact 0.5
+  tag check_id: 'C-60112r918920_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
   tag gid: 'V-256437'
-  tag rid: 'SV-256437r886092_rule'
+  tag rid: 'SV-256437r919026_rule'
   tag stig_id: 'ESXI-70-000085'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-60055r886091_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

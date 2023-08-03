@@ -142,7 +142,13 @@
   ansible.builtin.find:
     paths: '{{ var_logs_path }}'
     file_type: file
-    patterns: "*.log*,*.txt*,*.log"
+    patterns:
+      - '*.current'
+      - '*.stdout'
+      - '*.stderr'
+      - '*.log'
+    excludes:
+      - 'lookupsvc-init.log'
     recurse: true
   register: logs
   tags:
@@ -154,9 +160,9 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: "0640"
-    owner: "root"
-    group: "root"
+    mode: "o-w"
+    owner: "lookupsvc"
+    group: "lookupsvc"
   with_items: "{{ logs.files }}"
   tags:
     - VCLU-70-000007

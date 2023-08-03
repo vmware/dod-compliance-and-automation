@@ -1,55 +1,52 @@
 control 'ESXI-70-000035' do
   title 'The ESXi host must be configured to disable nonessential capabilities by disabling Secure Shell (SSH).'
-  desc  "
-    The ESXi Shell is an interactive command line interface (CLI) available at the ESXi server console. The ESXi shell provides temporary access to commands essential for server maintenance. Intended primarily for use in break-fix scenarios, the ESXi shell is well suited for checking and modifying configuration details, which are not always generally accessible, using the vSphere Client.
+  desc 'The ESXi Shell is an interactive command line interface (CLI) available at the ESXi server console. The ESXi shell provides temporary access to commands essential for server maintenance. Intended primarily for use in break-fix scenarios, the ESXi shell is well suited for checking and modifying configuration details, which are not always generally accessible, using the vSphere Client.
 
-    The ESXi shell is accessible remotely using SSH by users with the Administrator role. Under normal operating conditions, SSH access to the host must be disabled as is the default. As with the ESXi shell, SSH is also intended only for temporary use during break-fix scenarios. SSH must therefore be disabled under normal operating conditions and must only be enabled for diagnostics or troubleshooting. Remote access to the host must therefore be limited to the vSphere Client or Host Client at all other times.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Hosts and Clusters.
+The ESXi shell is accessible remotely using SSH by users with the Administrator role. Under normal operating conditions, SSH access to the host must be disabled as is the default. As with the ESXi shell, SSH is also intended only for temporary use during break-fix scenarios. SSH must therefore be disabled under normal operating conditions and must only be enabled for diagnostics or troubleshooting. Remote access to the host must therefore be limited to the vSphere Client or Host Client at all other times.
 
-    Select the ESXi Host >> Configure >> System >> Services.
+'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Under Services, locate the \"SSH\" service and verify it is \"Stopped\".
+Select the ESXi Host >> Configure >> System >> Services.
 
-    or
+Under "Services", locate the "SSH" service and verify it is "Stopped".
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+or
 
-    Get-VMHost | Get-VMHostService | Where {$_.Label -eq \"SSH\"}
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    If the SSH service is \"Running\", this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+Get-VMHost | Get-VMHostService | Where {$_.Label -eq "SSH"}
 
-    Select the ESXi Host >> Configure >> System >> Services.
+If the SSH service is "Running", this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Under \"Services\", select the \"SSH\" service and click the \"Stop\" button.
+Select the ESXi Host >> Configure >> System >> Services.
 
-    Click the \"Edit Startup policy...\" button.
+Under "Services", select the "SSH" service and click the "Stop" button.
 
-    Select the \"Start and stop manually\" radio button.
+Click the "Edit Startup policy..." button.
 
-    Click \"OK\".
+Select the "Start and stop manually" radio button.
 
-    or
+Click "OK".
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+or
 
-    Get-VMHost | Get-VMHostService | Where {$_.Label -eq \"SSH\"} | Set-VMHostService -Policy Off
-    Get-VMHost | Get-VMHostService | Where {$_.Label -eq \"SSH\"} | Stop-VMHostService
-  "
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+
+Get-VMHost | Get-VMHostService | Where {$_.Label -eq "SSH"} | Set-VMHostService -Policy Off
+Get-VMHost | Get-VMHostService | Where {$_.Label -eq "SSH"} | Stop-VMHostService'
   impact 0.5
+  tag check_id: 'C-60075r885979_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000095-VMM-000480'
-  tag satisfies: ['SRG-OS-000297-VMM-001040', 'SRG-OS-000298-VMM-001050']
   tag gid: 'V-256400'
   tag rid: 'SV-256400r885981_rule'
   tag stig_id: 'ESXI-70-000035'
+  tag gtitle: 'SRG-OS-000095-VMM-000480'
+  tag fix_id: 'F-60018r885980_fix'
+  tag satisfies: ['SRG-OS-000095-VMM-000480', 'SRG-OS-000297-VMM-001040', 'SRG-OS-000298-VMM-001050']
   tag cci: ['CCI-000381', 'CCI-002314', 'CCI-002322']
-  tag nist: ['AC-17 (1)', 'AC-17 (9)', 'CM-7 a']
+  tag nist: ['CM-7 a', 'AC-17 (1)', 'AC-17 (9)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

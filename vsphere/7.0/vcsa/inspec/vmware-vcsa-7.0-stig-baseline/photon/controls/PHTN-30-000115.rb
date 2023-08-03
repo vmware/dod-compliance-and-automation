@@ -1,37 +1,34 @@
 control 'PHTN-30-000115' do
   title 'The Photon operating system must configure sshd to disallow HostbasedAuthentication.'
-  desc  'Secure Shell (SSH) trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled.'
-  desc  'rationale', ''
-  desc  'check', "
-    At the command line, run the following command:
+  desc 'Secure Shell (SSH) trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled.'
+  desc 'check', 'At the command line, run the following command:
 
-    # sshd -T|&grep -i HostbasedAuthentication
+# sshd -T|&grep -i HostbasedAuthentication
 
-    Expected result:
+Expected result:
 
-    hostbasedauthentication no
+hostbasedauthentication no
 
-    If the output does not match the expected result, this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+If the output does not match the expected result, this is a finding.'
+  desc 'fix', 'Navigate to and open:
 
-    /etc/ssh/sshd_config
+/etc/ssh/sshd_config
 
-    Ensure the \"HostbasedAuthentication\" line is uncommented and set to the following:
+Ensure the "HostbasedAuthentication" line is uncommented and set to the following:
 
-    HostbasedAuthentication no
+HostbasedAuthentication no
 
-    At the command line, run the following command:
+At the command line, run the following command:
 
-    # systemctl restart sshd.service
-  "
+# systemctl restart sshd.service'
   impact 0.5
+  tag check_id: 'C-60259r887424_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-GPOS-00229'
   tag gid: 'V-256584'
   tag rid: 'SV-256584r887426_rule'
   tag stig_id: 'PHTN-30-000115'
+  tag gtitle: 'SRG-OS-000480-GPOS-00229'
+  tag fix_id: 'F-60202r887425_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

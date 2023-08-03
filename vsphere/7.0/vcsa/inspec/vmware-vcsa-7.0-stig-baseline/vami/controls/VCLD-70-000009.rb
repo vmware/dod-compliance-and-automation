@@ -1,34 +1,31 @@
 control 'VCLD-70-000009' do
   title 'VAMI server binaries and libraries must be verified for their integrity.'
-  desc  "
-    Being able to verify that a patch, upgrade, certificate, etc., being added to the web server is unchanged from the producer of the file is essential for file validation and non-repudiation of the information.
+  desc 'Being able to verify that a patch, upgrade, certificate, etc., being added to the web server is unchanged from the producer of the file is essential for file validation and nonrepudiation of the information.
 
-    VMware delivers product updates and patches regularly. When VAMI is updated, the signed packages will also be updated. These packages can be used to verify that VAMI has not been inappropriately modified since it was installed.
+VMware delivers product updates and patches regularly. When VAMI is updated, the signed packages will also be updated. These packages can be used to verify that VAMI has not been inappropriately modified since it was installed.
 
-    The file \"lighttpd.conf\" and \"vami-lighttp.service\" are intentionally modified on first boot and thus are excluded from the check.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    At the command prompt, run the following command:
+The file "lighttpd.conf" and "vami-lighttp.service" are intentionally modified on first boot and thus are excluded from the check.
 
-    # rpm -qa|grep lighttpd|xargs rpm -V|grep -v -E \"lighttpd.conf|vami-lighttp.service\"
+'
+  desc 'check', 'At the command prompt, run the following command:
 
-    If the command returns any output, this is a finding.
-  "
-  desc 'fix', "
-    If the VAMI binaries have been modified from the default state when deployed as part of the vCenter Server Appliance (VCSA), the system must be wiped and redeployed or restored from backup.
+# rpm -qa|grep lighttpd|xargs rpm -V|grep -v -E "lighttpd.conf|vami-lighttp.service"
 
-    VMware does not recommend or support recovering from such a state by reinstalling RPMs or similar efforts.
-  "
+If the command returns any output, this is a finding.'
+  desc 'fix', 'If the VAMI binaries have been modified from the default state when deployed as part of the vCenter Server Appliance (VCSA), the system must be wiped and redeployed or restored from backup.
+
+VMware does not recommend or support recovering from such a state by reinstalling RPMs or similar efforts.'
   impact 0.5
+  tag check_id: 'C-60328r888479_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000131-WSR-000051'
-  tag satisfies: ['SRG-APP-000211-WSR-000030', 'SRG-APP-000380-WSR-000072']
   tag gid: 'V-256653'
   tag rid: 'SV-256653r888481_rule'
   tag stig_id: 'VCLD-70-000009'
+  tag gtitle: 'SRG-APP-000131-WSR-000051'
+  tag fix_id: 'F-60271r888480_fix'
+  tag satisfies: ['SRG-APP-000131-WSR-000051', 'SRG-APP-000211-WSR-000030', 'SRG-APP-000380-WSR-000072']
   tag cci: ['CCI-001082', 'CCI-001749', 'CCI-001813']
-  tag nist: ['CM-5 (1)', 'CM-5 (3)', 'SC-2']
+  tag nist: ['SC-2', 'CM-5 (3)', 'CM-5 (1) (a)']
 
   describe command('rpm -V vmware-studio-vami-lighttpd|grep "^..5......"|grep -v -E "\.conf|\.service"') do
     its('stdout.strip') { should eq '' }

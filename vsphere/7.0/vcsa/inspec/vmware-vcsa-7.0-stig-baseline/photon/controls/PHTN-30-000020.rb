@@ -1,55 +1,54 @@
 control 'PHTN-30-000020' do
   title 'The Photon operating system must generate audit records when successful/unsuccessful attempts to access privileges occur.'
-  desc  'Audit records can be generated from various components within the information system (e.g., module or policy filter).'
-  desc  'rationale', ''
-  desc  'check', "
-    At the command line, run the following command:
+  desc 'Audit records can be generated from various components within the information system (e.g., module or policy filter).
 
-    # auditctl -l | grep chmod
+'
+  desc 'check', 'At the command line, run the following command:
 
-    Expected result:
+# auditctl -l | grep chmod
 
-    -a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
+Expected result:
 
-    -a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
+-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
 
-    -a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
+-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
 
-    -a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
+-a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
 
-    If the output does not match the expected result, this is a finding.
+-a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
 
-    Note: The auid!= parameter may display as 4294967295 or -1, which are equivalent.
+If the output does not match the expected result, this is a finding.
 
-    Note: This check depends on the auditd service to be in a running state for accurate results. The auditd service is enabled in control PHTN-30-000013.
-  "
-  desc 'fix', "
-    Navigate to and open:
+Note: The auid!= parameter may display as 4294967295 or -1, which are equivalent.
 
-    /etc/audit/rules.d/audit.STIG.rules
+Note: This check depends on the auditd service to be in a running state for accurate results. The auditd service is enabled in control PHTN-30-000013.'
+  desc 'fix', 'Navigate to and open:
 
-    Add the following lines:
+/etc/audit/rules.d/audit.STIG.rules
 
-    -a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
-    -a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
-    -a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
-    -a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
+Add the following lines:
 
-    At the command line, run the following command to load the new audit rules.
+-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
+-a always,exit -F arch=b64 -S chmod,fchmod,chown,fchown,lchown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
+-a always,exit -F arch=b32 -S chmod,fchmod,fchown,chown,fchownat,fchmodat -F auid>=1000 -F auid!=4294967295 -F key=perm_mod
+-a always,exit -F arch=b32 -S chmod,lchown,fchmod,fchown,chown,setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr,fchownat,fchmodat -F key=perm_mod
 
-    # /sbin/augenrules --load
+At the command line, run the following command to load the new audit rules:
 
-    Note: A new \"audit.STIG.rules\" file is provided for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
+# /sbin/augenrules --load
 
-    Note: An older \"audit.STIG.rules\" may exist if the file exists and references older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
-  "
+Note: A new "audit.STIG.rules" file is provided for placement in "/etc/audit/rules.d" that contains all rules needed for auditd.
+
+Note: An older "audit.STIG.rules" may exist if the file exists and references older "GEN" SRG IDs. This file can be removed and replaced as necessary with an updated one.'
   impact 0.5
+  tag check_id: 'C-60172r887163_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000064-GPOS-00033'
-  tag satisfies: ['SRG-OS-000392-GPOS-00172', 'SRG-OS-000462-GPOS-00206', 'SRG-OS-000466-GPOS-00210', 'SRG-OS-000468-GPOS-00212']
   tag gid: 'V-256497'
   tag rid: 'SV-256497r887165_rule'
   tag stig_id: 'PHTN-30-000020'
+  tag gtitle: 'SRG-OS-000064-GPOS-00033'
+  tag fix_id: 'F-60115r887164_fix'
+  tag satisfies: ['SRG-OS-000064-GPOS-00033', 'SRG-OS-000392-GPOS-00172', 'SRG-OS-000462-GPOS-00206', 'SRG-OS-000466-GPOS-00210', 'SRG-OS-000468-GPOS-00212']
   tag cci: ['CCI-000172', 'CCI-002884']
   tag nist: ['AU-12 c', 'MA-4 (1) (a)']
 

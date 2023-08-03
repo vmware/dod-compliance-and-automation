@@ -1,40 +1,37 @@
 control 'VCPF-70-000006' do
   title 'Performance Charts must generate log records for system startup and shutdown.'
-  desc  "
-    Logging must be started as soon as possible when a service starts and when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.
+  desc 'Logging must be started as soon as possible when a service starts and when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.
 
-    On the vCenter Server Appliance (VCSA), the \"vmware-vmon\" service starts up the Java virtual machines (JVMs) for various vCenter processes, including Performance Charts, and the individual json config files control the early JVM logging. Ensuring these json files are configured correctly enables early Java \"stdout\" and \"stderr\" logging.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    At the command prompt, run the following command:
+On the vCenter Server Appliance (VCSA), the "vmware-vmon" service starts up the Java virtual machines (JVMs) for various vCenter processes, including Performance Charts, and the individual json config files control the early JVM logging. Ensuring these json files are configured correctly enables early Java "stdout" and "stderr" logging.
 
-    # grep StreamRedirectFile /etc/vmware/vmware-vmon/svcCfgfiles/perfcharts.json
+'
+  desc 'check', 'At the command prompt, run the following command:
 
-    Expected result:
+# grep StreamRedirectFile /etc/vmware/vmware-vmon/svcCfgfiles/perfcharts.json
 
-    \"StreamRedirectFile\" : \"%VMWARE_LOG_DIR%/vmware/perfcharts/vmware-perfcharts-runtime.log\",
+Expected result:
 
-    If the output does not match the expected result, this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+"StreamRedirectFile" : "%VMWARE_LOG_DIR%/vmware/perfcharts/vmware-perfcharts-runtime.log",
 
-    /etc/vmware/vmware-vmon/svcCfgfiles/perfcharts.json
+If the output does not match the expected result, this is a finding.'
+  desc 'fix', 'Navigate to and open:
 
-    Below the last line of the \"PreStartCommandArg\" block, add the following line:
+/etc/vmware/vmware-vmon/svcCfgfiles/perfcharts.json
 
-    \"StreamRedirectFile\" : \"%VMWARE_LOG_DIR%/vmware/perfcharts/vmware-perfcharts-runtime.log\",
+Below the last line of the "PreStartCommandArg" block, add the following line:
 
-    Restart the appliance for changes to take effect.
-  "
+"StreamRedirectFile" : "%VMWARE_LOG_DIR%/vmware/perfcharts/vmware-perfcharts-runtime.log",
+
+Restart the appliance for changes to take effect.'
   impact 0.5
+  tag check_id: 'C-60291r888337_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000089-WSR-000047'
-  tag satisfies: ['SRG-APP-000092-WSR-000055']
   tag gid: 'V-256616'
   tag rid: 'SV-256616r888339_rule'
   tag stig_id: 'VCPF-70-000006'
+  tag gtitle: 'SRG-APP-000089-WSR-000047'
+  tag fix_id: 'F-60234r888338_fix'
+  tag satisfies: ['SRG-APP-000089-WSR-000047', 'SRG-APP-000092-WSR-000055']
   tag cci: ['CCI-000169', 'CCI-001464']
   tag nist: ['AU-12 a', 'AU-14 (1)']
 

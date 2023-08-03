@@ -1,29 +1,26 @@
 control 'ESXI-70-000009' do
   title 'The ESXi host SSH daemon must be configured with the DOD logon banner.'
-  desc  'The warning message reinforces policy awareness during the logon process and facilitates possible legal action against attackers. Alternatively, systems whose ownership should not be obvious should ensure usage of a banner that does not provide easy attribution.'
-  desc  'rationale', ''
-  desc  'check', "
-    From an ESXi shell, run the following command:
+  desc 'The warning message reinforces policy awareness during the logon process and facilitates possible legal action against attackers. Alternatively, systems whose ownership should not be obvious should ensure use of a banner that does not provide easy attribution.'
+  desc 'check', 'From an ESXi shell, run the following command:
 
-    # /usr/lib/vmware/openssh/bin/sshd -T|grep banner
+# /usr/lib/vmware/openssh/bin/sshd -T|grep banner
 
-    Expected result:
+Expected result:
 
-    banner /etc/issue
+banner /etc/issue
 
-    If the output does not match the expected result, this is a finding.
-  "
-  desc 'fix', "
-    From an ESXi shell,  add or correct the following line in \"/etc/ssh/sshd_config\":
+If the output does not match the expected result, this is a finding.'
+  desc 'fix', 'From an ESXi shell, add or correct the following line in "/etc/ssh/sshd_config":
 
-    Banner /etc/issue
-  "
+Banner /etc/issue'
   impact 0.5
+  tag check_id: 'C-60058r885928_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000023-VMM-000060'
   tag gid: 'V-256383'
   tag rid: 'SV-256383r885930_rule'
   tag stig_id: 'ESXI-70-000009'
+  tag gtitle: 'SRG-OS-000023-VMM-000060'
+  tag fix_id: 'F-60001r885929_fix'
   tag cci: ['CCI-000048']
   tag nist: ['AC-8 a']
 

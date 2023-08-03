@@ -1,72 +1,71 @@
 control 'PHTN-30-000032' do
   title 'The Photon operating system must disable the loading of unnecessary kernel modules.'
-  desc  'To support the requirements and principles of least functionality, the operating system must provide only essential capabilities and limit the use of modules, protocols, and/or services to only those required for the proper functioning of the product.'
-  desc  'rationale', ''
-  desc  'check', "
-    At the command line, run the following command:
+  desc 'To support the requirements and principles of least functionality, the operating system must provide only essential capabilities and limit the use of modules, protocols, and/or services to only those required for the proper functioning of the product.
 
-    # modprobe --showconfig | grep \"^install\" | grep \"/bin\"
+'
+  desc 'check', 'At the command line, run the following command:
 
-    Expected result:
+# modprobe --showconfig | grep "^install" | grep "/bin"
 
-    install sctp /bin/false
-    install dccp /bin/false
-    install dccp_ipv4 /bin/false
-    install dccp_ipv6 /bin/false
-    install ipx /bin/false
-    install appletalk /bin/false
-    install decnet /bin/false
-    install rds /bin/false
-    install tipc /bin/false
-    install bluetooth /bin/false
-    install usb_storage /bin/false
-    install ieee1394 /bin/false
-    install cramfs /bin/false
-    install freevxfs /bin/false
-    install jffs2 /bin/false
-    install hfs /bin/false
-    install hfsplus /bin/false
-    install squashfs /bin/false
-    install udf /bin/false
+Expected result:
 
-    The output may include other statements outside of the expected result.
+install sctp /bin/false
+install dccp /bin/false
+install dccp_ipv4 /bin/false
+install dccp_ipv6 /bin/false
+install ipx /bin/false
+install appletalk /bin/false
+install decnet /bin/false
+install rds /bin/false
+install tipc /bin/false
+install bluetooth /bin/false
+install usb_storage /bin/false
+install ieee1394 /bin/false
+install cramfs /bin/false
+install freevxfs /bin/false
+install jffs2 /bin/false
+install hfs /bin/false
+install hfsplus /bin/false
+install squashfs /bin/false
+install udf /bin/false
 
-    If the output does not include at least every statement in the expected result, this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+The output may include other statements outside of the expected result.
 
-    /etc/modprobe.d/modprobe.conf
+If the output does not include at least every statement in the expected result, this is a finding.'
+  desc 'fix', 'Navigate to and open:
 
-    Set the contents as follows:
+/etc/modprobe.d/modprobe.conf
 
-    install sctp /bin/false
-    install dccp /bin/false
-    install dccp_ipv4 /bin/false
-    install dccp_ipv6 /bin/false
-    install ipx /bin/false
-    install appletalk /bin/false
-    install decnet /bin/false
-    install rds /bin/false
-    install tipc /bin/false
-    install bluetooth /bin/false
-    install usb_storage /bin/false
-    install ieee1394 /bin/false
-    install cramfs /bin/false
-    install freevxfs /bin/false
-    install jffs2 /bin/false
-    install hfs /bin/false
-    install hfsplus /bin/false
-    install squashfs /bin/false
-    install udf /bin/false
-  "
+Set the contents as follows:
+
+install sctp /bin/false
+install dccp /bin/false
+install dccp_ipv4 /bin/false
+install dccp_ipv6 /bin/false
+install ipx /bin/false
+install appletalk /bin/false
+install decnet /bin/false
+install rds /bin/false
+install tipc /bin/false
+install bluetooth /bin/false
+install usb_storage /bin/false
+install ieee1394 /bin/false
+install cramfs /bin/false
+install freevxfs /bin/false
+install jffs2 /bin/false
+install hfs /bin/false
+install hfsplus /bin/false
+install squashfs /bin/false
+install udf /bin/false'
   impact 0.5
+  tag check_id: 'C-60184r887199_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000096-GPOS-00050'
-  tag satisfies: ['SRG-OS-000114-GPOS-00059']
   tag gid: 'V-256509'
   tag rid: 'SV-256509r887201_rule'
   tag stig_id: 'PHTN-30-000032'
+  tag gtitle: 'SRG-OS-000096-GPOS-00050'
+  tag fix_id: 'F-60127r887200_fix'
+  tag satisfies: ['SRG-OS-000096-GPOS-00050', 'SRG-OS-000114-GPOS-00059']
   tag cci: ['CCI-000382', 'CCI-000778']
   tag nist: ['CM-7 b', 'IA-3']
 

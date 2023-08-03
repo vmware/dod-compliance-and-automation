@@ -1,64 +1,59 @@
 control 'ESXI-70-000078' do
   title 'The ESXi host must use DOD-approved certificates.'
-  desc  "
-    The default self-signed host certificate issued by the VMware Certificate Authority (VMCA) must be replaced with a DOD-approved certificate when the host will be accessed directly, such as during a virtual machine (VM) console connection.
+  desc 'The default self-signed host certificate issued by the VMware Certificate Authority (VMCA) must be replaced with a DOD-approved certificate when the host will be accessed directly, such as during a virtual machine (VM) console connection.
 
-    The use of a DOD certificate on the host assures clients the service they are connecting to is legitimate and properly secured.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Hosts and Clusters.
+The use of a DOD certificate on the host assures clients the service they are connecting to is legitimate and properly secured.'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Certificate.
+Select the ESXi Host >> Configure >> System >> Certificate.
 
-    If the issuer is not a DOD-approved certificate authority, this is a finding.
+If the issuer is not a DOD-approved certificate authority, this is a finding.
 
-    If the host will never be accessed directly (virtual machine console connections bypass vCenter), this is not a finding.
-  "
-  desc 'fix', "
-    Join the ESXi host to vCenter before replacing the certificate.
+If the host will never be accessed directly (virtual machine console connections bypass vCenter), this is not a finding.'
+  desc 'fix', %q(Join the ESXi host to vCenter before replacing the certificate.
 
-    Obtain a DOD-issued certificate and private key for the host following the requirements below:
+Obtain a DOD-issued certificate and private key for the host following the requirements below:
 
-    Key size: 2048 bits or more (PEM encoded)
+Key size: 2048 bits or more (PEM encoded)
 
-    Key format: PEM
-    VMware supports PKCS8 and PKCS1 (RSA keys)
-    x509 version 3
+Key format: PEM
+VMware supports PKCS8 and PKCS1 (RSA keys)
+x509 version 3
 
-    SubjectAltName must contain DNS Name=<machine_FQDN>
+SubjectAltName must contain DNS Name=<machine_FQDN>
 
-    CRT (Base-64) format
+CRT (Base-64) format
 
-    Contains the following Key Usages: Digital Signature, Non Repudiation, Key Encipherment
+Contains the following Key Usages: Digital Signature, Non Repudiation, Key Encipherment
 
-    Start time of one day before the current time
+Start time of one day before the current time
 
-    CN (and SubjectAltName) set to the host name (or IP address) that the ESXi host has in the vCenter Server inventory
+CN (and SubjectAltName) set to the host name (or IP address) that the ESXi host has in the vCenter Server inventory
 
-    From the vSphere Web Client, select the ESXi host's vCenter Server >> Configure >> System >> Advanced Settings.
+From the vSphere Web Client, select the ESXi host's vCenter Server >> Configure >> System >> Advanced Settings.
 
-    Select the \"vpxd.certmgmt.mode\" value and ensure it is set to \"custom\".
+Select the "vpxd.certmgmt.mode" value and ensure it is set to "custom".
 
-    Put the host into maintenance mode.
+Put the host into maintenance mode.
 
-    Temporarily enable Secure Shell (SSH) on the host. Use Secure Copy Protocol (SCP) to transfer the new certificate and key to /tmp. SSH to the host. Back up the existing certificate and key:
+Temporarily enable Secure Shell (SSH) on the host. Use Secure Copy Protocol (SCP) to transfer the new certificate and key to /tmp. SSH to the host. Back up the existing certificate and key:
 
-    # mv /etc/vmware/ssl/rui.crt /etc/vmware/ssl/rui.crt.bak
-    # mv /etc/vmware/ssl/rui.key /etc/vmware/ssl/rui.key.bak
+# mv /etc/vmware/ssl/rui.crt /etc/vmware/ssl/rui.crt.bak
+# mv /etc/vmware/ssl/rui.key /etc/vmware/ssl/rui.key.bak
 
-    Copy the new certificate and key to \"/etc/vmware/ssl/\" and rename them to \"rui.crt\" and \"rui.key\" respectively.
+Copy the new certificate and key to "/etc/vmware/ssl/" and rename them to "rui.crt" and "rui.key" respectively.
 
-    Restart management agents to implement the new certificate:
+Restart management agents to implement the new certificate:
 
-    # services.sh restart
-  "
+# services.sh restart)
   impact 0.5
+  tag check_id: 'C-60106r886072_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
   tag gid: 'V-256431'
   tag rid: 'SV-256431r886074_rule'
   tag stig_id: 'ESXI-70-000078'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-60049r886073_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

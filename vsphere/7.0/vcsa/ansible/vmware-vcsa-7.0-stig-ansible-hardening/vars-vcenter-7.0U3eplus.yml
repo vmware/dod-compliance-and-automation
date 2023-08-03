@@ -1,4 +1,0 @@
-var_syslog_authpriv_log: /var/log/audit/sshinfo.log
-run_perfcharts_log_rotation: false # file no longer exists in newer versions
-run_set_syslog_server: false
-run_set_ntp_server: false

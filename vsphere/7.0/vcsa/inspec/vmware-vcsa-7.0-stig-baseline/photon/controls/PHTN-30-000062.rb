@@ -1,38 +1,35 @@
 control 'PHTN-30-000062' do
   title 'The Photon operating system must require users to reauthenticate for privilege escalation.'
-  desc  "
-    Without reauthentication, users may access resources or perform tasks for which they do not have authorization.
+  desc 'Without reauthentication, users may access resources or perform tasks for which they do not have authorization.
 
-    When operating systems provide the capability to escalate a functional capability, it is critical the user reauthenticate.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    At the command line, run the following commands:
+When operating systems provide the capability to escalate a functional capability, it is critical the user reauthenticate.
 
-    # grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v \"^#\"|grep -v \"^%\"|awk '{print $1}'
+'
+  desc 'check', %q(At the command line, run the following commands:
 
-    # awk -F: '($2 != \"x\" && $2 != \"!\") {print $1}' /etc/shadow
+# grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -v "^#"|grep -v "^%"|awk '{print $1}'
 
-    If any account listed in the first output is also listed in the second output and is not documented, this is a finding.
-  "
-  desc 'fix', "
-    Check the configuration of the \"/etc/sudoers\" and \"/etc/sudoers.d/*\" files with the following command:
+# awk -F: '($2 != "x" && $2 != "!") {print $1}' /etc/shadow
 
-    # visudo
+If any account listed in the first output is also listed in the second output and is not documented, this is a finding.)
+  desc 'fix', 'Check the configuration of the "/etc/sudoers" and "/etc/sudoers.d/*" files with the following command:
 
-    OR
+# visudo
 
-    # visudo -f /etc/sudoers.d/<file name>
+OR
 
-    Remove any occurrences of \"NOPASSWD\" tags associated with user accounts with a password hash.
-  "
+# visudo -f /etc/sudoers.d/<file name>
+
+Remove any occurrences of "NOPASSWD" tags associated with user accounts with a password hash.'
   impact 0.5
+  tag check_id: 'C-60208r887271_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000373-GPOS-00156'
-  tag satisfies: ['SRG-OS-000373-GPOS-00157', 'SRG-OS-000373-GPOS-00158']
   tag gid: 'V-256533'
   tag rid: 'SV-256533r887273_rule'
   tag stig_id: 'PHTN-30-000062'
+  tag gtitle: 'SRG-OS-000373-GPOS-00156'
+  tag fix_id: 'F-60151r887272_fix'
+  tag satisfies: ['SRG-OS-000373-GPOS-00156', 'SRG-OS-000373-GPOS-00157', 'SRG-OS-000373-GPOS-00158']
   tag cci: ['CCI-002038']
   tag nist: ['IA-11']
 
@@ -47,6 +44,7 @@ control 'PHTN-30-000062' do
       end
     end
   else
+    impact 0.0
     describe 'No users found in sudoers with NOPASSWD flag...skipping...' do
       skip 'No users found in sudoers with NOPASSWD flag...skipping...'
     end

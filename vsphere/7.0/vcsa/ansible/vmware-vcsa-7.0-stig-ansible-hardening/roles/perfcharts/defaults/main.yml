@@ -55,7 +55,7 @@ run_allow_trace: true
 # VCPF-70-000028
 run_web_remove_debug: true
 # VCPF-70-000029
-run_perfcharts_log_rotation: true
+run_perfcharts_log_rotation: false
 # VCPF-70-000030
 run_perfcharts_syslog_config: true
 # VCPF-70-000031

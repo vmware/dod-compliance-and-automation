@@ -1,60 +1,57 @@
 control 'ESXI-70-000095' do
   title 'The ESXi host must implement Secure Boot enforcement.'
-  desc  "
-    Secure Boot is part of the UEFI firmware standard. With UEFI Secure Boot enabled, a host refuses to load any UEFI driver or app unless the operating system bootloader has a valid digital signature. Secure Boot for ESXi requires support from the firmware and it requires that all ESXi kernel modules, drivers and VIBs be signed by VMware or a partner subordinate.
+  desc 'Secure Boot is part of the UEFI firmware standard. With UEFI Secure Boot enabled, a host refuses to load any UEFI driver or app unless the operating system bootloader has a valid digital signature. Secure Boot for ESXi requires support from the firmware and it requires that all ESXi kernel modules, drivers and VIBs be signed by VMware or a partner subordinate.
 
-    Secure Boot is enabled in the BIOS of the ESXi physical server and supported by the hypervisor boot loader. This control flips ESXi from merely supporting Secure Boot to requiring it. Without this setting enabled, and configuration encryption, an ESXi host could be subject to offline attacks. An attacker could simply transfer the ESXi install drive to a non-Secure Boot host and boot it up without ESXi complaining.
+Secure Boot is enabled in the BIOS of the ESXi physical server and supported by the hypervisor boot loader. This control flips ESXi from merely supporting Secure Boot to requiring it. Without this setting enabled, and configuration encryption, an ESXi host could be subject to offline attacks. An attacker could simply transfer the ESXi install drive to a non-Secure Boot host and boot it up without ESXi complaining.
 
-    Note: This setting is only available in 7.0 Update 2 and later.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    If the ESXi host does not have a compatible TPM, this finding is downgraded to a CAT III.
+Note: This setting is only available in 7.0 Update 2 and later.
 
-    From an ESXi shell, run the following command:
+'
+  desc 'check', 'If the ESXi host does not have a compatible TPM, this finding is downgraded to a CAT III.
 
-    # esxcli system settings encryption get|grep \"Secure Boot\"
+From an ESXi shell, run the following command:
 
-    or
+# esxcli system settings encryption get|grep "Secure Boot"
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+or
 
-    $esxcli = Get-EsxCli -v2
-    $esxcli.system.settings.encryption.get.invoke() | Select RequireSecureBoot
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    Expected result:
+$esxcli = Get-EsxCli -v2
+$esxcli.system.settings.encryption.get.invoke() | Select RequireSecureBoot
 
-    Require Secure Boot: true
+Expected result:
 
-    If the output does not match the expected result, this is a finding.
-  "
-  desc 'fix', "
-    This setting cannot be configured until Secure Boot is properly enabled in the BIOS.
+Require Secure Boot: true
 
-    From an ESXi shell, run the following command:
+If the output does not match the expected result, this is a finding.'
+  desc 'fix', 'This setting cannot be configured until Secure Boot is properly enabled in the BIOS.
 
-    # esxcli system settings encryption set --require-secure-boot=true
+From an ESXi shell, run the following command:
 
-    or
+# esxcli system settings encryption set --require-secure-boot=true
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+or
 
-    $esxcli = Get-EsxCli -v2
-    $arguments = $esxcli.system.settings.encryption.set.CreateArgs()
-    $arguments.requiresecureboot = $true
-    $esxcli.system.settings.encryption.set.Invoke($arguments)
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    Evacuate the host and gracefully reboot for changes to take effect.
-  "
+$esxcli = Get-EsxCli -v2
+$arguments = $esxcli.system.settings.encryption.set.CreateArgs()
+$arguments.requiresecureboot = $true
+$esxcli.system.settings.encryption.set.Invoke($arguments)
+
+Evacuate the host and gracefully reboot for changes to take effect.'
   impact 0.5
+  tag check_id: 'C-60122r886120_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag satisfies: ['SRG-OS-000257-VMM-000910', 'SRG-OS-000278-VMM-001000', 'SRG-OS-000446-VMM-001790']
   tag gid: 'V-256447'
   tag rid: 'SV-256447r886122_rule'
   tag stig_id: 'ESXI-70-000095'
-  tag cci: ['CCI-000366', 'CCI-001494', 'CCI-001496', 'CCI-002699']
-  tag nist: ['AU-9', 'AU-9 (3)', 'CM-6 b', 'SI-6 b']
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-60065r886121_fix'
+  tag satisfies: ['SRG-OS-000480-VMM-002000', 'SRG-OS-000257-VMM-000910', 'SRG-OS-000278-VMM-001000', 'SRG-OS-000446-VMM-001790']
+  tag cci: ['CCI-001494', 'CCI-001496', 'CCI-002699']
+  tag nist: ['AU-9', 'AU-9 (3)', 'SI-6 b']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

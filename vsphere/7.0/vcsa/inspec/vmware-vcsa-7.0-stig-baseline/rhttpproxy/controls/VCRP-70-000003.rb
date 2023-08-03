@@ -1,40 +1,39 @@
 control 'VCRP-70-000003' do
   title 'Envoy must be configured to operate in FIPS mode.'
-  desc  'Envoy ships with FIPS 140-2 validated OpenSSL cryptographic libraries and is configured by default to run in FIPS mode. This module is used for all cryptographic operations performed by Envoy, including protection of data-in-transit over the client Transport Layer Security (TLS) connection.'
-  desc  'rationale', ''
-  desc  'check', "
-    At the command prompt, run the following command:
+  desc 'Envoy ships with FIPS 140-2 validated OpenSSL cryptographic libraries and is configured by default to run in FIPS mode. This module is used for all cryptographic operations performed by Envoy, including protection of data-in-transit over the client Transport Layer Security (TLS) connection.
 
-    # xmllint --xpath '/config/vmacore/ssl/fips' /etc/vmware-rhttpproxy/config.xml
+'
+  desc 'check', "At the command prompt, run the following command:
 
-    Expected result:
+# xmllint --xpath '/config/vmacore/ssl/fips' /etc/vmware-rhttpproxy/config.xml
 
-    <fips>true</fips>
+Expected result:
 
-    If the output does not match the expected result, this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+<fips>true</fips>
 
-    /etc/vmware-rhttpproxy/config.xml
+If the output does not match the expected result, this is a finding."
+  desc 'fix', 'Navigate to and open:
 
-    Locate the <config>/<vmacore>/<ssl> block and configure <fips> as follows:
+/etc/vmware-rhttpproxy/config.xml
 
-    <fips>true</fips>
+Locate the <config>/<vmacore>/<ssl> block and configure <fips> as follows:
 
-    Restart the service for changes to take effect.
+<fips>true</fips>
 
-    # vmon-cli --restart rhttpproxy
-  "
+Restart the service for changes to take effect.
+
+# vmon-cli --restart rhttpproxy'
   impact 0.5
+  tag check_id: 'C-60414r889153_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000014-WSR-000006'
-  tag satisfies: ['SRG-APP-000179-WSR-000110', 'SRG-APP-000179-WSR-000111', 'SRG-APP-000416-WSR-000118', 'SRG-APP-000439-WSR-000188']
   tag gid: 'V-256739'
   tag rid: 'SV-256739r889155_rule'
   tag stig_id: 'VCRP-70-000003'
+  tag gtitle: 'SRG-APP-000014-WSR-000006'
+  tag fix_id: 'F-60357r889154_fix'
+  tag satisfies: ['SRG-APP-000014-WSR-000006', 'SRG-APP-000179-WSR-000111', 'SRG-APP-000416-WSR-000118', 'SRG-APP-000439-WSR-000188', 'SRG-APP-000179-WSR-000110']
   tag cci: ['CCI-000068', 'CCI-000803', 'CCI-002418', 'CCI-002450']
-  tag nist: ['AC-17 (2)', 'IA-7', 'SC-13', 'SC-8']
+  tag nist: ['AC-17 (2)', 'IA-7', 'SC-8', 'SC-13 b']
 
   describe xml("#{input('configXmlPath')}") do
     its(['/config/vmacore/ssl/fips']) { should cmp "#{input('fips')}" }

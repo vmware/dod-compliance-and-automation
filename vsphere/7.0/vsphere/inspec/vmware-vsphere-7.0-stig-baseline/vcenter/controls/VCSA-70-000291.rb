@@ -1,41 +1,36 @@
 control 'VCSA-70-000291' do
   title 'The vCenter Server must limit membership to the "TrustedAdmins" Single Sign-On (SSO) group.'
-  desc  "
-    The vSphere \"TrustedAdmins\" group grants additional rights to administer the vSphere Trust Authority feature.
+  desc 'The vSphere "TrustedAdmins" group grants additional rights to administer the vSphere Trust Authority feature.
 
-    To force accountability and nonrepudiation, the SSO group \"TrustedAdmins\" must be severely restricted.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Administration >> Single Sign On >> Users and Groups >> Groups.
+To force accountability and nonrepudiation, the SSO group "TrustedAdmins" must be severely restricted.'
+  desc 'check', 'From the vSphere Client, go to Administration >> Single Sign On >> Users and Groups >> Groups.
 
-    Click the next page arrow until the \"TrustedAdmins\" group appears.
+Click the next page arrow until the "TrustedAdmins" group appears.
 
-    Click \"TrustedAdmins\".
+Click "TrustedAdmins".
 
-    Review the members of the group and verify only authorized accounts are present.
+Review the members of the group and verify only authorized accounts are present.
 
-    Note: These accounts act as root on the Photon operating system and have the ability to severely damage vCenter, inadvertently or otherwise.
+Note: These accounts act as root on the Photon operating system and have the ability to severely damage vCenter, inadvertently or otherwise.
 
-    If any accounts are present as members of \"TrustedAdmins\" that are not authorized, this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Administration >> Single Sign On >> Users and Groups >> Groups.
+If any accounts are present as members of "TrustedAdmins" that are not authorized, this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Administration >> Single Sign On >> Users and Groups >> Groups.
 
-    Click the next page arrow until the \"TrustedAdmins\" group appears.
+Click the next page arrow until the "TrustedAdmins" group appears.
 
-    Click \"TrustedAdmins\".
+Click "TrustedAdmins".
 
-    Click the three vertical dots next to the name of each unauthorized account.
+Click the three vertical dots next to the name of each unauthorized account.
 
-    Select \"Remove Member\".
-  "
+Select "Remove Member".'
   impact 0.5
+  tag check_id: 'C-60046r885722_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000516'
   tag gid: 'V-256371'
   tag rid: 'SV-256371r885724_rule'
   tag stig_id: 'VCSA-70-000291'
+  tag gtitle: 'SRG-APP-000516'
+  tag fix_id: 'F-59989r885723_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

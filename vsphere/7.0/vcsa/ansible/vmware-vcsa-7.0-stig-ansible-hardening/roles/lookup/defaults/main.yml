@@ -15,8 +15,8 @@ run_http_only: true
 run_access_valve_pattern: true
 # VCLU-70-000006
 run_json_stream_redirect_file: true
-# VCLU-70-000007 setting to false until update comes out with new permissions. default is compliant
-run_logs_permissions: false
+# VCLU-70-000007
+run_logs_permissions: true
 # VCLU-70-000010
 run_user_database_realm: true
 # VCLU-70-000011

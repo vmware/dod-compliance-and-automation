@@ -1,11 +1,13 @@
----
 - hosts: all
   roles:
     - role: vmware-photon-3.0-stig-ansible-hardening
       vars:
-        var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
+        # Run set DoD banner in /etc/issue
+        run_sshd_banner_issue: false
+        # Do not run N/A Photon controls for VCSA
         run_set_syslog_server: false
         run_set_ntp_server: false
+        run_usr_lib_perms: false
     - role: eam
     - role: lookup
     - role: perfcharts

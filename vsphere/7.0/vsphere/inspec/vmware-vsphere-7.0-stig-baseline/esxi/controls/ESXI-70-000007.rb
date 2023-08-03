@@ -1,7 +1,6 @@
 control 'ESXI-70-000007' do
   title 'The ESXi host must display the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via the Direct Console User Interface (DCUI).'
   desc  'Failure to display the DOD logon banner prior to a logon attempt will negate legal proceedings resulting from unauthorized access to system resources.'
-  desc  'rationale', ''
   desc  'check', "
     From the vSphere Client, go to Hosts and Clusters.
 
@@ -123,12 +122,14 @@ control 'ESXI-70-000007' do
     Get-VMHost | Get-AdvancedSetting -Name Annotations.WelcomeMessage | Set-AdvancedSetting -Value \"<Banner text above>\"
   "
   impact 0.5
+  tag check_id: 'C-60056r885922_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000023-VMM-000060'
-  tag satisfies: ['SRG-OS-000024-VMM-000070']
   tag gid: 'V-256381'
   tag rid: 'SV-256381r885924_rule'
   tag stig_id: 'ESXI-70-000007'
+  tag gtitle: 'SRG-OS-000023-VMM-000060'
+  tag fix_id: 'F-59999r885923_fix'
+  tag satisfies: ['SRG-OS-000023-VMM-000060', 'SRG-OS-000024-VMM-000070']
   tag cci: ['CCI-000048', 'CCI-000050']
   tag nist: ['AC-8 a', 'AC-8 b']
 

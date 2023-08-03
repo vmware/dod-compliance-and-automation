@@ -1,45 +1,40 @@
 control 'VCSA-70-000280' do
   title 'The vCenter server must be configured to send events to a central log server.'
-  desc  "
-    vCenter server generates volumes of security-relevant application-level events. Examples include logins, system reconfigurations, system degradation warnings, and more. To ensure these events are available for forensic analysis and correlation, they must be sent to the syslog and forwarded on to the configured Security Information and Event Management (SIEM) system and/or central log server.
+  desc 'vCenter server generates volumes of security-relevant application-level events. Examples include logins, system reconfigurations, system degradation warnings, and more. To ensure these events are available for forensic analysis and correlation, they must be sent to the syslog and forwarded on to the configured Security Information and Event Management (SIEM) system and/or central log server.
 
-    The vCenter server sends events to syslog by default, but this configuration must be verified and maintained.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Host and Clusters.
+The vCenter server sends events to syslog by default, but this configuration must be verified and maintained.'
+  desc 'check', 'From the vSphere Client, go to Host and Clusters.
 
-    Select a vCenter Server >> Configure >> Settings >> Advanced Settings.
+Select a vCenter Server >> Configure >> Settings >> Advanced Settings.
 
-    Verify the \"vpxd.event.syslog.enabled\" value is set to \"true\".
+Verify the "vpxd.event.syslog.enabled" value is set to "true".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the vCenter server, run the following command:
+From a PowerCLI command prompt while connected to the vCenter server, run the following command:
 
-    Get-AdvancedSetting -Entity <vcenter server name> -Name vpxd.event.syslog.enabled
+Get-AdvancedSetting -Entity <vcenter server name> -Name vpxd.event.syslog.enabled
 
-    If the \"vpxd.event.syslog.enabled\" value is not set to \"true\", this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Host and Clusters.
+If the "vpxd.event.syslog.enabled" value is not set to "true", this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Host and Clusters.
 
-    Select a vCenter Server >> Configure >> Settings >> Advanced Settings.
+Select a vCenter Server >> Configure >> Settings >> Advanced Settings.
 
-    Click \"Edit Settings\" and configure the \"vpxd.event.syslog.enabled\" setting to \"true\".
+Click "Edit Settings" and configure the "vpxd.event.syslog.enabled" setting to "true".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the vCenter server, run the following command:
+From a PowerCLI command prompt while connected to the vCenter server, run the following command:
 
-    Get-AdvancedSetting -Entity <vcenter server name> -Name vpxd.event.syslog.enabled | Set-AdvancedSetting -Value true
-  "
+Get-AdvancedSetting -Entity <vcenter server name> -Name vpxd.event.syslog.enabled | Set-AdvancedSetting -Value true'
   impact 0.5
+  tag check_id: 'C-60035r885689_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000358'
   tag gid: 'V-256360'
   tag rid: 'SV-256360r885691_rule'
   tag stig_id: 'VCSA-70-000280'
+  tag gtitle: 'SRG-APP-000358'
+  tag fix_id: 'F-59978r885690_fix'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
