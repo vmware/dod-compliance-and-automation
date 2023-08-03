@@ -143,6 +143,8 @@
   ansible.builtin.find:
     paths: '{{ var_logs_path }}'
     file_type: file
+    excludes:
+      - 'vsphere-ui-rpm.log'
   register: vspherelogs
   tags:
     - VCUI-70-000007
@@ -153,7 +155,7 @@
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: file
-    mode: "0644"
+    mode: "o-w"
     owner: "vsphere-ui"
     group: "users"
   with_items: "{{ vspherelogs.files }}"

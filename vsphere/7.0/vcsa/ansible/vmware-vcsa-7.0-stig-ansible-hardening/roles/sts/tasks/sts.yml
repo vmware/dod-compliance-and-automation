@@ -211,6 +211,19 @@
   when:
     - run_logging_properties | bool
 
+- name: VCST-70-000006 - The Security Token Service must generate log records during java startup and shutdown. maxDays
+  community.general.ini_file:
+    path: '{{ var_logging_props_path }}'
+    section: null
+    state: present
+    option: '1catalina.org.apache.juli.FileHandler.maxDays'
+    value: '{{ var_logging_props_maxdays }}'
+    mode: "0600"
+  tags:
+    - VCST-70-000006
+  when:
+    - run_logging_properties | bool
+
 - name: VCST-70-000006 - The Security Token Service must generate log records during java startup and shutdown. handlers2
   community.general.ini_file:
     path: '{{ var_logging_props_path }}'

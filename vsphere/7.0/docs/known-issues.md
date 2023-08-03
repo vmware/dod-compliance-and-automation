@@ -2,24 +2,24 @@
 
 - [vCenter](#vcenter)
   - [VCSA-70-000077 FIPS mode and Smart Card authentication compatibility](#vcsa-70-000077-fips-mode-and-smart-card-authentication-compatibility)
-  - [VCSA-70-000285 Other default roles have cryptographic permissions](#vcsa-70-000285-other-default-roles-have-cryptographic-permissions)
+  - [RESOLVED VCSA-70-000285 Other default roles have cryptographic permissions](#vcsa-70-000285-other-default-roles-have-cryptographic-permissions)
 - [ESXi](#esxi)
-  - [ESXI-70-000084 Incorrect property shown in check](#esxi-70-000084-incorrect-property-shown-in-check)
+  - [RESOLVED ESXI-70-000084 Incorrect property shown in check](#esxi-70-000084-incorrect-property-shown-in-check)
   - [ESXI-70-000084 Audit storage capacity reverts on reboot](#esxi-70-000084-audit-storage-capacity-reverts-on-reboot)
 - [Virtual Machines](#vm)
-  - [VMCH-70-000023 The 3D setting may not be displayed in the UI](#vmch-70-000023-the-3d-setting-may-not-be-displayed-in-the-ui)
-  - [VMCH-70-000024 Check command does not display the expected output](#vmch-70-000024-check-command-does-not-display-the-expected-output)
+  - [RESOLVED VMCH-70-000023 The 3D setting may not be displayed in the UI](#vmch-70-000023-the-3d-setting-may-not-be-displayed-in-the-ui)
+  - [RESOLVED VMCH-70-000024 Check command does not display the expected output](#vmch-70-000024-check-command-does-not-display-the-expected-output)
 - [VCSA](#vcsa)
-  - [PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
-  - [PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
-  - [VCEM-70-000008 The check command displays files that have changed](#vcem-70-000008-the-check-command-displays-files-that-have-changed)
-  - [VCLD-70-000014 The VAMI service fails to start due to duplicate config](#vcld-70-000014-the-vami-service-fails-to-start-due-to-duplicate-config)
-  - [VCLU-70-000007 Log file permissions do not persist](#vclu-70-000007-log-file-permissions-do-not-persist)
+  - [RESOLVED PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
+  - [RESOLVED PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
+  - [RESOLVED VCEM-70-000008 The check command displays files that have changed](#vcem-70-000008-the-check-command-displays-files-that-have-changed)
+  - [RESOLVED VCLD-70-000014 The VAMI service fails to start due to duplicate config](#vcld-70-000014-the-vami-service-fails-to-start-due-to-duplicate-config)
+  - [RESOLVED VCLU-70-000007 Log file permissions do not persist](#vclu-70-000007-log-file-permissions-do-not-persist)
   - [VCPG-70-000006 The check command output may display some tables not owned by vc](#vcpg-70-000006-the-check-command-output-may-display-some-tables-not-owned-by-vc)
   - [VCPG-70-000020 The UTC timezone may be displayed in different formats](#vcpg-70-000020-the-utc-timezone-may-be-displayed-in-different-formats)
-  - [VCST-70-000006 Max days line in output](#vcst-70-000006-max-days-line-in-output)
+  - [RESOLVED VCST-70-000006 Max days line in output](#vcst-70-000006-max-days-line-in-output)
   - [VCST-70-000021 async-supported location](#vcst-70-000021-async-supported-location)
-  - [VCST-70-000028 New port for smartcard authentication in 7.0 U3i](#vcst-70-000028-new-port-for-smartcard-authentication-in-70-u3i)
+  - [RESOLVED VCST-70-000028 New port for smartcard authentication in 7.0 U3i](#vcst-70-000028-new-port-for-smartcard-authentication-in-70-u3i)
 
 # Known Issues
 
@@ -49,6 +49,8 @@ In 7.0 U2 a global FIPS mode feature was made available for the vCenter applianc
 
 ### [VCSA-70-000285] Other default roles have cryptographic permissions
 
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
+
 Related issue: [#137](https://github.com/vmware/dod-compliance-and-automation/issues/137)
 
 In the check and fix only the Administrator role is listed as having cryptographic permissions by default.
@@ -61,6 +63,8 @@ In the check and fix only the Administrator role is listed as having cryptograph
 ## ESXi
 
 ### [ESXI-70-000084] Incorrect property shown in check
+
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
 
 Related issue: [#122](https://github.com/vmware/dod-compliance-and-automation/issues/122)
 
@@ -87,6 +91,8 @@ If audit storage capacity is configured to something other than 4, for example 1
 
 ### [VMCH-70-000023] The 3D setting may not be displayed in the UI
 
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
+
 Related issue: None
 
 By default the "mks.enable3d" parameter is not displayed in the vSphere UI when viewing the advanced settings list for a VM. If enabled or explicitly set to False it will then show up in the list.  
@@ -98,6 +104,8 @@ The ESXI Host Client also doesn't display this setting in either case even if ex
 - The "Enable 3D Support" checkbox on a virtual machines video card can also be used to determine the status of this setting.    
 
 ### [VMCH-70-000024] Check command does not display the expected output
+
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
 
 Related issue: [#146](https://github.com/vmware/dod-compliance-and-automation/issues/146)
 
@@ -112,6 +120,8 @@ The check command logic is incorrectly using "or" instead of "and".
 
 ### [PHTN-30-000054/67] -S all is displayed in the check output
 
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
+
 Related issue: None
 
 Since we are not specifying a specific syscall(all is implied) in the audit rules for these controls the "-S all" is displayed in the auditctl command output which is not included in the expected output in the check.  
@@ -121,6 +131,8 @@ Since we are not specifying a specific syscall(all is implied) in the audit rule
 - The check output will be updated in a future update and the output with "-S all" added can be considered compliant.
 
 ### [PHTN-30-000114] Multiple umask entries in check output
+
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
 
 Related issue: None
 
@@ -133,6 +145,8 @@ The check command output may show multiple umask entries such as UMASK 022 and U
 
 ### [VCEM-70-000008] The check command displays files that have changed
 
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
+
 Related issue: [#100](https://github.com/vmware/dod-compliance-and-automation/issues/100)
 
 This issue is seen after some upgrades where some files may be replaced or configuration changed. Most commonly the "/etc/vmware-eam/version" is shown in the output which is updated on upgrades.
@@ -143,6 +157,8 @@ This issue is seen after some upgrades where some files may be replaced or confi
 ```rpm -V vmware-eam|grep "^..5......" | grep -v 'c /' | grep -v -E ".installer|.properties|.xml"```
 
 ### [VCLD-70-000014] The VAMI service fails to start due to duplicate config
+
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
 
 Related issue: None
 
@@ -185,6 +201,8 @@ Restart the service with the following command:
 ```
 
 ### [VCLU-70-000007] Log file permissions do not persist
+
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
 
 Related issue: [#133](https://github.com/vmware/dod-compliance-and-automation/issues/133)
 
@@ -231,6 +249,8 @@ The UTC timezone has multiple names in PostgreSQL and may be configured with any
 
 ### [VCST-70-000006] Max days line in output
 
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
+
 Related issue: None
 
 In the command output you may see an additional line "1catalina.org.apache.juli.FileHandler.maxDays = 10"  
@@ -252,6 +272,8 @@ This line is also not directly related to the filter being implemented and its p
 - The location the ansible playbook places the line is in relation to the XML Schema and where it will pass validation should XML schema validation be enabled.
 
 ### [VCST-70-000028] New port for smartcard authentication in 7.0 U3i
+
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
 
 Related issue: [#135](https://github.com/vmware/dod-compliance-and-automation/issues/135)
 

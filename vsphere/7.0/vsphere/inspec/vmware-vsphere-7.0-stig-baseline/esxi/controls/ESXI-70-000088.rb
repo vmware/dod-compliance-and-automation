@@ -1,45 +1,40 @@
 control 'ESXI-70-000088' do
   title 'The ESXi host must configure a session timeout for the vSphere API.'
-  desc  "
-    The vSphere API (VIM) allows for remote, programmatic administration of the ESXi host. Authenticated API sessions are no different from a risk perspective than authenticated UI sessions and they need similar protections.
+  desc 'The vSphere API (VIM) allows for remote, programmatic administration of the ESXi host. Authenticated API sessions are no different from a risk perspective than authenticated UI sessions and they need similar protections.
 
-    One of these protections is a basic inactivity timeout, after which the session will be invalidated and reauthentication will be required by the application accessing the API. This is set to 30 seconds by default but can be disabled, thus leaving API sessions open indefinitely. The 30 second default must be verified and maintained.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Hosts and Clusters.
+One of these protections is a basic inactivity timeout, after which the session will be invalidated and reauthentication will be required by the application accessing the API. This is set to 30 seconds by default but can be disabled, thus leaving API sessions open indefinitely. The 30 second default must be verified and maintained.'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Select the \"Config.HostAgent.vmacore.soap.sessionTimeout\" value and verify it is set to \"30\".
+Select the "Config.HostAgent.vmacore.soap.sessionTimeout" value and verify it is set to "30".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name Config.HostAgent.vmacore.soap.sessionTimeout
+Get-VMHost | Get-AdvancedSetting -Name Config.HostAgent.vmacore.soap.sessionTimeout
 
-    If the \"Config.HostAgent.vmacore.soap.sessionTimeout\" setting is not set to \"30\", this is a finding
-  "
-  desc 'fix', "
-    From the vSphere Client go to Hosts and Clusters.
+If the "Config.HostAgent.vmacore.soap.sessionTimeout" setting is not set to "30", this is a finding.'
+  desc 'fix', 'From the vSphere Client go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Select the \"Config.HostAgent.vmacore.soap.sessionTimeout\" value and set it to \"30\".
+Select the "Config.HostAgent.vmacore.soap.sessionTimeout" value and set it to "30".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name Config.HostAgent.vmacore.soap.sessionTimeout | Set-AdvancedSetting -Value \"30\"
-  "
+Get-VMHost | Get-AdvancedSetting -Name Config.HostAgent.vmacore.soap.sessionTimeout | Set-AdvancedSetting -Value "30"'
   impact 0.5
+  tag check_id: 'C-60115r886099_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
   tag gid: 'V-256440'
   tag rid: 'SV-256440r886101_rule'
   tag stig_id: 'ESXI-70-000088'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-60058r886100_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

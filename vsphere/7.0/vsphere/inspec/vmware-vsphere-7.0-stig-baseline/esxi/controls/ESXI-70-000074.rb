@@ -1,60 +1,57 @@
 control 'ESXI-70-000074' do
   title 'The ESXi host must exclusively enable Transport Layer Security (TLS) 1.2 for all endpoints.'
-  desc  "
-    TLS 1.0 and 1.1 are deprecated protocols with well-published shortcomings and vulnerabilities. TLS 1.2 should be enabled on all interfaces and SSLv3, TL 1.1, and 1.0 disabled, where supported.
+  desc 'TLS 1.0 and 1.1 are deprecated protocols with well-published shortcomings and vulnerabilities. TLS 1.2 should be enabled on all interfaces and SSLv3, TL 1.1, and 1.0 disabled, where supported.
 
-    Mandating TLS 1.2 may break third-party integrations and add-ons to vSphere. Test these integrations carefully after implementing TLS 1.2 and roll back where appropriate.
+Mandating TLS 1.2 may break third-party integrations and add-ons to vSphere. Test these integrations carefully after implementing TLS 1.2 and roll back where appropriate.
 
-    On interfaces where required functionality is broken with TLS 1.2, this finding is not applicable until such time as the third-party software supports TLS 1.2.
+On interfaces where required functionality is broken with TLS 1.2, this finding is not applicable until such time as the third-party software supports TLS 1.2.
 
-    Modify TLS settings in the following order:
-    1. vCenter.
-    2. ESXi.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Hosts and Clusters.
+Modify TLS settings in the following order:
+1. vCenter.
+2. ESXi.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the \"UserVars.ESXiVPsDisabledProtocols\" value and verify it is set to the following:
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    tlsv1,tlsv1.1,sslv3
+Select the "UserVars.ESXiVPsDisabledProtocols" value and verify it is set to the following:
 
-    or
+tlsv1,tlsv1.1,sslv3
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+or
 
-    Get-VMHost | Get-AdvancedSetting -Name UserVars.ESXiVPsDisabledProtocols
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    If the \"UserVars.ESXiVPsDisabledProtocols\" setting is not set to \"tlsv1,tlsv1.1,sslv3\" or the setting does not exist, this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+Get-VMHost | Get-AdvancedSetting -Name UserVars.ESXiVPsDisabledProtocols
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+If the "UserVars.ESXiVPsDisabledProtocols" setting is not set to "tlsv1,tlsv1.1,sslv3" or the setting does not exist, this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the \"UserVars.ESXiVPsDisabledProtocols\" value and set it to the following:
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    tlsv1,tlsv1.1,sslv3
+Select the "UserVars.ESXiVPsDisabledProtocols" value and set it to the following:
 
-    or
+tlsv1,tlsv1.1,sslv3
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+or
 
-    Get-VMHost | Get-AdvancedSetting -Name UserVars.ESXiVPsDisabledProtocols | Set-AdvancedSetting -Value \"tlsv1,tlsv1.1,sslv3\"
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Reboot the host for changes to take effect.
-  "
+Get-VMHost | Get-AdvancedSetting -Name UserVars.ESXiVPsDisabledProtocols | Set-AdvancedSetting -Value "tlsv1,tlsv1.1,sslv3"
+
+Reboot the host for changes to take effect.'
   impact 0.7
+  tag check_id: 'C-60104r886066_chk'
   tag severity: 'high'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag satisfies: ['SRG-OS-000425-VMM-001710']
   tag gid: 'V-256429'
   tag rid: 'SV-256429r886068_rule'
   tag stig_id: 'ESXI-70-000074'
-  tag cci: ['CCI-000366', 'CCI-002420']
-  tag nist: ['CM-6 b', 'SC-8 (2)']
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-60047r886067_fix'
+  tag satisfies: ['SRG-OS-000480-VMM-002000', 'SRG-OS-000425-VMM-001710']
+  tag cci: ['CCI-002420']
+  tag nist: ['SC-8 (2)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

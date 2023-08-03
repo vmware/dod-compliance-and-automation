@@ -1,50 +1,47 @@
 control 'PHTN-30-000064' do
   title 'The Photon operating system must configure sshd to use FIPS 140-2 ciphers.'
-  desc  "
-    Privileged access contains control and configuration information and is particularly sensitive, so additional protections are necessary. This is maintained by using cryptographic mechanisms such as encryption to protect confidentiality.
+  desc 'Privileged access contains control and configuration information and is particularly sensitive, so additional protections are necessary. This is maintained by using cryptographic mechanisms such as encryption to protect confidentiality.
 
-    Nonlocal maintenance and diagnostic activities are conducted by individuals communicating through an external network (e.g., the internet) or internal network. Local maintenance and diagnostic activities are carried out by individuals physically present at the information system or information system component and not communicating across a network connection.
+Nonlocal maintenance and diagnostic activities are conducted by individuals communicating through an external network (e.g., the internet) or internal network. Local maintenance and diagnostic activities are carried out by individuals physically present at the information system or information system component and not communicating across a network connection.
 
-    This requirement applies to hardware/software diagnostic test equipment or tools. It does not cover hardware/software components that may support information system maintenance, yet are a part of the system (e.g., the software implementing \"ping,\" \"ls,\" \"ipconfig,\" or the hardware and software implementing the monitoring port of an Ethernet switch).
+This requirement applies to hardware/software diagnostic test equipment or tools. It does not cover hardware/software components that may support information system maintenance, yet are a part of the system (e.g., the software implementing "ping," "ls," "ipconfig," or the hardware and software implementing the monitoring port of an Ethernet switch).
 
-    The operating system can meet this requirement by leveraging a cryptographic module.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    At the command line, run the following command:
+The operating system can meet this requirement by leveraging a cryptographic module.
 
-    # sshd -T|&grep -i Ciphers
+'
+  desc 'check', 'At the command line, run the following command:
 
-    Expected result:
+# sshd -T|&grep -i Ciphers
 
-    ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+Expected result:
 
-    If the output matches the ciphers in the expected result or a subset thereof, this is not a finding.
+ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 
-    If the ciphers in the output contain any ciphers not listed in the expected result, this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+If the output matches the ciphers in the expected result or a subset thereof, this is not a finding.
 
-    /etc/ssh/sshd_config
+If the ciphers in the output contain any ciphers not listed in the expected result, this is a finding.'
+  desc 'fix', 'Navigate to and open:
 
-    Ensure the \"Ciphers\" line is uncommented and set to the following:
+/etc/ssh/sshd_config
 
-    Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+Ensure the "Ciphers" line is uncommented and set to the following:
 
-    At the command line, run the following command:
+Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 
-    # systemctl restart sshd.service
-  "
+At the command line, run the following command:
+
+# systemctl restart sshd.service'
   impact 0.3
+  tag check_id: 'C-60209r887274_chk'
   tag severity: 'low'
-  tag gtitle: 'SRG-OS-000394-GPOS-00174'
-  tag satisfies: ['SRG-OS-000424-GPOS-00188']
   tag gid: 'V-256534'
   tag rid: 'SV-256534r887276_rule'
   tag stig_id: 'PHTN-30-000064'
+  tag gtitle: 'SRG-OS-000394-GPOS-00174'
+  tag fix_id: 'F-60152r887275_fix'
+  tag satisfies: ['SRG-OS-000394-GPOS-00174', 'SRG-OS-000424-GPOS-00188']
   tag cci: ['CCI-002421', 'CCI-003123']
-  tag nist: ['MA-4 (6)', 'SC-8 (1)']
+  tag nist: ['SC-8 (1)', 'MA-4 (6)']
 
   sshdcommand = input('sshdcommand')
   describe.one do

@@ -1,53 +1,48 @@
 control 'VCPF-70-000028' do
   title 'Performance Charts must have the debug option turned off.'
-  desc  "
-    Information needed by an attacker to begin looking for possible vulnerabilities in a web server includes any information about the web server and plug-ins or modules being used. When debugging or trace information is enabled in a production web server, information about the web server, such as web server type, version, patches installed, plug-ins and modules installed, type of code being used by the hosted application, and any backends being used for data storage may be displayed. Because this information may be placed in logs and general messages during normal operation of the web server, an attacker does not need to cause an error condition to gain this information.
+  desc 'Information needed by an attacker to begin looking for possible vulnerabilities in a web server includes any information about the web server and plug-ins or modules being used. When debugging or trace information is enabled in a production web server, information about the web server, such as web server type, version, patches installed, plug-ins and modules installed, type of code being used by the hosted application, and any backends being used for data storage may be displayed. Because this information may be placed in logs and general messages during normal operation of the web server, an attacker does not need to cause an error condition to gain this information.
 
-    The Performance Charts Service can be configured to set the debugging level. By setting the debugging level to zero, no debugging information will be provided to a malicious user.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    At the command prompt, run the following command:
+The Performance Charts Service can be configured to set the debugging level. By setting the debugging level to zero, no debugging information will be provided to a malicious user.'
+  desc 'check', %q(At the command prompt, run the following command:
 
-    # xmllint --format /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml | sed 's/xmlns=\".*\"//g' | xmllint --xpath '//param-name[text()=\"debug\"]/parent::init-param' -
+# xmllint --format /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml | sed 's/xmlns=".*"//g' | xmllint --xpath '//param-name[text()="debug"]/parent::init-param' -
 
-    Expected result:
+Expected result:
 
-    <init-param>
-          <param-name>debug</param-name>
-          <param-value>0</param-value>
-    </init-param>
+<init-param>
+      <param-name>debug</param-name>
+      <param-value>0</param-value>
+</init-param>
 
-    If the output of the command does not match the expected result, this is a finding.
+If the output of the command does not match the expected result, this is a finding.
 
-    If no lines is returned, this is not a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+If no lines is returned, this is not a finding.)
+  desc 'fix', 'Navigate to and open:
 
-    /usr/lib/vmware-perfcharts/tc-instance/conf/web.xml
+/usr/lib/vmware-perfcharts/tc-instance/conf/web.xml
 
-    Navigate to all <debug> nodes that are not set to \"0\".
+Navigate to all <debug> nodes that are not set to "0".
 
-    Set the <param-value> to \"0\" in all <param-name>debug</param-name> nodes.
+Set the <param-value> to "0" in all <param-name>debug</param-name> nodes.
 
-    Note: The debug setting should look like the following:
+Note: The debug setting should look like the following:
 
-    <init-param>
-          <param-name>debug</param-name>
-          <param-value>0</param-value>
-    </init-param>
+<init-param>
+      <param-name>debug</param-name>
+      <param-value>0</param-value>
+</init-param>
 
-    Restart the service with the following command:
+Restart the service with the following command:
 
-    # vmon-cli --restart perfcharts
-  "
+# vmon-cli --restart perfcharts'
   impact 0.5
+  tag check_id: 'C-60313r888403_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000266-WSR-000160'
   tag gid: 'V-256638'
   tag rid: 'SV-256638r888405_rule'
   tag stig_id: 'VCPF-70-000028'
+  tag gtitle: 'SRG-APP-000266-WSR-000160'
+  tag fix_id: 'F-60256r888404_fix'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 

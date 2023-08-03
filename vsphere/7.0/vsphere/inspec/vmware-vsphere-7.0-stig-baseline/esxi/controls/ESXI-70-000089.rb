@@ -1,41 +1,38 @@
 control 'ESXI-70-000089' do
   title 'The ESXi Host Client must be configured with a session timeout.'
-  desc  'The ESXi Host Client is the UI served up by the host itself, outside of vCenter. It is accessed by browsing to "https://<ESX FQDN>/ui". ESXi is not usually administered via this interface for long periods, and all users will be highly privileged. Implementing a mandatory session idle limit will ensure that orphaned, forgotten, or ignored sessions will be closed promptly.'
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Hosts and Clusters.
+  desc '<0> [object Object]'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Select the \"UserVars.HostClientSessionTimeout\" value and verify it is set to \"600\".
+Select the "UserVars.HostClientSessionTimeout" value and verify it is set to "600".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout
+Get-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout
 
-    If the \"UserVars.HostClientSessionTimeout\" setting is not set to \"600\", this is a finding
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+If the "UserVars.HostClientSessionTimeout" setting is not set to "600", this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Select the \"UserVars.HostClientSessionTimeout\" value and set it to \"600\".
+Select the "UserVars.HostClientSessionTimeout" value and set it to "600".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout | Set-AdvancedSetting -Value \"600\"
-  "
+Get-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout | Set-AdvancedSetting -Value "600"'
   impact 0.5
+  tag check_id: 'C-60116r886102_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
   tag gid: 'V-256441'
   tag rid: 'SV-256441r886104_rule'
   tag stig_id: 'ESXI-70-000089'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-60059r886103_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

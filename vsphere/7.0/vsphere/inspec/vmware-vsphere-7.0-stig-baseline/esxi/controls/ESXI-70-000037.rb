@@ -1,54 +1,51 @@
 control 'ESXI-70-000037' do
   title 'The ESXi host must use Active Directory for local user authentication.'
-  desc  "
-    Join ESXi hosts to an Active Directory domain to eliminate the need to create and maintain multiple local user accounts. Using Active Directory for user authentication simplifies the ESXi host configuration, ensures password complexity and reuse policies are enforced, and reduces the risk of security breaches and unauthorized access.
+  desc 'Join ESXi hosts to an Active Directory domain to eliminate the need to create and maintain multiple local user accounts. Using Active Directory for user authentication simplifies the ESXi host configuration, ensures password complexity and reuse policies are enforced, and reduces the risk of security breaches and unauthorized access.
 
-    Note: If the Active Directory group \"ESX Admins\" (default) exists, all users and groups assigned as members to this group will have full administrative access to all ESXi hosts in the domain.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    For systems that do not use Active Directory and have no local user accounts other than root and/or service accounts, this is not applicable.
+Note: If the Active Directory group "ESX Admins" (default) exists, all users and groups assigned as members to this group will have full administrative access to all ESXi hosts in the domain.
 
-    From the vSphere Client, go to Hosts and Clusters.
+'
+  desc 'check', 'For systems that do not use Active Directory and have no local user accounts other than root and/or service accounts, this is not applicable.
 
-    Select the ESXi Host >> Configure >> System >> Authentication Services.
+From the vSphere Client, go to Hosts and Clusters.
 
-    Verify the \"Directory Services Type\" is set to \"Active Directory\".
+Select the ESXi Host >> Configure >> System >> Authentication Services.
 
-    or
+Verify the "Directory Services Type" is set to "Active Directory".
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+or
 
-    Get-VMHost | Get-VMHostAuthentication
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    For systems that do not use Active Directory and do have local user accounts, other than root and/or service accounts, this is a finding.
+Get-VMHost | Get-VMHostAuthentication
 
-    If the Directory Services Type is not set to \"Active Directory\", this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+For systems that do not use Active Directory and do have local user accounts, other than root and/or service accounts, this is a finding.
 
-    Select the ESXi Host >> Configure >> System >> Authentication Services.
+If the Directory Services Type is not set to "Active Directory", this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Click \"Join Domain...\" and enter the AD domain to join.
+Select the ESXi Host >> Configure >> System >> Authentication Services.
 
-    Select the \"Using credentials\" radio button and enter the credentials of an account with permissions to join machines to AD (use UPN naming \"user@domain\"). Click \"OK\".
+Click "Join Domain..." and enter the AD domain to join.
 
-    or
+Select the "Using credentials" radio button and enter the credentials of an account with permissions to join machines to AD (use UPN naming "user@domain"). Click "OK".
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+or
 
-    Get-VMHost | Get-VMHostAuthentication | Set-VMHostAuthentication -JoinDomain -Domain \"domain name\" -User \"username\" -Password \"password\"
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    If any local user accounts are present besides root and service accounts, delete them by going to Host UI >> Manage >> Security & Users >> Users.
-  "
+Get-VMHost | Get-VMHostAuthentication | Set-VMHostAuthentication -JoinDomain -Domain "domain name" -User "username" -Password "password"
+
+If any local user accounts are present besides root and service accounts, delete them by going to Host UI >> Manage >> Security & Users >> Users.'
   impact 0.3
+  tag check_id: 'C-60077r885985_chk'
   tag severity: 'low'
-  tag gtitle: 'SRG-OS-000104-VMM-000500'
-  tag satisfies: ['SRG-OS-000109-VMM-000550', 'SRG-OS-000112-VMM-000560', 'SRG-OS-000113-VMM-000570']
   tag gid: 'V-256402'
   tag rid: 'SV-256402r885987_rule'
   tag stig_id: 'ESXI-70-000037'
+  tag gtitle: 'SRG-OS-000104-VMM-000500'
+  tag fix_id: 'F-60020r885986_fix'
+  tag satisfies: ['SRG-OS-000104-VMM-000500', 'SRG-OS-000109-VMM-000550', 'SRG-OS-000112-VMM-000560', 'SRG-OS-000113-VMM-000570']
   tag cci: ['CCI-000764', 'CCI-000770', 'CCI-001941', 'CCI-001942']
   tag nist: ['IA-2', 'IA-2 (5)', 'IA-2 (8)', 'IA-2 (9)']
 

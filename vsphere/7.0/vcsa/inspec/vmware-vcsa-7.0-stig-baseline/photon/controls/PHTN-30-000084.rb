@@ -1,37 +1,34 @@
 control 'PHTN-30-000084' do
   title 'The Photon operating system must configure sshd to disallow compression of the encrypted session stream.'
-  desc  'If compression is allowed in a Secure Shell (SSH) connection prior to authentication, vulnerabilities in the compression software could result in compromise of the system from an unauthenticated connection.'
-  desc  'rationale', ''
-  desc  'check', "
-    At the command line, run the following command:
+  desc 'If compression is allowed in a Secure Shell (SSH) connection prior to authentication, vulnerabilities in the compression software could result in compromise of the system from an unauthenticated connection.'
+  desc 'check', 'At the command line, run the following command:
 
-    # sshd -T|&grep -i Compression
+# sshd -T|&grep -i Compression
 
-    Expected result:
+Expected result:
 
-    Compression no
+Compression no
 
-    If the output does not match the expected result, this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+If the output does not match the expected result, this is a finding.'
+  desc 'fix', 'Navigate to and open:
 
-    /etc/ssh/sshd_config
+/etc/ssh/sshd_config
 
-    Ensure the \"Compression\" line is uncommented and set to the following:
+Ensure the "Compression" line is uncommented and set to the following:
 
-    Compression no
+Compression no
 
-    At the command line, run the following command:
+At the command line, run the following command:
 
-    # systemctl restart sshd.service
-  "
+# systemctl restart sshd.service'
   impact 0.5
+  tag check_id: 'C-60228r887331_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: 'V-256553'
   tag rid: 'SV-256553r887333_rule'
   tag stig_id: 'PHTN-30-000084'
+  tag gtitle: 'SRG-OS-000480-GPOS-00227'
+  tag fix_id: 'F-60171r887332_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

@@ -1,52 +1,53 @@
 control 'VCST-70-000006' do
   title 'The Security Token Service must generate log records during Java startup and shutdown.'
-  desc  'Logging must be started as soon as possible when a service starts and as late as possible when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.'
-  desc  'rationale', ''
-  desc  'check', "
-    At the command prompt, run the following command:
+  desc 'Logging must be started as soon as possible when a service starts and as late as possible when a service is stopped. Many forms of suspicious actions can be detected by analyzing logs for unexpected service starts and stops. Also, by starting to log immediately after a service starts, it becomes more difficult for suspicious activity to go unlogged.
 
-    # grep \"1catalina.org.apache.juli.FileHandler\" /usr/lib/vmware-sso/vmware-sts/conf/logging.properties
+'
+  desc 'check', 'At the command prompt, run the following command:
 
-    Expected result:
+# grep "1catalina.org.apache.juli.FileHandler" /usr/lib/vmware-sso/vmware-sts/conf/logging.properties
 
-    handlers = 1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler
-    .handlers = 1catalina.org.apache.juli.FileHandler
-    1catalina.org.apache.juli.FileHandler.level = FINE
-    1catalina.org.apache.juli.FileHandler.directory = ${catalina.base}/logs/tomcat
-    1catalina.org.apache.juli.FileHandler.prefix = catalina.
-    1catalina.org.apache.juli.FileHandler.bufferSize = -1
-    1catalina.org.apache.juli.FileHandler.formatter = java.util.logging.SimpleFormatter
-    org.apache.catalina.startup.Catalina.handlers = 1catalina.org.apache.juli.FileHandler
+Expected result:
 
-    If the output does not match the expected result, this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+handlers = 1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler
+.handlers = 1catalina.org.apache.juli.FileHandler
+1catalina.org.apache.juli.FileHandler.level = FINE
+1catalina.org.apache.juli.FileHandler.directory = ${catalina.base}/logs/tomcat
+1catalina.org.apache.juli.FileHandler.prefix = catalina.
+1catalina.org.apache.juli.FileHandler.bufferSize = -1
+1catalina.org.apache.juli.FileHandler.formatter = java.util.logging.SimpleFormatter
+1catalina.org.apache.juli.FileHandler.maxDays = 10
+org.apache.catalina.startup.Catalina.handlers = 1catalina.org.apache.juli.FileHandler
 
-    /usr/lib/vmware-sso/vmware-sts/conf/logging.properties
+If the output does not match the expected result, this is a finding.'
+  desc 'fix', 'Navigate to and open:
 
-    Ensure that the \"handlers\" and \".handlers\" lines are configured as follows:
+/usr/lib/vmware-sso/vmware-sts/conf/logging.properties
 
-    handlers = 1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler
-    .handlers = 1catalina.org.apache.juli.FileHandler
-    1catalina.org.apache.juli.FileHandler.level = FINE
-    1catalina.org.apache.juli.FileHandler.directory = ${catalina.base}/logs/tomcat
-    1catalina.org.apache.juli.FileHandler.prefix = catalina.
-    1catalina.org.apache.juli.FileHandler.bufferSize = -1
-    1catalina.org.apache.juli.FileHandler.formatter = java.util.logging.SimpleFormatter
-    org.apache.catalina.startup.Catalina.handlers = 1catalina.org.apache.juli.FileHandler
+Ensure that the "handlers" and ".handlers" lines are configured as follows:
 
-    Restart the service with the following command:
+handlers = 1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler
+.handlers = 1catalina.org.apache.juli.FileHandler
+1catalina.org.apache.juli.FileHandler.level = FINE
+1catalina.org.apache.juli.FileHandler.directory = ${catalina.base}/logs/tomcat
+1catalina.org.apache.juli.FileHandler.prefix = catalina.
+1catalina.org.apache.juli.FileHandler.bufferSize = -1
+1catalina.org.apache.juli.FileHandler.formatter = java.util.logging.SimpleFormatter
+1catalina.org.apache.juli.FileHandler.maxDays = 10
+org.apache.catalina.startup.Catalina.handlers = 1catalina.org.apache.juli.FileHandler
 
-    # vmon-cli --restart sts
-  "
+Restart the service with the following command:
+
+# vmon-cli --restart sts'
   impact 0.5
+  tag check_id: 'C-60425r918972_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000089-WSR-000047'
-  tag satisfies: ['SRG-APP-000092-WSR-000055']
   tag gid: 'V-256750'
-  tag rid: 'SV-256750r889220_rule'
+  tag rid: 'SV-256750r918974_rule'
   tag stig_id: 'VCST-70-000006'
+  tag gtitle: 'SRG-APP-000089-WSR-000047'
+  tag fix_id: 'F-60368r918973_fix'
+  tag satisfies: ['SRG-APP-000089-WSR-000047', 'SRG-APP-000092-WSR-000055']
   tag cci: ['CCI-000169', 'CCI-001464']
   tag nist: ['AU-12 a', 'AU-14 (1)']
 
@@ -76,6 +77,10 @@ control 'VCST-70-000006' do
 
   describe parse_config_file("#{input('loggingProperties')}").params['1catalina.org.apache.juli.FileHandler.formatter'] do
     it { should eq 'java.util.logging.SimpleFormatter' }
+  end
+
+  describe parse_config_file("#{input('loggingProperties')}").params['1catalina.org.apache.juli.FileHandler.maxDays'] do
+    it { should eq '10' }
   end
 
   describe parse_config_file("#{input('loggingProperties')}").params['org.apache.catalina.startup.Catalina.handlers'] do
