@@ -3,6 +3,10 @@
 
 # dod-compliance-and-automation
 
+## Announcements
+
+Please visit our new docs page at: https://vmware.github.io/dod-compliance-and-automation/  
+
 ## Overview
 
 VMware is a trusted partner in highly secure, mission critical systems around the world, including the US Department of Defense (DoD). In the DoD, all IT systems must adhere to the rigorous Risk Management Framework (RMF) as defined in DoDI 8510.01. A critical component of RMF is the mandatory implementation of Security Technical Implementation Guides (STIGs) and Security Requirements Guidelines (SRGs) as maintained by the Defense Information Systems Agency (DISA). Where a product specific STIG is not available, the relevant SRGs must be used instead.
