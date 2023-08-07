@@ -2,9 +2,9 @@
 # NSX Manager IP or FQDN
 nsxManager: '10.43.173.83'
 # Session token generated for access to NSX
-sessionToken: 'fe3d6167-09d5-4302-b6cd-be2e20947d58'
+sessionToken: '7d792b5f-f064-4fde-b639-3331100a5196'
 # Session cookie id generated for access to NSX. Example 'JSESSIONID=2A165FCF851CA50FCD038DFC8E770038'
-sessionCookieId: 'JSESSIONID=6A0F43FCD07947BB21890CDA05DF26C0'
+sessionCookieId: 'JSESSIONID=8D8623A8AD403710A2AA4245A626E68C'
 # Manager
 # Enter the environment specific syslog server vCenter should be forwarding logs to.
 syslogServers:
