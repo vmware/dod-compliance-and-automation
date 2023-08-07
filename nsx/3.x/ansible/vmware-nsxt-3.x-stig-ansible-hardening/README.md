@@ -1,6 +1,6 @@
 # vmware-nsxt-3.x-stig-ansible-hardening
 VMware NSX-T 3.x STIG Ansible Playbook  
-Version: Version 1 Release 2: September 02, 2022    
+Version: Version 1 Release 3: July 26, 2023    
 STIG Type: Official STIG  
 Maintainers: SCOPE/VMTA  
 

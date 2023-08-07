@@ -1,8 +1,6 @@
 ---
 # Turn specific controls on/off by setting the value to true or false
 
-# T0FW-3X-000002
-run_t0fw_unpublished_rules: true
 # T0FW-3X-000006
 run_t0fw_rule_logging: true
 # T0FW-3X-000011
