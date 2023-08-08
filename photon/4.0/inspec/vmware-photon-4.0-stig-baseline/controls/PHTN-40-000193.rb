@@ -3,7 +3,7 @@ control 'PHTN-40-000193' do
   desc  "
     By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.
 
-    If the pam_faillock.so module is not configured to use the silent flag it could leak information about the existence or non-existence of an user account.
+    If the pam_faillock.so module is not configured to use the silent flag it could leak information about the existence or nonexistence of an user account.
   "
   desc  'rationale', ''
   desc  'check', "

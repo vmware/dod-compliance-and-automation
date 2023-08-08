@@ -58,11 +58,11 @@ control 'PHTN-40-000192' do
   tag cci: ['CCI-000044']
   tag nist: ['AC-7 a']
 
-  describe pam('/etc/pam.d/system-auth') do
-    its('lines') { should match_pam_rule('auth required pam_faillock.so preauth') }
-    its('lines') { should match_pam_rule('auth required pam_faillock.so authfail') }
+  describe file('/etc/pam.d/system-auth') do
+    its('content') { should match /^auth\s+(required|requisite)\s+pam_faillock\.so\s+(?=.*\bpreauth\b).*\n(^auth\s+(required|requisite)\s+pam_unix\.so.*)/ }
+    its('content') { should match /^auth\s+(required|requisite)\s+pam_unix\.so.*\n(^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+(?=.*\bauthfail\b).*)/ }
   end
-  describe pam('/etc/pam.d/system-account') do
-    its('lines') { should match_pam_rule('account required pam_faillock.so') }
+  describe file('/etc/pam.d/system-account') do
+    its('content') { should match /^account\s+(required|requisite)\s+pam_faillock\.so.*\n(^account\s+(required|requisite)\s+pam_unix\.so.*)/ }
   end
 end

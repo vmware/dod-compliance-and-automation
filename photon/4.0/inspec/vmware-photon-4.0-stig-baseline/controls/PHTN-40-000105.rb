@@ -28,8 +28,8 @@ control 'PHTN-40-000105' do
 
     Note: If the file zz-stig-hardening.conf doesn't exist it must be created.
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-OS-000324-GPOS-00125'
   tag gid: 'V-PHTN-40-000105'
   tag rid: 'SV-PHTN-40-000105'

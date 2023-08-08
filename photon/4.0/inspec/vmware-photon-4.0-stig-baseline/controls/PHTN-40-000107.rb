@@ -3,28 +3,26 @@ control 'PHTN-40-000107' do
   desc  'Misuse of privileged functions, either intentionally or unintentionally by authorized users, or by unauthorized external entities that have compromised information system accounts, is a serious and ongoing concern and can have significant adverse impacts on organizations. Auditing the use of privileged functions is one way to detect such misuse and identify the risk from insider threats and the advanced persistent threat.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to obtain a list of setuid files:
+    At the command line, run the following command to output a list of files with setuid/setgid configured and their corresponding audit rules:
 
-    # find / -xdev -path /var/lib/containerd -prune -o \\( -perm -4000 -type f -o -perm -2000 \\) -type f -print
+    # for file in $(find / -xdev -path /var/lib/containerd -prune -o \\( -perm -4000 -o -perm -2000 \\) -type f -print | sort); do echo \"Found file with setuid/setgid configured: $file\";rule=\"$(auditctl -l | grep \"$file \")\";echo \"Audit Rule Result: $rule\";echo \"\"; done
 
-    Run the following command for each setuid file found in the first command:
+    Example output:
 
-    # auditctl -l | grep <setuid_path>
+    Found file with setuid/setgid configured: /usr/bin/chage
+    Audit Rule Result: -a always,exit -S all -F path=/usr/bin/chage -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged
 
-    Replace <setuid_path> with each path found in the first command.
+    Found file with setuid/setgid configured: /usr/bin/chfn
+    Audit Rule Result: -a always,exit -S all -F path=/usr/bin/chfn -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged
 
-    If each <setuid_path> does not have a corresponding line in the audit rules, this is a finding.
-
-    A typical corresponding line will look like the below:
-
-    -a always,exit -S all -F path=<setuid_path> -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged
+    If each file returned does not have a corresponding audit rule, this is a finding.
 
     Note: This check depends on the \"auditd\" service to be in a running state for accurate results. The \"auditd\" service is enabled in control PHTN-40-000016.
 
     Note: auid!=-1, auid!=4294967295, auid!=unset are functionally equivalent in this check and the output of the above commands may be displayed in either format.
   "
   desc  'fix', "
-    Run the following steps for each setuid file found in the check that does not have a corresponding line in the audit rules:
+    Run the following steps for each file found in the check that does not have a corresponding line in the audit rules:
 
     Navigate to and open:
 
@@ -32,7 +30,7 @@ control 'PHTN-40-000107' do
 
     Add the following line:
 
-    -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
+    -a always,exit -F path=<path> -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 
     Run the following command to load the new audit rules:
 
