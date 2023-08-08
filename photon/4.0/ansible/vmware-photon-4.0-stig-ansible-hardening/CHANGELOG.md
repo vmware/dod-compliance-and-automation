@@ -1,5 +1,14 @@
 # Change Log
 
+## [4.0 Version 1 Release 4] (2023-08-08)
+
+#### Release Notes
+- Updated pwquality and pwhistory tasks to have the option of not using a conf file for configuration. Controlled with vars `var_pam_use_pwquality_conf` and `var_pam_use_pwhistory_conf`
+- Updated handler notifications to include role name to avoid problems with handlers of the same name in other playbooks
+- PHTN-40-000012 updated regex in task
+- PHTN-40-000127 added libgcrypt to install command
+- PHTN-40-000241 updated failed/change when conditions to work with earlier versions of Photon 4
+
 ## [4.0 Version 1 Release 3] (2023-06-06)
 
 #### Release Notes

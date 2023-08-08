@@ -28,7 +28,7 @@ control 'PHTN-40-000030' do
   tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
 
-  auditfiles = command('find /etc/audit/* -maxdepth 1 -type f').stdout
+  auditfiles = command('find /etc/audit/ -type f').stdout
   if !auditfiles.empty?
     auditfiles.split.each do |fname|
       describe file(fname) do
