@@ -31,6 +31,7 @@ var_logging_props_directory: '${catalina.base}/logs/tomcat'
 var_logging_props_prefix: 'catalina.'
 var_logging_props_buffersize: '-1'
 var_logging_props_formatter: 'java.util.logging.SimpleFormatter'
+var_logging_props_maxdays: '10'
 var_logging_props_handlers2: '1catalina.org.apache.juli.FileHandler'
 
 # catalina properties variables

@@ -19,8 +19,23 @@
     mode: preserve
   with_items:
     - '{{ var_conf_path }}'
-    - '{{ var_conf_path_etc }}'
     - '{{ var_syslog_conf_path }}'
+  changed_when: false
+  register: backupresult
+  failed_when:
+    - backupresult.msg is defined
+    - "'not found' not in backupresult.msg"
+  when:
+    - create_backups | bool
+
+- name: Backup files...if restoring be sure to restore permissions that original file had!! etc conf
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ item }}"
+    dest: "/tmp/ansible-vcsa-vami-backups-{{ backup_timestamp }}/etc/"
+    mode: preserve
+  with_items:
+    - '{{ var_conf_path_etc }}'
   changed_when: false
   register: backupresult
   failed_when:
@@ -158,7 +173,7 @@
     state: file
     owner: root
     group: root
-    mode: "0644"
+    mode: "o-w"
   with_items: "{{ vamilogfiles.files }}"
   tags:
     - VCLD-70-000007

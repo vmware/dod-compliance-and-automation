@@ -1,45 +1,40 @@
 control 'ESXI-70-000055' do
   title 'The ESXi host must disable Inter-Virtual Machine (VM) Transparent Page Sharing.'
-  desc  "
-    Published academic papers have demonstrated that by forcing a flush and reload of cache memory, it is possible to measure memory timings to try to determine an Advanced Encryption Standard (AES) encryption key in use on another virtual machine running on the same physical processor of the host server if Transparent Page Sharing (TPS) is enabled between the two VMs. This technique works only in a highly controlled system configured in a nonstandard way that VMware believes would not be recreated in a production environment.
+  desc 'Published academic papers have demonstrated that by forcing a flush and reload of cache memory, it is possible to measure memory timings to try to determine an Advanced Encryption Standard (AES) encryption key in use on another virtual machine running on the same physical processor of the host server if Transparent Page Sharing (TPS) is enabled between the two VMs. This technique works only in a highly controlled system configured in a nonstandard way that VMware believes would not be recreated in a production environment.
 
-    Although VMware believes information being disclosed in real-world conditions is unrealistic, out of an abundance of caution, upcoming ESXi Update releases will no longer enable TPS between VMs by default (TPS will still be used within individual VMs).
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Hosts and Clusters.
+Although VMware believes information being disclosed in real-world conditions is unrealistic, out of an abundance of caution, upcoming ESXi Update releases will no longer enable TPS between VMs by default (TPS will still be used within individual VMs).'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Select the \"Mem.ShareForceSalting\" value and verify it is set to \"2\".
+Select the "Mem.ShareForceSalting" value and verify it is set to "2".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name Mem.ShareForceSalting
+Get-VMHost | Get-AdvancedSetting -Name Mem.ShareForceSalting
 
-    If the \"Mem.ShareForceSalting\" setting is not set to \"2\", this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+If the "Mem.ShareForceSalting" setting is not set to "2", this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Click \"Edit\". Select the \"Mem.ShareForceSalting\" value and set it to \"2\".
+Click "Edit". Select the "Mem.ShareForceSalting" value and set it to "2".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name Mem.ShareForceSalting | Set-AdvancedSetting -Value 2
-  "
+Get-VMHost | Get-AdvancedSetting -Name Mem.ShareForceSalting | Set-AdvancedSetting -Value 2'
   impact 0.3
+  tag check_id: 'C-60091r886027_chk'
   tag severity: 'low'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
   tag gid: 'V-256416'
   tag rid: 'SV-256416r886029_rule'
   tag stig_id: 'ESXI-70-000055'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-60034r886028_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

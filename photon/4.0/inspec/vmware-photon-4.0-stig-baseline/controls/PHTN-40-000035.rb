@@ -17,7 +17,7 @@ control 'PHTN-40-000035' do
 
     If the \"ucredit\" option is not < 0, is missing or commented out, this is a finding.
 
-    Note: If pwquality.conf is not used to configure pam_pwquality.so then these options may be specified on the pwquality line in system-password file.
+    Note: If pwquality.conf is not used to configure pam_pwquality.so, these options may be specified on the pwquality line in the system-password file.
   "
   desc 'fix', "
     Navigate to and open:
@@ -42,9 +42,8 @@ control 'PHTN-40-000035' do
       its('ucredit') { should cmp < 0 }
     end
   else
-    describe pam('/etc/pam.d/system-password') do
-      its('lines') { should match_pam_rule('password required pam_pwquality.so') }
-      its('lines') { should match_pam_rule('password required pam_pwquality.so').all_with_integer_arg('ucredit', '<', 0) }
+    describe file('/etc/pam.d/system-password') do
+      its('content') { should match /^password\s+(required|requisite)\s+pam_pwquality\.so\s+(?=.*\bucredit=-1\b).*$/ }
     end
   end
 end

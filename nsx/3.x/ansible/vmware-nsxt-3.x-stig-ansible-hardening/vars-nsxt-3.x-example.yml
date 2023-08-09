@@ -11,8 +11,6 @@ var_ntp_server2: 'time-b-g.nist.gov'
 
 ## Set to true/false to enable or disable controls
 # DFW
-# TDFW-3X-000002
-run_dfw_unpublished_rules: true
 # TDFW-3X-000005
 run_dfw_rule_logging: true
 # TDFW-3X-000019-28
@@ -49,8 +47,6 @@ run_mgr_disable_local_accounts: true
 run_mgr_enable_fips_for_lbs: true
 
 # T0FW
-# T0FW-3X-000002
-run_t0fw_unpublished_rules: true
 # T0FW-3X-000006
 run_t0fw_rule_logging: true
 # T0FW-3X-000011
@@ -103,8 +99,6 @@ run_t0rt_gateway_multicast: true
 var_t0rt_gateways_with_multicast_enabled: []
 
 # T1FW
-# T1FW-3X-000002
-run_t1fw_unpublished_rules: true
 # T1FW-3X-000005-06
 run_t1fw_rule_logging: true
 # T1FW-3X-000011-26

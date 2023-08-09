@@ -1,7 +1,7 @@
 # vmware-vsphere-7.0-stig-baseline
 VMware vSphere vCenter Appliance 7.0 STIG Chef InSpec Profile  
 InSpec profile for vSphere 7.0 vCenter, ESXi, and VM controls. Does not include appliance level controls  
-Version: Release 1 Version 1 Date: 15 March 2023  
+Version: Release 1 Version 2 Date: 26 July 2023  
 STIG Type: Official STIG 
 
 ## Overview

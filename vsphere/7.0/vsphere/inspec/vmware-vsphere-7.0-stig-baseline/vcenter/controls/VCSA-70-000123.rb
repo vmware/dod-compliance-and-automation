@@ -1,58 +1,55 @@
 control 'VCSA-70-000123' do
   title 'The vCenter Server must provide an immediate real-time alert to the system administrator (SA) and information system security officer (ISSO), at a minimum, on every Single Sign-On (SSO) account action.'
-  desc  "
-    Once an attacker establishes initial access to a system, they often attempt to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create a new account. They may also try to hijack an existing account by changing a password or enabling a previously disabled account. Therefore, all actions performed on accounts in the SSO domain much be alerted on in vCenter at a minimum and ideally on a Security Information and Event Management (SIEM) system as well.
+  desc 'Once an attacker establishes initial access to a system, they often attempt to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to create a new account. They may also try to hijack an existing account by changing a password or enabling a previously disabled account. Therefore, all actions performed on accounts in the SSO domain much be alerted on in vCenter at a minimum and ideally on a Security Information and Event Management (SIEM) system as well.
 
-    To ensure the appropriate personnel are alerted about SSO account actions, create a new vCenter alarm for the \"com.vmware.sso.PrincipalManagement\" event ID and configure the alert mechanisms appropriately.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Host and Clusters.
+To ensure the appropriate personnel are alerted about SSO account actions, create a new vCenter alarm for the "com.vmware.sso.PrincipalManagement" event ID and configure the alert mechanisms appropriately.
 
-    Select a vCenter Server >> Configure >> Security >> Alarm Definitions.
+'
+  desc 'check', 'From the vSphere Client, go to Host and Clusters.
 
-    Verify an alarm has been created to alert upon all SSO account actions.
+Select a vCenter Server >> Configure >> Security >> Alarm Definitions.
 
-    The alarm name may vary, but it is suggested to name it \"SSO account actions - com.vmware.sso.PrincipalManagement\".
+Verify an alarm has been created to alert upon all SSO account actions.
 
-    or
+The alarm name may vary, but it is suggested to name it "SSO account actions - com.vmware.sso.PrincipalManagement".
 
-    From a PowerCLI command prompt while connected to the vCenter server, run the following command:
+or
 
-    Get-AlarmDefinition | Where {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq \"com.vmware.sso.PrincipalManagement\"} | Select Name,Enabled,@{N=\"EventTypeId\";E={$_.ExtensionData.Info.Expression.Expression.EventTypeId}}
+From a PowerCLI command prompt while connected to the vCenter server, run the following command:
 
-    If an alarm is not created to alert on SSO account actions, this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Host and Clusters.
+Get-AlarmDefinition | Where {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq "com.vmware.sso.PrincipalManagement"} | Select Name,Enabled,@{N="EventTypeId";E={$_.ExtensionData.Info.Expression.Expression.EventTypeId}}
 
-    Select a vCenter Server >> Configure >> Security >> Alarm Definitions.
+If an alarm is not created to alert on SSO account actions, this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Host and Clusters.
 
-    Click \"Add\".
+Select a vCenter Server >> Configure >> Security >> Alarm Definitions.
 
-    Provide the alarm name of \"SSO account actions - com.vmware.sso.PrincipalManagement\" and an optional description.
+Click "Add".
 
-    From the \"Target type\" drop-down menu, select \"vCenter Server\".
+Provide the alarm name of "SSO account actions - com.vmware.sso.PrincipalManagement" and an optional description.
 
-    Click \"Next\".
+From the "Target type" drop-down menu, select "vCenter Server".
 
-    Paste \"com.vmware.sso.PrincipalManagement\" (without quotes) in the line after \"IF\" and press \"Enter\".
+Click "Next".
 
-    Next to \"Trigger the alarm and\", select \"Show as Warning\".
+Paste "com.vmware.sso.PrincipalManagement" (without quotes) in the line after "IF" and press "Enter".
 
-    Configure the desired notification actions that will inform the SA and ISSO of the event.
+Next to "Trigger the alarm and", select "Show as Warning".
 
-    Click \"Next\". Click \"Next\" again. Click \"Create\".
-  "
+Configure the desired notification actions that will inform the SA and ISSO of the event.
+
+Click "Next". Click "Next" again. Click "Create".'
   impact 0.5
+  tag check_id: 'C-60012r885620_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000291'
-  tag satisfies: ['SRG-APP-000292', 'SRG-APP-000293', 'SRG-APP-000294', 'SRG-APP-000320']
   tag gid: 'V-256337'
   tag rid: 'SV-256337r885622_rule'
   tag stig_id: 'VCSA-70-000123'
+  tag gtitle: 'SRG-APP-000291'
+  tag fix_id: 'F-59955r885621_fix'
+  tag satisfies: ['SRG-APP-000291', 'SRG-APP-000292', 'SRG-APP-000293', 'SRG-APP-000294', 'SRG-APP-000320']
   tag cci: ['CCI-001683', 'CCI-001684', 'CCI-001685', 'CCI-001686', 'CCI-002132']
-  tag nist: ['AC-2 (4)']
+  tag nist: ['AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)', 'AC-2 (4)']
 
   command = 'Get-AlarmDefinition | Where-Object {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq "com.vmware.sso.PrincipalManagement"} | Select-Object -ExpandProperty Enabled'
   describe powercli_command(command) do

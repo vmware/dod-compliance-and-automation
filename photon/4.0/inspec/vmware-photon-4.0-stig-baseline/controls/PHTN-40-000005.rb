@@ -23,7 +23,7 @@ control 'PHTN-40-000005' do
 
     Use the following verbiage for operating systems that have severe limitations on the number of characters that can be displayed in the banner:
 
-    \"I've read (literal ampersand) consent to terms in IS user agreem't.\"
+    \"I've read & consent to terms in IS user agreem't.\"
   "
   desc  'rationale', ''
   desc  'check', "
@@ -39,7 +39,7 @@ control 'PHTN-40-000005' do
 
     Next, open /etc/issue with a text editor.
 
-    If the file does not contain the Standard Mandatory DoD Notice and Consent Banner, this is a finding.
+    If the file does not contain the Standard Mandatory DOD Notice and Consent Banner, this is a finding.
 
     Standard Mandatory DOD Notice and Consent Banner:
 

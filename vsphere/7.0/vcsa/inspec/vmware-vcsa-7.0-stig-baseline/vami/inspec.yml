@@ -5,7 +5,7 @@ copyright: The Authors
 copyright_email: stigs@vmware.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.1
+version: 1.0.2
 
 inputs:
 - name: lighttpdConf

@@ -1,5 +1,21 @@
 # Change Log
 
+## [7.0 Version 1 Release 1] (2023-07-26)
+
+#### Release Notes
+- Fixed vami backup not working as intended with identical file names
+- Updated playbook.yml Photon vars
+- Renamed example vars file and removed vars file for older VCSA versions
+- VCLU-70-000007 enabled task again by default and updated user/group/permissions being set
+- VCST-70-000006 updated task to account for new line in check text
+- VCUI-70-000007 updated task to match new check text
+- VCLD-70-000007 updated task to match new check text
+
+## [7.0 Version 1 Release 1] (2023-03-15)
+
+#### Release Notes
+- No changes for official STIG V1R1 release
+
 ## [7.0 Version 1 Release 4] (2022-10-28)
 
 #### Release Notes

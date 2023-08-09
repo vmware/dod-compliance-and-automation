@@ -3,7 +3,7 @@ control 'PHTN-40-000239' do
   desc  "
     Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
 
-    Remote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, non-organization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+    Remote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
 
     Cryptographic mechanisms used for protecting the integrity of information include, for example, signed hash functions using asymmetric cryptography enabling distribution of the public key to verify the hash information while maintaining the confidentiality of the secret key used to generate the hash.
   "
@@ -17,9 +17,9 @@ control 'PHTN-40-000239' do
 
     macs hmac-sha2-512,hmac-sha2-256
 
-    If the output matches the ciphers in the example result or a subset thereof, this is not a finding.
+    If the output matches the macs in the example result or a subset thereof, this is not a finding.
 
-    If the ciphers in the output contain any ciphers not listed in the example result, this is a finding.
+    If the output contains any macs not listed in the example result, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:

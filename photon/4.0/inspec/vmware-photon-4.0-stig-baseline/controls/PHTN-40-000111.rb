@@ -48,8 +48,8 @@ control 'PHTN-40-000111' do
 
      # systemctl restart rsyslog.service
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-OS-000342-GPOS-00133'
   tag satisfies: ['SRG-OS-000274-GPOS-00104', 'SRG-OS-000275-GPOS-00105', 'SRG-OS-000276-GPOS-00106', 'SRG-OS-000277-GPOS-00107', 'SRG-OS-000304-GPOS-00121', 'SRG-OS-000447-GPOS-00201', 'SRG-OS-000479-GPOS-00224']
   tag gid: 'V-PHTN-40-000111'

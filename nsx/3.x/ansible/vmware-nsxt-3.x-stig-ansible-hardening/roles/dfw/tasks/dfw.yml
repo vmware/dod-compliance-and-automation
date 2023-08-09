@@ -1,16 +1,6 @@
 ---
 
 ###################################################################################################################################
-- name: TDFW-3X-000002
-  tags: [TDFW-3X-000002]
-  when: run_dfw_unpublished_rules | bool
-  block:
-    - name: TDFW-3X-000002 - The NSX-T Distributed Firewall must not have any unpublished firewall policies or rules.
-      ansible.builtin.debug:
-        msg: "TDFW-3X-000002 - This control must be manually remediated."
-      changed_when: false
-
-###################################################################################################################################
 # TDFW-3X-000005 - The NSX-T Distributed Firewall must generate traffic log entries containing information to establish the details of the event.
 - name: TDFW-3X-000005 - The NSX-T Distributed Firewall must generate traffic log entries containing information to establish the details of the event.
   tags: [TDFW-3X-000005]

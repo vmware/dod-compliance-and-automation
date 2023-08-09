@@ -15,16 +15,6 @@
       register: t1gateways
       changed_when: false
 
-##################################################################################################################################
-- name: T1FW-3X-000002
-  tags: [T1FW-3X-000002]
-  when: run_t1fw_unpublished_rules | bool
-  block:
-    - name: T1FW-3X-000002 - The NSX-T Tier-1 Gateway Firewall must not have any unpublished firewall policies or rules.
-      ansible.builtin.debug:
-        msg: "T1FW-3X-000002 - This control must be manually remediated."
-      changed_when: false
-
 ###################################################################################################################################
 - name: T1FW-3X-000005 - The NSX-T Tier-1 Gateway Firewall must generate traffic log entries containing information to establish the details of the event.
   tags: [T1FW-3X-000005, T1FW-3X-000006]

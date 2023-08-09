@@ -1,7 +1,7 @@
 [![pipeline status](https://gitlab.eng.vmware.com/compliance-automation/stig/nsx-t/vmware-nsxt-3.x-stig-baseline/badges/master/pipeline.svg)](https://gitlab.eng.vmware.com/compliance-automation/stig/nsx-t/vmware-nsxt-3.x-stig-baseline/-/commits/master)
 # vmware-nsxt-3.x-stig-baseline
 VMware NSX-T 3.x STIG Chef InSpec Profile  
-Version: Release 1 Version 2 Date: 02 September 2022 
+Version: Release 1 Version 3 Date: 26 July 2023 
 STIG Type: [Official STIG](https://confluence.eng.vmware.com/pages/viewpage.action?pageId=1231779155)  
 Maintainers: SCOPE/VMTA  
 

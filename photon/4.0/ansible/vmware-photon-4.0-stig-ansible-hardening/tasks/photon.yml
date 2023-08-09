@@ -101,12 +101,17 @@
         rpm -qa | grep ^rsyslog-
       register: rsysloginstalled
       changed_when: false
-      failed_when: rsysloginstalled.rc == 2
+      failed_when:
+        - rsysloginstalled.rc == 2
 
     - name: PHTN-40-000241 - Install rsyslog
       ansible.builtin.command: tdnf -y install rsyslog
       register: output
-      changed_when: output.rc == 0
+      changed_when:
+        - output.rc == 0 or output.rc == 245 # A 245 rc is returned sometimes due to another issue but rsyslog is still installed
+      failed_when:
+        - output.rc >= 2
+        - output.rc != 245
       when:
         - rsysloginstalled.stdout == ""
 
@@ -154,7 +159,7 @@
         mode: '0640'
         force: true
       notify:
-        - reload auditd
+        - '{{ role_name }} : reload auditd'
       when:
         - auditdinstalled.stdout != ""
 
@@ -201,7 +206,7 @@
         line: Banner {{ var_sshd_banner }}
         firstmatch: true
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000007 - Configure maxlogins in limits.conf
@@ -228,27 +233,14 @@
       changed_when: false
       failed_when: rsysloginstalled.rc == 2
 
-    - name: PHTN-40-000012 - Configure authpriv in rsyslog.conf
+    - name: PHTN-40-000012 - Configure auth/authpriv/daemon logging in rsyslog.conf
       ansible.builtin.lineinfile:
         path: '{{ var_rsyslog_conf_file }}'
         state: present
-        regexp: '^#?\s*authpriv\.\*'
+        regexp: '^#?\s*(^auth.*|^authpriv.*|^daemon.*)'
         line: auth.*;authpriv.*;daemon.* {{ var_rsyslog_authpriv_log }}
-        firstmatch: true
       notify:
-        - restart rsyslog
-      when:
-        - rsysloginstalled.stdout != ""
-
-    - name: PHTN-40-000012 - Configure auth line if needed in rsyslog.conf
-      ansible.builtin.lineinfile:
-        path: '{{ var_rsyslog_conf_file }}'
-        state: present
-        regexp: '^#?\s*auth\.\*'
-        line: auth.*;authpriv.*;daemon.* {{ var_rsyslog_authpriv_log }}
-        firstmatch: true
-      notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
       when:
         - rsysloginstalled.stdout != ""
 
@@ -265,7 +257,7 @@
         regexp: '^#?\s*Ciphers\s'
         line: Ciphers {{ var_sshd_ciphers }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000013 - Install OpenSSL FIPS Provider
@@ -442,7 +434,9 @@
 ###################################################################################################################################
 - name: PHTN-40-000035 - Configure pwquality.conf ucredit
   tags: [PHTN-40-000035, pam_pwquality]
-  when: run_pam_pwquality_ucredit | bool
+  when:
+    - run_pam_pwquality_ucredit | bool
+    - var_pam_use_pwquality_conf | bool
   block:
     - name: PHTN-40-000035 - Configure pwquality.conf ucredit
       ansible.builtin.lineinfile:
@@ -451,10 +445,27 @@
         regexp: '^#?\s*ucredit\s'
         line: ucredit = {{ var_pam_pwquality_ucredit }}
 
+- name: PHTN-40-000035 - Configure ucredit in system-password
+  tags: [PHTN-40-000035, pam_pwquality]
+  when:
+    - run_pam_pwquality_ucredit | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000035 - Configure pwquality ucredit in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'ucredit={{ var_pam_pwquality_ucredit }}'
+        state: args_present
+
 ###################################################################################################################################
 - name: PHTN-40-000036 - Configure pwquality.conf lcredit
   tags: [PHTN-40-000036, pam_pwquality]
-  when: run_pam_pwquality_lcredit | bool
+  when:
+    - run_pam_pwquality_lcredit | bool
+    - var_pam_use_pwquality_conf | bool
   block:
     - name: PHTN-40-000036 - Configure pwquality.conf lcredit
       ansible.builtin.lineinfile:
@@ -463,10 +474,27 @@
         regexp: '^#?\s*lcredit\s'
         line: lcredit = {{ var_pam_pwquality_lcredit }}
 
+- name: PHTN-40-000036 - Configure lcredit in system-password
+  tags: [PHTN-40-000036, pam_pwquality]
+  when:
+    - run_pam_pwquality_lcredit | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000036 - Configure pwquality lcredit in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'lcredit={{ var_pam_pwquality_lcredit }}'
+        state: args_present
+
 ###################################################################################################################################
 - name: PHTN-40-000037 - Configure pwquality.conf dcredit
   tags: [PHTN-40-000037, pam_pwquality]
-  when: run_pam_pwquality_dcredit | bool
+  when:
+    - run_pam_pwquality_dcredit | bool
+    - var_pam_use_pwquality_conf | bool
   block:
     - name: PHTN-40-000037 - Configure pwquality.conf dcredit
       ansible.builtin.lineinfile:
@@ -475,10 +503,27 @@
         regexp: '^#?\s*dcredit\s'
         line: dcredit = {{ var_pam_pwquality_dcredit }}
 
+- name: PHTN-40-000037 - Configure dcredit in system-password
+  tags: [PHTN-40-000037, pam_pwquality]
+  when:
+    - run_pam_pwquality_dcredit | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000037 - Configure pwquality dcredit in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'dcredit={{ var_pam_pwquality_dcredit }}'
+        state: args_present
+
 ###################################################################################################################################
 - name: PHTN-40-000038 - Configure pwquality.conf difok
   tags: [PHTN-40-000038, pam_pwquality]
-  when: run_pam_pwquality_difok | bool
+  when:
+    - run_pam_pwquality_difok | bool
+    - var_pam_use_pwquality_conf | bool
   block:
     - name: PHTN-40-000038 - Configure pwquality.conf difok
       ansible.builtin.lineinfile:
@@ -486,6 +531,21 @@
         state: present
         regexp: '^#?\s*difok\s'
         line: difok = {{ var_pam_pwquality_difok }}
+
+- name: PHTN-40-000038 - Configure difok in system-password
+  tags: [PHTN-40-000038, pam_pwquality]
+  when:
+    - run_pam_pwquality_difok | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000038 - Configure pwquality difok in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'difok={{ var_pam_pwquality_difok }}'
+        state: args_present
 
 ###################################################################################################################################
 - name: PHTN-40-000039 - Configure login.defs ENCRYPT_METHOD
@@ -552,8 +612,10 @@
 
 ###################################################################################################################################
 - name: PHTN-40-000043 - Configure pam_pwhistory.so remember setting
-  tags: [PHTN-40-000043]
-  when: run_pam_pwhistory_remember | bool
+  tags: [PHTN-40-000043, pam_pwhistory]
+  when:
+    - run_pam_pwhistory_remember | bool
+    - var_pam_use_pwhistory_conf | bool
   block:
     - name: PHTN-40-000043 - Configure pwhistory.conf remember
       ansible.builtin.lineinfile:
@@ -566,10 +628,27 @@
         owner: root
         mode: '644'
 
+- name: PHTN-40-000043 - Configure pam_pwhistory.so remember setting in system-password
+  tags: [PHTN-40-000043, pam_pwhistory]
+  when:
+    - run_pam_pwhistory_remember | bool
+    - not var_pam_use_pwhistory_conf
+  block:
+    - name: PHTN-40-000043 - Configure pwhistory remember in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwhistory_control }}'
+        module_path: pam_pwhistory.so
+        module_arguments: 'remember={{ var_pam_pwhistory_remember }}'
+        state: args_present
+
 ###################################################################################################################################
 - name: PHTN-40-000044 - Configure pwquality.conf minlen
   tags: [PHTN-40-000044, pam_pwquality]
-  when: run_pam_pwquality_minlen | bool
+  when:
+    - run_pam_pwquality_minlen | bool
+    - var_pam_use_pwquality_conf | bool
   block:
     - name: PHTN-40-000044 - Configure pwquality.conf minlen
       ansible.builtin.lineinfile:
@@ -577,6 +656,21 @@
         state: present
         regexp: '^#?\s*minlen\s'
         line: minlen = {{ var_pam_pwquality_minlen }}
+
+- name: PHTN-40-000044 - Configure minlen in system-password
+  tags: [PHTN-40-000044, pam_pwquality]
+  when:
+    - run_pam_pwquality_minlen | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000044 - Configure pwquality minlen in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'minlen={{ var_pam_pwquality_minlen }}'
+        state: args_present
 
 ###################################################################################################################################
 - name: PHTN-40-000046 - Configure grub boot password
@@ -774,7 +868,7 @@
         regexp: '^#?\s*ClientAliveInterval\s'
         line: ClientAliveInterval {{ var_sshd_clientaliveinterval }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000073 - Configure /var/log permissions
@@ -810,7 +904,7 @@
         line: $umask {{ var_rsyslog_umask }}
         firstmatch: true
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
       when:
         - rsysloginstalled.stdout != ""
 
@@ -909,7 +1003,9 @@
 ###################################################################################################################################
 - name: PHTN-40-000086 - Configure pwquality.conf ocredit
   tags: [PHTN-40-000086, pam_pwquality]
-  when: run_pam_pwquality_ocredit | bool
+  when:
+    - run_pam_pwquality_ocredit | bool
+    - var_pam_use_pwquality_conf | bool
   block:
     - name: PHTN-40-000086 - Configure pwquality.conf ocredit
       ansible.builtin.lineinfile:
@@ -917,6 +1013,21 @@
         state: present
         regexp: '^#?\s*ocredit\s'
         line: ocredit = {{ var_pam_pwquality_ocredit }}
+
+- name: PHTN-40-000086 - Configure ocredit in system-password
+  tags: [PHTN-40-000086, pam_pwquality]
+  when:
+    - run_pam_pwquality_ocredit | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000086 - Configure pwquality ocredit in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'ocredit={{ var_pam_pwquality_ocredit }}'
+        state: args_present
 
 ###################################################################################################################################
 - name: PHTN-40-000092 - Verify integrity of audit tools
@@ -1027,7 +1138,7 @@
         regexp: '^.*{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
         line: '*.* @{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
       when:
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
@@ -1041,7 +1152,7 @@
         regexp: '^.*{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
         line: '*.* @@{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
       when:
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
@@ -1055,7 +1166,7 @@
         regexp: '^.*{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
         line: '*.* @@(o){{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
       when:
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
@@ -1068,7 +1179,7 @@
         state: present
         line: $ActionSendStreamDriverAuthMode anon
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
       when:
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
@@ -1081,7 +1192,7 @@
         state: present
         line: $ActionSendStreamDriverMode 1
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
       when:
         - var_rsyslog_server_name != ''
         - var_rsyslog_server_port != ''
@@ -1173,7 +1284,7 @@
         state: absent
         regexp: '^server ((?!({{ var_time_servers[0] }}|{{ var_time_servers[1] }})).)*$'
       notify:
-        - restart ntpd
+        - '{{ role_name }} : restart ntpd'
       when:
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
@@ -1189,7 +1300,7 @@
       with_items:
         - "{{ var_time_servers }}"
       notify:
-        - restart ntpd
+        - '{{ role_name }} : restart ntpd'
       when:
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
@@ -1254,7 +1365,7 @@
         state: absent
         regexp: '^pool.*$'
       notify:
-        - restart chrony
+        - '{{ role_name }} : restart chrony'
       when:
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
@@ -1267,7 +1378,7 @@
         state: absent
         regexp: '^server ((?!({{ var_time_servers[0] }}|{{ var_time_servers[1] }})).)*$'
       notify:
-        - restart chrony
+        - '{{ role_name }} : restart chrony'
       when:
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
@@ -1283,7 +1394,7 @@
       with_items:
         - "{{ var_time_servers }}"
       notify:
-        - restart chrony
+        - '{{ role_name }} : restart chrony'
       when:
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
@@ -1299,7 +1410,7 @@
       with_items:
         - "{{ var_time_servers }}"
       notify:
-        - restart timesyncd
+        - '{{ role_name }} : restart timesyncd'
       when:
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
@@ -1314,7 +1425,7 @@
       with_items:
         - "{{ var_time_servers }}"
       notify:
-        - restart timesyncd
+        - '{{ role_name }} : restart timesyncd'
       when:
         - var_time_servers[0] != ''
         - var_time_servers[1] != ''
@@ -1343,8 +1454,9 @@
       failed_when: aideinstalled.rc == 2
       changed_when: false
 
+    # Added libgcrypt. Currently a bug in the aide package that does not upgrade libgcrypt to the needed version.
     - name: PHTN-40-000127 - Install AIDE
-      ansible.builtin.command: tdnf -y install aide
+      ansible.builtin.command: tdnf -y install aide libgcrypt
       register: output
       changed_when: output.rc == 0
       when:
@@ -1424,7 +1536,9 @@
 ###################################################################################################################################
 - name: PHTN-40-000184 - Configure pwquality.conf dictcheck
   tags: [PHTN-40-000184, pam_pwquality]
-  when: run_pam_pwquality_dictcheck | bool
+  when:
+    - run_pam_pwquality_dictcheck | bool
+    - var_pam_use_pwquality_conf | bool
   block:
     - name: PHTN-40-000184 - Configure pwquality.conf dictcheck
       ansible.builtin.lineinfile:
@@ -1432,6 +1546,21 @@
         state: present
         regexp: '^#?\s*dictcheck\s'
         line: dictcheck = {{ var_pam_pwquality_dictcheck }}
+
+- name: PHTN-40-000184 - Configure dictcheck in system-password
+  tags: [PHTN-40-000184, pam_pwquality]
+  when:
+    - run_pam_pwquality_dictcheck | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000184 - Configure pwquality dictcheck in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'dictcheck={{ var_pam_pwquality_dictcheck }}'
+        state: args_present
 
 ###################################################################################################################################
 - name: PHTN-40-000185 - Configure login.defs FAIL_DELAY
@@ -1502,34 +1631,37 @@
         regexp: '^#?\s*HostbasedAuthentication\s'
         line: HostbasedAuthentication {{ var_sshd_hostbasedauthentication }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000192 - Configure system-auth pam_faillock.so module
   tags: [PHTN-40-000192]
   when: run_pam_add_faillock_so | bool
   block:
-    - name: PHTN-40-000192 - Check to see if pam_faillock.so preauth rule exists
-      ansible.builtin.shell: grep -E '^auth\s*required\s*pam_faillock.so\spreauth$' /etc/pam.d/system-auth
-      register: sysauthpreauth
-      failed_when: sysauthpreauth.rc == 2
-      changed_when: false
+    - name: 'PHTN-40-000192 - Get current contents of {{ var_pam_system_auth_file }}'
+      ansible.builtin.slurp:
+        src: '{{ var_pam_system_auth_file }}'
+      register: systemauthslurp
 
-    - name: PHTN-40-000192 - Check to see if pam_faillock.so authfail rule exists
-      ansible.builtin.shell: grep -E '^auth\s*required\s*pam_faillock.so\sauthfail$' /etc/pam.d/system-auth
-      register: sysauthauthfail
-      failed_when: sysauthauthfail.rc == 2
-      changed_when: false
+    - name: 'PHTN-40-000192 - Decode current contents of {{ var_pam_system_auth_file }} and set fact'
+      ansible.builtin.set_fact:
+        systemauthcontent: "{{ systemauthslurp['content'] | b64decode }}"
 
-    - name: PHTN-40-000192 - Remove existing pam_faillock.so rules in system-auth if either is incorrect
-      community.general.pamd:
-        name: system-auth
-        type: auth
-        control: required
-        module_path: pam_faillock.so
+    - name: 'PHTN-40-000192 - Check to see if pam_faillock.so preauth rule exists in {{ var_pam_system_auth_file }} and is before the pam_unix.so rule'
+      ansible.builtin.set_fact:
+        preauthsearch: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_faillock\\.so\\spreauth$\\nauth\\s+(required|requisite)\\s+pam_unix\\.so.*$', multiline=True) }}"
+
+    - name: 'PHTN-40-000192 - Check to see if pam_faillock.so authfail rule exists in {{ var_pam_system_auth_file }} and is after the pam_unix.so rule'
+      ansible.builtin.set_fact:
+        authfailsearch: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_unix\\.so.*$\\nauth\\s+(required|requisite|\\[default=die\\])\\s+pam_faillock\\.so\\sauthfail$', multiline=True) }}"
+
+    - name: 'PHTN-40-000192 - Remove existing pam_faillock.so rules in {{ var_pam_system_auth_file }} if one not found or incorrect'
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_system_auth_file }}'
         state: absent
+        regexp: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so.*$'
       when:
-        - sysauthpreauth.stdout == "" or sysauthauthfail.stdout == ""
+        - preauthsearch == "" or authfailsearch == ""
 
     - name: PHTN-40-000192 - Add pam_faillock.so preauth to system-auth if it doesn't exist
       community.general.pamd:
@@ -1542,8 +1674,6 @@
         new_module_path: pam_faillock.so
         module_arguments: 'preauth'
         state: before
-      when:
-        - sysauthpreauth.stdout != "auth       required pam_faillock.so preauth"
 
     - name: PHTN-40-000192 - Add pam_faillock.so authfail to system-auth if it doesn't exist
       community.general.pamd:
@@ -1556,16 +1686,21 @@
         new_module_path: pam_faillock.so
         module_arguments: 'authfail'
         state: after
-      when:
-        - sysauthauthfail.stdout != "auth       required pam_faillock.so authfail"
 
-    - name: PHTN-40-000192 - Check to see if pam_faillock.so rule exists in system-account
-      ansible.builtin.shell: grep -E '^account\s*required\s*pam_faillock.so$' /etc/pam.d/system-account
-      register: sysaccount
-      failed_when: sysaccount.rc == 2
-      changed_when: false
+    - name: 'PHTN-40-000192 - Get current contents of {{ var_pam_system_account_file }}'
+      ansible.builtin.slurp:
+        src: '{{ var_pam_system_account_file }}'
+      register: systemaccountslurp
 
-    - name: PHTN-40-000192 - Remove existing pam_faillock.so rules in system-account if either is incorrect
+    - name: 'PHTN-40-000192 - Decode current contents of {{ var_pam_system_account_file }} and set fact'
+      ansible.builtin.set_fact:
+        systemaccounthcontent: "{{ systemaccountslurp['content'] | b64decode }}"
+
+    - name: 'PHTN-40-000192 - Check to see if pam_faillock.so rule exists in {{ var_pam_system_account_file }} and is before the pam_unix.so rule'
+      ansible.builtin.set_fact:
+        sysaccountsearch: "{{ systemaccounthcontent | regex_search('^account\\s+(required|requisite)\\s+pam_faillock\\.so$\\naccount\\s+(required|requisite)\\s+pam_unix\\.so.*$', multiline=True) }}"
+
+    - name: 'PHTN-40-000192 - Remove existing pam_faillock.so rules in {{ var_pam_system_account_file }} if incorrect'
       community.general.pamd:
         name: system-account
         type: account
@@ -1573,7 +1708,7 @@
         module_path: pam_faillock.so
         state: absent
       when:
-        - sysaccount.stdout == ""
+        - sysaccountsearch == ""
 
     - name: PHTN-40-000192 - Add pam_faillock.so to system-account if it doesn't exist
       community.general.pamd:
@@ -1645,7 +1780,9 @@
 ###################################################################################################################################
 - name: PHTN-40-000197 - Configure system-password pam_pwquality.so module
   tags: [PHTN-40-000197]
-  when: run_pam_add_pwquality_so | bool
+  when:
+    - run_pam_add_pwquality_so | bool
+    - not var_pam_use_pwquality_conf
   block:
     - name: PHTN-40-000197 - Check to see if pam_pwquality.so rule exists
       ansible.builtin.shell: grep -E '^password\s*required\s*pam_pwquality.so\suse_authtok$' /etc/pam.d/system-password
@@ -1707,7 +1844,7 @@
         regexp: '^#?\s*SyslogFacility\s'
         line: SyslogFacility {{ var_sshd_syslogfacility }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000201 - Configure sshd LogLevel
@@ -1721,7 +1858,7 @@
         regexp: '^#?\s*LogLevel\s'
         line: LogLevel {{ var_sshd_loglevel }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000203 - Configure sshd ClientAliveCountMax
@@ -1735,7 +1872,7 @@
         regexp: '^#?\s*ClientAliveCountMax\s'
         line: ClientAliveCountMax {{ var_sshd_clientalivecountmax }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000206 - Configure system-auth pam_faildelay.so module
@@ -1743,7 +1880,9 @@
   when: run_pam_add_faildelay_so | bool
   block:
     - name: PHTN-40-000206 - Check to see if pam_faildelay.so rule exists
-      ansible.builtin.shell: grep -E '^auth\s*optional\s*pam_faildelay.so\sdelay=4000000$' /etc/pam.d/system-auth
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -E '^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$' /etc/pam.d/system-auth
       register: sysauthfaildelay
       failed_when: sysauthfaildelay.rc == 2
       changed_when: false
@@ -1758,19 +1897,28 @@
       when:
         - sysauthfaildelay.stdout == ""
 
+    # Need to use lininfile instead of pam because of the placement this needs to go can't be dealt with by the ansible pam module
     - name: PHTN-40-000206 - Add pam_faildelay.so to system-auth if it doesn't exist
-      community.general.pamd:
-        name: system-auth
-        type: auth
-        control: required
-        module_path: pam_unix.so
-        new_type: auth
-        new_control: optional
-        new_module_path: pam_faildelay.so
-        module_arguments: 'delay=4000000'
-        state: after
-      when:
-        - sysauthfaildelay.stdout != "auth       optional pam_faildelay.so delay=4000000"
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_system_auth_file }}'
+        state: present
+        regexp: '^#?auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$'
+        line: auth       optional pam_faildelay.so delay=4000000
+        insertafter: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+authfail$'
+
+    # - name: PHTN-40-000206 - Add pam_faildelay.so to system-auth if it doesn't exist
+    #   community.general.pamd:
+    #     name: system-auth
+    #     type: auth
+    #     control: required
+    #     module_path: pam_unix.so
+    #     new_type: auth
+    #     new_control: optional
+    #     new_module_path: pam_faildelay.so
+    #     module_arguments: 'delay=4000000'
+    #     state: after
+    #   when:
+    #     - sysauthfaildelay.stdout != "auth       optional pam_faildelay.so delay=4000000"
 
 ###################################################################################################################################
 - name: PHTN-40-000207 - Configure sshd PermitEmptyPasswords
@@ -1784,7 +1932,7 @@
         regexp: '^#?\s*PermitEmptyPasswords\s'
         line: PermitEmptyPasswords {{ var_sshd_permitemptypasswords }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000208 - Configure sshd PermitUserEnvironment
@@ -1798,7 +1946,7 @@
         regexp: '^#?\s*PermitUserEnvironment\s'
         line: PermitUserEnvironment {{ var_sshd_permituserenvironment }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000209 - Configure login.defs CREATE_HOME
@@ -1835,7 +1983,7 @@
         regexp: '^#?\s*GSSAPIAuthentication\s'
         line: GSSAPIAuthentication {{ var_sshd_gssapiauthentication }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000212 - Configure sshd X11Forwarding
@@ -1849,7 +1997,7 @@
         regexp: '^#?\s*X11Forwarding\s'
         line: X11Forwarding {{ var_sshd_x11forwarding }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000213 - Configure sshd StrictModes
@@ -1863,7 +2011,7 @@
         regexp: '^#?\s*StrictModes\s'
         line: StrictModes {{ var_sshd_strictmodes }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000214 - Configure sshd KerberosAuthentication
@@ -1877,7 +2025,7 @@
         regexp: '^#?\s*KerberosAuthentication\s'
         line: KerberosAuthentication {{ var_sshd_kerberosauthentication }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000215 - Configure sshd Compression
@@ -1891,7 +2039,7 @@
         regexp: '^#?\s*Compression\s'
         line: Compression {{ var_sshd_compression }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000216 - Configure sshd PrintLastLog
@@ -1905,7 +2053,7 @@
         regexp: '^#?\s*PrintLastLog\s'
         line: PrintLastLog {{ var_sshd_printlastlog }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000217 - Configure sshd IgnoreRhosts
@@ -1919,7 +2067,7 @@
         regexp: '^#?\s*IgnoreRhosts\s'
         line: IgnoreRhosts {{ var_sshd_ignorerhosts }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000218 - Configure sshd IgnoreUserKnownHosts
@@ -1933,7 +2081,7 @@
         regexp: '^#?\s*IgnoreUserKnownHosts\s'
         line: IgnoreUserKnownHosts {{ var_sshd_ignoreuserknownhosts }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000219 - Configure sshd MaxAuthTries
@@ -1947,7 +2095,7 @@
         regexp: '^#?\s*MaxAuthTries\s'
         line: MaxAuthTries {{ var_sshd_maxauthtries }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000220 - Configure sshd AllowTcpForwarding
@@ -1961,7 +2109,7 @@
         regexp: '^#?\s*AllowTcpForwarding\s'
         line: AllowTcpForwarding {{ var_sshd_allowtcpforwarding }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000221 - Configure sshd LoginGraceTime
@@ -1975,7 +2123,7 @@
         regexp: '^#?\s*LoginGraceTime\s'
         line: LoginGraceTime {{ var_sshd_logingracetime }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000222 - Disable ctrl-alt-del.target
@@ -2357,7 +2505,9 @@
 ###################################################################################################################################
 - name: PHTN-40-000235 - Configure pwquality.conf enforce_for_root
   tags: [PHTN-40-000235, pam_pwquality]
-  when: run_pam_pwquality_enforce_for_root | bool
+  when:
+    - run_pam_pwquality_enforce_for_root | bool
+    - var_pam_use_pwquality_conf | bool
   block:
     - name: PHTN-40-000235 - Configure pwquality.conf enforce_for_root
       ansible.builtin.lineinfile:
@@ -2365,6 +2515,21 @@
         state: present
         regexp: '^#?\s*enforce_for_root\s'
         line: enforce_for_root
+
+- name: PHTN-40-000235 - Configure enforce_for_root in system-password
+  tags: [PHTN-40-000235, pam_pwquality]
+  when:
+    - run_pam_pwquality_enforce_for_root | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000235 - Configure pwquality enforce_for_root in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'enforce_for_root'
+        state: args_present
 
 ###################################################################################################################################
 - name: PHTN-40-000236 - Configure systemd resolved fallback DNS
@@ -2378,7 +2543,7 @@
         regexp: '^#?\s*FallbackDNS='
         line: FallbackDNS=
       notify:
-        - restart resolved
+        - '{{ role_name }} : restart resolved'
 
 ###################################################################################################################################
 - name: PHTN-40-000239 - Configure sshd MACs
@@ -2392,12 +2557,14 @@
         regexp: '^#?\s*MACs\s'
         line: MACs {{ var_sshd_macs }}
       notify:
-        - restart sshd
+        - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
 - name: PHTN-40-000243 - Configure pam_pwhistory.so module
   tags: [PHTN-40-000243, pam]
-  when: run_pam_pwhistory_module | bool
+  when:
+    - run_pam_pwhistory_module | bool
+    - var_pam_use_pwhistory_conf | bool
   block:
     - name: PHTN-40-000243 - Add pam_pwhistory to system-password if it doesn't exist
       community.general.pamd:
@@ -2408,7 +2575,7 @@
         new_type: password
         new_control: required
         new_module_path: pam_pwhistory.so
-        state: before
+        state: after
 
     - name: PHTN-40-000243 - Configure system-password pam_pwhistory.so use_authtok setting
       community.general.pamd:
@@ -2425,6 +2592,52 @@
         name: system-password
         type: password
         control: required
+        module_path: pam_pwhistory.so
+        module_arguments:
+          - conf
+          - file
+        state: args_absent
+
+- name: PHTN-40-000243 - Configure pam_pwhistory.so module
+  tags: [PHTN-40-000243, pam]
+  when:
+    - run_pam_pwhistory_module | bool
+    - not var_pam_use_pwhistory_conf
+  block:
+    - name: PHTN-40-000243 - Add pam_pwhistory.so to system-password if it doesn't exist.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        new_type: password
+        new_control: required
+        new_module_path: pam_pwhistory.so
+        module_arguments:
+          - remember=5
+          - retry=3
+          - enforce_for_root
+          - use_authtok
+        state: after
+
+    - name: PHTN-40-000243 - Configure system-password pam_pwhistory.so settings if already existing
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwhistory_control }}'
+        module_path: pam_pwhistory.so
+        module_arguments:
+          - remember=5
+          - retry=3
+          - enforce_for_root
+          - use_authtok
+        state: args_present
+
+    - name: PHTN-40-000243 - Configure system-password pam_pwhistory.so to remove file and conf directives
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwhistory_control }}'
         module_path: pam_pwhistory.so
         module_arguments:
           - conf
@@ -2494,7 +2707,7 @@
         sysctl_file: '{{ var_sysctl_conf_file }}'
         sysctl_set: true
         reload: true
-      when: fs_suid_dumpable.stdout != "fs_suid_dumpable = 0"
+      when: fs_suid_dumpable.stdout != "fs.suid_dumpable = 0"
 
 ###################################################################################################################################
 # !!! AIDE configuration should be the last task here so the configuration database includes all changes !!!

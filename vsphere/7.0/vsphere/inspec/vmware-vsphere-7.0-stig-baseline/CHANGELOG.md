@@ -1,4 +1,19 @@
-## [7.0 Version 1 Release 5 SRG/Version 1 Release 1 Official STIG] (2026-03-16)
+# Change Log
+
+## [7.0 Version 1 Release 2 Official STIG] (2023-07-26)
+
+#### Release Notes
+- Updated metadata to match release of official STIG for vSphere 7 V1R2
+- ESXI-70-000038 updated test
+- ESXI-70-000048 updated test
+- ESXI-70-000054 updated test
+- ESXI-70-000084 updated test
+- VCSA-70-000284 added test
+- VCSA-70-000285 added test
+- Virtual machine tests updated to support VMs with spaces in the name
+
+
+## [7.0 Version 1 Release 5 SRG/Version 1 Release 1 Official STIG] (2023-03-16)
 
 #### Release Notes
 - Updated metadata to match release of official STIG for vSphere 7

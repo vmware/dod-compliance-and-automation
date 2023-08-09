@@ -11,11 +11,12 @@ control 'PHTN-40-000196' do
 
     # grep '^dir' /etc/security/faillock.conf
 
-    Expected result:
+    Example result:
 
     dir = /var/log/faillock
 
-    If the \"dir\" option is not set to a non-default documented faillock directory, is missing or commented out, this is a finding.
+    If the \"dir\" option is set to \"/var/run/faillock\", this is a finding.
+    If the \"dir\" option is not set to a persistent documented faillock directory, is missing or commented out, this is a finding.
 
     Note: If faillock.conf is not used to configure pam_faillock.so then these options may be specified on the faillock lines in the system-auth and system-account files.
   "

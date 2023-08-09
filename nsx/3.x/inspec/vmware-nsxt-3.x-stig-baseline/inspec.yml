@@ -5,7 +5,7 @@ copyright: The Authors
 copyright_email: stigs@vmware.com
 license: Apache-2.0
 summary: InSpec Compliance Profile for NSX-T 3.x
-version: 1.2
+version: 1.0.3
 
 inputs:
 - name: nsxManager
