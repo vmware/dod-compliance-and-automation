@@ -85,7 +85,13 @@ If audit storage capacity is configured to something other than 4, for example 1
 
 - The configuration is actually updated but the command is not reflecting the correct value. This can be confirmed by viewing the audit log folder and the number of files present.
 - Each audit log is 1Mb so if 100 is configured you will see 100 files in the folder.
-- Note you may see more than 100 files due to another bug but only 100 will be used.
+- If you see more than 100 files in the audit log folder this may cause the `vmsyslogd` process to crash and restart. Perform the following steps to correct this:
+```
+esxcli system auditrecords local disable
+rm -rf /scatch/auditLog
+esxcli system auditrecords config set --size=<n>   (if a new size is requested)
+esxcli system auditrecords local enable (recreates the storage)
+```
 
 ## VM
 
