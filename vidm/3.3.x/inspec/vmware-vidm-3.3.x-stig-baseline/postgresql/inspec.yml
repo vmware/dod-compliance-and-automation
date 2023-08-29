@@ -1,0 +1,26 @@
+name: VMware Identity Manager 3.3.x PostgreSQL Service Profile
+title: VMware Identity Manager 3.3.x PostgreSQL Service Profile
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+inputs:
+- name: postgres_user
+  description: Enter username to connect to the postgres database.  Default is 'postgres'
+  type: string
+  value: "postgres"
+- name: postgres_host
+  description: Enter the host to connect to for the postgres connection.  Localhost in most cases
+  type: string
+  value: "localhost"
+- name: postgres_pw_file
+  description: Enter the file name including the full path to the file containing the vpostgres postgres user password.
+  type: string
+  value: "/usr/local/horizon/conf/db.pwd"
+- name: clustered
+  description: Is the vIDM instance clustered? true or false
+  type: boolean
+  value: false
