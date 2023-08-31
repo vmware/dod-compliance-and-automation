@@ -88,7 +88,7 @@ If audit storage capacity is configured to something other than 4, for example 1
 - If you see more than 100 files in the audit log folder this may cause the `vmsyslogd` process to crash and restart. Perform the following steps to correct this:
 ```
 esxcli system auditrecords local disable
-rm -rf /scatch/auditLog
+rm -rf /scratch/auditLog
 esxcli system auditrecords config set --size=<n>   (if a new size is requested)
 esxcli system auditrecords local enable (recreates the storage)
 ```
