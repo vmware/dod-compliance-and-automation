@@ -1,0 +1,61 @@
+---
+# Apache Inputs
+apacheConfPath: "/usr/lib/vmware-vcopssuite/utilities/conf/vcops-apache.conf"
+apacheConfFiles: ["/etc/httpd/httpd.conf", "/usr/lib/vmware-vcopssuite/utilities/conf/vcops-apache.conf"]
+fipsConfPath: "/etc/httpd/conf/fips.conf"
+maxKeepAliveRequests: "100"
+sslCipherSuite: "HIGH:!aNULL!ADH:!EXP:!MD5:!3DES:!CAMELLIA:!PSK:!SRP:!DH:!AES256-GCM-SHA384:!AES256-SHA256:!AES256-SHA:!AES128-GCM-SHA256:!AES128-SHA256:!AES128-SHA:@STRENGTH"
+accessLogFile: "/var/log/apache2/access_log"
+modules: ["jk_module       /usr/lib64/httpd/modules/mod_jk.so",
+          "rewrite_module  /usr/lib64/httpd/modules/mod_rewrite.so",
+          "headers_module  /usr/lib64/httpd/modules/mod_headers.so",
+          "http2_module    /usr/lib64/httpd/modules/mod_http2.so",
+          "deflate_module /usr/lib64/httpd/modules/mod_deflate.so"]
+httpdServiceFile: "/usr/lib/systemd/system/httpd.service"
+customLogSettings: ["CustomLog \"|/usr/sbin/rotatelogs2 -n 35 /var/log/apache2/access_log 50M\" \"%h %l %u %t \\\"%r\\\" %>s %b \\\"%{Referer}i\\\" \\\"%{User-agent}i\\\" Agent-Token:%{SSL_CLIENT_S_DN_CN}x \" env=lather",
+                    "CustomLog \"|/usr/sbin/rotatelogs2 -n 35 /var/log/apache2/access_log 50M\" combined  env=!lather"]
+
+# API Inputs
+api-tcInstance: "/usr/lib/vmware-vcops/tomcat-enterprise"
+api-serverXmlPath: "/usr/lib/vmware-vcops/tomcat-enterprise/conf/server.xml"
+api-tcCore: "/usr/share/tomcat"
+api-catalinaPropsPath: "/usr/lib/vmware-vcops/tomcat-enterprise/conf/catalina.properties"
+api-webXmlPath: "/usr/lib/vmware-vcops/tomcat-enterprise/conf/web.xml"
+api-contextXmlFiles: ["/usr/lib/vmware-vcops/tomcat-enterprise/conf/context.xml"]
+api-sessionTimeout: "30"
+api-maxThreads: "300"
+api-accessLogPattern: ["%h", "%l", "%t", "%u", "&quot;%r&quot;", "%s", "%b"]
+
+#CASA Inputs
+casa-tcInstance: "/usr/lib/vmware-casa/casa-webapp"
+casa-serverXmlPath: "/usr/lib/vmware-casa/casa-webapp/conf/server.xml"
+casa-tcCore: "/usr/share/tomcat"
+casa-catalinaPropsPath: "/usr/lib/vmware-casa/casa-webapp/conf/catalina.properties"
+casa-webXmlPath: "/usr/lib/vmware-casa/casa-webapp/conf/web.xml"
+casa-contextXmlFiles: ["/usr/lib/vmware-casa/casa-webapp/conf/context.xml"]
+casa-sessionTimeout: "30"
+casa-maxThreads: "300"
+casa-accessLogPattern: ["%h", "%l", "%t", "%u", "&quot;%r&quot;", "%s", "%b"]
+
+# UI Inputs
+ui-tcInstance: "/usr/lib/vmware-vcops/tomcat-web-app"
+ui-serverXmlPath: "/usr/lib/vmware-vcops/tomcat-web-app/conf/server.xml"
+ui-tcCore: "/usr/share/tomcat"
+ui-catalinaPropsPath: "/usr/lib/vmware-vcops/tomcat-web-app/conf/catalina.properties"
+ui-webXmlPath: "/usr/lib/vmware-vcops/tomcat-web-app/conf/web.xml"
+ui-contextXmlFiles: ["/usr/lib/vmware-vcops/tomcat-web-app/conf/context.xml"]
+ui-sessionTimeout: "30"
+ui-maxThreads: "300"
+ui-accessLogPattern: ["%h", "%l", "%t", "%u", "&quot;%r&quot;", "%s", "%b"]
+
+#POSTGRESQL Inputs
+ssl_enabled: true
+syslog_enabled: true
+pg_data_dir: "/storage/db/vcops/vpostgres/data"
+pg_owner: "postgres"
+pg_group: "users"
+pg_log_dir: "/storage/db/vcops/vpostgres/data/pg_log"
+pg_approved_extensions: ["plpgsql"] 
+tcpKeepAliveIdle: "7200"
+tcpKeepAliveInterval: "75"
+tcpKeepAliveCount: "9"
