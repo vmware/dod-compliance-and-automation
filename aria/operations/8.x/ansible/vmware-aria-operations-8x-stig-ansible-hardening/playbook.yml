@@ -1,0 +1,8 @@
+- name: VMware Aria Operations 8.x Remediation Automation
+  hosts: all
+  roles:
+    - role: apache
+    - role: api
+    - role: casa
+    - role: postgres
+    - role: ui

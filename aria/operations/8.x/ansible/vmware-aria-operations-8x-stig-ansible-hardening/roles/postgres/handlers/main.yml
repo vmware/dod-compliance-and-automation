@@ -1,0 +1,10 @@
+---
+- name: Restart Postgres
+  ansible.builtin.service:
+    name: vpostgres.service
+    state: restarted
+
+- name: Reload system settings
+  ansible.builtin.command: sysctl --system
+  register: sysctl_out
+  changed_when: sysctl_out.rc != 0

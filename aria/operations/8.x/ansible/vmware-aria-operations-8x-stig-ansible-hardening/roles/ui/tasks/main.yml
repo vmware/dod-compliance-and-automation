@@ -1,0 +1,11 @@
+---
+# tasks file for ui
+
+- name: Include ui
+  ansible.builtin.include_tasks:
+    file: ui.yml
+    apply:
+      tags:
+        - ui
+  tags:
+    - always
