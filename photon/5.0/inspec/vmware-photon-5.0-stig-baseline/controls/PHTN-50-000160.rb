@@ -1,7 +1,7 @@
 control 'PHTN-50-000160' do
   title 'The Photon operating system must implement address space layout randomization to protect its memory from unauthorized code execution.'
   desc  "
-    Some adversaries launch attacks with the intent of executing code in non-executable regions of memory or in memory locations that are prohibited. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism.
+    Some adversaries launch attacks with the intent of executing code in nonexecutable regions of memory or in memory locations that are prohibited. Security safeguards employed to protect memory include, for example, data execution prevention and address space layout randomization. Data execution prevention safeguards can either be hardware-enforced or software-enforced with hardware providing the greater strength of mechanism.
 
     Examples of attacks are buffer overflow attacks.
   "
@@ -24,9 +24,9 @@ control 'PHTN-50-000160' do
 
     At the command line, run the following command to load the new configuration:
 
-    # /sbin/sysctl --load
+    # /sbin/sysctl --load /etc/sysctl.d/zz-stig-hardening.conf
 
-    Note: If the file zz-stig-hardening.conf doesn't exist it must be created.
+    Note: If the file zz-stig-hardening.conf does not exist it must be created.
   "
   impact 0.5
   tag severity: 'medium'

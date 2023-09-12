@@ -8,15 +8,25 @@ run_auditd_install: true
 run_time_install: false
 run_install_aide: true
 run_selinux_install: true
+# Set to true/false to use conf files to configure pwquality or pwhistory. true is recommended
+var_pam_use_pwhistory_conf: true
+var_pam_use_pwquality_conf: true
+var_pam_pwquality_control: 'required'
 var_pam_faillock_dir: '/var/log/faillock'
 ## 1 for enforcing and 0 for permissive
 var_selinux_enforcing: 0
 
 # disabled controls
+## PHTN-50-000005
 run_etc_issue_dod: false
+## PHTN-50-000046
 run_grub_boot_password: false
+## PHTN-50-000111
 run_rsyslog_server: false
+## PHTN-50-000121
 run_time_sync: false
+## PHTN-50-000245
+run_systemd_tmp_mount: false
 
 # disable backups to keep a clean image
 create_backups: false

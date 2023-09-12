@@ -1,7 +1,7 @@
 control 'PHTN-50-000204' do
   title 'The Photon operating system must audit all account modifications.'
   desc  "
-    Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access.  One way to accomplish this is for the attacker to modify an existing account.  Auditing account modification actions provides logging that can be used for forensic purposes.
+    Once an attacker establishes access to a system, the attacker often attempts to create a persistent method of reestablishing access. One way to accomplish this is for the attacker to modify an existing account. Auditing account modification actions provides logging that can be used for forensic purposes.
 
     To address access requirements, many operating systems can be integrated with enterprise-level authentication/access/auditing mechanisms that meet or exceed access control policy requirements.
   "
@@ -38,7 +38,7 @@ control 'PHTN-50-000204' do
 
     # /sbin/augenrules --load
 
-    Note: A \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
+    Note: An \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
   "
   impact 0.5
   tag severity: 'medium'

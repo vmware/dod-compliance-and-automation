@@ -46,6 +46,7 @@
 -a always,exit -F path=/usr/bin/newgrp -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 -a always,exit -F path=/usr/bin/newuidmap -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 -a always,exit -F path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
+-a always,exit -F path=/usr/bin/ping -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 -a always,exit -F path=/usr/bin/procmail -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 -a always,exit -F path=/usr/bin/su -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 -a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged

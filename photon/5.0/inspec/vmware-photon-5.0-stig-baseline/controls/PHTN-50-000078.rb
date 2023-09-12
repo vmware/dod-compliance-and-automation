@@ -7,7 +7,7 @@ control 'PHTN-50-000078' do
 
     # auditctl -l | grep -E \"(userdel|groupdel)\"
 
-    Expected result:
+    Example result:
 
     -w /usr/sbin/userdel -p x -k userdel
     -w /usr/sbin/groupdel -p x -k groupdel
@@ -30,7 +30,7 @@ control 'PHTN-50-000078' do
 
     # /sbin/augenrules --load
 
-    Note: A \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
+    Note: An \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
   "
   impact 0.5
   tag severity: 'medium'

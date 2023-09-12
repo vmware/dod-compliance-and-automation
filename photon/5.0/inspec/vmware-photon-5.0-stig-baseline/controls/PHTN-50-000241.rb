@@ -5,7 +5,7 @@ control 'PHTN-50-000241' do
   desc  'check', "
     If another package is used to offload logs, such as syslog-ng, and is properly configured, this is not applicable.
 
-    At the command line, run the following commands to verify AIDE is installed and used to monitor for file changes:
+    At the command line, run the following commands to verify rsyslog is installed:
 
     # rpm -qa | grep '^rsyslog-'
 

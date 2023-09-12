@@ -3,7 +3,7 @@ control 'PHTN-50-000043' do
   desc  'Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. If the information system or application allows the user to consecutively reuse their password when that password has exceeded its defined lifetime, the end result is a password that is not changed as per policy requirements.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following commands to verify accounts are locked after three consecutive invalid logon attempts by a user during a 15-minute time period:
+    At the command line, run the following commands to verify passwords are not reused for a minimum of five generations:
 
     # grep '^remember' /etc/security/pwhistory.conf
 
@@ -13,7 +13,7 @@ control 'PHTN-50-000043' do
 
     If the \"remember\" option is not set to \"5\" or greater, this is a finding.
 
-    Note: If pwhistory.conf is not used to configure the \"pam_pwhistory.so\" module, then these options may be specified on the pwhistory lines in the system-password PAM file.
+    Note: If pwhistory.conf is not used to configure pam_pwhistory.so, these options may be specified on the pwhistory lines in the system-password file.
   "
   desc 'fix', "
     Navigate to and open:
@@ -38,9 +38,8 @@ control 'PHTN-50-000043' do
       its('remember') { should cmp >= 5 }
     end
   else
-    describe pam('/etc/pam.d/system-password') do
-      its('lines') { should match_pam_rule('password required pam_pwhistory.so') }
-      its('lines') { should match_pam_rule('password required pam_pwhistory.so').all_with_integer_arg('remember', '==', 5) }
+    describe file('/etc/pam.d/system-password') do
+      its('content') { should match /^password\s+(required|requisite)\s+pam_pwhistory\.so\s+(?=.*\bremember=5\b).*$/ }
     end
   end
 end

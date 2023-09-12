@@ -13,7 +13,7 @@ control 'PHTN-50-000197' do
 
     Example result:
 
-    password required pam_pwhistory.so remember=5 retry=3 enforce_for_root use_authtok
+    password required pam_pwhistory.so use_authtok
     password required pam_pwquality.so use_authtok
     password required pam_unix.so sha512 shadow use_authtok
 
@@ -37,7 +37,7 @@ control 'PHTN-50-000197' do
   tag cci: ['CCI-000192']
   tag nist: ['IA-5 (1) (a)']
 
-  describe pam('/etc/pam.d/system-password') do
-    its('lines') { should match_pam_rule('password required pam_pwquality.so use_authtok') }
+  describe file('/etc/pam.d/system-password') do
+    its('content') { should match /^password\s+(required|requisite)\s+pam_pwquality\.so\s+.*$/ }
   end
 end

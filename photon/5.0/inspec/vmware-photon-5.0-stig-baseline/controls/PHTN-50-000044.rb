@@ -17,7 +17,7 @@ control 'PHTN-50-000044' do
 
     If the \"minlen\" option is not >= 15, is missing or commented out, this is a finding.
 
-    Note: If pwquality.conf is not used to configure pam_pwquality.so then these options may be specified on the pwquality line in system-password file.
+    Note: If pwquality.conf is not used to configure pam_pwquality.so, these options may be specified on the pwquality line in the system-password file.
   "
   desc 'fix', "
     Navigate to and open:
@@ -42,9 +42,8 @@ control 'PHTN-50-000044' do
       its('minlen') { should cmp > 14 }
     end
   else
-    describe pam('/etc/pam.d/system-password') do
-      its('lines') { should match_pam_rule('password required pam_pwquality.so') }
-      its('lines') { should match_pam_rule('password required pam_pwquality.so').all_with_integer_arg('minlen', '>', 14) }
+    describe file('/etc/pam.d/system-password') do
+      its('content') { should match /^password\s+(required|requisite)\s+pam_pwquality\.so\s+(?=.*\bminlen=15\b).*$/ }
     end
   end
 end
