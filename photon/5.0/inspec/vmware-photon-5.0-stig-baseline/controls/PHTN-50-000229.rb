@@ -26,9 +26,9 @@ control 'PHTN-50-000229' do
 
     At the command line, run the following command to load the new configuration:
 
-    # /sbin/sysctl --load
+    # /sbin/sysctl --load /etc/sysctl.d/zz-stig-hardening.conf
 
-    Note: If the file zz-stig-hardening.conf doesn't exist it must be created.
+    Note: If the file zz-stig-hardening.conf does not exist it must be created.
   "
   impact 0.5
   tag severity: 'medium'

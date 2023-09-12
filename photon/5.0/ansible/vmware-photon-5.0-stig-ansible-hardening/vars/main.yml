@@ -32,6 +32,10 @@ var_pam_faillock_fail_interval: 900
 var_pam_faillock_unlock_time: 0
 var_pam_faillock_dir: '/var/log/faillock'
 var_pam_pwquality_conf_file: '/etc/security/pwquality.conf'
+# Set to false to configure pam_pwquality settings in system-password directly
+var_pam_use_pwquality_conf: true
+# requisite or required
+var_pam_pwquality_control: 'requisite'
 var_pam_pwquality_ucredit: '-1'
 var_pam_pwquality_lcredit: '-1'
 var_pam_pwquality_dcredit: '-1'
@@ -43,6 +47,10 @@ var_pam_system_password_file: '/etc/pam.d/system-password'
 var_pam_system_auth_file: '/etc/pam.d/system-auth'
 var_pam_system_account_file: '/etc/pam.d/system-account'
 var_pam_pwhistory_conf_file: '/etc/security/pwhistory.conf'
+# Set to false to configure pam_pwhistory settings in system-password directly
+var_pam_use_pwhistory_conf: true
+# requisite or required
+var_pam_pwhistory_control: 'required'
 var_pam_pwhistory_remember: 5
 
 # limits.conf

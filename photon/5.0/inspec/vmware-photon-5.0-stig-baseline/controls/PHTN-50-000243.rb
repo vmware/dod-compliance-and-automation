@@ -13,7 +13,7 @@ control 'PHTN-50-000243' do
     password required pam_pwquality.so use_authtok
     password required pam_unix.so sha512 shadow use_authtok
 
-    If the \"pam_pwhistory.so\" module is not present and before the \"pam_pwquality.so\" and \"pam_unix.so\" modules, this is a finding.
+    If the \"pam_pwhistory.so\" module is not present, this is a finding.
     If \"use_authtok\" is not present for the \"pam_pwhistory.so\" module, this is a finding.
     If \"conf\" or \"file\" are present for the \"pam_pwhistory.so\" module, this is a finding.
   "
@@ -35,10 +35,9 @@ control 'PHTN-50-000243' do
   tag cci: ['CCI-000200']
   tag nist: ['IA-5 (1) (e)']
 
-  describe pam('/etc/pam.d/system-password') do
-    its('lines') { should match_pam_rule('password required pam_pwhistory.so') }
-    its('lines') { should match_pam_rule('password required pam_pwhistory.so').all_with_args('use_authtok') }
-    its('lines') { should_not match_pam_rule('password required pam_pwhistory.so').all_with_args('conf') }
-    its('lines') { should_not match_pam_rule('password required pam_pwhistory.so').all_with_args('file') }
+  describe file('/etc/pam.d/system-password') do
+    its('content') { should match /^password\s+(required|requisite)\s+pam_pwhistory\.so\s+(?=.*\buse_authtok\b).*$/ }
+    its('content') { should_not match /^password\s+(required|requisite)\s+pam_pwhistory\.so\s+(?=.*\bconf\b).*$/ }
+    its('content') { should_not match /^password\s+(required|requisite)\s+pam_pwhistory\.so\s+(?=.*\bfile\b).*$/ }
   end
 end

@@ -1,12 +1,12 @@
 # vmware-photon-5.0-stig-ansible-hardening
 VMware Photon OS 5.0 STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 1: 31 May 2023  
-STIG Type: STIG Readiness Guide  
+Version: Version 1 Release 2: 12 September 2023  
+STIG Type: STIG Readiness Guide 
 
 ## Requirements
 - Tested with Ansible 2.14.4
 - Tested with Photon OS 5.0
-- Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 11 to run an Unbuntu box for example
+- Ansible cannot be run from Windows so you will need a Linux box or load the Linux Subsystem for Windows 11 to run an Ubuntu box for example
 
 ## Backups
 The first item in the photon.yml task is to backup files that may be changed under a folder in the /tmp folder with a timestamp for each ansible run.
@@ -29,7 +29,7 @@ Run all controls on a single host. Prompts for user password, displays verbose o
 ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --extra-vars @vars-example.yml
 ```
 
-Run all controls on a single host and only for a specific control PHTN-40-000001. Prompts for user password and displays verbose output  
+Run all controls on a single host and only for a specific control PHTN-50-000001. Prompts for user password and displays verbose output  
 ```
 ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --tags PHTN-50-000001  
 ```

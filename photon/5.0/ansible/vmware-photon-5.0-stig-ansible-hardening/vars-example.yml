@@ -3,7 +3,7 @@
 # To create backups of files modified under /tmp set to true
 create_backups: true
 # Enable the DoD login banner
-run_etc_issue_dod: false
+run_etc_issue_dod: true
 # Enter organizations rsyslog server
 var_rsyslog_server_name: 'syslog.test.local'
 var_rsyslog_server_port: '514'
@@ -22,5 +22,9 @@ run_auditd_install: true
 run_time_install: true
 run_install_aide: true
 run_selinux_install: true
+# Set to true/false to use conf files to configure pwquality or pwhistory. true is recommended
+var_pam_use_pwhistory_conf: true
+var_pam_use_pwquality_conf: true
+var_pam_pwquality_control: 'required'
 # SELinux mode. 1 for enforcing and 0 for permissive
 var_selinux_enforcing: 0
