@@ -5,7 +5,7 @@ control 'VCPG-80-000005' do
 
     Audit records can be generated from various components within the database management system (DBMS) (e.g., process, module). Certain specific application functionalities may be audited as well. The list of audited events is the set of events for which audits are to be generated. This set of events is typically a subset of the list of all events for which the system is capable of generating audit records.
 
-    DoD has defined the list of events for which the DBMS will provide an audit record generation capability as the following:
+    DOD has defined the list of events for which the DBMS will provide an audit record generation capability as the following:
 
     (i) Successful and unsuccessful attempts to access, modify, or delete privileges, security objects, security levels, or categories of information (e.g., classification levels);
 

@@ -27,11 +27,18 @@ control 'VCPF-80-000025' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'perfcharts' }
-      its('group') { should eq 'users' }
+  logfiles = command("find '#{input('logPath')}' -type f -xdev").stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'perfcharts' }
+        its('group') { should eq 'users' }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end

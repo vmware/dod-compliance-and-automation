@@ -29,26 +29,35 @@ control 'ESXI-80-000192' do
   desc  'check', "
     From an ESXi shell, run the following command:
 
-    # /usr/lib/vmware/openssh/bin/sshd -T | grep banner
+    # esxcli system ssh server config list -k banner
 
-    Expected result:
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+
+    $esxcli = Get-EsxCli -v2
+    $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'banner'}
+
+    Example result:
 
     banner /etc/issue
 
-    If the output does not match the expected result, this is a finding.
+    If \"banner\" is not configured to \"/etc/issue\", this is a finding.
   "
   desc 'fix', "
-    From an ESXi shell, navigate to and open:
+    From an ESXi shell, run the following command:
 
-    /etc/ssh/sshd_config
+    # esxcli system ssh server config set -k banner -v /etc/issue
 
-    Ensure that the \"Banner\" line is uncommented and set to the following:
+    or
 
-    Banner /etc/issue
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    Restart SSH from the UI or run the following command:
-
-    # /etc/init.d/SSH restart
+    $esxcli = Get-EsxCli -v2
+    $arguments = $esxcli.system.ssh.server.config.set.CreateArgs()
+    $arguments.keyword = 'banner'
+    $arguments.value = '/etc/issue'
+    $esxcli.system.ssh.server.config.set.Invoke($arguments)
   "
   impact 0.5
   tag severity: 'medium'
@@ -59,7 +68,31 @@ control 'ESXI-80-000192' do
   tag cci: ['CCI-000048']
   tag nist: ['AC-8 a']
 
-  describe 'This check is a manual or policy based check and must be reviewed manually.' do
-    skip 'This check is a manual or policy based check and must be reviewed manually.'
+  vmhostName = input('vmhostName')
+  cluster = input('cluster')
+  allhosts = input('allesxi')
+  vmhosts = []
+
+  unless vmhostName.empty?
+    vmhosts = powercli_command("Get-VMHost -Name #{vmhostName} | Sort-Object Name | Select -ExpandProperty Name").stdout.split
+  end
+  unless cluster.empty?
+    vmhosts = powercli_command("Get-Cluster -Name '#{cluster}' | Get-VMHost | Sort-Object Name | Select -ExpandProperty Name").stdout.split
+  end
+  unless allhosts == false
+    vmhosts = powercli_command('Get-VMHost | Sort-Object Name | Select -ExpandProperty Name').stdout.split
+  end
+
+  if !vmhosts.empty?
+    vmhosts.each do |vmhost|
+      command = "$vmhost = Get-VMHost -Name #{vmhost}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'banner'} | Select-Object -ExpandProperty Value"
+      describe powercli_command(command) do
+        its('stdout.strip') { should cmp '/etc/issue' }
+      end
+    end
+  else
+    describe 'No hosts found!' do
+      skip 'No hosts found...skipping tests'
+    end
   end
 end

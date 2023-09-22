@@ -1,7 +1,7 @@
 control 'VCLD-80-000096' do
   title 'The vCenter VAMI service must enable honoring the SSL cipher order.'
   desc  "
-    During a Transport Layer Security  (TLS) session negotiation, when choosing a cipher during a handshake, normally the client's preference is used. This is potentially problematic as a malicious, dated, or poorly configured client could select the most insecure cipher offered by the server, even if it supports stronger ones.
+    During a Transport Layer Security (TLS) session negotiation, when choosing a cipher during a handshake, normally the client's preference is used. This is potentially problematic as a malicious, dated, or poorly configured client could select the most insecure cipher offered by the server, even if it supports stronger ones.
 
     If \"ssl.honor-cipher-order\" is enabled, the \"ssl.cipher-list\" setting will be treated as an ordered list of cipher values from most preferred to least, left to right.
   "

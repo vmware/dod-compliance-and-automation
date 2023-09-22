@@ -24,7 +24,7 @@ control 'VCUI-80-000036' do
 
     Remove the 'allowTrace=\"true\"' setting.
 
-    Note: If \"allowTrace\" is not present the it defaults to false.
+    Note: If \"allowTrace\" is not present, it defaults to false.
 
     Restart the service with the following command:
 

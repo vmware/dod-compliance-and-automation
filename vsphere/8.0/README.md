@@ -1,7 +1,9 @@
 # VMware vSphere 8 DoD STIG Compliance and Automation
 
 ## Overview
-*STIG Status: STIG Readiness Guide Version 1 Release 1*
+*STIG Status: STIG Readiness Guide Version 1 Release 2*
+
+Note: Version 1 Release 2 is intended for Update 2 builds only. If you are still on Update 1 please reference Version 1 Release 1 of the guidance and automation available [here](https://github.com/vmware/dod-compliance-and-automation/tree/d91e15d8be3b4e139fa460427541f1000d13f75c).  
 
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
 

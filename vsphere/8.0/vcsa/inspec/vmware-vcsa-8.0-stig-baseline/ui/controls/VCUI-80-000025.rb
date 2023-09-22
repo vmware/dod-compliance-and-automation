@@ -1,5 +1,5 @@
 control 'VCUI-80-000025' do
-  title 'The vCenter UI service logs folder permissions must be set correctly.'
+  title 'The vCenter UI service must protect logs from unauthorized access.'
   desc  'Log data is essential in the investigation of events. The accuracy of the information is always pertinent. One of the first steps an attacker will take is the modification or deletion of log records to cover tracks and prolong discovery. The web server must protect the log data from unauthorized modification.'
   desc  'rationale', ''
   desc  'check', "
@@ -27,11 +27,18 @@ control 'VCUI-80-000025' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should cmp 'vsphere-ui' }
-      its('group') { should cmp('root').or cmp('users') }
+  logfiles = command("find '#{input('logPath')}' -type f -xdev").stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should cmp 'vsphere-ui' }
+        its('group') { should cmp('root').or cmp('users') }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end

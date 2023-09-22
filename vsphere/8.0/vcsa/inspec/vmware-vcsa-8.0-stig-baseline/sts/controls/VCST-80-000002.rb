@@ -35,12 +35,12 @@ control 'VCST-80-000002' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000014-AS-000009'
-  tag satisfies: ['SRG-APP-000015-AS-000010']
+  tag satisfies: ['SRG-APP-000015-AS-000010', 'SRG-APP-000172-AS-000120', 'SRG-APP-000172-AS-000121', 'SRG-APP-000439-AS-000274']
   tag gid: 'V-VCST-80-000002'
   tag rid: 'SV-VCST-80-000002'
   tag stig_id: 'VCST-80-000002'
-  tag cci: ['CCI-000068', 'CCI-001453']
-  tag nist: ['AC-17 (2)']
+  tag cci: ['CCI-000068', 'CCI-000197', 'CCI-001453', 'CCI-002418']
+  tag nist: ['AC-17 (2)', 'IA-5 (1) (c)', 'SC-8']
 
   # Open server.xml file
   xmlconf = xml(input('serverXmlPath'))

@@ -21,7 +21,7 @@ control 'VMCH-80-000205' do
 
     If the virtual machine advanced setting \"log.rotateSize\" is not set to \"2048000\", this is a finding.
 
-    If the virtual machine advanced setting \"log.rotateSize\" does NOT exist, this is NOT a finding.
+    If the virtual machine advanced setting \"log.rotateSize\" does not exist, this is not a finding.
   "
   desc  'fix', "
     For each virtual machine do the following:

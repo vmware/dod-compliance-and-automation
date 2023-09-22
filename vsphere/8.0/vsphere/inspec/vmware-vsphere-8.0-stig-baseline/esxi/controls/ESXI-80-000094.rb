@@ -20,9 +20,9 @@ control 'ESXI-80-000094' do
 
     If the output indicates that Secure Boot cannot be enabled, correct the discrepancies and try again.
 
-    Once all discrepancies are resolved then the server ESXi is installed on can be updated to enable Secure Boot in the firmware.
+    Once all discrepancies are resolved, the server ESXi is installed on can be updated to enable Secure Boot in the firmware.
 
-    To enable Secure Boot in the servers firmware follow the instructions for the specific manufacturer.
+    To enable Secure Boot in the server's firmware follow the instructions for the specific manufacturer.
   "
   impact 0.5
   tag severity: 'medium'

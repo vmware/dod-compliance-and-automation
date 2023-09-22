@@ -34,7 +34,7 @@ control 'VCSA-80-000272' do
 
     Click the \"VLAN\" tab.
 
-    Change the VLAN ID to a non-native VLAN.
+    Change the VLAN ID to a nonnative VLAN.
 
     Click \"OK\".
 

@@ -48,7 +48,7 @@ control 'ESXI-80-000238' do
     $arguments.mode = \"TPM\"
     $esxcli.system.settings.encryption.set.Invoke($arguments)
 
-    Evacuate the host and gracefully reboot for changes to take effect.
+    Enter the host into maintenance mode and reboot for changes to take effect.
   "
   impact 0.5
   tag severity: 'medium'

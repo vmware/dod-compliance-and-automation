@@ -5,18 +5,35 @@ control 'ESXI-80-000052' do
   desc  'check', "
     From an ESXi shell, run the following command:
 
-    # /usr/lib/vmware/openssh/bin/sshd -T | grep ignorerhosts
+    # esxcli system ssh server config list -k ignorerhosts
 
-    Expected result:
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+
+    $esxcli = Get-EsxCli -v2
+    $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'ignorerhosts'}
+
+    Example result:
 
     ignorerhosts yes
 
-    If the output does not match the expected result, this is a finding.
+    If \"ignorerhosts\" is not configured to \"yes\", this is a finding.
   "
   desc 'fix', "
-    From an ESXi shell, add or update the following line in \"/etc/ssh/sshd_config\":
+    From an ESXi shell, run the following command:
 
-    IgnoreRhosts yes
+    # esxcli system ssh server config set -k ignorerhosts -v yes
+
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+
+    $esxcli = Get-EsxCli -v2
+    $arguments = $esxcli.system.ssh.server.config.set.CreateArgs()
+    $arguments.keyword = 'ignorerhosts'
+    $arguments.value = 'yes'
+    $esxcli.system.ssh.server.config.set.Invoke($arguments)
   "
   impact 0.5
   tag severity: 'medium'
@@ -27,7 +44,31 @@ control 'ESXI-80-000052' do
   tag cci: ['CCI-000767']
   tag nist: ['IA-2 (3)']
 
-  describe 'This check is a manual or policy based check and must be reviewed manually.' do
-    skip 'This check is a manual or policy based check and must be reviewed manually.'
+  vmhostName = input('vmhostName')
+  cluster = input('cluster')
+  allhosts = input('allesxi')
+  vmhosts = []
+
+  unless vmhostName.empty?
+    vmhosts = powercli_command("Get-VMHost -Name #{vmhostName} | Sort-Object Name | Select -ExpandProperty Name").stdout.split
+  end
+  unless cluster.empty?
+    vmhosts = powercli_command("Get-Cluster -Name '#{cluster}' | Get-VMHost | Sort-Object Name | Select -ExpandProperty Name").stdout.split
+  end
+  unless allhosts == false
+    vmhosts = powercli_command('Get-VMHost | Sort-Object Name | Select -ExpandProperty Name').stdout.split
+  end
+
+  if !vmhosts.empty?
+    vmhosts.each do |vmhost|
+      command = "$vmhost = Get-VMHost -Name #{vmhost}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'ignorerhosts'} | Select-Object -ExpandProperty Value"
+      describe powercli_command(command) do
+        its('stdout.strip') { should cmp 'yes' }
+      end
+    end
+  else
+    describe 'No hosts found!' do
+      skip 'No hosts found...skipping tests'
+    end
   end
 end

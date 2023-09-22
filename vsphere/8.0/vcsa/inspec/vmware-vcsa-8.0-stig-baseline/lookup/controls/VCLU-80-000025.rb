@@ -5,7 +5,7 @@ control 'VCLU-80-000025' do
   desc  'check', "
     At the command prompt, run the following command:
 
-    # find /var/log/vmware/lookupsvc/ -xdev ! -name lookupsvc-init.log ! -name prestart.log -type f -a '(' -perm -o+w -o -not -user lookupsvc -o -not -group lookupsvc ')' -exec ls -ld {} \\;
+    # find /var/log/vmware/lookupsvc/ -xdev ! -name lookupsvc-init.log ! -name lookupsvc-prestart.log -type f -a '(' -perm -o+w -o -not -user lookupsvc -o -not -group lookupsvc ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
@@ -27,11 +27,18 @@ control 'VCLU-80-000025' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command("find '#{input('logPath')}' -type f ! -name lookupsvc-init.log ! -name prestart.log -xdev").stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'lookupsvc' }
-      its('group') { should eq 'lookupsvc' }
+  logfiles = command("find '#{input('logPath')}' -type f ! -name lookupsvc-init.log ! -name lookupsvc-prestart.log -xdev").stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'lookupsvc' }
+        its('group') { should eq 'lookupsvc' }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end

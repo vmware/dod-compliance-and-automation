@@ -11,7 +11,7 @@ control 'VCSA-80-000287' do
 
     Interview the system administrator (SA) to determine that a procedure has been put in place to perform a shallow rekey of all vSAN encrypted datastores at regular, site-defined intervals.
 
-    VMware recommends a 60-day rekey task, but this interval must be defined by the SA and the information system security officer (ISSO).
+    VMware recommends a 60-day rekey task, but this interval must be defined by the SA and the ISSO.
 
     If vSAN encryption is not in use, this is not a finding.
 

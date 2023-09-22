@@ -18,7 +18,7 @@ control 'VMCH-80-000214' do
     If the virtual machine has passthrough devices present, and the specific device returned is not approved, this is a finding.
   "
   desc 'fix', "
-    From the vSphere Client, select the Virtual Machine, right click and go to Edit Settings >> Virtual Hardware tab.
+    From the vSphere Client, select the Virtual Machine, right-click and go to Edit Settings >> Virtual Hardware tab.
 
     Find the unexpected PCI device returned from the check.
 

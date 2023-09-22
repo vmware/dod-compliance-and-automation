@@ -17,7 +17,7 @@ control 'VMCH-80-000192' do
 
     If the virtual machine advanced setting \"isolation.tools.paste.disable\" is not set to \"true\", this is a finding.
 
-    If the virtual machine advanced setting \"isolation.tools.paste.disable\" does NOT exist, this is NOT a finding.
+    If the virtual machine advanced setting \"isolation.tools.paste.disable\" does not exist, this is not a finding.
   "
   desc  'fix', "
     For each virtual machine do the following:

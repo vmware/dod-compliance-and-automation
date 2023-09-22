@@ -17,7 +17,7 @@ control 'VMCH-80-000198' do
 
     If the virtual machine advanced setting \"tools.guestlib.enableHostInfo\" is not set to \"false\", this is a finding.
 
-    If the virtual machine advanced setting \"tools.guestlib.enableHostInfo\" does NOT exist, this is NOT a finding.
+    If the virtual machine advanced setting \"tools.guestlib.enableHostInfo\" does not exist, this is not a finding.
   "
   desc  'fix', "
     For each virtual machine do the following:

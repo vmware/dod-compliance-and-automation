@@ -1,7 +1,7 @@
 control 'ESXI-80-000246' do
   title 'The ESXi host must not enable log filtering.'
   desc  "
-    The log filtering capability lets you modify the logging policy of the syslog service that is running on an ESXi host. You can create log filters to reduce the number of repetitive entries in the ESXi logs and to deny specific log events entirely.
+    The log filtering capability allows users to modify the logging policy of the syslog service that is running on an ESXi host. Users can create log filters to reduce the number of repetitive entries in the ESXi logs and to deny specific log events entirely.
 
     Setting a limit to the amount of logging information restricts the ability to detect and respond to potential security issues or system failures properly.
   "

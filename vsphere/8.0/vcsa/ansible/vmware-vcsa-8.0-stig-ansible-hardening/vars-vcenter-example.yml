@@ -1,9 +1,0 @@
-# General
-run_create_backups: true
-
-# Photon OS
-var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
-## Don't update banner with DoD banner
-run_sshd_banner_issue: false
-## Don't update syslog servers
-run_set_syslog_server: false

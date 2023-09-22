@@ -3,7 +3,7 @@ control 'ESXI-80-000085' do
   desc  "
     Secure Boot is part of the UEFI firmware standard. With UEFI Secure Boot enabled, a host refuses to load any UEFI driver or app unless the operating system bootloader has a valid digital signature. Secure Boot for ESXi requires support from the firmware and it requires that all ESXi kernel modules, drivers and VIBs be signed by VMware or a partner subordinate.
 
-    Secure Boot is enabled in the BIOS of the ESXi physical server and supported by the hypervisor boot loader. This control flips ESXi from merely supporting Secure Boot to requiring it. Without this setting enabled, and configuration encryption, an ESXi host could be subject to offline attacks. An attacker could simply transfer the ESXi install drive to a non-Secure Boot host and boot it up without ESXi complaining.
+    Secure Boot is enabled in the BIOS of the ESXi physical server and supported by the hypervisor boot loader. This control flips ESXi from merely supporting Secure Boot to requiring it. Without this setting enabled, and configuration encryption, an ESXi host could be subject to offline attacks. An attacker could simply transfer the ESXi install drive to a nonSecure Boot host and boot it up without ESXi complaining.
   "
   desc  'rationale', ''
   desc  'check', "

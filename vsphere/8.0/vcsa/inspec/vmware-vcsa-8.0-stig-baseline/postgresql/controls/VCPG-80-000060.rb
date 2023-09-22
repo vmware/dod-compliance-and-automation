@@ -1,5 +1,5 @@
 control 'VCPG-80-000060' do
-  title 'The vCenter PostgreSQL service must provide non-privileged users with minimal error information.'
+  title 'The vCenter PostgreSQL service must provide nonprivileged users with minimal error information.'
   desc  "
     Any DBMS or associated application providing too much information in error messages on the screen or printout risks compromising the data and security of the system. The structure and content of error messages need to contain the minimal amount of information.
 

@@ -9,11 +9,11 @@ control 'VCRP-80-000040' do
   desc  'check', "
     At the command prompt, run the following command:
 
-    # stat -c \"%n permisions are %a, is owned by %U and group owned by %G\" /etc/vmware-rhttpproxy/ssl/rui.key
+    # stat -c \"%n permissions are %a, is owned by %U and group owned by %G\" /etc/vmware-rhttpproxy/ssl/rui.key
 
     Expected result:
 
-    /etc/vmware-rhttpproxy/ssl/rui.key permisions are 600, is owned by rhttpproxy and group owned by rhttpproxy
+    /etc/vmware-rhttpproxy/ssl/rui.key permissions are 600, is owned by rhttpproxy and group owned by rhttpproxy
 
     If the output does not match the expected result, this is a finding.
   "

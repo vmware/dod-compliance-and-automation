@@ -42,7 +42,6 @@ control 'ESXI-80-000240' do
   tag stig_id: 'ESXI-80-000240'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
-
   vmhostName = input('vmhostName')
   cluster = input('cluster')
   allhosts = input('allesxi')

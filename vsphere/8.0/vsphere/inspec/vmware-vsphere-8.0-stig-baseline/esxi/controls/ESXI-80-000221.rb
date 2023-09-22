@@ -21,7 +21,7 @@ control 'ESXI-80-000221' do
 
     The latest ESXi versions and their build numbers can be found here: https://kb.vmware.com/s/article/2143832
 
-    VMware also publishes Advisories on security patches and offers a way to subscribe to email alerts for them.
+    VMware also publishes advisories on security patches and offers a way to subscribe to email alerts for them.
 
     Go to: https://www.vmware.com/support/policies/security_response
   "

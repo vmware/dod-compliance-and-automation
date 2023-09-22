@@ -14,10 +14,13 @@
       ansible.builtin.copy:
         remote_src: true
         src: "{{ item }}"
-        dest: "/tmp/ansible-backups-vcsa-rhttpproxy-{{ backup_timestamp }}/"
+        dest: "/tmp/ansible-backups-vcsa-envoy-{{ backup_timestamp }}/"
         mode: preserve
-      ignore_errors: true
       changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
       with_items:
         - '{{ var_config_xml_path }}'
         - '{{ var_rsyslog_conf_path }}'
@@ -87,7 +90,7 @@
         mode: '0644'
         force: true
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
 
 ###################################################################################################################################
 - name: VCRP-80-000097
@@ -103,7 +106,7 @@
         mode: '0644'
         force: true
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
 
 ###################################################################################################################################
 - name: VCRP-80-000098
@@ -125,7 +128,7 @@
         value: '2048'
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - maxhttpscount.count != 0
 
@@ -144,6 +147,6 @@
         value: '2048'
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - maxhttpcount.count != 0

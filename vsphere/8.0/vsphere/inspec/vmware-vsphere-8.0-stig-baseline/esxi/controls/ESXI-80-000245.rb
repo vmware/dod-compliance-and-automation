@@ -8,8 +8,8 @@ control 'ESXI-80-000245' do
     FIPS entropy handling is the default behavior if the following conditions are true:
 
     -The hardware supports RDSEED.
-    -The disableHwrng VMkernel boot option isn't present or is FALSE.
-    -The entropySources VMkernel boot option isn't present or is 0 (zero).
+    -The disableHwrng VMkernel boot option is not present or is FALSE.
+    -The entropySources VMkernel boot option is not present or is 0 (zero).
   "
   desc  'rationale', ''
   desc  'check', "

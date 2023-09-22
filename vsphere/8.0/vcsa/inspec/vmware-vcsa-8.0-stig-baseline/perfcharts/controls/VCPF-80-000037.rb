@@ -34,12 +34,11 @@ control 'VCPF-80-000037' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000142-AS-000014'
-  tag satisfies: ['SRG-APP-000516-AS-000237']
   tag gid: 'V-VCPF-80-000037'
   tag rid: 'SV-VCPF-80-000037'
   tag stig_id: 'VCPF-80-000037'
-  tag cci: ['CCI-000366', 'CCI-000382']
-  tag nist: ['CM-6 b', 'CM-7 b']
+  tag cci: ['CCI-000382']
+  tag nist: ['CM-7 b']
 
   # Open server.xml file
   xmlconf = xml(input('serverXmlPath'))

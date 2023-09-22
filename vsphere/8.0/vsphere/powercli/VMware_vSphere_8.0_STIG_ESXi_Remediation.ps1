@@ -1,24 +1,22 @@
 <# 
 .SYNOPSIS 
   Remediates ESXi hosts against the vSphere ESXi 8.0 STIG Readiness Guide
-  Version 1 Release 1
+  Version 1 Release 2
 .DESCRIPTION
   -Remediates a single host or all hosts in a specified cluster.
   -Individual controls can be enabled/disabled in the $controlsenabled hash table
-  -SSH settings are not remediated by this script since they are correct OOTB.
   -Not all controls are remediated by this script. Please review the output and items skipped for manual remediation.
-  -This script is intented for internal purposes to harden test beds for functional testing.
 
 .NOTES 
   File Name  : VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1 
-  Author     : VMware
-  Version    : 1 Release 1
-  License    : Apache-2.0
+  Author   : VMware
+  Version  : 1 Release 2
+  License  : Apache-2.0
 
   Tested against
-  -PowerCLI 13
-  -Powershell 5/Core 7.3.4
-  -vCenter/ESXi 8.0 U1a
+  -PowerCLI 13.1
+  -Powershell 5/Core 7.3.6
+  -vCenter/ESXi 8.0 U2
 
   Example command to run script
   .\VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1 -vcenter vcentername.test.local -hostname myhost.test.local -vccred $cred -esxAdminGroup "esxAdmins2" -allowedIPs "10.0.0.0/8" -syslogServer "tcp://log.test.local:514" -ntpServers "time.test.local","time2.test.local" -reportpath C:\Reports
@@ -89,16 +87,25 @@ $stigsettings = [ordered]@{
   passwordComplexity      = @{"Security.PasswordQualityControl" = "similar=deny retry=3 min=disabled,disabled,disabled,disabled,15"} #ESXI-80-000035
   passwordHistory         = @{"Security.PasswordHistory" = "5"} #ESXI-80-000043
   enableMob               = @{"Config.HostAgent.plugins.solo.enableMob" = $false} #ESXI-80-000047
+  sshIgnorerhosts         = @{"ignorerhosts" = "yes"} #ESXI-80-000052
   shellIntTimeout         = @{"UserVars.ESXiShellInteractiveTimeOut" = "900"} #ESXI-80-000068
   accountUnlockTime       = @{"Security.AccountUnlockTime" = "900"} #ESXI-80-000111
   auditRecordStorageCap   = @{"Syslog.global.auditRecord.storageCapacity" = "100"} #ESXI-80-000113
   vibacceptlevel          = "PartnerSupported"  #ESXI-80-000133 VIB Acceptance level CommunitySupported,PartnerSupported,VMwareAccepted,VMwareCertified
   sslProtocols            = @{"UserVars.ESXiVPsDisabledProtocols" = "sslv3,tlsv1,tlsv1.1"} #ESXI-80-000161
+  sshCiphers              = @{"ciphers" = "aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr"} #ESXI-80-000192
+  sshBanner               = @{"banner" = "/etc/issue"} #ESXI-80-000187
   DCUIAccess              = @{"DCUI.Access" = "root"}  #ESXI-80-000189
   sshEnabled              = $false #ESXI-80-000193
   shellEnabled            = $false #ESXI-80-000194
   shellTimeout            = @{"UserVars.ESXiShellTimeOut" = "600"} #ESXI-80-000195
-  DCUITImeout             = @{"UserVars.DcuiTimeOut" = "600"} #ESXI-80-000196
+  DCUITimeout             = @{"UserVars.DcuiTimeOut" = "600"} #ESXI-80-000196
+  sshHostbasedauth        = @{"hostbasedauthentication" = "no"} #ESXI-80-000202
+  sshPermituserenv        = @{"permituserenvironment" = "no"} #ESXI-80-000204
+  sshGatewayports         = @{"gatewayports" = "no"} #ESXI-80-000207
+  sshPermittunnel         = @{"permittunnel" = "no"} #ESXI-80-000209
+  sshClientalivecountmax  = @{"clientalivecountmax" = "3"} #ESXI-80-000210
+  sshClientaliveinterval  = @{"clientaliveinterval" = "200"} #ESXI-80-000211
   ShareForceSalting       = @{"Mem.ShareForceSalting" = "2"} #ESXI-80-000213
   BlockGuestBPDU          = @{"Net.BlockGuestBPDU" = "1"} #ESXI-80-000215
   DVFilterBindIpAddress   = @{"Net.DVFilterBindIpAddress" = ""} #ESXI-80-000219
@@ -110,6 +117,7 @@ $stigsettings = [ordered]@{
   apiTimeout              = @{"Config.HostAgent.vmacore.soap.sessionTimeout" = "30"} #ESXI-80-000226
   passwordMaxAge          = @{"Security.PasswordMaxDays" = "90"} #ESXI-80-000227
   cimEnabled              = $false #ESXI-80-000228
+  sshAllowtcpforwarding   = @{"allowtcpforwarding" = "no"} #ESXI-80-000230
   slpdEnabled             = $false #ESXI-80-000231
   syslogAuditEnable       = @{"Syslog.global.auditRecord.storageEnable" = $true} #ESXI-80-000232
   syslogAuditRemote       = @{"Syslog.global.auditRecord.remoteEnable" = $true} #ESXI-80-000233
@@ -215,12 +223,8 @@ $controlsenabled = [ordered]@{
   ESXI80000199 = $true  #Isolate Storage traffic
   ESXI80000201 = $true  #Lockdown Mode Exceptions
   ESXI80000202 = $true  #SSH HostbasedAuthentication no
-  ESXI80000203 = $true  #SSH PermitEmptyPasswords no
   ESXI80000204 = $true  #SSH PermitUserEnvironment no
-  ESXI80000205 = $true  #SSH StrictModes yes
-  ESXI80000206 = $true  #SSH Compression no
   ESXI80000207 = $true  #SSH GatewayPorts no
-  ESXI80000208 = $true  #SSH X11Forwarding no
   ESXI80000209 = $true  #SSH PermitTunnel no
   ESXI80000210 = $true  #SSH ClientAliveCountMax 3
   ESXI80000211 = $true  #SSH ClientAliveInterval 200
@@ -686,10 +690,26 @@ Catch{
 ## SSH .rhosts
 Try{
 	$STIGID = "ESXI-80-000052"
-	$Title = "The ESXi host SSH daemon must ignore .rhosts files."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must ignore .rhosts files."
   If($controlsenabled.ESXI80000052){
-  Write-ToConsoleBlue "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-  $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshIgnorerhosts.Keys
+    $value = [string]$stigsettings.sshIgnorerhosts.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
   Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
@@ -1070,14 +1090,30 @@ Catch{
 ## SSH Ciphers
 Try{
 	$STIGID = "ESXI-80-000187"
-	$Title = "The ESXi host SSH daemon must be configured to only use FIPS 140-2 validated ciphers."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must be configured to only use FIPS 140-2 validated ciphers."
   If($controlsenabled.ESXI80000187){
-    Write-ToConsoleBlue "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshCiphers.Keys
+    $value = [string]$stigsettings.sshCiphers.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+  Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+  $skipcount++
   }
 }
 Catch{
@@ -1126,7 +1162,7 @@ Catch{
 ## etc Issue
 Try{
 	$STIGID = "ESXI-80-000191"
-	$Title = "The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system via SSH."
+	$Title = "The ESXi host must display the Standard Mandatory DOD Notice and Consent Banner before granting access to the system via Secure Shell (SSH)."
   If($controlsenabled.ESXI80000191){
     Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
     ForEach($vmhost in $vmhosts){
@@ -1163,14 +1199,30 @@ Catch{
 ## SSH Banner
 Try{
 	$STIGID = "ESXI-80-000192"
-	$Title = "The ESXi host SSH daemon must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must display the Standard Mandatory DOD Notice and Consent Banner before granting access to the system."
   If($controlsenabled.ESXI80000192){
-    Write-ToConsoleBlue "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshBanner.Keys
+    $value = [string]$stigsettings.sshBanner.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+  Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+  $skipcount++
   }
 }
 Catch{
@@ -1395,33 +1447,30 @@ Catch{
 # SSH hostbasedauth
 Try{
 	$STIGID = "ESXI-80-000202"
-	$Title = "The ESXi host SSH daemon must not allow host-based authentication."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must not allow host-based authentication."
   If($controlsenabled.ESXI80000202){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshHostbasedauth.Keys
+    $value = [string]$stigsettings.sshHostbasedauth.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
-  }
-}
-Catch{
-  Write-ToConsoleRed "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-  Write-ToConsoleRed $_.Exception
-  $failedcount++
-}
-
-# SSH permitemptypasswords
-Try{
-	$STIGID = "ESXI-80-000203"
-	$Title = "The ESXi host SSH daemon must not allow authentication using an empty password."
-  If($controlsenabled.ESXI80000203){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
-  }
-  Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+  Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+  $skipcount++
   }
 }
 Catch{
@@ -1433,52 +1482,30 @@ Catch{
 # SSH permitemptyuserenv
 Try{
 	$STIGID = "ESXI-80-000204"
-	$Title = "The ESXi host SSH daemon must not permit user environment settings."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must not permit user environment settings."
   If($controlsenabled.ESXI80000204){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshPermituserenv.Keys
+    $value = [string]$stigsettings.sshPermituserenv.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
-  }
-}
-Catch{
-  Write-ToConsoleRed "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-  Write-ToConsoleRed $_.Exception
-  $failedcount++
-}
-
-# SSH strictmodes
-Try{
-	$STIGID = "ESXI-80-000205"
-	$Title = "The ESXi host SSH daemon must perform strict mode checking of home directory configuration files."
-  If($controlsenabled.ESXI80000205){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
-  }
-  Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
-  }
-}
-Catch{
-  Write-ToConsoleRed "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-  Write-ToConsoleRed $_.Exception
-  $failedcount++
-}
-
-# SSH compression
-Try{
-	$STIGID = "ESXI-80-000206"
-	$Title = "The ESXi host SSH daemon must not allow compression."
-  If($controlsenabled.ESXI80000206){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
-  }
-  Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+  Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+  $skipcount++
   }
 }
 Catch{
@@ -1490,33 +1517,30 @@ Catch{
 # SSH gatewayports
 Try{
 	$STIGID = "ESXI-80-000207"
-	$Title = "The ESXi host SSH daemon must be configured to not allow gateway ports."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must be configured to not allow gateway ports."
   If($controlsenabled.ESXI80000207){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshGatewayports.Keys
+    $value = [string]$stigsettings.sshGatewayports.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
-  }
-}
-Catch{
-  Write-ToConsoleRed "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-  Write-ToConsoleRed $_.Exception
-  $failedcount++
-}
-
-# SSH x11
-Try{
-	$STIGID = "ESXI-80-000208"
-	$Title = "The ESXi host SSH daemon must be configured to not allow X11 forwarding."
-  If($controlsenabled.ESXI80000208){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
-  }
-  Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+  Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+  $skipcount++
   }
 }
 Catch{
@@ -1528,14 +1552,30 @@ Catch{
 # SSH permit tunnel
 Try{
 	$STIGID = "ESXI-80-000209"
-	$Title = "The ESXi host SSH daemon must not permit tunnels."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must not permit tunnels."
   If($controlsenabled.ESXI80000209){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshPermittunnel.Keys
+    $value = [string]$stigsettings.sshPermittunnel.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+  Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+  $skipcount++
   }
 }
 Catch{
@@ -1547,14 +1587,30 @@ Catch{
 # SSH clientalivecountmax
 Try{
 	$STIGID = "ESXI-80-000210"
-	$Title = "The ESXi host SSH daemon must set a timeout count on idle sessions."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must set a timeout count on idle sessions."
   If($controlsenabled.ESXI80000210){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshClientalivecountmax.Keys
+    $value = [string]$stigsettings.sshClientalivecountmax.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+  Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+  $skipcount++
   }
 }
 Catch{
@@ -1566,14 +1622,30 @@ Catch{
 # SSH clientalivecinterval
 Try{
 	$STIGID = "ESXI-80-000211"
-	$Title = "The ESXi host SSH daemon must set a timeout interval on idle sessions."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must set a timeout interval on idle sessions."
   If($controlsenabled.ESXI80000211){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshClientaliveinterval.Keys
+    $value = [string]$stigsettings.sshClientaliveinterval.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+  Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+  $skipcount++
   }
 }
 Catch{
@@ -2233,14 +2305,30 @@ Catch{
 # SSH allowtcpforwarding
 Try{
 	$STIGID = "ESXI-80-000230"
-	$Title = "The ESXi host SSH daemon must disable port forwarding."
+	$Title = "The ESXi host Secure Shell (SSH) daemon must disable port forwarding."
   If($controlsenabled.ESXI80000230){
-    Write-ToConsole "...!!This control must be remediated manually!! Remediating STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+    Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
+    $name = [string]$stigsettings.sshAllowtcpforwarding.Keys
+    $value = [string]$stigsettings.sshAllowtcpforwarding.Values
+    ForEach($vmhost in $vmhosts){
+      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
+      $results = $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq $name} | Select-Object -ExpandProperty Value
+      If($results -eq $value){
+        Write-ToConsoleGreen "...SSH $name set correctly to $results on $($vmhost.name)"
+        $unchangedcount++
+      }Else{
+        Write-ToConsoleYellow "...Configuring SSH $name on $($vmhost.name) to $value"
+        $sshsargs = $esxcli.system.ssh.server.config.set.CreateArgs()
+        $sshsargs.keyword = $name
+        $sshsargs.value = $value
+        $esxcli.system.ssh.server.config.set.Invoke($sshsargs)
+        $changedcount++
+      }
+    }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
+  Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+  $skipcount++
   }
 }
 Catch{

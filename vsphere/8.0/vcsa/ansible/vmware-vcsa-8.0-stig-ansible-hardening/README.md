@@ -1,6 +1,6 @@
 # vmware-vcsa-8.0-stig-ansible-hardening
 VMware vCenter 8.0 Appliance STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 1: April 18, 2023  
+Version: Version 1 Release 2: September 21, 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
@@ -8,13 +8,14 @@ This is a hardening playbook that utilizes Ansible to perform automated remediat
 
 ## !!Important!!
 - Please read through the README carefully and familiarize yourself with the playbook and ansible before running this playbook
+- As of 8.0 U2 the vCenter appliance is now based on Photon 4. Using the correct example variables file is required!
 - As always please ensure you have a backout plan if needed you can roll back the changes
 - This playbook does not cover the vSphere (ESXi,VM,vCenter) which are in a companion PowerCLI script
 - In order to run the Photon role it must be installed as a role so that this playbook may find it
 - This playbook has not been tested for forward or backward compatibility beyond the version of vCenter listed under requirements.
 
 ## Requirements
-- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) installed on a machine that can SSH to the target node(s).  Tested with Ansible 2.12.8.
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) installed on a machine that can SSH to the target node(s).  Tested with Ansible 2.14.4.
 - SSH enabled
 - The bash shell will need to be enabled on the vCenter appliance as the default shell for root
 

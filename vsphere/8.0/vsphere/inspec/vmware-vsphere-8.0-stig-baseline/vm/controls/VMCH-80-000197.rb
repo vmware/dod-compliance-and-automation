@@ -1,5 +1,5 @@
 control 'VMCH-80-000197' do
-  title 'Virtual machines (VMs) must prevent unauthorized removal, connection and modification of devices.'
+  title 'Virtual machines (VMs) must prevent unauthorized removal, connection, and modification of devices.'
   desc  "
     In a virtual machine, users and processes without root or administrator privileges can connect or disconnect devices, such as network adaptors and CD-ROM drives, and can modify device settings. Use the virtual machine settings editor or configuration editor to remove unneeded or unused hardware devices. To use the device again, prevent a user or running process in the virtual machine from connecting, disconnecting, or modifying a device from within the guest operating system.
 
@@ -25,7 +25,7 @@ control 'VMCH-80-000197' do
 
     If the virtual machine advanced setting \"isolation.device.connectable.disable\" is not set to \"true\", this is a finding.
 
-    If the virtual machine advanced setting \"isolation.device.connectable.disable\" does NOT exist, this is NOT a finding.
+    If the virtual machine advanced setting \"isolation.device.connectable.disable\" does not exist, this is not a finding.
   "
   desc  'fix', "
     For each virtual machine do the following:

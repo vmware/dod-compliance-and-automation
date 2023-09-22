@@ -3,7 +3,7 @@ control 'VCRP-80-000019' do
   desc  "
     Log data is essential in the investigation of events. If log data were to become compromised, then competent forensic analysis and discovery of the true source of potentially malicious system activity would be difficult, if not impossible, to achieve. In addition, access to log records provides information an attacker could potentially use to their advantage since each event record might contain communication ports, protocols, services, trust relationships, usernames, etc.
 
-    The web server must protect the log data from unauthorized read, write, copy, etc. This can be done by the web server if the web server is also doing the logging function. The web server may also use an external log system. In either case, the logs must be protected from access by non-privileged users.
+    The web server must protect the log data from unauthorized read, write, copy, etc. This can be done by the web server if the web server is also doing the logging function. The web server may also use an external log system. In either case, the logs must be protected from access by nonprivileged users.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -37,18 +37,32 @@ control 'VCRP-80-000019' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command('find /var/log/vmware/rhttpproxy/ -type f -xdev').stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'rhttpproxy' }
-      its('group') { should eq 'rhttpproxy' }
+  logfiles = command('find /var/log/vmware/rhttpproxy/ -type f -xdev').stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'rhttpproxy' }
+        its('group') { should eq 'rhttpproxy' }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
-  command('find /var/log/vmware/envoy/ -type f -xdev').stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'envoy' }
-      its('group') { should eq 'envoy' }
+  logfilesenvoy = command('find /var/log/vmware/envoy/ -type f -xdev').stdout
+  if !logfilesenvoy.empty?
+    logfilesenvoy.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'envoy' }
+        its('group') { should eq 'envoy' }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end
