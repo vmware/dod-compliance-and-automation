@@ -1,7 +1,7 @@
 <# 
 .SYNOPSIS 
   Remediates vCenter Server against the vSphere vCenter 8.0 STIG Readiness Guide
-  Version 1 Release 1
+  Version 1 Release 2
 .DESCRIPTION
   -Remediates a single host or all hosts in a specified cluster.
   -Individual controls can be enabled/disabled in the $controlsenabled hash table
@@ -14,13 +14,13 @@
 .NOTES 
   File Name  : VMware_vSphere_8.0_vCenter_STIG_Remediation.ps1 
   Author     : VMware
-  Version    : 1 Release 1
+  Version    : 1 Release 2
   License    : Apache-2.0
 
   Tested against
-  -PowerCLI 13
-  -Powershell 5/Core 7.3.4
-  -vCenter/ESXi 8.0 U1a
+  -PowerCLI 13.1
+  -Powershell 5/Core 7.3.6
+  -vCenter/ESXi 8.0 U2
   -Vmware.Vsphere.SsoAdmin 1.3.9
 
   Example command to run script
@@ -89,7 +89,6 @@ $failedcount = 0
 
 ##### Enable or Disable specific STIG Remediations #####
 $controlsenabled = [ordered]@{
-  VCSA8000009 = $true  #TLS 1.2
   VCSA8000023 = $true  #SSO Login Attempts
   VCSA8000024 = $true  #SSO Banner - Manual
   VCSA8000034 = $true  #config.log.level
@@ -275,26 +274,6 @@ Catch{
   Disconnect-VIServer -Server $vcenter -Force -Confirm:$false
   Disconnect-SsoAdminServer -Server $vcenter
   Exit -1
-}
-
-## TLS 1.2
-Try{
-  $STIGID = "VCSA-80-000009"
-  $Title = "The vCenter Server must use TLS 1.2, at a minimum, to protect the confidentiality of sensitive data during electronic dissemination using remote access."
-  If($controlsenabled.VCSA8000009){
-    Write-ToConsole "...Remediating STIG ID: $STIGID with Title: $Title"
-    Write-ToConsoleBlue "...!!This control must be remediated manually!!"
-    $skipcount++
-  }
-  Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
-    $skipcount++
-  }
-}
-Catch{
-  Write-Error "Failed to remediate STIG ID:$STIGID with Title: $Title on $vcenter"
-  Write-Error $_.Exception
-  $failedcount++
 }
 
 ## SSO Login Attempts

@@ -1,7 +1,7 @@
 control 'ESXI-80-000219' do
   title 'The ESXi host must restrict use of the dvFilter network application programming interface (API).'
   desc  "
-    If the organization is not using products that use the dvfilter network API, the host should not be configured to send network information to a virtual machine (VM).
+    If the organization is not using products that use the dvFilter network API, the host should not be configured to send network information to a virtual machine (VM).
 
     If the API is enabled, an attacker might attempt to connect a virtual machine to it, potentially providing access to the network of other VMs on the host.
 

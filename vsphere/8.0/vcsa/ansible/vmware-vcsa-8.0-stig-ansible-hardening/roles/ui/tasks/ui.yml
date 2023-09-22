@@ -16,8 +16,11 @@
         src: "{{ item }}"
         dest: "/tmp/ansible-backups-vcsa-ui-{{ backup_timestamp }}/"
         mode: preserve
-      ignore_errors: true
       changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
       with_items:
         - '{{ var_server_xml_path }}'
         - '{{ var_web_xml_path }}'
@@ -33,12 +36,12 @@
     - name: VCUI-80-000001 - Configure maxThreads on executor
       community.general.xml:
         path: '{{ var_server_xml_path }}'
-        xpath: '/Server/Service/Executor[@name="tomcatThreadPool"]'
+        xpath: '/Server/Service/Connector'
         attribute: 'maxThreads'
         value: '{{ var_server_xml_maxthreads }}'
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 # This one needs to go before the secure setting for XML validation
@@ -55,7 +58,7 @@
           x: http://xmlns.jcp.org/xml/ns/javaee
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000005
@@ -71,7 +74,7 @@
           x: http://xmlns.jcp.org/xml/ns/javaee
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000013
@@ -82,12 +85,12 @@
       ansible.builtin.lineinfile:
         path: '{{ var_service_json_path }}'
         state: present
-        regexp: '^.*"StreamRedirectFile".*$'
+        regexp: '^\s+"StreamRedirectFile".*$'
         line: '    "StreamRedirectFile": "{{ var_stream_redirect_file }}",'
-        insertbefore: ^.*WorkingDir.*$
+        insertbefore: ^\s+"StartCommand":.*$
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000014
@@ -102,7 +105,7 @@
         value: '{{ var_server_xml_access_log_valve_pattern }}'
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000025
@@ -137,7 +140,7 @@
         state: present
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
     - name: VCUI-80-000034 - Check for minimumUmask attribute on org.apache.catalina.security.SecurityListener
       community.general.xml:
@@ -156,7 +159,7 @@
       when:
         - minumask.count != 0
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000036
@@ -169,7 +172,7 @@
         xpath: '/Server/Service/Connector/@allowTrace'
         state: absent
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000037
@@ -185,7 +188,7 @@
         state: present
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 # Port configuration left out until a good way to identify a connector outside of its port is determined
 
 ###################################################################################################################################
@@ -208,7 +211,7 @@
         firstmatch: true
       when: rfcount.stdout != "0"
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000062
@@ -223,7 +226,7 @@
         line: org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000065
@@ -249,7 +252,7 @@
       when:
         - uriecount.count != 0
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000067
@@ -265,7 +268,7 @@
         state: present
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
     - name: VCUI-80-000067 - Configure showServerInfo on org.apache.catalina.valves.ErrorReportValve
       community.general.xml:
@@ -276,7 +279,7 @@
         state: present
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000070
@@ -292,7 +295,7 @@
           x: http://xmlns.jcp.org/xml/ns/javaee
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000081
@@ -308,7 +311,7 @@
         mode: '0644'
         force: true
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
 
 ###################################################################################################################################
 - name: VCUI-80-000124
@@ -323,7 +326,7 @@
         line: org.apache.catalina.STRICT_SERVLET_COMPLIANCE=true
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000125
@@ -348,7 +351,7 @@
       when:
         - ctcount.count != 0
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000126
@@ -373,7 +376,7 @@
       when:
         - mkacount.count != 0
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000127
@@ -399,7 +402,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - filtermaphits.count == 0
 
@@ -413,7 +416,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - filtermaphits.count == 0
 
@@ -427,7 +430,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
     - name: VCUI-80-000127 - Check for bad filter configuration init-params
       community.general.xml:
@@ -467,7 +470,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
 
@@ -481,7 +484,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
 
@@ -495,7 +498,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
     - name: VCUI-80-000127 - Configure filter async
       community.general.xml:
@@ -507,7 +510,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
     - name: VCUI-80-000127 - Create filter init-param
       community.general.xml:
@@ -518,7 +521,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
     - name: VCUI-80-000127 - Configure filter init-param encoding
       community.general.xml:
@@ -530,7 +533,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
     - name: VCUI-80-000127 - Configure filter init-param encoding value
       community.general.xml:
@@ -542,7 +545,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
     - name: VCUI-80-000127 - Check for second init-param existance
       community.general.xml:
@@ -564,7 +567,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - init2counts.count == 0
 
@@ -579,7 +582,7 @@
           x: http://xmlns.jcp.org/xml/ns/javaee
 
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
     - name: VCUI-80-000127 - Configure filter init-param ignore value
       community.general.xml:
@@ -591,7 +594,7 @@
         namespaces:
           x: http://xmlns.jcp.org/xml/ns/javaee
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000130
@@ -607,7 +610,7 @@
           x: http://xmlns.jcp.org/xml/ns/javaee
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000134
@@ -623,17 +626,18 @@
         state: present
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
-    - name: VCUI-80-000134 - Configure base.shutdown.port in catalina.properties
+    - name: VCUI-80-000134 - Configure shutdown.port in vsphere-ui.json
       ansible.builtin.lineinfile:
-        path: '{{ var_catalina_props_path }}'
+        path: '{{ var_service_json_path }}'
         state: present
-        regexp: '^base\.shutdown\.port.*$'
-        line: base.shutdown.port=-1
+        regexp: '^\s+"-Dshutdown\.port.*$'
+        line: '        "-Dshutdown.port=-1",'
+        insertafter: '^\s+"StartCommandArgs":\s+\[.*$'
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000136
@@ -658,7 +662,7 @@
           x: http://xmlns.jcp.org/xml/ns/javaee
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - debugcount.count != 0
 
@@ -685,7 +689,7 @@
           x: http://xmlns.jcp.org/xml/ns/javaee
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - listingcount.count != 0
 
@@ -703,7 +707,7 @@
         state: present
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000139
@@ -719,7 +723,7 @@
         state: present
         pretty_print: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000140
@@ -744,7 +748,7 @@
       when:
         - xpcount.count != 0
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000141
@@ -814,7 +818,7 @@
         firstmatch: true
       when: abcount.stdout != "0"
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000152
@@ -836,7 +840,7 @@
         firstmatch: true
       when: ewcount.stdout != "0"
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCUI-80-000154

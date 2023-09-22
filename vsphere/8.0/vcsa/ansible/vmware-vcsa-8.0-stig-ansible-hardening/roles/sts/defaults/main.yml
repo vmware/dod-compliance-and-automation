@@ -34,6 +34,8 @@ run_error_report_valve: true
 run_session_timeout: true
 # VCST-80-000081
 run_rsyslog_conf: true
+# VCST-80-000124
+run_strict_servlet_compliance: false  # false until it can be added back
 # VCST-80-000125
 run_connection_timeout: true
 # VCST-80-000126
@@ -50,6 +52,8 @@ run_base_shutdown_port: true
 run_debug_off: true
 # VCST-80-000137
 run_remove_dir_listing: true
+# VCST-80-000138
+run_disable_deploy_xml: false  # false until it can be added back
 # VCST-80-000139
 run_disable_auto_deploy: true
 # VCST-80-000140

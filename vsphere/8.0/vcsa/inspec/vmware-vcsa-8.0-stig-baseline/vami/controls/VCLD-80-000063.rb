@@ -48,9 +48,16 @@ control 'VCLD-80-000063' do
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
-  command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/server\.modules/,/\)/'|sed -e 's/^[ ]*//'|grep mod_").stdout.split.each do |result|
-    describe result do
-      it { should_not cmp 'mod_status' }
+  modules = command("/opt/vmware/sbin/vami-lighttpd -p -f /opt/vmware/etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/server\.modules/,/\)/'|sed -e 's/^[ ]*//'|grep mod_").stdout
+  if !modules.empty?
+    modules.split.each do |result|
+      describe result do
+        it { should_not cmp 'mod_status' }
+      end
+    end
+  else
+    describe 'No modules found...skipping.' do
+      skip 'No modules found...skipping.'
     end
   end
 end

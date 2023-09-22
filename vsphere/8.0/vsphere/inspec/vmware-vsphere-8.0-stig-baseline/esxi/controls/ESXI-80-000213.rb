@@ -3,7 +3,7 @@ control 'ESXI-80-000213' do
   desc  "
     Published academic papers have demonstrated that by forcing a flush and reload of cache memory, it is possible to measure memory timings to try to determine an Advanced Encryption Standard (AES) encryption key in use on another virtual machine running on the same physical processor of the host server if Transparent Page Sharing (TPS) is enabled between the two VMs. This technique works only in a highly controlled system configured in a nonstandard way that VMware believes would not be recreated in a production environment.
 
-    Although VMware believes information being disclosed in real-world conditions is unrealistic, out of an abundance of caution, upcoming ESXi Update releases will no longer enable TPS between VMs by default (TPS will still be used within individual VMs).
+    Although VMware believes information being disclosed in real-world conditions is unrealistic, out of an abundance of caution, upcoming ESXi update releases will no longer enable TPS between VMs by default (TPS will still be used within individual VMs).
   "
   desc  'rationale', ''
   desc  'check', "

@@ -1,5 +1,5 @@
 control 'VCLD-80-000040' do
-  title 'The vCenter VAMI service must restrict access to the web servers private key.'
+  title "The vCenter VAMI service must restrict access to the web server's private key."
   desc  "The web server's private key is used to prove the identity of the server to clients and securely exchange the shared secret key used to encrypt communications between the web server and clients. By gaining access to the private key, an attacker can pretend to be an authorized server and decrypt the Secure Sockets Layer (SSL) traffic between a client and the web server."
   desc  'rationale', ''
   desc  'check', "

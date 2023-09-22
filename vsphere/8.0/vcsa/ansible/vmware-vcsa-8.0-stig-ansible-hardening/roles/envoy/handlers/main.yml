@@ -2,6 +2,8 @@
 
 - name: restart rhttpproxy
   ansible.builtin.command: vmon-cli --restart rhttpproxy
+  register: output
+  changed_when: output.rc == 0
 
 - name: restart rsyslog
   ansible.builtin.systemd:

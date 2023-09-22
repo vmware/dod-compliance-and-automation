@@ -7,7 +7,7 @@ control 'VCSA-80-000089' do
 
     View the value of the \"Session timeout\" setting.
 
-    If the \"Session timeout\" is not set to \"15 minute(s)\" or less this is a finding.
+    If the \"Session timeout\" is not set to \"15 minute(s)\" or less, this is a finding.
   "
   desc 'fix', "
     From the vSphere Client, go to Administration >> Deployment >> Client Configuration.

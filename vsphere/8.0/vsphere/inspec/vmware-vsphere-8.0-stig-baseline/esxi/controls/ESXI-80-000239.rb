@@ -37,13 +37,13 @@ control 'ESXI-80-000239' do
     From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
     $esxcli = Get-EsxCli -v2
-    #This disables the allow all rule for the target service. We are targeting the sshServer service in this example.
+    #This disables the allow all rule for the target service. The sshServer service is the target in this example.
     $arguments = $esxcli.network.firewall.ruleset.set.CreateArgs()
     $arguments.rulesetid = \"sshServer\"
     $arguments.allowedall = $false
     $esxcli.network.firewall.ruleset.set.Invoke($arguments)
 
-    #Next add the allowed IPs for the service. Note doing the \"vSphere Web Client\" service this way may disable access but may be done through vCenter or through the console.
+    #Next add the allowed IPs for the service. Note that executing the \\\"vSphere Web Client\\\" service this way may disable access but may be done through vCenter or through the console.
     $arguments = $esxcli.network.firewall.ruleset.allowedip.add.CreateArgs()
     $arguments.rulesetid = \"sshServer\"
     $arguments.ipaddress = \"10.0.0.0/8\"

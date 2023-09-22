@@ -19,7 +19,7 @@ var_host_manager_dir: '/var/opt/apache-tomcat/webapps/host-manager'
 var_server_xml_maxthreads: '300'
 # This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
 # Also &quot; needs to just be a " which turns into &quot;
-var_server_xml_access_log_valve_pattern: '{% raw %}%t %I [Request] "%{User-Agent}i" %{X-Forwarded-For}i/%h:%{remote}p %l %u to local %{local}p - "%r" %H %m %U%q    [Response] %s - %b bytes    [Perf] process %Dms / commit %Fms / conn [%X]{% endraw %}'
+var_server_xml_access_log_valve_pattern: '{% raw %}%t %I [Request] "%{User-Agent}i" %{X-Forwarded-For}i/%h:%{remote}p %l %u to local %{local}p - "%r" %H %m %U%q [Response] %s - %b bytes [Perf] process %Dms / commit %Fms / conn [%X]{% endraw %}'
 var_server_xml_security_listener_min_umask: '0007'
 var_server_xml_port: '${bio-custom.http.port}'
 var_server_xml_address: 'localhost'

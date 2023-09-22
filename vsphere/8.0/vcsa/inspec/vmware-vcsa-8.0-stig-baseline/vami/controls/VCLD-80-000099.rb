@@ -1,6 +1,6 @@
 control 'VCLD-80-000099' do
   title 'The vCenter VAMI service must implement HTTP Strict Transport Security (HSTS).'
-  desc  'HTTP Strict Transport Security (HSTS) instructs web browsers to only use secure connections for all future requests when communicating with a web site. Doing so helps prevent SSL protocol attacks, SSL stripping, cookie hijacking, and other attempts to circumvent SSL protection.'
+  desc  'HSTS instructs web browsers to only use secure connections for all future requests when communicating with a web site. Doing so helps prevent SSL protocol attacks, SSL stripping, cookie hijacking, and other attempts to circumvent SSL protection.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, run the following command:
@@ -9,7 +9,7 @@ control 'VCLD-80-000099' do
 
     Expected result:
 
-    \"Strict-Transport-Security\" => \"max-age=31536000; includeSubDomains\",
+    \"Strict-Transport-Security\" => \"max-age=31536000; includeSubDomains; preload\",
 
     If the output does not match the expected result, this is a finding.
 
@@ -24,7 +24,7 @@ control 'VCLD-80-000099' do
 
     Locate the \"setenv.add-response-header\" parameter and add or update the following value:
 
-    \"Strict-Transport-Security\" => \"max-age=31536000; includeSubDomains\",
+    \"Strict-Transport-Security\" => \"max-age=31536000; includeSubDomains; preload\",
 
     Note: The last line in the parameter does not need a trailing comma.
 
@@ -42,6 +42,6 @@ control 'VCLD-80-000099' do
   tag nist: ['CM-6 b']
 
   describe command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')} 2>/dev/null|awk '/setenv\.add-response-header/,/\)/'|sed -e 's/^[ ]*//'|grep Strict-Transport-Security") do
-    its('stdout.strip') { should cmp '"Strict-Transport-Security" => "max-age=31536000; includeSubDomains",' }
+    its('stdout.strip') { should cmp '"Strict-Transport-Security" => "max-age=31536000; includeSubDomains; preload",' }
   end
 end

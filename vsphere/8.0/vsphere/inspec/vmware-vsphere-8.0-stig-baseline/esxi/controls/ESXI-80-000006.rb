@@ -23,7 +23,7 @@ control 'ESXI-80-000006' do
 
     Use the following verbiage for VMMs that have severe limitations on the number of characters that can be displayed in the banner:
 
-    \"I've read (literal ampersand) consent to terms in IS user agreem't.\"
+    \"I've read & consent to terms in IS user agreem't.\"
   "
   desc  'rationale', ''
   desc  'check', "

@@ -1,6 +1,6 @@
 control 'VCSA-80-000023' do
   title 'The vCenter Server must enforce the limit of three consecutive invalid login attempts by a user.'
-  desc  'By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute forcing, is reduced. Limits are imposed by locking the account. '
+  desc  'By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute forcing, is reduced. Limits are imposed by locking the account.'
   desc  'rationale', ''
   desc  'check', "
     From the vSphere Client, go to Administration >> Single Sign On >> Configuration >> Local Accounts >> Lockout Policy.

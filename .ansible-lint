@@ -11,3 +11,5 @@ warn_list:
   - no-changed-when
 mock_roles:
   - vmware-photon-3.0-stig-ansible-hardening
+  - vmware-photon-4.0-stig-ansible-hardening
+  - vmware-photon-5.0-stig-ansible-hardening

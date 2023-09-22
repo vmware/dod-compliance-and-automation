@@ -19,7 +19,7 @@
 .NOTES 
     File Name  : VMware_vSphere_8.0_VM_STIG_Remediation.ps1 
     Author     : VMware
-    Version    : 1 Release 1
+    Version    : 1 Release 2
     License    : Apache-2.0
 
     Tested against

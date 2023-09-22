@@ -1,7 +1,7 @@
 control 'VCPG-80-000041' do
   title 'The vCenter PostgreSQL service must enforce authorized access to all PKI private keys stored/utilized by PostgreSQL.'
   desc  "
-    The DoD standard for authentication is DoD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.
+    The DOD standard for authentication is DOD-approved PKI certificates. PKI certificate-based authentication is performed by requiring the certificate holder to cryptographically prove possession of the corresponding private key.
 
     If the private key is stolen, an attacker can use the private key(s) to impersonate the certificate holder.  In cases where the database management system (DBMS)-stored private keys are used to authenticate the DBMS to the system’s clients, loss of the corresponding private keys would allow an attacker to successfully perform undetected man in the middle attacks against the DBMS system and its clients.
 

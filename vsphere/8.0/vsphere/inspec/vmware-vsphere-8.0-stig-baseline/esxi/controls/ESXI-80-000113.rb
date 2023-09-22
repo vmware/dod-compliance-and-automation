@@ -1,5 +1,5 @@
 control 'ESXI-80-000113' do
-  title 'The ESXi host must allocate audit record storage capacity to store at least one weeks worth of audit records.'
+  title "The ESXi host must allocate audit record storage capacity to store at least one week's worth of audit records."
   desc  "
     In order to ensure ESXi has sufficient storage capacity in which to write the audit logs, audit record storage capacity should be configured.
 

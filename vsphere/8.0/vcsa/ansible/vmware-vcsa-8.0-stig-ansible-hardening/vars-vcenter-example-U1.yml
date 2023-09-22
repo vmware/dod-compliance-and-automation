@@ -1,0 +1,9 @@
+# General
+run_create_backups: true
+
+# Photon
+# U1 = 3, U2 = 4
+photon_version: '3'
+## Photon 3 vars
+run_sshd_banner_issue: true
+var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'

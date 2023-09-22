@@ -1,5 +1,5 @@
 control 'VCLD-80-000062' do
-  title 'The vCenter VAMI service disable directory listing.'
+  title 'The vCenter VAMI service must disable directory listing.'
   desc  "
     The goal is to completely control the web user's experience in navigating any portion of the web document root directories. Ensuring all web content directories have at least the equivalent of an \"index.html\" file is a significant factor to accomplish this end.
 

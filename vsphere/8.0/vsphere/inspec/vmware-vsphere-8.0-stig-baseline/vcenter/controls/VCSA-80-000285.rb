@@ -7,7 +7,7 @@ control 'VCSA-80-000285' do
 
     From the vSphere Client, go to Administration >> Access Control >> Roles.
 
-    Highlight each role and click the 'Privileges\" button in the right pane.
+    Highlight each role and click the \"Privileges\" button in the right pane.
 
     Verify that only the Administrator, No Trusted Infrastructure Administrator, vCLSAdmin, and vSphere Kubernetes Manager and any site-specific cryptographic roles have the following permissions:
 
