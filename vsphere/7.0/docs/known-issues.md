@@ -45,7 +45,7 @@ In 7.0 U2 a global FIPS mode feature was made available for the vCenter applianc
 
 **Workaround:**
 
-- OCSP recovation validation will no longer function and should be disabled. CRL recovation validation can be utilized instead to provide certificate revocation validation.
+- OCSP revocation validation will no longer function and should be disabled. CRL revocation validation can be utilized instead to provide certificate revocation validation.
 
 ### [VCSA-70-000285] Other default roles have cryptographic permissions
 
