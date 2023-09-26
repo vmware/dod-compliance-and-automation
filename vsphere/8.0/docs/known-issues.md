@@ -4,9 +4,9 @@
 - [ESXi](#esxi)
 - [Virtual Machines](#vm)
 - [VCSA](#vcsa)
-  - [PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
-  - [PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
-  - [VCLU-80-000037 Path incorrect in check](vclu-80-000037-path-incorrect-in-check)
+  - [RESOLVED PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
+  - [RESOLVED PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
+  - [RESOLVED VCLU-80-000037 Path incorrect in check](vclu-80-000037-path-incorrect-in-check)
 
 # Known Issues
 
@@ -26,11 +26,85 @@ Please check the [open](https://github.com/vmware/dod-compliance-and-automation/
 
 ## ESXi
 
+### [ESXI-80-000239] When attempting to configure Allowed IPs for the ESXi firewall you see the following error for some services: `Invalid operation requested: Can not change allowed ip list this ruleset, it is owned by system service.`
+
+Related issue: None
+
+Due to changes in the ESXi firewall some services are unable to be configured to restrict access via a list of IP addresses or ranges. See the [8.0 U2 release notes](https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-vcenter-server-802-release-notes/index.html#Known%20Issues-Miscellaneous%20Issues) for more information.  
+
+**Workaround:**
+
+See the below output for a list of services that can be configured at this time.  
+
+```
+esxcli network firewall ruleset list
+
+Name                         Enabled  Enable/Disable configurable  Allowed IP configurable
+---------------------------  -------  ---------------------------  -----------------------
+sshServer                       true                        false                     true
+sshClient                      false                         true                     true
+nfsClient                      false                        false                    false
+nfs41Client                    false                        false                    false
+dhcp                            true                        false                    false
+dns                             true                         true                     true
+snmp                           false                        false                     true
+ntpClient                      false                        false                     true
+CIMHttpServer                   true                        false                    false
+CIMHttpsServer                 false                        false                     true
+CIMSLP                         false                        false                     true
+iSCSI                          false                        false                    false
+vpxHeartbeats                   true                        false                    false
+updateManager                   true                         true                     true
+faultTolerance                  true                         true                     true
+webAccess                       true                         true                     true
+vMotion                         true                        false                    false
+vSphereClient                   true                         true                     true
+activeDirectoryAll             false                        false                    false
+NFC                             true                        false                    false
+HBR                             true                        false                    false
+ftpClient                      false                         true                     true
+httpClient                     false                         true                     true
+gdbserver                      false                         true                     true
+DVFilter                       false                         true                     true
+DHCPv6                          true                        false                    false
+DVSSync                         true                        false                    false
+syslog                         false                         true                     true
+WOL                             true                         true                     true
+vSPC                           false                         true                     true
+remoteSerialPort               false                         true                     true
+rdt                             true                        false                    false
+cmmds                           true                        false                    false
+ipfam                          false                         true                     true
+iofiltervp                      true                        false                    false
+esxupdate                      false                        false                    false
+vsanEncryption                 false                        false                    false
+pvrdma                         false                         true                     true
+vic-engine                     false                         true                     true
+etcdClientComm                  true                        false                    false
+etcdPeerComm                    true                        false                    false
+settingsd                      false                        false                    false
+vdfs                           false                        false                    false
+gstored                        false                        false                    false
+trusted-infrastructure-kmxd    false                        false                    false
+iwarp-pm                       false                         true                     true
+ptpd                           false                        false                     true
+trusted-infrastructure-kmxa    false                        false                    false
+nvmetcp                        false                        false                    false
+esxio-orchestrator             false                        false                    false
+esxioComm                      false                        false                     true
+nvmemdns                       false                        false                    false
+vltd                           false                        false                    false
+vsanhealth-unicasttest         false                        false                    false
+vsanmgmt-https-tunnel           true                        false                    false
+```
+
 ## VM
 
 ## VCSA
 
 ### [PHTN-30-000054/67] -S all is displayed in the check output
+
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
 
 Related issue: None
 
@@ -42,6 +116,8 @@ Since we are not specifying a specific syscall(all is implied) in the audit rule
 
 ### [PHTN-30-000114] Multiple umask entries in check output
 
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
+
 Related issue: None
 
 The check command output may show multiple umask entries such as UMASK 022 and UMASK 077.  
@@ -52,6 +128,8 @@ The check command output may show multiple umask entries such as UMASK 022 and U
 - When multiple entries are present the last entry is enforced.  
 
 ### [VCLU-80-000037] Path incorrect in check
+
+<mark style="background-color: #78BC20">**Resolved in STIG Version 1 Release 2**</mark>
 
 Related issue: None
 
