@@ -2,6 +2,7 @@
 
 - [vCenter](#vcenter)
 - [ESXi](#esxi)
+  - [ESXI-80-000239 When attempting to configure Allowed IPs for the ESXi firewall you may see an error for some services](#esxi-80-000239-when-attempting-to-configure-allowed-ips-for-the-esxi-firewall-you-may-see-an-error-for-some-services)
 - [Virtual Machines](#vm)
 - [VCSA](#vcsa)
   - [RESOLVED PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
@@ -26,9 +27,11 @@ Please check the [open](https://github.com/vmware/dod-compliance-and-automation/
 
 ## ESXi
 
-### [ESXI-80-000239] When attempting to configure Allowed IPs for the ESXi firewall you see the following error for some services: `Invalid operation requested: Can not change allowed ip list this ruleset, it is owned by system service.`
+### [ESXI-80-000239] When attempting to configure Allowed IPs for the ESXi firewall you may see an error for some services
 
 Related issue: None
+
+You may see the error `Invalid operation requested: Can not change allowed ip list this ruleset, it is owned by system service.` when configuring some services.  
 
 Due to changes in the ESXi firewall some services are unable to be configured to restrict access via a list of IP addresses or ranges. See the [8.0 U2 release notes](https://docs.vmware.com/en/VMware-vSphere/8.0/rn/vsphere-vcenter-server-802-release-notes/index.html#Known%20Issues-Miscellaneous%20Issues) for more information.  
 
