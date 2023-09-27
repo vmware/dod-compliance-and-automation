@@ -142,6 +142,14 @@
   tags: [PHTN-50-000003, PHTN-50-000019, PHTN-50-000031, PHTN-50-000076, PHTN-50-000078, PHTN-50-000107, PHTN-50-000173, PHTN-50-000175, PHTN-50-000204, PHTN-50-000238, auditd]
   when: run_auditd_rules | bool
   block:
+    - name: PHTN-50-000003 - Create /var/lib/rpm folder if exists
+      ansible.builtin.file:
+        path: /var/lib/rpm
+        state: directory
+        mode: "0750"
+        owner: root
+        group: root
+
     - name: PHTN-50-000003 - Check to see if auditd is installed
       ansible.builtin.shell: |
         set -o pipefail
