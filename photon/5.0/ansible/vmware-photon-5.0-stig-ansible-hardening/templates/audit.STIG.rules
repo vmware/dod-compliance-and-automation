@@ -57,7 +57,6 @@
 -a always,exit -F path=/usr/sbin/sendmail -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 -a always,exit -F path=/usr/sbin/unix_chkpwd -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 -a always,exit -F path=/usr/sbin/usernetctl -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
--a always,exit -F path=/var/lib/rpm/.rpm.lock -F perm=x -F auid>=1000 -F auid!=unset -F key=privileged
 
 # PHTN-50-000173 audit failed logons
 -w /var/log/faillog -p wa -k logons
