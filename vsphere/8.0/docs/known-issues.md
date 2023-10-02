@@ -2,6 +2,7 @@
 
 - [vCenter](#vcenter)
 - [ESXi](#esxi)
+  - [ESXI-80-000232 Persistent audit storage and capacity should be configured before enabling audit logs](#esxi-80-000232-persistent-audit-storage-and-capacity-should-be-configured-before-enabling-audit-logs)
   - [ESXI-80-000239 When attempting to configure Allowed IPs for the ESXi firewall you may see an error for some services](#esxi-80-000239-when-attempting-to-configure-allowed-ips-for-the-esxi-firewall-you-may-see-an-error-for-some-services)
 - [Virtual Machines](#vm)
 - [VCSA](#vcsa)
@@ -26,6 +27,21 @@ Please check the [open](https://github.com/vmware/dod-compliance-and-automation/
 ## vCenter
 
 ## ESXi
+
+### [ESXI-80-000232] Persistent audit storage and capacity should be configured before enabling audit logs
+
+Related issue: None
+
+You may see log files under `/var/log` with a name similar to `vmsyslog.####.debug` with entries pertaining that your audit log location does not exist. This may lead to errors such as the var ramdisk being full, services failing to start, and other general issue with the ESXi host.
+
+**Workaround:**
+
+- The advanced settings `Syslog.global.auditRecord.storageCapacity` and `Syslog.global.logDir` should be configured and verified before enabling audit logs with the `Syslog.global.auditRecord.storageEnable` setting.
+- If you have already done this and are experiencing issue follow the below steps:
+  1. Make sure the logDir is configured and exists on persistent storage.
+  2. Reboot the host
+  3. Set `Syslog.global.auditRecord.storageEnable` to false
+  4. Set `Syslog.global.auditRecord.storageEnable` to true
 
 ### [ESXI-80-000239] When attempting to configure Allowed IPs for the ESXi firewall you may see an error for some services
 
