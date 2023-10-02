@@ -38,7 +38,7 @@ You may see log files under `/var/log` with a name similar to `vmsyslog.####.deb
 
 - The advanced settings `Syslog.global.auditRecord.storageCapacity` and `Syslog.global.logDir` should be configured and verified before enabling audit logs with the `Syslog.global.auditRecord.storageEnable` setting.
 - If you have already done this and are experiencing issue follow the below steps:
-  1. Make sure the logDir is configured and exists on persistent storage.
+  1. Make sure `Syslog.global.logDir` is configured and exists on persistent storage.
   2. Reboot the host
   3. Set `Syslog.global.auditRecord.storageEnable` to false
   4. Set `Syslog.global.auditRecord.storageEnable` to true
