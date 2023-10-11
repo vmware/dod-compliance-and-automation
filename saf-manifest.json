@@ -432,5 +432,29 @@
         "platform": "InSpec"
       }
     ]
+  },
+  {
+    "product": "NSX Advanced Load Balancer",
+    "version": "30.x",
+    "vendor": "VMware",
+    "guidance": {
+      "name": "VMware NSX Advanced Load Balancer STIG Readiness Guide",
+      "version": "V1R1",
+      "date": "October 10, 2023",
+      "source": "https://github.com/vmware/dod-compliance-and-automation/blob/master/nsx-alb/30.x/docs",
+      "type": "STIG Readiness Guide",
+      "category": "Virtual Platforms"
+    },
+    "hardening": [
+    ],
+    "validation": [
+      {
+        "name": "VMware NSX Advanced Load Balancer STIG Readiness Guide Chef InSpec Profile",
+        "version": "V1R1",
+        "date": "October 10, 2023",
+        "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/nsx-alb/30.x/inspec/vmware-nsx-alb-stig-baseline",
+        "platform": "InSpec"
+      }
+    ]
   }
 ]

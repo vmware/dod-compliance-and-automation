@@ -1,0 +1,42 @@
+name: VMware NSX ALB Controller STIG Readiness Guide Inspec Profile
+title: VMware NSX ALB Controller STIG Readiness Guide Inspec Profile
+maintainer: VMware
+copyright: VMware
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.1
+
+inputs:
+- name: avicontroller
+  type: string
+  value: "x.x.x.x"
+  description: "IP or FQDN of NSX ALB"
+- name: sessionCookieId
+  type: string
+  value: ""
+  description: "Session ID for authentication"
+  sensitive: true
+- name: aviversion
+  type: string
+  value: ""
+  description: "NSX ALB Version"
+- name: allowed_ntp_servers
+  type: array
+  value:
+    - time-a-g.nist.gov
+    - time-b-g.nist.gov
+  description: "NTP Server IP"
+- name: portal_cert_issuer_organization
+  type: string
+  value: 'U.S. Government'
+  description: 'SSL/TLS Certificate Issuer Organization'
+- name: dod_banner
+  type: string
+  value: "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.\n\nBy using this IS (which includes any device attached to this IS), you consent to the following conditions:\n-The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.\n-At any time, the USG may inspect and seize data stored on this IS.\n-Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.\n-This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.\n-Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details."
+  description: "DoD consent Banner"
+# Replace the value with list of allowed Syslog Servers
+- name: allowed_syslog_servers
+  type: array
+  value: ['10.0.0.26','1.1.1.1']
+  description: 'Syslog Server IP'
