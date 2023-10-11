@@ -1,0 +1,10 @@
+---
+name: stig
+
+templates:
+  pre-start.sh.erb: bin/pre-start
+  post-start.sh: bin/post-start
+
+packages: []
+
+properties: {}

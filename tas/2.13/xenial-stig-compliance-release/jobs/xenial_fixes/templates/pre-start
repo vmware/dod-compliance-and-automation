@@ -1,0 +1,289 @@
+#! /bin/bash -e
+[[ -z "${DEBUG:-}" ]] || set -x
+
+# SV-90123r2_rule
+if ! grep -E "^\*[[:space:]]*hard[[:space:]]*maxlogins[[:space:]]*10" /etc/security/limits.conf ; then
+  echo "*               hard    maxlogins       10" >> /etc/security/limits.conf
+else
+  sed -i "s/^\*[[:space:]]*hard[[:space:]]*maxlogins.*/*               hard    maxlogins       10/g" /etc/security/limits.conf
+fi 
+
+#SV-90165r3_rule
+useradd -D -f 35
+
+# SV-90157r2_rule
+sed -i "s/minlen=14/minlen=15/g" /etc/pam.d/common-password
+
+# SV-90241r1_rule
+if ! grep -E "^CREATE_HOME.*" /etc/login.defs ; then
+  echo "CREATE_HOME yes" >> /etc/login.defs
+else
+  sed -i "s/CREATE_HOME.*/CREATE_HOME yes/g" /etc/login.defs
+fi
+
+# SV-90153r2_rule
+sed -i "s/PASS_MAX_DAYS.*/PASS_MAX_DAYS 60/g" /etc/login.defs
+
+# SV-90249r1_rule
+awk -F: '($3>=500)&&($1!="nobody"){print $6}' /etc/passwd | xargs -I '{}' find '{}' -type f -name  ".[^.]*" 2> /dev/null | xargs -n1 chmod 740 || true
+
+#SV-90509r2_rule
+sed -i "s/^Ciphers .*/Ciphers aes128-ctr,aes192-ctr,aes256-ctr/g" /etc/ssh/sshd_config
+
+#SV-90511r2_rule
+sed -i "s/^MACs .*/MACs hmac-sha2-256,hmac-sha2-512/g" /etc/ssh/sshd_config
+
+# SV-90517r2_rule
+sed -i "s/^ClientAliveInterval .*/ClientAliveInterval 600/g" /etc/ssh/sshd_config
+sed -i "s/^ClientAliveCountMax .*/ClientAliveCountMax 1/g" /etc/ssh/sshd_config
+
+# SV-90521r2_rule
+if ! grep -E "^IgnoreUserKnownHosts[[:space:]].*" /etc/ssh/sshd_config ; then
+  echo "IgnoreUserKnownHosts yes" >> /etc/ssh/sshd_config
+else
+  sed -i "s/^IgnoreUserKnownHosts[[:space:]].*/IgnoreUserKnownHosts yes/g" /etc/ssh/sshd_config
+fi
+
+# SV-90531r2_rule
+if ! grep -E "^Compression[[:space:]].*" /etc/ssh/sshd_config ; then
+  echo "Compression delayed" >> /etc/ssh/sshd_config
+else
+  sed -i "s/^Compression[[:space:]].*/Compression delayed/g" /etc/ssh/sshd_config
+fi
+
+# SV-90225r2_rule
+
+if getent passwd games ; then
+  userdel -r -f games
+fi
+
+if getent passwd lp ; then
+  userdel -r -f lp
+fi
+
+if getent passwd mail ; then
+  userdel -r -f mail
+fi
+
+if getent passwd news ; then
+  userdel -r -f news
+fi
+
+if getent passwd list ; then
+  userdel -r -f list
+fi
+
+if getent passwd irc ; then
+  userdel -r -f irc
+fi
+
+if getent passwd nobody ; then
+  userdel -r -f nobody
+fi
+
+if getent passwd uucp ; then
+  userdel -r -f uucp
+fi
+
+if getent passwd man ; then
+  userdel -r -f man
+fi
+
+if getent passwd www-data ; then
+  userdel -r -f www-data
+fi
+
+if getent passwd backup ; then
+  userdel -r -f backup
+fi
+
+if getent passwd gnats ; then
+  userdel -r -f gnats
+fi
+
+if getent passwd sys ; then
+  userdel -f sys
+fi
+
+# SV-90167r3_rule
+sed -i "s/^auth[[:space:]]*required[[:space:]]*pam_tally2\.so.*/auth    required                    pam_tally2.so onerr=fail deny=3/" /etc/pam.d/common-auth
+
+# SV-90167r3_rule
+sed -i "s/^session[[:space:]]*optional[[:space:]]*pam_lastlog\.so.*/session    required   pam_lastlog.so showfailed/" /etc/pam.d/login
+
+# SV-90371r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*-F[[:space:]]*path=\/bin\/su.*@-a always,exit -F path=\/bin\/su -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-priv_change@" /etc/audit/rules.d/audit.rules
+
+# SV-90373r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=\/usr\/bin\/chfn[[:space:]]*.*@-a always,exit -F path=\/usr\/bin\/chfn -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-gpasswd@" /etc/audit/rules.d/audit.rules
+
+# SV-90375r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=\/bin\/mount[[:space:]]*.*@-a always,exit -F path=/bin/mount -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-mount@" /etc/audit/rules.d/audit.rules
+
+# SV-90377r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=\/bin\/umount[[:space:]]*.*@-a always,exit -F path=/bin/umount -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-mount@" /etc/audit/rules.d/audit.rules
+
+# SV-90379r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=\/usr\/bin\/ssh-agent[[:space:]]*.*@-a always,exit -F path=/usr/bin/ssh-agent -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-ssh@" /etc/audit/rules.d/audit.rules
+
+# SV-90387r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/lib/openssh/ssh-keysign[[:space:]]*.*@-a always,exit -F path=/usr/lib/openssh/ssh-keysign -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-ssh@" /etc/audit/rules.d/audit.rules
+
+# SV-90397r2_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*setxattr[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S setxattr -F auid>=1000 -F auid!=4294967295 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S setxattr -F auid=0 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+
+# SV-90399r2_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*lsetxattr[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S lsetxattr -F auid>=1000 -F auid!=4294967295 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S lsetxattr -F auid=0 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+
+# SV-90401r2_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*fsetxattr[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S fsetxattr -F auid>=1000 -F auid!=4294967295 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S fsetxattr -F auid=0 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+
+# SV-90403r2_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*removexattr[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S removexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S removexattr -F auid=0 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+
+# SV-90405r2_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*lremovexattr[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S lremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S lremovexattr -F auid=0 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+
+# SV-90407r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*fremovexattr[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S fremovexattr -F auid=0 -k perm_mod" >> /etc/audit/rules.d/audit.rules
+
+# SV-90409r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*chown[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S chown -F auid>=1000 -F auid!=4294967295 -k perm_chng" >> /etc/audit/rules.d/audit.rules
+
+# SV-90411r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*fchown[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S fchown -F auid>=1000 -F auid!=4294967295 -k perm_chng" >> /etc/audit/rules.d/audit.rules
+
+# SV-90413r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*fchownat[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S fchownat -F auid>=1000 -F auid!=4294967295 -k perm_chng" >> /etc/audit/rules.d/audit.rules
+
+# SV-90415r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*lchown[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_chng" >> /etc/audit/rules.d/audit.rules
+
+# SV-90423r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*open[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S open -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S open -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+
+# SV-90425r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*truncate[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S truncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S truncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+
+# SV-90427r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*ftruncate[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+
+# SV-90429r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*creat[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S creat -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S creat -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+
+# SV-90431r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*openat[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S openat -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S openat -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+
+# SV-90433r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*open_by_handle_at[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S open_by_handle_at -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S open_by_handle_at -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k perm_access" >> /etc/audit/rules.d/audit.rules
+
+# SV-90435r3_rule
+sed -i "s@^-a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=500 -F auid!=4294967295 -k privileged@-a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=4294967295 -k priv_cmd@" /etc/audit/rules.d/audit.rules
+
+# SV-90437r3_rule
+sed -i "s@^-a always,exit -F path=/usr/bin/sudoedit -F perm=x -F auid>=500 -F auid!=4294967295 -k priv_cmd@-a always,exit -F path=/usr/bin/sudoedit -F perm=x -F auid>=1000 -F auid!=4294967295 -k priv_cmd@" /etc/audit/rules.d/audit.rules
+
+# SV-90439r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/bin/chsh[[:space:]]*.*@-a always,exit -F path=/usr/bin/chsh -F perm=x -F auid>=1000 -F auid!=4294967295 -k priv_cmd@" /etc/audit/rules.d/audit.rules
+
+# SV-90441r4_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/bin/newgrp[[:space:]]*.*@-a always,exit -F path=/usr/bin/newgrp -F perm=x -F auid>=1000 -F auid!=4294967295 -k priv_cmd@" /etc/audit/rules.d/audit.rules
+
+# SV-90445r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/sbin/apparmor_parser[[:space:]]*.*@-a always,exit -F path=/sbin/apparmor_parser -F perm=x -F auid>=1000 -F auid!=4294967295 -k perm_chng@" /etc/audit/rules.d/audit.rules
+
+# SV-90447r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-F[[:space:]]*path=/usr/bin/setfacl[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F path=/usr/bin/setfacl -F perm=x -F auid>=1000 -F auid!=4294967295 -k perm_chng" >> /etc/audit/rules.d/audit.rules
+
+# SV-90449r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-F[[:space:]]*path=/usr/bin/chacl[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F path=/usr/bin/chacl -F perm=x -F auid>=1000 -F auid!=4294967295 -k perm_chng" >> /etc/audit/rules.d/audit.rules
+
+# SV-90457r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/bin/passwd[[:space:]]*.*@-a always,exit -F path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-passwd@" /etc/audit/rules.d/audit.rules
+
+# SV-90457r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/sbin/unix_update[[:space:]]*.*@-a always,exit -F path=/sbin/unix_update -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-unix-update@" /etc/audit/rules.d/audit.rules
+
+# SV-90461r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/bin/gpasswd[[:space:]]*.*@-a always,exit -F path=/usr/bin/gpasswd -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-gpasswd@" /etc/audit/rules.d/audit.rules
+
+# SV-90463r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/bin/chage[[:space:]]*.*@-a always,exit -F path=/usr/bin/chage -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-chage@" /etc/audit/rules.d/audit.rules
+
+# SV-90465r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/sbin/usermod[[:space:]]*.*@-a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-usermod@" /etc/audit/rules.d/audit.rules
+
+# SV-90467r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/bin/crontab[[:space:]]*.*@-a always,exit -F path=/usr/bin/crontab -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-crontab@" /etc/audit/rules.d/audit.rules
+
+# SV-90469r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/sbin/pam_timestamp_check[[:space:]]*.*@-a always,exit -F path=/usr/sbin/pam_timestamp_check -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-pam_timestamp_check@" /etc/audit/rules.d/audit.rules
+
+# SV-90471r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*init_module[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S init_module -F auid>=1000 -F auid!=4294967295 -k module_chng" >> /etc/audit/rules.d/audit.rules
+
+# SV-90473r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*finit_module[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S finit_module -F auid>=1000 -F auid!=4294967295 -k module_chng" >> /etc/audit/rules.d/audit.rules
+
+# SV-90475r3_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*-S[[:space:]]*delete_module[[:space:]]*.*@@"  /etc/audit/rules.d/audit.rules
+echo "-a always,exit -F arch=b64 -S delete_module -F auid>=1000 -F auid!=4294967295 -k module_chng" >> /etc/audit/rules.d/audit.rules
+
+# SV-95681r1_rule
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/bin/chcon[[:space:]]*.*@-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=4294967295 -k perm_chng@" /etc/audit/rules.d/audit.rules
+
+#SV-90533r2_rule
+sed -i "s@^X11Forwarding.*@X11Forwarding no@" /etc/ssh/sshd_config
+
+#SV-214947r610931_rule
+passwd -l root
+
+# SV-238380
+systemctl disable ctrl-alt-del.target
+systemctl mask ctrl-alt-del.target
+
+# SV-238204
+if ! grep -E "^password_pbkdf2 root" /boot/grub/grub.cfg ; then
+  sed -i "s@^password .*@password_pbkdf2 root grub.pbkdf2.sha512.10000.*@g" /boot/grub/grub.cfg
+  sed -i '/^password_pbkdf2 .*/i set superusers=\"root\"' /boot/grub/grub.cfg
+fi
+
+# SV-214964
+if ! grep -E "difok=1" /etc/pam.d/common-password ; then
+  sed -i "s@difok=8@difok=8 dictcheck=1@g" /etc/pam.d/common-password
+fi
+
+# SV-214971
+sed -i "s@auth       optional   pam_faildelay.so  delay=4000000@auth       required   pam_faildelay.so  delay=4000000@" /etc/pam.d/login

@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+if ! grep -e '^-e 2$' /etc/audit/rules.d/audit.rules -q; then
+  echo '-e 2' >> /etc/audit/rules.d/audit.rules
+fi
+
+service sshd restart
+service auditd restart

@@ -1,0 +1,10 @@
+---
+name: xenial_fixes
+
+templates: 
+  pre-start: bin/pre-start
+  post-start: bin/post-start
+
+packages: []
+
+properties: {}
