@@ -1,6 +1,6 @@
 control 'PHTN-50-000216' do
   title 'The Photon operating system must configure Secure Shell (SSH) to display the last login immediately after authentication.'
-  desc  'Providing users with feedback on the last time they logged on via Secure Shell (SSH) facilitates user recognition and reporting of unauthorized account use.'
+  desc  'Providing users with feedback on the last time they logged on via SSH facilitates user recognition and reporting of unauthorized account use.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:

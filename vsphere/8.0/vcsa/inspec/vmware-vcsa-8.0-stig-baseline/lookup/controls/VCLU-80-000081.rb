@@ -43,8 +43,14 @@ control 'VCLU-80-000081' do
           Facility=\"local0\")
     #prestart
     input(type=\"imfile\"
-          File=\"/var/log/vmware/lookupsvc/prestart.log\"
+          File=\"/var/log/vmware/lookupsvc/lookupsvc-prestart.log\"
           Tag=\"lookupsvc-prestart\"
+          Severity=\"info\"
+          Facility=\"local0\")
+    #health
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/lookupsvc/lookupsvc-health.log\"
+          Tag=\"lookupsvc-health\"
           Severity=\"info\"
           Facility=\"local0\")
     #lookupserver-default
@@ -103,8 +109,14 @@ control 'VCLU-80-000081' do
           Facility=\"local0\")
     #prestart
     input(type=\"imfile\"
-          File=\"/var/log/vmware/lookupsvc/prestart.log\"
+          File=\"/var/log/vmware/lookupsvc/lookupsvc-prestart.log\"
           Tag=\"lookupsvc-prestart\"
+          Severity=\"info\"
+          Facility=\"local0\")
+    #health
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/lookupsvc/lookupsvc-health.log\"
+          Tag=\"lookupsvc-health\"
           Severity=\"info\"
           Facility=\"local0\")
     #lookupserver-default

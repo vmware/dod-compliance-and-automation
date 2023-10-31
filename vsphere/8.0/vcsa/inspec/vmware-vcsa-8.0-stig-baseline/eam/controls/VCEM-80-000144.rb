@@ -26,11 +26,18 @@ control 'VCEM-80-000144' do
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1)']
 
-  command("find '#{input('appPath')}' -type f -xdev").stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'root' }
-      its('group') { should eq 'root' }
+  appfiles = command("find '#{input('appPath')}' -type f -xdev").stdout
+  if !appfiles.empty?
+    appfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'root' }
+        its('group') { should eq 'root' }
+      end
+    end
+  else
+    describe 'No app files found...skipping.' do
+      skip 'No app files found...skipping.'
     end
   end
 end

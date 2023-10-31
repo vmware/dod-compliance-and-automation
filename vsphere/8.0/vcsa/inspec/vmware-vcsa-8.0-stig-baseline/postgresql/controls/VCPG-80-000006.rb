@@ -36,11 +36,18 @@ control 'VCPG-80-000006' do
   pg_owner = input('pg_owner')
   pg_group = input('pg_group')
 
-  command("find #{input('pg_data_dir')} -type f -maxdepth 1 -name '*conf*'").stdout.split.each do |fname|
-    describe file(fname) do
-      its('mode') { should cmp '0600' }
-      its('owner') { should cmp pg_owner }
-      its('group') { should cmp pg_group }
+  pgfiles = command("find #{input('pg_data_dir')} -type f -maxdepth 1 -name '*conf*'").stdout
+  if !pgfiles.empty?
+    pgfiles.split.each do |fname|
+      describe file(fname) do
+        its('mode') { should cmp '0600' }
+        its('owner') { should cmp pg_owner }
+        its('group') { should cmp pg_group }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end

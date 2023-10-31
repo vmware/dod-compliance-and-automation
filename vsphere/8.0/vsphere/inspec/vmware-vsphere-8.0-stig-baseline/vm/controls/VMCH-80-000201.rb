@@ -17,7 +17,7 @@ control 'VMCH-80-000201' do
 
     If the virtual machine advanced setting \"tools.guest.desktop.autolock\" is not set to \"true\", this is a finding.
 
-    If the virtual machine advanced setting \"tools.guest.desktop.autolock\" does NOT exist, this is NOT a finding.
+    If the virtual machine advanced setting \"tools.guest.desktop.autolock\" does not exist, this is not a finding.
   "
   desc  'fix', "
     For each virtual machine do the following:

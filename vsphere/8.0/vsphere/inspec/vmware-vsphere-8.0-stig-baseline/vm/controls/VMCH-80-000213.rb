@@ -33,7 +33,7 @@ control 'VMCH-80-000213' do
 
     Get-VM \"VM Name\" | Get-USBDevice | Remove-USBDevice
 
-    Note:  This will not remove the USB controller, just any connected devices.
+    Note: This will not remove the USB controller, just any connected devices.
   "
   impact 0.5
   tag severity: 'medium'

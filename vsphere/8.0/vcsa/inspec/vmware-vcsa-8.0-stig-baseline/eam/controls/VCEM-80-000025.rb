@@ -27,11 +27,18 @@ control 'VCEM-80-000025' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command("find '#{input('logPath')}' -type f ! -name install.log -xdev").stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'eam' }
-      its('group') { should eq 'eam' }
+  logfiles = command("find '#{input('logPath')}' -type f ! -name install.log -xdev").stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'eam' }
+        its('group') { should eq 'eam' }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end

@@ -9,7 +9,7 @@ control 'VCLU-80-000037' do
   desc  'check', "
     At the command prompt, run the following command:
 
-    # xmllint --xpath \"//Connector[(@port = '0') or not(@address)]\" /usr/lib/vmware-eam/web/conf/server.xml
+    # xmllint --xpath \"//Connector[(@port = '0') or not(@address)]\" /usr/lib/vmware-lookupsvc/conf/server.xml
 
     Expected result:
 

@@ -1,0 +1,6 @@
+---
+
+- name: Restart CASA
+  ansible.builtin.service:
+    name: vmware-casa.service
+    state: restarted

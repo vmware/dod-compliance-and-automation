@@ -4,6 +4,12 @@ roles:
   - src: https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening
     scm: git
     version: master
+  - src: https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/4.0/ansible/vmware-photon-4.0-stig-ansible-hardening
+    scm: git
+    version: master
+  - src: https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/5.0/ansible/vmware-photon-5.0-stig-ansible-hardening
+    scm: git
+    version: master
 
 collections:
   - name: community.general

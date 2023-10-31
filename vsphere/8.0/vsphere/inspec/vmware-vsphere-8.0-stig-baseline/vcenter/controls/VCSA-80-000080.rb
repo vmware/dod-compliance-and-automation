@@ -19,6 +19,8 @@ control 'VCSA-80-000080' do
     Configure revocation checking per site requirements. OCSP with CRL failover is recommended.
 
     By default, both locations are pulled from the cert. CRL location can be overridden in this screen, and local responders can be specified via the sso-config command line tool. See the vSphere documentation for more information.
+
+    Note: If FIPS mode is enabled on vCenter, OCSP revocation validation may not function and CRL used instead.
   "
   impact 0.5
   tag severity: 'medium'

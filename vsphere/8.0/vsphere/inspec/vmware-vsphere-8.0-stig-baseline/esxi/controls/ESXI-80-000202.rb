@@ -1,22 +1,39 @@
 control 'ESXI-80-000202' do
   title 'The ESXi host Secure Shell (SSH) daemon must not allow host-based authentication.'
-  desc  "SSH trust relationships mean a compromise on one host can allow an attacker to move trivially to other hosts. SSH's cryptographic host-based authentication is more secure than \".rhosts\" authentication, since hosts are cryptographically authenticated. However, it is not recommended that hosts unilaterally trust one another, even within an organization."
+  desc  "SSH trust relationships mean a compromise on one host can allow an attacker to move trivially to other hosts. SSH's cryptographic host-based authentication is more secure than \".rhosts\" authentication since hosts are cryptographically authenticated. However, it is not recommended that hosts unilaterally trust one another, even within an organization."
   desc  'rationale', ''
   desc  'check', "
     From an ESXi shell, run the following command:
 
-    # /usr/lib/vmware/openssh/bin/sshd -T | grep hostbasedauthentication
+    # esxcli system ssh server config list -k hostbasedauthentication
 
-    Expected result:
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+
+    $esxcli = Get-EsxCli -v2
+    $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'hostbasedauthentication'}
+
+    Example result:
 
     hostbasedauthentication no
 
-    If the output does not match the expected result, this is a finding.
+    If \"hostbasedauthentication\" is not configured to \"no\", this is a finding.
   "
   desc 'fix', "
-    From an ESXi shell, add or update the following line in \"/etc/ssh/sshd_config\":
+    From an ESXi shell, run the following command:
 
-    HostbasedAuthentication no
+    # esxcli system ssh server config set -k hostbasedauthentication -v no
+
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+
+    $esxcli = Get-EsxCli -v2
+    $arguments = $esxcli.system.ssh.server.config.set.CreateArgs()
+    $arguments.keyword = 'hostbasedauthentication'
+    $arguments.value = 'no'
+    $esxcli.system.ssh.server.config.set.Invoke($arguments)
   "
   impact 0.5
   tag severity: 'medium'
@@ -27,7 +44,31 @@ control 'ESXI-80-000202' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe 'This check is a manual or policy based check and must be reviewed manually.' do
-    skip 'This check is a manual or policy based check and must be reviewed manually.'
+  vmhostName = input('vmhostName')
+  cluster = input('cluster')
+  allhosts = input('allesxi')
+  vmhosts = []
+
+  unless vmhostName.empty?
+    vmhosts = powercli_command("Get-VMHost -Name #{vmhostName} | Sort-Object Name | Select -ExpandProperty Name").stdout.split
+  end
+  unless cluster.empty?
+    vmhosts = powercli_command("Get-Cluster -Name '#{cluster}' | Get-VMHost | Sort-Object Name | Select -ExpandProperty Name").stdout.split
+  end
+  unless allhosts == false
+    vmhosts = powercli_command('Get-VMHost | Sort-Object Name | Select -ExpandProperty Name').stdout.split
+  end
+
+  if !vmhosts.empty?
+    vmhosts.each do |vmhost|
+      command = "$vmhost = Get-VMHost -Name #{vmhost}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'hostbasedauthentication'} | Select-Object -ExpandProperty Value"
+      describe powercli_command(command) do
+        its('stdout.strip') { should cmp 'no' }
+      end
+    end
+  else
+    describe 'No hosts found!' do
+      skip 'No hosts found...skipping tests'
+    end
   end
 end

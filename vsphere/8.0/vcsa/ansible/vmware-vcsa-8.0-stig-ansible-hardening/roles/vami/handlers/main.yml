@@ -2,6 +2,8 @@
 
 - name: restart vami
   ansible.builtin.command: vmon-cli --restart applmgmt
+  register: output
+  changed_when: output.rc == 0
 
 - name: restart rsyslog
   ansible.builtin.systemd:

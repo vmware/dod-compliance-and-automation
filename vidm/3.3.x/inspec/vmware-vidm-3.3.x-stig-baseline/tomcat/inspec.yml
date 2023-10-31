@@ -1,0 +1,58 @@
+name: VMware Identity Manager 3.3.x Tomcat Service Profile
+title: VMware Identity Manager 3.3.x Tomcat Service Profile
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+inputs:
+- name: serverXmlPath
+  description: Tomcat server.xml path
+  type: string
+  value: "/opt/vmware/horizon/workspace/conf/server.xml"
+- name: loggingPropertiesPath
+  description: logging.properties path
+  type: string
+  value: "/opt/vmware/horizon/workspace/conf/logging.properties"
+- name: catalinaPropertiesPath
+  description: Tomcat catalina.properties path
+  type: string
+  value: "/opt/vmware/horizon/workspace/conf/catalina.properties"
+- name: logPath
+  description: Service Log Directory
+  type: string
+  value: "/opt/vmware/horizon/workspace/logs/"
+- name: connectionTimeout
+  description: "WOAT-3X-000001"
+  type: string
+  value: "20000"
+- name: maxThreads
+  description: "WOAT-3X-000002"
+  type: string
+  value: "300"
+- name: sslCipherList
+  description: "WOAT-3X-000005"
+  type: string
+  value: "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
+- name: accessValvePattern
+  description: "WOAT-3X-000007"
+  type: string
+  value: "%h %l %u %t [%I] &quot;%r&quot; %s %b &quot;%{User-Agent}i&quot;"
+- name: packageAccess
+  description: "WOAT-3X-000029"
+  type: string
+  value: "sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat."
+- name: memLeakListener
+  description: "WOAT-3X-000038"
+  type: string
+  value: "org.apache.catalina.core.JreMemoryLeakPreventionListener"
+- name: uriEncoding
+  description: "WOAT-3X-000065"
+  type: string
+  value: "UTF-8"
+- name: server
+  description: "WOAT-3X-000071"
+  type: string
+  value: "Anonymous"

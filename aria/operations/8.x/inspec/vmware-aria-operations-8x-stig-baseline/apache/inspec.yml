@@ -1,0 +1,55 @@
+name: VMware Aria Operations 8.x Apache Profile
+title: VMware Aria Operations 8.x Apache Profile
+maintainer: VMTA
+copyright: VMTA
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.2.0
+
+inputs:
+- name: apacheConfPath
+  description: VRPE-8X-000002, 003, 004, 007, 008, 010, 016, 017, 018, 019, 020, 021, 023, 024, 025, 026, 027, 028, 029, 030
+  type: string
+  value: "/usr/lib/vmware-vcopssuite/utilities/conf/vcops-apache.conf"
+- name: apacheConfFiles
+  description: VRPE-8X-000001, 003
+  type: array
+  value:
+    - "/etc/httpd/httpd.conf"
+    - "/usr/lib/vmware-vcopssuite/utilities/conf/vcops-apache.conf"
+- name: fipsConfPath
+  description: VRPE-8X-000012
+  type: string
+  value: "/etc/httpd/conf/fips.conf"
+- name: maxKeepAliveRequests
+  description: VRPE-8X-000001
+  type: string
+  value: "100"
+- name: sslCipherSuite
+  description: VRPE-8X-000002
+  type: string
+  value: "HIGH:!aNULL!ADH:!EXP:!MD5:!3DES:!CAMELLIA:!PSK:!SRP:!DH:!AES256-GCM-SHA384:!AES256-SHA256:!AES256-SHA:!AES128-GCM-SHA256:!AES128-SHA256:!AES128-SHA:@STRENGTH"
+- name: accessLogFile
+  description: VRPE-8X-000005
+  type: string
+  value: "/var/log/apache2/access_log"
+- name: modules
+  description: VRPE-8X-000007
+  type: array
+  value:
+    - "jk_module       /usr/lib64/httpd/modules/mod_jk.so"
+    - "rewrite_module  /usr/lib64/httpd/modules/mod_rewrite.so"
+    - "headers_module  /usr/lib64/httpd/modules/mod_headers.so"
+    - "http2_module    /usr/lib64/httpd/modules/mod_http2.so"
+    - "deflate_module /usr/lib64/httpd/modules/mod_deflate.so"
+- name: httpdServiceFile
+  description: VRPE-8X-000022
+  type: string
+  value: "/usr/lib/systemd/system/httpd.service"
+- name: customLogSettings
+  description: VRPE-8X-000004
+  type: array
+  value:
+    - "CustomLog \"|/usr/sbin/rotatelogs2 -n 35 /var/log/apache2/access_log 50M\" \"%h %l %u %t \\\"%r\\\" %>s %b \\\"%{Referer}i\\\" \\\"%{User-agent}i\\\" Agent-Token:%{SSL_CLIENT_S_DN_CN}x \" env=lather"
+    - "CustomLog \"|/usr/sbin/rotatelogs2 -n 35 /var/log/apache2/access_log 50M\" combined  env=!lather"

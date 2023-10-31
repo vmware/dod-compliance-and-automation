@@ -1,5 +1,5 @@
 control 'VMCH-80-000208' do
-  title 'Virtual machines (VMs) must not use independent, non-persistent disks.'
+  title 'Virtual machines (VMs) must not use independent, nonpersistent disks.'
   desc  "
     The security issue with nonpersistent disk mode is that successful attackers, with a simple shutdown or reboot, might undo or remove any traces they were ever on the machine. To safeguard against this risk, production virtual machines should be set to use persistent disk mode; additionally, ensure activity within the VM is logged remotely on a separate server, such as a syslog server or equivalent Windows-based event collector. Without a persistent record of activity on a VM, administrators might never know whether they have been attacked or hacked.
 

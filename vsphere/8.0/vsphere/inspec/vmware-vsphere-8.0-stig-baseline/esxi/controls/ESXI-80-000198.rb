@@ -15,7 +15,7 @@ control 'ESXI-80-000198' do
 
     Review the VLAN associated with each VMkernel that is used for management traffic. Verify with the system administrator that they are dedicated for that purpose and are logically separated from other functions.
 
-    If any services are enabled on any Management VMkernel adapter, this is a finding.
+    If any services other than \"Management\" are enabled on the Management VMkernel adapter, this is a finding.
 
     If the network segment is accessible, except to networks where other management-related entities are located such as vCenter, this is a finding.
 
@@ -24,7 +24,7 @@ control 'ESXI-80-000198' do
   desc 'fix', "
     Configuration of the management VMkernel will be unique to each environment.
 
-    As an example, to modify the IP address and VLAN information to the correct network on a distributed switch do the following:
+    For example, to modify the IP address and VLAN information to the correct network on a distributed switch, do the following:
 
     From the vSphere Client, go to Hosts and Clusters.
 
@@ -75,18 +75,19 @@ control 'ESXI-80-000198' do
         describe powercli_command(command2) do
           its('stdout.strip') { should be_empty }
         end
-        # Get Management Port Group Name
-        command3 = "Get-VMHost -Name #{vmhost} | Get-VMHostNetworkAdapter -Name #{vmk} | Select-Object -ExpandProperty PortGroupName"
-        pgname = powercli_command(command3).stdout.strip
-        # Test standard port groups
-        command4 = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup -Name \"#{pgname}\" | Select-Object -ExpandProperty VlanId"
-        stdpgs = powercli_command(command4).stdout.strip
-        unless stdpgs.empty?
-          describe 'Checking standand port group VLAN ID' do
-            subject { stdpgs }
-            it { should cmp "#{input('mgtVlanId')}" }
-          end
-        end
+        # Commenting out for now. Checking the vlan isn't necessary to the finding statements.
+        # # Get Management Port Group Name
+        # command3 = "Get-VMHost -Name #{vmhost} | Get-VMHostNetworkAdapter -Name #{vmk} | Select-Object -ExpandProperty PortGroupName"
+        # pgname = powercli_command(command3).stdout.strip
+        # # Test standard port groups
+        # command4 = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup -Name \"#{pgname}\" | Select-Object -ExpandProperty VlanId"
+        # stdpgs = powercli_command(command4).stdout.strip
+        # unless stdpgs.empty?
+        #   describe 'Checking standand port group VLAN ID' do
+        #     subject { stdpgs }
+        #     it { should cmp "#{input('mgtVlanId')}" }
+        #   end
+        # end
         describe 'SA Interview' do
           skip 'SA also needs to confirm this VLAN is dedicated to Management and not shared with VMs or other services.'
         end

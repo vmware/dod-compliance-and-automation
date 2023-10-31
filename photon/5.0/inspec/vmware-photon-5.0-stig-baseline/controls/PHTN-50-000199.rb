@@ -1,6 +1,6 @@
 control 'PHTN-50-000199' do
   title 'The Photon operating system TDNF package management tool must cryptographically verify the authenticity of all software packages during installation for all repos.'
-  desc  'Installation of any non-trusted software, patches, service packs, device drivers, or operating system components can significantly affect the overall security of the operating system. This requirement ensures the software has not been tampered with and has been provided by a trusted vendor.'
+  desc  'Installation of any nontrusted software, patches, service packs, device drivers, or operating system components can significantly affect the overall security of the operating system. This requirement ensures the software has not been tampered with and has been provided by a trusted vendor.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify software packages are cryptographically verified during installation:

@@ -1,6 +1,6 @@
 control 'VCSA-80-000294' do
   title 'The vCenter server Native Key Provider must be backed up with a strong password.'
-  desc  'The vCenter Native Key Provider feature was introduced in 7.0 U2 and acts as a key provider for encryption based capabilities such as encrypted virtual machines without requiring an external KMS solution.  When enabling this feature a backup must be taken which is a PKCS#12 formatted file and if no password is provided during the backup process this presents the opportunity for this to be used maliciously and compromise the environment.'
+  desc  'The vCenter Native Key Provider feature was introduced in 7.0 U2 and acts as a key provider for encryption-based capabilities such as encrypted virtual machines without requiring an external KMS solution. When enabling this feature, a backup must be taken, which is a PKCS#12 formatted file. If no password is provided during the backup process, this presents the opportunity for this to be used maliciously and compromise the environment.'
   desc  'rationale', ''
   desc  'check', "
     If the vCenter Native Key Provider feature is not in use, this is not applicable.

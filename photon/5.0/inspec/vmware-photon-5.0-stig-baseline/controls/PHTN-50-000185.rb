@@ -1,9 +1,9 @@
 control 'PHTN-50-000185' do
-  title 'The Photon operating system must enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt in login.defs.'
+  title 'The Photon operating system must enforce a delay of at least four seconds between logon prompts following a failed logon attempt in login.defs.'
   desc  'Limiting the number of logon attempts over a certain time interval reduces the chances that an unauthorized user may gain access to an account.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify passwords are stored with only encrypted representations:
+    At the command line, run the following command to verify a four second delay is configured between logon attempts:
 
     # grep '^FAIL_DELAY' /etc/login.defs
 

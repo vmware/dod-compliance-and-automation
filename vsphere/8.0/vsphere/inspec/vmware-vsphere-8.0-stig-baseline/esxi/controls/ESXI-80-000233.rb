@@ -3,7 +3,7 @@ control 'ESXI-80-000233' do
   desc  "
     ESXi offers both local and remote audit recordkeeping to meet the requirements of the NIAP Virtualization Protection Profile and Server Virtualization Extended Package. Local records are stored on any accessible local or VMFS path. Remote records are sent to the global syslog servers configured elsewhere.
 
-    To operate in the NIAP validated state, ESXi must enable and properly configure this audit system. This system is disabled by default.
+    To operate in the NIAP-validated state, ESXi must enable and properly configure this audit system. This system is disabled by default.
 
     Note: Audit records can be viewed locally via the \"/bin/viewAudit\" utility over SSH or at the ESXi shell.
   "

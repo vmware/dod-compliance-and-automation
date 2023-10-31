@@ -1,0 +1,11 @@
+---
+# tasks file for api
+
+- name: Include api
+  ansible.builtin.include_tasks:
+    file: api.yml
+    apply:
+      tags:
+        - api
+  tags:
+    - always

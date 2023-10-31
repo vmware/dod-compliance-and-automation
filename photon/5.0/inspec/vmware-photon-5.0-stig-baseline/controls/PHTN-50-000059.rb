@@ -1,11 +1,11 @@
 control 'PHTN-50-000059' do
   title 'The Photon operating system must use mechanisms meeting the requirements of applicable federal laws, Executive orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module.'
   desc  "
-    Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised.
+    Unapproved mechanisms that are used for authentication to the cryptographic module are not verified and therefore cannot be relied upon to provide confidentiality or integrity, and DOD data may be compromised.
 
     Operating systems utilizing encryption are required to use FIPS-compliant mechanisms for authenticating to cryptographic modules.
 
-    FIPS 140-2/140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DoD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general purpose computing system.
+    FIPS 140-2/140-3 is the current standard for validating that mechanisms used to access cryptographic modules utilize authentication that meets DOD requirements. This allows for Security Levels 1, 2, 3, or 4 for use on a general purpose computing system.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -37,8 +37,7 @@ control 'PHTN-50-000059' do
   tag cci: ['CCI-000803']
   tag nist: ['IA-7']
 
-  describe pam('/etc/pam.d/system-password') do
-    its('lines') { should match_pam_rule('password required pam_unix.so') }
-    its('lines') { should match_pam_rule('password required pam_unix.so').all_with_args('sha512') }
+  describe file('/etc/pam.d/system-password') do
+    its('content') { should match /^password\s+(required|requisite)\s+pam_unix\.so\s+(?=.*\bsha512\b).*$/ }
   end
 end

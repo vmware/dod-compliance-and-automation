@@ -1,6 +1,6 @@
 control 'PHTN-50-000215' do
   title 'The Photon operating system must configure Secure Shell (SSH) to disallow compression of the encrypted session stream.'
-  desc  'If compression is allowed in a Secure Shell (SSH) connection prior to authentication, vulnerabilities in the compression software could result in compromise of the system from an unauthenticated connection.'
+  desc  'If compression is allowed in a SSH connection prior to authentication, vulnerabilities in the compression software could result in compromise of the system from an unauthenticated connection.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:

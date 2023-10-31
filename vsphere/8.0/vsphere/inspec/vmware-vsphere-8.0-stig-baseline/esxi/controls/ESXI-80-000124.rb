@@ -23,7 +23,8 @@ control 'ESXI-80-000124' do
     Get-VMHost | Get-VMHostService | Where {$_.Label -eq \"NTP Daemon\" -or $_.Label -eq \"PTP Daemon\"}
 
     If the NTP service is not configured with authoritative DOD time sources or the service is not configured to start and stop with the host (\"Policy\" of \"on\" in PowerCLI) or is stopped, this is a finding.
-    If PTP is used instead of NTP, this is NOT a finding.
+
+    If PTP is used instead of NTP, this is not a finding.
   "
   desc 'fix', "
     To configure NTP, perform the following:
@@ -34,7 +35,7 @@ control 'ESXI-80-000124' do
 
     Click \"Add Service\" and select \"Network Time Protocol\".
 
-    Enter or update the NTP servers listed with a comma separate list of authoritative time servers. Click \"OK\".
+    Enter or update the NTP servers listed with a comma-separated list of authoritative time servers. Click \"OK\".
 
     From the vSphere Client, go to Hosts and Clusters.
 

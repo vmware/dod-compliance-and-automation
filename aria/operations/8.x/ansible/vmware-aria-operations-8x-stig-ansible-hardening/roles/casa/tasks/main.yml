@@ -1,0 +1,11 @@
+---
+# tasks file for casa
+
+- name: Include casa
+  ansible.builtin.include_tasks:
+    file: casa.yml
+    apply:
+      tags:
+        - casa
+  tags:
+    - always

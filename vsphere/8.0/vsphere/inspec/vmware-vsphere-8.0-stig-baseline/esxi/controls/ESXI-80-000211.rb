@@ -5,18 +5,35 @@ control 'ESXI-80-000211' do
   desc  'check', "
     From an ESXi shell, run the following command:
 
-    # /usr/lib/vmware/openssh/bin/sshd -T | grep clientaliveinterval
+    # esxcli system ssh server config list -k clientaliveinterval
 
-    Expected result:
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+
+    $esxcli = Get-EsxCli -v2
+    $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'clientaliveinterval'}
+
+    Example result:
 
     clientaliveinterval 200
 
-    If the output does not match the expected result, this is a finding.
+    If \"clientaliveinterval\" is not configured to \"200\", this is a finding.
   "
   desc 'fix', "
-    From an ESXi shell, add or update the following line in \"/etc/ssh/sshd_config\":
+    From an ESXi shell, run the following command:
 
-    ClientAliveInterval 200
+    # esxcli system ssh server config set -k clientaliveinterval -v 200
+
+    or
+
+    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+
+    $esxcli = Get-EsxCli -v2
+    $arguments = $esxcli.system.ssh.server.config.set.CreateArgs()
+    $arguments.keyword = 'clientaliveinterval'
+    $arguments.value = '200'
+    $esxcli.system.ssh.server.config.set.Invoke($arguments)
   "
   impact 0.3
   tag severity: 'low'
@@ -27,7 +44,31 @@ control 'ESXI-80-000211' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe 'This check is a manual or policy based check and must be reviewed manually.' do
-    skip 'This check is a manual or policy based check and must be reviewed manually.'
+  vmhostName = input('vmhostName')
+  cluster = input('cluster')
+  allhosts = input('allesxi')
+  vmhosts = []
+
+  unless vmhostName.empty?
+    vmhosts = powercli_command("Get-VMHost -Name #{vmhostName} | Sort-Object Name | Select -ExpandProperty Name").stdout.split
+  end
+  unless cluster.empty?
+    vmhosts = powercli_command("Get-Cluster -Name '#{cluster}' | Get-VMHost | Sort-Object Name | Select -ExpandProperty Name").stdout.split
+  end
+  unless allhosts == false
+    vmhosts = powercli_command('Get-VMHost | Sort-Object Name | Select -ExpandProperty Name').stdout.split
+  end
+
+  if !vmhosts.empty?
+    vmhosts.each do |vmhost|
+      command = "$vmhost = Get-VMHost -Name #{vmhost}; $esxcli = Get-EsxCli -VMHost $vmhost -V2; $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'clientaliveinterval'} | Select-Object -ExpandProperty Value"
+      describe powercli_command(command) do
+        its('stdout.strip') { should cmp '200' }
+      end
+    end
+  else
+    describe 'No hosts found!' do
+      skip 'No hosts found...skipping tests'
+    end
   end
 end

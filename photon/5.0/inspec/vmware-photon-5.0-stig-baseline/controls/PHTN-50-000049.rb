@@ -1,6 +1,6 @@
 control 'PHTN-50-000049' do
   title 'The Photon operating system must not have duplicate User IDs (UIDs).'
-  desc  'To ensure accountability and prevent unauthenticated access, organizational users must be uniquely identified and authenticated to prevent potential misuse and provide for non-repudiation.'
+  desc  'To ensure accountability and prevent unauthenticated access, organizational users must be uniquely identified and authenticated to prevent potential misuse and provide for nonrepudiation.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify there are no duplicate user IDs present:

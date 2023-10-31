@@ -16,12 +16,29 @@
         src: "{{ item }}"
         dest: "/tmp/ansible-backups-vcsa-vami-{{ backup_timestamp }}/"
         mode: preserve
-      ignore_errors: true
       changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
       with_items:
         - '{{ var_opt_conf_path }}'
         - '{{ var_etc_conf_path }}'
         - '{{ var_rsyslog_conf_path }}'
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!! Backup etc lighttpd.conf
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vcsa-vami-{{ backup_timestamp }}/etc"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ var_etc_conf_path }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000001
@@ -36,7 +53,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000004
@@ -51,7 +68,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000005
@@ -66,7 +83,7 @@
         state: present
         insertafter: '^server.modules = \($'
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000010
@@ -79,7 +96,7 @@
         regexp: '^(accesslog.format.*)$'
         replace: '# \1'
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000019
@@ -132,7 +149,7 @@
         mode: '0644'
         force: true
       notify:
-        - restart rsyslog
+        - '{{ role_name }} : restart rsyslog'
 
 ###################################################################################################################################
 - name: VCLD-80-000031
@@ -147,7 +164,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000033
@@ -162,7 +179,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000034
@@ -175,7 +192,7 @@
         state: absent
         regexp: '^/s?mod_webdav.*$'
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000035
@@ -190,7 +207,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000040
@@ -218,7 +235,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000060
@@ -233,7 +250,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000061
@@ -263,7 +280,7 @@
       with_items:
         - "{{ mimetypes }}"
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
       when:
         - mimetypes | length | int > 0
 
@@ -280,7 +297,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000063
@@ -293,7 +310,7 @@
         state: absent
         regexp: '^/s?mod_status.*$'
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000064
@@ -308,7 +325,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000096
@@ -323,7 +340,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000097
@@ -336,7 +353,7 @@
         regexp: '^ssl.disable-client-renegotiation.*$'
         state: absent
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 - name: VCLD-80-000098
@@ -351,7 +368,7 @@
         state: present
         firstmatch: true
       notify:
-        - restart {{ var_notify_service_name }}
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
 
 ###################################################################################################################################
 # VCLD-80-000099-102 Manual remediation

@@ -21,7 +21,7 @@ control 'VMCH-80-000196' do
 
     If the virtual machine advanced setting \"tools.setinfo.sizeLimit\" is not set to \"1048576\", this is a finding.
 
-    If the virtual machine advanced setting \"tools.setinfo.sizeLimit\" does NOT exist, this is NOT a finding.
+    If the virtual machine advanced setting \"tools.setinfo.sizeLimit\" does not exist, this is not a finding.
   "
   desc  'fix', "
     For each virtual machine do the following:

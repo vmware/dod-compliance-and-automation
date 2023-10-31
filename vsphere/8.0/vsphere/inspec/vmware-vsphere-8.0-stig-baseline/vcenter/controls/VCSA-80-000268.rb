@@ -24,7 +24,7 @@ control 'VCSA-80-000268' do
     Get-VDSwitch | Get-VDSecurityPolicy
     Get-VDPortgroup | ?{$_.IsUplink -eq $false} | Get-VDSecurityPolicy
 
-    If the \"Forged Transmits\" policy is set to accept for a non-uplink port, this is a finding.
+    If the \"Forged Transmits\" policy is set to accept for a nonuplink port, this is a finding.
   "
   desc 'fix', "
     From the vSphere Client, go to \"Networking\".

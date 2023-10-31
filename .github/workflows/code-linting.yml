@@ -256,6 +256,22 @@ jobs:
           gem install cookstyle
           ls -la
           cookstyle ./nsx/4.x/inspec/vmware-nsx-4.x-stig-baseline
+  cookstyle-nsxalb:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
+      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
+      - name: Install cookstyle and run
+        run: |
+          gem install cookstyle
+          ls -la
+          cookstyle ./nsx-alb/30.x/inspec/vmware-nsx-alb-stig-baseline
   ansiblelint-nsx3:
     runs-on: ubuntu-latest
     steps:

@@ -3,7 +3,7 @@ control 'VCLD-80-000019' do
   desc  "
     Log data is essential in the investigation of events. If log data were to become compromised, then competent forensic analysis and discovery of the true source of potentially malicious system activity would be difficult, if not impossible, to achieve. In addition, access to log records provides information an attacker could potentially use to their advantage since each event record might contain communication ports, protocols, services, trust relationships, user names, etc.
 
-    The web server must protect the log data from unauthorized read, write, copy, etc. This can be done by the web server if the web server is also doing the logging function. The web server may also use an external log system. In either case, the logs must be protected from access by non-privileged users.
+    The web server must protect the log data from unauthorized read, write, copy, etc. This can be done by the web server if the web server is also doing the logging function. The web server may also use an external log system. In either case, the logs must be protected from access by nonprivileged users.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -37,25 +37,46 @@ control 'VCLD-80-000019' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command('find /var/log/vmware/applmgmt/ -type f -xdev').stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'root' }
-      its('group') { should eq 'root' }
+  logfiles = command('find /var/log/vmware/applmgmt/ -type f -xdev').stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'root' }
+        its('group') { should eq 'root' }
+      end
+    end
+  else
+    describe 'No applmgmt log files found...skipping.' do
+      skip 'No applmgmt log files found...skipping.'
     end
   end
-  command('find /var/log/vmware/applmgmt-audit/ -type f -xdev').stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'root' }
-      its('group') { should eq 'root' }
+  logfiles2 = command('find /var/log/vmware/applmgmt-audit/ -type f -xdev').stdout
+  if !logfiles2.empty?
+    logfiles2.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'root' }
+        its('group') { should eq 'root' }
+      end
+    end
+  else
+    describe 'No applmgmt audit log files found...skipping.' do
+      skip 'No applmgmt audit log files found...skipping.'
     end
   end
-  command('find /opt/vmware/var/log/lighttpd/ -type f -xdev').stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'lighttpd' }
-      its('group') { should eq 'lighttpd' }
+  logfiles3 = command('find /opt/vmware/var/log/lighttpd/ -type f -xdev').stdout
+  if !logfiles3.empty?
+    logfiles3.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'lighttpd' }
+        its('group') { should eq 'lighttpd' }
+      end
+    end
+  else
+    describe 'No lighttpd log files found...skipping.' do
+      skip 'No lighttpd audit log files found...skipping.'
     end
   end
 end

@@ -59,6 +59,12 @@ Depending on the product, there may be a need to host DoD specific whitepapers, 
 
 More information on support for STIGs and STIG Readiness Guides is available in the [Support](SUPPORT.md) document.
 
+## Archives
+
+The `master` branch in this repo contains the latest available content for a given product and major version. In some cases it may be necessary to retain access to older revisions of guidance and automation for products that are still supported.  
+
+In these cases a separate branch will be created to maintain access with a convention of `archive-product-version`.  
+
 ## Contributing
 
 The dod-compliance-and-automation project team welcomes contributions from the community. If you wish to contribute code and you have not signed our contributor license agreement (CLA), our bot will update the issue when you open a Pull Request. For any questions about the CLA process, please refer to our [FAQ](https://cla.vmware.com/faq).

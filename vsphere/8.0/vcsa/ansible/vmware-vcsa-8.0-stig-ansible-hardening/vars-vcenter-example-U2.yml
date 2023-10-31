@@ -1,0 +1,12 @@
+# General
+run_create_backups: true
+
+# Photon
+# U1 = 3, U2 = 4
+photon_version: '4'
+## Photon 4/5 vars
+create_backups: true
+run_etc_issue_dod: true
+var_rsyslog_authpriv_log: '/var/log/audit/sshinfo.log'
+var_pam_use_pwquality_conf: false
+var_pam_use_pwhistory_conf: false

@@ -3,9 +3,9 @@ control 'VCSA-80-000196' do
   desc  "
     Applications handling data requiring \"data at rest\" protections must employ cryptographic mechanisms to prevent unauthorized disclosure and modification of the information at rest.
 
-    Data encryption is a common technique used in environments that require additional levels of security.  It consists of a process to ensure that data can only be consumed by systems that have appropriate levels of access.  Approved systems must have and use the appropriate cryptographic keys to encrypt and decrypt the data.  Systems that do not have the keys will not be able to consume the data in any meaningful way, as it will remain encrypted in accordance to the commonly used Advanced Encryption Standard (AES) from the National Institute of Standards and Technology, or NIST.
+    Data encryption is a common technique used in environments that require additional levels of security. It consists of a process to ensure that data can only be consumed by systems that have appropriate levels of access. Approved systems must have and use the appropriate cryptographic keys to encrypt and decrypt the data. Systems that do not have the keys will not be able to consume the data in any meaningful way, as it will remain encrypted in accordance with the commonly used Advanced Encryption Standard (AES) from the National Institute of Standards and Technology, or NIST.
 
-    vSAN supports Data-At-Rest Encryption and Data-in-Transit Encryption and uses an AES 256 cipher. Data is encrypted after all other processing, such as deduplication, is performed. Data at rest encryption protects data on storage devices, in case a device is removed from the cluster.
+    vSAN supports Data-At-Rest Encryption and Data-in-Transit Encryption and uses an AES 256 cipher. Data is encrypted after all other processing, such as deduplication, is performed. Data at rest encryption protects data on storage devices in case a device is removed from the cluster.
   "
   desc  'rationale', ''
   desc  'check', "

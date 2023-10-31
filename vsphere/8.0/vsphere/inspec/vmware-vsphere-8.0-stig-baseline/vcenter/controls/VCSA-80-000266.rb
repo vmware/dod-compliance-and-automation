@@ -1,6 +1,6 @@
 control 'VCSA-80-000266' do
   title 'The vCenter Server must require an administrator to unlock an account locked due to excessive login failures.'
-  desc  'By requiring that Single Sign-On (SSO) accounts be unlocked manually, the risk of unauthorized access via user password guessing, otherwise known as brute forcing, is reduced. When the account unlock time is set to zero, once an account is locked it can only be unlocked manually by an administrator.'
+  desc  'By requiring that Single Sign-On (SSO) accounts be unlocked manually, the risk of unauthorized access via user password guessing, otherwise known as brute forcing, is reduced. When the account unlock time is set to zero, a locked account can only be unlocked manually by an administrator.'
   desc  'rationale', ''
   desc  'check', "
     From the vSphere Client, go to Administration >> Single Sign On >> Configuration >> Local Accounts >> Lockout Policy.

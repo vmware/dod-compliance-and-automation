@@ -27,11 +27,18 @@ control 'VCST-80-000025' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command("find '#{input('logPath')}' ! -name lookupsvc-init.log ! -name sts-prestart.log -type f -xdev").stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'sts' }
-      its('group') { should eq 'lwis' }
+  logfiles = command("find '#{input('logPath')}' ! -name lookupsvc-init.log ! -name sts-prestart.log -type f -xdev").stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'sts' }
+        its('group') { should eq 'lwis' }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end

@@ -1,6 +1,6 @@
 control 'ESXI-80-000224' do
   title 'The ESXi host must verify certificates for SSL syslog endpoints.'
-  desc  'When sending syslog data to a remote host, ESXi can be configured to use any combination of TCP, UDP and SSL transports. When using SSL, the server certificate must be validated to ensure that the host is connecting to a valid syslog server.'
+  desc  'When sending syslog data to a remote host, ESXi can be configured to use any combination of TCP, UDP, and SSL transports. When using SSL, the server certificate must be validated to ensure that the host is connecting to a valid syslog server.'
   desc  'rationale', ''
   desc  'check', "
     If SSL is not used for a syslog target, this is not applicable.
@@ -20,7 +20,7 @@ control 'ESXI-80-000224' do
     If the \"Syslog.global.logCheckSSLCerts\" setting is not set to \"true\", this is a finding.
   "
   desc 'fix', "
-    To configure SSL syslog endpoint certificate checking it must be turned on and also the trusted certificate chain must be added to ESXi's trusted store.
+    To configure SSL syslog endpoint certificate checking, it must be turned on and the trusted certificate chain must be added to ESXi's trusted store.
 
     From the vSphere Client go to Hosts and Clusters.
 
@@ -28,7 +28,7 @@ control 'ESXI-80-000224' do
 
     Click \"Edit\". Select the \"Syslog.global.logCheckSSLCerts\" value and configure it to \"true\".
 
-    Copy the PEM formatted trusted CA certificate so that is accessible to the host and append the contents to /etc/vmware/ssl/castore.pem by running the follow command:
+    Copy the PEM formatted trusted CA certificate so that is accessible to the host and append the contents to /etc/vmware/ssl/castore.pem by running the following command:
 
     # <path/to/cacert> >> /etc/vmware/ssl/castore.pem
 

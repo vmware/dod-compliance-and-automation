@@ -3,7 +3,7 @@ control 'ESXI-80-000160' do
   desc  "
     While encrypted vMotion is available, vMotion traffic should still be sequestered from other traffic to further protect it from attack. This network must only be accessible to other ESXi hosts, preventing outside access to the network.
 
-    The vMotion VMkernel port group must be in a dedicated VLAN that can be on a standard or distributed virtual switch as long as the vMotion VLAN is not shared by any other function and is not routed to anything but ESXi hosts.
+    The vMotion VMkernel port group must be in a dedicated VLAN that can be on a standard or distributed virtual switch as long as the vMotion VLAN is not shared by any other function and is only routed to ESXi hosts.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -15,14 +15,14 @@ control 'ESXI-80-000160' do
 
     Review the VLAN associated with any vMotion VMkernel(s) and verify they are dedicated for that purpose and are logically separated from other functions.
 
-    If long distance or cross vCenter vMotion is used the vMotion network can be routable but must be accessible to only the intended ESXi hosts.
+    If long distance or cross vCenter vMotion is used, the vMotion network can be routable but must be accessible to only the intended ESXi hosts.
 
     If the vMotion port group is not on an isolated VLAN and/or is routable to systems other than ESXi hosts, this is a finding.
   "
   desc 'fix', "
     Configuration of the vMotion VMkernel will be unique to each environment.
 
-    As an example, to modify the IP address and VLAN information to the correct network on a distributed switch do the following:
+    For example, to modify the IP address and VLAN information to the correct network on a distributed switch, do the following:
 
     From the vSphere Client, go to Networking.
 

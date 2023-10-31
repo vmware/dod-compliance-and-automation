@@ -137,7 +137,7 @@ Try{
   ForEach($vm in $vms){
     $name = $vm.Name
     $reportFile = $reportPath + "\VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
-    $command = {inspec exec $inspecPath -t vmware:// --input vmhostName=$name --show-progress --reporter=json:$reportFile}
+    $command = {inspec exec $inspecPath -t vmware:// --input vmName=$name --show-progress --reporter=json:$reportFile}
     Write-ToConsole "...Report path is $reportPath and report file is $reportFile"
     Write-ToConsole "...Running InSpec exec against $name with $command"
     Invoke-Command -ScriptBlock $command
@@ -149,12 +149,12 @@ Try{
         $attestCommand = {saf attest apply -i $reportFile $attestationFile -o $reportFileWithAttestations}
         Invoke-Command -ScriptBlock $attestCommand
         $cklFile = $reportPath + "\VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.ckl"
-        $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
+        $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --fqdn $name}
         Invoke-Command -ScriptBlock $cklCommand
       }Else{
         Write-ToConsole "...No attestion file provided for $name"
         $cklFile = $reportPath + "\VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".ckl"
-        $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
+        $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --fqdn $name}
         Invoke-Command -ScriptBlock $cklCommand
       }
     }

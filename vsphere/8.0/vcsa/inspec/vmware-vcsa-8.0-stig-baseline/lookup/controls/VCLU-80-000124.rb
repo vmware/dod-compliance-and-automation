@@ -1,5 +1,5 @@
 control 'VCLU-80-000124' do
-  title 'The vCenter Lookup service must enable "STRICT_SERVLET_COMPLIANCE".'
+  title 'The vCenter Lookup service must enable STRICT_SERVLET_COMPLIANCE.'
   desc  "
     Strict Servlet Compliance forces Tomcat to adhere to standards specifications including but not limited to RFC2109. RFC2109 sets the standard for HTTP session management. This setting affects several other settings that primarily pertain to cookie headers, cookie values, and sessions. Cookies will be parsed for strict adherence to specifications.
 

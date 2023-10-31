@@ -1,6 +1,6 @@
 control 'PHTN-50-000213' do
   title 'The Photon operating system must configure Secure Shell (SSH) to perform strict mode checking of home directory configuration files.'
-  desc  'If other users have access to modify user-specific Secure Shell (SSH) configuration files, they may be able to log on to the system as another user.'
+  desc  'If other users have access to modify user-specific SSH configuration files, they may be able to log on to the system as another user.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:

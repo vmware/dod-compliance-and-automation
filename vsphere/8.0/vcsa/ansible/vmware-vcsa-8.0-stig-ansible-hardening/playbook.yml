@@ -3,7 +3,46 @@
   roles:
     - role: vmware-photon-3.0-stig-ansible-hardening
       vars:
-        var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
+        # Set to true or false to configure dod banner for ssh
+        run_sshd_banner_issue: false
+        # Disable N/A Photon Controls
+        run_set_syslog_server: false
+        run_usr_lib_perms: false
+        run_set_ntp_server: false
+      when:
+        - photon_version == '3'
+    - role: vmware-photon-4.0-stig-ansible-hardening
+      vars:
+        # Set to true or false to configure dod banner for ssh
+        run_etc_issue_dod: false
+        # Disable N/A Photon Controls
+        run_rsyslog_server: false
+        run_enable_selinux: false
+        run_selinux_install: false
+        run_usr_lib_perms: false
+        run_time_sync: false
+        run_systemd_tmp_mount: false
+        run_pam_add_pwquality_so: false
+        run_install_aide: false
+        run_aide_config: false
+      when:
+        - photon_version == '4'
+    - role: vmware-photon-5.0-stig-ansible-hardening
+      vars:
+        # Set to true or false to configure dod banner for ssh
+        run_etc_issue_dod: false
+        # Disable N/A Photon Controls
+        run_rsyslog_server: false
+        run_enable_selinux: false
+        run_selinux_install: false
+        run_usr_lib_perms: false
+        run_time_sync: false
+        run_systemd_tmp_mount: false
+        run_install_aide: false
+        run_aide_config: false
+      when:
+        - photon_version == '5'
+    - role: misc
     - role: eam
     - role: envoy
     - role: lookup
