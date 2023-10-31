@@ -1,5 +1,5 @@
 addons:
-- name: stig
+- name: xenial-stig
   include:
     stemcell:
     - os: ubuntu-xenial

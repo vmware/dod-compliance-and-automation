@@ -1,5 +1,5 @@
 addons:
-- name: stig
+- name: jammy-stig
   include:
     stemcell:
     - os: ubuntu-jammy
