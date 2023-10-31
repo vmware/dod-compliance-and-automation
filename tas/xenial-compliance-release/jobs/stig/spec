@@ -1,5 +1,5 @@
 ---
-name: xenial_fixes
+name: stig
 
 templates: 
   pre-start: bin/pre-start

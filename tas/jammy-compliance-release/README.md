@@ -5,11 +5,12 @@
 The `stig` is intended to be used to change the stemcell configurations to pass Bionic STIG rules, since a Jammy STIG has not been published yet
 
 ### fixes
-Following controls are fixed by this release
-- V-238309: The Ubuntu operating system must generate audit records for privileged activities, nonlocal maintenance, diagnostic sessions and other system-level access.
-- V-238216: The Ubuntu operating system must configure the SSH daemon to use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hashes to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
-- V-238217: The Ubuntu operating system must configure the SSH daemon to use FIPS 140-2 approved ciphers to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.
-- V-255912: The Ubuntu operating system SSH server must be configured to use only FIPS-validated key exchange algorithms.
+| VID | Title|
+|---|---|
+| V-238309| The Ubuntu operating system must generate audit records for privileged activities, nonlocal maintenance, diagnostic sessions and other system-level access. |
+| V-238216| The Ubuntu operating system must configure the SSH daemon to use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hashes to prevent the unauthorized disclosure of information and/or detect changes to information during transmission. |
+| V-238217| The Ubuntu operating system must configure the SSH daemon to use FIPS 140-2 approved ciphers to prevent the unauthorized disclosure of information and/or detect changes to information during transmission. |
+| V-255912| The Ubuntu operating system SSH server must be configured to use only FIPS-validated key exchange algorithms. |
 
 ### false positives
 - V-238258
