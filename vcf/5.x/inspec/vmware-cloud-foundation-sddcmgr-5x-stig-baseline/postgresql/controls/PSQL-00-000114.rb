@@ -9,7 +9,7 @@ control 'PSQL-00-000114' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # psql -h localhost -U postgres -A -t -c \"SHOW log_disconnections\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c \"SHOW log_disconnections\"
 
     Expected result:
 
@@ -20,7 +20,7 @@ control 'PSQL-00-000114' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_disconnections TO 'on';\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_disconnections TO 'on';\"
 
     Reload the PostgreSQL service by running the following command:
 

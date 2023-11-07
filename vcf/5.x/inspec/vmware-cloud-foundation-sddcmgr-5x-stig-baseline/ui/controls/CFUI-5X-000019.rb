@@ -31,11 +31,18 @@ control 'CFUI-5X-000019' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command('find /var/log/vmware/vcf/sddc-manager-ui-app/ -xdev -type f').stdout.split.each do |fname|
-    describe file(fname) do
-      its('owner') { should cmp 'vcf_sddc_manager_ui_app' }
-      its('group') { should cmp 'vcf' }
-      it { should_not be_writable.by('others') }
+  logfiles = command('find /var/log/vmware/vcf/sddc-manager-ui-app/ -xdev -type f').stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        its('owner') { should cmp 'vcf_sddc_manager_ui_app' }
+        its('group') { should cmp 'vcf' }
+        it { should_not be_writable.by('others') }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end

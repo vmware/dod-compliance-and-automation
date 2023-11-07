@@ -39,11 +39,17 @@ control 'CFNG-5X-000040' do
   tag nist: ['IA-5 (2) (b)']
 
   ssl_keys = command('nginx -T 2>&1 | grep "ssl_certificate_key" | cut -f 1 -d ";"').stdout.split.keep_if { |fname| fname != 'ssl_certificate_key' }
-  ssl_keys.each do |key|
-    describe file(key) do
-      its('group') { should cmp 'root' }
-      its('owner') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0640') }
+  if !ssl_keys.empty?
+    ssl_keys.each do |key|
+      describe file(key) do
+        its('group') { should cmp 'root' }
+        its('owner') { should cmp 'root' }
+        it { should_not be_more_permissive_than('0640') }
+      end
+    end
+  else
+    describe 'No key files found...skipping.' do
+      skip 'No key files found...skipping.'
     end
   end
 end

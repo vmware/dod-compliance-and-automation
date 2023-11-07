@@ -13,7 +13,7 @@ control 'CFNG-5X-000090' do
 
     Example result:
 
-    ssl_protocols TLSv1.2;
+    ssl_protocols TLSv1.2 TLSv1.3;
 
     If \"ssl_protocols\" is not configured to \"TLSv1.2\", this is a finding.
   "
@@ -24,7 +24,7 @@ control 'CFNG-5X-000090' do
 
     Add the following line in the http context for each server that is terminating ssl:
 
-    ssl_protocols TLSv1.2;
+    ssl_protocols TLSv1.2 TLSv1.3;
 
     At the command line, run the following command:
 
@@ -40,26 +40,33 @@ control 'CFNG-5X-000090' do
   tag cci: ['CCI-000197', 'CCI-002418', 'CCI-002420', 'CCI-002422']
   tag nist: ['IA-5 (1) (c)', 'SC-8', 'SC-8 (2)']
 
-  protocols = [['TLSv1.2'], ['TLSv1.3']]
+  protocols = ['TLSv1.2', 'TLSv1.3']
   http_protocols = nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['ssl_protocols']
   servers = nginx_conf_custom(input('nginx_conf_path')).servers
 
   # Check server blocks
   if http_protocols
+    httpsprotocols = http_protocols.flatten
     # Check setting in HTTP block
-    describe http_protocols do
-      it { should be_in protocols }
+    httpsprotocols.each do |httpsprotocol|
+      describe httpsprotocol do
+        it { should be_in protocols }
+      end
     end
     servers.each do |server|
       next unless server.params['listen'].flatten.include?('ssl')
-      describe.one do
-        describe "Checking server block: #{server.params['server_name']}" do
-          it 'its ssl_protocols should be TLS1.2 or 1.3' do
-            expect(server.params['ssl_protocols']).to be_in protocols
+      server_protocols = server.params['ssl_protocols']
+      if server_protocols
+        serverprotocols = server_protocols.flatten
+        serverprotocols.each do |serverprotocol|
+          describe "Checking server block: #{server.params['server_name']} its ssl_protocol #{serverprotocol}" do
+            subject { serverprotocol }
+            it { should be_in protocols }
           end
         end
+      else
         describe "Checking server block: #{server.params['server_name']}" do
-          it 'its ssl_protocols should not exist' do
+          it 'its ssl_protocol should not exist since they are defined at the http level' do
             expect(server.params['ssl_protocols']).to be nil
           end
         end
@@ -68,9 +75,20 @@ control 'CFNG-5X-000090' do
   else
     servers.each do |server|
       next unless server.params['listen'].flatten.include?('ssl')
-      describe "Checking server block: #{server.params['server_name']}" do
-        it 'its ssl_protocols should be TLS1.2 or 1.3' do
-          expect(server.params['ssl_protocols']).to be_in protocols
+      server_protocols = server.params['ssl_protocols']
+      if server_protocols
+        serverprotocols = server_protocols.flatten
+        serverprotocols.each do |serverprotocol|
+          describe "No HTTP context configuration detected. Checking server block: #{server.params['server_name']} its ssl_protocol #{serverprotocol}" do
+            subject { serverprotocol }
+            it { should be_in protocols }
+          end
+        end
+      else
+        describe "No HTTP context configuration detected. Checking server block: #{server.params['server_name']}" do
+          it 'its ssl_protocol should not exist since they are defined at the http level' do
+            expect(server.params['ssl_protocols']).not_to be nil
+          end
         end
       end
     end

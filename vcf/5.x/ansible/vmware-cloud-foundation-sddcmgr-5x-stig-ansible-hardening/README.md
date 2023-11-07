@@ -1,6 +1,6 @@
 # vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 VMware Cloud Foundation SDDC Manager 5.x Appliance STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 1: June 1, 2023    
+Version: Version 1 Release 2: November 7, 2023    
 STIG Type: STIG Readiness Guide  
 
 ## Overview
@@ -8,7 +8,7 @@ This is a hardening playbook that utilizes Ansible to perform automated remediat
 
 ## !!Important!!
 - Please read through the README carefully and familiarize yourself with the playbook and ansible before running this playbook
-- As always please ensure you have a backout plan if needed you can roll back the changes
+- As always please ensure you have a back out plan if needed you can roll back the changes
 - In order to run the Photon role it must be installed as a role so that this playbook may find it
 - This playbook has not been tested for forward or backward compatibility beyond the version of SDDC Manager listed under requirements.
 

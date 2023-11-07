@@ -9,7 +9,7 @@ control 'CFNG-5X-000019' do
   desc  'check', "
     At the command line, run the following command:
 
-    # find /var/log/nginx/* -type f -exec stat -c \"%n is owned by %U and group %G permissions are %a\" {} $1\\;
+    # find /var/log/nginx/ -type f -exec stat -c \"%n is owned by %U and group %G permissions are %a\" {} $1\\;
 
     If any file is not owned by root or group is not vcf or permissions are more permissive than 0640, this is a finding.
   "
@@ -31,11 +31,18 @@ control 'CFNG-5X-000019' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command(' find /var/log/nginx/* -maxdepth 1 -type f').stdout.split.each do |fname|
-    describe file(fname) do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'vcf' }
-      it { should_not be_more_permissive_than('0640') }
+  logfiles = command('find /var/log/nginx/ -type f').stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        its('owner') { should cmp 'root' }
+        its('group') { should cmp 'vcf' }
+        it { should_not be_more_permissive_than('0640') }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end

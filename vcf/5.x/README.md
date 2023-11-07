@@ -1,8 +1,18 @@
 # VMware Cloud Foundation 5.x DoD STIG Compliance and Automation
+*STIG Status: STIG Readiness Guide Version 1 Release 2*  
+
+## Compatibility
+The STIG Readiness Guide Version 1 Release 2 is intended for 5.1 builds only. If you are still on 5.0 please reference the STIG Readiness Guide Version 1 Release 1 of the guidance and automation available [here](https://github.com/vmware/dod-compliance-and-automation/tree/archive-vcf-50).  
+
+|                |        V1R1*       |         V1R2*      |
+|:--------------:|:------------------:|:------------------:|
+|     5.0        | :heavy_check_mark: |         :x:        |
+|     5.0.0.1    | :heavy_check_mark: |         :x:        |
+|     5.1        |        :x:         | :heavy_check_mark: |
+
+\* Denotes STIG Readiness Guide
 
 ## Overview
-*STIG Status: STIG Readiness Guide Version 1 Release 1*
-
 This project folder contains content for compliance auditing and remediation of the VMware Cloud Foundation 5.x STIG Readiness Guide.
 
 The VMware Cloud Foundation 5.x Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of VMware Cloud Foundation 5.x in the Department of Defense (DoD). The VMware Cloud Foundation 5.x STIG is comprised of the following:

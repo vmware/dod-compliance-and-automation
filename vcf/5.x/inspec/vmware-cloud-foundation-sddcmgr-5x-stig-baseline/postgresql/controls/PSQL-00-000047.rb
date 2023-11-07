@@ -15,20 +15,20 @@ control 'PSQL-00-000047' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -h localhost -U postgres -A -t -c \"SHOW tcp_keepalives_idle\"
-    $ psql -h localhost -U postgres -A -t -c \"SHOW tcp_keepalives_interval\"
-    $ psql -h localhost -U postgres -A -t -c \"SHOW tcp_keepalives_count\"
-    $ psql -h localhost -U postgres -A -t -c \"SHOW statement_timeout\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c \"SHOW tcp_keepalives_idle\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c \"SHOW tcp_keepalives_interval\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c \"SHOW tcp_keepalives_count\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c \"SHOW statement_timeout\"
 
     If these settings are not set, this is a finding.
   "
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -h localhost -U postgres -c \"ALTER SYSTEM SET statement_timeout = '1min';\"
-    $ psql -h localhost -U postgres -c \"ALTER SYSTEM SET tcp_keepalives_idle = '7200';\"
-    $ psql -h localhost -U postgres -c \"ALTER SYSTEM SET tcp_keepalives_interval = '75';\"
-    $ psql -h localhost -U postgres -c \"ALTER SYSTEM SET tcp_keepalives_count = '9';\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET statement_timeout = '1min';\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET tcp_keepalives_idle = '7200';\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET tcp_keepalives_interval = '75';\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET tcp_keepalives_count = '9';\"
 
     Note: Set the following parameters to organizational requirements or use the values in the example above.
 

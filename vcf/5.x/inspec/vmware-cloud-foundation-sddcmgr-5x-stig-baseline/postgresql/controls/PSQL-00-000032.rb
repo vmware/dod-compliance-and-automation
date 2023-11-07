@@ -11,14 +11,14 @@ control 'PSQL-00-000032' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # psql -h localhost -U postgres -c \"select * from pg_extension where extname != 'plpgsql'\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -c \"select * from pg_extension where extname != 'plpgsql'\"
 
     If any extensions exist that are not approved, this is a finding.
   "
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # psql -h localhost -U postgres -c \"DROP EXTENSION <extension name>\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -c \"DROP EXTENSION <extension name>\"
 
     Note: It is recommended that plpgsql not be removed.
 

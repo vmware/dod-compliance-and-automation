@@ -9,22 +9,22 @@ control 'PSQL-00-000029' do
   desc  'check', "
     At the command prompt, run the following commands:
 
-    # psql -h localhost -U postgres -d domainmanager -x -c \"\\dt\" | grep Owner | grep -v domainmanager
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -d domainmanager -x -c \"\\dt\" | grep Owner | grep -v domainmanager
 
-    # psql -h localhost -U postgres -d lcm -x -c \"\\dt\" | grep Owner | grep -v lcm
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -d lcm -x -c \"\\dt\" | grep Owner | grep -v lcm
 
-    # psql -h localhost -U postgres -d operationsmanager -x -c \"\\dt\" | grep Owner | grep -v opsmgr
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -d operationsmanager -x -c \"\\dt\" | grep Owner | grep -v opsmgr
 
-    # psql -h localhost -U postgres -d platform -x -c \"\\dt\" | grep Owner | grep -v platform
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -d platform -x -c \"\\dt\" | grep Owner | grep -v platform
 
-    # psql -h localhost -U postgres -d sddc_manager_ui -x -c \"\\dt\" | grep Owner | grep -v vcfui
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -d sddc_manager_ui -x -c \"\\dt\" | grep Owner | grep -v vcfui
 
     If any results are returned from any of the commands, this is a finding.
   "
   desc 'fix', "
     At the command prompt, run the following command:
 
-    # psql -h localhost -U postgres -c \"ALTER TABLE <tablename> OWNER TO <ownername>;\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -c \"ALTER TABLE <tablename> OWNER TO <ownername>;\"
 
     Replace <tablename> with the name of the table discovered during the check and <ownername> with the appropriate owner name from the check.
   "

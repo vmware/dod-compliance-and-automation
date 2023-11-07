@@ -1,11 +1,11 @@
 name: vmware-cloud-foundation-sddcmgr-5.x-stig-baseline
-title: InSpec Profile for VMware Cloud Foundation SDDC Manager STIG Readiness Guide Version 1 Release 1
-maintainer: VMware
+title: InSpec Profile for VMware Cloud Foundation SDDC Manager STIG Readiness Guide Version 1 Release 2
+maintainer: VMTA
 copyright: VMware
-copyright_email: stigs@vmware.com
+copyright_email: vmta-stigs@vmware.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.1
+version: 1.0.2
 
 depends:
   - name: application
@@ -19,7 +19,7 @@ depends:
   - name: nginx
     path: nginx
   - name: photon
-    path: ../vmware-photon-3.0-stig-inspec-baseline
+    path: ../vmware-photon-4.0-stig-baseline
   - name: operationsmanager
     path: operationsmanager
   - name: postgresql
@@ -28,6 +28,9 @@ depends:
     path: sos
   - name: ui
     path: ui
+  # Remove for external use
+  - name: internal
+    path: internal
 
 # Specifying bearer token in parent profile so sensitive is honored.
 inputs:

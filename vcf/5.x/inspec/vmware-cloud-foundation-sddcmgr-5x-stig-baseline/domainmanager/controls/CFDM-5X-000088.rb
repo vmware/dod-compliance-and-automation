@@ -31,11 +31,18 @@ control 'CFDM-5X-000088' do
   tag cci: ['CCI-001493', 'CCI-001494', 'CCI-001495', 'CCI-001813', 'CCI-002235']
   tag nist: ['AC-6 (10)', 'AU-9', 'CM-5 (1)']
 
-  command('find /etc/vmware/vcf/domainmanager/ -xdev ! -name vcf-domain-manager.conf -type f').stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_more_permissive_than('0600') }
-      its('owner') { should cmp 'vcf_domainmanager' }
-      its('group') { should cmp 'vcf' }
+  appfiles = command('find /etc/vmware/vcf/domainmanager/ -xdev ! -name vcf-domain-manager.conf -type f').stdout
+  if !appfiles.empty?
+    appfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_more_permissive_than('0600') }
+        its('owner') { should cmp 'vcf_domainmanager' }
+        its('group') { should cmp 'vcf' }
+      end
+    end
+  else
+    describe 'No app files found...skipping.' do
+      skip 'No app files found...skipping.'
     end
   end
 end
