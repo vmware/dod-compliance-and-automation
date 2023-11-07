@@ -1,19 +1,18 @@
 # vmware-vcsa-8.0-stig-baseline
-VMware vSphere vCenter Appliance 8.0 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 2 Date: 21 September 2023  
-STIG Type: STIG Readiness Guide
+VMware vSphere vCenter Appliance 8.0 STIG Chef InSpec Profile  
+Version: Release 1 Version 1 Date: 03 November 2023  
+STIG Type: Official STIG
 
 ## VCSA InSpec Profiles
 
 InSpec profiles for the VCSA are available for each component or can be run all or some from the wrapper/overlay profile. Note the wrapper profile is setup to reference the other profiles from the same relative folder structure as seen here.  
 
-[See the InSpec docs for more info on Profile dependencies and inheritence](https://www.inspec.io/docs/reference/profiles/)
+[See the InSpec docs for more info on Profile dependencies and inheritance](https://www.inspec.io/docs/reference/profiles/)
 
 
 ## How to run InSpec locally from Powershell on Windows
 
 **Note - assumes vcsa profiles are downloaded to C:\Inspec\Profiles\vmware-vcsa-8.0-stig-baseline**  
-**Note - assumes photon profile is downloaded to C:\Inspec\Profiles\vmware-photon-4.0-stig-inspec-baseline**  
 
 It is recommended to utilize an inputs files for specifying vCenter and environment specific variables. An example is provided for you to begin with.  
 

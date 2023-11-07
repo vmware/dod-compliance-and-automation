@@ -1,59 +1,54 @@
 control 'ESXI-80-000216' do
   title 'The ESXi host must configure virtual switch security policies to reject forged transmits.'
-  desc  "
-    If the virtual machine (VM) operating system changes the Media Access Control (MAC) address, the operating system can send frames with an impersonated source MAC address at any time. This allows an operating system to stage malicious attacks on the devices in a network by impersonating a network adaptor authorized by the receiving network.
+  desc 'If the virtual machine (VM) operating system changes the Media Access Control (MAC) address, the operating system can send frames with an impersonated source MAC address at any time. This allows an operating system to stage malicious attacks on the devices in a network by impersonating a network adaptor authorized by the receiving network.
 
-    This means the virtual switch does not compare the source and effective MAC addresses.
+This means the virtual switch does not compare the source and effective MAC addresses.
 
-    To protect against MAC address impersonation, all virtual switches must have forged transmissions set to reject. Reject Forged Transmit can be set at the vSwitch and/or the Portgroup level. Switch-level settings can be overridden at the Portgroup level.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    Note: This control addresses ESXi standard switches. Distributed switches are addressed in the vCenter STIG. If there is no standard switch on the ESXi host, this is not applicable.
+To protect against MAC address impersonation, all virtual switches must have forged transmissions set to reject. Reject Forged Transmit can be set at the vSwitch and/or the Portgroup level. Switch-level settings can be overridden at the Portgroup level.'
+  desc 'check', %q(Note: This control addresses ESXi standard switches. Distributed switches are addressed in the vCenter STIG. If there is no standard switch on the ESXi host, this is not applicable.
 
-    From the vSphere Client, go to Hosts and Clusters.
+From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> Networking >> Virtual Switches.
+Select the ESXi Host >> Configure >> Networking >> Virtual Switches.
 
-    On each standard switch, click the '...' button next to each port group and select \"Edit Settings\".
+On each standard switch, click the '...' button next to each port group and select "Edit Settings".
 
-    Click the \"Security\" tab. Verify that \"Forged transmits\" is set to \"Reject\" and that \"Override\" is not checked.
+Click the "Security" tab. Verify that "Forged transmits" is set to "Reject" and that "Override" is not checked.
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    Get-VirtualSwitch | Get-SecurityPolicy
-    Get-VirtualPortGroup | Get-SecurityPolicy | Select-Object *
+Get-VirtualSwitch | Get-SecurityPolicy
+Get-VirtualPortGroup | Get-SecurityPolicy | Select-Object *
 
-    If the \"Forged Transmits\" policy is set to \"Accept\" (or \"true\", via PowerCLI) or the security policy inherited from the virtual switch is overridden, this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+If the "Forged Transmits" policy is set to "Accept" (or "true", via PowerCLI) or the security policy inherited from the virtual switch is overridden, this is a finding.)
+  desc 'fix', %q(From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> Networking >> Virtual Switches.
+Select the ESXi Host >> Configure >> Networking >> Virtual Switches.
 
-    On each standard switch, click \"Edit\" and select Security.
+On each standard switch, click "Edit" and select Security.
 
-    Set \"Forged transmits\" to \"Reject\". Click \"OK\".
+Set "Forged transmits" to "Reject". Click "OK".
 
-    For each port group, click the '...' button and select \"Edit Settings\" then Security.
+For each port group, click the '...' button and select "Edit Settings" then Security.
 
-    Set \"Forged transmits\" to \"Reject\" and uncheck the \"Override\" box. Click \"OK\".
+Set "Forged transmits" to "Reject" and uncheck the "Override" box. Click "OK".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmits $false
-    Get-VirtualPortGroup | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmitsInherited $true
-  "
+Get-VirtualSwitch | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmits $false
+Get-VirtualPortGroup | Get-SecurityPolicy | Set-SecurityPolicy -ForgedTransmitsInherited $true)
   impact 0.5
+  tag check_id: 'C-62511r933372_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: 'V-ESXI-80-000216'
-  tag rid: 'SV-ESXI-80-000216'
+  tag gid: 'V-258771'
+  tag rid: 'SV-258771r933374_rule'
   tag stig_id: 'ESXI-80-000216'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-62420r933373_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

@@ -1,6 +1,6 @@
 <# 
 .SYNOPSIS 
-    Remediates virtual machines against the vSphere Virtual Machine 8.0 STIG Readiness Guide
+    Remediates virtual machines against the vSphere Virtual Machine 8.0 STIG
     Version 1 Release 1
 .DESCRIPTION
     -This script assumes there is a vCenter server managing the virtual machines.
@@ -19,7 +19,7 @@
 .NOTES 
     File Name  : VMware_vSphere_8.0_VM_STIG_Remediation.ps1 
     Author     : VMware
-    Version    : 1 Release 2
+    Version    : 1 Release 1
     License    : Apache-2.0
 
     Tested against

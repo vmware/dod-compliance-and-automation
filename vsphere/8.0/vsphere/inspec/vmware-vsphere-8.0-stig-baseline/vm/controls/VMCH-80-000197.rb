@@ -1,55 +1,50 @@
 control 'VMCH-80-000197' do
   title 'Virtual machines (VMs) must prevent unauthorized removal, connection, and modification of devices.'
-  desc  "
-    In a virtual machine, users and processes without root or administrator privileges can connect or disconnect devices, such as network adaptors and CD-ROM drives, and can modify device settings. Use the virtual machine settings editor or configuration editor to remove unneeded or unused hardware devices. To use the device again, prevent a user or running process in the virtual machine from connecting, disconnecting, or modifying a device from within the guest operating system.
+  desc 'In a virtual machine, users and processes without root or administrator privileges can connect or disconnect devices, such as network adaptors and CD-ROM drives, and can modify device settings. Use the virtual machine settings editor or configuration editor to remove unneeded or unused hardware devices. To use the device again, prevent a user or running process in the virtual machine from connecting, disconnecting, or modifying a device from within the guest operating system.
 
-    By default, a rogue user with nonadministrator privileges in a virtual machine can:
+By default, a rogue user with nonadministrator privileges in a virtual machine can:
 
-    1. Connect a disconnected CD-ROM drive and access sensitive information on the media left in the drive.
-    2. Disconnect a network adaptor to isolate the virtual machine from its network, which is a denial of service.
-    3. Modify settings on a device.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    For each virtual machine do the following:
+1. Connect a disconnected CD-ROM drive and access sensitive information on the media left in the drive.
+2. Disconnect a network adaptor to isolate the virtual machine from its network, which is a denial of service.
+3. Modify settings on a device.'
+  desc 'check', 'For each virtual machine do the following:
 
-    From the vSphere Client, right-click the Virtual Machine and go to Edit Settings >> Advanced Parameters.
+From the vSphere Client, right-click the Virtual Machine and go to Edit Settings >> Advanced Parameters.
 
-    Verify the \"isolation.device.connectable.disable\" value is set to \"true\".
+Verify the "isolation.device.connectable.disable" value is set to "true".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
 
-    Get-VM \"VM Name\" | Get-AdvancedSetting -Name isolation.device.connectable.disable
+Get-VM "VM Name" | Get-AdvancedSetting -Name isolation.device.connectable.disable
 
-    If the virtual machine advanced setting \"isolation.device.connectable.disable\" is not set to \"true\", this is a finding.
+If the virtual machine advanced setting "isolation.device.connectable.disable" is not set to "true", this is a finding.
 
-    If the virtual machine advanced setting \"isolation.device.connectable.disable\" does not exist, this is not a finding.
-  "
-  desc  'fix', "
-    For each virtual machine do the following:
+If the virtual machine advanced setting "isolation.device.connectable.disable" does not exist, this is not a finding.'
+  desc 'fix', 'For each virtual machine do the following:
 
-    From the vSphere Client, right-click the Virtual Machine and go to Edit Settings >> Advanced Parameters.
+From the vSphere Client, right-click the Virtual Machine and go to Edit Settings >> Advanced Parameters.
 
-    Find the \"isolation.device.connectable.disable\" value and set it to \"true\".
+Find the "isolation.device.connectable.disable" value and set it to "true".
 
-    If the setting does not exist no action is needed.
+If the setting does not exist no action is needed.
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
 
-    Get-VM \"VM Name\" | Get-AdvancedSetting -Name isolation.device.connectable.disable | Set-AdvancedSetting -Value true
+Get-VM "VM Name" | Get-AdvancedSetting -Name isolation.device.connectable.disable | Set-AdvancedSetting -Value true
 
-    Note: The VM must be powered off to configure the advanced settings through the vSphere Client. Therefore, it is recommended to configure these settings with PowerCLI as this can be done while the VM is powered on. Settings do not take effect via either method until the virtual machine is cold started, not rebooted.
-  "
+Note: The VM must be powered off to configure the advanced settings through the vSphere Client. Therefore, it is recommended to configure these settings with PowerCLI as this can be done while the VM is powered on. Settings do not take effect via either method until the virtual machine is cold started, not rebooted.'
   impact 0.5
+  tag check_id: 'C-62450r933189_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: 'V-VMCH-80-000197'
-  tag rid: 'SV-VMCH-80-000197'
+  tag gid: 'V-258710'
+  tag rid: 'SV-258710r933191_rule'
   tag stig_id: 'VMCH-80-000197'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-62359r933190_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

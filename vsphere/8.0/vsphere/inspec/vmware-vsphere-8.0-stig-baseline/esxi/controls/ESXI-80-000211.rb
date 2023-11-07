@@ -1,46 +1,43 @@
 control 'ESXI-80-000211' do
   title 'The ESXi host Secure Shell (SSH) daemon must set a timeout interval on idle sessions.'
-  desc  'Automatically logging out idle users guards against compromises via hijacked administrative sessions.'
-  desc  'rationale', ''
-  desc  'check', "
-    From an ESXi shell, run the following command:
+  desc 'Automatically logging out idle users guards against compromises via hijacked administrative sessions.'
+  desc 'check', %q(From an ESXi shell, run the following command:
 
-    # esxcli system ssh server config list -k clientaliveinterval
+# esxcli system ssh server config list -k clientaliveinterval
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    $esxcli = Get-EsxCli -v2
-    $esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'clientaliveinterval'}
+$esxcli = Get-EsxCli -v2
+$esxcli.system.ssh.server.config.list.invoke() | Where-Object {$_.Key -eq 'clientaliveinterval'}
 
-    Example result:
+Example result:
 
-    clientaliveinterval 200
+clientaliveinterval 200
 
-    If \"clientaliveinterval\" is not configured to \"200\", this is a finding.
-  "
-  desc 'fix', "
-    From an ESXi shell, run the following command:
+If "clientaliveinterval" is not configured to "200", this is a finding.)
+  desc 'fix', "From an ESXi shell, run the following command:
 
-    # esxcli system ssh server config set -k clientaliveinterval -v 200
+# esxcli system ssh server config set -k clientaliveinterval -v 200
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    $esxcli = Get-EsxCli -v2
-    $arguments = $esxcli.system.ssh.server.config.set.CreateArgs()
-    $arguments.keyword = 'clientaliveinterval'
-    $arguments.value = '200'
-    $esxcli.system.ssh.server.config.set.Invoke($arguments)
-  "
+$esxcli = Get-EsxCli -v2
+$arguments = $esxcli.system.ssh.server.config.set.CreateArgs()
+$arguments.keyword = 'clientaliveinterval'
+$arguments.value = '200'
+$esxcli.system.ssh.server.config.set.Invoke($arguments)"
   impact 0.3
+  tag check_id: 'C-62506r933357_chk'
   tag severity: 'low'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: 'V-ESXI-80-000211'
-  tag rid: 'SV-ESXI-80-000211'
+  tag gid: 'V-258766'
+  tag rid: 'SV-258766r933359_rule'
   tag stig_id: 'ESXI-80-000211'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-62415r933358_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

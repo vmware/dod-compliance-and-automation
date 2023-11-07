@@ -1,5 +1,10 @@
 # Change Log
 
+## [8.0 Official STIG Version 1 Release 1] (2023-11-03)
+
+#### Release Notes
+- Updated release notes to reflect the official STIG publication  
+
 ## [8.0 Version 1 Release 2] (2023-09-21)
 
 #### Release Notes

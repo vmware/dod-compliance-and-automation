@@ -1,11 +1,11 @@
 # vmware-vsphere-8.0-stig-baseline
-VMware vSphere vCenter Appliance 8.0 STIG Readiness Guide Chef InSpec Profile  
+VMware vSphere vCenter Appliance 8.0 STIG Chef InSpec Profile  
 InSpec profile for vSphere 8.0 vCenter, ESXi, and VM controls. Does not include appliance level controls  
-Version: Release 1 Version 2 Date: 21 September 2023  
-STIG Type: STIG Readiness Guide  
+Version: Release 1 Version 1 Date: 03 November 2023  
+STIG Type: Official STIG  
 
 ## Overview
-This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the vSphere 8.0 vCenter, ESXi, and VM STIG Readiness Guide controls. Does not include appliance level controls.  
+This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the vSphere 8.0 vCenter, ESXi, and VM STIG controls. Does not include appliance level controls.  
 
 ## Requirements
 

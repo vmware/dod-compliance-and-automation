@@ -1,6 +1,6 @@
 <# 
 .SYNOPSIS 
-  Remediates ESXi hosts against the vSphere ESXi 8.0 STIG Readiness Guide
+  Remediates ESXi hosts against the vSphere ESXi 8.0 STIG
   Version 1 Release 2
 .DESCRIPTION
   -Remediates a single host or all hosts in a specified cluster.
@@ -10,7 +10,7 @@
 .NOTES 
   File Name  : VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1 
   Author   : VMware
-  Version  : 1 Release 2
+  Version  : 1 Release 1
   License  : Apache-2.0
 
   Tested against

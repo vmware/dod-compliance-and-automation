@@ -1,36 +1,33 @@
 control 'VMCH-80-000211' do
   title 'Virtual machines (VMs) must remove unneeded parallel devices.'
-  desc  'Ensure no device is connected to a virtual machine if it is not required. For example, floppy, serial, and parallel ports are rarely used for virtual machines in a data center environment, and CD/DVD drives are usually connected only temporarily during software installation.'
-  desc  'rationale', ''
-  desc  'check', "
-    Parallel devices are no longer visible through the vSphere Client and must be done via the Application Programming Interface (API) or PowerCLI.
+  desc 'Ensure no device is connected to a virtual machine if it is not required. For example, floppy, serial, and parallel ports are rarely used for virtual machines in a data center environment, and CD/DVD drives are usually connected only temporarily during software installation.'
+  desc 'check', 'Parallel devices are no longer visible through the vSphere Client and must be done via the Application Programming Interface (API) or PowerCLI.
 
-    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
 
-    Get-VM | Where {$_.ExtensionData.Config.Hardware.Device.DeviceInfo.Label -match \"parallel\"}
+Get-VM | Where {$_.ExtensionData.Config.Hardware.Device.DeviceInfo.Label -match "parallel"}
 
-    If a virtual machine has a parallel device present, this is a finding.
-  "
-  desc 'fix', "
-    Parallel devices are no longer visible through the vSphere Client and must be done via the Application Programming Interface (API) or PowerCLI.
+If a virtual machine has a parallel device present, this is a finding.'
+  desc 'fix', 'Parallel devices are no longer visible through the vSphere Client and must be done via the Application Programming Interface (API) or PowerCLI.
 
-    The VM must be powered off to remove a parallel device.
+The VM must be powered off to remove a parallel device.
 
-    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following commands:
+From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following commands:
 
-    $pport = (Get-VM -Name <vmname>).ExtensionData.Config.Hardware.Device | Where {$_.DeviceInfo.Label -match \"Parallel\"}
-    $spec = New-Object VMware.Vim.VirtualMachineConfigSpec
-    $spec.DeviceChange += New-Object VMware.Vim.VirtualDeviceConfigSpec
-    $spec.DeviceChange[-1].device = $pport
-    $spec.DeviceChange[-1].operation = \"remove\"
-    (Get-VM -Name <vmname>).ExtensionData.ReconfigVM($spec)
-  "
+$pport = (Get-VM -Name <vmname>).ExtensionData.Config.Hardware.Device | Where {$_.DeviceInfo.Label -match "Parallel"}
+$spec = New-Object VMware.Vim.VirtualMachineConfigSpec
+$spec.DeviceChange += New-Object VMware.Vim.VirtualDeviceConfigSpec
+$spec.DeviceChange[-1].device = $pport
+$spec.DeviceChange[-1].operation = "remove"
+(Get-VM -Name <vmname>).ExtensionData.ReconfigVM($spec)'
   impact 0.5
+  tag check_id: 'C-62464r933231_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: 'V-VMCH-80-000211'
-  tag rid: 'SV-VMCH-80-000211'
+  tag gid: 'V-258724'
+  tag rid: 'SV-258724r933233_rule'
   tag stig_id: 'VMCH-80-000211'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-62373r933232_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

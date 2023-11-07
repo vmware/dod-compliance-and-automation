@@ -1,1 +1,1 @@
-PowerCLI scripts for the vSphere 8.0 STIG Readiness Guide.  See instructions inside each script for more information.  
+PowerCLI scripts for the vSphere 8.0 STIG.  See instructions inside each script for more information.  

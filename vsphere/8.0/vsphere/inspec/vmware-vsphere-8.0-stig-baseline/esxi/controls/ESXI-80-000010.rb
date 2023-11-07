@@ -1,41 +1,38 @@
 control 'ESXI-80-000010' do
   title 'The ESXi host client must be configured with an idle session timeout.'
-  desc  'The ESXi host client is the UI served up by the host itself, outside of vCenter. It is accessed at https://<ESX FQDN>/ui. ESXi is not usually administered via this interface for long periods, and all users will be highly privileged. Implementing a mandatory session idle limit will ensure that orphaned, forgotten, or ignored sessions will be closed promptly.'
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Hosts and Clusters.
+  desc 'The ESXi host client is the UI served up by the host itself, outside of vCenter. It is accessed at https://<ESX FQDN>/ui. ESXi is not usually administered via this interface for long periods, and all users will be highly privileged. Implementing a mandatory session idle limit will ensure that orphaned, forgotten, or ignored sessions will be closed promptly.'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Select the \"UserVars.HostClientSessionTimeout\" value and verify it is set to \"900\" or less.
+Select the "UserVars.HostClientSessionTimeout" value and verify it is set to "900" or less.
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout
+Get-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout
 
-    If the \"UserVars.HostClientSessionTimeout\" setting is not set to \"900\" or less, this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+If the "UserVars.HostClientSessionTimeout" setting is not set to "900" or less, this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Click \"Edit\". Select the \"UserVars.HostClientSessionTimeout\" value and configure it to \"900\".
+Click "Edit". Select the "UserVars.HostClientSessionTimeout" value and configure it to "900".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout | Set-AdvancedSetting -Value \"900\"
-  "
+Get-VMHost | Get-AdvancedSetting -Name UserVars.HostClientSessionTimeout | Set-AdvancedSetting -Value "900"'
   impact 0.5
+  tag check_id: 'C-62471r933252_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000029-VMM-000100'
-  tag gid: 'V-ESXI-80-000010'
-  tag rid: 'SV-ESXI-80-000010'
+  tag gid: 'V-258731'
+  tag rid: 'SV-258731r933254_rule'
   tag stig_id: 'ESXI-80-000010'
+  tag gtitle: 'SRG-OS-000029-VMM-000100'
+  tag fix_id: 'F-62380r933253_fix'
   tag cci: ['CCI-000057']
   tag nist: ['AC-11 a']
 

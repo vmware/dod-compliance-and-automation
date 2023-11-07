@@ -5,7 +5,7 @@ copyright: The Authors
 copyright_email:
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.2
+version: 1.0.1
 
 inputs:
 - name: lighttpdConf

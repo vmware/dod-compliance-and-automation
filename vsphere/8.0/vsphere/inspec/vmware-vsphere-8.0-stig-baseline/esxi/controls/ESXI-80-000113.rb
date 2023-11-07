@@ -1,45 +1,40 @@
 control 'ESXI-80-000113' do
   title "The ESXi host must allocate audit record storage capacity to store at least one week's worth of audit records."
-  desc  "
-    In order to ensure ESXi has sufficient storage capacity in which to write the audit logs, audit record storage capacity should be configured.
+  desc 'In order to ensure ESXi has sufficient storage capacity in which to write the audit logs, audit record storage capacity should be configured.
 
-    If a central audit record storage facility is available, the local storage capacity should be sufficient to hold audit records that would accumulate during anticipated interruptions in delivery of records to the facility.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Hosts and Clusters.
+If a central audit record storage facility is available, the local storage capacity should be sufficient to hold audit records that would accumulate during anticipated interruptions in delivery of records to the facility.'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Select the \"Syslog.global.auditRecord.storageCapacity\" value and verify it is set to \"100\".
+Select the "Syslog.global.auditRecord.storageCapacity" value and verify it is set to "100".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name Syslog.global.auditRecord.storageCapacity
+Get-VMHost | Get-AdvancedSetting -Name Syslog.global.auditRecord.storageCapacity
 
-    If the \"Syslog.global.auditRecord.storageCapacity\" setting is not set to 100, this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+If the "Syslog.global.auditRecord.storageCapacity" setting is not set to 100, this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Click \"Edit\". Select the \"Syslog.global.auditRecord.storageCapacity\" value and configure it to \"100\".
+Click "Edit". Select the "Syslog.global.auditRecord.storageCapacity" value and configure it to "100".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name Syslog.global.auditRecord.storageCapacity | Set-AdvancedSetting -Value 100
-  "
+Get-VMHost | Get-AdvancedSetting -Name Syslog.global.auditRecord.storageCapacity | Set-AdvancedSetting -Value 100'
   impact 0.5
+  tag check_id: 'C-62483r933288_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000341-VMM-001220'
-  tag gid: 'V-ESXI-80-000113'
-  tag rid: 'SV-ESXI-80-000113'
+  tag gid: 'V-258743'
+  tag rid: 'SV-258743r933290_rule'
   tag stig_id: 'ESXI-80-000113'
+  tag gtitle: 'SRG-OS-000341-VMM-001220'
+  tag fix_id: 'F-62392r933289_fix'
   tag cci: ['CCI-001849']
   tag nist: ['AU-4']
 
