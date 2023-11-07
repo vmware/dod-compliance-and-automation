@@ -1,10 +1,10 @@
 # vmware-vcsa-8.0-stig-ansible-hardening
-VMware vCenter 8.0 Appliance STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 2: September 21, 2023  
-STIG Type: STIG Readiness Guide  
+VMware vCenter 8.0 Appliance STIG Ansible Playbook  
+Version: Version 1 Release 1: November 03, 2023  
+STIG Type: Official STIG  
 
 ## Overview
-This is a hardening playbook that utilizes Ansible to perform automated remediation for STIG compliance of the VMware vCenter 8.0 Appliance STIG Readiness Guide.  
+This is a hardening playbook that utilizes Ansible to perform automated remediation for STIG compliance of the VMware vCenter 8.0 Appliance STIG.  
 
 ## !!Important!!
 - Please read through the README carefully and familiarize yourself with the playbook and ansible before running this playbook

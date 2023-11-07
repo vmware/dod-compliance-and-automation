@@ -1,46 +1,40 @@
 control 'VCST-80-000002' do
   title 'The vCenter STS service must be configured to use strong encryption ciphers.'
-  desc  "
-    Tomcat has several remote communications channels. Examples are user requests via http/https, communication to a backend database, or communication to authenticate users. The encryption used to communicate must match the data that is being retrieved or presented.
+  desc 'Tomcat has several remote communications channels. Examples are user requests via http/https, communication to a backend database, or communication to authenticate users. The encryption used to communicate must match the data that is being retrieved or presented.
 
-    The Tomcat <Connector> element controls the TLS protocol and the associated ciphers used. If a strong cipher is not selected, an attacker may be able to circumvent encryption protections that are configured for the connector. Strong ciphers must be employed when configuring a secured connector.
+  The Tomcat <Connector> element controls the TLS protocol and the associated ciphers used. If a strong cipher is not selected, an attacker may be able to circumvent encryption protections that are configured for the connector. Strong ciphers must be employed when configuring a secured connector.
 
-    TLSv1.2 or TLSv1.3 ciphers are configured via the server.xml file on a per connector basis. For a list of approved ciphers, refer to NIST SP 800-52 section 3.3.1.1.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    At the command prompt, run the following command:
+  TLSv1.2 or TLSv1.3 ciphers are configured via the server.xml file on a per connector basis. For a list of approved ciphers, refer to NIST SP 800-52 section 3.3.1.1.'
+  desc 'check', %q(At the command prompt, run the following command:
 
-    # xmllint --xpath '/Server/Service/Connector/SSLHostConfig/@ciphers' /usr/lib/vmware-sso/vmware-sts/conf/server.xml
+# xmllint --xpath '/Server/Service/Connector/SSLHostConfig/@ciphers' /usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
-    Expected result:
+Expected result:
 
-    ciphers=\"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256\"
+ciphers="TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
 
-    If each result returned does not match the expected result, this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+If each result returned does not match the expected result, this is a finding.)
+  desc 'fix', 'Navigate to and open:
 
-    /usr/lib/vmware-sso/vmware-sts/conf/server.xml
+/usr/lib/vmware-sso/vmware-sts/conf/server.xml
 
-    For each connector with \"SSLEnabled\" set to true, configure the ciphers attribute under the \"SSLHostConfig\" as follows:
+For each connector with "SSLEnabled" set to true, configure the ciphers attribute under the "SSLHostConfig" as follows:
 
-    ciphers=\"TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256\"
+ciphers="TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
 
-    Restart the service with the following command:
+Restart the service with the following command:
 
-    # vmon-cli --restart sts
-  "
+# vmon-cli --restart sts'
   impact 0.5
+  tag check_id: 'C-62711r934569_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000014-AS-000009'
-  tag satisfies: ['SRG-APP-000015-AS-000010', 'SRG-APP-000172-AS-000120', 'SRG-APP-000172-AS-000121', 'SRG-APP-000439-AS-000274']
-  tag gid: 'V-VCST-80-000002'
-  tag rid: 'SV-VCST-80-000002'
+  tag gid: 'V-258971'
+  tag rid: 'SV-258971r934571_rule'
   tag stig_id: 'VCST-80-000002'
+  tag gtitle: 'SRG-APP-000014-AS-000009'
+  tag fix_id: 'F-62620r934570_fix'
   tag cci: ['CCI-000068', 'CCI-000197', 'CCI-001453', 'CCI-002418']
-  tag nist: ['AC-17 (2)', 'IA-5 (1) (c)', 'SC-8']
+  tag nist: ['AC-17 (2)', 'IA-5 (1) (c)', 'AC-17 (2)', 'SC-8']
 
   # Open server.xml file
   xmlconf = xml(input('serverXmlPath'))

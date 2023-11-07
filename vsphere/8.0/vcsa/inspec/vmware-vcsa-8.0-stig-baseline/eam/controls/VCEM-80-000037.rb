@@ -1,42 +1,37 @@
 control 'VCEM-80-000037' do
   title 'The vCenter ESX Agent Manager service must be configured to use a specified IP address and port.'
-  desc  "
-    The server must be configured to listen on a specified IP address and port. Without specifying an IP address and port for server to use, the server will listen on all IP addresses available.
+  desc 'The server must be configured to listen on a specified IP address and port. Without specifying an IP address and port for server to use, the server will listen on all IP addresses available.
 
-    Accessing the hosted application through an IP address normally used for nonapplication functions opens the possibility of user access to resources, utilities, files, ports, and protocols that are protected on the desired application IP address.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    At the command prompt, run the following command:
+Accessing the hosted application through an IP address normally used for nonapplication functions opens the possibility of user access to resources, utilities, files, ports, and protocols that are protected on the desired application IP address.'
+  desc 'check', %q(At the command prompt, run the following command:
 
-    # xmllint --xpath \"//Connector[(@port = '0') or not(@address)]\" /usr/lib/vmware-eam/web/conf/server.xml
+# xmllint --xpath "//Connector[(@port = '0') or not(@address)]" /usr/lib/vmware-eam/web/conf/server.xml
 
-    Expected result:
+Expected result:
 
-    XPath set is empty
+XPath set is empty
 
-    If any connectors are returned, this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+If any connectors are returned, this is a finding.)
+  desc 'fix', 'Navigate to and open:
 
-    /usr/lib/vmware-eam/web/conf/server.xml
+/usr/lib/vmware-eam/web/conf/server.xml
 
-    Navigate to the <Connector> node and configure the port and address as follows:
+Navigate to the <Connector> node and configure the port and address as follows:
 
-    port=\"${bio.http.port}\"
-    address=\"localhost\"
+port="${bio.http.port}"
+address="localhost"
 
-    Restart the service with the following command:
+Restart the service with the following command:
 
-    # vmon-cli --restart eam
-  "
+# vmon-cli --restart eam'
   impact 0.5
+  tag check_id: 'C-62750r934686_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000142-AS-000014'
-  tag gid: 'V-VCEM-80-000037'
-  tag rid: 'SV-VCEM-80-000037'
+  tag gid: 'V-259010'
+  tag rid: 'SV-259010r934688_rule'
   tag stig_id: 'VCEM-80-000037'
+  tag gtitle: 'SRG-APP-000142-AS-000014'
+  tag fix_id: 'F-62659r934687_fix'
   tag cci: ['CCI-000382']
   tag nist: ['CM-7 b']
 

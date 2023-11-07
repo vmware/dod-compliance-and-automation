@@ -1,115 +1,110 @@
 control 'VCSA-80-000277' do
   title 'The vCenter Server must be isolated from the public internet but must still allow for patch notification and delivery.'
-  desc  "
-    vCenter and the embedded Lifecycle Manager system must never have a direct route to the internet. Despite this, updates and patches sourced from VMware on the internet must be delivered in a timely manner.
+  desc 'vCenter and the embedded Lifecycle Manager system must never have a direct route to the internet. Despite this, updates and patches sourced from VMware on the internet must be delivered in a timely manner.
 
-    There are two methods to accomplish this: a proxy server and the Update Manager Download Service (UMDS). UMDS is an optional module for Lifecycle Manager that fetches upgrades for virtual appliances, patch metadata, patch binaries, and notifications that would not otherwise be available to an isolated Lifecycle Manager directly.
+There are two methods to accomplish this: a proxy server and the Update Manager Download Service (UMDS). UMDS is an optional module for Lifecycle Manager that fetches upgrades for virtual appliances, patch metadata, patch binaries, and notifications that would not otherwise be available to an isolated Lifecycle Manager directly.
 
-    Alternatively, a proxy for Lifecycle Manager can be configured to allow controlled, limited access to the public internet for the sole purpose of patch gathering. Either solution mitigates the risk of internet connectivity by limiting its scope and use.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    Check the following conditions:
+Alternatively, a proxy for Lifecycle Manager can be configured to allow controlled, limited access to the public internet for the sole purpose of patch gathering. Either solution mitigates the risk of internet connectivity by limiting its scope and use.'
+  desc 'check', 'Check the following conditions:
 
-    1. Lifecycle Manager must be configured to use the UMDS.
+1. Lifecycle Manager must be configured to use the UMDS.
 
-    OR
+OR
 
-    2. Lifecycle Manager must be configured to use a proxy server for access to VMware patch repositories.
+2. Lifecycle Manager must be configured to use a proxy server for access to VMware patch repositories.
 
-    OR
+OR
 
-    3. Lifecycle Manager must disable internet patch repositories and any patches must be manually validated and imported as needed.
+3. Lifecycle Manager must disable internet patch repositories and any patches must be manually validated and imported as needed.
 
-    Option 1:
+Option 1:
 
-    From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
+From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
 
-    Click the \"Change Download Source\" button.
+Click the "Change Download Source" button.
 
-    Verify the \"Download patches from a UMDS shared repository\" radio button is selected and that a valid UMDS repository is supplied.
+Verify the "Download patches from a UMDS shared repository" radio button is selected and that a valid UMDS repository is supplied.
 
-    Click \"Cancel\".
+Click "Cancel".
 
-    If this is not set, this is a finding.
+If this is not set, this is a finding.
 
-    Option 2:
+Option 2:
 
-    From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
+From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
 
-    Click the \"Change Download Source\" button.
+Click the "Change Download Source" button.
 
-    Verify the \"Download patches directly from the internet\" radio button is selected.
+Verify the "Download patches directly from the internet" radio button is selected.
 
-    Click \"Cancel\".
+Click "Cancel".
 
-    Navigate to the vCenter Server Management interface at https://<vcenter dns>:5480 >> Networking >> Proxy Settings.
+Navigate to the vCenter Server Management interface at https://<vcenter dns>:5480 >> Networking >> Proxy Settings.
 
-    Verify that \"HTTPS\" is \"Enabled\".
+Verify that "HTTPS" is "Enabled".
 
-    Click the \"HTTPS\" row.
+Click the "HTTPS" row.
 
-    Verify the proxy server configuration is accurate.
+Verify the proxy server configuration is accurate.
 
-    If this is not set, this is a finding.
+If this is not set, this is a finding.
 
-    Option 3:
+Option 3:
 
-    From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Downloads.
+From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Downloads.
 
-    Verify the \"Automatic downloads\" option is disabled.
+Verify the "Automatic downloads" option is disabled.
 
-    From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
+From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
 
-    Verify any download sources are disabled.
+Verify any download sources are disabled.
 
-    If this is not set, this is a finding.
-  "
-  desc 'fix', "
-    Option 1:
+If this is not set, this is a finding.'
+  desc 'fix', 'Option 1:
 
-    From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
+From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
 
-    Click the \"Change Download Source\" button.
+Click the "Change Download Source" button.
 
-    Select the \"Download patches from a UMDS shared repository\" radio button and supply a valid UMDS repository.
+Select the "Download patches from a UMDS shared repository" radio button and supply a valid UMDS repository.
 
-    Click \"Save\".
+Click "Save".
 
-    Option 2:
+Option 2:
 
-    From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
+From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Setup.
 
-    Click the \"Change Download Source\" button.
+Click the "Change Download Source" button.
 
-    Select the \"Download patches directly from the internet\" radio button.
+Select the "Download patches directly from the internet" radio button.
 
-    Click \"Save\".
+Click "Save".
 
-    Navigate to the vCenter Server Management interface at https://<vcenter dns>:5480 >> Networking >> Proxy Settings.
+Navigate to the vCenter Server Management interface at https://<vcenter dns>:5480 >> Networking >> Proxy Settings.
 
-    Click \"Edit\".
+Click "Edit".
 
-    Slide \"HTTPS\" to \"Enabled\".
+Slide "HTTPS" to "Enabled".
 
-    Supply the appropriate proxy server configuration.
+Supply the appropriate proxy server configuration.
 
-    Click \"Save\".
+Click "Save".
 
-    Option 3:
+Option 3:
 
-    From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Downloads.
+From the vSphere Client, go to Lifecycle Manager >> Settings >> Patch Downloads.
 
-    Click \"Edit\" and uncheck \"Download patches\".
+Click "Edit" and uncheck "Download patches".
 
-    Under \"Patch Setup\" select each download source and click Disable.
-  "
+Under "Patch Setup" select each download source and click Disable.'
   impact 0.3
+  tag check_id: 'C-62684r934488_chk'
   tag severity: 'low'
-  tag gtitle: 'SRG-APP-000516'
-  tag gid: 'V-VCSA-80-000277'
-  tag rid: 'SV-VCSA-80-000277'
+  tag gid: 'V-258944'
+  tag rid: 'SV-258944r934490_rule'
   tag stig_id: 'VCSA-80-000277'
+  tag gtitle: 'SRG-APP-000516'
+  tag fix_id: 'F-62593r934489_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

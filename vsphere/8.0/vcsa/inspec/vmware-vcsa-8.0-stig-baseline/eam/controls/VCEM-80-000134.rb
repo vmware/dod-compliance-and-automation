@@ -1,47 +1,44 @@
 control 'VCEM-80-000134' do
   title 'The vCenter ESX Agent Manager service shutdown port must be disabled.'
-  desc  'Tomcat by default listens on TCP port 8005 to accept shutdown requests. By connecting to this port and sending the SHUTDOWN command, all applications within Tomcat are halted. The shutdown port is not exposed to the network as it is bound to the loopback interface. Setting the port to "-1" in $CATALINA_BASE/conf/server.xml instructs Tomcat to not listen for the shutdown command.'
-  desc  'rationale', ''
-  desc  'check', "
-    At the command prompt, run the following commands:
+  desc 'Tomcat by default listens on TCP port 8005 to accept shutdown requests. By connecting to this port and sending the SHUTDOWN command, all applications within Tomcat are halted. The shutdown port is not exposed to the network as it is bound to the loopback interface. Setting the port to "-1" in $CATALINA_BASE/conf/server.xml instructs Tomcat to not listen for the shutdown command.'
+  desc 'check', %q(At the command prompt, run the following commands:
 
-    # xmllint --xpath \"//Server/@port\" /usr/lib/vmware-eam/web/conf/server.xml
-    # grep 'base.shutdown.port' /etc/vmware-eam/catalina.properties
+# xmllint --xpath "//Server/@port" /usr/lib/vmware-eam/web/conf/server.xml
+# grep 'base.shutdown.port' /etc/vmware-eam/catalina.properties
 
-    Example results:
+Example results:
 
-    port=\"${base.shutdown.port}\"
-    base.shutdown.port=-1
+port="${base.shutdown.port}"
+base.shutdown.port=-1
 
-    If \"port\" does not equal \"${base.shutdown.port}\", this is a finding.
+If "port" does not equal "${base.shutdown.port}", this is a finding.
 
-    If \"base.shutdown.port\" does not equal \"-1\", this is a finding.
-  "
-  desc 'fix', "
-    Navigate to and open:
+If "base.shutdown.port" does not equal "-1", this is a finding.)
+  desc 'fix', 'Navigate to and open:
 
-    /etc/vmware-eam/catalina.properties
+/etc/vmware-eam/catalina.properties
 
-    Add or modify the setting \"base.shutdown.port=-1\" in the \"catalina.properties\" file.
+Add or modify the setting "base.shutdown.port=-1" in the "catalina.properties" file.
 
-    Navigate to and open:
+Navigate to and open:
 
-    /usr/lib/vmware-eam/web/conf/server.xml
+/usr/lib/vmware-eam/web/conf/server.xml
 
-    Configure the <Server> node with the value:
+Configure the <Server> node with the value:
 
-    port=\"${base.shutdown.port}\"
+port="${base.shutdown.port}"
 
-    Restart the service with the following command:
+Restart the service with the following command:
 
-    # vmon-cli --restart eam
-  "
+# vmon-cli --restart eam'
   impact 0.5
+  tag check_id: 'C-62763r934725_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-APP-000141-AS-000095'
-  tag gid: 'V-VCEM-80-000134'
-  tag rid: 'SV-VCEM-80-000134'
+  tag gid: 'V-259023'
+  tag rid: 'SV-259023r934727_rule'
   tag stig_id: 'VCEM-80-000134'
+  tag gtitle: 'SRG-APP-000141-AS-000095'
+  tag fix_id: 'F-62672r934726_fix'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 

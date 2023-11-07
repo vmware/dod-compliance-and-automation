@@ -1,45 +1,40 @@
 control 'ESXI-80-000246' do
   title 'The ESXi host must not enable log filtering.'
-  desc  "
-    The log filtering capability allows users to modify the logging policy of the syslog service that is running on an ESXi host. Users can create log filters to reduce the number of repetitive entries in the ESXi logs and to deny specific log events entirely.
+  desc 'The log filtering capability allows users to modify the logging policy of the syslog service that is running on an ESXi host. Users can create log filters to reduce the number of repetitive entries in the ESXi logs and to deny specific log events entirely.
 
-    Setting a limit to the amount of logging information restricts the ability to detect and respond to potential security issues or system failures properly.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    From an ESXi shell, run the following command:
+Setting a limit to the amount of logging information restricts the ability to detect and respond to potential security issues or system failures properly.'
+  desc 'check', 'From an ESXi shell, run the following command:
 
-    # esxcli system syslog config logfilter get
+# esxcli system syslog config logfilter get
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    $esxcli = Get-EsxCli -v2
-    $esxcli.system.syslog.config.logfilter.get.invoke()
+$esxcli = Get-EsxCli -v2
+$esxcli.system.syslog.config.logfilter.get.invoke()
 
-    If \"LogFilteringEnabled\" is not set to \"false\", this is a finding.
-  "
-  desc 'fix', "
-    From an ESXi shell, run the following command:
+If "LogFilteringEnabled" is not set to "false", this is a finding.'
+  desc 'fix', 'From an ESXi shell, run the following command:
 
-    # esxcli system syslog config logfilter set --log-filtering-enabled=false
+# esxcli system syslog config logfilter set --log-filtering-enabled=false
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
+From a PowerCLI command prompt while connected to the ESXi host, run the following commands:
 
-    $esxcli = Get-EsxCli -v2
-    $arguments = $esxcli.system.syslog.config.logfilter.set.CreateArgs()
-    $arguments.logfilteringenabled = $false
-    $esxcli.system.syslog.config.logfilter.set.invoke($arguments)
-  "
+$esxcli = Get-EsxCli -v2
+$arguments = $esxcli.system.syslog.config.logfilter.set.CreateArgs()
+$arguments.logfilteringenabled = $false
+$esxcli.system.syslog.config.logfilter.set.invoke($arguments)'
   impact 0.5
+  tag check_id: 'C-62540r933459_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: 'V-ESXI-80-000246'
-  tag rid: 'SV-ESXI-80-000246'
+  tag gid: 'V-258800'
+  tag rid: 'SV-258800r933461_rule'
   tag stig_id: 'ESXI-80-000246'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-62449r933460_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

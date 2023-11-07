@@ -1,63 +1,60 @@
 control 'ESXI-80-000221' do
   title 'The ESXi host must have all security patches and updates installed.'
-  desc  'Installing software updates is a fundamental mitigation against the exploitation of publicly known vulnerabilities.'
-  desc  'rationale', ''
-  desc  'check', "
-    Determine the current version and build:
+  desc 'Installing software updates is a fundamental mitigation against the exploitation of publicly known vulnerabilities.'
+  desc 'check', 'Determine the current version and build:
 
-    From the vSphere Client, go to Hosts and Clusters.
+From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Summary. Note the version string next to \"Hypervisor:\".
+Select the ESXi Host >> Summary. Note the version string next to "Hypervisor:".
 
-    or
+or
 
-    From a Secure Shell (SSH) session connected to the ESXi host, or from the ESXi shell, run the following command:
+From a Secure Shell (SSH) session connected to the ESXi host, or from the ESXi shell, run the following command:
 
-    # vmware -v
+# vmware -v
 
-    If the ESXi host does not have the latest patches, this is a finding.
+If the ESXi host does not have the latest patches, this is a finding.
 
-    If the ESXi host is not on a supported release, this is a finding.
+If the ESXi host is not on a supported release, this is a finding.
 
-    The latest ESXi versions and their build numbers can be found here: https://kb.vmware.com/s/article/2143832
+The latest ESXi versions and their build numbers can be found here: https://kb.vmware.com/s/article/2143832
 
-    VMware also publishes advisories on security patches and offers a way to subscribe to email alerts for them.
+VMware also publishes advisories on security patches and offers a way to subscribe to email alerts for them.
 
-    Go to: https://www.vmware.com/support/policies/security_response
-  "
-  desc 'fix', "
-    ESXi can be patched in multiple ways, and this fix text does not cover all methods.
+Go to: https://www.vmware.com/support/policies/security_response'
+  desc 'fix', 'ESXi can be patched in multiple ways, and this fix text does not cover all methods.
 
-    Manual patching when image profiles are not used:
+Manual patching when image profiles are not used:
 
-    - Download the latest \"offline bundle\" .zip update from vmware.com. Verify the hash.
+- Download the latest "offline bundle" .zip update from vmware.com. Verify the hash.
 
-    - Transfer the file to a datastore accessible by the ESXi host, local or remote.
+- Transfer the file to a datastore accessible by the ESXi host, local or remote.
 
-    - Put the ESXi host into maintenance mode.
+- Put the ESXi host into maintenance mode.
 
-    - From an ESXi shell, run the following command:
+- From an ESXi shell, run the following command:
 
-    esxcli software vib update -d <path to offline patch bundle.zip>
+esxcli software vib update -d <path to offline patch bundle.zip>
 
-    Manual patching when image profiles are used:
+Manual patching when image profiles are used:
 
-    From an ESXi shell, run the following command:
+From an ESXi shell, run the following command:
 
-    # esxcli software sources profile list -d /vmfs/volumes/<your datastore>/<bundle name.zip>
+# esxcli software sources profile list -d /vmfs/volumes/<your datastore>/<bundle name.zip>
 
-    Note the available profiles. The organization will usually want the one ending in \"-standard\".
+Note the available profiles. The organization will usually want the one ending in "-standard".
 
-    # esxcli software profile update -p <selected profile> -d /vmfs/volumes/<your datastore>/<bundle name.zip>
+# esxcli software profile update -p <selected profile> -d /vmfs/volumes/<your datastore>/<bundle name.zip>
 
-    There will be little output during the update. Once complete, reboot the host for changes to take effect.
-  "
+There will be little output during the update. Once complete, reboot the host for changes to take effect.'
   impact 0.7
+  tag check_id: 'C-62516r933387_chk'
   tag severity: 'high'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: 'V-ESXI-80-000221'
-  tag rid: 'SV-ESXI-80-000221'
+  tag gid: 'V-258776'
+  tag rid: 'SV-258776r933389_rule'
   tag stig_id: 'ESXI-80-000221'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-62425r933388_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

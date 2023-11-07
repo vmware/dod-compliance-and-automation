@@ -1,31 +1,28 @@
 control 'VMCH-80-000209' do
   title 'Virtual machines (VMs) must remove unneeded floppy devices.'
-  desc  'Ensure no device is connected to a virtual machine if it is not required. For example, floppy, serial, and parallel ports are rarely used for virtual machines in a data center environment, and CD/DVD drives are usually connected only temporarily during software installation.'
-  desc  'rationale', ''
-  desc  'check', "
-    Floppy drives are no longer visible through the vSphere Client and must be done via the Application Programming Interface (API) or PowerCLI.
+  desc 'Ensure no device is connected to a virtual machine if it is not required. For example, floppy, serial, and parallel ports are rarely used for virtual machines in a data center environment, and CD/DVD drives are usually connected only temporarily during software installation.'
+  desc 'check', 'Floppy drives are no longer visible through the vSphere Client and must be done via the Application Programming Interface (API) or PowerCLI.
 
-    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
 
-    Get-VM | Get-FloppyDrive | Select Parent, Name, ConnectionState
+Get-VM | Get-FloppyDrive | Select Parent, Name, ConnectionState
 
-    If a virtual machine has a floppy drive connected, this is a finding.
-  "
-  desc 'fix', "
-    Floppy drives are no longer visible through the vSphere Client and must be done via the Application Programming Interface (API) or PowerCLI.
+If a virtual machine has a floppy drive connected, this is a finding.'
+  desc 'fix', 'Floppy drives are no longer visible through the vSphere Client and must be done via the Application Programming Interface (API) or PowerCLI.
 
-    The VM must be powered off to remove a floppy drive.
+The VM must be powered off to remove a floppy drive.
 
-    From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
 
-    Get-VM \"VM Name\" | Get-FloppyDrive | Remove-FloppyDrive
-  "
+Get-VM "VM Name" | Get-FloppyDrive | Remove-FloppyDrive'
   impact 0.5
+  tag check_id: 'C-62462r933225_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000480-VMM-002000'
-  tag gid: 'V-VMCH-80-000209'
-  tag rid: 'SV-VMCH-80-000209'
+  tag gid: 'V-258722'
+  tag rid: 'SV-258722r933227_rule'
   tag stig_id: 'VMCH-80-000209'
+  tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag fix_id: 'F-62371r933226_fix'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

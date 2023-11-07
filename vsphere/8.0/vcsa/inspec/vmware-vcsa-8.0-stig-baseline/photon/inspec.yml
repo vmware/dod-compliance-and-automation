@@ -1,0 +1,80 @@
+name: vCenter Virtual Appliance 8.0 Photon OS 4 Profile
+title: vCenter Virtual Appliance 8.0 Photon OS 4 Profile
+maintainer: VMware
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.1
+
+inputs:
+- name: useFaillockConf
+  type: boolean
+  description: If /etc/security/faillock.conf is used to configure pam_faillock.so set this to true
+  value: true
+- name: usePwqualityConf
+  type: boolean
+  description: If /etc/security/pwquality.conf is used to configure pam_pwquality.so set this to true
+  value: true
+- name: useHistoryConf
+  type: boolean
+  description: If /etc/security/pwhistory.conf is used to configure pam_pwhistory.so set this to true
+  value: true
+- name: sshdcommand
+  type: string
+  value: 'sshd -T'
+  description: If a different sshd command is needed then supply a different input value such as if there are user matching rules.
+- name: authprivlog
+  type: string
+  value: "/var/log/messages"  #Enter expected log path for authpriv log in rsyslog conf
+- name: disabled_modules
+  description: List of Kernel modules that must be disabled
+  type: array
+  value:
+    - bridge
+    - sctp
+    - dccp
+    - dccp_ipv4
+    - dccp_ipv6
+    - ipx
+    - appletalk
+    - decnet
+    - rds
+    - tipc
+    - bluetooth
+    - usb_storage
+    - ieee1394
+    - cramfs
+    - freevxfs
+    - jffs2
+    - hfs
+    - hfsplus
+    - squashfs
+    - udf
+- name: syslogServer
+  type: string
+  value: "x.x.x.x:514"  #Enter IP or FQDN of Syslog Server and Port
+- name: ntptype
+  type: string
+  value: "ntpd"  #Enter the NTP solution. Either "ntpd" "timesyncd" "chrony"  
+- name: ntpServer1
+  type: string
+  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+- name: ntpServer2
+  type: string
+  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+- name: sshdCiphers
+  type: array
+  description: List of FIPS validated SSH Ciphers
+  value:
+    - aes256-gcm@openssh.com
+    - aes128-gcm@openssh.com
+    - aes256-ctr
+    - aes192-ctr
+    - aes128-ctr
+- name: sshdMacs
+  type: array
+  description: List of FIPS validated SSH MACs
+  value:
+    - hmac-sha2-512
+    - hmac-sha2-256

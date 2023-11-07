@@ -1,44 +1,41 @@
 control 'ESXI-80-000068' do
   title 'The ESXi host must set a timeout to automatically end idle shell sessions after fifteen minutes.'
-  desc  'If a user forgets to log out of their local or remote ESXi Shell session, the idle connection will remain open indefinitely and increase the likelihood of inappropriate host access via session hijacking. The "ESXiShellInteractiveTimeOut" allows the automatic termination of idle shell sessions.'
-  desc  'rationale', ''
-  desc  'check', "
-    From the vSphere Client, go to Hosts and Clusters.
+  desc 'If a user forgets to log out of their local or remote ESXi Shell session, the idle connection will remain open indefinitely and increase the likelihood of inappropriate host access via session hijacking. The "ESXiShellInteractiveTimeOut" allows the automatic termination of idle shell sessions.'
+  desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Select the \"UserVars.ESXiShellInteractiveTimeOut\" value and verify it is set to less than \"900\" and not \"0\".
+Select the "UserVars.ESXiShellInteractiveTimeOut" value and verify it is set to less than "900" and not "0".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name UserVars.ESXiShellInteractiveTimeOut
+Get-VMHost | Get-AdvancedSetting -Name UserVars.ESXiShellInteractiveTimeOut
 
-    If the \"UserVars.ESXiShellInteractiveTimeOut\" setting is set to a value greater than \"900\" or \"0\", this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+If the "UserVars.ESXiShellInteractiveTimeOut" setting is set to a value greater than "900" or "0", this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Advanced System Settings.
+Select the ESXi Host >> Configure >> System >> Advanced System Settings.
 
-    Click \"Edit\". Select the \"UserVars.ESXiShellInteractiveTimeOut\" value and configure it to \"900\".
+Click "Edit". Select the "UserVars.ESXiShellInteractiveTimeOut" value and configure it to "900".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-AdvancedSetting -Name UserVars.ESXiShellInteractiveTimeOut | Set-AdvancedSetting -Value 900
-  "
+Get-VMHost | Get-AdvancedSetting -Name UserVars.ESXiShellInteractiveTimeOut | Set-AdvancedSetting -Value 900'
   impact 0.5
+  tag check_id: 'C-62479r933276_chk'
   tag severity: 'medium'
-  tag gtitle: 'SRG-OS-000163-VMM-000700'
-  tag satisfies: ['SRG-OS-000279-VMM-001010']
-  tag gid: 'V-ESXI-80-000068'
-  tag rid: 'SV-ESXI-80-000068'
+  tag gid: 'V-258739'
+  tag rid: 'SV-258739r933278_rule'
   tag stig_id: 'ESXI-80-000068'
+  tag gtitle: 'SRG-OS-000163-VMM-000700'
+  tag fix_id: 'F-62388r933277_fix'
+  tag satisfies: ['SRG-OS-000163-VMM-000700', 'SRG-OS-000279-VMM-001010']
   tag cci: ['CCI-001133', 'CCI-002361']
-  tag nist: ['AC-12', 'SC-10']
+  tag nist: ['SC-10', 'AC-12']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

@@ -1,56 +1,51 @@
 control 'ESXI-80-000049' do
   title 'The ESXi host must uniquely identify and must authenticate organizational users by using Active Directory.'
-  desc  "
-    Join ESXi hosts to an Active Directory domain to eliminate the need to create and maintain multiple local user accounts. Using Active Directory for user authentication simplifies the ESXi host configuration, ensures password complexity and reuse policies are enforced, and reduces the risk of security breaches and unauthorized access.
+  desc 'Join ESXi hosts to an Active Directory domain to eliminate the need to create and maintain multiple local user accounts. Using Active Directory for user authentication simplifies the ESXi host configuration, ensures password complexity and reuse policies are enforced, and reduces the risk of security breaches and unauthorized access.
 
-    Note: If the Active Directory group \"ESX Admins\" (default) exists, all users and groups assigned as members to this group will have full administrative access to all ESXi hosts in the domain.
-  "
-  desc  'rationale', ''
-  desc  'check', "
-    For systems that do not use Active Directory and have no local user accounts other than root and/or service accounts, this is not applicable.
+Note: If the Active Directory group "ESX Admins" (default) exists, all users and groups assigned as members to this group will have full administrative access to all ESXi hosts in the domain.'
+  desc 'check', 'For systems that do not use Active Directory and have no local user accounts other than root and/or service accounts, this is not applicable.
 
-    From the vSphere Client, go to Hosts and Clusters.
+From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Authentication Services.
+Select the ESXi Host >> Configure >> System >> Authentication Services.
 
-    Verify the \"Directory Services Type\" is set to \"Active Directory\".
+Verify the "Directory Services Type" is set to "Active Directory".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-VMHostAuthentication
+Get-VMHost | Get-VMHostAuthentication
 
-    For systems that do not use Active Directory and do have local user accounts, other than root and/or service accounts, this is a finding.
+For systems that do not use Active Directory and do have local user accounts, other than root and/or service accounts, this is a finding.
 
-    If the \"Directory Services Type\" is not set to \"Active Directory\", this is a finding.
-  "
-  desc 'fix', "
-    From the vSphere Client, go to Hosts and Clusters.
+If the "Directory Services Type" is not set to "Active Directory", this is a finding.'
+  desc 'fix', 'From the vSphere Client, go to Hosts and Clusters.
 
-    Select the ESXi Host >> Configure >> System >> Authentication Services.
+Select the ESXi Host >> Configure >> System >> Authentication Services.
 
-    Click \"Join Domain...\" and enter the AD domain to join.
+Click "Join Domain..." and enter the AD domain to join.
 
-    Select the \"Using credentials\" radio button and enter the credentials of an account with permissions to join machines to AD (use UPN naming \"user@domain\"). Click \"OK\".
+Select the "Using credentials" radio button and enter the credentials of an account with permissions to join machines to AD (use UPN naming "user@domain"). Click "OK".
 
-    or
+or
 
-    From a PowerCLI command prompt while connected to the ESXi host, run the following command:
+From a PowerCLI command prompt while connected to the ESXi host, run the following command:
 
-    Get-VMHost | Get-VMHostAuthentication | Set-VMHostAuthentication -JoinDomain -Domain \"domain name\" -User \"username\" -Password \"password\"
+Get-VMHost | Get-VMHostAuthentication | Set-VMHostAuthentication -JoinDomain -Domain "domain name" -User "username" -Password "password"
 
-    If any local user accounts are present besides root and service accounts, delete them by going to Host UI >> Manage >> Security & Users >> Users.
-  "
+If any local user accounts are present besides root and service accounts, delete them by going to Host UI >> Manage >> Security & Users >> Users.'
   impact 0.3
+  tag check_id: 'C-62477r933270_chk'
   tag severity: 'low'
-  tag gtitle: 'SRG-OS-000104-VMM-000500'
-  tag satisfies: ['SRG-OS-000109-VMM-000550', 'SRG-OS-000112-VMM-000560', 'SRG-OS-000113-VMM-000570', 'SRG-OS-000123-VMM-000620']
-  tag gid: 'V-ESXI-80-000049'
-  tag rid: 'SV-ESXI-80-000049'
+  tag gid: 'V-258737'
+  tag rid: 'SV-258737r933272_rule'
   tag stig_id: 'ESXI-80-000049'
+  tag gtitle: 'SRG-OS-000104-VMM-000500'
+  tag fix_id: 'F-62386r933271_fix'
+  tag satisfies: ['SRG-OS-000104-VMM-000500', 'SRG-OS-000109-VMM-000550', 'SRG-OS-000112-VMM-000560', 'SRG-OS-000113-VMM-000570', 'SRG-OS-000123-VMM-000620']
   tag cci: ['CCI-000764', 'CCI-000770', 'CCI-001682', 'CCI-001941', 'CCI-001942']
-  tag nist: ['AC-2 (2)', 'IA-2', 'IA-2 (5)', 'IA-2 (8)', 'IA-2 (9)']
+  tag nist: ['IA-2', 'IA-2 (5)', 'AC-2 (2)', 'IA-2 (8)', 'IA-2 (9)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')
