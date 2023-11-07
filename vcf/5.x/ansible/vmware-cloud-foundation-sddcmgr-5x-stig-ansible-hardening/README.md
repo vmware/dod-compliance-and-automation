@@ -1,19 +1,22 @@
 # vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 VMware Cloud Foundation SDDC Manager 5.x Appliance STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 1: June 1, 2023    
+Version: Version 1 Release 2: November 07, 2023    
 STIG Type: STIG Readiness Guide  
 
 ## Overview
 This is a hardening playbook that utilizes Ansible to perform automated remediation for STIG compliance of the VMware Cloud Foundation SDDC Manager 5.x Appliance STIG Readiness Guide.  
 
+## Supported Versions
+- VCF 5.1  
+
 ## !!Important!!
 - Please read through the README carefully and familiarize yourself with the playbook and ansible before running this playbook
-- As always please ensure you have a backout plan if needed you can roll back the changes
+- As always please ensure you have a back out plan if needed you can roll back the changes
 - In order to run the Photon role it must be installed as a role so that this playbook may find it
 - This playbook has not been tested for forward or backward compatibility beyond the version of SDDC Manager listed under requirements.
 
 ## Requirements
-- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) installed on a machine that can SSH to the target node(s).  Tested with Ansible 2.12.8.
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) installed on a machine that can SSH to the target node(s).  Tested with Ansible 2.14.4.
 - SSH enabled and root access enabled
 - an API bearer token is needed for the SDDC Manager Application controls to make API calls and needs to be provided at the CLI or vars file
 

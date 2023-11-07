@@ -1,6 +1,6 @@
 # vmware-cloud-foundation-sddcmgr-5x-stig-baseline
 VMware Cloud Foundation SDDC Manager 5.x STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 1 Date: 1 June 2023  
+Version: Release 1 Version 1 Date: 07 November 2023  
 STIG Type: STIG Readiness Guide
 
 ## SDDC Manager InSpec Profiles
@@ -8,14 +8,16 @@ InSpec profiles for the SDDC Manager are available for each component or can be 
 
 [See the InSpec docs for more info on Profile dependencies and inheritance](https://www.inspec.io/docs/reference/profiles/)
 
+## Supported Versions
+- VCF 5.1  
 
 ## Requirements
 
-- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH to the target. Tested with version 5.18.14. Chef/CINC Workstation can also be installed and used.
+- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH to the target. Tested with version 5.22.4. Chef/CINC Workstation can also be installed and used.
 - Administrative access to the target via root or sudo
 - Update the inputs in inputs file example as appropriate for your environment
 - assumes profile is downloaded to C:\Inspec\Profiles\vmware-cloud-foundation-sddcmgr-5x-stig-baseline**  
-- assumes photon profile is downloaded to C:\Inspec\Profiles\vmware-photon-3.0-stig-inspec-baseline**  
+- assumes photon profile is downloaded to C:\Inspec\Profiles\vmware-photon-4.0-stig-inspec-baseline**  
 - you may need to allow root ssh in order to run the profile since the vcf user cannot sudo. Remember to turn it back off afterwards.**
 - an API bearer token is needed for the SDDC Manager Application controls to make API calls. Specify it on the command line or in the inputs file.**  
 

@@ -2,15 +2,15 @@
 run_create_backups: true
 
 # Photon OS
-var_syslog_authpriv_log: '/var/log/audit/auth.log'
-## Don't update banner with DoD banner
-run_sshd_banner_issue: false
-# NTP is covered in the Application controls
-run_set_ntp_server: false
+create_backups: true
+run_etc_issue_dod: true
+var_rsyslog_server_name: 'syslog.test.local'
+var_rsyslog_server_port: '514'
+var_rsyslog_server_protocol: 'tcp'
 
 # Application
 # Enter SDDC Manager FQDN or IP for API Calls
-var_sddc_manager: 'sddc-manager.vrack.vsphere.local'
+var_sddc_manager: 'sddc-manager.vsphere.local'
 # Enter generated bearer token here
 var_bearer_token: ''
 # Enter an array of 1 to 2 NTP servers

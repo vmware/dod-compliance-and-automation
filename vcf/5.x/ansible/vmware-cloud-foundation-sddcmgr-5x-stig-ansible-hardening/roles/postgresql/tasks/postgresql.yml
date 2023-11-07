@@ -30,7 +30,7 @@
   when: run_max_connections | bool
   block:
     - name: PSQL-00-000001 - Check max_connections value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW max_connections"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW max_connections"
       register: result
       changed_when: false
       failed_when:
@@ -38,7 +38,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000001 - Set max_connections value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET max_connections = '{{ var_max_connections }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET max_connections = '{{ var_max_connections }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -76,7 +76,7 @@
   when: run_log_destination | bool
   block:
     - name: PSQL-00-000009 - Check log_destination value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_destination"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW log_destination"
       register: result
       changed_when: false
       failed_when:
@@ -84,7 +84,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000009 - Set log_destination value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_destination = '{{ var_log_destination }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET log_destination = '{{ var_log_destination }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -101,7 +101,7 @@
   when: run_log_prefix | bool
   block:
     - name: PSQL-00-000010 - Check log_line_prefix value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_line_prefix"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW log_line_prefix"
       register: result
       changed_when: false
       failed_when:
@@ -109,7 +109,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000010 - Set log_line_prefix value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_line_prefix = '{{ var_log_line_prefix }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET log_line_prefix = '{{ var_log_line_prefix }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -126,7 +126,7 @@
   when: run_log_files_permissions | bool
   block:
     - name: PSQL-00-000020 - Check log_file_mode value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_file_mode"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW log_file_mode"
       register: result
       changed_when: false
       failed_when:
@@ -134,7 +134,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000020 - Set log_file_mode value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_file_mode = '{{ var_log_file_mode }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET log_file_mode = '{{ var_log_file_mode }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -177,7 +177,7 @@
   when: run_remove_ext | bool
   block:
     - name: PSQL-00-000032 - Check for unauthorized extensions
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "select extname from pg_extension where extname != 'plpgsql'"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "select extname from pg_extension where extname != 'plpgsql'"
       register: result
       changed_when: false
       failed_when:
@@ -197,7 +197,7 @@
   when: run_conf_port | bool
   block:
     - name: PSQL-00-000035 - Check port value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW port"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW port"
       register: result
       changed_when: false
       failed_when:
@@ -205,7 +205,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000035 - Set port value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET port = '{{ var_port }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET port = '{{ var_port }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -248,7 +248,7 @@
   when: run_password_encryption | bool
   block:
     - name: PSQL-00-000038 - Check password_encryption value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW password_encryption"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW password_encryption"
       register: result
       changed_when: false
       failed_when:
@@ -256,7 +256,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000038 - Set password_encryption value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET password_encryption = '{{ var_password_encryption }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET password_encryption = '{{ var_password_encryption }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -273,7 +273,7 @@
   when: run_statement_timeout | bool
   block:
     - name: PSQL-00-000047 - Check statement_timeout value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW statement_timeout"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW statement_timeout"
       register: result
       changed_when: false
       failed_when:
@@ -281,7 +281,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000047 - Set statement_timeout value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET statement_timeout = '{{ var_statement_timeout }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET statement_timeout = '{{ var_statement_timeout }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -298,7 +298,7 @@
   when: run_write_logs | bool
   block:
     - name: PSQL-00-000051 - Check fsync value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW fsync"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW fsync"
       register: result
       changed_when: false
       failed_when:
@@ -306,7 +306,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000051 - Set fsync value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET fsync = '{{ var_fsync }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET fsync = '{{ var_fsync }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -318,7 +318,7 @@
         - result.stdout != var_fsync
 
     - name: PSQL-00-000051 - Check full_page_writes value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW full_page_writes"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW full_page_writes"
       register: result
       changed_when: false
       failed_when:
@@ -326,7 +326,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000051 - Set full_page_writes value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET full_page_writes = '{{ var_full_page_writes }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET full_page_writes = '{{ var_full_page_writes }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -338,7 +338,7 @@
         - result.stdout != var_full_page_writes
 
     - name: PSQL-00-000051 - Check synchronous_commit value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW synchronous_commit"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW synchronous_commit"
       register: result
       changed_when: false
       failed_when:
@@ -346,7 +346,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000051 - Set synchronous_commit value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET synchronous_commit = '{{ var_synchronous_commit }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET synchronous_commit = '{{ var_synchronous_commit }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -363,7 +363,7 @@
   when: run_client_min_messages | bool
   block:
     - name: PSQL-00-000060 - Check client_min_messages value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW client_min_messages"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW client_min_messages"
       register: result
       changed_when: false
       failed_when:
@@ -371,7 +371,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000060 - Set client_min_messages value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET client_min_messages = '{{ var_client_min_messages }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET client_min_messages = '{{ var_client_min_messages }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -388,7 +388,7 @@
   when: run_logging_collector | bool
   block:
     - name: PSQL-00-000070 - Check logging_collector value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW logging_collector"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW logging_collector"
       register: result
       changed_when: false
       failed_when:
@@ -396,7 +396,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000070 - Set logging_collector value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET logging_collector = '{{ var_logging_collector }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET logging_collector = '{{ var_logging_collector }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -413,7 +413,7 @@
   when: run_log_timezone | bool
   block:
     - name: PSQL-00-000075 - Check log_timezone value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_timezone"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW log_timezone"
       register: result
       changed_when: false
       failed_when:
@@ -421,7 +421,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000075 - Set log_timezone value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_timezone = '{{ var_log_timezone }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET log_timezone = '{{ var_log_timezone }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -438,7 +438,7 @@
   when: run_log_connections | bool
   block:
     - name: PSQL-00-000110 - Check log_connections value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_connections"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW log_connections"
       register: result
       changed_when: false
       failed_when:
@@ -446,7 +446,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000110 - Set log_connections value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_connections = '{{ var_log_connections }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET log_connections = '{{ var_log_connections }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:
@@ -463,7 +463,7 @@
   when: run_log_disconnections | bool
   block:
     - name: PSQL-00-000114 - Check log_disconnections value
-      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_disconnections"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c "SHOW log_disconnections"
       register: result
       changed_when: false
       failed_when:
@@ -471,7 +471,7 @@
         - result.rc != 0
 
     - name: PSQL-00-000114 - Set log_disconnections value
-      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_disconnections = '{{ var_log_disconnections }}';"
+      ansible.builtin.command: /usr/pgsql/13/bin/psql -h localhost -U postgres -c "ALTER SYSTEM SET log_disconnections = '{{ var_log_disconnections }}';"
       register: psqlresult
       changed_when: psqlresult.rc == 0
       failed_when:

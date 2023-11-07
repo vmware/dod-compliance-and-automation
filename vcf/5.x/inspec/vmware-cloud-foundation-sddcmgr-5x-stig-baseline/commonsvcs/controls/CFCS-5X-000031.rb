@@ -11,7 +11,7 @@ control 'CFCS-5X-000031' do
 
     module(load=\"imfile\" mode=\"inotify\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/commonsvcs/vcf-commonsvcs.log\"
+          File=\"/var/log/vmware/vcf/commonsvcs/*.log\"
           Tag=\"vcf-commonsvcs-runtime\"
           Severity=\"info\"
           Facility=\"local0\")
@@ -36,7 +36,7 @@ control 'CFCS-5X-000031' do
 
     module(load=\"imfile\" mode=\"inotify\")
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vcf/commonsvcs/vcf-commonsvcs.log\"
+          File=\"/var/log/vmware/vcf/commonsvcs/*.log\"
           Tag=\"vcf-commonsvcs-runtime\"
           Severity=\"info\"
           Facility=\"local0\")

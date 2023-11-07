@@ -38,19 +38,25 @@ control 'CFNG-5X-000091' do
   # Check server blocks to ensure setting doesn't exist or is on
   servers = nginx_conf_custom(input('nginx_conf_path')).servers
 
-  servers.each do |server|
-    next unless server.params['listen'].flatten.include?('ssl')
-    describe.one do
-      describe "Checking server block: #{server.params['server_name']}" do
-        it 'its ssl_prefer_server_ciphers should be on' do
-          expect(server.params['ssl_prefer_server_ciphers']).to include(['on'])
+  if !servers.empty?
+    servers.each do |server|
+      next unless server.params['listen'].flatten.include?('ssl')
+      describe.one do
+        describe "Checking server block: #{server.params['server_name']}" do
+          it 'its ssl_prefer_server_ciphers should be on' do
+            expect(server.params['ssl_prefer_server_ciphers']).to include(['on'])
+          end
+        end
+        describe "Checking server block: #{server.params['server_name']}" do
+          it 'its ssl_prefer_server_ciphers should not exist' do
+            expect(server.params['ssl_prefer_server_ciphers']).to be nil
+          end
         end
       end
-      describe "Checking server block: #{server.params['server_name']}" do
-        it 'its ssl_prefer_server_ciphers should not exist' do
-          expect(server.params['ssl_prefer_server_ciphers']).to be nil
-        end
-      end
+    end
+  else
+    describe 'No server contexts...skipping.' do
+      skip 'No server contexts...skipping.'
     end
   end
 end

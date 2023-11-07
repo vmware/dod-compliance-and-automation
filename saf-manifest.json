@@ -49,41 +49,41 @@
     "version": "8",
     "vendor": "VMware",
     "guidance": {
-      "name": "VMware vSphere 8 STIG Readiness Guide",
-      "version": "V1R2",
-      "date": "September 21, 2023",
+      "name": "VMware vSphere 8 STIG",
+      "version": "V1R1",
+      "date": "November 03, 2023",
       "source": "https://core.vmware.com/resource/vmware-vsphere-8-stig-readiness-guide",
-      "type": "STIG Readiness Guide",
+      "type": "Official STIG",
       "category": "Virtual Platforms"
     },
     "hardening": [
       {
-        "name": "VMware vSphere vCenter Appliance 8.0 STIG Readiness Guide Ansible Playbook",
-        "version": "V1R2",
-        "date": "September 21, 2023",
+        "name": "VMware vSphere vCenter Appliance 8.0 STIG Ansible Playbook",
+        "version": "V1R1",
+        "date": "November 03, 2023",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/8.0/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening",
         "platform": "Ansible"
       },
       {
-        "name": "VMware vSphere 8.0 STIG Readiness Guide PowerCLI",
-        "version": "V1R2",
-        "date": "September 21, 2023",
+        "name": "VMware vSphere 8.0 STIG PowerCLI",
+        "version": "V1R1",
+        "date": "November 03, 2023",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/8.0/vsphere/powercli",
         "platform": "Powershell"
       }
     ],
     "validation": [
       {
-        "name": "VMware vSphere vCenter Appliance 8.0 STIG Readiness Guide Chef InSpec Profile",
-        "version": "V1R2",
-        "date": "September 21, 2023",
+        "name": "VMware vSphere vCenter Appliance 8.0 STIG Chef InSpec Profile",
+        "version": "V1R1",
+        "date": "November 03, 2023",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/8.0/vcsa/inspec/vmware-vcsa-8.0-stig-baseline",
         "platform": "InSpec"
       },
       {
-        "name": "VMware vSphere 8.0 STIG Readiness Guide Chef InSpec Profile",
-        "version": "V1R2",
-        "date": "September 21, 2023",
+        "name": "VMware vSphere 8.0 STIG Chef InSpec Profile",
+        "version": "V1R1",
+        "date": "November 03, 2023",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/8.0/vsphere/inspec/vmware-vsphere-8.0-stig-baseline",
         "platform": "InSpec"
       }
@@ -273,27 +273,27 @@
     "version": "5.x",
     "vendor": "VMware",
     "guidance": {
-      "name": "VMware Cloud Foundation 5.0 STIG Readiness Guide",
-      "version": "V1R1",
-      "date": "June 1, 2023",
+      "name": "VMware Cloud Foundation 5.1 STIG Readiness Guide",
+      "version": "V1R2",
+      "date": "November 07, 2023",
       "source": "https://core.vmware.com/resource/vmware-cloud-foundation-50-stig-readiness-guide",
       "type": "STIG Readiness Guide",
       "category": "Virtual Platforms"
     },
     "hardening": [
       {
-        "name": "VMware Cloud Foundation 5.0 STIG Readiness Guide Ansible Playbook",
+        "name": "VMware Cloud Foundation 5.1 STIG Readiness Guide Ansible Playbook",
         "version": "V1R1",
-        "date": "June 1, 2023",
+        "date": "November 07, 2023",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/vcf/5.x/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening",
         "platform": "Ansible"
       }
     ],
     "validation": [
       {
-        "name": "VMware Cloud Foundation 5.0 STIG Readiness Guide Chef InSpec Profile",
+        "name": "VMware Cloud Foundation 5.1 STIG Readiness Guide Chef InSpec Profile",
         "version": "V1R1",
-        "date": "June 1, 2023",
+        "date": "November 07, 2023",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/vcf/5.x/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline",
         "platform": "InSpec"
       }

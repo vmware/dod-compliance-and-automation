@@ -5,7 +5,7 @@ copyright: VMTA
 copyright_email: stigs@vmware.com
 license: Apache-2.0
 summary: InSpec Profile PostgreSQL based on our internal VMware developed PostgreSQL content
-version: 1.1
+version: 1.0.2
 
 inputs:
 - name: postgres_user

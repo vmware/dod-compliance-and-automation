@@ -11,7 +11,7 @@ control 'PSQL-00-000038' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -h localhost -U postgres -A -t -c \"SHOW password_encryption\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -A -t -c \"SHOW password_encryption\"
 
     Expected result:
 
@@ -22,14 +22,14 @@ control 'PSQL-00-000038' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # psql -h localhost -U postgres -c \"ALTER SYSTEM SET password_encryption TO 'md5';\"
+    # /usr/pgsql/13/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET password_encryption TO 'md5';\"
 
     Reload the PostgreSQL service by running the following command:
 
     # systemctl reload postgres
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000171-DB-000074'
   tag gid: 'V-PSQL-00-000038'
   tag rid: 'SV-PSQL-00-000038'

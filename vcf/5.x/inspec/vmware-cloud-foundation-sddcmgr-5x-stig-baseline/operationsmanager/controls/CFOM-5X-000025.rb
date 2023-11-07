@@ -33,11 +33,18 @@ control 'CFOM-5X-000025' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164', 'CCI-001314']
   tag nist: ['AU-9', 'SI-11 b']
 
-  command('find /var/log/vmware/vcf/operationsmanager/ -type f -xdev').stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_writable.by('others') }
-      its('owner') { should eq 'vcf_operationsmanager' }
-      its('group') { should eq 'vcf' }
+  logfiles = command('find /var/log/vmware/vcf/operationsmanager/ -type f -xdev').stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_writable.by('others') }
+        its('owner') { should eq 'vcf_operationsmanager' }
+        its('group') { should eq 'vcf' }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end

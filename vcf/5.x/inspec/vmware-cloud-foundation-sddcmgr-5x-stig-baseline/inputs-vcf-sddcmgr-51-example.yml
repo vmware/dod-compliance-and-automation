@@ -1,5 +1,5 @@
 # Inputs for Photon OS.
-authprivlog: /var/log/audit/auth.log
+authprivlog: /var/log/messages
 sshdcommand: "sshd -T -C 'user=vcf'"
 # Enter environment specific syslog server with port. replace.local:514
 syslogServer: 'replace.local:514'
@@ -21,6 +21,6 @@ sftpServer: '10.1.2.3'
 # Enter environment specific ntp servers. This is an array.
 ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
 # Enter latest version of SDDC manager with build. 5.0.0.0-21790711
-currentVersion: '5.0.0.0-21822418'
+currentVersion: '5.1.0.0-22688368'
 # Enter myvmware account used to pull updates in SDDC Manager if used.
 myVmwareAccount: 'myvmwarevcfaccount@test.local'

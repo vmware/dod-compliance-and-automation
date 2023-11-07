@@ -34,8 +34,8 @@ control 'CFAP-5X-000113' do
 
     https://docs.vmware.com/en/VMware-Cloud-Foundation/5.0/vcf-lifecycle/GUID-B384B08D-3652-45E2-8AA9-AF53066F5F70.html
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000456-AS-000266'
   tag gid: 'V-CFAP-5X-000113'
   tag rid: 'SV-CFAP-5X-000113'

@@ -42,18 +42,33 @@ control 'CFSS-5X-000025' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9']
 
-  command('find /var/log/vmware/vcf/sddc-support/*.* -xdev -type f ! -name vcf-sos-gunicorn.log').stdout.split.each do |fname|
-    describe file(fname) do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'vcf' }
-      it { should_not be_more_permissive_than('0640') }
+  logfiles = command('find /var/log/vmware/vcf/sddc-support/*.* -xdev -type f ! -name vcf-sos-gunicorn.log').stdout
+  if !logfiles.empty?
+    logfiles.split.each do |fname|
+      describe file(fname) do
+        its('owner') { should cmp 'root' }
+        its('group') { should cmp 'vcf' }
+        it { should_not be_more_permissive_than('0640') }
+      end
+    end
+  else
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
-  command('find /var/log/vmware/vcf/sddc-support/sos*/* -xdev -type f').stdout.split.each do |fname|
-    describe file(fname) do
-      its('owner') { should cmp 'vcf' }
-      its('group') { should cmp 'vcf' }
-      it { should_not be_more_permissive_than('0640') }
+  logfilessos = command('find /var/log/vmware/vcf/sddc-support/sos*/* -xdev -type f').stdout
+  if !logfilessos.empty?
+    logfilessos.split.each do |fname|
+      describe file(fname) do
+        its('owner') { should cmp 'vcf' }
+        its('group') { should cmp 'vcf' }
+        it { should_not be_more_permissive_than('0640') }
+      end
+    end
+  else
+    impact 0.0
+    describe 'No log files found...skipping.' do
+      skip 'No log files found...skipping.'
     end
   end
 end
