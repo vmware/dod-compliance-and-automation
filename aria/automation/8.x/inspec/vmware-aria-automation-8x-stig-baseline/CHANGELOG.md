@@ -7,7 +7,7 @@
   - VRAA-8X-000002
   - VRAA-8X-000005
   - VRAA-8X-000007
-  - VRAA-8X-000008
+  - VRAA-8X-000008 - fixed vracli command
   - VRAA-8X-000009
   - VRAA-8X-000012
   - VRAA-8X-000014
@@ -17,9 +17,9 @@
   - VRAA-8X-000091
   - VRAA-8X-000106
   - VRAA-8X-000107
-  - VRAA-8X-000123
-  - VRAA-8X-000125
-  - VRAA-8X-000126
+  - VRAA-8X-000123 - removed
+  - VRAA-8X-000125 - fixed fips mode check
+  - VRAA-8X-000126 - updated sshd config path
   - VRAA-8X-000127
   - VRAA-8X-000128
 - Include Photon controls locally (instead of linking to Photon profile) to handle updated sshd config file path specific to Aria Automation.

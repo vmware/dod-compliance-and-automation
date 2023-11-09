@@ -13,7 +13,7 @@ control 'PHTN-30-000064' do
   desc  'check', "
     At the command line, run the following command:
 
-    # sshd -t -f /etc/ssh/sshd_config_effective |&grep -i Ciphers
+    # sshd -T -f /etc/ssh/sshd_config_effective |&grep -i Ciphers
 
     Expected result:
 

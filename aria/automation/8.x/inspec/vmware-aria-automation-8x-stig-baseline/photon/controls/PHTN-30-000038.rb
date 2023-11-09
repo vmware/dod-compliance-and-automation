@@ -5,7 +5,7 @@ control 'PHTN-30-000038' do
   desc  'check', "
     At the command line, run the following command:
 
-    # sshd -t -f /etc/ssh/sshd_config_effective |&grep -i ClientAliveCountMax
+    # sshd -T -f /etc/ssh/sshd_config_effective |&grep -i ClientAliveCountMax
 
     Expected result:
 

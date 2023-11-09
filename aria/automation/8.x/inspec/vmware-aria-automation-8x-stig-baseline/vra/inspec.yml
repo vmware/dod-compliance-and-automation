@@ -42,7 +42,7 @@ inputs:
 - name: maxAuthTries
   description: VRAA-8X-000126 - Define sshd maxAuthTries
   type: string
-  value: "2"
+  value: "3"
 
 - name: verbose
   description: When analyzing file owners and groups, return list of files or just a count.
