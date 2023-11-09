@@ -1,10 +1,10 @@
-# vmware-vra-8x-stig-baseline
-VMware vRealize Automation 8.x STIG Readiness Guide Chef InSpec Profile  
+# vmware-aria-automation-8x-stig-baseline
+VMware Aria Automation 8.x STIG Readiness Guide Chef InSpec Profile  
 Version: Version 1 Release 4 Date: 30 October 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
-This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the VMware vRealize Automation 8.x STIG Readiness Guide.
+This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the VMware Aria Automation 8.x STIG Readiness Guide.
 
 It has been tested against versions 8.12 through 8.13. 
 
