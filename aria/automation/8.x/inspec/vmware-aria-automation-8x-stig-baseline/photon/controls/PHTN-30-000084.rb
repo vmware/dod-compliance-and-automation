@@ -5,7 +5,7 @@ control 'PHTN-30-000084' do
   desc  'check', "
     At the command line, run the following command:
 
-    # sshd -t -f /etc/ssh/sshd_config_effective |&grep -i Compression
+    # sshd -T -f /etc/ssh/sshd_config_effective |&grep -i Compression
 
     Expected result:
 

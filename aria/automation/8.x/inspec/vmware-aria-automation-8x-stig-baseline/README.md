@@ -17,15 +17,6 @@ All technical NIST SP 800-53 requirements were considered while developing this 
 - Update the inputs in the inspec.yml file as appropriate for the environment.
 - InSpec installed on target machine if running tests locally, or ssh enabled on the target machine if running tests remotely.
 
-## vRA InSpec Profiles
-
-InSpec profiles for vRA are available for each component or can be run all or some from a wrapper/overlay profile. Note the wrapper profile is setup to reference the other profiles from the same relative folder structure as seen below.  
-
-Repository paths:
-* [Photon](https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/3.0/inspec/vmware-photon-3.0-stig-inspec-baseline)
-
-See the [InSpec docs](https://www.inspec.io/docs/reference/profiles/) for more info on profile dependencies and inheritance  
-
 ## How to run InSpec locally from Powershell on Windows
 
 **Note - assumes all relevant profiles are downloaded to C:\Inspec\Profiles\vmware-aria-automation-8x-stig-baseline**  

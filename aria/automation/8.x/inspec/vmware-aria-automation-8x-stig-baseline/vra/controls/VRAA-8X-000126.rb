@@ -5,7 +5,7 @@ control 'VRAA-8X-000126' do
   desc  'check', "
     At the command line, run the following command:
 
-    # sshd -T|&grep -i MaxAuthTries
+    # sshd -T -f /etc/ssh/sshd_config_effective |&grep -i MaxAuthTries
 
     Example result:
 
@@ -16,7 +16,7 @@ control 'VRAA-8X-000126' do
   desc 'fix', "
     Navigate to and open:
 
-    /etc/ssh/sshd_config
+    /etc/ssh/sshd_config_effective
 
     Ensure that the \"MaxAuthTries\" line is uncommented and set to the following:
 
@@ -37,7 +37,7 @@ control 'VRAA-8X-000126' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe command('sshd -T|&grep -i MaxAuthTries') do
-    its('stdout.strip') { should cmp input('maxAuthTries') }
+  describe command('sshd -T -f /etc/ssh/sshd_config_effective |&grep -i MaxAuthTries') do
+    its('stdout.strip') { should cmp "MaxAuthTries #{input('maxAuthTries')}" }
   end
 end

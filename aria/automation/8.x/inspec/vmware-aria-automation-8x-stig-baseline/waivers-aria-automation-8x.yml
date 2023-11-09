@@ -12,7 +12,3 @@ PHTN-30-000106:
   expiration_date: 2024-12-31
   run: false
   justification: "Aria Automation runs Kubernetes which needs this kernel option to forward traffic"
-VRAA-8X-000123:
-  expiration_date: 2024-12-31
-  run: false
-  justification: "CEIP can be enabled if not on a DoD network"

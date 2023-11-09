@@ -15,7 +15,7 @@ control 'VRAA-8X-000008' do
 
      # vracli remote-syslog
 
-    For Log Insight configuration:
+    For VMware Aria Operations for Logs configuration:
 
      # vracli vrli
 
@@ -30,7 +30,7 @@ control 'VRAA-8X-000008' do
             \"use_ssl\": false
     }
 
-    Example result for Log Insight:
+    Example result for VMware Aria Operations for Logs:
 
     {
         \"agentId\": \"0\",
@@ -41,20 +41,20 @@ control 'VRAA-8X-000008' do
         \"sslVerify\": false
     }
 
-    If the output does not indicate a valid syslog or Log Insight server similar to the above examples, this is a finding.
+    If the output does not indicate a valid server similar to the above examples, this is a finding.
   "
   desc 'fix', "
     At the command line interface, run one of the following commands:
 
     For Syslog configuration:
 
-     # vracli remote-syslog set -id <unique ID to send to syslog> --ca-file </path/to/syslog crt> tcp://<syslog server IP>:<port>
+    # vracli remote-syslog set -id <unique ID to send to syslog> --ca-file </path/to/syslog crt> tcp://<syslog server IP>:<port>
 
-     To use TCP rather than TLS, remove the \"ca-file\" switch and add \"--disable-ssl\" before the host portion.
+    To use TCP rather than TLS, remove the \"ca-file\" switch and add \"--disable-ssl\" before the host portion.
 
-    For Log Insight configuration:
+    For VMware Aria Operations for Logs configuration:
 
-     # vracli vrli set --ca-file </path/to/vrli crt> http://<vRLI IP>:<port>
+    # vracli vrli set https://<FQDN or IP>:<port>
   "
   impact 0.5
   tag severity: 'medium'

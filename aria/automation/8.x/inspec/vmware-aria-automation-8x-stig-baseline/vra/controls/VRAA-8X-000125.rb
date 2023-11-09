@@ -9,7 +9,7 @@ control 'VRAA-8X-000125' do
 
     Example output:
 
-    FIPS mode: enabled
+    FIPS mode: strict
 
     If FIPS mode is not enabled, this is a finding.
   "
@@ -28,6 +28,6 @@ control 'VRAA-8X-000125' do
   tag nist: ['CM-6 b']
 
   describe command('vracli security fips') do
-    its('stdout.strip') { should cmp 'FIPS mode: enabled' }
+    its('stdout.strip') { should cmp 'FIPS mode: strict' }
   end
 end

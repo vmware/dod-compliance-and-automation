@@ -5,7 +5,7 @@ control 'PHTN-30-000080' do
   desc  'check', "
     At the command line, run the following command:
 
-    # sshd -t -f /etc/ssh/sshd_config_effective |&grep -i X11Forwarding
+    # sshd -T -f /etc/ssh/sshd_config_effective |&grep -i X11Forwarding
 
     Expected result:
 
