@@ -8,4 +8,4 @@ addons:
     release: xenial-compliance
 releases:
 - name: xenial-compliance
-  version: 0+dev.17
+  version: 0+dev.3

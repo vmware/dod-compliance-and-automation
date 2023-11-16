@@ -105,6 +105,10 @@ if getent passwd sys ; then
   userdel -f sys
 fi
 
+if getent passwd sync ; then
+  userdel -f sync
+fi
+
 # SV-90167r3_rule
 sed -i "s/^auth[[:space:]]*required[[:space:]]*pam_tally2\.so.*/auth    required                    pam_tally2.so onerr=fail deny=3/" /etc/pam.d/common-auth
 
@@ -118,7 +122,7 @@ sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*-F[[:space:]]*path=\/bin\/su.*@-
 sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=\/usr\/bin\/chfn[[:space:]]*.*@-a always,exit -F path=\/usr\/bin\/chfn -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-gpasswd@" /etc/audit/rules.d/audit.rules
 
 # SV-90375r3_rule
-sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=\/bin\/mount[[:space:]]*.*@-a always,exit -F path=/bin/mount -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-mount@" /etc/audit/rules.d/audit.rules
+sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=\/bin\/mount[[:space:]]*.*@-a always,exit -F path=/bin/mount -F perm=x -F auid>=500 -F auid!=4294967295 -k privileged-mount@" /etc/audit/rules.d/audit.rules
 
 # SV-90377r3_rule
 sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=\/bin\/umount[[:space:]]*.*@-a always,exit -F path=/bin/umount -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged-mount@" /etc/audit/rules.d/audit.rules
@@ -265,7 +269,10 @@ echo "-a always,exit -F arch=b64 -S delete_module -F auid>=1000 -F auid!=4294967
 sed -i "s@^-a[[:space:]]*always,exit[[:space:]]*.*path=/usr/bin/chcon[[:space:]]*.*@-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=4294967295 -k perm_chng@" /etc/audit/rules.d/audit.rules
 
 # SV-90533r2_rule
-sed -i "s@^X11Forwarding.*@X11Forwarding no@" /etc/ssh/sshd_config
+sed -i "s@^X11Forwarding.*@X11Forwarding yes@" /etc/ssh/sshd_config
+
+# SV-233624r610931_rule	
+sed -i "s@^X11UseLocalhost.*@X11UseLocalhost yes@" /etc/ssh/sshd_config
 
 # SV-214947r610931_rule
 passwd -l root
