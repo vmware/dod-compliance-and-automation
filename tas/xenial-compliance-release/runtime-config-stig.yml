@@ -1,0 +1,11 @@
+addons:
+- name: xenial-stig
+  include:
+    stemcell:
+    - os: ubuntu-xenial
+  jobs:
+  - name: stig
+    release: xenial-compliance
+releases:
+- name: xenial-compliance
+  version: 0+dev.3

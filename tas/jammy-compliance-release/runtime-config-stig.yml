@@ -1,0 +1,11 @@
+addons:
+- name: jammy-stig
+  include:
+    stemcell:
+    - os: ubuntu-jammy
+  jobs:
+  - name: stig
+    release: jammy-compliance
+releases:
+- name: jammy-compliance
+  version: 0+dev.17

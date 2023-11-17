@@ -1,0 +1,20 @@
+#! /bin/bash -e
+[[ -z "${DEBUG:-}" ]] || set -x
+
+# V-238309
+echo "Defaults logfile=/var/log/sudo.log" > /etc/sudoers.d/log_file
+
+grep -q '^-w /var/log/sudo.log -p wa' /etc/audit/rules.d/audit.rules \
+  && sed -i "s@.*\/var\/log\/sudo.log.*@-w /var/log/sudo.log -p wa -k sudo_log_file@" /etc/audit/rules.d/audit.rules \
+  || echo '-w /var/log/sudo.log -p wa -k sudo_log_file' >> /etc/audit/rules.d/audit.rules
+
+# V-238216
+sed -i "s@MACs.*@MACs hmac-sha2-512,hmac-sha2-256@" /etc/ssh/sshd_config 
+
+# V-238217
+sed -i "s@Ciphers.*@Ciphers aes256-ctr,aes192-ctr,aes128-ctr@" /etc/ssh/sshd_config 
+
+# V-255912
+grep -q '^KexAlgorithms' /etc/ssh/sshd_config  \
+  && sed -i "s@^KexAlgorithms.*@KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256@" /etc/ssh/sshd_config \
+  || echo "KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256" >> /etc/ssh/sshd_config

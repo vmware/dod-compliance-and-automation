@@ -1,0 +1,10 @@
+---
+name: stig
+
+templates: 
+  pre-start: bin/pre-start
+  post-start: bin/post-start
+
+packages: []
+
+properties: {}
