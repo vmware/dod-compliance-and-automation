@@ -1,7 +1,7 @@
 <# 
 .SYNOPSIS 
   Remediates vCenter Server against the vSphere vCenter 8.0 STIG
-  Version 1 Release 2
+  Version 1 Release 1
 .DESCRIPTION
   -Remediates a single host or all hosts in a specified cluster.
   -Individual controls can be enabled/disabled in the $controlsenabled hash table

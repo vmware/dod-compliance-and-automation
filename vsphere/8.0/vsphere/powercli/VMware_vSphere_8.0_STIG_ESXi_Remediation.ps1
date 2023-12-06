@@ -1,7 +1,7 @@
 <# 
 .SYNOPSIS 
   Remediates ESXi hosts against the vSphere ESXi 8.0 STIG
-  Version 1 Release 2
+  Version 1 Release 1
 .DESCRIPTION
   -Remediates a single host or all hosts in a specified cluster.
   -Individual controls can be enabled/disabled in the $controlsenabled hash table
@@ -297,7 +297,7 @@ If($reportpath){
   $TranscriptName = $reportpath + "\VMware_vSphere_8.0_STIG_ESXi_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
   Start-Transcript -Path $TranscriptName
   ## Results file name for output to json
-  $resultjson = $reportpath + "\VMware_vSphere_8.0_STIG_ESXi_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"   
+  $resultjson = $reportpath + "\VMware_vSphere_8.0_STIG_ESXi_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
 }
 
 #Modules needed to run script and load

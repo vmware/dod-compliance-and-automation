@@ -25,7 +25,7 @@
     Tested against
     -PowerCLI 13
     -Powershell 5/Core 7.3.4
-    -vCenter/ESXi 8.0 U1a
+    -vCenter/ESXi 8.0 U2
 
     Example command to run script
     .\VMware_vSphere_8.0_STIG_VM_Remediation.ps1 -vcenter vcentername.test.local -all myhost.test.local -vccred $cred -reportpath C:\Reports
@@ -134,10 +134,10 @@ If($reportpath){
     ## Capture Date variable
     $Date = Get-Date
     ## Start Transcript
-    $TranscriptName = $reportpath + "\VMware_vSphere_8.0_STIG_ESXi_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
+    $TranscriptName = $reportpath + "\VMware_vSphere_8.0_STIG_VM_Remediation_Transcript" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".txt"
     Start-Transcript -Path $TranscriptName
     ## Results file name for output to json
-    $resultjson = $reportpath + "\VMware_vSphere_8.0_STIG_ESXi_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"   
+    $resultjson = $reportpath + "\VMware_vSphere_8.0_STIG_VM_Remediation_Results" + "_" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"   
 }
 
 #Modules needed to run script and load
