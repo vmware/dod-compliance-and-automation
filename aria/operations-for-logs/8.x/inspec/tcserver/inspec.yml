@@ -1,0 +1,106 @@
+name: vRealize Log Insight Appliance 8.x tc Server Profile
+title: vRealize Log Insight Appliance 8.x tc Server Profile
+maintainer: VMTA
+copyright: 2023
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+inputs:
+- name: catalinaHome
+  description: tc Server core path (path to main binaries) - equates to $CATALINA_HOME
+  type: string
+  value: "/usr/lib/loginsight/application/etc/3rd_config"
+- name: catalinaBase
+  description: Path to tc Server instance - equates to $CATALINA_BASE
+  type: string
+  value: "/usr/lib/loginsight/application/3rd_party/apache-tomcat-8.5.87"
+- name: contextXmlFiles
+  description: List of Context.xml files (if present)
+  type: array
+  value: 
+  - /usr/lib/loginsight/application/3rd_party/apache-tomcat-8.5.87/conf/context.xml
+- name: keystoreFile
+  description: path to the keystore file, if in use
+  type: string
+  value: "/usr/lib/loginsight/application/3rd_party/apache-tomcat-8.5.87/conf/keystore"  
+- name: javaHome
+  description: path to java instance on the tc Server
+  type: string
+  value: "/usr/bin/java"
+- name: svcFilePath
+  description: Tomcat service config file
+  type: string
+  value: "/lib/systemd/system/loginsight.service"
+- name: maxThreads
+  description: maxThreads value
+  type: string
+  value: "150"
+- name: accessLogPattern
+  description: List of values that must be present in the pattern property of the AccessLogValve
+  type: array
+  value:
+  - "%h" 
+  - "%l" 
+  - "%t" 
+  - "%u" 
+  - "&quot;%r&quot;"
+  - "%s" 
+  - "%b"
+- name: securePorts
+  description: Connectors listening on secure ports that should have the SSLEnabled flag set
+  type: array
+  value:
+  - "443"
+- name: approvedConnectorPorts
+  description: Approved ports for connectors to listen on
+  type: array
+  value:
+  - "443"
+- name: allowedCiphers
+  description:
+  type: array
+  value:
+  - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+  #USERS and GROUPS
+- name: tcCoreUser
+  description: user owner of the tcCore files and folders
+  value: "root"
+- name: tcCoreGroup
+  description: group owner of the tcCore files and folders
+  value: "root"
+- name: svcAccountName
+  description: name of the user account running the tc Server service
+  type: string
+  value: "root"
+- name: svcGroup
+  description: Name of group running the tc Server service
+  type: string
+  value: "root"
+  #OTHER CONFIG SETTINGS
+- name: tcVersion
+  description: tc Server version that should be running
+  type: string
+  value: "8.5.87" 
+- name: minUmask
+  description: minimum Umask value for the SecurityListener element
+  type: string
+  value: "0007"
+- name: connectionTimeout
+  description: timeout value for connections
+  type: string
+  value: "20000"
+- name: maxKeepAliveRequests
+  description: value for allowed maximum keep-alive requests
+  type: string
+  value: "50"
+- name: shutdownPort
+  description: port used for server shutdown, setting to -1 disables functionality
+  type: string
+  value: "-1"
+- name: sessionTimeout
+  description: session timeout value in minutes
+  type: string
+  value: "30"
