@@ -4,7 +4,6 @@
 This STIG Readiness Guide *Version 1 Release 3* is intended for version 8.14. If you are on a previous version please reference the guidance available [here](https://github.com/vmware/dod-compliance-and-automation/tree/f81b17bc4527711969af024ae53ab70180ef1c59/aria/operations-for-logs/8.x).
 
 |                     |        V1R2*       |        V1R3*       |
-|                     | (previous release) |   (this release)   |
 |:-------------------:|:------------------:|:------------------:|
 |  8.12 GA to 8.13 GA | :heavy_check_mark: |         :x:        |
 |       8.14 GA       |         :x:        | :heavy_check_mark: |
