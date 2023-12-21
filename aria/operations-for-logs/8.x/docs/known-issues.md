@@ -7,7 +7,7 @@
 
 # Known Issues
 
-This document outlines known issues with the VMware Aria Operations for Logs 8 STIG content, including workarounds if known.
+This document outlines known issues with the VMware Aria Operations for Logs 8 STIG Readiness Guide content, including workarounds if known.
 
 ## What should I do if...
 

@@ -1,5 +1,11 @@
 # Change Log
 
+## [8.14 Version 1 Release 3] (2023-12-22)
+
+#### Release Notes
+- Updated to include Photon 4.0 guidance
+
+
 ## [8.12 Version 1 Release 2] (2023-12-20)
 
 #### Release Notes

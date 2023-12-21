@@ -1,27 +1,25 @@
 # vmware-aria-operations-for-logs-8.x-stig-baseline
 VMware Aria Operations for Logs 8.12 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 2 Date: 20 December 2023  
+Version: Release 1 Version 3 Date: 21 December 2023  
 STIG Type: STIG Readiness Guide
 Maintainers: SCOPE/VMTA  
 
 ## Targets
-This content is currently applicable for VMware Aria Operations for Logs versions 8.12 and 8.13, and will be updated as necessary for later releases.
-
-Version 1 Release 2 is intended for version 8.12 and 8.13 builds only.
+This version of the content is currently applicable for VMware Aria Operations for Logs versions 8.14, and will be updated as necessary for later releases.
 
 ## VMware Aria Operations for Logs InSpec Profiles
 
 InSpec profiles for VMware Aria Operations for Logs are available for each component or can be run all or some from the wrapper/overlay profile. Note the wrapper profile is setup to reference the other profiles from the same relative folder structure as seen below.  
 
 Repository paths:
-* [Photon](https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/3.0/inspec/vmware-photon-3.0-stig-inspec-baseline)
+* [Photon 4.0](https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/4.0/inspec/vmware-photon-4.0-stig-baseline)
 
 [See the InSpec docs for more info on Profile dependencies and inheritence](https://www.inspec.io/docs/reference/profiles/)
 
 
 ## How to run InSpec locally from Powershell on Windows
 
-**Note - assumes profiles are downloaded to C:\Inspec\Profiles\vmware-stig-baseline**  
+**Note - assumes profiles are downloaded to C:\Inspec\Profiles\vmware-stig-baseline.  Photon profile must be downloaded and staged appropriately.**  
 Example folder structure:  
 ```
 \vmware-stig-baseline  
@@ -30,7 +28,7 @@ Example folder structure:
     \cassandra
     \controls
     \tcserver
-  \vmware-photon-3.0-stig-inspec-baseline  
+  \vmware-photon-4.0-stig-baseline  
 ```
 
 **Note - update any needed inputs in each inspec.yaml or specify them at run time.**  
@@ -63,7 +61,7 @@ Run a single control against a target appliance with input file and output resul
 inspec exec . -t ssh://root@<IP or FQDN> --password 'password' --input-file .\inputs-example.yml --controls=VLIA-8X-000001
 ```
 
-Run a specific set of controls from a specific profile using regex against a target vRLI appliance
+Run a specific set of controls from a specific profile using regex against a target appliance
 ```
 inspec exec .\cassandra -t ssh://root@<IP or FQDN> --password 'password' --controls=/VLIC-8X-00001/
 (or /VLIC/, etc)
