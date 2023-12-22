@@ -10,10 +10,10 @@ version: 1.0.2
 inputs:
 - name: cassandraconfig
   type: string
-  value: /usr/lib/loginsight/application/lib/apache-cassandra-4.1.0/conf/cassandra.yaml
+  value: /usr/lib/loginsight/application/lib/apache-cassandra-4.1.3/conf/cassandra.yaml
 - name: cassandraroot
   type: string
-  value: /usr/lib/loginsight/application/lib/apache-cassandra-4.1.0
+  value: /usr/lib/loginsight/application/lib/apache-cassandra-4.1.3
 - name: ipaddress
   type: string
   value: "10.10.10.10"

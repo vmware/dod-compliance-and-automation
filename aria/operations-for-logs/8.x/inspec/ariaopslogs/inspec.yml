@@ -19,7 +19,7 @@ inputs:
 - name: password
   type: string
   description: Password to connect with
-  value: "password"
+  value: "PASSWORD"
 - name: configBase
   type: string
   description: Base Configuration File
