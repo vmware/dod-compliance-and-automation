@@ -95,10 +95,11 @@ esxiBuildNumber: "21424296"
 Connectivity to vCenter is established via environment variables. Take care to clear your history and close the Powershell session to avoid any credentials left in memory/history.
 ```powershell
 # Note: VISERVER is referencing vCenter and not an ESXi host.
-> $env:VISERVER="10.182.131.166"
-> $env:VISERVER_USERNAME="Administrator@vsphere.local"
-> $env:VISERVER_PASSWORD="password"
+> $env:VISERVER='10.186.30.81'
+> $env:VISERVER_USERNAME='Administrator@vsphere.local'
+> $env:VISERVER_PASSWORD='password'
 ```
+*Note: If your password has a single ' in it you must substitute it with '''' for it to be properly escaped all the way through the process.*
 
 ### Run the audit
 In this example we will be scanning all ESXi hosts attached to the target vCenter, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
@@ -150,10 +151,11 @@ Connectivity to vCenter is established via environment variables. Take care to c
 If was done in the previous step it is not necessary to do again.
 ```powershell
 # Note: VISERVER is referencing vCenter and not an ESXi host.
-> $env:VISERVER="10.182.131.166"
-> $env:VISERVER_USERNAME="Administrator@vsphere.local"
-> $env:VISERVER_PASSWORD="password"
+> $env:VISERVER='10.186.30.81'
+> $env:VISERVER_USERNAME='Administrator@vsphere.local'
+> $env:VISERVER_PASSWORD='password'
 ```
+*Note: If your password has a single ' in it you must substitute it with '''' for it to be properly escaped all the way through the process.*
 
 ### Run the audit
 In this example we will be scanning all VMs in the target vCenter, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
@@ -232,10 +234,11 @@ Connectivity to vCenter is established via environment variables. Take care to c
 If was done in the previous step it is not necessary to do again.
 ```powershell
 # Note: VISERVER is referencing vCenter and not an ESXi host.
-> $env:VISERVER="10.182.131.166"
-> $env:VISERVER_USERNAME="Administrator@vsphere.local"
-> $env:VISERVER_PASSWORD="password"
+> $env:VISERVER='10.186.30.81'
+> $env:VISERVER_USERNAME='Administrator@vsphere.local'
+> $env:VISERVER_PASSWORD='password'
 ```
+*Note: If your password has a single ' in it you must substitute it with '''' for it to be properly escaped all the way through the process.*
 
 ### Run the audit
 In this example we will be scanning vCenter controls in the target vCenter, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
@@ -288,9 +291,10 @@ To use the runner script, do the following:
 ```powershell
 # If not done already provide the credentials for InSpec to connect to vCenter.
 # Note: VISERVER is referencing vCenter and not an ESXi host.
-> $env:VISERVER="10.182.131.166"
-> $env:VISERVER_USERNAME="Administrator@vsphere.local"
-> $env:VISERVER_PASSWORD="password"
+> $env:VISERVER='10.186.30.81'
+> $env:VISERVER_USERNAME='Administrator@vsphere.local'
+> $env:VISERVER_PASSWORD='password'
+# Note: If your password has a single ' in it you must substitute it with '''' for it to be properly escaped all the way through the process.
 # Adjust the paths in the command as needed. The inspec and inputs paths in the example are assuming this is being ran from the root of the InSpec profile folder.
 > C:\github\VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.182.131.166 -reportPath C:\Inspec\Reports\Runner -inspecPath .\esxi\ -inputsfile .\inputs-example.yml
 
