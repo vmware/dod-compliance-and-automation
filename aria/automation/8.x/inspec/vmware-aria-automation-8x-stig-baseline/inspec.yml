@@ -1,12 +1,12 @@
 ---
 name: vmware-aria-automation-8x-stig-baseline
-title: InSpec Wrapper Profile for VMware vRealize Automation 8.x STIG Readiness Guide Version 1 Release 3
+title: InSpec Wrapper Profile for VMware vRealize Automation 8.x STIG Readiness Guide
 maintainer: VMTA
 copyright: VMware
 copyright_email: stigs@vmware.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.4
+version: 1.0.5
 
 depends:
   - name: vra

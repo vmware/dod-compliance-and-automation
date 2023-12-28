@@ -1,12 +1,12 @@
 # vmware-aria-automation-8x-stig-baseline
 VMware Aria Automation 8.x STIG Readiness Guide Chef InSpec Profile  
-Version: Version 1 Release 4 Date: 30 October 2023  
+Version: Version 1 Release 5 Date: 03 January 2024  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
 This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the VMware Aria Automation 8.x STIG Readiness Guide.
 
-It has been tested against versions 8.12 through 8.13. 
+It has been tested against version 8.13.1. 
 
 All technical NIST SP 800-53 requirements were considered while developing this content. SRG requirements that are applicable and configurable are included in this content while other controls that are "Not Applicable", "Inherently Met" or "Does Not Meet" are not included.
 
@@ -29,6 +29,8 @@ Example folder structure:
   \vra  
 ```
 **Note - update any needed inputs in each inspec.yaml or specify them at run time.**  
+
+**NOTE: The Official DISA Kubernetes STIG guidance must be modified if running manual checks. Please see the Overview file in the documentation located [here](https://github.com/vmware/dod-compliance-and-automation/blob/master/aria/automation/8.x/docs/VMware_Aria_Automation_8.x_V1R5_STIG_Readiness_Guide_xccdf.zip)**
 
 It is recommended to utilize an inputs file for specifying environment specific variables such as NTP, Syslog, etc. An example is provided for you to begin with.  
 
