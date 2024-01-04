@@ -1,22 +1,33 @@
 # VMware Aria Automation - Application
-syslogHost: "log.test.local"
-syslogPort: "514"
-syslogProtocol: "tcp"
-syslogSslVerify: "true"
-syslogUseSsl: "false"
-ntpServers: "['time.google.com']"
-maxAuthTries: "2"
-verbose: True
-allowedCipherSuites: ["TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384","TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256","TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384","TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"]
+syslogHost:                "log.test.local"
+syslogPort:                "514"
+syslogProtocol:            "tcp"
+syslogSslVerify:           "true"
+syslogUseSsl:              "false"
+ntpServers:                "['time.google.com']"
+maxAuthTries:              "2"
+verbose:                   True
+allowedCipherSuites:       ["TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384","TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256","TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384","TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"]
 
 # VMware Aria Automation - Kubernetes
-manifests_path: '/etc/kubernetes/manifests'
-pki_path: '/etc/kubernetes/pki'
-kubeadm_conf_path: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf'
-kubectl_path: '/usr/local/bin/kubectl'
-kubectl_minversion: 'v1.12.9'
-kubernetes_conf_files: ["/etc/kubernetes/admin.conf","/etc/kubernetes/scheduler.conf","/etc/kubernetes/controller-manager.conf"]
-kubectl_conf_path: '/etc/kubernetes/admin.conf'
-kubelet_conf_path: '/var/lib/kubelet/config.yaml'
-kubelet_kubeconf_path: ''
+manifests_path:            '/etc/kubernetes/manifests'
+pki_path:                  '/etc/kubernetes/pki'
+kubeadm_conf_path:         '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf'
+kubectl_path:              '/usr/local/bin/kubectl'
+kubectl_minversion:        'v1.12.9'
+kubernetes_conf_files:     ["/etc/kubernetes/admin.conf","/etc/kubernetes/scheduler.conf","/etc/kubernetes/controller-manager.conf"]
+kubectl_conf_path:         '/etc/kubernetes/admin.conf'
+kubelet_conf_path:         '/var/lib/kubelet/config.yaml'
+kubelet_kubeconf_path:     ''
 k8s_min_supported_version: 'v1.20.13'
+
+# VMware Aria Automation - Photon
+sshdcommand:               'sshd -T -f /etc/ssh/sshd_config_effective'
+authprivlog:               "/var/log/audit/auth.log"  #Enter expected log path for authpriv log in rsyslog conf
+photonIp:                  "x.x.x.x"  #Enter IP for PhotonOS
+ntptype:                   "ntpd"  #Enter the NTP solution. Either "ntpd" "timesyncd" "chrony"  
+ntpServer1:                "x.x.x.x"  #Enter IP or FQDN of NTP Server
+ntpServer2:                "x.x.x.x"  #Enter IP or FQDN of NTP Server
+syslogServer:              "x.x.x.x:514"  #Enter IP or FQDN of Syslog Server and Port
+disabled_modules:          ["sctp", "dccp", "dccp_ipv4", "dccp_ipv6", "ipx", "appletalk", "decnet", "rds", "tipc", "bluetooth", 
+                            "usb_storage", "ieee1394", "cramfs", "freevxfs", "jffs2", "hfs", "hfsplus", "squashfs", "udf"]

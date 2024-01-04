@@ -1,5 +1,10 @@
 # Change Log  
 
+## [8.13.1 Version 1 Release 5] (2024-01-03)
+
+#### Release Notes
+- Updated documentation for Kubernetes manifest file changes.
+
 ## [8.12 Version 1 Release 4] (2023-10-30)
 
 #### Release Notes
