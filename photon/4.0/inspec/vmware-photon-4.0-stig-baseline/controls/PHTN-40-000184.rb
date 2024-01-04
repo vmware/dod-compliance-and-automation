@@ -3,7 +3,7 @@ control 'PHTN-40-000184' do
   desc  'If the operating system allows the user to select passwords based on dictionary words, then this increases the chances of password compromise by increasing the opportunity for successful guesses and brute-force attacks.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify at least one upper-case character be used:
+    At the command line, run the following command to verify passwords do not match dictionary words:
 
     # grep '^dictcheck' /etc/security/pwquality.conf
 
@@ -11,7 +11,7 @@ control 'PHTN-40-000184' do
 
     dictcheck = 1
 
-    If the \"dictcheck\" option is 1, is missing or commented out, this is a finding.
+    If the \"dictcheck\" option is not set to 1, is missing or commented out, this is a finding.
 
     Note: If pwquality.conf is not used to configure pam_pwquality.so, these options may be specified on the pwquality line in the system-password file.
   "

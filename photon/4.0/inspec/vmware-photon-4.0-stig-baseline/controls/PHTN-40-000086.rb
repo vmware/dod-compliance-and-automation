@@ -9,7 +9,7 @@ control 'PHTN-40-000086' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify at least one upper-case character be used:
+    At the command line, run the following command to verify at least one special character be used:
 
     # grep '^ocredit' /etc/security/pwquality.conf
 

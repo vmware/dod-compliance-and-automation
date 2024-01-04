@@ -3,7 +3,7 @@ control 'PHTN-40-000187' do
   desc  'Setting the most restrictive default permissions ensures that when new accounts are created they do not have unnecessary access.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify passwords are stored with only encrypted representations:
+    At the command line, run the following command to verify the default umask configuration:
 
     # grep '^UMASK' /etc/login.defs
 

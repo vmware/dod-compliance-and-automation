@@ -1,6 +1,16 @@
 # Change Log
 
-## [5.0 Version 1 Release 2] (2023-09-12)
+## [5.0 Version 1 Release 3] (2024-01-02)
+
+#### Release Notes
+- PHTN-50-000042 updated finding statement and test
+- PHTN-50-000047 removed bridge module from list to support container workloads
+- PHTN-50-000107 added /var/lib/docker path to exclude from check
+- PHTN-50-000121 updated test to support ntp server input as an array instead of strings
+- PHTN-50-000231 updated test to include input for container host systems to mark the control N/A
+- PHTN-50-000247 new control
+
+## [5.0 Version 1 Release 2] (2023-09-15)
 
 #### Release Notes
 - Updated source SRG to GPOS V2R6

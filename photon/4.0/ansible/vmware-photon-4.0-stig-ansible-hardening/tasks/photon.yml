@@ -172,14 +172,14 @@
       ansible.builtin.lineinfile:
         path: '{{ var_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*deny\s'
+        regexp: '^#?\s*deny.*$'
         line: deny = {{ var_pam_faillock_deny }}
 
     - name: PHTN-40-000004 - Configure faillock.conf fail_interval
       ansible.builtin.lineinfile:
         path: '{{ var_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*fail_interval\s'
+        regexp: '^#?\s*fail_interval.*$'
         line: fail_interval = {{ var_pam_faillock_fail_interval }}
 
 ###################################################################################################################################
@@ -1082,7 +1082,7 @@
       ansible.builtin.lineinfile:
         path: '{{ var_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*unlock_time\s'
+        regexp: '^#?\s*unlock_time.*$'
         line: unlock_time = {{ var_pam_faillock_unlock_time }}
 
 ###################################################################################################################################
@@ -1730,7 +1730,7 @@
       ansible.builtin.lineinfile:
         path: '{{ var_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*silent$'
+        regexp: '^#?\s*silent.*$'
         line: silent
 
 ###################################################################################################################################
@@ -1742,7 +1742,7 @@
       ansible.builtin.lineinfile:
         path: '{{ var_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*audit$'
+        regexp: '^#?\s*audit.*$'
         line: audit
 
 ###################################################################################################################################
@@ -1754,7 +1754,7 @@
       ansible.builtin.lineinfile:
         path: '{{ var_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*even_deny_root$'
+        regexp: '^#?\s*even_deny_root.*$'
         line: even_deny_root
 
 ###################################################################################################################################
@@ -1766,7 +1766,7 @@
       ansible.builtin.lineinfile:
         path: '{{ var_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*dir$'
+        regexp: '^#?\s*dir.*$'
         line: dir = {{ var_pam_faillock_dir }}
 
     - name: PHTN-40-000196 - Create faillock dir
@@ -2423,11 +2423,22 @@
   tags: [PHTN-40-000231]
   when: run_kernel_net_ip_forward | bool
   block:
+    - name: PHTN-40-000231 - Check to see if container host packages are installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep -E '(^docker-|^containerd|^kubernetes)'
+      register: cntrpkgsinstalled
+      changed_when: false
+      failed_when:
+        - cntrpkgsinstalled.rc == 2
+
     - name: PHTN-40-000231 - Check to see if net.ipv4.ip_forward is set to 0
       ansible.builtin.command: /sbin/sysctl net.ipv4.ip_forward
       register: ipv4_ip_forward
       failed_when: ipv4_ip_forward.rc == 2
       changed_when: false
+      when:
+        - cntrpkgsinstalled.stdout == ""
 
     - name: PHTN-40-000231 - Configure kernel parameter net.ipv4.ip_forward
       ansible.posix.sysctl:
@@ -2437,7 +2448,10 @@
         sysctl_file: '{{ var_sysctl_conf_file }}'
         sysctl_set: true
         reload: true
-      when: ipv4_ip_forward.stdout != "net.ipv4.ip_forward = 0"
+      when:
+        - ipv4_ip_forward.stdout is defined
+        - ipv4_ip_forward.stdout != "net.ipv4.ip_forward = 0"
+        - cntrpkgsinstalled.stdout == ""
 
 ###################################################################################################################################
 - name: PHTN-40-000232 - Configure kernel parameter net_tcp_timestamps
@@ -2708,6 +2722,23 @@
         sysctl_set: true
         reload: true
       when: fs_suid_dumpable.stdout != "fs.suid_dumpable = 0"
+
+###################################################################################################################################
+- name: PHTN-40-000247 - Remove nullok from pam_unix.so module
+  tags: [PHTN-40-000247]
+  when: run_pam_remove_nullok | bool
+  block:
+    - name: PHTN-40-000247 - Remove nullok from /etc/pam.d/system-password
+      ansible.builtin.replace:
+        path: '{{ var_pam_system_password_file }}'
+        regexp: '^(password.*pam_unix\.so.*)(\snullok)(.*)'
+        replace: '\1\3'
+
+    - name: PHTN-40-000247 - Remove nullok from /etc/pam.d/system-auth
+      ansible.builtin.replace:
+        path: '{{ var_pam_system_auth_file }}'
+        regexp: '^(auth.*pam_unix\.so.*)(\snullok)(.*)'
+        replace: '\1\3'
 
 ###################################################################################################################################
 # !!! AIDE configuration should be the last task here so the configuration database includes all changes !!!

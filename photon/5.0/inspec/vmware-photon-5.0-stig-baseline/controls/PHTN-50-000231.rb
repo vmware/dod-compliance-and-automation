@@ -39,7 +39,14 @@ control 'PHTN-50-000231' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe kernel_parameter('net.ipv4.ip_forward') do
-    its('value') { should cmp 0 }
+  if input('containerHost')
+    impact 0.0
+    describe 'Container host flag set to true so this control is N/A...skipping...' do
+      skip 'Container host flag set to true so this control is N/A...skipping...'
+    end
+  else
+    describe kernel_parameter('net.ipv4.ip_forward') do
+      its('value') { should cmp 0 }
+    end
   end
 end

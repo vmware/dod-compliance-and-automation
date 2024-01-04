@@ -1,5 +1,5 @@
 control 'PHTN-40-000035' do
-  title 'The Photon operating system must enforce password complexity by requiring that at least one upper-case character be used.'
+  title 'The Photon operating system must enforce password complexity by requiring that at least one uppercase character be used.'
   desc  "
     Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.
 
@@ -7,7 +7,7 @@ control 'PHTN-40-000035' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify at least one upper-case character be used:
+    At the command line, run the following command to verify at least one uppercase character be used:
 
     # grep '^ucredit' /etc/security/pwquality.conf
 

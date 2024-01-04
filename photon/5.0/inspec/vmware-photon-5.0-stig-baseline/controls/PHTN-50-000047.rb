@@ -15,7 +15,6 @@ control 'PHTN-50-000047' do
 
     Expected result:
 
-    install bridge /bin/false
     install sctp /bin/false
     install dccp /bin/false
     install dccp_ipv4 /bin/false
@@ -47,7 +46,6 @@ control 'PHTN-50-000047' do
 
     Set the contents as follows:
 
-    install bridge /bin/false
     install sctp /bin/false
     install dccp /bin/false
     install dccp_ipv4 /bin/false

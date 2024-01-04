@@ -1,9 +1,9 @@
 control 'PHTN-40-000041' do
-  title 'The Photon operating system must enforce 1 day as the minimum password lifetime.'
+  title 'The Photon operating system must enforce one day as the minimum password lifetime.'
   desc  "Enforcing a minimum password lifetime helps to prevent repeated password changes to defeat the password reuse or history enforcement requirement. If users are allowed to immediately and continually change their password, then the password could be repeatedly changed in a short period of time to defeat the organization's policy regarding password reuse."
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify 1 day as the minimum password lifetime:
+    At the command line, run the following command to verify one day as the minimum password lifetime:
 
     # grep '^PASS_MIN_DAYS' /etc/login.defs
 

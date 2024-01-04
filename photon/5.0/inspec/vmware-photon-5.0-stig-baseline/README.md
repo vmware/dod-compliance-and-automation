@@ -1,16 +1,29 @@
 # vmware-photon-5.0-stig-baseline
 Photon OS 5.0 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 2 Date: 12 September 2023  
+Version: Release 1 Version 3 Date: 02 January 2024  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
 This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the Photon OS 5.0 STIG Readiness Guide.  
 
 ## Requirements
-
-- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH target node. Tested with version 5.22.3. Chef/CINC Workstation can also be installed and used.
+- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH target node. Tested with version 6.6.0. Chef/CINC Workstation can also be installed and used.
 - SSH access to Photon instance
 - Update the inputs in inspec-example.yml or make a new copy and update as appropriate for your environment
+
+## Inputs
+Inputs are used to provide variable information that customize how the profile is ran against the target system. Below is a list of inputs available for this profile that can be provided.  
+
+|     Input Name    |       Default Value       | Description |     Type    |   STIG IDs  |
+|-------------------|---------------------------|-------------|-------------|-------------|
+|authprivlog        |/var/log/messages          |The expected log path for the authpriv log in the rsyslog config.|String|PHTN-50-000012|
+|containerHost      |false                      |Used to indicate if system is a container host and running Kubernetes/Docker/etc for controls where this would make them N/A.|Boolean|PHTN-50-000231|
+|ntptype            |ntpd                       |Specify the NTP solution used. Supported values are `ntpd`, `timesyncd`, or `chrony`.|String|PHTN-50-000121|
+|ntpServers         |time-a-g.nist.gov,time-b-g.nist.gov|A list of NTP servers with which the system should sync.|Array|PHTN-50-000121|
+|syslogServer       |syslog.changeme.local:514  |Specify the IP or FQDN with port of the target syslog server.|String|PHTN-50-000111|
+|useFaillockConf    |true                       |Used to indicate that `/etc/security/faillock.conf` is used to configure `pam_faillock.so`.|Boolean|PHTN-50-000004,PHTN-50-000108,PHTN-50-000193,,PHTN-50-000194,PHTN-50-000195,PHTN-50-000196|
+|usePwqualityConf   |true                       |Used to indicate that `/etc/security/pwquality.conf` is used to configure `pam_pwquality.so`.|Boolean|PHTN-50-000035,PHTN-50-000036,PHTN-50-000037,,PHTN-50-000038,PHTN-50-000044,PHTN-50-000086,PHTN-50-000184,PHTN-50-000235|
+|useHistoryConf     |true                       |Used to indicate that `/etc/security/pwhistory.conf` is used to configure `pam_pwhistory.so`.|Boolean|PHTN-50-000043|
 
 ## Running the profile
 

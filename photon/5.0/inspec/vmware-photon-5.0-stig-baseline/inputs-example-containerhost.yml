@@ -3,7 +3,7 @@ usePwqualityConf: true
 useHistoryConf: true
 sshdcommand: 'sshd -T'
 authprivlog: /var/log/messages
-containerHost: false
+containerHost: true
 syslogServer: loginsight.vmware.com:514
 ntptype: ntpd
 ntpServers:

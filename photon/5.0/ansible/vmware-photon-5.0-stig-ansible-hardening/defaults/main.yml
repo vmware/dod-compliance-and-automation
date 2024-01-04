@@ -215,3 +215,5 @@ run_kernel_fs_protected_hardlinks: true
 run_systemd_tmp_mount: true
 # PHTN-50-000246
 run_kernel_fs_suid_dumpable: true
+# PHTN-50-000247
+run_pam_remove_nullok: true

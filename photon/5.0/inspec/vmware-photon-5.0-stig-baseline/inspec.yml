@@ -5,7 +5,7 @@ copyright: The Authors
 copyright_email: stigs@vmware.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.2
+version: 1.0.3
 
 inputs:
 - name: useFaillockConf
@@ -20,18 +20,22 @@ inputs:
   type: boolean
   description: If /etc/security/pwhistory.conf is used to configure pam_pwhistory.so set this to true
   value: true
+- name: containerHost
+  type: boolean
+  description: Used to indicate if system is a container host and running Kubernetes/Docker/etc for controls where this would make them N/A
+  value: false
 - name: sshdcommand
   type: string
   value: 'sshd -T'
   description: If a different sshd command is needed then supply a different input value such as if there are user matching rules.
 - name: authprivlog
   type: string
-  value: "/var/log/messages"  #Enter expected log path for authpriv log in rsyslog conf
+  description: Enter expected log path for authpriv log in rsyslog conf
+  value: '/var/log/messages'
 - name: disabled_modules
   description: List of Kernel modules that must be disabled
   type: array
   value:
-    - bridge
     - sctp
     - dccp
     - dccp_ipv4
@@ -53,16 +57,18 @@ inputs:
     - udf
 - name: syslogServer
   type: string
-  value: "x.x.x.x:514"  #Enter IP or FQDN of Syslog Server and Port
+  description: Specify the IP or FQDN with port of the target syslog server
+  value: 'syslog.changeme.local:514'
 - name: ntptype
   type: string
-  value: "ntpd"  #Enter the NTP solution. Either "ntpd" "timesyncd" "chrony"  
-- name: ntpServer1
-  type: string
-  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
-- name: ntpServer2
-  type: string
-  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+  description: Specify the NTP solution. Either "ntpd" "timesyncd" "chrony"
+  value: "ntpd"
+- name: ntpServers
+  type: array
+  description: Enter a list of NTP servers the system should sync with
+  value:
+    - time-a-g.nist.gov
+    - time-b-g.nist.gov
 - name: sshdCiphers
   type: array
   description: List of FIPS validated SSH Ciphers

@@ -188,8 +188,8 @@
     "vendor": "VMware",
     "guidance": {
       "name": "VMware Photon OS 4.0 STIG Readiness Guide",
-      "version": "V1R4",
-      "date": "August 08, 2023",
+      "version": "V1R5",
+      "date": "January 04, 2024",
       "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/4.0/docs",
       "type": "STIG Readiness Guide",
       "category": "Operating Systems"
@@ -197,8 +197,8 @@
     "hardening": [
       {
         "name": "VMware Photon OS 4.0 STIG Readiness Guide Ansible Playbook",
-        "version": "V1R4",
-        "date": "August 08, 2023",
+        "version": "V1R5",
+        "date": "January 04, 2024",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/4.0/ansible/vmware-photon-4.0-stig-ansible-hardening",
         "platform": "Ansible"
       }
@@ -206,8 +206,8 @@
     "validation": [
       {
         "name": "VMware Photon OS 4.0 STIG Readiness Guide Chef InSpec Profile",
-        "version": "V1R8",
-        "date": "August 08, 2023",
+        "version": "V1R5",
+        "date": "January 04, 2024",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/4.0/inspec/vmware-photon-4.0-stig-baseline",
         "platform": "InSpec"
       }
@@ -219,8 +219,8 @@
     "vendor": "VMware",
     "guidance": {
       "name": "VMware Photon OS 5.0 STIG Readiness Guide",
-      "version": "V1R2",
-      "date": "September 12, 2023",
+      "version": "V1R3",
+      "date": "January 02, 2024",
       "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/5.0/docs",
       "type": "STIG Readiness Guide",
       "category": "Operating Systems"
@@ -228,8 +228,8 @@
     "hardening": [
       {
         "name": "VMware Photon OS 5.0 STIG Readiness Guide Ansible Playbook",
-        "version": "V1R2",
-        "date": "September 12, 2023",
+        "version": "V1R3",
+        "date": "January 02, 2024",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/5.0/ansible/vmware-photon-5.0-stig-ansible-hardening",
         "platform": "Ansible"
       }
@@ -237,8 +237,8 @@
     "validation": [
       {
         "name": "VMware Photon OS 5.0 STIG Readiness Guide Chef InSpec Profile",
-        "version": "V1R2",
-        "date": "September 12, 2023",
+        "version": "V1R3",
+        "date": "January 02, 2024",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/5.0/inspec/vmware-photon-5.0-stig-baseline",
         "platform": "InSpec"
       }

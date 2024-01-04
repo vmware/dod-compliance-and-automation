@@ -1,5 +1,5 @@
 control 'PHTN-40-000206' do
-  title 'The Photon operating system must enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt.'
+  title 'The Photon operating system must enforce a delay of at least four seconds between logon prompts following a failed logon attempt.'
   desc  'Limiting the number of logon attempts over a certain time interval reduces the chances that an unauthorized user may gain access to an account.'
   desc  'rationale', ''
   desc  'check', "
@@ -14,7 +14,7 @@ control 'PHTN-40-000206' do
     auth required pam_faillock.so authfail
     auth optional pam_faildelay.so delay=4000000
 
-    If the pam_faildelay.so module is not present with the delay set to at least 4 seconds, this is a finding.
+    If the pam_faildelay.so module is not present with the delay set to at least four seconds, this is a finding.
 
     Note: The delay is configured in milliseconds.
   "
