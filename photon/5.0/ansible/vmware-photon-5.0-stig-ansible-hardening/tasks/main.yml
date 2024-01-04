@@ -7,3 +7,12 @@
         - photon
   tags:
     - always
+
+- name: Include Photon Installer Tasks
+  ansible.builtin.include_tasks:
+    file: photon-installer.yml
+    apply:
+      tags:
+        - photon-installer
+  when:
+    - ansible_is_chroot | bool

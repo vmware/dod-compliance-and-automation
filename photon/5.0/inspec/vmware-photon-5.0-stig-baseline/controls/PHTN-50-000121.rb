@@ -95,12 +95,12 @@ control 'PHTN-50-000121' do
   tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)']
 
   ntptype = input('ntptype')
-  ntpserver1 = input('ntpServer1')
-  ntpserver2 = input('ntpServer2')
+  ntpservers = input('ntpServers')
+  ntpserversstr = input('ntpServers').join(' ')
 
   if ntptype == 'ntpd'
     describe ntp_conf do
-      its('server') { should be_in ["#{ntpserver1}", "#{ntpserver2}"] }
+      its('server') { should be_in ntpservers }
     end
     describe systemd_service('ntpd') do
       it { should be_installed }
@@ -110,13 +110,8 @@ control 'PHTN-50-000121' do
   end
 
   if ntptype == 'timesyncd'
-    describe.one do
-      describe file('/etc/systemd/timesyncd.conf') do
-        its('content') { should match /^NTP=#{ntpserver1} #{ntpserver2}/ }
-      end
-      describe file('/etc/systemd/timesyncd.conf') do
-        its('content') { should match /^NTP=#{ntpserver1}/ }
-      end
+    describe file('/etc/systemd/timesyncd.conf') do
+      its('content') { should match /^NTP=#{ntpserversstr}/ }
     end
     describe systemd_service('systemd-timesyncd') do
       it { should be_installed }
@@ -127,7 +122,7 @@ control 'PHTN-50-000121' do
 
   if ntptype == 'chrony'
     describe chrony_conf do
-      its('server') { should be_in ["#{ntpserver1}", "#{ntpserver2}"] }
+      its('server') { should be_in ntpservers }
     end
     describe systemd_service('chrony') do
       it { should be_installed }

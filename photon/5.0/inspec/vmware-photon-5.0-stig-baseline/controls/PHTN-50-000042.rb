@@ -8,6 +8,7 @@ control 'PHTN-50-000042' do
     # grep '^PASS_MAX_DAYS' /etc/login.defs
 
     If \"PASS_MAX_DAYS\" is not set to <= 90, is missing or commented out, this is a finding.
+    If \"PASS_MAX_DAYS\" is disabled or set to -1, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -28,6 +29,7 @@ control 'PHTN-50-000042' do
   tag nist: ['IA-5 (1) (d)']
 
   describe login_defs do
-    its('PASS_MAX_DAYS') { should cmp <= '90' }
+    its('PASS_MAX_DAYS') { should cmp <= 90 }
+    its('PASS_MAX_DAYS') { should cmp >= 0 }
   end
 end
