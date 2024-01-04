@@ -1,13 +1,14 @@
 control 'PHTN-40-000042' do
-  title 'The Photon operating systems must enforce a 90 day maximum password lifetime restriction.'
+  title 'The Photon operating systems must enforce a 90-day maximum password lifetime restriction.'
   desc  'Any password, no matter how complex, can eventually be cracked. Therefore, passwords need to be changed periodically. If the operating system does not limit the lifetime of passwords and force users to change their passwords, there is the risk that the operating system passwords could be compromised.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify a 90 day maximum password lifetime restriction:
+    At the command line, run the following command to verify a 90-day maximum password lifetime restriction:
 
     # grep '^PASS_MAX_DAYS' /etc/login.defs
 
     If \"PASS_MAX_DAYS\" is not set to <= 90, is missing or commented out, this is a finding.
+    If \"PASS_MAX_DAYS\" is disabled or set to -1, this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -29,5 +30,6 @@ control 'PHTN-40-000042' do
 
   describe login_defs do
     its('PASS_MAX_DAYS') { should cmp <= '90' }
+    its('PASS_MAX_DAYS') { should cmp >= 0 }
   end
 end

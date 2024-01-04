@@ -1,7 +1,7 @@
 control 'PHTN-40-000046' do
   title 'The Photon operating system must require authentication upon booting into single-user and maintenance modes.'
   desc  "
-    If the system does not require authentication before it boots into single-user mode, anyone with console access to the system can trivially access all files on the system. GRUB2 is the boot loader for Photon OS and is can be configured to require a password to boot into single-user mode or make modifications to the boot menu.
+    If the system does not require authentication before it boots into single-user mode, anyone with console access to the system can trivially access all files on the system. GRUB2 is the boot loader for Photon OS and can be configured to require a password to boot into single-user mode or make modifications to the boot menu.
 
     Note: Photon does not support building grub changes via grub2-mkconfig.
   "
@@ -20,13 +20,13 @@ control 'PHTN-40-000046' do
     If a password is not set for the super user, this is a finding.
   "
   desc 'fix', "
-    Before proceeding ensure a snapshot is taken to rollback if needed.
+    Before proceeding, ensure a snapshot is taken to rollback if needed.
 
     At the command line, run the following command to generate a grub password:
 
     # grub2-mkpasswd-pbkdf2
 
-    Enter a secure password and ensure this password is stored for break-glass situations. You will not be able to recover the root account without knowing this separate password. Copy the resulting encrypted string.
+    Enter a secure password and ensure this password is stored for break-glass situations. Users will not be able to recover the root account without knowing this separate password. Copy the resulting encrypted string.
 
     An example string is below:
 
@@ -44,7 +44,7 @@ control 'PHTN-40-000046' do
 
     Note: The superusers name can be a value other than root and is not tied to an OS account.
 
-    Below this paste the following, substituting your own encrypted string from the steps above:
+    Below this paste the following, substituting the user's own encrypted string from the steps above:
 
     password_pbkdf2 root <YOUR-LONG-STRING-FROM-ABOVE>
 
@@ -57,7 +57,7 @@ control 'PHTN-40-000046' do
         fi
     }
 
-    When booting now if you hit 'e' when the Photon splash screen appears you should be prompted for credentials before being presented the option to edit the boot loader before system startup.
+    When booting now, if users press \"e\" when the Photon splash screen appears, users will be prompted for credentials before being presented the option to edit the boot loader before system startup.
 
     Note: Photon does not support building grub changes via grub2-mkconfig.
   "

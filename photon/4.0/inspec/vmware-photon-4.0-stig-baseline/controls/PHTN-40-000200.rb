@@ -3,7 +3,7 @@ control 'PHTN-40-000200' do
   desc  "
     Automated monitoring of remote access sessions allows organizations to detect cyber attacks and ensure ongoing compliance with remote access policies by auditing connection activities.
 
-    Shipping sshd authentication events to syslog allows organizations to use their log aggregators to correlate forensic activities among multiple systems.
+    Shipping SSH authentication events to syslog allows organizations to use their log aggregators to correlate forensic activities among multiple systems.
   "
   desc  'rationale', ''
   desc  'check', "

@@ -1,5 +1,16 @@
 # Change Log
 
+## [4.0 Version 1 Release 5] (2024-01-04)
+
+#### Release Notes
+- Misc. tech edits for PHTN-40-000003,07,19,31,35,36,37,38,41,43,46,67,68,76,78,86,105,160,173,175,184,185,187,193,196,200,204,206,213,214,215,216,223,224,225,226,227,228,229,232,238,244,246
+- PHTN-40-000042 updated finding statement and test
+- PHTN-40-000047 removed bridge module from list to support container workloads
+- PHTN-40-000107 added /var/lib/docker path to exclude from check
+- PHTN-40-000121 updated test to support ntp server input as an array instead of strings
+- PHTN-40-000231 updated test to include input for container host systems to mark the control N/A
+- PHTN-40-000247 new control
+
 ## [4.0 Version 1 Release 4] (2023-08-08)
 
 #### Release Notes

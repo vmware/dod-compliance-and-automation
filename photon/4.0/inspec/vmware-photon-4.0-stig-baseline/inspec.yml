@@ -5,7 +5,7 @@ copyright: The Authors
 copyright_email: stigs@vmware.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.4
+version: 1.0.5
 
 inputs:
 - name: useFaillockConf
@@ -20,6 +20,10 @@ inputs:
   type: boolean
   description: If /etc/security/pwhistory.conf is used to configure pam_pwhistory.so set this to true
   value: true
+- name: containerHost
+  type: boolean
+  description: Used to indicate if system is a container host and running Kubernetes/Docker/etc for controls where this would make them N/A
+  value: false
 - name: sshdcommand
   type: string
   value: 'sshd -T'
@@ -31,7 +35,6 @@ inputs:
   description: List of Kernel modules that must be disabled
   type: array
   value:
-    - bridge
     - sctp
     - dccp
     - dccp_ipv4
@@ -57,12 +60,12 @@ inputs:
 - name: ntptype
   type: string
   value: "ntpd"  #Enter the NTP solution. Either "ntpd" "timesyncd" "chrony"  
-- name: ntpServer1
-  type: string
-  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
-- name: ntpServer2
-  type: string
-  value: "x.x.x.x"  #Enter IP or FQDN of NTP Server
+- name: ntpServers
+  type: array
+  description: Enter a list of NTP servers the system should sync with
+  value:
+    - time-a-g.nist.gov
+    - time-b-g.nist.gov
 - name: sshdCiphers
   type: array
   description: List of FIPS validated SSH Ciphers

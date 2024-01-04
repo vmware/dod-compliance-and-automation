@@ -7,7 +7,7 @@ control 'PHTN-40-000037' do
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify at least one lower-case character be used:
+    At the command line, run the following command to verify at least one numeric character be used:
 
     # grep '^dcredit' /etc/security/pwquality.conf
 

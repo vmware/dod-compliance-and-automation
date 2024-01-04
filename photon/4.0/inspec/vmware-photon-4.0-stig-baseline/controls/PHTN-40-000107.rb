@@ -5,7 +5,7 @@ control 'PHTN-40-000107' do
   desc  'check', "
     At the command line, run the following command to output a list of files with setuid/setgid configured and their corresponding audit rules:
 
-    # for file in $(find / -xdev -path /var/lib/containerd -prune -o \\( -perm -4000 -o -perm -2000 \\) -type f -print | sort); do echo \"Found file with setuid/setgid configured: $file\";rule=\"$(auditctl -l | grep \"$file \")\";echo \"Audit Rule Result: $rule\";echo \"\"; done
+    # for file in $(find / -xdev -path /var/lib/containerd -prune -o -path /var/lib/docker -prune -o \\( -perm -4000 -o -perm -2000 \\) -type f -print | sort); do echo \"Found file with setuid/setgid configured: $file\";rule=\"$(auditctl -l | grep \"$file \")\";echo \"Audit Rule Result: $rule\";echo \"\"; done
 
     Example output:
 
@@ -36,7 +36,7 @@ control 'PHTN-40-000107' do
 
     # /sbin/augenrules --load
 
-    Note: A \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
+    Note: An \"audit.STIG.rules\" file is provided with this guidance for placement in \"/etc/audit/rules.d\" that contains all rules needed for auditd.
 
     Note: An older \"audit.STIG.rules\" may exist and may reference older \"GEN\" SRG IDs. This file can be removed and replaced as necessary with an updated one.
   "
@@ -50,7 +50,7 @@ control 'PHTN-40-000107' do
   tag cci: ['CCI-000172', 'CCI-001404', 'CCI-002234']
   tag nist: ['AC-2 (4)', 'AC-6 (9)', 'AU-12 c']
 
-  results = command('find / -xdev -path /var/lib/containerd -prune -o \( -perm -4000 -type f -o -perm -2000 \) -type f -print').stdout.split("\n")
+  results = command('find / -xdev -path /var/lib/containerd -prune -o -path /var/lib/docker -prune -o \( -perm -4000 -type f -o -perm -2000 \) -type f -print').stdout.split("\n")
   if !results.empty?
     results.each do |path|
       describe auditd do

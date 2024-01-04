@@ -1,5 +1,12 @@
 # Change Log
 
+## [4.0 Version 1 Release 5] (2024-01-04)
+
+#### Release Notes
+- PHTN-40-000047 removed bridge module from list to support container workloads
+- PHTN-40-000231 updated task to not run if container host packages are installed
+- PHTN-40-000247 new control to remove nullok from pam_unix.so module
+
 ## [4.0 Version 1 Release 4] (2023-08-08)
 
 #### Release Notes
