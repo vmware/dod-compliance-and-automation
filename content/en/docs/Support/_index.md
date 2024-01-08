@@ -6,6 +6,8 @@ description: >
   Support for Official STIGs, STIG Readiness Guides, and automation is provided through a variety of channels depending on the situation. It is important to adhere to the supported scenarios detailed here to avoid issues in unsupported situations.  
 ---
 
+For the most up to date information on support please visit our STIG Support KB: https://kb.vmware.com/s/article/94398
+
 ## Table of contents
 
 - [Types of Support](#types-of-support)
