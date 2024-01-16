@@ -1,11 +1,11 @@
 control 'DKER-CE-000175' do
-  title 'Docker CE must protect /etc/default/docker from unauthorized changes.'
-  desc  '/etc/default/docker file contains sensitive parameters that may alter the behavior of docker daemon. Hence, it must be owned and group-owned by root to maintain the integrity of the file.'
+  title 'Docker CE must protect /etc/docker/daemon.json from unauthorized changes.'
+  desc  '/etc/docker/daemon.json file contains sensitive parameters that may alter the behavior of docker daemon. Hence, it must be owned and group-owned by root to maintain the integrity of the file.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, execute the following command:
 
-    # stat -c %a:%U:%G /etc/default/docker
+    # stat -c %a:%U:%G /etc/docker/daemon.json
 
     Expected result:
 
@@ -18,8 +18,8 @@ control 'DKER-CE-000175' do
   desc 'fix', "
     At the command prompt, execute the following command(s):
 
-    # chmod 644 /etc/default/docker
-    # chown root:root /etc/default/docker
+    # chmod 644 /etc/docker/daemon.json
+    # chown root:root /etc/docker/daemon.json
   "
   impact 0.5
   tag severity: 'medium'
@@ -31,9 +31,9 @@ control 'DKER-CE-000175' do
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  conf = file('/etc/default/docker')
+  conf = file('/etc/docker/daemon.json')
   if conf.exist?
-    describe file('/etc/default/docker') do
+    describe file('/etc/docker/daemon.json') do
       its('owner') { should cmp 'root' }
       its('group') { should cmp 'root' }
       it { should_not be_more_permissive_than('0644') }

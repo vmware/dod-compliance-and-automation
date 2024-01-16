@@ -1,4 +1,4 @@
-# VMware Aria Automation 8.12 STIG Documentation
+# VMware Aria Automation 8.13.1 STIG Documentation
 
 ## Compatibility
 This STIG Readiness Guide *Version 1 Release 5* is intended for versions 8.13.1 and later only. If you are still on a previous version please reference the guidance available [here](https://github.com/vmware/dod-compliance-and-automation/tree/e2df6ab7ed8cd72148ede03fed97d894885fe95c/aria/automation/8.x) or [here](https://github.com/vmware/dod-compliance-and-automation/tree/a3b1ba67188d9fb8ff8d92ddcca3782b6dd9151a/aria/automation/8.x).
