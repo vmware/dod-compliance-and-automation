@@ -1,7 +1,24 @@
 # vmware-vidm-3.3.x-stig-baseline
 VMware Identity Manager 3.3.x STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 2 Date: 29 August 2023  
+Version: Release 1 Version 3 Date: 17 January 2024   
 STIG Type: STIG Readiness Guide
+
+## Overview
+This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the VMware Identity Manager (Workspace ONE Access) 3.3.x STIG Readiness Guide.  
+
+## Requirements
+- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH target node. Tested with version 6.6.0. Chef/CINC Workstation can also be installed and used.
+- Supported on vIDM 3.3.7.
+- SSH access to vIDM appliances.
+- Update the inputs in inspec-example.yml or make a new copy and update as appropriate for your environment
+
+## Inputs
+Inputs are used to provide variable information that customize how the profile is ran against the target system. Below is a list of inputs available for this profile that can be provided.  
+
+|     Input Name    |       Default Value       | Description |     Type    |   STIG IDs  |
+|-------------------|---------------------------|-------------|-------------|-------------|
+|authprivlog        |/var/log/messages          |The expected log path for the authpriv log in the rsyslog config.|String|PHTN-30-000007|
+|clustered          |false                      |Is the vIDM instance clustered? true or false|Boolean|N/A|
 
 ## InSpec Profiles
 
@@ -19,27 +36,27 @@ It is recommended to utilize an inputs files for specifying vIDM and environment
 
 Run all profiles against a target appliance and output results to CLI
 ```
-inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password'
+inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password' --sudo --sudo-password 'password' --input-file .\inputs-example.yml
 ```
 
 Run all profiles against a target appliance, show progress, and output results to CLI and JSON
 ```
-inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password' --show-progress --reporter=cli json:C:\Inspec\Reports\vidm.json
+inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password' --show-progress --sudo --sudo-password 'password' --input-file .\inputs-example.yml --reporter=cli json:C:\Inspec\Reports\vidm.json
 ```
 
 Run a specific profile against a target appliance show progress, and output results to CLI and JSON
 ```
-inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password' --show-progress --reporter=cli json:C:\Inspec\Reports\vidm.json
+inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password' --show-progress --sudo --sudo-password 'password' --input-file .\inputs-example.yml --reporter=cli json:C:\Inspec\Reports\vidm.json
 ```
 
-Run a specific profile (EAM in this case) against a target appliance show progress, and output results to CLI and JSON using the wrapper profile
+Run a specific profile (vPostgres in this case) against a target appliance show progress, and output results to CLI and JSON using the wrapper profile
 ```
-inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password' --show-progress --reporter=cli json:C:\Inspec\Reports\vidm.json --controls=/WOAD/
+inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password' --show-progress --sudo --sudo-password 'password' --input-file .\inputs-example.yml --reporter=cli json:C:\Inspec\Reports\vidm.json --controls=/WOAD/
 ```
 
 Run a single STIG Control against a target appliance from a specific profile
 ```
-inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password' --controls=WOAD-3X-000001
+inspec exec C:\Inspec\Profiles\vmware-vidm-3.3.x-stig-baseline -t ssh://root@vidm IP or FQDN --password 'password' --sudo --sudo-password 'password' --input-file .\inputs-example.yml --controls=WOAD-3X-000001
 ```
 
 ## Waivers
