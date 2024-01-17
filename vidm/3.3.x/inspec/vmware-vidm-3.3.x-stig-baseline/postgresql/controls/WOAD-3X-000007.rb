@@ -27,7 +27,7 @@ control 'WOAD-3X-000007' do
   tag cci: ['CCI-000171', 'CCI-001493', 'CCI-001494', 'CCI-001495', 'CCI-001813']
   tag nist: ['AU-12 b', 'AU-9', 'CM-5 (1)']
 
-  conffiles = command('find /db/data/*conf* -type f -xdev').stdout
+  conffiles = command('find /db/data/ -name *.conf -xdev -type f').stdout
   if !conffiles.empty?
     conffiles.split.each do |fname|
       describe file(fname) do

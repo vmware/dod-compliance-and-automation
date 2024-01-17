@@ -1,7 +1,7 @@
 # VMware Identity Manager 3.3.x DoD STIG Compliance and Automation
 
 ## Overview
-*STIG Status: STIG Readiness Guide Version 1 Release 2*
+*STIG Status: STIG Readiness Guide Version 1 Release 3*
 
 This project folder contains content for compliance auditing and remediation of the VMware Identity Manager 3.3.x STIG Readiness Guide.
 
