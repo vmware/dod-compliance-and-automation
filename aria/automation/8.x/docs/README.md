@@ -27,6 +27,11 @@ The VMware Aria Automation Security Technical Implementation Guides (STIGs) prov
     - Kubernetes
     - Photon OS 3.0
 
+**NOTE: The official DISA Kubernetes guide is included here for reference. If using that content to manually check for compliance, any commands that reference the manifests directory, for example,  
+```'...change to the manifests directory at /etc/kubernetes/manifests and run the command: grep -i <item> *'```  
+should be changed to run the following command:  
+```'find /opt/scripts/ -name "run-*" -exec grep -i <item> {} /dev/null \;'```  
+
 The VMware Aria Automation STIGs presume operation in an environment compliant with all applicable DoD guidance.
 
 All technical NIST SP 800-53 requirements were considered while developing this STIG. SRG requirements that are applicable and configurable are included in the SRG content spreadsheets. Other controls that are "Not Applicable", "Inherently Met" or "Does Not Meet" are not included.
