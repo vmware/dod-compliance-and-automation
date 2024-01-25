@@ -1,5 +1,11 @@
 # Change Log
 
+## [7.0 Official STIG Version 1 Release 3] (2024-01-22)
+
+#### Release Notes
+- Updated metadata to match official STIG V1R3
+- PHTN-30-000089 updated check to check for masking of the service
+
 ## [7.0 Official STIG Version 1 Release 2] (2023-07-26)
 
 #### Release Notes

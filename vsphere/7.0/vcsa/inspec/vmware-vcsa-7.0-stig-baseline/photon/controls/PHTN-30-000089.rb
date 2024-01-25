@@ -8,10 +8,10 @@ control 'PHTN-30-000089' do
 Expected result:
 
 ctrl-alt-del.target
-Loaded: masked (/dev/null; bad)
+Loaded: masked (Reason: Unit ctrl-alt-del.target is masked.)
 Active: inactive (dead)
 
-If the output does not match the expected result, this is a finding.'
+If the "ctrl-alt-del.target" is not "inactive" and "masked", this is a finding.'
   desc 'fix', 'At the command line, run the following command:
 
 # systemctl mask ctrl-alt-del.target'
@@ -29,5 +29,11 @@ If the output does not match the expected result, this is a finding.'
   describe systemd_service('ctrl-alt-del.target') do
     it { should_not be_enabled }
     it { should_not be_running }
+  end
+  describe systemd_service('ctrl-alt-del.target').params['LoadState'] do
+    it { should cmp 'masked' }
+  end
+  describe systemd_service('ctrl-alt-del.target').params['UnitFileState'] do
+    it { should cmp 'masked' }
   end
 end

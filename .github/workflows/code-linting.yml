@@ -288,27 +288,3 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "nsx/4.x/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
-  ansiblelint-vsphere70-esxi:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v3
-      - name: Install Collections
-        run: ansible-galaxy collection install -f -r vsphere/7.0/vsphere/ansible/vmware-esxi-7.0-stig-ansible-hardening/requirements.yml -p /home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/collections
-      - uses: ansible-community/ansible-lint-action@main
-        env:
-          ANSIBLE_COLLECTIONS_PATH: '/home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/collections'
-        with:
-          path: "vsphere/7.0/vsphere/ansible/vmware-esxi-7.0-stig-ansible-hardening/"
-  ansiblelint-vsphere70-vm:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v3
-      - name: Install Collections
-        run: ansible-galaxy collection install -f -r vsphere/7.0/vsphere/ansible/vmware-esxi-7.0-stig-ansible-hardening/requirements.yml -p /home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/collections
-      - uses: ansible-community/ansible-lint-action@main
-        env:
-          ANSIBLE_COLLECTIONS_PATH: '/home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/collections'
-        with:
-          path: "vsphere/7.0/vsphere/ansible/vmware-vm-7.0-stig-ansible-hardening/"

@@ -5,9 +5,9 @@
     "vendor": "VMware",
     "guidance": {
       "name": "VMware vSphere 7 STIG",
-      "version": "V1R2",
+      "version": "V1R3",
       "date": "July 24, 2023",
-      "source": "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_7-0_Y23M07_STIG.zip",
+      "source": "https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_7-0_Y24M01_STIG.zip",
       "type": "Official STIG",
       "category": "Virtual Platforms"
     },
@@ -30,15 +30,15 @@
     "validation": [
       {
         "name": "VMware vSphere vCenter Appliance 7.0 STIG Chef InSpec Profile",
-        "version": "V1R2",
-        "date": "July 24, 2023",
+        "version": "V1R3",
+        "date": "January 22, 2024",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/inspec/vmware-vcsa-7.0-stig-baseline",
         "platform": "InSpec"
       },
       {
         "name": "VMware vSphere 7.0 STIG Chef InSpec Profile",
-        "version": "V1R2",
-        "date": "July 24, 2023",
+        "version": "V1R3",
+        "date": "January 22, 2024",
         "source": "https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vsphere/inspec/vmware-vsphere-7.0-stig-baseline",
         "platform": "InSpec"
       }

@@ -15,7 +15,7 @@ The operating system can meet this requirement by leveraging a cryptographic mod
 
 Expected result:
 
-ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+ciphers aes128-ctr,aes128-gcm@openssh.com,aes192-ctr,aes256-gcm@openssh.com,aes256-ctr
 
 If the output matches the ciphers in the expected result or a subset thereof, this is not a finding.
 
@@ -26,7 +26,7 @@ If the ciphers in the output contain any ciphers not listed in the expected resu
 
 Ensure the "Ciphers" line is uncommented and set to the following:
 
-Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+Ciphers aes128-ctr,aes128-gcm@openssh.com,aes192-ctr,aes256-gcm@openssh.com,aes256-ctr
 
 At the command line, run the following command:
 
