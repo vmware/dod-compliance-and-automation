@@ -1,7 +1,7 @@
 # VMware vSphere 7.0 DoD STIG Compliance and Automation
 
 ## Overview
-*STIG Status: Officially published Version 1 Release 2*
+*STIG Status: Officially published Version 1 Release 3*
 
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
 

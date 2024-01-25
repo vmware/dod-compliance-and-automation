@@ -20,7 +20,7 @@ mgtVlanId: "101"
 # If snmp is used in the environment change to true.
 snmpEnabled: "false"
 # Enter the latest build number for ESXi.
-esxiBuildNumber: "21424296"
+esxiBuildNumber: "22348816"
 # vCenter
 # Enter the environment specific syslog server vCenter should be forwarding logs to.
 syslogServers:

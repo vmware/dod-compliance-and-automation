@@ -1,6 +1,6 @@
 # vmware-vcsa-7.0-stig-baseline
 VMware vSphere vCenter Appliance 7.0 STIG Chef InSpec Profile  
-Version: Release 1 Version 2 Date: 26 July 2023  
+Version: Release 1 Version 3 Date: 22 January 2024    
 STIG Type: Official STIG
 
 ## VCSA InSpec Profiles

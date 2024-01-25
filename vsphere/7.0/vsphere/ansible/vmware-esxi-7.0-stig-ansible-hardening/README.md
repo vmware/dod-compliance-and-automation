@@ -1,4 +1,9 @@
 # vmware-esxi-7.0-stig-ansible-hardening
+## NOTICE
+This playbook is currently not maintained by the VMware team with no support provided.
+
+## Overview
+
 VMware vSphere ESXi 7.0 STIG Readiness Guide Ansible Playbook
 
 Version: Version 1 Release 4: 28 October 2022 

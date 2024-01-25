@@ -22,7 +22,7 @@ From a PowerCLI command prompt while connected to the vCenter server, run the fo
 Get-VDSwitch | Get-VDSecurityPolicy
 Get-VDPortgroup | ?{$_.IsUplink -eq $false} | Get-VDSecurityPolicy
 
-If the "Forged Transmits" policy is set to accept for a nonuplink port, this is a finding.'
+If the "Forged Transmits" policy is set to accept for a nonuplink port, and is not documented as an exception, this is a finding.'
   desc 'fix', 'From the vSphere Client, go to "Networking".
 
 Select a distributed switch and then select a port group.

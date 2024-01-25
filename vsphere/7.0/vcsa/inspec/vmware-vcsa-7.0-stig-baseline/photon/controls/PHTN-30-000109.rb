@@ -7,11 +7,12 @@ control 'PHTN-30-000109' do
 
 Expected result:
 
+/etc/ssh/ssh_host_dsa_key permissions are 600 and owned by root:root
 /etc/ssh/ssh_host_ecdsa_key permissions are 600 and owned by root:root
 /etc/ssh/ssh_host_ed25519_key permissions are 600 and owned by root:root
 /etc/ssh/ssh_host_rsa_key permissions are 600 and owned by root:root
 
-If the output does not match the expected result, this is a finding.'
+If any key file listed is not owned by root or not group owned by root or does not have permissions of "0600", this is a finding.'
   desc 'fix', 'At the command line, run the following commands for each returned file:
 
 # chmod 600 <file>

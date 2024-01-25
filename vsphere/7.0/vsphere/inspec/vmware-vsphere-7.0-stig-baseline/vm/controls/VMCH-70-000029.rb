@@ -13,7 +13,7 @@ or
 
 From a PowerCLI command prompt while connected to the ESXi host or vCenter server, run the following command:
 
-Get-VM | Where {($_.ExtensionData.Config.FtEncryptionMode -ne "ftEncryptionOpportunistic") -and ($_.ExtensionData.Config.FtEncryptionMode -ne "ftEncryptionRequired")}
+Get-VM | Where {$_.ExtensionData.Config.FtEncryptionMode -eq "ftEncryptionDisabled"}
 
 If the setting does not have a value of "Opportunistic" or "Required", this is a finding.'
   desc 'fix', 'From the vSphere Client, select the Virtual Machine, right-click, and go to Edit Settings >> VM Options tab >> Encryption >> FT Encryption.

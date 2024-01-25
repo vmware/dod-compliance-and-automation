@@ -1,5 +1,10 @@
 # Change Log
 
+## [7.0 Version 1 Release 3 Official STIG] (2024-01-22)
+
+#### Release Notes
+- Updated metadata to match release of official STIG for vSphere 7 V1R3 for vCenter and VM STIGs
+
 ## [7.0 Version 1 Release 2 Official STIG] (2023-07-26)
 
 #### Release Notes
