@@ -1,0 +1,822 @@
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: always
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vrli-tcserver-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      with_items:
+        - '{{ tcserver_server_xml_path }}'
+        - '{{ tcserver_web_xml_path }}'
+        - '{{ tcserver_catalina_prop_path }}'
+
+###################################################################################################################################
+
+# VRLT-8X-000001 - Tomcat server must limit the number of maximum concurrent connections permitted.
+- name: VRLT-8X-000001 - Tomcat server must limit the number of maximum concurrent connections permitted
+  tags: [VRLT-8X-000001]
+  block:
+    - name: VCRP-80-000098 - Count Executors with maxThreads setting
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '//Executor[@maxThreads]'
+        count: true
+      register: executors
+
+    # If Executor node has maxThreads setting, make sure it is set correctly
+    - name: VRLT-8X-000001 - Add or configure maximum concurrent connections permitted - Executor node
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '//Executor[@maxThreads]'
+        attribute: 'maxThreads'
+        value: '{{ tcserver_maxthreads }}'
+        pretty_print: true
+      when: executors.count | default(0) != 0
+      notify: Restart LI
+
+    - name: VCRP-80-000098 - Count Connectors with maxThreads setting
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '//Connector[not(@executor) and not(@redirectPort) and (@maxThreads)]'
+        count: true
+      register: connectors
+
+    # Check each Connector that is not a redirect, and is not connected to an Executor - if setting is present, make sure it is correct.
+    - name: VRLT-8X-000001 - Add or configure maximum concurrent connections permitted - Connector node
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '//Connector[not(@executor) and not(@redirectPort) and (@maxThreads)]'
+        attribute: maxThreads
+        value: '{{ tcserver_maxthreads }}'
+        pretty_print: true
+      when: connectors.count | default(0) != 0
+      notify: Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000004-14 - Logging must be configured for each VMware Aria Operations for Logs tc Server application context.
+- name: VRLT-8X-000004-14 - Logging must be configured for each The VMware Aria Operations for Logs tc Server application context
+  tags: [VRLT-8X-000004, VRLT-8X-000014]
+  block:
+    - name: VRLT-8X-000004-14 - Configure AccessLogValve for Host container
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '//Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
+        attribute: 'pattern'
+        value: '{{ tcserver_access_log_pattern }}'
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000005 - Cookies must have secure flag set.
+- name: VRLT-8X-000005 - Cookies must have secure flag set
+  tags: [VRLT-8X-000005]
+  block:
+    - name: VRLT-8X-000005 - Configure secure cookies
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
+        value: 'true'
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000013 - The VMware Aria Operations for Logs tc Server must initiate session logging upon startup.
+# This is a manual fix
+# Configure the application to begin logging application events as soon as the application starts up.
+
+###################################################################################################################################
+
+# VRLT-8X-000025 - The VMware Aria Operations for Logs tc Server logs folder permissions must be set correctly.
+- name: VRLT-8X-000025 - The VMware Aria Operations for Logs tc Server logs folder permissions must be set correctly
+  tags: [VRLT-8X-000025]
+  block:
+    - name: VRLT-8X-000025 - Update logs directories permissions
+      ansible.builtin.shell: |
+        set -o pipefail
+        find {{ tcserver_catalina_base }}/logs -follow -maxdepth 0 -type d | sudo xargs chmod 750
+      register: dir_perm_out
+      failed_when: false
+      changed_when: false
+
+###################################################################################################################################
+
+# VRLT-8X-000026 - Files in the $CATALINA_BASE/logs/ folder must have their permissions set to 640.
+- name: VRLT-8X-000026 - Files in the $CATALINA_BASE/logs/ folder must have their permissions set to 640
+  tags: [VRLT-8X-000026]
+  block:
+    - name: VRLT-8X-000026 - Update logs files permissions
+      ansible.builtin.shell: |
+        set -o pipefail
+        find {{ tcserver_catalina_base }}/logs/* -follow -maxdepth 0 -type f  | sudo xargs chmod 640
+      register: file_perm_out
+      failed_when: false
+      changed_when: false
+
+###################################################################################################################################
+
+# VRLT-8X-000036 - Stack tracing must be disabled.
+- name: VRLT-8X-000036- Stack tracing must be disabled
+  tags: [VRLT-8X-000036]
+  block:
+    - name: VRLT-8X-000036 - Remove allowTrace attribute on connectors
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '/Server/Service/Connector/@allowTrace'
+        state: absent
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000037 - The VMware Aria Operations for Logs tc Server must be configured to use a specified IP address and port.
+# This is a manual fix.
+#### Edit the $CATALINA_HOME/server.xml file.
+#### Navigate to each of the <Connector> nodes.
+#### Configure each <Connector> node with the value 'address="XXXXX"' and 'port="XXXX"'.
+#### Restart LI service
+
+###################################################################################################################################
+
+# VRLT-8X-000045 - The The VMware Aria Operations for Logs tc Server must encrypt passwords during transmission.
+# - name: VRLT-8X-000045- The The VMware Aria Operations for Logs tc Server must encrypt passwords during transmission
+#   tags: [VRLT-8X-000045]
+#   block:
+#     - name: VRLT-8X-000045 - Configure SSL for secure coonnectors
+#       community.general.xml:
+#         path: '{{ tcserver_server_xml_path }}'
+#         xpath: '//Connector[@port = {{ item }}]'
+#         attribute: 'SSLEnabled'
+#         value: 'true'
+#         state: present
+#       with_items:
+#         - "{{ tcserver_secure_ports }}"
+#       notify:
+#         - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000048 - The VMware Aria Operations for Logs tc Server must only allow authorized system administrators to have access to the keystore.
+# - name: VRLT-8X-000048- The VMware Aria Operations for Logs tc Server must only allow authorized system administrators to have access to the keystore
+#   tags: [VRLT-8X-000048]
+#   block:
+#     - name: VRLT-8X-000048 - List keystore files
+#       ansible.builtin.shell: |
+#         set -o pipefail
+#         xmllint --xpath "//Certificate/@certificateKeystoreFile | //Connector/@keystoreFile" {{ tcserver_server_xml_path }} | awk -F "=" '{print $2}' | tr -d '"'
+#       register: keystore_files
+#       failed_when: false
+#       changed_when: false
+
+#     - name: VRLT-8X-000048 - Update file permissions
+#       ansible.builtin.file:
+#         path: "{{ tcserver_catalina_base }}/{{ item }}"
+#         owner: '{{ tcserver_svc_account_name }}'
+#         group: '{{ tcserver_svc_group }}'
+#         mode: '640'
+#       with_items: "{{ keystore_files.stdout_lines }}"
+#       when: keystore_files.stdout  != ""
+
+###################################################################################################################################
+
+# VRLT-8X-000051 - The VMware Aria Operations for Logs tc Server must use FIPS-validated ciphers on secured connectors.
+# Handled by Application control - VLIA-8X-000056 // SRG-APP-000172-AU-002550
+# - name: VRLT-8X-000051- The VMware Aria Operations for Logs tc Server must use FIPS-validated ciphers on secured connectors
+#   tags: [VRLT-8X-000051]
+#   block:
+#     - name: VRLT-8X-000051 - Enable FIPS mode
+#       community.general.xml:
+#         path: '{{ tcserver_server_xml_path }}'
+#         xpath: '//Listener[contains(@className, "AprLifecycleListener")]'
+#         attribute: 'FIPSMode'
+#         value: 'on'
+#         state: present
+#       notify:
+#         - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000057 - The VMware Aria Operations for Logs tc Server must be configured to limit data exposure between applications.
+- name: VRLT-8X-000057 - The VMware Aria Operations for Logs tc Server must be configured to limit data exposure between applications
+  tags: [VRLT-8X-000057]
+  block:
+    - name: VRLT-8X-000057 - Check for RECYCLE_FACADES config
+      ansible.builtin.command: grep RECYCLE_FACADES {{ tcserver_catalina_prop_path }}
+      register: rec_fac_out
+      failed_when: false
+      changed_when: false
+
+    - name: VRLT-8X-000057 - Add or configure RECYCLE_FACADES if not set already or misconfigured
+      ansible.builtin.lineinfile:
+        path: "{{ tcserver_catalina_prop_path }}"
+        regexp: 'RECYCLE_FACADES'
+        line: "org.apache.catalina.connector.RECYCLE_FACADES=true"
+        state: present
+      when: rec_fac_out.stdout | trim != "org.apache.catalina.connector.RECYCLE_FACADES=true"
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000062 - The VMware Aria Operations for Logs tc Server must be built to fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+- name: VRLT-8X-000062 - The VMware Aria Operations for Logs tc Server must be built to fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+  tags: [VRLT-8X-000062]
+  block:
+    - name: VRLT-8X-000062 - Check for EXIT_ON_INIT_FAILURE config
+      ansible.builtin.command: grep -i EXIT_ON_INIT_FAILURE {{ tcserver_catalina_prop_path }}
+      register: exit_fail_out
+      failed_when: false
+      changed_when: false
+
+    - name: VRLT-8X-000062 - Add or configure EXIT_ON_INIT_FAILURE if not set already or misconfigured
+      ansible.builtin.lineinfile:
+        path: "{{ tcserver_catalina_prop_path }}"
+        regexp: 'EXIT_ON_INIT_FAILURE'
+        line: "org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true"
+        state: present
+      when: exit_fail_out.stdout | trim != "org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true"
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000065- The VMware Aria Operations for Logs tc Server must set URIEncoding to UTF-8.
+- name: VRLT-8X-000065 - The VMware Aria Operations for Logs tc Server must set URIEncoding to UTF-8
+  tags: [VRLT-8X-000065]
+  block:
+    - name: VRLT-8X-000065 - Update incorrect URIEncoding attributes on connectors to UTF-8
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '//Connector'
+        attribute: 'URIEncoding'
+        value: 'UTF-8'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000067- The VMware Aria Operations for Logs tc Server "ErrorReportValve showServerInfo" must be set to "false".
+- name: VRLT-8X-000067 - The VMware Aria Operations for Logs tc Server "ErrorReportValve showServerInfo" must be set to "false"
+  tags: [VRLT-8X-000067]
+  block:
+    - name: VRLT-8X-000067 - Configure showServerInfo on ErrorReportValve
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+        attribute: 'showServerInfo'
+        value: 'false'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000070- The VMware Aria Operations for Logs tc Server must set an inactive timeout for sessions.
+- name: VRLT-8X-000070 - The VMware Aria Operations for Logs tc Server must set an inactive timeout for sessions
+  tags: [VRLT-8X-000070]
+  block:
+    - name: VRLT-8X-000070 - Configure session timeout
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:session-config/x:session-timeout'
+        value: '{{ tcserver_session_timeout }}'
+        state: present
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000105 - The VMware Aria Operations for Logs tc Server must be patched for security vulnerabilities.
+# This is a manual fix.
+#### Follow operational procedures for upgrading The VMware Aria Operations for Logs tc Server . Download latest version of The VMware Aria Operations for Logs tc Server and install in a test environment.
+#### Test applications that are running in production and follow all operations best practices when upgrading the production The VMware Aria Operations for Logs tc Server application servers.
+#### Update the The VMware Aria Operations for Logs tc Server production instance accordingly and ensure corrected builds are installed once tested and verified.
+
+###################################################################################################################################
+
+# VRLT-8X-000106 -  The VMware Aria Operations for Logs tc Server must set sslEnabledProtocols to an approved Transport Layer Security (TLS) version.
+# - name: VRLT-8X-000106 -  The VMware Aria Operations for Logs tc Server must set sslEnabledProtocols to an approved Transport Layer Security (TLS) version
+#   tags: [VRLT-8X-000106]
+#   block:
+#     - name: VRLT-8X-000106 - Configure secure protocol
+#       community.general.xml:
+#         path: '{{ tcserver_server_xml_path }}'
+#         xpath: '//Connector[@port = {{ item }}]'
+#         attribute: 'sslEnabledProtocols'
+#         value: '{{ tcserver_secure_ssl_protocol }}'
+#         state: present
+#       with_items:
+#         - "{{ tcserver_secure_ports }}"
+#       notify:
+#         - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000117 - Changes to $CATALINA_HOME/bin/ folder must be logged.
+# - name: VRLT-8X-000117 - Changes to $CATALINA_HOME/bin/ folder must be logged
+#   tags: [VRLT-8X-000117]
+#   block:
+#     - name: VRLT-8X-000117 - Configure audit watch for tomcat
+#       ansible.builtin.command: auditctl -w {{ tcserver_catalina_home }}/bin -p wa -k {{ tcserver_core_user }}
+#       register: auditd_out
+#       changed_when: 'auditd_out.rc == 0 or "Rule exists" not in auditd_out.stderr'
+#       failed_when: false
+
+###################################################################################################################################
+
+# VRLT-8X-000125 - The VMware Aria Operations for Logs tc Server must limit the amount of time that each Transmission Control Protocol (TCP) connection is kept alive.
+- name: VRLT-8X-000125 - The VMware Aria Operations for Logs tc Server must limit the amount of time that each Transmission Control Protocol (TCP) connection is kept alive
+  tags: [VRLT-8X-000125]
+  block:
+    - name: VRLT-8X-000125 - Update incorrect connectionTimeout attribute on connectors
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: "//Connector"
+        attribute: 'connectionTimeout'
+        value: '{{ tcserver_connection_timeout }}'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000126- The VMware Aria Operations for Logs tc Server must limit the number of times that each Transmission Control Protocol (TCP) connection is kept alive.
+- name: VRLT-8X-000126 - The VMware Aria Operations for Logs tc Server must limit the number of times that each Transmission Control Protocol (TCP) connection is kept alive
+  tags: [VRLT-8X-000126]
+  block:
+    - name: VRLT-8X-000126 - Update incorrect maxKeepAliveRequests attributes on connectors
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: "//Connector"
+        attribute: 'maxKeepAliveRequests'
+        value: '{{ tcserver_maxkeep_alive_requests }}'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000127- The VMware Aria Operations for Logs tc Server must configure the "setCharacterEncodingFilter" filter.
+- name: VRLT-8X-000127 - The VMware Aria Operations for Logs tc Server must configure the "setCharacterEncodingFilter" filter
+  tags: [VRLT-8X-000127]
+  block:
+    - name: VRLT-8X-000127 - Check for filter-mapping
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]'
+        count: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      register: filtermaphits
+
+    - name: VRLT-8X-000127 - Create filter-mapping element
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app'
+        add_children:
+          - filter-mapping:
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+      when:
+        - filtermaphits.count == 0
+
+    - name: VRLT-8X-000127 - Create filter-mapping name
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter-mapping[last()]/x:filter-name'
+        value: 'setCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+      when:
+        - filtermaphits.count == 0
+
+    - name: VRLT-8X-000127 - Configure filter-mapping url-pattern
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]/x:url-pattern'
+        value: '/*'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+    - name: VRLT-8X-000127 - Check for bad filter configuration init-params
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param'
+        count: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      register: countbadinits
+
+    - name: VRLT-8X-000127 - Check for bad filter configuration duplicate filters
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        count: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      register: countbadfilters
+
+    - name: VRLT-8X-000127 - Delete bad filter configurations
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        state: absent
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VRLT-8X-000127 - Create new filter
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app'
+        add_children:
+          - filter:
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VRLT-8X-000127 - Configure new filter-name
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[last()]/x:filter-name'
+        value: 'setCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VRLT-8X-000127 - Configure filter-class
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:filter-class'
+        value: 'org.apache.catalina.filters.SetCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+    - name: VRLT-8X-000127 - Configure filter async
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:async-supported'
+        value: 'true'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+    - name: VRLT-8X-000127 - Create filter init-param
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param/x:param-name'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+    - name: VRLT-8X-000127 - Configure filter init-param encoding
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-name'
+        value: 'encoding'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+    - name: VRLT-8X-000127 - Configure filter init-param encoding value
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-value'
+        value: 'UTF-8'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+    - name: VRLT-8X-000127 - Check for second init-param existance
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]'
+        count: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      register: init2counts
+
+    - name: VRLT-8X-000127 - Create filter init-param
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        state: present
+        pretty_print: true
+        add_children:
+          - init-param:
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+      when:
+        - init2counts.count == 0
+
+    - name: VRLT-8X-000127 - Configure filter init-param ignore
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-name'
+        value: 'ignore'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+    - name: VRLT-8X-000127 - Configure filter init-param ignore value
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-value'
+        value: 'true'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000129 - The VMware Aria Operations for Logs tc Server cookies must have the "http-only" flag set.
+- name: VRLT-8X-000129 - The VMware Aria Operations for Logs tc Server cookies must have the "http-only" flag set
+  tags: [VRLT-8X-000129]
+  block:
+    - name: VRLT-8X-000129 - Configure http-only cookies
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:session-config/x:cookie-config/x:http-only'
+        value: 'true'
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000130 - The VMware Aria Operations for Logs tc Server DefaultServlet must be set to "readonly" for "PUT" and "DELETE" commands.
+- name: VRLT-8X-000130 - The VMware Aria Operations for Logs tc Server DefaultServlet must be set to "readonly" for "PUT" and "DELETE" commands
+  tags: [VRLT-8X-000130]
+  block:
+    - name: VRLT-8X-000130 - Remove readonly parameter if it exists
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/x:param-name[text()="readonly"]/..'
+        state: absent
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000131 - Connectors must be secured.
+- name: VRLT-8X-000131 - Connectors must be secured.
+  tags: [VRLT-8X-000131]
+  block:
+    - name: VRLT-8X-000131 - Configure scheme for connectors
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '//Connector[not(@redirectPort)]'
+        attribute: 'scheme'
+        value: 'https'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart LI
+
+    - name: VRLT-8X-000131 - Configure secure for connectors
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: '//Connector[not(@redirectPort)]'
+        attribute: 'secure'
+        value: 'true'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000134 - The VMware Aria Operations for Logs tc Server shutdown port must be disabled.
+# Handled by Product by default
+# - name: VRLT-8X-000134 - The VMware Aria Operations for Logs tc Server shutdown port must be disabled
+#   tags: [VRLT-8X-000134]
+#   block:
+#     - name: VRLT-8X-000134 - Configure shutdown port in server.xml
+#       community.general.xml:
+#         path: '{{ tcserver_server_xml_path }}'
+#         xpath: '/Server'
+#         attribute: 'port'
+#         value: '{{ tcserver_shutdown_port }}'
+#         state: present
+#         pretty_print: true
+#       notify:
+#         - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000135 - Unapproved connectors must be disabled.
+# This is a manual fix.
+# User should carefully review & remove the connectors.
+#### Edit the /usr/lib/loginsight/application/3rd_party/apache-tomcat/conf/server.xml file.
+#### Remove any unapproved connectors.
+#### systemctl restart loginsight.service
+
+####################################################################################################################################
+
+# VRLT-8X-000136 - The VMware Aria Operations for Logs tc Server debug parameter must be disabled.
+- name: VRLT-8X-000136 - The VMware Aria Operations for Logs tc Server debug parameter must be disabled
+  tags: [VRLT-8X-000136]
+  block:
+    - name: VRLT-8X-000136 - Remove debug parameter if it exists
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/x:param-name[text()="debug"]/..'
+        state: absent
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000137 - The VMware Aria Operations for Logs tc Server directory listings parameter must be disabled.
+- name: VRLT-8X-000137 - The VMware Aria Operations for Logs tc Server directory listings parameter must be disabled
+  tags: [VRLT-8X-000137]
+  block:
+    - name: VRLT-8X-000137 - Remove listings parameter
+      community.general.xml:
+        path: '{{ tcserver_web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/x:param-name[text()="listings"]/..'
+        state: absent
+        namespaces:
+          x: "{{ tcserver_default_namespace }}"
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000140 - The VMware Aria Operations for Logs tc Server xpoweredBy attribute must be disabled.
+- name: VRLT-8X-000140 - The VMware Aria Operations for Logs tc Server xpoweredBy attribute must be disabled
+  tags: [VRLT-8X-000140]
+  block:
+    - name: VRLT-8X-000140 - Configure xpoweredBy attributes on connectors
+      community.general.xml:
+        path: '{{ tcserver_server_xml_path }}'
+        xpath: "//Connector/@xpoweredBy"
+        state: absent
+        pretty_print: true
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000141-43-154-155 - The VMware Aria Operations for Logs tc Server example applications, ROOT web app, documentation must be removed.
+- name: VRLT-8X-000141-43-154-155 - The VMware Aria Operations for Logs tc Server example applications, ROOT web app, documentation must be removed
+  tags: [VRLT-8X-000141, VRLT-8X-000143, VRLT-8X-000154, VRLT-8X-000155]
+  block:
+    - name: VRLT-8X-000141-43-154-155 - Remove examples folder
+      ansible.builtin.file:
+        path: '{{ item }}'
+        state: absent
+      with_items:
+        - "{{ tcserver_catalina_base }}/webapps/examples"
+        - "{{ tcserver_catalina_base }}/webapps/docs"
+        - "{{ tcserver_catalina_base }}/webapps/manager"
+        - "{{ tcserver_catalina_base }}/webapps/host-manager"
+
+###################################################################################################################################
+
+# VRLT-8X-000142 - The VMware Aria Operations for Logs tc Server default ROOT web application must be removed.
+# This is a manual fix.
+#### Removing the ROOT folder without replacing the content with valid web based content will result in an error page being displayed to the browser when the browser lands on the default page.
+
+###################################################################################################################################
+
+# VRLT-8X-000148 - Changes to $CATALINA_BASE/conf folder must be logged.
+# - name: VRLT-8X-000148 - Changes to $CATALINA_BASE/conf folder must be logged
+#   tags: [VRLT-8X-000148]
+#   block:
+#     - name: VRLT-8X-000148 - Configure audit watch for tomcat conf
+#       ansible.builtin.command: auditctl -w {{ tcserver_catalina_base }}/conf -p wa -k {{ tcserver_svc_account_name }}
+#       register: auditd_out
+#       changed_when: 'auditd_out.rc == 0 or "Rule exists" not in auditd_out.stderr'
+#       failed_when: false
+
+###################################################################################################################################
+
+# VRLT-8X-000149 - Changes to $CATALINA_BASE/lib/ folder must be logged.
+# - name: VRLT-8X-000149 - Changes to $CATALINA_BASE/lib/ folder must be logged
+#   tags: [VRLT-8X-000149]
+#   block:
+#     - name: VRLT-8X-000149 - Configure audit watch for tomcat lib
+#       ansible.builtin.command: auditctl -w {{ tcserver_catalina_base }}/lib -p wa -k {{ tcserver_svc_account_name }}
+#       register: auditd_out
+#       changed_when: 'auditd_out.rc == 0 or "Rule exists" not in auditd_out.stderr'
+#       failed_when: false
+
+###################################################################################################################################
+
+# VRLT-8X-000151 - The VMware Aria Operations for Logs tc Server must disable "ALLOW_BACKSLASH".
+- name: VRLT-8X-000151 - The VMware Aria Operations for Logs tc Server must disable "ALLOW_BACKSLASH"
+  tags: [VRLT-8X-000151]
+  block:
+    - name: VRLT-8X-000151 - Search for ALLOW_BACKSLASH in catalina prop
+      ansible.builtin.command: grep -i ALLOW_BACKSLASH {{ tcserver_catalina_prop_path }}
+      register: search_out
+      failed_when: false
+      changed_when: false
+
+    - name: VRLT-8X-000151 - Update or remove ALLOW_BACKSLASH line
+      ansible.builtin.lineinfile:
+        path: "{{ tcserver_catalina_prop_path }}"
+        regexp: "ALLOW_BACKSLASH"
+        line: "org.apache.catalina.connector.ALLOW_BACKSLASH=false"
+        state: present
+      when: search_out.stdout != "" and search_out.stdout != "org.apache.catalina.connector.ALLOW_BACKSLASH=false"
+      notify:
+        - Restart LI
+
+###################################################################################################################################
+
+# VRLT-8X-000152 - The VMware Aria Operations for Logs tc Server must enable "ENFORCE_ENCODING_IN_GET_WRITER".
+- name: VRLT-8X-000152- The VMware Aria Operations for Logs tc Server must enable "ENFORCE_ENCODING_IN_GET_WRITER"
+  tags: [VRLT-8X-000152]
+  block:
+    - name: VRLT-8X-000152 - Check if ENFORCE_ENCODING_IN_GET_WRITER is enabled
+      ansible.builtin.command: grep ENFORCE_ENCODING_IN_GET_WRITER {{ tcserver_catalina_prop_path }}
+      register: enc_out
+      failed_when: false
+      changed_when: false
+
+    - name: VRLT-8X-000152 - Update/configure ENFORCE_ENCODING_IN_GET_WRITER
+      ansible.builtin.lineinfile:
+        path: "{{ tcserver_catalina_prop_path }}"
+        regexp: 'ENFORCE_ENCODING_IN_GET_WRITER'
+        line: "org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER=true"
+        insertafter: "EXIT_ON_INIT_FAILURE"
+        state: present
+      when: enc_out.stdout != "" and enc_out.stdout != "org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER=true"
+      notify:
+        - Restart LI

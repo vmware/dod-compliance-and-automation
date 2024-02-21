@@ -1,0 +1,11 @@
+---
+# tasks file for tcserver
+
+- name: Include tcserver
+  ansible.builtin.include_tasks:
+    file: tcserver.yml
+    apply:
+      tags:
+        - tcserver
+  tags:
+    - always

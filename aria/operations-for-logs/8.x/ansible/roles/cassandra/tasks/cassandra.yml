@@ -1,0 +1,80 @@
+# VLIC-8X-000006 - The Aria Operations for Logs Cassandra database logs must be protected from unauthorized read access.
+- name: VLIC-8X-000006 - The Aria Operations for Logs Cassandra database logs must be protected from unauthorized read access
+  tags: [VLIC-8X-000006]
+  block:
+    - name: VLIC-8X-000006 - Check log file permissions
+      ansible.builtin.shell: stat -c "%a:%U:%G" /storage/var/loginsight/cassandra.log;
+      register: file_perm
+      changed_when: false
+
+    - name: VLIC-8X-000006 - Verify and update file permissions
+      ansible.builtin.file:
+        path: "/storage/var/loginsight/cassandra.log"
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '640'
+      when: item.split(':')[0] != "640" or item.split(':')[1] != "root" or item.split(':')[2] != "root"
+      with_items: "{{ file_perm.stdout_lines }}"
+
+###################################################################################################################################
+
+# VLIC-8X-000007 - The Aria Operations for Logs Cassandra database log configuration file must be protected from unauthorized read access.
+- name: VLIC-8X-000007 - The Aria Operations for Logs Cassandra database log configuration file must be protected from unauthorized read access
+  tags: [VLIC-8X-000007]
+  block:
+    - name: VLIC-8X-000007 - Check log conf file permissions
+      ansible.builtin.shell: stat -c "%a:%U:%G" {{ cassandra_root }}/conf/cassandra.yaml;
+      register: conf_file_perm
+      changed_when: false
+
+    - name: VLIC-8X-000007 - Verify and update conf file permissions
+      ansible.builtin.file:
+        path: "{{ cassandra_root }}/conf/cassandra.yaml"
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '640'
+      when: item.split(':')[0] != "640" or item.split(':')[1] != "root" or item.split(':')[2] != "root"
+      with_items: "{{ conf_file_perm.stdout_lines }}"
+
+###################################################################################################################################
+
+# VLIC-8X-000013 - The Aria Operations for Logs Cassandra database must prohibit user installation of logic modules without explicit privileged status.
+- name: VLIC-8X-000013 - The Aria Operations for Logs Cassandra database must prohibit user installation of logic modules without explicit privileged status
+  tags: [VLIC-8X-000013]
+  block:
+    - name: VLIC-8X-000013 - Check log conf file permissions
+      ansible.builtin.shell: stat -c "%a:%U:%G" /usr/lib/loginsight/application/etc/truststore;
+      register: trust_file_perm
+      changed_when: false
+
+    - name: VLIC-8X-000013 - Verify and update conf file permissions
+      ansible.builtin.file:
+        path: "/usr/lib/loginsight/application/etc/truststore"
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '600'
+      when: item.split(':')[0] != "600" or item.split(':')[1] != "root" or item.split(':')[2] != "root"
+      with_items: "{{ trust_file_perm.stdout_lines }}"
+
+###################################################################################################################################
+
+# VLIC-8X-000014 - The Aria Operations for Logs Cassandra database must verify there are no user altered roles
+- name: VLIC-8X-000014 - TThe Aria Operations for Logs Cassandra database must verify there are no user altered roles
+  tags: [VLIC-8X-000014]
+  block:
+    - name: VLIC-8X-000014 - Get roles from table
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ cassandra_root }}/bin/cqlsh-no-pass -e 'SELECT role, can_login, member_of FROM system_auth.roles;' | tail -n +4 | head -n -2
+      register: roles_whdr
+      changed_when: false
+
+    - name: VLIC-8X-000014 - Drop roles with unexpected permissions
+      ansible.builtin.shell: "{{ cassandra_root }}/bin/cqlsh-no-pass -e 'DROP ROLE {{ item.split('|')[0] }};'"
+      when: '(item.split("|")[0] | trim != "lisuper") or (item.split("|")[1] | trim != "True" or item.split("|")[2] | trim != "null")'
+      with_items: "{{ roles_whdr.stdout_lines }}"
+      register: drop_roles_out
+      changed_when: drop_roles_out.rc != 0

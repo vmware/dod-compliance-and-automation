@@ -1,5 +1,5 @@
 control 'VLIC-8X-000013' do
-  title 'The Aria Operations for Logs Cassandra database must protect the truststore file.'
+  title 'The VMware Aria Operations for Logs Cassandra database must protect the truststore file.'
   desc  "
     Failure to provide logical access restrictions associated with changes to configuration may have significant effects on the overall security of the system.
 
