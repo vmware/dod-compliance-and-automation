@@ -1,6 +1,6 @@
 # vmware-aria-operations-for-logs-8.x-stig-baseline
 VMware Aria Operations for Logs 8.14 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 3 Date: 22 December 2023  
+Version: Release 1 Version 4 Date: 21 February 2024
 STIG Type: STIG Readiness Guide
 Maintainers: SCOPE/VMTA  
 
@@ -27,8 +27,8 @@ Example folder structure:
     \ariaoplogs
     \cassandra
     \controls
+    \photon
     \tcserver
-  \vmware-photon-4.0-stig-baseline  
 ```
 
 **Note - update any needed inputs in each inspec.yaml or specify them at run time.**  

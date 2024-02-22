@@ -1,0 +1,11 @@
+---
+# tasks file for ariaopslogs
+
+- name: Include ariaopslogs
+  ansible.builtin.include_tasks:
+    file: ariaopslogs.yml
+    apply:
+      tags:
+        - ariaopslogs
+  tags:
+    - always

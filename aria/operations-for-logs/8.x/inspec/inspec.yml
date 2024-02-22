@@ -1,17 +1,17 @@
 name: vmware-aria-operations-for-logs-8.x-stig-inspec-baseline
 title: InSpec Wrapper Profile for VMware Aria Operations for Logs 8.x Appliances
-maintainer: VMTA
-copyright: 2023
-copyright_email: stigs@vmware.com
+maintainer: VTAE
+copyright: VTAE 2024
+copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.3
+version: 1.0.4
 
 depends:
   - name: cassandra
     path: cassandra
   - name: photon
-    path: ../vmware-photon-4.0-stig-inspec-baseline
+    path: photon
   - name: tcserver
     path: tcserver
   - name: ariaopslogs

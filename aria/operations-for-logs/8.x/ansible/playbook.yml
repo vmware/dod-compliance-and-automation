@@ -1,0 +1,6 @@
+- name: VRLI 8.x Remediation Automation
+  hosts: all
+  roles:
+    - role: ariaopslogs
+    - role: cassandra
+    - role: tcserver

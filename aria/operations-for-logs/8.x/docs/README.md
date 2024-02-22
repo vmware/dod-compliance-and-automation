@@ -1,12 +1,13 @@
-# VMware Aria Operations for Logs 8.14 STIG Readiness Guide Documentation
+# VMware Aria Operations for Logs 8.14.1 STIG Readiness Guide Documentation
 
 ## Compatibility
-This STIG Readiness Guide *Version 1 Release 3* is intended for version 8.14. If you are on a previous version please reference the guidance available [here](https://github.com/vmware/dod-compliance-and-automation/tree/f81b17bc4527711969af024ae53ab70180ef1c59/aria/operations-for-logs/8.x).
+This STIG Readiness Guide *Version 1 Release 3* is intended for version 8.14.1. If you are on a previous version please reference the guidance available [here](https://github.com/vmware/dod-compliance-and-automation/tree/f81b17bc4527711969af024ae53ab70180ef1c59/aria/operations-for-logs/8.x).
 
-|                     |        V1R2*       |        V1R3*       |
-|:-------------------:|:------------------:|:------------------:|
-|  8.12 GA to 8.13 GA | :heavy_check_mark: |         :x:        |
-|       8.14 GA       |         :x:        | :heavy_check_mark: |
+|                     |        V1R2*       |        V1R3*       |        V1R4*       |
+|:-------------------:|:------------------:|:------------------:|:------------------:|
+|  8.12 GA to 8.13 GA | :heavy_check_mark: |         :x:        |         :x:        |
+|       8.14 GA       |         :x:        | :heavy_check_mark: |         :x:        |
+|      8.14.1 GA      |         :x:        |         :x:        | :heavy_check_mark: |
 
 \* Denotes STIG Readiness Guide
 

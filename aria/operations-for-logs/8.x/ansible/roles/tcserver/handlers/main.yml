@@ -1,0 +1,5 @@
+---
+- name: Restart LI
+  ansible.builtin.service:
+    name: loginsight.service
+    state: restarted

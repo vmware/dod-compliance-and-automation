@@ -1,5 +1,5 @@
 control 'VLIC-8X-000007' do
-  title 'The Aria Operations for Logs Cassandra database log configuration file must be protected from unauthorized read access.'
+  title 'The VMware Aria Operations for Logs Cassandra database log configuration file must be protected from unauthorized read access.'
   desc  "
     Protecting audit data also includes identifying and protecting the tools used to view and manipulate log data.
 

@@ -1,0 +1,42 @@
+---
+# defaults file for tcserver
+tcserver_catalina_home: /usr/lib/loginsight/application/etc/3rd_config
+tcserver_catalina_base: /usr/lib/loginsight/application/3rd_party/apache-tomcat
+tcserver_server_xml_path: /usr/lib/loginsight/application/etc/3rd_config/server.xml
+tcserver_web_xml_path: /usr/lib/loginsight/application/3rd_party/apache-tomcat/conf/web.xml
+tcserver_catalina_prop_path: /usr/lib/loginsight/application/3rd_party/apache-tomcat/conf/catalina.properties
+tcserver_default_namespace: "http://java.sun.com/xml/ns/javaee"
+
+# TCSV-00-000001
+tcserver_maxthreads: '150'
+
+# TCSV-00-000014
+# This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+# Also &quot; needs to just be a " which turns into &quot;
+tcserver_access_log_pattern: '{% raw %}%t %h %l %u "%r" %s %b %D{% endraw %}'
+
+# TCSV-00-000048
+tcserver_svc_account_name: "root"
+tcserver_svc_group: "root"
+
+# TCSV-00-000070
+tcserver_session_timeout: '30'
+
+# TCSV-00-000088
+tcserver_core_user: "root"
+tcserver_core_group: "root"
+
+# TCSV-00-000100
+tcserver_allowed_ciphers: "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+
+# TCSV-00-000106
+tcserver_secure_ssl_protocol: "TLSv1.2"
+
+# TCSV-00-000125
+tcserver_connection_timeout: "20000"
+
+# TCSV-00-000126
+tcserver_maxkeep_alive_requests: "50"
+
+# TCSV-00-000134
+tcserver_shutdown_port: "-1"

@@ -1,0 +1,11 @@
+---
+# tasks file for cassandra
+
+- name: Include cassandra
+  ansible.builtin.include_tasks:
+    file: cassandra.yml
+    apply:
+      tags:
+        - cassandra
+  tags:
+    - always

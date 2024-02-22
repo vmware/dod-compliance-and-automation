@@ -1,0 +1,303 @@
+# Generate session token
+- name: Generate and get session ID
+  tags: always
+  block:
+    - name: Generate sessionId
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/sessions"
+        method: POST
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+        body_format: json
+        body: '{"username":"{{ ariaopslogs_username }}","password":"{{ ariaopslogs_password }}","provider":"Local"}'
+        validate_certs: false
+      register: token
+
+    - name: Extract & save sessionId
+      ansible.builtin.set_fact:
+        session_id: "{{ token.json.sessionId }}"
+
+###################################################################################################################################
+
+# VLIA-8X-000001 - VMware Aria Operations for Logs must display the standard DoD notice and consent banner before granting access to the system.
+- name: VLIA-8X-000001 - VMware Aria Operations for Logs must display the standard DoD notice and consent banner before granting access to the system
+  tags: [VLIA-8X-000001]
+  block:
+    - name: VLIA-8X-000001 - Get Current DoD Consent Details
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/dod"
+        method: GET
+        status_code: 200
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        validate_certs: false
+      register: response_get_dod
+      changed_when: false
+      failed_when:
+        - response_get_dod.status != 200
+
+    - name: VLIA-8X-000001 -Update DoD Consent Details
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/dod"
+        method: PUT
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        body_format: json
+        body: '{ "enabled" : true, "title" : "DoD Consent", "description" : "{{ ariaopslogs_loginbanner }}", "loginMessageType" : "CONSENT_DIALOG" }'
+        validate_certs: false
+      register: response_upd_dod
+      when:
+        - not response_get_dod.json.enabled
+      changed_when:
+        - response_upd_dod.status == 200
+
+###################################################################################################################################
+
+# VLIA-8X-000002 - VMware Aria Operations for Logs must be configured to synchronize time with an authoritative source.
+- name: VLIA-8X-000002 - VMware Aria Operations for Logs must be configured to synchronize time with an authoritative source
+  tags: [VLIA-8X-000002]
+  block:
+    - name: VLIA-8X-000002 - Get time configurations
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/time/config"
+        method: GET
+        status_code: 200
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        validate_certs: false
+      register: response_get_time
+      changed_when: false
+      failed_when:
+        - response_get_time.status != 200
+
+    - name: VLIA-8X-000002 - Update time configurations
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/time/config"
+        method: PUT
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        body_format: json
+        body: '{ "timeReference": "NTP_SERVER","ntpServers": {{ ariaopslogs_ntp_servers }} }'
+        validate_certs: false
+      register: response_upd_time
+      when:
+        - response_get_time.json.ntpConfig.timeReference == "ESX_HOST" or response_get_time.json.ntpConfig.ntpServers != ariaopslogs_ntp_servers
+      changed_when:
+        - response_upd_time.status == 200
+
+###################################################################################################################################
+
+# VLIA-8X-000003 - VMware Aria Operations for Logs must initiate session auditing upon startup.
+- name: VLIA-8X-000003 - VMware Aria Operations for Logs must initiate session auditing upon startup
+  tags: [VLIA-8X-000003]
+  block:
+    - name: VLIA-8X-000003 - Configure log level
+      community.general.xml:
+        path: "{{ ariaopslogs_config_base }}"
+        xpath: '/config/logging/configuration/loggers/logger[@name="com.vmware.loginsight.web.bootstrap.Bootstrapper.audit"]'
+        attribute: level
+        value: "info"
+        state: present
+
+    - name: VLIA-8X-000003 - Configure appenderRef
+      community.general.xml:
+        path: "{{ ariaopslogs_config_base }}"
+        xpath: '/config/logging/configuration/loggers/logger[@name="com.vmware.loginsight.web.bootstrap.Bootstrapper.audit"]/appenderRef'
+        attribute: ref
+        value: "AUDIT"
+        state: present
+
+###################################################################################################################################
+
+# VLIA-8X-000004 - VMware Aria Operations for Logs must protect audit information from unauthorized read access.
+- name: VLIA-8X-000004 - VMware Aria Operations for Logs must protect audit information from unauthorized read access
+  tags: [VLIA-8X-000004]
+  block:
+    - name: VLIA-8X-000004 - Check log file permissions
+      ansible.builtin.command: stat -c "%a:%U:%G" /var/log/loginsight/audit.log
+      register: file_perm
+      changed_when: false
+
+    - name: VLIA-8X-000004 - Verify and update file permissions
+      ansible.builtin.file:
+        path: "/var/log/loginsight/audit.log"
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '640'
+
+###################################################################################################################################
+
+# VLIA-8X-000005 - VMware Aria Operations for Logs must enable multifactor authentication.
+# This is a manual fix
+#### Login to VMware Aria Operations for Logs as an administrator.
+#### In the slide-out menu on the left, choose Configuration >> Authentication.
+#### Navigate to the "Workspace ONE Access" tab, ensure the "Enable Single Sign-On" radio button is enabled and the details of your Workspace ONE Access instance are correct, then click "Save".
+#### Workspace ONE Access must also be configured to support Smart Card authentication.
+#### See the accompanying Smart Card configuration guide for Workspace ONE Access.
+
+###################################################################################################################################
+
+# VLIA-8X-000006 - VMware Aria Operations for Logs must disable local accounts after 35 days of inactivity.
+# This is a manual fix.
+#### Login to VMware Aria Operations for Logs as an administrator.
+#### In the slide-out menu on the left, choose Configuration >> General.
+#### Enable the radio button next to "Password Policy Restriction" and click Save.
+
+###################################################################################################################################
+
+# VLIA-8X-000007 - VMware Aria Operations for Logs must terminate user sessions after a period of inactivity.
+- name: VLIA-8X-000007 - VMware Aria Operations for Logs must terminate user sessions after a period of inactivity
+  tags: [VLIA-8X-000007]
+  block:
+    - name: VLIA-8X-000007 - Get session timeout
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/ui/browser-session"
+        method: GET
+        status_code: 200
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        validate_certs: false
+      register: response_get_to
+      changed_when: false
+      failed_when:
+        - response_get_to.status != 200
+
+    - name: VLIA-8X-000007 - Update session timeout
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/ui/browser-session"
+        method: PUT
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        body_format: json
+        body: '{ "timeout" : 30 }'
+        validate_certs: false
+      register: response_upd_to
+      when:
+        - response_get_to.json.timeout != 30
+      changed_when:
+        - response_upd_to.status == 200
+
+###################################################################################################################################
+
+# VLIA-8X-000008 - VMware Aria Operations for Logs must notify the SA and ISSO when log record retention capacity is low.
+- name: VLIA-8X-000008 - VMware Aria Operations for Logs must notify the SA and ISSO when log record retention capacity is low
+  tags: [VLIA-8X-000008]
+  block:
+    - name: VLIA-8X-000008 - Get retention threshold
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/notification/config/retention-threshold"
+        method: GET
+        status_code: 200
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        validate_certs: false
+      register: response_get_thres
+      changed_when: false
+      failed_when:
+        - response_get_thres.status != 200
+
+    - name: VLIA-8X-000008 - Update retention threshold
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/notification/config/retention-threshold"
+        method: PUT
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        body_format: json
+        body: '{ "sendNotification" : true, "dataInterval" : 1, "intervalUnit" : "MONTHS" }'
+        validate_certs: false
+      register: response_upd_thres
+      when:
+        - not response_get_thres.json.sendNotification
+      changed_when:
+        - response_upd_thres.status == 200
+
+###################################################################################################################################
+
+# VLIA-8X-000009 - VMware Aria Operations for Logs must alert administrators of audit failure events.
+# This is a manual fix.
+#### Login to VMware Aria Operations for Logs as an administrator.
+#### In the slide-out menu on the left, choose Management >> Hosts.
+#### Click the checkbox next to "Inactive hosts notification" and configure an alerting threshold for notifications according to organizational policies.
+
+###################################################################################################################################
+
+# VLIA-8X-000010 - VMware Aria Operations for Logs must use only DoD PKI-established certificate authorities for verification of the establishment of protected sessions.
+# This is a manual fix.
+#### Generate or request a new certificate from a trusted certificate authority
+#### Login to VMware Aria Operations for Logs as an administrator.
+#### In the slide-out menu on the left, choose Configuration >> SSL.
+#### Click "Choose File" next to "New Certificate File", select the new certificate file, then click Save.
+#### Restart if prompted.
+
+###################################################################################################################################
+
+# VLIA-8X-000011 - VMware Aria Operations for Logs must protect API SSL connections.
+# This is a manual fix
+#### Login to VMware Aria Operations for Logs as an administrator.
+#### In the slide-out menu on the left, choose Configuration >> SSL.
+#### Ensure "Require SSL Connection" is enabled  and click save.
+
+###################################################################################################################################
+
+# VLIA-8X-000012 - VMware Aria Operations for Logs must not provide environment information to third parties.
+- name: VLIA-8X-000012 - VMware Aria Operations for Logs must not provide environment information to third parties
+  tags: [VLIA-8X-000012]
+  block:
+    - name: VLIA-8X-000012 - Get CEIP
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/ceip"
+        method: GET
+        status_code: 200
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        validate_certs: false
+      register: response_get_ceip
+      changed_when: false
+      failed_when:
+        - response_get_ceip.status != 200
+
+    - name: VLIA-8X-000012 - Update CEIP
+      ansible.builtin.uri:
+        url: "{{ ariaopslogs_apipath }}/ceip"
+        method: PUT
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Bearer {{ session_id }}"
+        body_format: json
+        body: '{ "feedback" : false }'
+        validate_certs: false
+      register: response_upd_ceip
+      when:
+        - response_get_ceip.json.feedback
+      changed_when:
+        - response_upd_ceip.status == 200
+
+###################################################################################################################################
+
+# VLIA-8X-000056 - VMware Aria Operations for Logs must protect audit information from unauthorized read access.
+# This is a manual fix
+#### Login to the VMware Aria Operations for Logs admin portal (/admin/) as an administrator.
+#### In the menu on the left, choose "Configuration", then "General".
+#### On the "General Configuration" page, under "FIPS MODE", ensure "Activate FIPS Mode" is enabled, then click "Save".
+#### Note: Once FIPS mode is activated, it can never be de-activated.

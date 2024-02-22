@@ -1,11 +1,11 @@
-name: vRealize Log Insight Appliance 8.x Cassandra Profile
-title: vRealize Log Insight Appliance 8.x Cassandra Profile
-maintainer: VMTA
-copyright: 2023
-copyright_email: stigs@vmware.com
+name: VMware Aria Operations for Logs Appliance 8.x Cassandra Profile
+title: VMware Aria Operations for Logs Appliance 8.x Cassandra Profile
+maintainer: VTAE
+copyright: VTAE 2024
+copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.3
+version: 1.0.4
 
 inputs:
 - name: cassandraconfig
