@@ -1,0 +1,18 @@
+name: vmware-aria-suite-lifecycle-8.x-stig-inspec-baseline
+title: InSpec Wrapper Profile for VMware Aria Suite Lifecycle 8.x Appliance STIG Readiness Guide
+maintainer: VTAE
+copyright: VTAE 2024
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+depends:
+  - name: application
+    path: application
+  - name: nginx
+    path: nginx
+  - name: photon
+    path: photon
+  - name: vpostgres
+    path: vpostgres
