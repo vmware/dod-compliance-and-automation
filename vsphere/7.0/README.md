@@ -3,7 +3,7 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|                   |        V1R1*       |         V1R2*      |         V1R3*      |         V1R4*      |         V1R1       |         V1R2       |         V1R3       |
+|      Version      |        V1R1*       |         V1R2*      |         V1R3*      |         V1R4*      |         V1R1       |         V1R2       |         V1R3       |
 |:-----------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
 |     `7.0 U2`      | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
 |     `7.0 U2a`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
@@ -31,8 +31,9 @@ The table below provides supported interoperability between product and STIG ver
 |     `7.0 U3o`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 |     `7.0 U3p`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
-\* Denotes STIG Readiness Guide   
-__NOTE__: Versioning in the table is based on vCenter. ESXi releases generally pair with vCenter but there are occasions where ESXi will skip a minor release. 
+> [!NOTE]
+> - \* Denotes STIG Readiness Guide  
+> - Versioning in the table is based on vCenter. ESXi releases generally pair with vCenter but there are occasions where ESXi will skip a minor release. 
 
 ## Overview
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
