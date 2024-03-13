@@ -7,20 +7,16 @@ on:
 jobs:
   cookstyle-vsphere70:
     runs-on: ubuntu-22.04
-    env:
-      BUNDLE_ONLY: rubocop
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2
+          ruby-version: 3.3
           bundler-cache: true
       - name: Testing
         run: |
-          gem list
-          bundle install
           gem list
       - name: Run Rubocop
         uses: reviewdog/action-rubocop@v2
