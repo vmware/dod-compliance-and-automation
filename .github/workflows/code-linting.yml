@@ -21,7 +21,7 @@ jobs:
           reporter: github-check
           skip_install: true
           use_bundler: true
-          rubocop_flags: --config .rubocop.yml
+          rubocop_flags: --config /home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/.rubocop.yml
           workdir: ./vsphere/7.0
   ansiblelint-vsphere70:
     runs-on: ubuntu-latest
