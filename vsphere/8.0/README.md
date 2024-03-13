@@ -22,7 +22,7 @@ __NOTE__: Versioning in the table is based on vCenter. ESXi releases generally p
 ## Overview
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
 
-This project contains content for compliance auditing and remediation of the VMware vSphere 8 DoD STIG Baseline.
+This project contains content for compliance auditing and remediation of the VMware vSphere 8 DOD STIG Baseline.
 
 The VMware vSphere 8 Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of vSphere 8 in the Department of Defense (DOD). The vSphere 8 STIG is comprised of the following:
 
