@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  cookstyle-vsphere70:
+  lint-inspec-vsphere70:
     runs-on: ubuntu-22.04
     steps:
       - name: Clone Repo
@@ -15,10 +15,6 @@ jobs:
         with:
           ruby-version: 3.1
           bundler-cache: true
-      - name: Testing
-        run: |
-          gem list
-          cookstyle --version
       - name: Run Rubocop
         uses: reviewdog/action-rubocop@v2
         with:
