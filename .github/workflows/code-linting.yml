@@ -17,8 +17,10 @@ jobs:
         with:
           ruby-version: 3.3
           bundler-cache: true
-      - name: Install cookstyle and run
+      - name: Testing
         run: |
+          gem list
+          bundle install
           gem list
       - name: Run Rubocop
         uses: reviewdog/action-rubocop@v2
