@@ -1,0 +1,9 @@
+---
+
+- name: restart sts
+  ansible.builtin.command: vmon-cli --restart sts
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted

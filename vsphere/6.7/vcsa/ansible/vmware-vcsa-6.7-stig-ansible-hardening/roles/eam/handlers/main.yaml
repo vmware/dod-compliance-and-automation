@@ -1,9 +1,0 @@
----
-
-- name: restart eam
-  ansible.builtin.command: vmon-cli --restart eam
-
-- name: restart syslog
-  ansible.builtin.service:
-    name: syslog
-    state: restarted
