@@ -40,6 +40,9 @@ Style/FormatStringToken:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/IfUnlessModifier:
+  Enabled: false
+
 Style/NegatedIfElseCondition:
   Enabled: false
 
