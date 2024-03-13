@@ -21,7 +21,7 @@ jobs:
       - name: Run Rubocop
         uses: reviewdog/action-rubocop@v2
         with:
-          reporter: github-pr-check
+          reporter: github-check
           skip_install: true
           use_bundler: true
       - name: Run cookstyle
