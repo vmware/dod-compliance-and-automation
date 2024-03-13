@@ -18,15 +18,15 @@ jobs:
       - name: Testing
         run: |
           gem list
+          cookstyle --version
       - name: Run Rubocop
         uses: reviewdog/action-rubocop@v2
         with:
           reporter: github-check
           skip_install: true
           use_bundler: true
-      - name: Run cookstyle
-        run: |
-          cookstyle ./vsphere/7.0
+          rubocop_flags: --config .rubocop.yml
+          workdir: ./vsphere/7.0
   ansiblelint-vsphere70:
     runs-on: ubuntu-latest
     steps:

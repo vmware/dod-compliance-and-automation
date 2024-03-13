@@ -9,5 +9,51 @@
 #
 # See https://docs.rubocop.org/rubocop/configuration
 
+AllCops:
+  NewCops: enable
+  Exclude:
+    - '**/libraries/*'
+
+Layout/LineLength:
+  Max: 1500
+  AllowURI: true
+  IgnoreCopDirectives: true
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 1000
+
+Naming/FileName:
+  Enabled: false
+
+Naming/VariableName:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/NegatedIfElseCondition:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/RedundantArgument:
+  Enabled: false
+
+Style/RedundantInterpolation:
+  Enabled: false
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: false
+
 Style/WordArray:
   Enabled: false
