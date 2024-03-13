@@ -3,7 +3,6 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|                   |                         STIG Version                        ||
 |      Version      |        V1R1*       |         V1R2*      |         V1R3*      |
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |      `3.3.4`      | :heavy_check_mark: |         :x:        |         :x:        |
@@ -12,7 +11,8 @@ The table below provides supported interoperability between product and STIG ver
 |      `3.3.7`      |         :x:        |         :x:        | :heavy_check_mark: |
 
 
-\* Denotes STIG Readiness Guide  
+> [!NOTE]
+> \* Denotes STIG Readiness Guide  
 
 ## Overview
 This project folder contains content for compliance auditing and remediation of the VMware Identity Manager 3.3.x STIG Readiness Guide.
