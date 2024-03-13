@@ -16,9 +16,9 @@ The table below provides supported interoperability between product and STIG ver
 |     `8.0 U2b`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
 
 > [!NOTE]
-> \* Denotes STIG Readiness Guide  
-> V1R2 of the STIG Readiness Guide is no longer available in favor of V1R1 of the Official STIG release  
-> Versioning in the table is based on vCenter. ESXi releases generally pair with vCenter but there are occasions where ESXi will skip a minor release. 
+> - \* Denotes STIG Readiness Guide  
+> - V1R2 of the STIG Readiness Guide is no longer available in favor of V1R1 of the Official STIG release  
+> - Versioning in the table is based on vCenter. ESXi releases generally pair with vCenter but there are occasions where ESXi will skip a minor release. 
 
 ## Overview
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
