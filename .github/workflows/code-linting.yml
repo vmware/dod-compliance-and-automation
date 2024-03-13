@@ -17,7 +17,6 @@ jobs:
         with:
           ruby-version: 3.3
           bundler-cache: true
-      - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
       - uses: reviewdog/action-rubocop@v2
         with:
           reporter: github-pr-check
