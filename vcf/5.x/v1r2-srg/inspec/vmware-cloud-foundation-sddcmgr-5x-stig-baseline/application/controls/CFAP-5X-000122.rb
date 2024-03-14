@@ -46,12 +46,12 @@ control 'CFAP-5X-000122' do
   tag nist: ['SC-13']
 
   result = http("https://#{input('sddcManager')}/v1/domains",
-              method: 'GET',
-              headers: {
-                'Accept' => 'application/json',
-                'Authorization' => "#{input('bearerToken')}",
+                method: 'GET',
+                headers: {
+                  'Accept' => 'application/json',
+                  'Authorization' => "#{input('bearerToken')}"
                 },
-              ssl_verify: false)
+                ssl_verify: false)
 
   describe result do
     its('status') { should cmp 200 }
@@ -62,12 +62,12 @@ control 'CFAP-5X-000122' do
       next unless domain['type'] != 'MANAGEMENT'
       name = domain['name']
       certificates = http("https://#{input('sddcManager')}/v1/domains/#{name}/resource-certificates",
-          method: 'GET',
-          headers: {
-            'Accept' => 'application/json',
-            'Authorization' => "#{input('bearerToken')}",
-            },
-          ssl_verify: false)
+                          method: 'GET',
+                          headers: {
+                            'Accept' => 'application/json',
+                            'Authorization' => "#{input('bearerToken')}"
+                          },
+                          ssl_verify: false)
 
       certs = JSON.parse(certificates.body)
       certs['elements'].each do |cert|

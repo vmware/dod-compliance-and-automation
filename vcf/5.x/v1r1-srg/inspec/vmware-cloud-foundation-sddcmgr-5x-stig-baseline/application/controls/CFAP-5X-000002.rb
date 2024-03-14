@@ -35,12 +35,12 @@ control 'CFAP-5X-000002' do
   tag nist: ['AC-17 (2)', 'IA-7', 'SC-23 (3)', 'SC-8', 'SC-8 (1)', 'SC-8 (2)']
 
   result = http("https://#{input('sddcManager')}/v1/system/security/fips",
-              method: 'GET',
-              headers: {
-                'Accept' => 'application/json',
-                'Authorization' => "#{input('bearerToken')}",
+                method: 'GET',
+                headers: {
+                  'Accept' => 'application/json',
+                  'Authorization' => "#{input('bearerToken')}"
                 },
-              ssl_verify: false)
+                ssl_verify: false)
 
   describe result do
     its('status') { should cmp 200 }

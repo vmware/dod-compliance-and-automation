@@ -50,12 +50,12 @@ control 'CFAP-5X-000128' do
   tag nist: ['CM-6 b']
 
   result = http("https://#{input('sddcManager')}/v1/users/local/admin",
-              method: 'GET',
-              headers: {
-                'Accept' => 'application/json',
-                'Authorization' => "#{input('bearerToken')}",
+                method: 'GET',
+                headers: {
+                  'Accept' => 'application/json',
+                  'Authorization' => "#{input('bearerToken')}"
                 },
-              ssl_verify: false)
+                ssl_verify: false)
 
   describe result do
     its('status') { should cmp 200 }
