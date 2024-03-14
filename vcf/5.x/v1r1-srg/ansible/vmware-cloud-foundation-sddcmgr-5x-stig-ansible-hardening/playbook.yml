@@ -1,0 +1,14 @@
+- name: vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
+  hosts: all
+  roles:
+    - role: vmware-photon-3.0-stig-ansible-hardening
+      vars:
+        var_syslog_authpriv_log: '/var/log/audit/sshinfo.log'
+    - role: application
+    - role: commonsvcs
+    - role: domainmanager
+    - role: lcm
+    - role: operationsmanager
+    - role: postgresql
+    - role: sos
+    - role: ui

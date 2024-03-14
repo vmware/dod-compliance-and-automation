@@ -1,0 +1,127 @@
+<included>
+    <conversionRule conversionWord="vcfMdcTag" converterClass="com.vmware.evo.sddc.common.core.logging.patterns.VcfLogMdcSectionMessageConverter" />
+    <conversionRule conversionWord="msg" converterClass="com.vmware.evo.sddc.common.core.logging.security.VcfToStringParamConverter" />
+
+    <property resource="application-${spring.profiles.active}.properties" />
+    <springProperty name="springAppName" source="spring.application.name" defaultValue="vcf_lcm"/>
+    <property name="encoder.pattern" value="%date{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %-5level [${springAppName},%vcfMdcTag] [%logger{36},%thread] %msg%n"/>
+    <property name="syslog.encoder.pattern" value="VCF_LCM %date{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %-5level %vcfMdcTag [%logger{36},%thread] %msg%n"/>
+    <property name="log.suffix.pattern" value=".%d{yyyy-MM-dd}.%i"/>
+
+    <springProperty name="activityEncoderPattern" source="feature.vcf.logging.activity.pattern"
+                    defaultValue="${encoder.pattern}"/>
+    <springProperty name="activityLogRetentionMaxFileSize" source="feature.vcf.logging.activity.maxFileSize"
+                    defaultValue="100MB"/>
+    <springProperty name="activityLogRetentionMaxHistory" source="feature.vcf.logging.activity.maxHistory"
+                    defaultValue="30"/>
+    <springProperty name="activityLogRetentionTotalSizeCap" source="feature.vcf.logging.activity.maxCapacity"
+                    defaultValue="3GB"/>
+
+    <!-- All LCM logs -->
+    <appender name="LCM" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+    </filter>
+        <file>${lcm.log.folder.location}/lcm.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${lcm.log.folder.location}/lcm.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- each file is at most 500MB, keep 30 days worth of history, but at most 2GB in total -->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+            <maxFileSize>500 MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${encoder.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- All LCM logs including debug-->
+    <appender name="LCM_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- Modifify here if you want to include TRACE for this file, Also set TRACE as log level below for lcm package -->
+            <level>DEBUG</level>
+        </filter>
+        <file>${lcm.log.folder.location}/lcm-debug.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${lcm.log.folder.location}/lcm.%d{yyyy-MM-dd}.%i.log-debug.gz</fileNamePattern>
+            <!-- each file is at most 500MB, keep 30 days worth of history, but at most 2GB in total -->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+            <maxFileSize>500 MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${encoder.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LCM-ACTIVITY"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${lcm.log.folder.location}/lcm-activity.log</file>
+        <append>true</append>
+        <rollingPolicy
+            class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${lcm.log.folder.location}/lcm-activity${log.suffix.pattern}.log.gz
+            </fileNamePattern>
+            <maxFileSize>${activityLogRetentionMaxFileSize}</maxFileSize>
+            <maxHistory>${activityLogRetentionMaxHistory}</maxHistory>
+            <totalSizeCap>${activityLogRetentionTotalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${activityEncoderPattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- SYSLOG Appender -->
+    <appender name="SYSLOG" class="ch.qos.logback.classic.net.SyslogAppender">
+        <syslogHost>${syslog.host}</syslogHost>
+        <facility>${syslog.facility}</facility>
+        <suffixPattern>${syslog.encoder.pattern}</suffixPattern>
+    </appender>
+
+    <!-- Enable Logging Filter -->
+    <logger name="com.vmware.evo.sddc.lcm.http.filter.LoggingFilter" level="INFO" additivity="false">
+        <appender-ref ref="LCM" />
+        <appender-ref ref="LCM_DEBUG" />
+        <appender-ref ref="SYSLOG"/>
+    </logger>
+    <logger name="org.apache.http.wire" level="INFO" additivity="false">
+        <appender-ref ref="LCM" />
+        <appender-ref ref="LCM_DEBUG" />
+    </logger>
+    <!-- LCM Logger -->
+    <!-- Modify level to TRACE in below line if needed for lcm package, also set filter at TRACE level above for lcm debug log -->
+    <logger name="com.vmware.evo.sddc.lcm" level="DEBUG" additivity="false">
+        <appender-ref ref="LCM" />
+        <appender-ref ref="LCM_DEBUG" />
+        <appender-ref ref="SYSLOG"/>
+    </logger>
+
+    <logger name="com.vmware.evo.sddc.common.vrealize" level="DEBUG" additivity="false">
+        <appender-ref ref="LCM" />
+        <appender-ref ref="LCM_DEBUG" />
+    </logger>
+
+    <logger name="com.vmware.vcf.lcm" level="DEBUG" additivity="false">
+        <appender-ref ref="LCM" />
+        <appender-ref ref="LCM_DEBUG" />
+    </logger>
+    <!-- VCF Pulic API Telemetry Logs -->
+    <logger name="com.vmware.vcf.common.api.interceptor" level="WARN" />
+    <logger name="com.vmware.vcf.telemetry" level="WARN" />
+    <!-- Root Logger -->
+    <root level="INFO">
+        <appender-ref ref="LCM"/>
+        <appender-ref ref="LCM_DEBUG" />
+        <appender-ref ref="SYSLOG"/>
+    </root>
+        <!-- ACTIVITY LOGGER -->
+    <logger name="com.vmware.vcf.logging.activity.logback.logger" level="DEBUG"
+            additivity="false">
+        <appender-ref ref="LCM-ACTIVITY"/>
+    </logger>
+</included>

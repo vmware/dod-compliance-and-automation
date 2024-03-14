@@ -1,0 +1,26 @@
+# Inputs for Photon OS.
+authprivlog: /var/log/audit/auth.log
+sshdcommand: "sshd -T -C 'user=vcf'"
+# Enter environment specific syslog server with port. replace.local:514
+syslogServer: 'replace.local:514'
+# Inputs for PostgreSQL. No updates needed.
+postgres_user: postgres
+pg_data_dir: /data/pgdata/
+pg_log_dir: /var/log/postgres
+pg_owner: postgres
+pg_group: users
+# SDDC Manager Application
+# Enter SDDC Manager FQDN/IP
+sddcManager: 'sddc-manager.vsphere.local'
+# Enter bearer token for API based tests
+bearerToken: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqd...'
+# Set to true if file based/sftp backups are used for SDDC Manager. Set to false if image based backups are used.
+sftpBackupsEnabled: true
+# Enter environment specific sftp server.
+sftpServer: '10.1.2.3'
+# Enter environment specific ntp servers. This is an array.
+ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
+# Enter latest version of SDDC manager with build. 5.0.0.0-21790711
+currentVersion: '5.0.0.0-21822418'
+# Enter myvmware account used to pull updates in SDDC Manager if used.
+myVmwareAccount: 'myvmwarevcfaccount@test.local'

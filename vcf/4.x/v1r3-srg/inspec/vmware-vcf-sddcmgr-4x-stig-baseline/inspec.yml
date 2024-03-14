@@ -1,0 +1,30 @@
+name: vmware-vcf-sddcmgr-4x-stig-baseline
+title: InSpec Profile for the VMware Cloud Foundation SDDC Manager Appliance 4.x STIG Readiness Guide
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: Intended for SDDC Manager version 4.4.x
+version: 1.0.3
+
+depends:
+  - name: commonsvcs
+    path: commonsvcs
+  - name: domainmanager
+    path: domainmanager
+  - name: lcm
+    path: lcm
+  - name: nginx
+    path: nginx
+  - name: opsmgr
+    path: opsmgr
+  - name: photon
+    path: ../vmware-photon-3.0-stig-inspec-baseline
+  - name: postgresql
+    path: postgresql
+  - name: sddcmgr
+    path: sddcmgr
+  - name: sos
+    path: sos
+  - name: ui
+    path: ui

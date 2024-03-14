@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <conversionRule conversionWord="vcfMdcTag" converterClass="com.vmware.evo.sddc.common.core.logging.patterns.VcfLogMdcSectionMessageConverter" />
+    <conversionRule conversionWord="msg" converterClass="com.vmware.evo.sddc.common.core.logging.security.VcfToStringParamConverter" />
+
+    <springProperty name="springAppName" source="spring.application.name" defaultValue="common"/>
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+    <property name="CONSOLE_PATTERN" value="%-5p [%t] [%c] %m%n" />
+    <property name="FILE_PATTERN"
+              value="%date{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %-5level [${springAppName},%vcfMdcTag] [%logger{36},%thread] %msg%n" />
+
+    <property name="LOG_SUFFIX_PATTERN" value=".%d{yyyy-MM-dd}.%i" />
+    <property name="LOG_MONTH_ROLLING_PATTERN" value=".%d{yyyy/MM}" />
+    <property name="LOG_DIR" value="/var/log/vmware/vcf/commonsvcs" />
+
+    <springProperty name="activityEncoderPattern" source="feature.vcf.logging.activity.pattern"
+                    defaultValue="${FILE_PATTERN}"/>
+    <springProperty name="activityLogRetentionMaxFileSize" source="feature.vcf.logging.activity.maxFileSize"
+                    defaultValue="100MB"/>
+    <springProperty name="activityLogRetentionMaxHistory" source="feature.vcf.logging.activity.maxHistory"
+                    defaultValue="30"/>
+    <springProperty name="activityLogRetentionTotalSizeCap" source="feature.vcf.logging.activity.maxCapacity"
+                    defaultValue="3GB"/>
+
+    <!-- APPENDERS -->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${CONSOLE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rollingFileAppenderInfo"
+        class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/vcf-commonsvcs.log</file>
+        <append>true</append>
+        <rollingPolicy
+            class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/vcf-commonsvcs${LOG_SUFFIX_PATTERN}.log.gz
+            </fileNamePattern>
+            <!-- each file is at most 500MB, keep 30 days worth of history,
+                but at most 2GB in total -->
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+            <maxFileSize>500 MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="COMMON-SERVICES-ACTIVITY"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/vcf-commonsvcs-activity.log</file>
+        <append>true</append>
+        <rollingPolicy
+            class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_DIR}/vcf-commonsvcs-activity${LOG_SUFFIX_PATTERN}.log.gz
+            </fileNamePattern>
+            <maxFileSize>${activityLogRetentionMaxFileSize}</maxFileSize>
+            <maxHistory>${activityLogRetentionMaxHistory}</maxHistory>
+            <totalSizeCap>${activityLogRetentionTotalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${activityEncoderPattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/inventory-sync-audit.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>>${LOG_DIR}/inventory-sync-audit${LOG_MONTH_ROLLING_PATTERN}.log.gz</fileNamePattern>
+            <!-- each file is at most 100MB, keep 1 year worth of history, but at most 1GB in total -->
+            <maxHistory>12</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- LOGGERS -->
+    <logger name="com.vmware.evo.sddc" level="INFO" additivity="false">
+        <appender-ref ref="rollingFileAppenderInfo" />
+    </logger>
+
+    <logger name="org.springframework" level="INFO" additivity="false">
+        <appender-ref ref="rollingFileAppenderInfo" />
+    </logger>
+
+    <!-- vIP Client logs -->
+    <!-- Turned OFF for g1, should be put to ERROR/FATAL for g2 -->
+    <logger name="com.vmware.vip" level="OFF" />
+    <logger name="com.vmware.vipclient" level="OFF" />
+
+    <!-- VCF Pulic API Telemetry Logs -->
+    <logger name="com.vmware.vcf.common.api.interceptor" level="WARN" />
+    <logger name="com.vmware.vcf.telemetry" level="WARN" />
+
+    <!-- ROOT LOGGER -->
+    <root level="INFO">
+        <appender-ref ref="rollingFileAppenderInfo" />
+    </root>
+
+    <!-- AUDIT LOGGER -->
+    <logger name="audit-log" level="INFO" additivity="false">
+        <appender-ref ref="AUDIT"/>
+    </logger>
+
+    <!-- ACTIVITY LOGGER -->
+    <logger name="com.vmware.vcf.logging.activity.logback.logger" level="DEBUG"
+            additivity="false">
+        <appender-ref ref="COMMON-SERVICES-ACTIVITY"/>
+    </logger>
+
+</configuration>
