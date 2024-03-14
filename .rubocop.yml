@@ -12,7 +12,17 @@
 AllCops:
   NewCops: enable
   Exclude:
-    - '**/libraries/*'
+    - '**/libraries/**/*'
+    - 'vendor/**/*'
+    - 'tas/**/*'
+    - 'tkg/**/*'
+    - 'ubuntu/**/*'
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/EndOfLine:
+  Enabled: true
 
 Layout/LineLength:
   Max: 1500
@@ -44,6 +54,9 @@ Style/IfUnlessModifier:
   Enabled: false
 
 Style/NegatedIfElseCondition:
+  Enabled: false
+
+Style/NegatedUnless:
   Enabled: false
 
 Style/NumericPredicate:
