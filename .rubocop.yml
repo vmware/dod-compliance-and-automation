@@ -38,6 +38,10 @@ Lint/AmbiguousRegexpLiteral:
 Metrics/BlockLength:
   Max: 1000
 
+Metrics/BlockNesting:
+  CountBlocks: false
+  Max: 5
+
 Naming/FileName:
   Enabled: false
 

@@ -63,9 +63,9 @@ control 'ESXI-80-000201' do
       command = "$vmhost = Get-VMHost -Name #{vmhost} | Get-View; (Get-View $vmhost.ConfigManager.HostAccessManager).QueryLockdownExceptions()"
       results = powercli_command(command).stdout
       if !results.empty?
-        results.split.each do |exceptionUser|
-          describe "Exception user: #{exceptionUser} on host: #{vmhost}" do
-            subject { exceptionUser }
+        results.split.each do |exceptionuser|
+          describe "Exception user: #{exceptionuser} on host: #{vmhost}" do
+            subject { exceptionuser }
             it { should be_in "#{input('exceptionUsers')}" }
           end
         end
