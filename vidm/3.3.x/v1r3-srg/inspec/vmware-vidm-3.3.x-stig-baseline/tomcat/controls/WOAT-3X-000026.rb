@@ -40,7 +40,7 @@ control 'WOAT-3X-000026' do
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
-  webappslist = %w(acs AUDIT catalog-portal cfg hc mtkadmin ROOT SAAS ws1-admin ws-admin)
+  webappslist = ['acs', 'AUDIT', 'catalog-portal', 'cfg', 'hc', 'mtkadmin', 'ROOT', 'SAAS', 'ws1-admin', 'ws-admin']
   apps = command('ls -1 /opt/vmware/horizon/workspace/webapps').stdout.strip.split("\n")
 
   apps.each do |app|

@@ -39,7 +39,7 @@ control 'WOAD-3X-000041' do
   tag cci: ['CCI-000196']
   tag nist: ['IA-5 (1) (c)']
 
-  list = %w(on scram-sha-256 md5)
+  list = ['on', 'scram-sha-256', 'md5']
   clustered = input('clustered')
 
   if clustered

@@ -41,7 +41,7 @@ control 'WOAD-3X-000132' do
   tag cci: ['CCI-000130']
   tag nist: ['AU-3']
 
-  levels = %w(DEBUG5 DEBUG4 DEBUG3 DEBUG2 DEBUG1 INFO NOTICE WARNING debug5 debug4 debug3 debug2 debug1 info notice warning)
+  levels = ['DEBUG5', 'DEBUG4', 'DEBUG3', 'DEBUG2', 'DEBUG1', 'INFO', 'NOTICE', 'WARNING', 'debug5', 'debug4', 'debug3', 'debug2', 'debug1', 'info', 'notice', 'warning']
   clustered = input('clustered')
 
   if clustered
