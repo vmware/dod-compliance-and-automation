@@ -75,9 +75,10 @@ Style/RedundantInterpolation:
 Style/RedundantRegexpCharacterClass:
   Enabled: false
 
-Style/RedundantStringEscape:
-  Enabled: true
-  Severity: info
+# Will be needed for rubocop > 1.37
+# Style/RedundantStringEscape:
+#   Enabled: true
+#   Severity: info
 
 Style/TrailingCommaInHashLiteral:
   Enabled: true
