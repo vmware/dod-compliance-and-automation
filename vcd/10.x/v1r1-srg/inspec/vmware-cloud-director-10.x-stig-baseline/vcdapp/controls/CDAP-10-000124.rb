@@ -40,11 +40,11 @@ control 'CDAP-10-000124' do
   tag nist: ['SC-13', 'SC-8', 'SC-23 (3)', 'IA-7']
 
   result = http("https://#{input('vcdURL')}:5480/api/1.0.0/fips",
-              method: 'GET',
-              headers: {
-                'Authorization' => "#{input('applianceBearerToken')}",
+                method: 'GET',
+                headers: {
+                  'Authorization' => "#{input('applianceBearerToken')}"
                 },
-              ssl_verify: false)
+                ssl_verify: false)
 
   describe result do
     its('status') { should cmp 200 }

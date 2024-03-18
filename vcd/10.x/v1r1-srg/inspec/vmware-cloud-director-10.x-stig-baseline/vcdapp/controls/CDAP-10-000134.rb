@@ -27,12 +27,12 @@ control 'CDAP-10-000134' do
 
   trustedCerts = input('trustedCertificates')
   result = http("https://#{input('vcdURL')}/cloudapi/1.0.0/ssl/trustedCertificates",
-              method: 'GET',
-              headers: {
-                'Accept' => "#{input('apiVersion')}",
-                'Authorization' => "#{input('bearerToken')}",
+                method: 'GET',
+                headers: {
+                  'Accept' => "#{input('apiVersion')}",
+                  'Authorization' => "#{input('bearerToken')}"
                 },
-              ssl_verify: false)
+                ssl_verify: false)
 
   describe result do
     its('status') { should cmp 200 }

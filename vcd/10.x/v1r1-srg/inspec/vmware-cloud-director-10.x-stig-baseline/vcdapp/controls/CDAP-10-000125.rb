@@ -27,12 +27,12 @@ control 'CDAP-10-000125' do
 
   approvedPlugins = input('approvedPlugins')
   result = http("https://#{input('vcdURL')}/cloudapi/extensions/ui",
-              method: 'GET',
-              headers: {
-                'Accept' => "#{input('apiVersion')}",
-                'Authorization' => "#{input('bearerToken')}",
+                method: 'GET',
+                headers: {
+                  'Accept' => "#{input('apiVersion')}",
+                  'Authorization' => "#{input('bearerToken')}"
                 },
-              ssl_verify: false)
+                ssl_verify: false)
 
   describe result do
     its('status') { should cmp 200 }

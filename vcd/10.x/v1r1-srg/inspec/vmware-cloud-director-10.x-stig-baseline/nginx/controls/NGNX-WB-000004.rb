@@ -63,19 +63,10 @@ control 'NGNX-WB-000004' do
     # Since headers are defined at the http level we need to check if they are defined lower. If not it's ok but if there are any defined they should include the headers defined at the http level
     servers.each do |server|
       server_headers = server.params['add_header']
-      next unless server_headers
+      next unless server.params['listen'].flatten.include?('ssl') && server_headers
       describe "Found headers defined in server: #{server.params['server_name']}" do
         it "should have a #{header_name} header" do
           expect(server_headers).to include(header_value)
-        end
-      end
-    end
-    locations.each do |location|
-      location_headers = location.params['add_header']
-      next unless location_headers
-      describe "Found headers defined in location: #{location.params['_']}" do
-        it "should have a #{header_name} header" do
-          expect(location_headers).to include(header_value)
         end
       end
     end
@@ -83,6 +74,7 @@ control 'NGNX-WB-000004' do
   else
     # Check each server block and each listen directive for the SSL option
     servers.each do |server|
+      next unless server.params['listen'].flatten.include?('ssl')
       server_headers = server.params['add_header']
       if server_headers
         describe "Found headers defined in server: #{server.params['server_name']}" do
@@ -98,13 +90,13 @@ control 'NGNX-WB-000004' do
         end
       end
     end
-    locations.each do |location|
-      location_headers = location.params['add_header']
-      next unless location_headers
-      describe "Found headers defined in location: #{location.params['_']}" do
-        it "should have a #{header_name} header" do
-          expect(location_headers).to include(header_value)
-        end
+  end
+  locations.each do |location|
+    location_headers = location.params['add_header']
+    next unless location_headers
+    describe "Found headers defined in location: #{location.params['_']}" do
+      it "should have a #{header_name} header" do
+        expect(location_headers).to include(header_value)
       end
     end
   end

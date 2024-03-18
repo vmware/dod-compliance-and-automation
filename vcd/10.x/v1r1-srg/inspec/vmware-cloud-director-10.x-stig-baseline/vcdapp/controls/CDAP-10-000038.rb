@@ -41,12 +41,12 @@ control 'CDAP-10-000038' do
   tag nist: ['IA-2', 'IA-2 (1)', 'IA-5 (2) (c)', 'AU-10']
 
   result = http("https://#{input('vcdURL')}/api/org",
-              method: 'GET',
-              headers: {
-                'Accept' => "#{input('legacyapiVersion')}",
-                'Authorization' => "#{input('bearerToken')}",
+                method: 'GET',
+                headers: {
+                  'Accept' => "#{input('legacyapiVersion')}",
+                  'Authorization' => "#{input('bearerToken')}"
                 },
-              ssl_verify: false)
+                ssl_verify: false)
 
   describe result do
     its('status') { should cmp 200 }
@@ -56,20 +56,20 @@ control 'CDAP-10-000038' do
     orgs['org'].each do |org|
       orgid = org['href'].scan(%r{.*org/(.*)}).flatten[0]
       orgsettings = http("https://#{input('vcdURL')}/api/admin/org/#{orgid}/settings",
-                  method: 'GET',
-                  headers: {
-                    'Accept' => "#{input('legacyapiVersion')}",
-                    'Authorization' => "#{input('bearerToken')}",
-                    },
-                  ssl_verify: false)
+                         method: 'GET',
+                         headers: {
+                           'Accept' => "#{input('legacyapiVersion')}",
+                           'Authorization' => "#{input('bearerToken')}"
+                         },
+                         ssl_verify: false)
       if org['name'] == 'System'
         providerLdapSettings = http("https://#{input('vcdURL')}/api/admin/extension/settings/ldapSettings",
-                                  method: 'GET',
-                                  headers: {
-                                    'Accept' => "#{input('legacyapiVersion')}",
-                                    'Authorization' => "#{input('bearerToken')}",
+                                    method: 'GET',
+                                    headers: {
+                                      'Accept' => "#{input('legacyapiVersion')}",
+                                      'Authorization' => "#{input('bearerToken')}"
                                     },
-                                  ssl_verify: false)
+                                    ssl_verify: false)
         describe orgsettings do
           its('status') { should cmp 200 }
         end

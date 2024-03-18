@@ -38,12 +38,12 @@ control 'CDAP-10-000003' do
   tag nist: ['AC-17 (2)', 'SC-8', 'SC-8 (2)', 'SC-8 (2)', 'SC-8 (1)']
 
   result = http("https://#{input('vcdURL')}/cloudapi/1.0.0/ssl/settings",
-              method: 'GET',
-              headers: {
-                'Accept' => "#{input('apiVersion')}",
-                'Authorization' => "#{input('bearerToken')}",
+                method: 'GET',
+                headers: {
+                  'Accept' => "#{input('apiVersion')}",
+                  'Authorization' => "#{input('bearerToken')}"
                 },
-              ssl_verify: false)
+                ssl_verify: false)
 
   describe result do
     its('status') { should cmp 200 }

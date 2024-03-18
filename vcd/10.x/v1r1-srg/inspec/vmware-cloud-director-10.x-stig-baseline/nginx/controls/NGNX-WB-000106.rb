@@ -64,18 +64,9 @@ control 'NGNX-WB-000106' do
         end
       end
     end
-    locations.each do |location|
-      location_headers = location.params['add_header']
-      next unless location_headers
-      describe "Found headers defined in location: #{location.params['_']}" do
-        it "should have a #{header_name} header" do
-          expect(location_headers).to include(header_value)
-        end
-      end
-    end
   # If none exist in the http block check the server and location blocks
   else
-    # Check each server block and each listen directive for the SSL option
+    # Check each server block
     servers.each do |server|
       server_headers = server.params['add_header']
       if server_headers
@@ -92,13 +83,13 @@ control 'NGNX-WB-000106' do
         end
       end
     end
-    locations.each do |location|
-      location_headers = location.params['add_header']
-      next unless location_headers
-      describe "Found headers defined in location: #{location.params['_']}" do
-        it "should have a #{header_name} header" do
-          expect(location_headers).to include(header_value)
-        end
+  end
+  locations.each do |location|
+    location_headers = location.params['add_header']
+    next unless location_headers
+    describe "Found headers defined in location: #{location.params['_']}" do
+      it "should have a #{header_name} header" do
+        expect(location_headers).to include(header_value)
       end
     end
   end

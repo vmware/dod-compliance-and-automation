@@ -26,12 +26,12 @@ control 'CDAP-10-000129' do
   tag nist: ['CM-6 b']
 
   result = http("https://#{input('vcdURL')}/api/admin/extension/settings/general",
-              method: 'GET',
-              headers: {
-                'Accept' => "#{input('legacyapiVersion')}",
-                'Authorization' => "#{input('bearerToken')}",
+                method: 'GET',
+                headers: {
+                  'Accept' => "#{input('legacyapiVersion')}",
+                  'Authorization' => "#{input('bearerToken')}"
                 },
-              ssl_verify: false)
+                ssl_verify: false)
 
   describe result do
     its('status') { should cmp 200 }
