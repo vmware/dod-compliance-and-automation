@@ -75,6 +75,10 @@ Style/RedundantInterpolation:
 Style/RedundantRegexpCharacterClass:
   Enabled: false
 
+Style/RedundantStringEscape:
+  Enabled: true
+  Severity: info
+
 Style/TrailingCommaInHashLiteral:
   Enabled: true
   EnforcedStyleForMultiline: no_comma
