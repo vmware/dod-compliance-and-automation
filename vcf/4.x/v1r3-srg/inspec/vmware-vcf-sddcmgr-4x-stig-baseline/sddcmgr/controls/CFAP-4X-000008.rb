@@ -27,12 +27,12 @@ control 'CFAP-4X-000008' do
 
   unless myvmwareaccount.nil?
     result = http("https://#{input('sddcManager')}/v1/system/settings/depot",
-                method: 'GET',
-                headers: {
-                  'Accept' => 'application/json',
-                  'Authorization' => "#{input('bearerToken')}",
+                  method: 'GET',
+                  headers: {
+                    'Accept' => 'application/json',
+                    'Authorization' => "#{input('bearerToken')}"
                   },
-                ssl_verify: false)
+                  ssl_verify: false)
 
     describe result do
       its('status') { should cmp 200 }
