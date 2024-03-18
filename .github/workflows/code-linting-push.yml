@@ -1,8 +1,7 @@
-name: Check code for syntax issues
+name: Lint code for syntax issues on pushes
 
 on:
   push:
-  pull_request:
 
 jobs:
   lint-inspec-all:
@@ -21,6 +20,7 @@ jobs:
           reporter: github-check
           skip_install: true
           use_bundler: true
+          fail_on_error: true
           rubocop_flags: --config /home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/.rubocop.yml
           workdir: .
   ansiblelint-vcf5x-v1r1srg:
@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: ansible-community/ansible-lint-action@main
         with:
-          path: "vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-5x-stig-ansible-hardening/"
+          path: "vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
   ansiblelint-vcf5x-v1r2srg:
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: ansible-community/ansible-lint-action@main
         with:
-          path: "vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-5x-stig-ansible-hardening/"
+          path: "vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
   ansiblelint-vsphere70:
     runs-on: ubuntu-latest
     steps:
