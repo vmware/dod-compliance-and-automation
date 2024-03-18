@@ -27,7 +27,7 @@ control 'WOAT-3X-000047' do
   tag cci: ['CCI-001082']
   tag nist: ['SC-2']
 
-  describe command("find /opt/vmware/horizon/workspace/webapps/ -xdev -type f -a '(' -not -user horizon -o -not -group www ')' -exec ls -ld {} \;") do
+  describe command("find /opt/vmware/horizon/workspace/webapps/ -xdev -type f -a '(' -not -user horizon -o -not -group www ')' -exec ls -ld {} \\;") do
     its('stdout.strip') { should cmp '' }
   end
 end

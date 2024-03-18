@@ -38,7 +38,7 @@ control 'WOAT-3X-000034' do
   tag nist: ['CM-7 a']
 
   command('find /opt/vmware/horizon/workspace/ -name web.xml').stdout.split.each do |fname|
-    describe command("grep -En \'(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)\' '#{fname}'") do
+    describe command("grep -En '(x-csh<)|(x-sh<)|(x-shar<)|(x-ksh<)' '#{fname}'") do
       its('stdout.strip') { should cmp '' }
     end
   end
