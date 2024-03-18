@@ -23,7 +23,15 @@ jobs:
           fail_on_error: true
           rubocop_flags: --config /home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/.rubocop.yml
           workdir: .
-  ansiblelint-vcf5x-v1r1srg:
+  ansiblelint-vcd-10x-v1r1-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vcd/10.x/v1r1-srg/ansible/vmware-cloud-director-10.x-stig-ansible-hardening/"
+  ansiblelint-vcf-5x-v1r1-srg:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -31,7 +39,7 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
-  ansiblelint-vcf5x-v1r2srg:
+  ansiblelint-vcf-5x-v1r2-srg:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -39,7 +47,7 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
-  ansiblelint-vsphere70:
+  ansiblelint-vsphere-70-v1r3-stig:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -47,7 +55,7 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/7.0/v1r3-stig/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/"
-  ansiblelint-vsphere80-v1r1srg:
+  ansiblelint-vsphere-80-v1r1-srg:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -55,7 +63,7 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/8.0/v1r1-srg/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"
-  ansiblelint-vsphere80-v1r1stig:
+  ansiblelint-vsphere-80-v1r1-stig:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
