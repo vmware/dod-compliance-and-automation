@@ -23,6 +23,22 @@ jobs:
           use_bundler: true
           rubocop_flags: --config /home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/.rubocop.yml
           workdir: .
+  ansiblelint-vcf5x-v1r1srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-5x-stig-ansible-hardening/"
+  ansiblelint-vcf5x-v1r2srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-5x-stig-ansible-hardening/"
   ansiblelint-vsphere70:
     runs-on: ubuntu-latest
     steps:
