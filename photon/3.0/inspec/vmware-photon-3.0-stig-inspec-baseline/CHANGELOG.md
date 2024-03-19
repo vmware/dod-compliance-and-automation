@@ -1,5 +1,19 @@
 # Change Log
 
+## [3.0 Version 1 Release 9] (2023-08-02)
+
+#### Release Notes
+- PHTN-30-000019 updated test to work as a non root user.
+- PHTN-30-000041 updated test if file not found to impact 0
+- PHTN-30-000054 clarified check text and updated test to handle finding no files
+- PHTN-30-000061 updated test to handle finding no files
+- PHTN-30-000062 updated test if sudoers not found to impact 0
+- PHTN-30-000067 clarified check text
+- PHTN-30-000094 updated test to handle finding no files
+- PHTN-30-000097 updated test to handle finding no files
+- PHTN-30-000108,109 updated check text and finding statement, also updated test to handle finding no files
+- PHTN-30-000114 updated check text
+
 ## [3.0 Version 1 Release 8] (2023-03-21)
 
 #### Release Notes

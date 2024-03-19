@@ -17,7 +17,9 @@ control 'PHTN-30-000054' do
 
     A typical corresponding line will look like the following:
 
-    -a always,exit -F path=<setuid_path> -F perm=x -F auid>=1000 -F auid!=4294967295 -F key=privileged
+    -a always,exit -S all -F path=<setuid_path> -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged
+
+    Note: The auid!= parameter may display as 4294967295 or -1, which are equivalent.
 
     Note: This check depends on the auditd service to be in a running state for accurate results. The auditd service is enabled in control PHTN-30-000013.
   "
@@ -55,14 +57,20 @@ control 'PHTN-30-000054' do
   tag nist: ['AC-6 (9)', 'AU-12 c']
 
   results = command('find / -xdev -path /var/lib/containerd -prune -o \( -perm -4000 -type f -o -perm -2000 \) -type f -print').stdout.split("\n")
-  results.each do |path|
-    describe.one do
-      describe auditd do
-        its('lines') { should include %r{-a always,exit -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
+  if !results.empty?
+    results.each do |path|
+      describe.one do
+        describe auditd do
+          its('lines') { should include /-a always,exit -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged/ }
+        end
+        describe auditd do
+          its('lines') { should include /-a always,exit -S all -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged/ }
+        end
       end
-      describe auditd do
-        its('lines') { should include %r{-a always,exit -S all -F path=#{path} -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged} }
-      end
+    end
+  else
+    describe 'No privileged files found troubleshoot command and rerun.' do
+      skip 'No privileged files found troubleshoot command and rerun.'
     end
   end
 end

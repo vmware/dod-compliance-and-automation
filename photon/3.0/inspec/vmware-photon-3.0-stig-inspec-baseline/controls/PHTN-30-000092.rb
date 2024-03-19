@@ -24,7 +24,7 @@ control 'PHTN-30-000092' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  describe command("find /etc/bash.bashrc /etc/profile /etc/profile.d/ -xdev -type f -a '(' -perm -002 -o -not -user root -o -not -group root ')' -exec ls -ld {} \;") do
+  describe command("find /etc/bash.bashrc /etc/profile /etc/profile.d/ -xdev -type f -a '(' -perm -002 -o -not -user root -o -not -group root ')' -exec ls -ld {} \\;") do
     its('stdout') { should eq '' }
   end
 end

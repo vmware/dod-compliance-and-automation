@@ -46,6 +46,7 @@ control 'PHTN-30-000062' do
       end
     end
   else
+    impact 0.0
     describe 'No users found in sudoers with NOPASSWD flag...skipping...' do
       skip 'No users found in sudoers with NOPASSWD flag...skipping...'
     end

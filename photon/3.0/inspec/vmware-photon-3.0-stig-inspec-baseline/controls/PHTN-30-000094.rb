@@ -26,36 +26,44 @@ control 'PHTN-30-000094' do
   verbose = input('verbose')
 
   # Pull all supported local filesystems from /proc/filesystems
-  command('grep -v "nodev" /proc/filesystems | awk \'NF{ print $NF }\'').stdout.strip.split("\n").each do |fs|
-    # Collect the mount points of all mounted filesystems matching the type
-    command("df -t #{fs} --output=target | tail +2").stdout.split("\n").each do |mp|
-      # If verbose is 'true' find and list (ls) all files with unknown owner/group
-      if verbose
-        user_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nouser -exec ls -ld {} \\; 2>/dev/null").stdout
-        group_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nogroup -exec ls -ld {} \\; 2>/dev/null").stdout
-        # The resulting string should be empty
-        describe "The set of files (#{fs}:#{mp}) with unknown owner" do
-          subject { user_cmd }
-          it { should cmp '' }
-        end
-        describe "The set of files (#{fs}:#{mp}) with unknown group owner" do
-          subject { group_cmd }
-          it { should cmp '' }
-        end
-      # If verbose is 'false' find all files with unknown owner/group and count them (wc)
-      else
-        user_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nouser 2>/dev/null | wc -l").stdout.to_i
-        group_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nogroup 2>/dev/null | wc -l").stdout.to_i
-        # The length of the result set should be 0
-        describe "The set of files (#{fs}:#{mp}) with unknown owner" do
-          subject { user_cmd }
-          it { should cmp 0 }
-        end
-        describe "The set of files (#{fs}:#{mp}) with unknown group owner" do
-          subject { group_cmd }
-          it { should cmp 0 }
+  results = command('grep -v "nodev" /proc/filesystems | awk \'NF{ print $NF }\'').stdout
+
+  if !results.empty?
+    results.strip.split("\n").each do |fs|
+      # Collect the mount points of all mounted filesystems matching the type
+      command("df -t #{fs} --output=target | tail +2").stdout.split("\n").each do |mp|
+        # If verbose is 'true' find and list (ls) all files with unknown owner/group
+        if verbose
+          user_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nouser -exec ls -ld {} \\; 2>/dev/null").stdout
+          group_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nogroup -exec ls -ld {} \\; 2>/dev/null").stdout
+          # The resulting string should be empty
+          describe "The set of files (#{fs}:#{mp}) with unknown owner" do
+            subject { user_cmd }
+            it { should cmp '' }
+          end
+          describe "The set of files (#{fs}:#{mp}) with unknown group owner" do
+            subject { group_cmd }
+            it { should cmp '' }
+          end
+        # If verbose is 'false' find all files with unknown owner/group and count them (wc)
+        else
+          user_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nouser 2>/dev/null | wc -l").stdout.to_i
+          group_cmd = command("find #{mp} -xdev -fstype #{fs} -path /var/lib/containerd -prune -o -nogroup 2>/dev/null | wc -l").stdout.to_i
+          # The length of the result set should be 0
+          describe "The set of files (#{fs}:#{mp}) with unknown owner" do
+            subject { user_cmd }
+            it { should cmp 0 }
+          end
+          describe "The set of files (#{fs}:#{mp}) with unknown group owner" do
+            subject { group_cmd }
+            it { should cmp 0 }
+          end
         end
       end
+    end
+  else
+    describe 'Command produced no local filesystems from /proc/filesystems. Troubleshoot and rerun.' do
+      skip 'Command produced no local filesystems from /proc/filesystems. Troubleshoot and rerun.'
     end
   end
 end

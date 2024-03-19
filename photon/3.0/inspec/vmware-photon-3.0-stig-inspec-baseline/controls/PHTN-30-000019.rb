@@ -25,9 +25,16 @@ control 'PHTN-30-000019' do
   tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
 
-  command('find /etc/audit/* -maxdepth 1 -type f').stdout.split.each do |fname|
-    describe file(fname) do
-      it { should_not be_more_permissive_than('0640') }
+  auditfiles = command('find /etc/audit/ -type f').stdout
+  if !auditfiles.empty?
+    auditfiles.split.each do |fname|
+      describe file(fname) do
+        it { should_not be_more_permissive_than('0640') }
+      end
+    end
+  else
+    describe 'No auditd configuration files found. Is auditd installed?' do
+      skip 'No auditd configuration files found. Is auditd installed?'
     end
   end
 end

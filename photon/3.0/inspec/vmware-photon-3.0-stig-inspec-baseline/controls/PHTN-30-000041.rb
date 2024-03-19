@@ -33,6 +33,7 @@ control 'PHTN-30-000041' do
       it { should_not be_more_permissive_than('0640') }
     end
   else
+    impact 0.0
     describe 'No /var/log/messages file found...skipping...' do
       skip 'No /var/log/messages file found...skipping...'
     end

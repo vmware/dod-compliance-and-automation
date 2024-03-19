@@ -13,7 +13,7 @@ control 'PHTN-30-000067' do
 
     Expected result:
 
-    -a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged
+    -a always,exit -S all -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged
 
     If the output does not match the expected result, this is a finding.
 

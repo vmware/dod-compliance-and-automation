@@ -38,43 +38,50 @@ control 'PHTN-30-000097' do
   cronweekly = directory('/etc/cron.weekly')
   cronmonthly = directory('/etc/cron.monthly')
 
-  if crond.exist?
-    describe crond do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+  if !crond.exist? && !crondaily.exist? && !cronhourly.exist? && !cronweekly.exist? && !cronmonthly.exist?
+    impact 0.0
+    describe 'No cron directories found...skipping.' do
+      skip 'No cron directories found...skipping.'
     end
-  end
-
-  if crondaily.exist?
-    describe crondaily do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+  else
+    if crond.exist?
+      describe crond do
+        its('owner') { should cmp 'root' }
+        its('group') { should cmp 'root' }
+        its('mode') { should cmp '0755' }
+      end
     end
-  end
 
-  if cronhourly.exist?
-    describe cronhourly do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    if crondaily.exist?
+      describe crondaily do
+        its('owner') { should cmp 'root' }
+        its('group') { should cmp 'root' }
+        its('mode') { should cmp '0755' }
+      end
     end
-  end
 
-  if cronweekly.exist?
-    describe cronweekly do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    if cronhourly.exist?
+      describe cronhourly do
+        its('owner') { should cmp 'root' }
+        its('group') { should cmp 'root' }
+        its('mode') { should cmp '0755' }
+      end
     end
-  end
 
-  if cronmonthly.exist?
-    describe cronmonthly do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0755' }
+    if cronweekly.exist?
+      describe cronweekly do
+        its('owner') { should cmp 'root' }
+        its('group') { should cmp 'root' }
+        its('mode') { should cmp '0755' }
+      end
+    end
+
+    if cronmonthly.exist?
+      describe cronmonthly do
+        its('owner') { should cmp 'root' }
+        its('group') { should cmp 'root' }
+        its('mode') { should cmp '0755' }
+      end
     end
   end
 end

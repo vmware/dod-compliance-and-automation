@@ -5,13 +5,15 @@ control 'PHTN-30-000114' do
   desc  'check', "
     At the command line, run the following command:
 
-    # grep UMASK /etc/login.defs
+    # grep ^UMASK /etc/login.defs
 
-    Expected result:
+    Example result:
 
     UMASK 077
 
-    If the output does not match the expected result, this a finding.
+    If \"UMASK\" is not configured to \"077\", this a finding.
+
+    Note: \"UMASK\" should only be specified once in login.defs.
   "
   desc 'fix', "
     Navigate to and open:

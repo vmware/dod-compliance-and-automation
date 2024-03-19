@@ -7,14 +7,14 @@ control 'PHTN-30-000108' do
 
     # stat -c \"%n permissions are %a and owned by %U:%G\" /etc/ssh/*key.pub
 
-    Expected result:
+    Example result:
 
     /etc/ssh/ssh_host_dsa_key.pub permissions are 644 and owned by root:root
     /etc/ssh/ssh_host_ecdsa_key.pub permissions are 644 and owned by root:root
     /etc/ssh/ssh_host_ed25519_key.pub permissions are 644 and owned by root:root
     /etc/ssh/ssh_host_rsa_key.pub permissions are 644 and owned by root:root
 
-    If the output does not match the expected result, this is a finding.
+    If any \"key.pub\" file listed is not owned by root or not group owned by root or does not have permissions of \"0644\", this is a finding.
   "
   desc 'fix', "
     At the command line, run the following commands for each returned file:
@@ -31,11 +31,19 @@ control 'PHTN-30-000108' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  command('find /etc/ssh/ -maxdepth 1 -name "*key.pub"').stdout.split.each do |fname|
-    describe file(fname) do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      its('mode') { should cmp '0644' }
+  results = command('find /etc/ssh/ -maxdepth 1 -name "*key.pub"').stdout
+
+  if !results.empty?
+    results.split.each do |fname|
+      describe file(fname) do
+        its('owner') { should cmp 'root' }
+        its('group') { should cmp 'root' }
+        its('mode') { should cmp '0644' }
+      end
+    end
+  else
+    describe 'No SSH public keys found to process.' do
+      skip 'No SSH pucblic keys found to process.'
     end
   end
 end

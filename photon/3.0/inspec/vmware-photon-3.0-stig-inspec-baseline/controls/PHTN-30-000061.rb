@@ -25,9 +25,16 @@ control 'PHTN-30-000061' do
   tag cci: ['CCI-001749']
   tag nist: ['CM-5 (3)']
 
-  command('find /etc/yum.repos.d/ -type f').stdout.split.each do |repofile|
-    describe file(repofile) do
-      its('content') { should match /^(?=.*?\bgpgcheck=1\b).*$/ }
+  results = command('find /etc/yum.repos.d/ -type f').stdout
+  if !results.empty?
+    results.split.each do |repofile|
+      describe file(repofile) do
+        its('content') { should match /^(?=.*?\bgpgcheck=1\b).*$/ }
+      end
+    end
+  else
+    describe 'No YUM repo files found to check.' do
+      skip 'No YUM repo files found to check.'
     end
   end
 end
