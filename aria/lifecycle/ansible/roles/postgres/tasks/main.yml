@@ -1,0 +1,11 @@
+---
+# tasks file for postgresql
+
+- name: Include postgresql
+  ansible.builtin.include_tasks:
+    file: postgres.yml
+    apply:
+      tags:
+        - postgres
+  tags:
+    - always
