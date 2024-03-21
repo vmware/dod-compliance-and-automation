@@ -3,14 +3,14 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|      Version      |        V1R1*       |
-|:-----------------:|:------------------:|
-|     `4.1.0`       | :heavy_check_mark: |
-|     `4.1.0.2`     | :heavy_check_mark: |
-|     `4.1.1`       | :heavy_check_mark: |
-|     `4.1.2`       | :heavy_check_mark: |
-|     `4.1.2.1`     | :heavy_check_mark: |
-|     `4.1.2.3`     | :heavy_check_mark: |
+|      Version      |        V1R1*       |        V1R2*       |
+|:-----------------:|:------------------:|:------------------:|
+|     `4.1.0`       | :heavy_check_mark: |         :x:        |
+|     `4.1.0.2`     | :heavy_check_mark: |         :x:        |
+|     `4.1.1`       | :heavy_check_mark: |         :x:        |
+|     `4.1.2`       |         :x:        | :heavy_check_mark: |
+|     `4.1.2.1`     |         :x:        | :heavy_check_mark: |
+|     `4.1.2.3`     |         :x:        | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide   
@@ -21,7 +21,6 @@ The table below provides supported interoperability between product and STIG ver
 This project contains content for compliance auditing and remediation of the VMware NSX 4.x STIG Readiness Guide Baseline.
 
 The VMware NSX 4.x Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of VMware NSX 4.x in the Department of Defense (DOD). The VMware NSX 4.x STIG is comprised of the following:
-
 - VMware NSX 4.x STIG Readiness Guide
   - Distributed Firewall
   - Manager

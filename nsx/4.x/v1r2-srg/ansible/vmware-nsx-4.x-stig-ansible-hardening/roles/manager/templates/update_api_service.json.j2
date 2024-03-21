@@ -1,0 +1,91 @@
+{
+  "session_timeout": 300,
+  "connection_timeout": 30,
+  "protocol_versions": [
+      {
+          "name": "TLSv1.1",
+          "enabled": false
+      },
+      {
+          "name": "TLSv1.2",
+          "enabled": true
+      },
+      {
+          "name": "TLSv1.3",
+          "enabled": true
+      }
+  ],
+  "_revision": "{{ item._revision + 1 }}",
+  "cipher_suites": [
+      {
+          "name": "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+          "enabled": true
+      },
+      {
+          "name": "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+          "enabled": true
+      },
+      {
+          "name": "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+          "enabled": true
+      },
+      {
+          "name": "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+          "enabled": true
+      },
+      {
+          "name": "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+          "enabled": true
+      },
+      {
+          "name": "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+          "enabled": true
+      },
+      {
+          "name": "TLS_RSA_WITH_AES_128_CBC_SHA",
+          "enabled": true
+      },
+      {
+          "name": "TLS_RSA_WITH_AES_128_CBC_SHA256",
+          "enabled": true
+      },
+      {
+          "name": "TLS_RSA_WITH_AES_128_GCM_SHA256",
+          "enabled": true
+      },
+      {
+          "name": "TLS_RSA_WITH_AES_256_CBC_SHA",
+          "enabled": true
+      },
+      {
+          "name": "TLS_RSA_WITH_AES_256_CBC_SHA256",
+          "enabled": true
+      },
+      {
+          "name": "TLS_RSA_WITH_AES_256_GCM_SHA384",
+          "enabled": true
+      },
+      {
+          "name": "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+          "enabled": true
+      },
+      {
+          "name": "TLS_AES_128_GCM_SHA256",
+          "enabled": true
+      },
+      {
+          "name": "TLS_AES_256_GCM_SHA384",
+          "enabled": true
+      },
+      {
+          "name": "TLS_CHACHA20_POLY1305_SHA256",
+          "enabled": true
+      }
+  ],
+  "client_api_concurrency_limit": 40,
+  "client_api_rate_limit": 100,
+  "connection_timeout": 30,
+  "cookie_based_authentication_enabled": true,
+  "global_api_concurrency_limit": 199,
+  "redirect_host": "{{ item.redirect_host }}",
+}
