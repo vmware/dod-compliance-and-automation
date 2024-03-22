@@ -31,6 +31,14 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "aria/operations-for-logs/8.x/v1r4-srg/ansible/vmware-vrli-8.x-stig-ansible-hardening/"
+  ansiblelint-aria-ops-v1r2-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "aria/operations/8.x/v1r2-srg/ansible/vmware-aria-operations-8x-stig-ansible-hardening/"
   ansiblelint-nsx3-v1r3-stig:
     runs-on: ubuntu-latest
     steps:

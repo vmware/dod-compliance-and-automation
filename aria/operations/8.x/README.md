@@ -1,13 +1,15 @@
-# VMware Aria Operations for Logs 8.x STIG Compliance and Automation
+# VMware Aria Operations 8.x STIG Compliance and Automation
 
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|                     |        V1R2*       |        V1R4*       |
+|                     |        V1R1*       |        V1R2*       |
 |:-------------------:|:------------------:|:------------------:|
-|     `8.12.x`        | :heavy_check_mark: |         :x:        |
-|     `8.14.x`        |         :x:        | :heavy_check_mark: |
-|     `8.16.x`        |         :x:        | :heavy_check_mark: |
+|     `8.2.x`         | :heavy_check_mark: |         :x:        |
+|     `8.10.x`        |         :x:        | :heavy_check_mark: |
+|     `8.12.x`        |         :x:        | :heavy_check_mark: |
+|     `8.14.x`        |         :x:        |         :x:        |
+|     `8.16.x`        |         :x:        |         :x:        |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide   
@@ -15,17 +17,17 @@ The table below provides supported interoperability between product and STIG ver
 ## Overview
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
 
-This project contains content for compliance auditing and remediation of the VMware Aria Operations for Logs 8.x STIG Readiness Guide Baseline.
+This project contains content for compliance auditing and remediation of the VMware Aria Operations 8.x STIG Readiness Guide Baseline.
 
-The VMware Aria Operations for Logs 8.x Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of VMware Aria Operations for Logs 8.x in the Department of Defense (DOD). The VMware Aria Operations for Logs 8.x STIG is comprised of the following:
+The VMware Aria Operations 8.x Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of VMware Aria Operations 8.x in the Department of Defense (DOD). The VMware Aria Operations 8.x STIG is comprised of the following:
 
-- VMware Aria Operations for Logs 8.x STIG Readiness Guide
+- VMware Aria Operations 8.x STIG Readiness Guide
   - Application controls
   - Cassandra controls
   - tc Server controls
   - Photon OS 4.0 controls
 
-The VMware Aria Operations for Logs 8.x STIGs presume operation in an environment compliant with all applicable DOD guidance.
+The VMware Aria Operations 8.x STIGs presume operation in an environment compliant with all applicable DOD guidance.
 
 ## Using this Repo
 In each of these areas you will find instructions on how to run those components and other relevant notes. 
