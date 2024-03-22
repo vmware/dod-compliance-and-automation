@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: ansible-community/ansible-lint-action@main
         with:
-          path: "aria/operations-for-logs/8.x/v1r4-stig/ansible/vmware-vrli-8.x-stig-ansible-hardening/"
+          path: "aria/operations-for-logs/8.x/v1r4-srg/ansible/vmware-vrli-8.x-stig-ansible-hardening/"
   ansiblelint-nsx3-v1r3-stig:
     runs-on: ubuntu-latest
     steps:
