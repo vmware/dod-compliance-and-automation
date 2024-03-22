@@ -53,68 +53,70 @@ Due to changes in the ESXi firewall some services are unable to be configured to
 
 **Workaround:**
 
-See the below output for a list of services that can be configured at this time.  
+As of 8.0 U2b most services are now once again user configurable for the Allowed IP settings. A future STIG update will clarify that services that are not user configurable are not in scope of the rule. See the below list for what is user configurable. 
 
 ```
 esxcli network firewall ruleset list
 
 Name                         Enabled  Enable/Disable configurable  Allowed IP configurable
 ---------------------------  -------  ---------------------------  -----------------------
-sshServer                       true                        false                     true
+sshServer                       true                         true                     true
 sshClient                      false                         true                     true
 nfsClient                      false                        false                    false
 nfs41Client                    false                        false                    false
-dhcp                            true                        false                    false
+dhcp                            true                        false                     true
 dns                             true                         true                     true
 snmp                           false                        false                     true
 ntpClient                      false                        false                     true
-CIMHttpServer                   true                        false                    false
+CIMHttpServer                   true                        false                     true
 CIMHttpsServer                 false                        false                     true
 CIMSLP                         false                        false                     true
-iSCSI                          false                        false                    false
-vpxHeartbeats                   true                        false                    false
+iSCSI                          false                        false                     true
+vpxHeartbeats                   true                        false                     true
 updateManager                   true                         true                     true
 faultTolerance                  true                         true                     true
 webAccess                       true                         true                     true
-vMotion                         true                        false                    false
+vMotion                         true                        false                     true
 vSphereClient                   true                         true                     true
-activeDirectoryAll             false                        false                    false
-NFC                             true                        false                    false
-HBR                             true                        false                    false
+activeDirectoryAll             false                        false                     true
+NFC                             true                        false                     true
+HBR                             true                        false                     true
 ftpClient                      false                         true                     true
 httpClient                     false                         true                     true
 gdbserver                      false                         true                     true
 DVFilter                       false                         true                     true
-DHCPv6                          true                        false                    false
-DVSSync                         true                        false                    false
+DHCPv6                          true                        false                     true
+DVSSync                         true                        false                     true
 syslog                         false                         true                     true
 WOL                             true                         true                     true
 vSPC                           false                         true                     true
 remoteSerialPort               false                         true                     true
-rdt                             true                        false                    false
-cmmds                           true                        false                    false
+rdt                             true                        false                     true
+cmmds                           true                        false                     true
 ipfam                          false                         true                     true
-iofiltervp                      true                        false                    false
-esxupdate                      false                        false                    false
+iofiltervp                      true                        false                     true
+esxupdate                      false                        false                     true
 vsanEncryption                 false                        false                    false
 pvrdma                         false                         true                     true
 vic-engine                     false                         true                     true
-etcdClientComm                  true                        false                    false
-etcdPeerComm                    true                        false                    false
-settingsd                      false                        false                    false
-vdfs                           false                        false                    false
-gstored                        false                        false                    false
+etcdClientComm                  true                        false                     true
+etcdPeerComm                    true                        false                     true
+settingsd                      false                        false                     true
+vdfs                           false                        false                     true
+gstored                        false                        false                     true
 trusted-infrastructure-kmxd    false                        false                    false
 iwarp-pm                       false                         true                     true
 ptpd                           false                        false                     true
 trusted-infrastructure-kmxa    false                        false                    false
-nvmetcp                        false                        false                    false
-esxio-orchestrator             false                        false                    false
+nvmetcp                        false                        false                     true
+esxio-orchestrator             false                        false                     true
 esxioComm                      false                        false                     true
-nvmemdns                       false                        false                    false
-vltd                           false                        false                    false
-vsanhealth-unicasttest         false                        false                    false
-vsanmgmt-https-tunnel           true                        false                    false
+nvmemdns                       false                        false                     true
+proxy                          false                        false                    false
+dpd                            false                        false                     true
+vltd                           false                        false                     true
+vsanhealth-unicasttest         false                        false                     true
+vsanmgmt-https-tunnel           true                        false                     true
 ```
 
 ## VM
