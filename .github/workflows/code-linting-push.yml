@@ -23,7 +23,55 @@ jobs:
           fail_on_error: true
           rubocop_flags: --config /home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/.rubocop.yml
           workdir: .
-  ansiblelint-vcd-10x-v1r1-srg:
+  ansiblelint-nsx3-v1r3-stig:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "nsx/3.x/v1r3-stig/ansible/vmware-nsxt-3.x-stig-ansible-hardening/"
+  ansiblelint-nsx4-v1r1-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "nsx/4.x/v1r1-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
+  ansiblelint-nsx4-v1r2-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "nsx/4.x/v1r2-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
+  ansiblelint-photon3-v1r9-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "photon/3.0/v1r9-srg/ansible/vmware-photon-3.0-stig-ansible-hardening/"
+  ansiblelint-photon4-v1r5-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "photon/4.0/v1r5-srg/ansible/vmware-photon-4.0-stig-ansible-hardening/"
+  ansiblelint-photon5-v1r3-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "photon/5.0/v1r3-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/"
+  ansiblelint-vcd10x-v1r1-srg:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -31,7 +79,7 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vcd/10.x/v1r1-srg/ansible/vmware-cloud-director-10.x-stig-ansible-hardening/"
-  ansiblelint-vcf-5x-v1r1-srg:
+  ansiblelint-vcf5x-v1r1-srg:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -39,7 +87,7 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
-  ansiblelint-vcf-5x-v1r2-srg:
+  ansiblelint-vcf5x-v1r2-srg:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -47,7 +95,7 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
-  ansiblelint-vsphere-70-v1r3-stig:
+  ansiblelint-vsphere70:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -55,7 +103,7 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/7.0/v1r3-stig/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/"
-  ansiblelint-vsphere-80-v1r1-srg:
+  ansiblelint-vsphere80-v1r1-srg:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -63,7 +111,7 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/8.0/v1r1-srg/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"
-  ansiblelint-vsphere-80-v1r1-stig:
+  ansiblelint-vsphere80-v1r1-stig:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -71,230 +119,3 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/8.0/v1r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"
-  # cookstyle-photon30:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         cookstyle ./photon/3.0
-  # ansiblelint-photon30:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - uses: ansible-community/ansible-lint-action@main
-  #       with:
-  #         path: "photon/3.0/ansible/vmware-photon-3.0-stig-ansible-hardening/"  # <-- only one value is allowed
-  # cookstyle-photon40:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         cookstyle ./photon/4.0
-  # ansiblelint-photon40:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - uses: ansible-community/ansible-lint-action@main
-  #       with:
-  #         path: "photon/4.0/ansible/vmware-photon-4.0-stig-ansible-hardening/"  # <-- only one value is allowed
-  # cookstyle-photon50:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         cookstyle ./photon/5.0
-  # ansiblelint-photon50:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - uses: ansible-community/ansible-lint-action@main
-  #       with:
-  #         path: "photon/5.0/ansible/vmware-photon-5.0-stig-ansible-hardening/"  # <-- only one value is allowed
-  # cookstyle-vcd104:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         ls -la
-  #         cookstyle ./vcd/10.4
-  # ansiblelint-vcd104:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - uses: ansible-community/ansible-lint-action@main
-  #       with:
-  #         path: "vcd/10.4/ansible/vmware-cloud-director-10.4-stig-ansible-hardening/"  # <-- only one value is allowed
-  # cookstyle-horizon-8:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         cookstyle ./horizon/8.0
-  # cookstyle-vra-8:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         cookstyle ./aria/automation/8.x/
-  # cookstyle-vcf4:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         ls -la
-  #         cookstyle ./vcf/4.x
-  # cookstyle-vcf5:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         ls -la
-  #         cookstyle ./vcf/5.x
-  # ansiblelint-vcf5:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - uses: ansible-community/ansible-lint-action@main
-  #       with:
-  #         path: "vcf/5.x/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
-  # cookstyle-nsx3:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         ls -la
-  #         cookstyle ./nsx/3.x/inspec/vmware-nsxt-3.x-stig-baseline
-  # cookstyle-nsx4:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         ls -la
-  #         cookstyle ./nsx/4.x/inspec/vmware-nsx-4.x-stig-baseline
-  # cookstyle-nsxalb:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: 2.7
-  #         bundler-cache: true
-  #     - uses: r7kamura/rubocop-problem-matchers-action@v1 # this shows the failures in the PR
-  #     - name: Install cookstyle and run
-  #       run: |
-  #         gem install cookstyle
-  #         ls -la
-  #         cookstyle ./nsx-alb/30.x/inspec/vmware-nsx-alb-stig-baseline
-  # ansiblelint-nsx3:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - uses: ansible-community/ansible-lint-action@main
-  #       with:
-  #         path: "nsx/3.x/ansible/vmware-nsxt-3.x-stig-ansible-hardening/"
-  # ansiblelint-nsx4:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v3
-  #     - uses: ansible-community/ansible-lint-action@main
-  #       with:
-  #         path: "nsx/4.x/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
