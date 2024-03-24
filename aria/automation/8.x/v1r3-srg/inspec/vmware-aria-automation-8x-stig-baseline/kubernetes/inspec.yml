@@ -1,0 +1,75 @@
+name: kubernetes-stig-baseline
+title: Kubernetes Security Technical Implementation Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.3
+
+supports:
+  - platform-family: linux
+
+inputs:
+  - name: manifests_path
+    description: 'Path to Kubernetes manifest files on the target node'
+    type: string
+    value: '/etc/kubernetes/manifests'
+    required: true
+
+  - name: pki_path
+    description: 'Path to Kubernetes PKI files on the target node'
+    type: string
+    value: '/etc/kubernetes/pki'
+    required: true
+
+  - name: kubeadm_conf_path
+    description: 'Path to kubeadm conf file on the target node'
+    type: string
+    value: '/etc/systemd/system/kubelet.service.d/10-kubeadm.conf'
+    required: true
+
+  - name: kubectl_path
+    description: 'Path to kubectl on the target node'
+    type: string
+    value: '/usr/local/bin/kubectl'
+    required: true
+
+  - name: kubectl_minversion
+    description: 'Minimum version of the kubectl binary on the target node'
+    type: string
+    value: 'v1.12.9'
+    required: true
+
+  - name: kubernetes_conf_files
+    description: 'Path to Kubernetes conf files on the target node'
+    type: array
+    value:
+        - /etc/kubernetes/admin.conf
+        - /etc/kubernetes/scheduler.conf
+        - /etc/kubernetes/controller-manager.conf
+    required: true
+
+  - name: kubectl_conf_path
+    description: 'Path to kubectl conf file to use for running commands'
+    type: string
+    value: '/etc/kubernetes/admin.conf'
+    required: true
+
+  - name: kubelet_conf_path
+    description: 'Path to kubelet config file to use for running commands. Needed mostly if there are multiple kubelet processes as the resource doesnt handle that well.'
+    type: string
+    value: '/var/lib/kubelet/config.yaml'
+    required: false
+
+  - name: kubelet_kubeconf_path
+    description: 'Path to kubelet conf file to use for running commands. Needed mostly if there are multiple kubelet processes as the resource doesnt handle that well.'
+    type: string
+    value: ''
+    required: false
+
+  - name: k8s_min_supported_version
+    description: 'Latest version of Kubernetes to test for supported version. Currently K8s maintains the most recent 3 minor branches. For example if 1.22.5 is the latest release then put the most recent 1.20.y version here.'
+    type: string
+    value: 'v1.20.13'
+    required: true

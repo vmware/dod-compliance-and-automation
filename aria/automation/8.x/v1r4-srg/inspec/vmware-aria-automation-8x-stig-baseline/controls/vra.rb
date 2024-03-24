@@ -1,2 +1,1 @@
-include_controls 'vra' do
-end
+include_controls 'vra'
