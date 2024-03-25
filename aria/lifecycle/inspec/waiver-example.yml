@@ -1,5 +1,0 @@
----
-ZZZZ-ZZ-000001:
-  expiration_date: 2025-12-31
-  run: false
-  justification: "Explain why the control does not pass and the system cannot be changed to ensure it passes."
