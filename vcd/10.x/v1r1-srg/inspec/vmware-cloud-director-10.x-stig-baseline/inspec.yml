@@ -11,7 +11,7 @@ depends:
   - name: nginx
     path: nginx
   - name: photon
-    path: ../vmware-photon-3.0-stig-inspec-baseline
+    path: ../../../../../photon/3.0/v1r9-srg/inspec/vmware-photon-3.0-stig-inspec-baseline
   - name: postgresql
     path: postgresql
   - name: vcdapp

@@ -11,7 +11,7 @@ depends:
   - name: cassandra
     path: cassandra
   - name: photon
-    path: ../vmware-photon-3.0-stig-inspec-baseline
+    path: ../../../../../../photon/3.0/v1r9-srg/inspec/vmware-photon-3.0-stig-inspec-baseline
   - name: tcserver
     path: tcserver
   - name: ariaopslogs

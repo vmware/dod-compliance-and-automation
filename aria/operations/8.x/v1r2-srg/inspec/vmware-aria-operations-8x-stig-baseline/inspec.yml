@@ -15,7 +15,7 @@ depends:
   - name: casa
     path: ./casa
   - name: photon
-    path: ../vmware-photon-3.0-os-stig-baseline
+    path: ../../../../../../photon/3.0/v1r9-srg/inspec/vmware-photon-3.0-stig-inspec-baseline
   - name: postgres
     path: ./postgres
   - name: ui
