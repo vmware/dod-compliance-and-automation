@@ -23,6 +23,14 @@ jobs:
           fail_on_error: true
           rubocop_flags: --config /home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/.rubocop.yml
           workdir: .
+  ansiblelint-aria-lcm-v1r2-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "aria/lifecycle/8.x/v1r2-srg/ansible/vmware-vrslcm-8.x-stig-ansible-hardening/"
   ansiblelint-aria-logs-v1r4-srg:
     runs-on: ubuntu-latest
     steps:

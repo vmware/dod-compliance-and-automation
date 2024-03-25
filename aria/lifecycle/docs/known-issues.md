@@ -1,7 +1,7 @@
 # Table of contents
 
 - [Application](#application)
-- [NGIINX](#nginx)
+- [NGINX](#nginx)
 - [Photon](#photon)
 - [vpostgres](#vpostgres)
 
