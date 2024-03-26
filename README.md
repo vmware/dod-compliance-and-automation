@@ -2,6 +2,9 @@
 ![Docs Deployment](https://github.com/vmware/dod-compliance-and-automation/actions/workflows/deploy-docs.yml/badge.svg?docs)
 # dod-compliance-and-automation
 
+> [!CAUTION]
+> Prior to using the STIG automation provided here it is assumed the user has familiarity with the rules contained in the various VMware STIGs and has evaluated those for impact and implementation considerations in their environment.
+
 ## Announcements
 Please visit our new documentation page at: https://vmware.github.io/dod-compliance-and-automation/  
 
