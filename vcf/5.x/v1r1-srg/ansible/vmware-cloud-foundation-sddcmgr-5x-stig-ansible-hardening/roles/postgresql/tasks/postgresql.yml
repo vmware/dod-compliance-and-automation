@@ -1,0 +1,499 @@
+---
+# Ansible Playbook for VMware Cloud Foundation 5.x SDDC Manager Appliance PostgreSQL Service STIG Readiness Guide
+
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: run_create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vcf-postgresql-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ var_rsyslog_conf_path }}'
+
+###################################################################################################################################
+- name: PSQL-00-000001 - PostgreSQL must limit the number of concurrent sessions.
+  tags: [PSQL-00-000001]
+  when: run_max_connections | bool
+  block:
+    - name: PSQL-00-000001 - Check max_connections value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW max_connections"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000001 - Set max_connections value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET max_connections = '{{ var_max_connections }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - restart {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_max_connections
+
+###################################################################################################################################
+- name: PSQL-00-000006
+  tags: [PSQL-00-000006]
+  when: run_pg_conf_perms | bool
+  block:
+    - name: PSQL-00-000006 - Find files with incorrect permissions
+      ansible.builtin.shell: find {{ var_postgresql_data_dir }}/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group users ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: PSQL-00-000006 - Update permissions on files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: postgres
+        group: users
+        mode: '0600'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: PSQL-00-000009
+  tags: [PSQL-00-000009]
+  when: run_log_destination | bool
+  block:
+    - name: PSQL-00-000009 - Check log_destination value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_destination"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000009 - Set log_destination value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_destination = '{{ var_log_destination }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_log_destination
+
+###################################################################################################################################
+- name: PSQL-00-000010
+  tags: [PSQL-00-000010]
+  when: run_log_prefix | bool
+  block:
+    - name: PSQL-00-000010 - Check log_line_prefix value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_line_prefix"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000010 - Set log_line_prefix value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_line_prefix = '{{ var_log_line_prefix }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_log_line_prefix
+
+###################################################################################################################################
+- name: PSQL-00-000020
+  tags: [PSQL-00-000020]
+  when: run_log_files_permissions | bool
+  block:
+    - name: PSQL-00-000020 - Check log_file_mode value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_file_mode"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000020 - Set log_file_mode value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_file_mode = '{{ var_log_file_mode }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_log_file_mode
+
+    - name: PSQL-00-000020 - Find logs with incorrect permissions
+      ansible.builtin.shell: find {{ var_log_dir }} -xdev -type f -a '(' -not -perm 600 -o -not -user {{ var_log_owner }} -o -not -group {{ var_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: PSQL-00-000020 - Update permissions on log files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ var_log_owner }}'
+        group: '{{ var_log_group }}'
+        mode: '0600'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: PSQL-00-000029
+  tags: [PSQL-00-000029]
+  when: run_obj_owners | bool
+  block:
+    - name: PSQL-00-000029 - PostgreSQL objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers) must be owned by principals authorized for ownership.
+      ansible.builtin.debug:
+        msg: "PSQL-00-000029 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: PSQL-00-000032
+  tags: [PSQL-00-000032]
+  when: run_remove_ext | bool
+  block:
+    - name: PSQL-00-000032 - Check for unauthorized extensions
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "select extname from pg_extension where extname != 'plpgsql'"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000032 - Removing extensions is a manual task
+      ansible.builtin.debug:
+        msg: "PSQL-00-000032 - Possible unauthorized extensions detected...review for manual remediation: {{ result.stdout }}"
+      changed_when: true
+      when:
+        - result.stdout != ''
+
+###################################################################################################################################
+- name: PSQL-00-000035
+  tags: [PSQL-00-000035]
+  when: run_conf_port | bool
+  block:
+    - name: PSQL-00-000035 - Check port value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW port"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000035 - Set port value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET port = '{{ var_port }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - restart {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_port
+
+###################################################################################################################################
+- name: PSQL-00-000036
+  tags: [PSQL-00-000036]
+  when: run_hba_auth | bool
+  block:
+    - name: PSQL-00-000036 - Check for trust or password configurations in pg_hba
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -v "^#" {{ var_postgresql_data_dir }}/pg_hba.conf |grep '\S'|grep 'trust\|password'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000036 - Correcting pg_hba.conf auth is a manual task
+      ansible.builtin.debug:
+        msg:
+          - "PSQL-00-000036 - Trust or Password entries detected in pg_hba.conf and must be manually remediated."
+          - "{{ item }}"
+      with_items:
+        - "{{ result.stdout_lines }}"
+      changed_when: true
+      when:
+        - result.stdout != ''
+
+###################################################################################################################################
+- name: PSQL-00-000038
+  tags: [PSQL-00-000038]
+  when: run_password_encryption | bool
+  block:
+    - name: PSQL-00-000038 - Check password_encryption value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW password_encryption"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000038 - Set password_encryption value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET password_encryption = '{{ var_password_encryption }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_password_encryption
+
+###################################################################################################################################
+- name: PSQL-00-000047
+  tags: [PSQL-00-000047]
+  when: run_statement_timeout | bool
+  block:
+    - name: PSQL-00-000047 - Check statement_timeout value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW statement_timeout"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000047 - Set statement_timeout value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET statement_timeout = '{{ var_statement_timeout }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - restart {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_statement_timeout
+
+###################################################################################################################################
+- name: PSQL-00-000051
+  tags: [PSQL-00-000051]
+  when: run_write_logs | bool
+  block:
+    - name: PSQL-00-000051 - Check fsync value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW fsync"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000051 - Set fsync value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET fsync = '{{ var_fsync }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_fsync
+
+    - name: PSQL-00-000051 - Check full_page_writes value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW full_page_writes"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000051 - Set full_page_writes value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET full_page_writes = '{{ var_full_page_writes }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_full_page_writes
+
+    - name: PSQL-00-000051 - Check synchronous_commit value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW synchronous_commit"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000051 - Set synchronous_commit value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET synchronous_commit = '{{ var_synchronous_commit }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_synchronous_commit
+
+###################################################################################################################################
+- name: PSQL-00-000060
+  tags: [PSQL-00-000060]
+  when: run_client_min_messages | bool
+  block:
+    - name: PSQL-00-000060 - Check client_min_messages value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW client_min_messages"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000060 - Set client_min_messages value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET client_min_messages = '{{ var_client_min_messages }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_client_min_messages
+
+###################################################################################################################################
+- name: PSQL-00-000070
+  tags: [PSQL-00-000070]
+  when: run_logging_collector | bool
+  block:
+    - name: PSQL-00-000070 - Check logging_collector value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW logging_collector"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000070 - Set logging_collector value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET logging_collector = '{{ var_logging_collector }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_logging_collector
+
+###################################################################################################################################
+- name: PSQL-00-000075
+  tags: [PSQL-00-000075]
+  when: run_log_timezone | bool
+  block:
+    - name: PSQL-00-000075 - Check log_timezone value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_timezone"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000075 - Set log_timezone value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_timezone = '{{ var_log_timezone }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_log_timezone
+
+###################################################################################################################################
+- name: PSQL-00-000110
+  tags: [PSQL-00-000110]
+  when: run_log_connections | bool
+  block:
+    - name: PSQL-00-000110 - Check log_connections value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_connections"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000110 - Set log_connections value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_connections = '{{ var_log_connections }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_log_connections
+
+###################################################################################################################################
+- name: PSQL-00-000114
+  tags: [PSQL-00-000114]
+  when: run_log_disconnections | bool
+  block:
+    - name: PSQL-00-000114 - Check log_disconnections value
+      ansible.builtin.command: psql -h localhost -U postgres -A -t -c "SHOW log_disconnections"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000114 - Set log_disconnections value
+      ansible.builtin.command: psql -h localhost -U postgres -c "ALTER SYSTEM SET log_disconnections = '{{ var_log_disconnections }}';"
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - reload {{ var_notify_service_name }}
+      when:
+        - result.stdout != var_log_disconnections
+
+###################################################################################################################################
+- name: PSQL-00-000122
+  tags: [PSQL-00-000122]
+  when: run_rsyslog_conf | bool
+  block:
+    - name: PSQL-00-000122 - Configure rsyslog conf
+      ansible.builtin.template:
+        src: '{{ var_rsyslog_conf_name }}'
+        dest: '/etc/rsyslog.d/{{ var_rsyslog_conf_name }}'
+        owner: root
+        group: root
+        mode: '0640'
+        force: true
+      notify:
+        - restart rsyslog

@@ -1,0 +1,19 @@
+name: vRealize Log Insight Appliance 8.x Cassandra Profile
+title: vRealize Log Insight Appliance 8.x Cassandra Profile
+maintainer: VMTA
+copyright: 2023
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+inputs:
+- name: cassandraconfig
+  type: string
+  value: /usr/lib/loginsight/application/lib/apache-cassandra-4.1.0/conf/cassandra.yaml
+- name: cassandraroot
+  type: string
+  value: /usr/lib/loginsight/application/lib/apache-cassandra-4.1.0
+- name: ipaddress
+  type: string
+  value: "10.10.10.10"

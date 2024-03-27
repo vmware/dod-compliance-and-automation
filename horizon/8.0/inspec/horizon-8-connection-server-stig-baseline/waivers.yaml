@@ -1,3 +1,0 @@
-HZNV-8X-000008:
-  run: false
-  justification: "Requiring Administrative CAC login breaks WinRM access (InSpec can't perform the login)"

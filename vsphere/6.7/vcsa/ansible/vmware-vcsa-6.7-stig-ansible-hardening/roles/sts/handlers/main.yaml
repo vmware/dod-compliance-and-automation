@@ -1,9 +1,0 @@
----
-
-- name: restart syslog
-  ansible.builtin.service:
-    name: syslog
-    state: restarted
-
-- name: restart sts
-  ansible.builtin.command: service-control --restart vmware-stsd

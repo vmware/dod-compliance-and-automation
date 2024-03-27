@@ -1,0 +1,18 @@
+name: vmware-vidm-3.3.x-stig-baseline
+title: InSpec Wrapper Profile for the VMware Identity Manager 3.3.x STIG Readiness Guide Version 1 Release 3
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.3
+
+depends:
+  - name: aaa
+    path: aaa
+  - name: photon
+    path: ../../../../../photon/3.0/v1r9-srg/inspec/vmware-photon-3.0-stig-inspec-baseline
+  - name: postgresql
+    path: postgresql
+  - name: tomcat
+    path: tomcat

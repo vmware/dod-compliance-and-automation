@@ -1,0 +1,23 @@
+---
+name: vmware-vra-8x-stig-baseline
+title: InSpec Wrapper Profile for VMware vRealize Automation 8.x STIG Readiness Guide Version 1 Release 4
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.4
+
+depends:
+  - name: vra
+    path: ./vra
+
+  - name: photon
+    path: ./photon
+
+  - name: docker
+    path: ./docker
+
+  - name: kubernetes
+    path: ./kubernetes
+    

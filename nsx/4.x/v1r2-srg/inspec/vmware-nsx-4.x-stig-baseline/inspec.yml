@@ -1,0 +1,43 @@
+name: vmware-nsx-4.x-stig-inspec-baseline
+title: InSpec Compliance Profile for the NSX 4.x STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: InSpec Compliance Profile for the NSX 4.x STIG Readiness Guide
+version: 1.0.2
+
+inputs:
+- name: nsxManager
+  type: string
+  value: '10.187.113.62'
+  description: 'IP or FQDN of NSX Manager'
+# We use session based authentication in this profile to avoid username/pass   See https://developer.vmware.com/apis/1248/nsx-t on how to generate the session token and you will also need the JSESSIONID cookie
+- name: sessionToken
+  type: string
+  value: 'fea5f9e8-10c9-4c58-bf86-4668828be556'
+  description: 'X-XSRF-TOKEN session token for authentication'
+  sensitive: true
+- name: sessionCookieId
+  type: string
+  value: 'JSESSIONID=CBA784EF0F7F27132752F72D4998ED56'
+  description: 'JSESSIONID Cookie in the format JSESSIONID=ECEF0CE603677B7FC5F34523714B7F5A for example'
+  sensitive: true
+- name: syslogServers
+  type: array
+  value:
+    - loginsight.vmware.com
+
+depends:
+  - name: dfw
+    path: dfw
+  - name: manager
+    path: manager
+  - name: t0fw
+    path: t0fw
+  - name: t0rtr
+    path: t0rtr
+  - name: t1fw
+    path: t1fw
+  - name: t1rtr
+    path: t1rtr

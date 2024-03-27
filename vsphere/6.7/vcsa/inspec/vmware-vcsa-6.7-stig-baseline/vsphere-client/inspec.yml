@@ -1,8 +1,0 @@
-name: vmware-vcsa-6.7-vsphereclient-stig-baseline
-title: VMware vSphere 6.7 Virgo-Client Security Technical Implementation Guide
-maintainer: VMware
-copyright: VMware
-copyright_email: stigs@vmware.com
-license: Apache-2.0
-summary: "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
-version: 6.7.0 Version 1 Release 1

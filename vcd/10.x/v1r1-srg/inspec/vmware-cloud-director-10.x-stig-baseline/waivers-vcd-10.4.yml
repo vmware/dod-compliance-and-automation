@@ -1,0 +1,16 @@
+NGNX-WB-000040:
+  expiration_date: 2024-12-31
+  run: false
+  justification: "The NGINX key in VCD is shared with PostgreSQL and as such permissions cannot be adjusted to accommodate this requirement."
+PSQL-00-000005:
+  expiration_date: 2024-12-31
+  run: false
+  justification: "The vPostgres deployment in VCD is not at the required version to include pgaudit."
+PSQL-00-000007:
+  expiration_date: 2024-12-31
+  run: false
+  justification: "The vPostgres deployment in VCD is not at the required version to include pgaudit."
+PSQL-00-000041:
+  expiration_date: 2024-12-31
+  run: false
+  justification: "VCD vPostgres at this time shares a key with the VCD VAMI and permissions cannot be updated."

@@ -1,0 +1,24 @@
+name: vmware-vrops-8.x-stig-inspec-baseline
+title: InSpec Wrapper Profile for VMware Aria Operations 8.x Appliances
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.2.0
+
+depends:
+  - name: apache
+    path: ./apache
+  - name: api
+    path: ./api
+  - name: casa
+    path: ./casa
+  - name: photon
+    path: ../../../../../../photon/3.0/v1r9-srg/inspec/vmware-photon-3.0-stig-inspec-baseline
+  - name: postgres
+    path: ./postgres
+  - name: ui
+    path: ./ui
+  - name: application
+    path: ./application

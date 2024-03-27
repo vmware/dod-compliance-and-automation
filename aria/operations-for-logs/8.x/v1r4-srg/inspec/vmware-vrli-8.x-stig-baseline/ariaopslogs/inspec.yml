@@ -1,0 +1,38 @@
+name: VMware Aria Operations for Logs Appliance 8.x Application Profile
+title: VMware Aria Operations for Logs Appliance 8.x Application Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.4
+
+inputs:
+- name: apipath
+  type: string
+  description: FQDN or IP of appliance to test with port and api version
+  value: logserver.domain:9543/api/v2
+- name: username
+  type: string
+  description: Username to connect with
+  value: "admin"
+- name: password
+  type: string
+  description: Password to connect with
+  value: "PASSWORD"
+- name: configBase
+  type: string
+  description: Base Configuration File
+  value: /usr/lib/loginsight/application/etc/loginsight-config-base.xml
+- name: ntpServers
+  type: array
+  description: List of allowed NTP servers
+  value:
+   - 0.vmware.pool.ntp.org
+   - 1.vmware.pool.ntp.org
+   - 2.vmware.pool.ntp.org
+   - 3.vmware.pool.ntp.org
+- name: loginbanner
+  description: DoD Warning Banner check text.
+  type: string
+  value: "You are accessing a U.S. Government (USG) Information System (IS)"

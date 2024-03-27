@@ -1,0 +1,9 @@
+---
+
+- name: restart vami
+  ansible.builtin.command: vmon-cli --restart applmgmt
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted

@@ -1,0 +1,78 @@
+control 'VCLU-80-000001' do
+  title 'The vCenter Lookup service must limit the number of maximum concurrent connections permitted.'
+  desc  "
+    Resource exhaustion can occur when an unlimited number of concurrent requests are allowed on a website, facilitating a denial-of-service attack. Unless the number of requests is controlled, the web server can consume enough system resources to cause a system crash.
+
+    Mitigating this kind of attack will include limiting the number of concurrent HTTP/HTTPS requests. In Tomcat, each incoming request requires a thread for the duration of that request. If more simultaneous requests are received than can be handled by the currently available request processing threads, additional threads will be created up to the value of the maxThreads attribute.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command prompt, run the following command:
+
+    # xmllint --xpath '/Server/Service/Executor[@name=\"tomcatThreadPool\"]/@maxThreads' /usr/lib/vmware-lookupsvc/conf/server.xml
+
+    Expected result:
+
+    maxThreads=\"300\"
+
+    If the output does not match the expected result, this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
+
+    /usr/lib/vmware-lookupsvc/conf/server.xml
+
+    Navigate to the <Executor> node with the name of tomcatThreadPool and configure with the value \"maxThreads=\"300\"\".
+
+    Note: The <Executor> node should be configured similar to the following:
+
+    <Executor maxThreads=\"300\"
+                    minSpareThreads=\"50\"
+                    name=\"tomcatThreadPool\"
+                    namePrefix=\"tomcat-http--\"/>
+
+    Restart the service with the following command:
+
+    # vmon-cli --restart lookupsvc
+  "
+  impact 0.5
+  tag severity: 'medium'
+  tag gtitle: 'SRG-APP-000001-AS-000001'
+  tag satisfies: ['SRG-APP-000435-AS-000163']
+  tag gid: 'V-VCLU-80-000001'
+  tag rid: 'SV-VCLU-80-000001'
+  tag stig_id: 'VCLU-80-000001'
+  tag cci: ['CCI-000054', 'CCI-002385']
+  tag nist: ['AC-10', 'SC-5']
+
+  # Open server.xml file and get the input variable value
+  xmlconf = xml(input('serverXmlPath'))
+  mt = input('maxThreads')
+
+  # Does executor exist with a maxThreads?
+  if xmlconf['//Executor[@maxThreads]'].count > 0
+    # If so, does it have the correct value?
+    describe xmlconf do
+      its(['//Executor/@maxThreads']) { should cmp [mt] }
+    end
+    ex_name = xmlconf['//Executor/@name'].join('')
+    # Connectors will pass if bound to Executor with a maxThreads
+    xmlconf['//Connector/@executor'].each do |conn_ex|
+      describe conn_ex do
+        it { should cmp ex_name }
+      end
+    end
+
+    # Check Connectors not bound to Executor
+    xmlconf['//Connector[not(@executor)]/@maxThreads'].each do |conn_noex|
+      describe conn_noex do
+        it { should cmp mt }
+      end
+    end
+  else
+    # No Executor with a maxThreads exists - check each connector
+    describe xmlconf do
+      its(['//Connector/@maxThreads']) { should cmp mt }
+    end
+  end
+end

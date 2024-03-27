@@ -1,0 +1,120 @@
+# Generate authentication token
+- name: Generate and get session ID
+  tags: always
+  block:
+    - name: Generate sessionId
+      ansible.builtin.shell: |
+        set -o pipefail
+        echo -n "{{ vrlcm_username }}:{{ vrlcm_password }}" | base64
+      register: session_token
+      changed_when: "session_token.rc != 0"
+
+###################################################################################################################################
+
+# VLMA-8X-000001 - VMware Aria Suite Lifecycle must enable FIPS mode.
+- name: VLMA-8X-000001 - VMware Aria Suite Lifecycle must enable FIPS mode
+  tags: [VLMA-8X-000001]
+  block:
+    - name: VLMA-8X-000001 - Get FIPS mode status
+      ansible.builtin.uri:
+        url: "{{ vrlcm_hostname }}/lcm/locker/api/security/fips"
+        method: GET
+        status_code: 200
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Basic {{ session_token.stdout }}"
+        validate_certs: false
+      register: fips_status
+      changed_when: false
+      failed_when:
+        - fips_status.status != 200
+
+    - name: VLMA-8X-000001 - Verify and update FIPS mode
+      ansible.builtin.uri:
+        url: "{{ vrlcm_hostname }}/lcm/locker/api/security/fips"
+        method: POST
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Basic {{ session_token.stdout }}"
+        body_format: json
+        body: '{ "enabled": true }'
+        validate_certs: false
+      register: response_fips_enable
+      when:
+        - not fips_status.json.enabled
+      changed_when:
+        - response_fips_enable.status == 200
+
+###################################################################################################################################
+
+# VLMA-8X-000004 - VMware Aria Suite Lifecycle must configure authentication when a proxy server is specified.
+# This is a manual fix.
+
+###################################################################################################################################
+
+# VLMA-8X-000005 - VMware Aria Suite Lifecycle must off-load log records to a different system.
+# This is a manual fix.
+#### Log in to the VMware Aria Suite Lifecycle management interface.
+#### Select "Lifecycle Operations" >> Settings >> System Administration >> Logs.
+#### Enter valid information for Hostname and Port, then choose the relevant Server Protocol and fill in the remaining information.
+#### Click Save.
+
+###################################################################################################################################
+
+# VLMA-8X-000006 - VMware Aria Suite Lifecycle must not provide environment information to third parties.
+- name: VLMA-8X-000006 - VMware Aria Suite Lifecycle must not provide environment information to third parties
+  tags: [VLMA-8X-000006]
+  block:
+    - name: VLMA-8X-000006 - Get server clock configuration
+      ansible.builtin.uri:
+        url: "{{ vrlcm_hostname }}/lcm/lcops/api/v2/settings/system-details/time"
+        method: GET
+        status_code: 200
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Basic {{ session_token.stdout }}"
+        validate_certs: false
+      register: time_status
+      changed_when: false
+      failed_when:
+        - time_status.status != 200
+
+    - name: VLMA-8X-000006 - Verify and update server clock configuration
+      ansible.builtin.uri:
+        url: "{{ vrlcm_hostname }}/lcm/lcops/api/v2/settings/system-details/time"
+        method: POST
+        headers:
+          Content-Type: 'application/json'
+          Accept: 'application/json'
+          Authorization: "Basic {{ session_token.stdout }}"
+        body_format: json
+        body: '{ "ntpServerEnabled": true, "ntpServers":  "{{ vrlcm_ntp_servers }}" }'
+        validate_certs: false
+      register: response_time_enable
+      when:
+        - not time_status.json.ntpServerEnabled or not time_status.json.ntpServerStarted or time_status.json.ntpServers != vrlcm_ntp_servers
+      changed_when:
+        - response_time_enable.status == 200
+
+###################################################################################################################################
+
+# VLMA-8X-000007 - VMware Aria Suite Lifecycle must off-load log records to a different system.
+# This is a manual fix.
+#### To install available patches perform the following:
+#### Login to VMware Aria Suite Lifecycle as the admin@local account.
+#### Select "Lifecycle Operations" >> Settings >> System Administration >> System Patches >> New Patch
+#### Select an available patch from the list and click next.
+#### Review the patch installation and click Install.
+
+###################################################################################################################################
+
+# VLMA-8X-000008 - VMware Aria Suite Lifecycle must off-load log records to a different system.
+# This is a manual fix.
+
+###################################################################################################################################
+
+# VLMA-8X-000009 - VMware Aria Suite Lifecycle must not provide environment information to third parties.
+# This is a manual fix. Unavailability of API.

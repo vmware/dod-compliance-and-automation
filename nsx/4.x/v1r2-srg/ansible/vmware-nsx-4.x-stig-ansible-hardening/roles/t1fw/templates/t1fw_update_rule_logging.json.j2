@@ -1,0 +1,13 @@
+{
+    "action": "{{ item.action }}",
+    "resource_type": "{{ item.resource_type }}",
+    "source_groups": {{ item.source_groups }},
+    "destination_groups": {{ item.destination_groups }},
+    "services": {{ item.services }},
+    "profiles": {{ item.profiles }},
+    "logged": true,
+    "scope": {{ item.scope }},
+    {% if item.ip_protocol is defined %}
+    "ip_protocol": "{{ item.ip_protocol }}"
+    {% endif %}
+}

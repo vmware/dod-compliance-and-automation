@@ -1,0 +1,1830 @@
+{
+  "local.server.port": {
+    "value": 7400
+  }
+}
+{
+  "bomList[0].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:3:18"
+  },
+  "bomList[0].bomComponents[0].version": {
+    "value": "6.5.0-9451637",
+    "origin": "class path resource [BomSpecification.yml]:4:14"
+  },
+  "bomList[0].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:5:18"
+  },
+  "bomList[0].bomComponents[1].version": {
+    "value": "6.3.5-7119875",
+    "origin": "class path resource [BomSpecification.yml]:6:14"
+  },
+  "bomList[0].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:7:18"
+  },
+  "bomList[0].bomComponents[2].version": {
+    "value": "6.5.0-10719125",
+    "origin": "class path resource [BomSpecification.yml]:8:14"
+  },
+  "bomList[0].bomId": {
+    "value": "BOM-1",
+    "origin": "class path resource [BomSpecification.yml]:9:10"
+  },
+  "bomList[0].releases[0]": {
+    "value": "2.3.2.5",
+    "origin": "class path resource [BomSpecification.yml]:11:5"
+  },
+  "bomList[1].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:13:18"
+  },
+  "bomList[1].bomComponents[0].version": {
+    "value": "6.5.0-9451637",
+    "origin": "class path resource [BomSpecification.yml]:14:14"
+  },
+  "bomList[1].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:15:18"
+  },
+  "bomList[1].bomComponents[1].version": {
+    "value": "6.4.1-8599035",
+    "origin": "class path resource [BomSpecification.yml]:16:14"
+  },
+  "bomList[1].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:17:18"
+  },
+  "bomList[1].bomComponents[2].version": {
+    "value": "6.5.0-9298722",
+    "origin": "class path resource [BomSpecification.yml]:18:14"
+  },
+  "bomList[1].bomId": {
+    "value": "BOM-2",
+    "origin": "class path resource [BomSpecification.yml]:19:10"
+  },
+  "bomList[1].releases[0]": {
+    "value": "3.0.0",
+    "origin": "class path resource [BomSpecification.yml]:21:5"
+  },
+  "bomList[2].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:23:18"
+  },
+  "bomList[2].bomComponents[0].version": {
+    "value": "6.7.0-10244745",
+    "origin": "class path resource [BomSpecification.yml]:24:14"
+  },
+  "bomList[2].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:25:18"
+  },
+  "bomList[2].bomComponents[1].version": {
+    "value": "6.4.4-11197766",
+    "origin": "class path resource [BomSpecification.yml]:26:14"
+  },
+  "bomList[2].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:27:18"
+  },
+  "bomList[2].bomComponents[2].version": {
+    "value": "6.7.0-10764712",
+    "origin": "class path resource [BomSpecification.yml]:28:14"
+  },
+  "bomList[2].bomId": {
+    "value": "BOM-3",
+    "origin": "class path resource [BomSpecification.yml]:29:10"
+  },
+  "bomList[2].releases[0]": {
+    "value": "3.5.0",
+    "origin": "class path resource [BomSpecification.yml]:31:5"
+  },
+  "bomList[3].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:33:18"
+  },
+  "bomList[3].bomComponents[0].version": {
+    "value": "6.7.0-11726888",
+    "origin": "class path resource [BomSpecification.yml]:34:14"
+  },
+  "bomList[3].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:35:18"
+  },
+  "bomList[3].bomComponents[1].version": {
+    "value": "6.4.4-11197766",
+    "origin": "class path resource [BomSpecification.yml]:36:14"
+  },
+  "bomList[3].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:37:18"
+  },
+  "bomList[3].bomComponents[2].version": {
+    "value": "6.7.0-11675023",
+    "origin": "class path resource [BomSpecification.yml]:38:14"
+  },
+  "bomList[3].bomId": {
+    "value": "BOM-4",
+    "origin": "class path resource [BomSpecification.yml]:39:10"
+  },
+  "bomList[3].releases[0]": {
+    "value": "3.7.0",
+    "origin": "class path resource [BomSpecification.yml]:41:5"
+  },
+  "bomList[4].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:43:18"
+  },
+  "bomList[4].bomComponents[0].version": {
+    "value": "6.7.0-11726888",
+    "origin": "class path resource [BomSpecification.yml]:44:14"
+  },
+  "bomList[4].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:45:18"
+  },
+  "bomList[4].bomComponents[1].version": {
+    "value": "6.4.4-11197766",
+    "origin": "class path resource [BomSpecification.yml]:46:14"
+  },
+  "bomList[4].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:47:18"
+  },
+  "bomList[4].bomComponents[2].version": {
+    "value": "6.7.0-13004448",
+    "origin": "class path resource [BomSpecification.yml]:48:14"
+  },
+  "bomList[4].bomId": {
+    "value": "BOM-5",
+    "origin": "class path resource [BomSpecification.yml]:49:10"
+  },
+  "bomList[4].releases[0]": {
+    "value": "3.7.1",
+    "origin": "class path resource [BomSpecification.yml]:51:5"
+  },
+  "bomList[5].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:53:18"
+  },
+  "bomList[5].bomComponents[0].version": {
+    "value": "6.7.0-13643870",
+    "origin": "class path resource [BomSpecification.yml]:54:14"
+  },
+  "bomList[5].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:55:18"
+  },
+  "bomList[5].bomComponents[1].version": {
+    "value": "6.4.4-11197766",
+    "origin": "class path resource [BomSpecification.yml]:56:14"
+  },
+  "bomList[5].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:57:18"
+  },
+  "bomList[5].bomComponents[2].version": {
+    "value": "6.7.0-13644319",
+    "origin": "class path resource [BomSpecification.yml]:58:14"
+  },
+  "bomList[5].bomId": {
+    "value": "BOM-6",
+    "origin": "class path resource [BomSpecification.yml]:59:10"
+  },
+  "bomList[5].releases[0]": {
+    "value": "3.7.2",
+    "origin": "class path resource [BomSpecification.yml]:61:5"
+  },
+  "bomList[6].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:63:18"
+  },
+  "bomList[6].bomComponents[0].version": {
+    "value": "6.7.0-14070457",
+    "origin": "class path resource [BomSpecification.yml]:64:14"
+  },
+  "bomList[6].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:65:18"
+  },
+  "bomList[6].bomComponents[1].version": {
+    "value": "6.4.5-13282012",
+    "origin": "class path resource [BomSpecification.yml]:66:14"
+  },
+  "bomList[6].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:67:18"
+  },
+  "bomList[6].bomComponents[2].version": {
+    "value": "6.7.0-13981272",
+    "origin": "class path resource [BomSpecification.yml]:68:14"
+  },
+  "bomList[6].bomId": {
+    "value": "BOM-7",
+    "origin": "class path resource [BomSpecification.yml]:69:10"
+  },
+  "bomList[6].releases[0]": {
+    "value": "3.8.0",
+    "origin": "class path resource [BomSpecification.yml]:71:5"
+  },
+  "bomList[7].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:73:18"
+  },
+  "bomList[7].bomComponents[0].version": {
+    "value": "6.7.0-14367737",
+    "origin": "class path resource [BomSpecification.yml]:74:14"
+  },
+  "bomList[7].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:75:18"
+  },
+  "bomList[7].bomComponents[1].version": {
+    "value": "6.4.5-13282012",
+    "origin": "class path resource [BomSpecification.yml]:76:14"
+  },
+  "bomList[7].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:77:18"
+  },
+  "bomList[7].bomComponents[2].version": {
+    "value": "6.7.0-14320388",
+    "origin": "class path resource [BomSpecification.yml]:78:14"
+  },
+  "bomList[7].bomId": {
+    "value": "BOM-8",
+    "origin": "class path resource [BomSpecification.yml]:79:10"
+  },
+  "bomList[7].releases[0]": {
+    "value": "3.8.1",
+    "origin": "class path resource [BomSpecification.yml]:81:5"
+  },
+  "bomList[8].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:83:18"
+  },
+  "bomList[8].bomComponents[0].version": {
+    "value": "6.7.0-14367737",
+    "origin": "class path resource [BomSpecification.yml]:84:14"
+  },
+  "bomList[8].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:85:18"
+  },
+  "bomList[8].bomComponents[1].version": {
+    "value": "6.4.5-13282012",
+    "origin": "class path resource [BomSpecification.yml]:86:14"
+  },
+  "bomList[8].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:87:18"
+  },
+  "bomList[8].bomComponents[2].version": {
+    "value": "6.7.0-14320388",
+    "origin": "class path resource [BomSpecification.yml]:88:14"
+  },
+  "bomList[8].bomId": {
+    "value": "BOM-9",
+    "origin": "class path resource [BomSpecification.yml]:89:10"
+  },
+  "bomList[8].releases[0]": {
+    "value": "3.9.0",
+    "origin": "class path resource [BomSpecification.yml]:91:5"
+  },
+  "bomList[9].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:93:18"
+  },
+  "bomList[9].bomComponents[0].version": {
+    "value": "6.7.0-15069244",
+    "origin": "class path resource [BomSpecification.yml]:94:14"
+  },
+  "bomList[9].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:95:18"
+  },
+  "bomList[9].bomComponents[1].version": {
+    "value": "6.4.6-14819921",
+    "origin": "class path resource [BomSpecification.yml]:96:14"
+  },
+  "bomList[9].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:97:18"
+  },
+  "bomList[9].bomComponents[2].version": {
+    "value": "6.7.0-15069247",
+    "origin": "class path resource [BomSpecification.yml]:98:14"
+  },
+  "bomList[9].bomId": {
+    "value": "BOM-10",
+    "origin": "class path resource [BomSpecification.yml]:99:10"
+  },
+  "bomList[9].releases[0]": {
+    "value": "3.9.1",
+    "origin": "class path resource [BomSpecification.yml]:101:5"
+  },
+  "bomList[10].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:103:18"
+  },
+  "bomList[10].bomComponents[0].version": {
+    "value": "6.7.0-16046470",
+    "origin": "class path resource [BomSpecification.yml]:104:14"
+  },
+  "bomList[10].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:105:18"
+  },
+  "bomList[10].bomComponents[1].version": {
+    "value": "6.4.6-14819921",
+    "origin": "class path resource [BomSpecification.yml]:106:14"
+  },
+  "bomList[10].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:107:18"
+  },
+  "bomList[10].bomComponents[2].version": {
+    "value": "6.7.0-16075168",
+    "origin": "class path resource [BomSpecification.yml]:108:14"
+  },
+  "bomList[10].bomId": {
+    "value": "BOM-11",
+    "origin": "class path resource [BomSpecification.yml]:109:10"
+  },
+  "bomList[10].releases[0]": {
+    "value": "3.10.0",
+    "origin": "class path resource [BomSpecification.yml]:111:5"
+  },
+  "bomList[11].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:113:18"
+  },
+  "bomList[11].bomComponents[0].version": {
+    "value": "7.0.0.10100-15952498",
+    "origin": "class path resource [BomSpecification.yml]:114:14"
+  },
+  "bomList[11].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:115:18"
+  },
+  "bomList[11].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:116:14"
+  },
+  "bomList[11].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:117:18"
+  },
+  "bomList[11].bomComponents[2].version": {
+    "value": "7.0.0-15843807",
+    "origin": "class path resource [BomSpecification.yml]:118:14"
+  },
+  "bomList[11].bomId": {
+    "value": "BOM-12",
+    "origin": "class path resource [BomSpecification.yml]:119:10"
+  },
+  "bomList[11].releases[0]": {
+    "value": "4.0.0",
+    "origin": "class path resource [BomSpecification.yml]:121:5"
+  },
+  "bomList[12].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:123:18"
+  },
+  "bomList[12].bomComponents[0].version": {
+    "value": "7.0.0.10300-16189094",
+    "origin": "class path resource [BomSpecification.yml]:124:14"
+  },
+  "bomList[12].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:125:18"
+  },
+  "bomList[12].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:126:14"
+  },
+  "bomList[12].bomComponents[2].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:127:18"
+  },
+  "bomList[12].bomComponents[2].version": {
+    "value": "3.0.0.0.0.15946738",
+    "origin": "class path resource [BomSpecification.yml]:128:14"
+  },
+  "bomList[12].bomComponents[3].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:129:18"
+  },
+  "bomList[12].bomComponents[3].version": {
+    "value": "7.0.0-15843807",
+    "origin": "class path resource [BomSpecification.yml]:130:14"
+  },
+  "bomList[12].bomId": {
+    "value": "BOM-13",
+    "origin": "class path resource [BomSpecification.yml]:131:10"
+  },
+  "bomList[12].releases[0]": {
+    "value": "4.0.0.1",
+    "origin": "class path resource [BomSpecification.yml]:133:5"
+  },
+  "bomList[13].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:135:18"
+  },
+  "bomList[13].bomComponents[0].version": {
+    "value": "7.0.0.10400-16386292",
+    "origin": "class path resource [BomSpecification.yml]:136:14"
+  },
+  "bomList[13].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:137:18"
+  },
+  "bomList[13].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:138:14"
+  },
+  "bomList[13].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:139:18"
+  },
+  "bomList[13].bomComponents[2].version": {
+    "value": "7.0.0-16324942",
+    "origin": "class path resource [BomSpecification.yml]:140:14"
+  },
+  "bomList[13].bomComponents[3].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:141:18"
+  },
+  "bomList[13].bomComponents[3].version": {
+    "value": "3.0.0.0.0.15946738",
+    "origin": "class path resource [BomSpecification.yml]:142:14"
+  },
+  "bomList[13].bomId": {
+    "value": "BOM-14",
+    "origin": "class path resource [BomSpecification.yml]:143:10"
+  },
+  "bomList[13].releases[0]": {
+    "value": "4.0.1.0",
+    "origin": "class path resource [BomSpecification.yml]:145:5"
+  },
+  "bomList[14].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:147:18"
+  },
+  "bomList[14].bomComponents[0].version": {
+    "value": "7.0.0.10600-16620007",
+    "origin": "class path resource [BomSpecification.yml]:148:14"
+  },
+  "bomList[14].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:149:18"
+  },
+  "bomList[14].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:150:14"
+  },
+  "bomList[14].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:151:18"
+  },
+  "bomList[14].bomComponents[2].version": {
+    "value": "7.0.0-16324942",
+    "origin": "class path resource [BomSpecification.yml]:152:14"
+  },
+  "bomList[14].bomComponents[3].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:153:18"
+  },
+  "bomList[14].bomComponents[3].version": {
+    "value": "3.0.1.0.0-16404613",
+    "origin": "class path resource [BomSpecification.yml]:154:14"
+  },
+  "bomList[14].bomId": {
+    "value": "BOM-15",
+    "origin": "class path resource [BomSpecification.yml]:155:10"
+  },
+  "bomList[14].releases[0]": {
+    "value": "4.0.1.1",
+    "origin": "class path resource [BomSpecification.yml]:157:5"
+  },
+  "bomList[15].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:159:18"
+  },
+  "bomList[15].bomComponents[0].version": {
+    "value": "7.0.1.00000-16860138",
+    "origin": "class path resource [BomSpecification.yml]:160:14"
+  },
+  "bomList[15].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:161:18"
+  },
+  "bomList[15].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:162:14"
+  },
+  "bomList[15].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:163:18"
+  },
+  "bomList[15].bomComponents[2].version": {
+    "value": "7.0.1-16850804",
+    "origin": "class path resource [BomSpecification.yml]:164:14"
+  },
+  "bomList[15].bomComponents[3].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:165:18"
+  },
+  "bomList[15].bomComponents[3].version": {
+    "value": "3.0.2.0.0-16887200",
+    "origin": "class path resource [BomSpecification.yml]:166:14"
+  },
+  "bomList[15].bomId": {
+    "value": "BOM-16",
+    "origin": "class path resource [BomSpecification.yml]:167:10"
+  },
+  "bomList[15].releases[0]": {
+    "value": "4.1.0.0",
+    "origin": "class path resource [BomSpecification.yml]:169:5"
+  },
+  "bomList[16].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:171:18"
+  },
+  "bomList[16].bomComponents[0].version": {
+    "value": "7.0.1.00000-16860138",
+    "origin": "class path resource [BomSpecification.yml]:172:14"
+  },
+  "bomList[16].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:173:18"
+  },
+  "bomList[16].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:174:14"
+  },
+  "bomList[16].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:175:18"
+  },
+  "bomList[16].bomComponents[2].version": {
+    "value": "7.0.1-17168206",
+    "origin": "class path resource [BomSpecification.yml]:176:14"
+  },
+  "bomList[16].bomComponents[3].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:177:18"
+  },
+  "bomList[16].bomComponents[3].version": {
+    "value": "3.0.2.0.0-16887200",
+    "origin": "class path resource [BomSpecification.yml]:178:14"
+  },
+  "bomList[16].bomId": {
+    "value": "BOM-17",
+    "origin": "class path resource [BomSpecification.yml]:179:10"
+  },
+  "bomList[16].releases[0]": {
+    "value": "4.1.0.1",
+    "origin": "class path resource [BomSpecification.yml]:181:5"
+  },
+  "bomList[17].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:183:18"
+  },
+  "bomList[17].bomComponents[0].version": {
+    "value": "7.0.1.00200-17327517",
+    "origin": "class path resource [BomSpecification.yml]:184:14"
+  },
+  "bomList[17].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:185:18"
+  },
+  "bomList[17].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:186:14"
+  },
+  "bomList[17].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:187:18"
+  },
+  "bomList[17].bomComponents[2].version": {
+    "value": "7.0.1-17551050",
+    "origin": "class path resource [BomSpecification.yml]:188:14"
+  },
+  "bomList[17].bomComponents[3].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:189:18"
+  },
+  "bomList[17].bomComponents[3].version": {
+    "value": "3.1.0.0.0-17107167",
+    "origin": "class path resource [BomSpecification.yml]:190:14"
+  },
+  "bomList[17].bomId": {
+    "value": "BOM-18",
+    "origin": "class path resource [BomSpecification.yml]:191:10"
+  },
+  "bomList[17].releases[0]": {
+    "value": "4.2.0.0",
+    "origin": "class path resource [BomSpecification.yml]:193:5"
+  },
+  "bomList[18].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:195:18"
+  },
+  "bomList[18].bomComponents[0].version": {
+    "value": "7.0.1.00301-17956102",
+    "origin": "class path resource [BomSpecification.yml]:196:14"
+  },
+  "bomList[18].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:197:18"
+  },
+  "bomList[18].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:198:14"
+  },
+  "bomList[18].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:199:18"
+  },
+  "bomList[18].bomComponents[2].version": {
+    "value": "7.0.1-17551050",
+    "origin": "class path resource [BomSpecification.yml]:200:14"
+  },
+  "bomList[18].bomComponents[3].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:201:18"
+  },
+  "bomList[18].bomComponents[3].version": {
+    "value": "3.1.2.0.0-17883596",
+    "origin": "class path resource [BomSpecification.yml]:202:14"
+  },
+  "bomList[18].bomId": {
+    "value": "BOM-19",
+    "origin": "class path resource [BomSpecification.yml]:203:10"
+  },
+  "bomList[18].releases[0]": {
+    "value": "4.2.1.0",
+    "origin": "class path resource [BomSpecification.yml]:205:5"
+  },
+  "bomList[19].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:207:18"
+  },
+  "bomList[19].bomComponents[0].version": {
+    "value": "7.0.2.00400-18356314",
+    "origin": "class path resource [BomSpecification.yml]:208:14"
+  },
+  "bomList[19].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:209:18"
+  },
+  "bomList[19].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:210:14"
+  },
+  "bomList[19].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:211:18"
+  },
+  "bomList[19].bomComponents[2].version": {
+    "value": "7.0.2-17867351",
+    "origin": "class path resource [BomSpecification.yml]:212:14"
+  },
+  "bomList[19].bomComponents[3].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:213:18"
+  },
+  "bomList[19].bomComponents[3].version": {
+    "value": "3.1.3.0.0-18328989",
+    "origin": "class path resource [BomSpecification.yml]:214:14"
+  },
+  "bomList[19].bomId": {
+    "value": "BOM-20",
+    "origin": "class path resource [BomSpecification.yml]:215:10"
+  },
+  "bomList[19].releases[0]": {
+    "value": "4.3.0.0",
+    "origin": "class path resource [BomSpecification.yml]:217:5"
+  },
+  "bomList[20].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:219:18"
+  },
+  "bomList[20].bomComponents[0].version": {
+    "value": "7.0.2.00500-18455184",
+    "origin": "class path resource [BomSpecification.yml]:220:14"
+  },
+  "bomList[20].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:221:18"
+  },
+  "bomList[20].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:222:14"
+  },
+  "bomList[20].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:223:18"
+  },
+  "bomList[20].bomComponents[2].version": {
+    "value": "7.0.2-18426014",
+    "origin": "class path resource [BomSpecification.yml]:224:14"
+  },
+  "bomList[20].bomComponents[3].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:225:18"
+  },
+  "bomList[20].bomComponents[3].version": {
+    "value": "3.1.3.1.0-18504668",
+    "origin": "class path resource [BomSpecification.yml]:226:14"
+  },
+  "bomList[20].bomId": {
+    "value": "BOM-21",
+    "origin": "class path resource [BomSpecification.yml]:227:10"
+  },
+  "bomList[20].releases[0]": {
+    "value": "4.3.1.0",
+    "origin": "class path resource [BomSpecification.yml]:229:5"
+  },
+  "bomList[21].bomComponents[0].productType": {
+    "value": "VCENTER",
+    "origin": "class path resource [BomSpecification.yml]:231:18"
+  },
+  "bomList[21].bomComponents[0].version": {
+    "value": "7.0.3.00300-19234570",
+    "origin": "class path resource [BomSpecification.yml]:232:14"
+  },
+  "bomList[21].bomComponents[1].productType": {
+    "value": "NSX_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:233:18"
+  },
+  "bomList[21].bomComponents[1].version": {
+    "value": "6.4.7-15000561",
+    "origin": "class path resource [BomSpecification.yml]:234:14"
+  },
+  "bomList[21].bomComponents[2].productType": {
+    "value": "ESX",
+    "origin": "class path resource [BomSpecification.yml]:235:18"
+  },
+  "bomList[21].bomComponents[2].version": {
+    "value": "7.0.3-19193900",
+    "origin": "class path resource [BomSpecification.yml]:236:14"
+  },
+  "bomList[21].bomComponents[3].productType": {
+    "value": "NSX_T_MANAGER",
+    "origin": "class path resource [BomSpecification.yml]:237:18"
+  },
+  "bomList[21].bomComponents[3].version": {
+    "value": "3.1.3.5.0-19068434",
+    "origin": "class path resource [BomSpecification.yml]:238:14"
+  },
+  "bomList[21].bomId": {
+    "value": "BOM-22",
+    "origin": "class path resource [BomSpecification.yml]:239:10"
+  },
+  "bomList[21].releases[0]": {
+    "value": "4.4.0.0",
+    "origin": "class path resource [BomSpecification.yml]:241:5"
+  }
+}
+{
+  "versionAliases.VRSLCM[0].base": {
+    "value": "8.1.0-16256499",
+    "origin": "class path resource [VersionAlias.yml]:41:17"
+  },
+  "versionAliases.VRSLCM[0].alias[0]": {
+    "value": "8.1.0-15995660",
+    "origin": "class path resource [VersionAlias.yml]:43:17"
+  },
+  "versionAliases.VRA[0].base": {
+    "value": "8.1.0-16633378",
+    "origin": "class path resource [VersionAlias.yml]:45:17"
+  },
+  "versionAliases.VRA[0].alias[0]": {
+    "value": "8.1.0-16413777",
+    "origin": "class path resource [VersionAlias.yml]:47:17"
+  },
+  "versionAliases.VRA[0].alias[1]": {
+    "value": "8.1.0-15986821",
+    "origin": "class path resource [VersionAlias.yml]:48:17"
+  },
+  "versionAliases.VRA[0].alias[2]": {
+    "value": "8.1.0-17018655",
+    "origin": "class path resource [VersionAlias.yml]:49:17"
+  },
+  "versionAliases.VRA[1].base": {
+    "value": "8.2.0-17018654",
+    "origin": "class path resource [VersionAlias.yml]:50:17"
+  },
+  "versionAliases.VRA[1].alias[0]": {
+    "value": "8.2.0-16980951",
+    "origin": "class path resource [VersionAlias.yml]:52:17"
+  }
+}
+{}
+{
+  "java.runtime.name": {
+    "value": "OpenJDK Runtime Environment"
+  },
+  "sun.boot.library.path": {
+    "value": "/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/amd64"
+  },
+  "java.vm.version": {
+    "value": "25.71-b00"
+  },
+  "java.vm.vendor": {
+    "value": "Oracle Corporation"
+  },
+  "java.vendor.url": {
+    "value": "http://java.oracle.com/"
+  },
+  "path.separator": {
+    "value": ":"
+  },
+  "java.vm.name": {
+    "value": "OpenJDK 64-Bit Server VM"
+  },
+  "file.encoding.pkg": {
+    "value": "sun.io"
+  },
+  "user.country": {
+    "value": "US"
+  },
+  "sun.java.launcher": {
+    "value": "SUN_STANDARD"
+  },
+  "sun.os.patch.level": {
+    "value": "unknown"
+  },
+  "PID": {
+    "value": "29596"
+  },
+  "java.vm.specification.name": {
+    "value": "Java Virtual Machine Specification"
+  },
+  "user.dir": {
+    "value": "/opt/vmware/vcf/lcm"
+  },
+  "java.runtime.version": {
+    "value": "1.8.0-internal-_2021_07_27_17_23-b00"
+  },
+  "basedir": {
+    "value": "/opt/vmware/vcf/lcm/lcm-app"
+  },
+  "java.awt.graphicsenv": {
+    "value": "sun.awt.X11GraphicsEnvironment"
+  },
+  "java.endorsed.dirs": {
+    "value": "/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/endorsed"
+  },
+  "os.arch": {
+    "value": "amd64"
+  },
+  "spring.profiles.active": {
+    "value": "prod"
+  },
+  "app.home": {
+    "value": "/opt/vmware/vcf/lcm/lcm-app"
+  },
+  "java.io.tmpdir": {
+    "value": "/opt/vmware/vcf/lcm/tmp"
+  },
+  "line.separator": {
+    "value": "\n"
+  },
+  "java.vm.specification.vendor": {
+    "value": "Oracle Corporation"
+  },
+  "os.name": {
+    "value": "Linux"
+  },
+  "LOG_LEVEL_PATTERN": {
+    "value": "%5p [vcf_lcm,%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}]"
+  },
+  "spring.config.location": {
+    "value": "classpath:/application-prod.properties,classpath:/application.properties"
+  },
+  "app.name": {
+    "value": "lcm"
+  },
+  "sun.jnu.encoding": {
+    "value": "UTF-8"
+  },
+  "spring.beaninfo.ignore": {
+    "value": "true"
+  },
+  "java.library.path": {
+    "value": "/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"
+  },
+  "app.repo": {
+    "value": "/opt/vmware/vcf/lcm/lcm-app/lib"
+  },
+  "java.specification.name": {
+    "value": "Java Platform API Specification"
+  },
+  "java.class.version": {
+    "value": "52.0"
+  },
+  "sun.management.compiler": {
+    "value": "HotSpot 64-Bit Tiered Compilers"
+  },
+  "os.version": {
+    "value": "4.19.219-4.ph3"
+  },
+  "user.home": {
+    "value": "/opt/vmware/vcf/lcm"
+  },
+  "catalina.useNaming": {
+    "value": "false"
+  },
+  "user.timezone": {
+    "value": "Etc/UTC"
+  },
+  "java.awt.printerjob": {
+    "value": "sun.print.PSPrinterJob"
+  },
+  "file.encoding": {
+    "value": "UTF-8"
+  },
+  "java.specification.version": {
+    "value": "1.8"
+  },
+  "catalina.home": {
+    "value": "/opt/vmware/vcf/lcm/tmp/tomcat.7400.795709759967343796"
+  },
+  "java.class.path": {
+    "value": "/opt/vmware/vcf/lcm/lcm-app/conf:/opt/vmware/vcf/lcm/lcm-app/lib/commons-csv-1.8.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-primitive-mock-impl-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jackson-core-2.12.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-lang-2.6.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-rest-client-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-common-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-httpclient-5.9.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jandex-2.1.3.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-public-rest-api-controller-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsx-vsphere-gobuild.6.4.2-9639593.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/ph-upload-logic-3.0.316401.jar:/opt/vmware/vcf/lcm/lcm-app/lib/service-accounts-recipes-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-orm-5.2.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/hibernate-core-5.4.15.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-plugin-metadata-1.2.0.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-auth-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/sso-adminsdk-7.0.2-17523212.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-vcf-clients-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsxt-plugin-model-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-taskmanager-engine-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/warnings-model-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/hibernate-commons-annotations-5.1.0.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-webmvc-5.2.15.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-primitive-model-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-functionality-toggle-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/dnsjava-2.1.9.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-beanutils-1.9.4.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vmca-client-gobuild.6.5.0-7130179.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vapi-sdk-wrapper-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-internal-java-bindings-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-localization-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vlsi-client-gobuild.6.0.0-4652991.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vapi-runtime-2.30.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commonsvcs-client-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/operationsmanager-client-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jackson-annotations-2.12.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-cloud-context-2.2.1.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-sql-dal-client-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-security-core-5.3.10.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-internal-model-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spbmVmodl-7.0.0.10100-15599539.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-rest-api-model-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-hateoas-1.0.2.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vsanVmodl-7.0.2-41609-17958471-RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-restdocs-core-2.0.4.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vac-collector-client-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/singleton-client-java-0.4.4.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-audit-spi-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jsch-0.1.55.jar:/opt/vmware/vcf/lcm/lcm-app/lib/reflectVmodl-gobuild.6.0.0-4652991.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/validation-plugin-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/hibernate-entitymanager-5.4.15.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vapi-authentication-2.30.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/swagger-annotations-1.5.21.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-secure-config-core-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/css-rest-api-model-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/locking-rest-api-model-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/orch-rest-api-controller-5.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-secure-https-lib-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jboss-logging-3.3.2.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-rest-api-activity-logger-1.0.0-10424-20211118.153911-1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/licensemanager-internal-java-bindings-1.6.0-RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-api-validation-rules-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-web-5.2.15.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-services-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/guava-28.2-jre.jar:/opt/vmware/vcf/lcm/lcm-app/lib/gson-2.8.6.jar:/opt/vmware/vcf/lcm/lcm-app/lib/json-path-2.4.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-rest-api-telemetry-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/okhttp-2.7.5.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-errors-5.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-file-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/licenseCisVmodlBindings-gobuild.6.0.0-2595906.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/orch-rest-api-model-5.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jna-platform-4.1.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-boot-actuator-autoconfigure-2.3.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-codec-4.1.69.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-beans-5.2.15.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/licenseClient-gobuild.6.0.0-2595906.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/asm-5.0.4.jar:/opt/vmware/vcf/lcm/lcm-app/lib/invsvc-client-vmodl-6.5.0-4429884.jar:/opt/vmware/vcf/lcm/lcm-app/lib/orch-dal-5.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/classmate-1.5.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-security-web-5.3.10.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/httpcore-4.4.13.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-security-crypto-5.2.1.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/httpmime-4.3.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-vcf-secure-vim25-lib-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vsphere-plugin-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/bc-fips-1.0.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vlsi-core-gobuild.6.0.0-4652991.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/logback-core-1.2.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.activation-api-1.2.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/json-20190722.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-boot-actuator-2.3.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jsch.agentproxy.usocket-nc-0.0.9.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-rest-api-controller-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vlsiEmitter-gobuild.6.0.0-4652991.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/inventory-rest-api-model-2.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/accessors-smart-1.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/reactor-netty-0.9.10.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/error_prone_annotations-2.3.4.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsx-sdk-wrapper-4.0.4-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-vault-web-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/inventory-service-model-2.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-context-support-5.2.15.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/inventory-extensions-vi-common-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/loginsight-plugin-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/ph-api-serialization-3.0.316401.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-boot-2.3.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-handler-4.1.69.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/json-smart-2.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/httpclient-4.5.10.jar:/opt/vmware/vcf/lcm/lcm-app/lib/common-legacy-rest-model-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/annotations-13.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-secure-ssl-lib-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vrealize-plugin-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-spring-webmvc-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-lang3-3.9.jar:/opt/vmware/vcf/lcm/lcm-app/lib/reflections-0.9.12.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jna-5.5.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/ph-api-common-3.0.316401.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vimVmodl-7.0.0.10100-15599539.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vsphere-client-internal-gobuild.6.1.0-7125816.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jackson-dataformat-yaml-2.12.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lookupClient-8.2.0-13480383-RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-primitive-spi-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/HikariCP-3.4.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsx-policy-language-bindings-gobuild.nsx-policy-java-sdk-3.1.3.0.0-18328989.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-cloud-starter-2.2.1.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/failureaccess-1.0.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsx-app-dto-gobuild.6.4.2-9639593.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/tomcat-embed-core-9.0.54.jar:/opt/vmware/vcf/lcm/lcm-app/lib/zipkin-reporter-metrics-micrometer-2.11.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-jms-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-transport-native-epoll-4.1.51.Final-linux-x86_64.jar:/opt/vmware/vcf/lcm/lcm-app/lib/orch-platform-5.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jsch.agentproxy.core-0.0.9.jar:/opt/vmware/vcf/lcm/lcm-app/lib/antlr-2.7.7.jar:/opt/vmware/vcf/lcm/lcm-app/lib/json-simple-1.1.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-common-4.1.69.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/gson-fire-1.8.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vsphere-orchestrator-model-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/kotlin-stdlib-1.3.61.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jul-to-slf4j-1.7.30.jar:/opt/vmware/vcf/lcm/lcm-app/lib/slf4j-api-1.7.30.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-digester-1.8.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-jdbc-5.2.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-collections4-4.4.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.validation-api-2.0.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/caffeine-2.8.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.servlet.jsp-api-2.3.6.jar:/opt/vmware/vcf/lcm/lcm-app/lib/aspectjrt-1.9.5.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-aop-5.2.15.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-oxm-5.2.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jackson-databind-2.12.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-rest-api-bindings-2.0.0-vcf4400-22c8f34-20220203235555.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-messaging-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jsch.agentproxy.pageant-0.0.9.jar:/opt/vmware/vcf/lcm/lcm-app/lib/liquibase-core-3.6.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-test-utils-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/ph-client-3.0.316401.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-vault-engine-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-security-config-5.3.10.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.el-api-3.0.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jsch.agentproxy.sshagent-0.0.9.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-recovery-services-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-httpasyncclient-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/xmlpull-1.1.3.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jcabi-log-0.14.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-functionality-model-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/logging-interceptor-2.7.5.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsx-vsmvam-gobuild.6.4.2-9639593.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-io-2.6.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-vmware-clients-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-security-rsa-1.0.9.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-orch-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-servlet-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-sql-dal-controller-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-core-5.2.15.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-resolver-4.1.69.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/operationsmanager-internal-java-bindings-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-boot-starter-logging-2.3.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/log4j-to-slf4j-2.13.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-net-3.6.jar:/opt/vmware/vcf/lcm/lcm-app/lib/reactor-core-3.3.8.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-context-log4j2-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jjwt-0.9.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-codec-http-4.1.69.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.persistence-api-2.2.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-core-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-plugin-core-2.0.0.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-boot-starter-cache-2.3.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-boot-autoconfigure-2.3.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/admin-interfaces-7.0.2-17523212.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vrlcm-sdk-wrapper-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/invsvc-client-6.5.0-4429884.jar:/opt/vmware/vcf/lcm/lcm-app/lib/taglibs-standard-impl-1.2.5.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-logger-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-buffer-4.1.69.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/ph-api-interfaces-3.0.316401.jar:/opt/vmware/vcf/lcm/lcm-app/lib/postgresql-42.2.9.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jackson-module-jsonSchema-2.12.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-audit-mock-impl-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/logback-classic-1.2.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-cloud-commons-2.2.1.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vum-vmodl-7.0.0-15232413.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-secure-config-sddc-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-feature-toggle-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/aspectjweaver-1.9.5.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-transport-native-unix-common-4.1.51.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-boot-starter-aop-2.2.2.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jcabi-manifests-1.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/ph-telemetry-stand-common-3.0.316401.jar:/opt/vmware/vcf/lcm/lcm-app/lib/stax-api-1.0-2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-data-jpa-2.3.0.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-utils-7.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spotbugs-annotations-4.2.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/byte-buddy-1.10.10.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-validator-1.6.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-secure-ssh-lib-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-compress-1.21.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jsch.agentproxy.usocket-jna-0.0.9.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-state-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/appliance-rest-api-model-3.0.1-vcf4400-8cdca28-20220131165358.jar:/opt/vmware/vcf/lcm/lcm-app/lib/stax2-api-3.1.4.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-service-model-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsx-language-bindings-gobuild.nsx-java-sdk-3.1.3.0.0-18328989.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vsanmgmt-sdk-gobuild.6.7.1-9842263.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-vmware-primitive-common-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/licensecheck-1.1.5-2177237.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-rest-api-interface-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-functionality-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-rpc-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-handler-proxy-4.1.51.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jgrapht-core-1.0.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-spring-web-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/mxparser-1.2.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jackson-datatype-jsr310-2.12.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-bundle-download-impl-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-vmware-primitive-impl-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-annotations-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vrops-sdk-wrapper-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-cloud-sleuth-core-2.2.1.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-text-1.8.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.annotation-api-1.3.5.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.ws.rs-api-2.1.6.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-mvc-logger-0.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/zipkin-reporter-2.11.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vsphere-vmodl2-internal-bindings-3.5.2-20210629.223550-1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-info-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-data-migrator-engine-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-kafka-streams-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/queryVmodl-gobuild.6.5.0-5821684.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-secure-vapi-client-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsx-services-dto-gobuild.6.4.2-9639593.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/snakeyaml-1.26.jar:/opt/vmware/vcf/lcm/lcm-app/lib/dom4j-2.1.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-primitive-rest-api-model-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/gson-javatime-serialisers-1.1.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-boot-starter-2.3.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jsch.agentproxy.connector-factory-0.0.9.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-events-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-context-5.2.15.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-codec-socks-4.1.51.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.xml.bind-api-2.3.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vsphere-sdk-wrapper-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/gson-extras-0.2.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/woodstox-core-asl-4.4.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-skip-host-test-utils-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-webflux-5.2.15.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-boot-starter-actuator-2.3.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/javassist-3.24.0-GA.jar:/opt/vmware/vcf/lcm/lcm-app/lib/springfox-core-2.3.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-primitive-evo-impl-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commonsvcs-internal-java-bindings-2.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-tx-5.2.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-cloud-starter-sleuth-2.2.1.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-http-5.9.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-test-utils-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/zipkin-2.19.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsx-edges-dto-gobuild.6.4.2-9639593.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/bcpkix-fips-1.0.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/common-rest-api-model-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-adapters-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-transport-4.1.69.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jackson-module-parameter-names-2.12.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-bundle-download-spi-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/j2objc-annotations-1.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/checker-qual-2.10.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-spring-rabbit-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/ssoClient-5.5.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/kotlin-stdlib-common-1.3.61.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-expression-5.2.7.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/ph-extension-api-3.0.316401.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vsphere-recipes-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-rest-client-4.0.1-vcf4400-22c8f34-20220203235555.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-rest-api-model-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-model-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.transaction-api-1.3.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-collections-3.2.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vcf-validation-1.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jsr305-3.0.2.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-data-commons-2.3.0.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/okio-2.4.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/spring-retry-1.2.5.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/commons-codec-1.14.jar:/opt/vmware/vcf/lcm/lcm-app/lib/log4j-over-slf4j-1.7.30.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jackson-datatype-jdk8-2.12.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/smsVmodl-6.0.0-14826773-20200330.182842-1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/psc-sdk-wrapper-4.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-audit-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/netty-codec-http2-4.1.51.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/orch-core-5.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jakarta.el-3.0.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vrli-sdk-wrapper-3.0.0-vcf4400-48b4bc9-20220124030230.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-app-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/sso-adminserver-client-bindings-7.0.2-17523212.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/cron-utils-9.1.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-instrumentation-kafka-clients-5.9.0.jar:/opt/vmware/vcf/lcm/lcm-app/lib/log4j-api-2.13.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-sql-dal-model-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/hibernate-validator-6.1.0.Final.jar:/opt/vmware/vcf/lcm/lcm-app/lib/nsx-gpm-language-bindings-gobuild.nsx-gpm-java-sdk-3.1.3.0.0-18328989.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/lcm-dal-client-spi-4.4.0-vcf4400RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/xstream-1.4.18.jar:/opt/vmware/vcf/lcm/lcm-app/lib/passwordmanager-internal-java-bindings-1.2.0-RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/invsvc-core-6.5.0-4429884.jar:/opt/vmware/vcf/lcm/lcm-app/lib/jcl-over-slf4j-1.7.30.jar:/opt/vmware/vcf/lcm/lcm-app/lib/brave-5.9.1.jar:/opt/vmware/vcf/lcm/lcm-app/lib/reactive-streams-1.0.3.jar:/opt/vmware/vcf/lcm/lcm-app/lib/vim25-gobuild.6.0.0-2149910.RELEASE.jar:/opt/vmware/vcf/lcm/lcm-app/lib/freemarker-2.3.29.jar"
+  },
+  "user.name": {
+    "value": "vcf_lcm"
+  },
+  "java.vm.specification.version": {
+    "value": "1.8"
+  },
+  "sun.java.command": {
+    "value": "******"
+  },
+  "java.home": {
+    "value": "/usr/lib/jvm/OpenJDK8-1.8.0/jre"
+  },
+  "sun.arch.data.model": {
+    "value": "64"
+  },
+  "user.language": {
+    "value": "en"
+  },
+  "java.specification.vendor": {
+    "value": "Oracle Corporation"
+  },
+  "awt.toolkit": {
+    "value": "sun.awt.X11.XToolkit"
+  },
+  "java.vm.info": {
+    "value": "mixed mode"
+  },
+  "java.version": {
+    "value": "1.8.0-internal"
+  },
+  "java.ext.dirs": {
+    "value": "/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/ext:/usr/java/packages/lib/ext"
+  },
+  "sun.boot.class.path": {
+    "value": "/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/resources.jar:/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/rt.jar:/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/sunrsasign.jar:/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/jsse.jar:/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/jce.jar:/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/charsets.jar:/usr/lib/jvm/OpenJDK8-1.8.0/jre/lib/jfr.jar:/usr/lib/jvm/OpenJDK8-1.8.0/jre/classes"
+  },
+  "java.awt.headless": {
+    "value": "true"
+  },
+  "java.vendor": {
+    "value": "Oracle Corporation"
+  },
+  "catalina.base": {
+    "value": "/opt/vmware/vcf/lcm/tmp/tomcat.7400.795709759967343796"
+  },
+  "com.zaxxer.hikari.pool_number": {
+    "value": "1"
+  },
+  "file.separator": {
+    "value": "/"
+  },
+  "java.vendor.url.bug": {
+    "value": "http://bugreport.sun.com/bugreport/"
+  },
+  "sun.io.unicode.encoding": {
+    "value": "UnicodeLittle"
+  },
+  "sun.cpu.endian": {
+    "value": "little"
+  },
+  "app.pid": {
+    "value": "29596"
+  },
+  "sun.cpu.isalist": {
+    "value": ""
+  }
+}
+{
+  "PATH": {
+    "value": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "origin": "System Environment Property \"PATH\""
+  },
+  "INVOCATION_ID": {
+    "value": "2378e9cdabe845ffaf351cfb66f9362d",
+    "origin": "System Environment Property \"INVOCATION_ID\""
+  },
+  "JOURNAL_STREAM": {
+    "value": "9:10756447",
+    "origin": "System Environment Property \"JOURNAL_STREAM\""
+  },
+  "JAVA_HOME": {
+    "value": "/etc/alternatives/jre",
+    "origin": "System Environment Property \"JAVA_HOME\""
+  },
+  "LOGNAME": {
+    "value": "vcf_lcm",
+    "origin": "System Environment Property \"LOGNAME\""
+  },
+  "PWD": {
+    "value": "/opt/vmware/vcf/lcm",
+    "origin": "System Environment Property \"PWD\""
+  },
+  "USER": {
+    "value": "vcf_lcm",
+    "origin": "System Environment Property \"USER\""
+  },
+  "LANG": {
+    "value": "en_US.UTF-8",
+    "origin": "System Environment Property \"LANG\""
+  },
+  "SHLVL": {
+    "value": "1",
+    "origin": "System Environment Property \"SHLVL\""
+  },
+  "HOME": {
+    "value": "/opt/vmware/vcf/lcm",
+    "origin": "System Environment Property \"HOME\""
+  }
+}
+{
+  "spring.cloud.client.hostname": {
+    "value": "10.193.54.101"
+  },
+  "spring.cloud.client.ip-address": {
+    "value": "10.193.54.101"
+  }
+}
+{
+  "spring.application.name": {
+    "value": "vcf_lcm",
+    "origin": "class path resource [application.properties]:3:25"
+  },
+  "lcm.datasource.password": {
+    "value": "******",
+    "origin": "class path resource [application.properties]:6:25"
+  }
+}
+{
+  "spring.profiles.include": {
+    "value": "production,personalityService,evosddc,bundleprimitive,vrmprimitive,vcfserviceprimitive,vcenterprimitive,esxvumprimitive,vlcmprimitive,nsxprimitive,nsxtprimitive,vsanprimitive,inventoryprimitive,vcenteraudit,esxaudit,vsanaudit,nsxaudit,nsxtaudit,vxmaudit,depot,restapinoauth,vrealizeprimitive, vrslcmprimitive,vrslcmaudit,vrliaudit,vropsaudit,vraaudit,vxmprimitive,clusterprimitive,vcfdeploymentprimitive",
+    "origin": "class path resource [application-prod.properties]:1:26"
+  },
+  "spring.dao.exceptiontranslation.enabled": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:2:41"
+  },
+  "lcm.app.context.test": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:3:22"
+  },
+  "spring.servlet.multipart.max-file-size": {
+    "value": "999MB",
+    "origin": "class path resource [application-prod.properties]:5:41"
+  },
+  "spring.servlet.multipart.max-request-size": {
+    "value": "999MB",
+    "origin": "class path resource [application-prod.properties]:6:44"
+  },
+  "lcm.service.download.autodownload": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:9:35"
+  },
+  "lcm.service.download.autoretry": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:12:32"
+  },
+  "lcm.service.download.autoretry.maxattempt": {
+    "value": "5",
+    "origin": "class path resource [application-prod.properties]:13:43"
+  },
+  "lcm.service.download.autoretry.delay": {
+    "value": "3600000",
+    "origin": "class path resource [application-prod.properties]:14:38"
+  },
+  "lcm.log.folder.location": {
+    "value": "/var/log/vmware/vcf/lcm",
+    "origin": "class path resource [application-prod.properties]:17:25"
+  },
+  "syslog.host": {
+    "value": "localhost",
+    "origin": "class path resource [application-prod.properties]:18:13"
+  },
+  "syslog.facility": {
+    "value": "USER",
+    "origin": "class path resource [application-prod.properties]:19:17"
+  },
+  "server.address": {
+    "value": "127.0.0.1",
+    "origin": "class path resource [application-prod.properties]:21:16"
+  },
+  "server.port": {
+    "value": "7400",
+    "origin": "class path resource [application-prod.properties]:22:14"
+  },
+  "lcm.service.protocol": {
+    "value": "http",
+    "origin": "class path resource [application-prod.properties]:25:22"
+  },
+  "lcm.adapter.inventory.spec": {
+    "value": "/opt/vmware/vcf/lcm/inventory.json",
+    "origin": "class path resource [application-prod.properties]:28:28"
+  },
+  "lcm.file.staging.parent.dir": {
+    "value": "/opt/vmware/vcf",
+    "origin": "class path resource [application-prod.properties]:31:29"
+  },
+  "lcm.file.staging.dir": {
+    "value": "/opt/vmware/vcf/lcm/staging",
+    "origin": "class path resource [application-prod.properties]:32:22"
+  },
+  "nfs.mount.dir": {
+    "value": "/nfs/vmware/vcf/nfs-mount",
+    "origin": "class path resource [application-prod.properties]:33:15"
+  },
+  "lcm.file.repo.dir": {
+    "value": "/nfs/vmware/vcf/nfs-mount/bundle",
+    "origin": "class path resource [application-prod.properties]:34:19"
+  },
+  "lcm.personality.repo.dir": {
+    "value": "/nfs/vmware/vcf/nfs-mount/personalities",
+    "origin": "class path resource [application-prod.properties]:35:26"
+  },
+  "lcm.core.enableManifestPolling": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:38:32"
+  },
+  "lcm.core.manifest.poll.interval": {
+    "value": "300000",
+    "origin": "class path resource [application-prod.properties]:39:33"
+  },
+  "lcm.core.enableLCMManifestDownload": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:42:36"
+  },
+  "lcm.core.supported.lcmManifest.version": {
+    "value": "1",
+    "origin": "class path resource [application-prod.properties]:43:40"
+  },
+  "lcm.2.0.manifest.out.of.date.threshold.yellow": {
+    "value": "180",
+    "origin": "class path resource [application-prod.properties]:44:47"
+  },
+  "lcm.2.0.manifest.out.of.date.threshold.red": {
+    "value": "270",
+    "origin": "class path resource [application-prod.properties]:45:44"
+  },
+  "lcm.depot.adapter.host": {
+    "value": "depot.vmware.com",
+    "origin": "class path resource [application-prod.properties]:48:24"
+  },
+  "lcm.depot.adapter.port": {
+    "value": "443",
+    "origin": "class path resource [application-prod.properties]:49:24"
+  },
+  "lcm.depot.adapter.remote.rootDir": {
+    "value": "/PROD2",
+    "origin": "class path resource [application-prod.properties]:50:34"
+  },
+  "lcm.depot.adapter.remote.repoDir": {
+    "value": "/evo/vmw",
+    "origin": "class path resource [application-prod.properties]:51:34"
+  },
+  "lcm.depot.adapter.local.baseDir": {
+    "value": "/nfs/vmware/vcf/nfs-mount/bundle/depot/local",
+    "origin": "class path resource [application-prod.properties]:52:33"
+  },
+  "lcm.depot.adapter.enableBundleSignatureValidation": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:53:51"
+  },
+  "lcm.depot.adapter.certificateCheckEnabled": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:54:43"
+  },
+  "lcm.depot.adapter.remote.index.filename": {
+    "value": "index.v3",
+    "origin": "class path resource [application-prod.properties]:55:41"
+  },
+  "lcm.depot.adapter.softwareCompatibilitySetsFile": {
+    "value": "softwareCompatibilitySets.json",
+    "origin": "class path resource [application-prod.properties]:56:49"
+  },
+  "lcm.depot.adapter.proxyEnabled": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:57:32"
+  },
+  "lcm.depot.adapter.proxyHost": {
+    "value": "proxy.vmware.com",
+    "origin": "class path resource [application-prod.properties]:58:29"
+  },
+  "lcm.depot.adapter.proxyPort": {
+    "value": "3128",
+    "origin": "class path resource [application-prod.properties]:59:29"
+  },
+  "lcm.depot.credential.file.path": {
+    "value": "/opt/vmware/vcf/etc/depot.cred",
+    "origin": "class path resource [application-prod.properties]:60:32"
+  },
+  "lcm.depot.bundleElement.patchFile.checksumValidation": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:61:54"
+  },
+  "lcm.depot.adapter.lcmManifestFile": {
+    "value": "lcmManifest.json",
+    "origin": "class path resource [application-prod.properties]:62:35"
+  },
+  "lcm.depot.adapter.remote.lcmManifestDir": {
+    "value": "/evo/vmw/lcm/manifest",
+    "origin": "class path resource [application-prod.properties]:63:41"
+  },
+  "base.install.images.dir": {
+    "value": "/nfs/vmware/vcf/nfs-mount/base-install-images",
+    "origin": "class path resource [application-prod.properties]:66:25"
+  },
+  "base.install.images.manifest.file.name": {
+    "value": "manifest.json",
+    "origin": "class path resource [application-prod.properties]:67:40"
+  },
+  "base.install.images.bundle.id": {
+    "value": "BASE-INSTALL-BUNDLE",
+    "origin": "class path resource [application-prod.properties]:68:31"
+  },
+  "vrslcm.install.base.version": {
+    "value": "8.1.0-16776528",
+    "origin": "class path resource [application-prod.properties]:71:29"
+  },
+  "vra.install.base.version": {
+    "value": "8.1.0-15986821",
+    "origin": "class path resource [application-prod.properties]:72:26"
+  },
+  "vrops.install.base.version": {
+    "value": "8.1.1-16522874",
+    "origin": "class path resource [application-prod.properties]:73:28"
+  },
+  "vrli.install.base.version": {
+    "value": "8.1.1-16281169",
+    "origin": "class path resource [application-prod.properties]:74:27"
+  },
+  "products.notApplicable": {
+    "value": "PKS,HORIZON,NSX_MANAGER",
+    "origin": "class path resource [application-prod.properties]:77:24"
+  },
+  "lcm.ssh.strictHostKeyCheck": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:80:28"
+  },
+  "lcm.ssh.knownHostsFilePath": {
+    "value": "/home/vcf/.ssh/known_hosts",
+    "origin": "class path resource [application-prod.properties]:81:28"
+  },
+  "lcm.vc.primitive.snapshot.skip": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:84:32"
+  },
+  "lcm.primitive.backup.skip": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:85:27"
+  },
+  "lcm.upgrade.scheduleTime.maxFutureTimeVarianceInMilliSeconds": {
+    "value": "31536000000",
+    "origin": "class path resource [application-prod.properties]:87:62"
+  },
+  "lcm.app.dir": {
+    "value": "/opt/vmware/vcf/lcm/lcm-app",
+    "origin": "class path resource [application-prod.properties]:90:13"
+  },
+  "lcm.tools.dir": {
+    "value": "/opt/vmware/vcf/lcm/lcm-tools",
+    "origin": "class path resource [application-prod.properties]:91:15"
+  },
+  "lcm.upgrade.dir": {
+    "value": "/var/log/vmware/vcf/lcm/upgrades",
+    "origin": "class path resource [application-prod.properties]:92:17"
+  },
+  "lcm.upgrade.script": {
+    "value": "lcm_upgrade_bg.sh",
+    "origin": "class path resource [application-prod.properties]:93:20"
+  },
+  "lcm.upgrade.thirdparty.dir": {
+    "value": "/var/log/vmware/vcf/lcm/thirdparty",
+    "origin": "class path resource [application-prod.properties]:94:28"
+  },
+  "lcm.upgrade.thirdparty.skip": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:95:29"
+  },
+  "lcm.audit.fixed.delay": {
+    "value": "300000",
+    "origin": "class path resource [application-prod.properties]:98:23"
+  },
+  "lcm.audit.nsx.inventory.fixed.delay": {
+    "value": "180000",
+    "origin": "class path resource [application-prod.properties]:99:37"
+  },
+  "lcm.audit.nsxt.inventory.fixed.delay": {
+    "value": "180000",
+    "origin": "class path resource [application-prod.properties]:100:38"
+  },
+  "vcf.http.client.vapi.socket.timeout": {
+    "value": "600000",
+    "origin": "class path resource [application-prod.properties]:104:37"
+  },
+  "lcm.upgrade.precheck.threads.core.pool.size": {
+    "value": "10",
+    "origin": "class path resource [application-prod.properties]:198:45"
+  },
+  "lcm.upgrade.precheck.threads.max.pool.size": {
+    "value": "20",
+    "origin": "class path resource [application-prod.properties]:199:44"
+  },
+  "lcm.upgrade.precheck.resource.cache.maximum.size": {
+    "value": "1500",
+    "origin": "class path resource [application-prod.properties]:109:50"
+  },
+  "lcm.upgrade.precheck.result.cache.maximum.size": {
+    "value": "1500",
+    "origin": "class path resource [application-prod.properties]:110:48"
+  },
+  "lcm.upgrade.precheck.cache.maximum.size": {
+    "value": "50",
+    "origin": "class path resource [application-prod.properties]:111:41"
+  },
+  "deployment.configuration.precheck.enabled": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:114:43"
+  },
+  "sddc.manager.fs.perm.check.dirs.exclude": {
+    "value": "/var/log/vmware/vcf/lcm/vcf_ue.log",
+    "origin": "class path resource [application-prod.properties]:115:41"
+  },
+  "nsxt.cpu.reservation.small": {
+    "value": "4000",
+    "origin": "class path resource [application-prod.properties]:118:28"
+  },
+  "nsxt.cpu.reservation.medium": {
+    "value": "6000",
+    "origin": "class path resource [application-prod.properties]:119:29"
+  },
+  "nsxt.cpu.reservation.large": {
+    "value": "12000",
+    "origin": "class path resource [application-prod.properties]:120:28"
+  },
+  "vsan.healthcheck.enabled": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:123:26"
+  },
+  "vsan.hcl.update.enabled": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:124:25"
+  },
+  "vsan.precheck.enabled": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:125:23"
+  },
+  "esx.upgrade.timeout": {
+    "value": "14400000",
+    "origin": "class path resource [application-prod.properties]:129:21"
+  },
+  "lcm.esx.upgrade.custom.image.spec": {
+    "value": "/nfs/vmware/vcf/nfs-mount/esx-custom-image-upgrade-spec.json",
+    "origin": "class path resource [application-prod.properties]:133:35"
+  },
+  "drsRules.MANAGEMENT": {
+    "value": "anti-affinity-rule-nsxt,anti-affinity-rule-ecmpedges,PSC Anti-Affinity Rule,NSX Controller Anti-Affinity Rule,NSX Controllers Anti-Affinity Rule,NSXT Managers Anti Affinity Rule,vRLI Anti-Affinity Rule,vROps-Data Anti-Affinity Rule,vROps-Master-Replica,vRops-DataNodes,anti-affinity-rule-vra-svr,anti-affinity-rule-vra-iws,anti-affinity-rule-vra-ims,anti-affinity-rule-vra-dem,anti-affinity-rule-vra-ias",
+    "origin": "class path resource [application-prod.properties]:137:21"
+  },
+  "drsRules.VI": {
+    "value": "NSX Controllers Anti-Affinity Rule,vRLI Anti-Affinity Rule",
+    "origin": "class path resource [application-prod.properties]:138:13"
+  },
+  "drsRules.VDI": {
+    "value": "NSX Controllers Anti-Affinity Rule,vRLI Anti-Affinity Rule",
+    "origin": "class path resource [application-prod.properties]:139:14"
+  },
+  "lcm.event.evorack.bundletype": {
+    "value": "SDDC Manager",
+    "origin": "class path resource [application-prod.properties]:142:30"
+  },
+  "lcm.vcsa.input.template.version": {
+    "value": "2.13.0",
+    "origin": "class path resource [application-prod.properties]:145:33"
+  },
+  "lcm.script.handler.path": {
+    "value": "/opt/vmware/bin/scripthandler",
+    "origin": "class path resource [application-prod.properties]:146:25"
+  },
+  "lcm.esx.vum.depot.parent.directory": {
+    "value": "/tmp/vcf-vum-depot/",
+    "origin": "class path resource [application-prod.properties]:148:36"
+  },
+  "spring.http.multipart.location": {
+    "value": "/tmp/",
+    "origin": "class path resource [application-prod.properties]:149:32"
+  },
+  "wait.for.vra.deployment.task.max.retry.attempts": {
+    "value": "100",
+    "origin": "class path resource [application-prod.properties]:152:49"
+  },
+  "wait.for.vra.deployment.task.delay.between.retries.millis": {
+    "value": "60000",
+    "origin": "class path resource [application-prod.properties]:153:59"
+  },
+  "ovf.tool.location": {
+    "value": "/iso_store/ovftool/ovftool",
+    "origin": "class path resource [application-prod.properties]:154:19"
+  },
+  "wait.for.vrops.cluster.state.change.max.retry.attempts": {
+    "value": "60",
+    "origin": "class path resource [application-prod.properties]:155:56"
+  },
+  "wait.for.vrops.cluster.state.change.delay.between.retries.millis": {
+    "value": "60000",
+    "origin": "class path resource [application-prod.properties]:156:66"
+  },
+  "spring.application.name": {
+    "value": "vcf_lcm",
+    "origin": "class path resource [application-prod.properties]:159:25"
+  },
+  "lcm.nsx.backup.skip": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:162:21"
+  },
+  "vxrail.manager.ssh.username": {
+    "value": "mystic",
+    "origin": "class path resource [application-prod.properties]:165:29"
+  },
+  "vxmanager.system.info.uri": {
+    "value": "system",
+    "origin": "class path resource [application-prod.properties]:166:27"
+  },
+  "vcf.auth.secret.key.path": {
+    "value": "/etc/security/token/token.properties",
+    "origin": "class path resource [application-prod.properties]:169:26"
+  },
+  "lcm.service.personality.location": {
+    "value": "/nfs/vmware/vcf/nfs-mount/personalities",
+    "origin": "class path resource [application-prod.properties]:172:34"
+  },
+  "lcm.upgrade.max.parallel.upgrade.in.domain": {
+    "value": "5",
+    "origin": "class path resource [application-prod.properties]:175:44"
+  },
+  "lcm.passwordvalidation.max.wait.time.minutes": {
+    "value": "5",
+    "origin": "class path resource [application-prod.properties]:178:46"
+  },
+  "lcm.passwordvaldiation.retry.wait.interval": {
+    "value": "10000",
+    "origin": "class path resource [application-prod.properties]:179:44"
+  },
+  "server.tomcat.uri-encoding": {
+    "value": "UTF-8",
+    "origin": "class path resource [application-prod.properties]:182:28"
+  },
+  "server.servlet.jsp.init-parameters.listings": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:183:45"
+  },
+  "server.error.whitelabel.enabled": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:184:33"
+  },
+  "server.error.include-stacktrace": {
+    "value": "never",
+    "origin": "class path resource [application-prod.properties]:185:33"
+  },
+  "server.error.path": {
+    "value": "/error",
+    "origin": "class path resource [application-prod.properties]:186:19"
+  },
+  "server.servlet.jsp.init-parameters.debug": {
+    "value": "0",
+    "origin": "class path resource [application-prod.properties]:187:42"
+  },
+  "management.endpoint.shutdown.enabled": {
+    "value": "false",
+    "origin": "class path resource [application-prod.properties]:190:38"
+  },
+  "lcm.inventory.upgrade.cache.initial.capacity": {
+    "value": "2",
+    "origin": "class path resource [application-prod.properties]:193:46"
+  },
+  "lcm.inventory.upgrade.cache.maxsize": {
+    "value": "4",
+    "origin": "class path resource [application-prod.properties]:194:37"
+  },
+  "lcm.inventory.upgrade.cache.expiry.seconds": {
+    "value": "300",
+    "origin": "class path resource [application-prod.properties]:195:44"
+  },
+  "lcm.async.threads.core.pool.size": {
+    "value": "10",
+    "origin": "class path resource [application-prod.properties]:200:34"
+  },
+  "lcm.async.threads.max.pool.size": {
+    "value": "20",
+    "origin": "class path resource [application-prod.properties]:201:33"
+  },
+  "lcm.scheduled.threads.pool.size": {
+    "value": "10",
+    "origin": "class path resource [application-prod.properties]:202:33"
+  },
+  "lcm.vlcm.minimumtwohost": {
+    "value": "true",
+    "origin": "class path resource [application-prod.properties]:206:25"
+  },
+  "lcm.serviceId": {
+    "value": "dd40999e-fc50-4cae-b88c-e082b3b932fc",
+    "origin": "class path resource [application-prod.properties]:209:15"
+  },
+  "management.endpoints.web.exposure.include": {
+    "value": "*",
+    "origin": "class path resource [application-prod.properties]:210:43"
+  }
+}
+{}
+{
+  "telemetry.audit.filename": {
+    "value": "ceip_audit_lcm.log"
+  },
+  "telemetry.vcf.collector.id": {
+    "value": "vcf.m_1"
+  },
+  "telemetry.vcf.collector.environment": {
+    "value": "PRODUCTION"
+  },
+  "telemetry.vac.provider.basepackages": {
+    "value": "com.vmware.vcf.telemetry,com.vmware.evo.sddc.lcm,com.vmware.vcf.common.api.interceptor"
+  }
+}
+{
+  "telemetry.audit.file.max.size": {
+    "value": "10485760"
+  },
+  "commonservices.api.base.path": {
+    "value": "http://localhost:80"
+  },
+  "telemetry.use.cron.store": {
+    "value": "false"
+  },
+  "vac.scheduler.corepoolsize": {
+    "value": "1"
+  },
+  "vac.collector.corepoolsize": {
+    "value": "10"
+  },
+  "telemetry.metrics.local.dump.path": {
+    "value": "/tmp/metrics_dump.json"
+  },
+  "telemetry.vcf.collector.environment": {
+    "value": "PRODUCTION"
+  },
+  "telemetry.audit.file.history.entry": {
+    "value": "1000"
+  },
+  "ceip.cron.schedule.interval": {
+    "value": "0 0 2 ? * SUN"
+  },
+  "telemetry.audit.filename": {
+    "value": "ceip_audit.log"
+  },
+  "telemetry.vac.provider.basepackages": {
+    "value": "com.vmware.vcf"
+  },
+  "telemetry.vac.schema": {
+    "value": "/telemetry/vac-schema.yaml"
+  },
+  "telemetry.cron.store.file": {
+    "value": "/etc/vmware/vcf/ceip/vac-cron-db"
+  },
+  "telemetry.metrics.upload.period.milliseconds": {
+    "value": "3600000"
+  },
+  "vac.collector.maxpoolsize": {
+    "value": "20"
+  },
+  "vac.collector.threadpoolsize": {
+    "value": "5"
+  },
+  "vac.collector.queuecapacity": {
+    "value": "40"
+  }
+}
+{
+  "primaryKey": {
+    "value": "******"
+  },
+  "tableName": {
+    "value": "vcf_stage"
+  },
+  "name": {
+    "value": "resources"
+  },
+  "columns": {
+    "value": ""
+  },
+  "type": {
+    "value": "List"
+  },
+  "-": {
+    "value": "column:"
+  },
+  "databaseDefinition": {
+    "value": ""
+  }
+}
+{
+  "feature.lcm.nsxt.vlcm.upgrade.parallel": {
+    "value": "true"
+  },
+  "feature.lcm.silence.precheck": {
+    "value": "false"
+  },
+  "feature.lcm.domain.level.config.drift.upgrade.precheck": {
+    "value": "false"
+  },
+  "feature.lcm.2.0": {
+    "value": "true"
+  },
+  "feature.lcm.nsxt.upgrade": {
+    "value": "true"
+  },
+  "feature.vcf.service.accounts.vcenter.nsxt.integration": {
+    "value": "true"
+  },
+  "feature.lcm.personality.manager": {
+    "value": "false"
+  },
+  "feature.lcm.sddc.security.precheck": {
+    "value": "true"
+  },
+  "feature.lcm.nsxt.cluster.selection": {
+    "value": "true"
+  },
+  "feature.lcm.upgrade.localization": {
+    "value": "true"
+  },
+  "feature.lcm.vxrail.ngsso": {
+    "value": "true"
+  },
+  "feature.vcf.esxi.ssh.disable": {
+    "value": "true"
+  },
+  "feature.lcm.precheck.password.validation": {
+    "value": "true"
+  },
+  "feature.lcm.image.management": {
+    "value": "true"
+  },
+  "feature.lcm.store.target.version": {
+    "value": "false"
+  },
+  "feature.lcm.domain.level.config.drift.upgrade.improvements": {
+    "value": "false"
+  },
+  "feature.vcf.service.accounts.vcenter.vrslcm.integration": {
+    "value": "true"
+  },
+  "feature.lcm.sddc.manager.version": {
+    "value": "true"
+  },
+  "feature.lcm.support.vxrail": {
+    "value": "true"
+  },
+  "feature.lcm.vxrail.manifest.support": {
+    "value": "false"
+  },
+  "feature.lcm.nsxt.upgrade.parallel": {
+    "value": "true"
+  },
+  "feature.vrealize.service.accounts": {
+    "value": "false"
+  },
+  "feature.vcf.lcm.avi.upgrade": {
+    "value": "false"
+  },
+  "feature.lcm.vra.skip.upgrade.prevalidation": {
+    "value": "false"
+  },
+  "feature.lcm.parallel.cluster.upgrade": {
+    "value": "true"
+  },
+  "feature.lcm.vxrail.system.precheck": {
+    "value": "true"
+  },
+  "feature.lcm.image.management.vcm.2.0.manifest": {
+    "value": "false"
+  },
+  "feature.lcm.skip.upgrade": {
+    "value": "true"
+  },
+  "feature.lcm.vra.upgrade": {
+    "value": "true"
+  },
+  "feature.lcm.bundle.recall": {
+    "value": "false"
+  },
+  "feature.vcf.logging.activity": {
+    "value": "true"
+  },
+  "feature.lcm.vlcm.cluster.precheck": {
+    "value": "true"
+  },
+  "feature.lcm.vrslcm.upgrade": {
+    "value": "true"
+  },
+  "feature.vxrack.firmware.upgrade": {
+    "value": "false"
+  },
+  "feature.lcm.nsxt.upgrade.vxrail": {
+    "value": "true"
+  },
+  "feature.lcm.v1.upgrade.api": {
+    "value": "true"
+  },
+  "feature.lcm.vrli.upgrade": {
+    "value": "true"
+  },
+  "feature.vcf.service.accounts.esxi.integration": {
+    "value": "true"
+  },
+  "feature.lcm.telemetry.vac.schema.v1": {
+    "value": "true"
+  },
+  "feature.lcm.skip.upgrade.k2": {
+    "value": "true"
+  },
+  "feature.lcm.nsxt.vlcm.upgrade": {
+    "value": "true"
+  },
+  "feature.lcm.vrops.upgrade": {
+    "value": "true"
+  },
+  "feature.lcm.quick.boot": {
+    "value": "true"
+  },
+  "feature.vcf.mode.vrslcm": {
+    "value": "true"
+  },
+  "feature.lcm.vcenter.upgrade.vapi": {
+    "value": "true"
+  },
+  "feature.lcm.deployment.configuration.precheck": {
+    "value": "true"
+  },
+  "feature.esx.bundle.precheck": {
+    "value": "true"
+  }
+}
+{
+  "spring.freemarker.checkTemplateLocation": {
+    "value": "false"
+  }
+}
+{
+  "lcm.datasource.url": {
+    "value": "jdbc:postgresql://127.0.0.1:5432/lcm"
+  },
+  "lcm.hibernate.dialect": {
+    "value": "org.hibernate.dialect.PostgreSQL94Dialect"
+  },
+  "lcm.datasource.driver": {
+    "value": "org.postgresql.Driver"
+  },
+  "lcm.datasource.socket.timeout": {
+    "value": "30"
+  }
+}
+{
+  "lcm.datasource.password": {
+    "value": "******"
+  },
+  "spring.application.name": {
+    "value": "vcf_lcm"
+  }
+}
+{
+  "logging.pattern.level": {
+    "value": "%5p [vcf_lcm,%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}]"
+  }
+}

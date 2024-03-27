@@ -1,0 +1,10 @@
+---
+
+- name: Include Tier-0 Gateway Firewall
+  ansible.builtin.include_tasks:
+    file: t0fw.yml
+    apply:
+      tags:
+        - t0fw
+  tags:
+    - always

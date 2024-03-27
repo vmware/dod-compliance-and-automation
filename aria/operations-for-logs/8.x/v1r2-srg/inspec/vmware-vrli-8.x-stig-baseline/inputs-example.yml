@@ -1,0 +1,47 @@
+# Application
+apipath:                   "loginsight.domain:9543/api/v2"
+username:                  "admin"
+password:                  "PASSWORD"
+configBase:                "/usr/lib/loginsight/application/etc/loginsight-config-base.xml"
+ntpServers:                ["0.vmware.pool.ntp.org", "1.vmware.pool.ntp.org", "2.vmware.pool.ntp.org", "3.vmware.pool.ntp.org"]
+loginbanner:               "You are accessing a U.S. Government (USG) Information System (IS)"
+
+# Cassandra
+cassandraconfig:           "/usr/lib/loginsight/application/lib/apache-cassandra-4.1.0/conf/cassandra.yaml"
+cassandraroot:             "/usr/lib/loginsight/application/lib/apache-cassandra-4.1.0"
+ipaddress:                 "10.10.10.10"
+
+# tc Server
+catalinaHome:              "/usr/lib/loginsight/application/etc/3rd_config"
+catalinaBase:              "/usr/lib/loginsight/application/3rd_party/apache-tomcat-8.5.87"
+contextXmlFiles:           ["/usr/lib/loginsight/application/3rd_party/apache-tomcat-8.5.87/conf/context.xml"]
+keystoreFile:              "/usr/lib/loginsight/application/3rd_party/apache-tomcat-8.5.87/conf/keystore"  
+javaHome:                  "/usr/bin/java"
+svcFilePath:               "/lib/systemd/system/loginsight.service"
+maxThreads:                "150"
+accessLogPattern:          ["%h", "%l", "%t", "%u", "&quot;%r&quot;", "%s", "%b"]
+securePorts:               ["443"]
+approvedConnectorPorts:    ["443"]
+allowedCiphers:            ["TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"]
+tcCoreUser:                "root"
+tcCoreGroup:               "root"
+svcAccountName:            "root"
+svcGroup:                  "root"
+tcVersion:                 "8.5.87" 
+minUmask:                  "0007"
+connectionTimeout:         "20000"
+maxKeepAliveRequests:      "50"
+shutdownPort:              "-1"
+sessionTimeout:            "30"
+
+# Photon
+verbose:                   True
+sshdcommand:               'sshd -T'
+authprivlog:               "/var/log/audit/auth.log"  #Enter expected log path for authpriv log in rsyslog conf
+photonIp:                  "x.x.x.x"  #Enter IP for PhotonOS
+ntptype:                   "ntpd"  #Enter the NTP solution. Either "ntpd" "timesyncd" "chrony"  
+ntpServer1:                "x.x.x.x"  #Enter IP or FQDN of NTP Server
+ntpServer2:                "x.x.x.x"  #Enter IP or FQDN of NTP Server
+syslogServer:              "x.x.x.x:514"  #Enter IP or FQDN of Syslog Server and Port
+disabled_modules:          ["sctp", "dccp", "dccp_ipv4", "dccp_ipv6", "ipx", "appletalk", "decnet", "rds", "tipc", "bluetooth", 
+                            "usb_storage", "ieee1394", "cramfs", "freevxfs", "jffs2", "hfs", "hfsplus", "squashfs", "udf"]

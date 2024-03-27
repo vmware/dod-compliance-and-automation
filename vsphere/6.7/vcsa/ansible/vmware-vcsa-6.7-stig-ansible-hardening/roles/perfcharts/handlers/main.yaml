@@ -1,9 +1,0 @@
----
-
-- name: restart perfcharts
-  ansible.builtin.command: vmon-cli --restart perfcharts
-
-- name: restart syslog
-  ansible.builtin.service:
-    name: syslog
-    state: restarted
