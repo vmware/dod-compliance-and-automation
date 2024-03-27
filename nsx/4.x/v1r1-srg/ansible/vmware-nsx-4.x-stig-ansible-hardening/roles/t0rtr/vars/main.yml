@@ -16,5 +16,6 @@ var_t0rtr_gateways_with_dhcp_enabled: []
 
 # misc
 var_t0rtr_interface_urpf: 'STRICT'
+var_t0rtr_icmp_policy_name: 'stig_icmp_policy'
 var_t0rtr_bgp_max_prefixes: 200
 var_t0rtr_ipv6_hop_limit: 64
