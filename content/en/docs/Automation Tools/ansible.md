@@ -22,7 +22,7 @@ Installation of Ansible varies by platform with detailed instructions available 
 
 ## Concepts
 ### Playbooks
-Ansible Playbooks offer a repeatable, re-usable, simple configuration management and multi-machine deployment system, one that is well suited to deploying complex applications. If you need to execute a task with Ansible more than once, write a playbook and put it under source control. Then you can use the playbook to push out new configuration or confirm the configuration of remote systems.
+Ansible Playbooks offer a repeatable, re-usable, simple configuration management and multi-machine deployment system, one that is well suited to deploying complex applications. If you need to execute a task with Ansible more than once, write a playbook and put it under source control. Then you can use the playbook to push out new configurations or confirm the configurations of remote systems.
 
 Playbook structure example:
 ```
@@ -114,12 +114,12 @@ To be added
 ### Tags
 Tags in Ansible offer a way to only run a specific task or exclude tasks. In the playbooks provided we tag tasks with STIG IDs and sometimes a category such as sshd if there are many tasks that touch ssh.
 
-When running a playbook you can specify `--tags` or `--skip-tags` and the cli followed by a list of tags.
+When running a playbook you can specify `--tags` or `--skip-tags` at the cli followed by a list of tags.
 
 ### Inventory
 Ansible automates tasks on managed nodes or “hosts” in your infrastructure, using a list or group of lists known as inventory. You can pass host names at the command line, but most Ansible users create inventory files. Your inventory defines the managed nodes you automate, with groups so you can run automation tasks on multiple hosts at the same time. Once your inventory is defined, you use patterns to select the hosts or groups you want Ansible to run against.
 
-The examples we provide in this documentation just pass host names at the command line but if creating inventory files is desired that can be done as well but outside of the scope here.
+The examples we provide in this documentation just pass host names at the command line but if creating inventory files is desired that can be done as well but is outside of the scope here.
 
 For more information on inventory, see [Building Ansible inventories](https://docs.ansible.com/ansible/latest/inventory_guide/index.html).
 

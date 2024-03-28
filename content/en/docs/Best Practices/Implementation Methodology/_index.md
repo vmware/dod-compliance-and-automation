@@ -48,7 +48,7 @@ If we apply this workflow to vSphere 7 or 8 it would look like this at a high le
 It is important to focus on one STIG at a time so that any issues identified during functional testing can be quickly narrowed down.  
 
 ### Incremental Implementations
-It is also a valid strategy, especially in larger environments with multiple vCenters and clusters, to incrementally implement STIGs to one site, vCenter, or vSphere cluster at a time to flush out any issues without impacting the entire environment.  
+It is also a valid strategy, especially in larger environments with multiple vCenters and clusters, to incrementally implement STIGs to one site, vCenter, or vSphere cluster at a time to identify any issues without impacting the entire environment.  
 
 When pursuing this approach here are some items to consider:  
 - Do not mix hardened with non-hardened ESXi hosts in the same cluster.

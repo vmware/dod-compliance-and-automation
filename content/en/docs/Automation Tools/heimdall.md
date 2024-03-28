@@ -5,7 +5,7 @@ description: >
   How to use and install MITRE's Heimdall Server
 ---
 
-The [MITRE's Heimdall Server](https://github.com/mitre/heimdall2) allows you to visualize, store, and compare scan results from various security tools.
+[MITRE's Heimdall Server](https://github.com/mitre/heimdall2) allows you to visualize, store, and compare scan results from various security tools.
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ Demo instances are available at [Heimdall Lite](https://heimdall-lite.mitre.org/
 For a full list of installation options, see [Installation](https://github.com/mitre/heimdall2#getting-started--installation).
 
 ## Usage
-All of the documetation below will be in the context of working with InSpec results. Using results from other tools may vary.  
+All of the documentation below will be in the context of working with InSpec results. Using results from other tools may vary.  
 
 ### Viewing Results
 
