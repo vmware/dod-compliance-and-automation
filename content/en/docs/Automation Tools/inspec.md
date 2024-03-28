@@ -7,13 +7,13 @@ description: >
 
 [Chef InSpec](https://docs.chef.io/inspec/) is an open-source framework for testing and auditing your applications and infrastructure. Chef InSpec works by comparing the actual state of your system with the desired state that you express in easy-to-read and easy-to-write Chef InSpec code. Chef InSpec detects violations and displays findings in the form of a report, but puts you in control of remediation.
 
-[Cinc](https://cinc.sh/) is a recursive acronym for CINC Is Not Chef. Chef InSpec is free for non-commercial use so the Cinc project was able to remove any trademarks while still complying with Chef's policies and offer a free for any use alternative. Cinc Auditor is built off the same code base and Chef InSpec.
+[Cinc](https://cinc.sh/) is a recursive acronym for CINC Is Not Chef. Chef InSpec is free for non-commercial use so the Cinc project was able to remove any trademarks while still complying with Chef's policies and offer a free for any use alternative. Cinc Auditor is built off the same code base as Chef InSpec.
 
 ## Why InSpec?
 
-We are currently utilizing Chef InSpec/CINC Auditor to assess products as it is geared specifically towards compliance auditing and reporting. It is also something our DoD customers can use along with the supporting tools from the MITRE Security Automation Framework to create artifacts needed to accredit their environments for use.
+Chef InSpec/CINC Auditor is currently being utilized to assess products as it is geared specifically towards compliance auditing and reporting. It is also something our DoD customers can use, along with the supporting tools from the MITRE Security Automation Framework, to create artifacts needed to accredit their environments.
 
-We also feel that using a separate tool than what is used to fix or remediate controls is good practice and provides additional assurances that the configuration is in an agreed upon state from multiple points of view. One can think of this similar to a home builder and inspector where we don't rely on a builder to inspect things and tell us they are up to code.
+Additionally, using a separate tool than what is used to fix or remediate controls is good practice and provides additional assurances that the configuration is in an agreed upon state from multiple points of view. One can think of this similar to a home builder and inspector where we don't rely on a builder to inspect things and tell us they are up to code.
 
 ## Prerequisites
 
@@ -60,7 +60,7 @@ Inputs provide a way for us to provide values to tests without having to update 
 ### Dependent Profiles
 In many cases our profiles are really made up of multiple profiles that are included in the same folder structure but can also be pulled in from another location.
 
-We do this when a product may have multiple STIGs that we would like to audit together but also separate into its own profile for organizational purposes. Another reason to do this is it makes profile reuse easier like with Photon OS which many of our product appliances are based on. Instead of maintaining a profile for Photon with each product we can maintain Photon separately and it can be called as a dependency in the a products profile and then provided inputs and tweaked as needed for that specific product.
+We do this when a product may have multiple STIGs that we would like to audit together but also separate into its own profile for organizational purposes. Another reason to do this is it makes profile reuse easier like with Photon OS which many of our product appliances are based on. Instead of maintaining a profile for Photon with each product we can maintain Photon separately and it can be called as a dependency in a product's profile and then provided inputs and tweaked as needed for that specific product.
 
 If we look at the [vSphere 7 VCSA profile](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/inspec/vmware-vcsa-7.0-stig-baseline) we will see an example of this.
 
@@ -215,12 +215,12 @@ InSpec can provide results in a variety of formats such as:
 * html,html2
 * junit
 
-These are useful for system admins to collect and monitor configuration drift and for accredidation tasks where with the SAF CLI tool you can convert results into a CKL file to import into STIG Viewer.
+These are useful for system admins to collect and monitor configuration drift and for accreditation tasks where with the SAF CLI tool you can convert results into a CKL file to import into STIG Viewer.
 
 For more information on reports, see [Reporters](https://docs.chef.io/inspec/reporters/)
 
 ### Waivers
-Waivers allow you do document as code the controls have a waiver/poam for in your environment. This is done through a waivers file and provided as an argument at the command line.
+Waivers allow you do document as code the controls that have a waiver/poam in place for your environment. This is done through a waivers file and provided as an argument at the command line.
 
 Example `waivers.yml` file
 ```yaml
