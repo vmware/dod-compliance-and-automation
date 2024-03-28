@@ -48,7 +48,7 @@ jobs:
         id: pages
         uses: actions/configure-pages@v3
       - name: Install Node.js dependencies
-        run: "[[ -f package-lock.json || -f npm-shrinkwrap.json ]] && npm ci || true"
+        run: npm install
       - name: Install postcss-cli
         run: npm install postcss-cli
       - name: Build with Hugo
