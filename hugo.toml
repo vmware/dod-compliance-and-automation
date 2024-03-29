@@ -2,7 +2,7 @@ baseURL = "https://github.com/vmware/dod-compliance-and-automation/"
 title = "DoD Compliance and Automation"
 
 # Language settings
-contentDir = "content"
+contentDir = "content/en"
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
 # Useful when translating.
