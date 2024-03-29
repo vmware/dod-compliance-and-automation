@@ -2,7 +2,7 @@ baseURL = "https://github.com/vmware/dod-compliance-and-automation/"
 title = "DoD Compliance and Automation"
 
 # Language settings
-contentDir = "content/en"
+contentDir = "content"
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
 # Useful when translating.
@@ -182,6 +182,6 @@ enable = false
 [module]
   # uncomment line below for temporary local development of module
   # replacements = "github.com/google/docsy -> ../../docsy"
-  [[module.imports]]
-    path = "github.com/google/docsy"
-    disable = false
+  proxy = "direct"
+[[module.imports]]
+  path = "github.com/google/docsy"
