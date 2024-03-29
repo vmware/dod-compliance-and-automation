@@ -64,11 +64,10 @@ anchor = "smart"
 [languages]
 [languages.en]
 title = "DoD Compliance and Automation"
+description = "DoD Compliance and Automation Documentation Site"
 languageName ="English"
 # Weight used for sorting.
 weight = 1
-[languages.en.params]
-description = "DoD Compliance and Automation Documentation Site"
 
 [markup]
   [markup.goldmark]
@@ -125,6 +124,9 @@ github_branch= "docs"
 # Google Custom Search Engine ID. Remove or comment out to disable search.
 # gcs_engine_id = "d72aa9b2712488cc3"
 
+# Enable Algolia DocSearch
+algolia_docsearch = false
+
 # Enable Lunr.js offline search
 offlineSearch = true
 
@@ -136,7 +138,7 @@ prism_syntax_highlighting = false
 #  Set to true to disable breadcrumb navigation.
 breadcrumb_disable = false
 # Set to true to disable the About link in the site footer
-footer_about_enable = false
+footer_about_disable = true
 # Set to false if you don't want to display a logo (/assets/icons/logo.svg) in the top navbar
 navbar_logo = true
 # Set to true if you don't want the top navbar to be translucent when over a `block/cover`, like on the homepage.
@@ -182,6 +184,12 @@ enable = false
 [module]
   # uncomment line below for temporary local development of module
   # replacements = "github.com/google/docsy -> ../../docsy"
-  proxy = "direct"
-[[module.imports]]
-  path = "github.com/google/docsy"
+  [module.hugoVersion]
+    extended = true
+    min = "0.75.0"
+  [[module.imports]]
+    path = "github.com/google/docsy"
+    disable = false
+  [[module.imports]]
+    path = "github.com/google/docsy/dependencies"
+    disable = false    
