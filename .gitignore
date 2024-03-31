@@ -4,3 +4,4 @@ node_modules/
 .hugo_build.lock
 Gemfile.lock
 package-lock.json
+go.sum
