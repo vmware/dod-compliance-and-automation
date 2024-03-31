@@ -56,6 +56,8 @@ jobs:
         run: npm install --save-dev postcss-cli
       - name: Install docsy postcss dependency
         run: npm install -D postcss
+      - name: Env vars
+        run: echo "path ${{ steps.pages.outputs.base_url }}"
       - name: Build with Hugo
         env:
           # For maximum backward compatibility with Hugo modules
@@ -65,7 +67,7 @@ jobs:
           hugo \
             --gc \
             --minify \
-            --baseURL "/"
+            --baseURL "${{ steps.pages.outputs.base_url }}/"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -79,6 +81,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: vars
+        run: echo "deployment... ${{ steps.deployment.outputs.page_url }}"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
