@@ -82,7 +82,7 @@ jobs:
     needs: build
     steps:
       - name: vars
-        run: echo "deployment... {{ steps.deployment.outputs.page_url }}"
+        run: echo "deployment... ${{ steps.deployment.outputs.page_url }}"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
