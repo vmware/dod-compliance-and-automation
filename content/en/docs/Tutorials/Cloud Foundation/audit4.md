@@ -1,6 +1,6 @@
 ---
 title: "Audit Cloud Foundation 4.x"
-weight: 1
+weight: 3
 description: >
   Auditing VCF 4.x for STIG Compliance
 ---
