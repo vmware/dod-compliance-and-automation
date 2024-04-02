@@ -108,8 +108,17 @@ In the example below we are using the `ansible.builtin.template` module.
 
 For a list of all available modules, see [Index of all Modules](https://docs.ansible.com/ansible/latest/collections/index_module.html).
 
-#### Installing Collections/Modules
-To be added
+#### Installing Collections and Roles
+```bash
+# Install a collection directly from ansible galaxy
+ansible-galaxy collection install ansible-posix
+
+# Install a collection from a downloaded tar.gz
+ansible-galaxy collection install ansible-posix-1.5.4.tar.gz
+
+# Install a role from a downloaded tar.gz of the role
+ansible-galaxy role install --roles-path /usr/share/ansible/roles vmware-photon-3.0-stig-ansible-hardening-v1r9.tar.gz
+```
 
 ### Tags
 Tags in Ansible offer a way to only run a specific task or exclude tasks. In the playbooks provided we tag tasks with STIG IDs and sometimes a category such as sshd if there are many tasks that touch ssh.
