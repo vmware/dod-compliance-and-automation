@@ -1,6 +1,6 @@
 ---
 title: "Audit vSphere 7"
-weight: 1
+weight: 3
 description: >
   Auditing vSphere 7 for STIG Compliance
 ---

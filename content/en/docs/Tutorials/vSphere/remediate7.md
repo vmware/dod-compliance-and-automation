@@ -1,6 +1,6 @@
 ---
 title: "Remediate vSphere 7"
-weight: 2
+weight: 4
 description: >
   Remediating vSphere 7 for STIG Compliance
 ---
