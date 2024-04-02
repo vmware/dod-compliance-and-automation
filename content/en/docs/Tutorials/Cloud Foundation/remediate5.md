@@ -20,6 +20,7 @@ Versions listed below were used for this documentation. Other versions of these 
 * Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy roles install -r requirements.yml`.
 * The dependent Photon OS Ansible roles(Photon 3.0 for VCF 5.0.x and Photon 4 for VCF 5.1.x) installed and available.  Verify role installation with `ansible-galaxy role list`.
 
+## Remediating SDDC Manager
 {{% alert title="Important" color="primary" %}}
 The example commands below are specific to the product version and the supported STIG content for the version you are running. Select the example command tabs for the version in your environment.
 {{% /alert %}}
@@ -28,7 +29,6 @@ The example commands below are specific to the product version and the supported
 Before running it is highly advised to have a backup of the SDDC Manager and/or snapshot available if a rollback is required. Also the playbook will backup files configured before updates and place them under the /tmp directory in a folder directly on the SDDC Manager appliance.
 {{% /alert %}}
 
-## Remediating SDDC Manager
 ### Generate bearer token for SDDC Manager
 The SDDC Manager Ansible playbook connects to the API via a bearer token to update product controls while the appliance controls are configured via SSH.  
 
@@ -72,14 +72,14 @@ Open the inputs file for editing.
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
-# Edit the inputs file
+# Edit the vars file
 vi vars-sddcmgr-example.yml
 {{< /tab >}}
 {{< tab header="5.0.x" lang="bash" >}}
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
-# Edit the inputs file
+# Edit the vars file
 vi vars-sddcmgr-example.yml
 {{< /tab >}}
 {{< /tabpane >}}

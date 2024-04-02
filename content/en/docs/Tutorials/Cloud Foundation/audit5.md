@@ -23,11 +23,11 @@ Versions listed below were used for this documentation. Other versions of these 
 * The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
 * CINC Auditor is used in lieu of InSpec. If InSpec is used replace `cinc-auditor` with `inspec` when running commands.
 
+## Auditing SDDC Manager
 {{% alert title="Important" color="primary" %}}
 The example commands below are specific to the product version and the supported STIG content for the version you are running. Select the example command tabs for the version in your environment.
 {{% /alert %}}
 
-## Auditing SDDC Manager
 ### Generate bearer token for SDDC Manager
 The SDDC Manager InSpec profile connects to the API via a bearer token to query some configurations when auditing.
 
