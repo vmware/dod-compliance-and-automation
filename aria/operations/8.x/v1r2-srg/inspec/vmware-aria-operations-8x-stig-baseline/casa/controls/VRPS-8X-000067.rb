@@ -47,6 +47,6 @@ control 'VRPS-8X-000067' do
 
   # Find Host elements with missing ErrorReportValue, or if present, the showServerInfo is not set to false
   describe xmlconf do
-    its(["name(//Host[not(Valve[contains(@className, 'ErrorReportValve')])] | //Host[Valve[contains(@className, 'ErrorReportValve')]/@showServerInfo != 'false'])"]) { should cmp [] }
+    its(["//Host/Valve[contains(@className, 'ErrorReportValve')]/@showServerInfo"]) { should cmp ['false'] }
   end
 end
