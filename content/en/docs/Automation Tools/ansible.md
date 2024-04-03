@@ -156,6 +156,16 @@ The arguments provided in the example can be combined as needed.
 
 For more options, see [ansible-playbook](https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html).
 
+### Host Key Checking
+Ansible enables host key checking by default. Checking host keys guards against server spoofing and man-in-the-middle attacks. If a host is not trusted before running Ansible you may see an error that the authenticity of the host cannot be verified.
+
+This can be corrected by running the following:
+```bash
+ssh-keyscan -H <IP or FQDN> >> /root/.ssh/known_hosts
+```
+
+See [managing-host-key-checking](https://docs.ansible.com/ansible/latest/inventory_guide/connection_details.html#managing-host-key-checking) for more details.
+
 ## References
 
 For the full Ansible documentation, see [Ansible Documentation](https://docs.ansible.com/ansible/latest/index.html).
