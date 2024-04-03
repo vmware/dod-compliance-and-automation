@@ -2598,37 +2598,61 @@ Try{
   If($controlsenabled.ESXI80000239){
     Write-ToConsole "...Remediating STIG ID:$STIGID with Title: $Title"
     ForEach($vmhost in $vmhosts){
-      #vSphere Web Client, VMware vCenter Agent, and the Dell VxRail services are excluded from the script due to the order PowerCLI does firewall rules which removes all allowed IPs briefly before setting new allowed ranges which breaks connectivity from vCenter to ESXi so these must be manually done.
-      $fwservices = $vmhost | Get-VMHostFirewallException -ErrorAction Stop | Where-Object {($_.Enabled -eq $True) -and ($_.extensiondata.allowedhosts.allip -eq "enabled") -and ($_.Name -ne "vSphere Web Client") -and ($_.Name -ne "dellptagenttcp") -and ($_.Name -ne "dellsshServer") -and ($_.Name -ne "VMware vCenter Agent")}
-      $esxcli = Get-EsxCli -VMHost $vmhost -V2 -ErrorAction Stop
-      ForEach($fwservice in $fwservices){
-        $fwsvcname = $fwservice.extensiondata.key
-        Write-ToConsoleYellow "...Configuring ESXi Firewall Policy on service $fwsvcname to $($stigsettings.allowedips) on $vmhost"
-        ## Disables All IPs allowed policy
-        $fwargs = $esxcli.network.firewall.ruleset.set.CreateArgs()
-        $fwargs.allowedall = $false
-        $fwargs.rulesetid = $fwsvcname
-        $esxcli.network.firewall.ruleset.set.Invoke($fwargs) | Out-Null
-        #Add IP ranges to each service
-        ForEach($allowedip in $stigsettings.allowedips){
-          $fwallowedargs = $esxcli.network.firewall.ruleset.allowedip.add.CreateArgs()
-          $fwallowedargs.ipaddress = $allowedip
-          $fwallowedargs.rulesetid = $fwsvcname
-          $esxcli.network.firewall.ruleset.allowedip.add.Invoke($fwallowedargs) | Out-Null
-          $changedcount++
-        }
-        #Add 169.254.0.0/16 range to hyperbus service if NSX-T is in use for internal communication
-        If($fwsvcname -eq "hyperbus"){
-          $fwallowedargs = $esxcli.network.firewall.ruleset.allowedip.add.CreateArgs()
-          $fwallowedargs.ipaddress = "169.254.0.0/16"
-          $fwallowedargs.rulesetid = $fwsvcname
-          $esxcli.network.firewall.ruleset.allowedip.add.Invoke($fwallowedargs) | Out-Null
-          $changedcount++
-        }
-      }
+      $fwsys = Get-View $vmhost.ExtensionData.ConfigManager.FirewallSystem
+      # Get a list of all enabled firewall rules that are user configurable that allow all IP addresses
+      $fwservices = $fwsys.FirewallInfo.Ruleset | Where-Object {($_.IpListUserConfigurable -eq $true) -and ($_.Enabled -eq $true) -and ($_.AllowedHosts.AllIp -eq $true) } | Sort-Object Key
       If(-not $fwservices){
         Write-ToConsoleGreen "...ESXi Firewall Policy set correctly on $vmhost"
         $unchangedcount++
+      }Else{
+        # Populate new allowed IP networks object
+        $newIpNetworks = @()
+        ForEach ($allowedIpNetwork in $stigsettings.allowedips) {
+          $allowedNetwork,$allowedNetworkPrefix = $allowedIpNetwork.split('/')
+          $tmp = New-Object VMware.Vim.HostFirewallRulesetIpNetwork
+          $tmp.network = $allowedNetwork
+          $tmp.prefixLength = $allowedNetworkPrefix
+          $newIpNetworks+=$tmp
+        }
+        # Loop through each firewall service that is user configurable, enabled, and currently set to allow all IPs
+        ForEach($fwservice in $fwservices){
+          Write-ToConsoleYellow "...Configuring ESXi Firewall Policy on service $($fwservice.Label) to $($stigsettings.allowedips) on $vmhost"
+          # Add 169.254.0.0/16 range to hyperbus service if NSX is in use for internal communication
+          If($fwservice.Key -eq "hyperbus"){
+            $nsxIpNetworks = @()
+            ForEach ($allowedIpNetwork in $stigsettings.allowedips) {
+              $allowedNetwork,$allowedNetworkPrefix = $allowedIpNetwork.split('/')
+              $tmp = New-Object VMware.Vim.HostFirewallRulesetIpNetwork
+              $tmp.network = $allowedNetwork
+              $tmp.prefixLength = $allowedNetworkPrefix
+              $nsxIpNetworks+=$tmp
+            }
+            $tmp = New-Object VMware.Vim.HostFirewallRulesetIpNetwork
+            $tmp.network = "169.254.0.0"
+            $tmp.prefixLength = "16"
+            $nsxIpNetworks+=$tmp
+            # Create new object for rule IP list and disable allow all IPs
+            $rulesetIpListSpec = New-Object VMware.Vim.HostFirewallRulesetIpList
+            $rulesetIpListSpec.allIp = $false
+            $rulesetIpListSpec.ipNetwork = $nsxIpNetworks
+            # Create new object for update firewall rules with new IP ranges
+            $rulesetSpec = New-Object VMware.Vim.HostFirewallRulesetRulesetSpec
+            $rulesetSpec.allowedHosts = $rulesetIpListSpec
+
+            $fwsys.UpdateRuleset($fwservice.Key, $rulesetSpec)
+            $changedcount++
+          }Else{
+            # Create new object for rule IP list and disable allow all IPs
+            $rulesetIpListSpec = New-Object VMware.Vim.HostFirewallRulesetIpList
+            $rulesetIpListSpec.allIp = $false
+            $rulesetIpListSpec.ipNetwork = $newIpNetworks
+            # Create new object for update firewall rules with new IP ranges
+            $rulesetSpec = New-Object VMware.Vim.HostFirewallRulesetRulesetSpec
+            $rulesetSpec.allowedHosts = $rulesetIpListSpec
+            $fwsys.UpdateRuleset($fwservice.Key, $rulesetSpec)
+            $changedcount++
+          }
+        }
       }
     }
   }
