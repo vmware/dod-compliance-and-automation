@@ -1,0 +1,19 @@
+- name: vmware-aria-operations-8x-stig-ansible-hardening
+  hosts: all
+  roles:
+    - role: apache
+    - role: api
+    - role: casa
+    - role: postgres
+    - role: ui
+    - role: vmware-photon-4.0-stig-ansible-hardening
+      vars:
+        # Set to true or false to configure dod banner for ssh
+        run_etc_issue_dod: false
+        # Disable N/A Photon Controls
+        run_enable_selinux: false
+        run_selinux_install: false
+        run_time_sync: false
+        run_install_aide: false
+        run_aide_config: false
+        run_usr_lib_perms: false

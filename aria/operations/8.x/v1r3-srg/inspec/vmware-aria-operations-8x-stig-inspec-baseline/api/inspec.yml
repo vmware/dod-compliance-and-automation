@@ -1,0 +1,57 @@
+name: VMware Aria Operations 8.x API Profile
+title: VMware Aria Operations 8.x API Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.3
+
+inputs:
+# FILE PATHS
+- name: api-tcInstance
+  description: VRPI-8X-000025, 141, 142, 143, 144, 154, 155 - Path to Tomcat server instance base folder (equates to $CATALINA_BASE)
+  type: string
+  value: "/usr/lib/vmware-vcops/tomcat-enterprise"
+- name: api-serverXmlPath
+  description: VRPI-8X-000001, 014, 034, 036, 065, 067, 125, 126, 134, 138, 139, 140 - Tomcat instance server.xml path (equates to $CATALINA_BASE/conf/server.xml)
+  type: string
+  value: "/usr/lib/vmware-vcops/tomcat-enterprise/conf/server.xml"
+- name: api-tcCore
+  description: VRPI-8X-000013 - Tomcat server core path (path to main binaries) - equates to $CATALINA_HOME
+  type: string
+  value: "/usr/share/tomcat"
+- name: api-catalinaPropsPath
+  description: VRPI-8X-000057, 062, 124, 134, 151, 152
+  type: string
+  value: "/usr/lib/vmware-vcops/tomcat-enterprise/conf/catalina.properties"
+- name: api-webXmlPath
+  description: VRPI-8X-000005, 070, 127, 129, 130, 136, 137 - Path to Tomcat instance web.xml file (equates to $CATALINA_BASE/conf/web.xml)
+  type: string
+  value: "/usr/lib/vmware-vcops/tomcat-enterprise/conf/web.xml"
+- name: api-contextXmlFiles
+  description: VRPI-8X-000014 - List of Context.xml files (if present)
+  type: array
+  value:
+  - /usr/lib/vmware-vcops/tomcat-enterprise/conf/context.xml
+
+# OTHER SETTINGS 
+- name: api-sessionTimeout
+  description: VRPI-8X-000070 - session timeout value in minutes
+  type: string
+  value: "30"
+- name: api-maxThreads
+  description: VRPI-8X-000001
+  type: string
+  value: "300"
+- name: api-accessLogPattern
+  description: VRPI-8X-000014 - List of values that must be present in the pattern property of the AccessLogValve
+  type: array
+  value:
+  - "%h"
+  - "%l"
+  - "%t"
+  - "%u"
+  - "&quot;%r&quot;"
+  - "%s"
+  - "%b"

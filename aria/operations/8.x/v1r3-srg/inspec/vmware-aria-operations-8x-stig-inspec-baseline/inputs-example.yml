@@ -1,0 +1,2 @@
+# Inputs for Photon OS.
+sshdcommand: "sshd -T"
