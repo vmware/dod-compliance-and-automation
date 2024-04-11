@@ -19,5 +19,5 @@ depends:
     path: vpostgres
   - name: ui
     path: ui
-  - name: vrops
-    path: vrops
+  - name: application
+    path: application
