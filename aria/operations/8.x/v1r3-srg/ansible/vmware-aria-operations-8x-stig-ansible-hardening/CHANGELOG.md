@@ -17,6 +17,8 @@ VPOSTGRES:
 
 CASA:
 - VRPS-8X-000124 - removed
+- VRPS-8X-000138 - removed
+- VRPS-8X-000139 - removed
 
 ## [8.x Version 1 Release 2] (2023-06-15)
 
