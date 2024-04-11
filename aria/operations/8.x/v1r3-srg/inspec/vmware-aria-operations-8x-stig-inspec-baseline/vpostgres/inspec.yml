@@ -1,0 +1,55 @@
+name: VMware Aria Operations 8.x PostgreSQL data Profile
+title: VMware Aria Operations 8.x PostgreSQL data Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.3
+
+inputs:
+- name: ssl_enabled
+  description: VRPP-8X-000041, 049 - Set to true or false depending on whether SSL should be enabled and in use for this instance.
+  type: boolean
+  value: true
+- name: syslog_enabled
+  description: VRPP-8X-000122 - Set to true or false depending on whether PostgreSQL should ship logs directly to a syslog server or if an alternative solution is used such as rsyslog.
+  type: boolean
+  value: true
+- name: pg_data_dir
+  description: VRPP-8X-000006, 036 - Enter location of the postgres installation - can be found by connecting to the database and running 'SHOW data_directory;'
+  type: string
+  value: "/storage/db/vcops/vpostgres/data"
+- name: pg_repl_dir
+  description: VRPP-8X-000006, 036 - Enter location of the postgres installation - can be found by connecting to the database and running 'SHOW data_directory;'
+  type: string
+  value: "/storage/db/vcops/vpostgres/repl"
+- name: pg_owner
+  description: VRPP-8X-000006, 020, 041 - Enter expected owner for pg files
+  type: string
+  value: "postgres"
+- name: pg_group
+  description: VRPP-8X-000006, 020, 041 - Enter expected group for pg files
+  type: string
+  value: "users"
+- name: pg_log_dir
+  description: VRPP-8X-000020 - Enter location of the postgres logs - can be found by connecting to the database and running 'SHOW log_directory;'. It may be a relative path to the data_directory.
+  type: string
+  value: "/storage/db/vcops/vpostgres/repl/pg_log"
+- name: pg_approved_extensions
+  description: VRPP-8X-000032 - Enter a list of approved extensions. Ensure 'plpgsql' is one of the entries
+  type: array
+  value:
+    - plpgsql 
+- name: tcpKeepAliveIdle
+  description: VRPP-8X-000047
+  type: string
+  value: "7200"
+- name: tcpKeepAliveInterval
+  description: VRPP-8X-000047
+  type: string
+  value: "75"
+- name: tcpKeepAliveCount
+  description: VRPP-8X-000047
+  type: string
+  value: "9"

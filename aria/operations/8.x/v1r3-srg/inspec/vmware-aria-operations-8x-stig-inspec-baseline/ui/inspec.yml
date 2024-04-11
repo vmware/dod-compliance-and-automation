@@ -1,0 +1,55 @@
+name: VMware Aria Operations 8.x UI Profile
+title: VMware Aria Operations 8.x UI Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.3
+
+inputs:
+# FILE PATHS
+- name: ui-tcInstance
+  description: VRPU-8X-000025, 141, 142, 143, 144, 154, 155 - Path to Tomcat server instance base folder (equates to $CATALINA_BASE)
+  type: string
+  value: "/usr/lib/vmware-vcops/tomcat-web-app"
+- name: ui-serverXmlPath
+  description: VRPU-8X-000001, 014, 034, 036, 065, 067, 125, 126, 134, 138, 139, 140 - Tomcat instance server.xml path (equates to $CATALINA_BASE/conf/server.xml)
+  type: string
+  value: "/usr/lib/vmware-vcops/tomcat-web-app/conf/server.xml"
+- name: ui-tcCore
+  description: VRPU-8X-000013 - Tomcat server core path (path to main binaries) - equates to $CATALINA_HOME
+  type: string
+  value: "/usr/share/tomcat"
+- name: ui-catalinaPropsPath
+  description: VRPU-8X-000057, 062, 124, 134, 151, 152 - path to the catalina.properties file
+  type: string
+  value: "/usr/lib/vmware-vcops/tomcat-web-app/conf/catalina.properties"
+- name: ui-webXmlPath
+  description: VRPU-8X-000005, 070, 127, 129, 130, 136, 137 - Path to Tomcat instance web.xml file (equates to $CATALINA_BASE/conf/web.xml)
+  type: string
+  value: "/usr/lib/vmware-vcops/tomcat-web-app/conf/web.xml"
+- name: ui-contextXmlFiles
+  description: VRPU-8X-000014 -List of Context.xml files (if present)
+  type: array
+  value:
+  - /usr/lib/vmware-vcops/tomcat-web-app/conf/context.xml
+- name: ui-sessionTimeout
+  description: VRPU-8X-000070 - session timeout value in minutes
+  type: string
+  value: "30"
+- name: ui-maxThreads
+  description: VRPU-8X-000001 - Value for maxThreads attribute
+  type: string
+  value: "300"
+- name: ui-accessLogPattern
+  description: VRPU-8X-000014 - List of values that must be present in the pattern property of the AccessLogValve
+  type: array
+  value:
+  - "%h"
+  - "%l"
+  - "%t"
+  - "%u"
+  - "&quot;%r&quot;"
+  - "%s"
+  - "%b"

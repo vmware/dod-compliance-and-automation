@@ -1,0 +1,718 @@
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [apache, backup]
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vrops-Apache-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      with_items:
+        - '{{ apache_conf_path }}'
+        - '{{ apache_conf_file }}'
+
+###################################################################################################################################
+
+# VRPE-8X-000001 - The vRealize Operations Manager Apache server must limit the number of allowed simultaneous session requests.
+- name: VRPE-8X-000001 - The vRealize Operations Manager Apache server must limit the number of allowed simultaneous session requests
+  tags: [VRPE-8X-000001]
+  block:
+    - name: VRPE-8X-000001 - Check maximum number of allowed simultaneous session requests
+      ansible.builtin.shell: set -o pipefail && grep MaxKeepAliveRequests {{ apache_conf_file }} | grep -v '^#'
+      register: max_conn_out
+      changed_when: false
+
+    - name: VRPE-8X-000001 - Add or configure MaxKeepAliveRequests if not set already or misconfigured
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_file }}"
+        regexp: 'MaxKeepAliveRequests '
+        line: "MaxKeepAliveRequests {{ max_keep_alive_requests }}"
+        insertbefore: "KeepAliveTimeout"
+        state: present
+      when: 'max_conn_out.stdout | trim != "MaxKeepAliveRequests max_keep_alive_requests"'
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000002 - The vRealize Operations Manager Apache server must use encryption strength in accordance with the categorization of data hosted by the web server when remote connections are provided.
+- name: VRPE-8X-000002 - The vRealize Operations Manager Apache server must use encryption strength in accordance with the categorization of data hosted by the web server when remote connections are provided
+  tags: [VRPE-8X-000002]
+  block:
+    - name: VRPE-8X-000002 - Check ssl cipher suite config
+      ansible.builtin.shell: grep SSLCipherSuite {{ apache_conf_path }} | grep -v '^#'
+      register: ssl_cphr_out
+      ignore_errors: true
+      failed_when: false
+      changed_when: false
+
+    - name: VRPE-8X-000002 - Add or configure ssl_cipher_suite if not set already or misconfigured
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: 'SSLCipherSuite '
+        line: "SSLCipherSuite {{ ssl_cipher_suite }}"
+        state: present
+      when: 'ssl_cphr_out.stdout | trim != "SSLCipherSuite ssl_cipher_suite"'
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000003 - The vRealize Operations Manager Apache server must use cryptography to protect the integrity of remote sessions.
+- name: VRPE-8X-000003 - The vRealize Operations Manager Apache server must use cryptography to protect the integrity of remote sessions
+  tags: [VRPE-8X-000003]
+  block:
+    - name: VRPE-8X-000003 - Check ssl engine config
+      ansible.builtin.shell: grep SSLEngine {{ apache_conf_path }} |sed 's/^[ \t]*//' | grep -v '^#'
+      register: ssl_eng_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000003 - Add or configure SSLEngine if not set already
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: 'SSLEngine '
+        line: "    SSLEngine on"
+        insertbefore: "SSLCertificateFile"
+        state: present
+      when: ssl_eng_out.stdout | trim != "SSLEngine on"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000004 - The vRealize Operations Manager Apache server must capture, record, and log all content related to a user session.
+- name: VRPE-8X-000004 - The vRealize Operations Manager Apache server must capture, record, and log all content related to a user session
+  tags: [VRPE-8X-000004]
+  block:
+    - name: VRPE-8X-000004 - Check custom log config
+      ansible.builtin.shell: grep CustomLog {{ apache_conf_path }} |sed 's/^[ \t]*//' | grep -v '^#'
+      register: log_conf_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000004 - Add or configure CustomLog if not set already
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        line: "    {{ item }}"
+        insertbefore: "ErrorLog"
+        state: present
+      when: item not in log_conf_out.stdout_lines
+      with_items:
+        - "{{ custom_log_config }}"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000005 - The vRealize Operations Manager Apache server log files must only be accessible by privileged users.
+- name: VRPE-8X-000005 - The vRealize Operations Manager Apache server log files must only be accessible by privileged users.
+  tags: [VRPE-8X-000005]
+  block:
+    - name: VRPE-8X-000005- Check owner and permissions for the access log file
+      ansible.builtin.command: stat -c "%U:%G %a" {{ access_log_file }}
+      register: file_perm_out
+      changed_when: false
+
+    - name: VRPE-8X-000005- Change file owner
+      ansible.builtin.file:
+        path: "{{ access_log_file }}"
+        state: file
+        owner: 'admin'
+        group: 'admin'
+        mode: '640'
+      when: file_perm_out.stdout.split()[0] != "admin:admin" or file_perm_out.stdout.split()[1] != "640"
+
+    - name: VRPE-8X-000005 - Update umask configuration
+      ansible.builtin.lineinfile:
+        path: /etc/login.defs
+        regexp: '^#?\s*UMASK\s'
+        line: UMASK 077
+        state: present
+
+###################################################################################################################################
+
+# VRPE-8X-000006 - The vRealize Operations Manager Apache server files must be verified for their integrity (e.g., checksums and hashes) before becoming part of the production web server.
+# Roll back to a previous snapshot, restore from backup or deploy a new node and retire the affected one.
+
+###################################################################################################################################
+
+# VRPE-8X-000007 - The vRealize Operations Manager Apache server expansion modules must be fully reviewed, tested, and signed.
+- name: VRPE-8X-000007 - The vRealize Operations Manager Apache server expansion modules must be fully reviewed, tested, and signed
+  tags: [VRPE-8X-000007]
+  block:
+    - name: VRPE-8X-000007 - Check load module config
+      ansible.builtin.shell: grep LoadModule {{ apache_conf_path }} | grep -v '^#'
+      register: ld_mod_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000007 - Check or configure/remove modules
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        line: "{{ item }}"
+        state: absent
+      when: item | replace(' ','') not in modules
+      with_items:
+        - "{{ ld_mod_out.stdout_lines | trim }}"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000008 - The vRealize Operations Manager Apache server must disable Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs.
+- name: VRPE-8X-000008 - The vRealize Operations Manager Apache server must disable Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs
+  tags: [VRPE-8X-000008]
+  block:
+    - name: VRPE-8X-000008 - Check for Action or AddHandler
+      ansible.builtin.shell: grep -E 'Action|AddHandler' {{ apache_conf_path }} | grep -v '^#'
+      register: ac_add_out
+      ignore_errors: true
+      changed_when: false
+      failed_when: "ac_add_out.rc not in [ 0, 1 ]"
+
+    - name: VRPE-8X-000008 - Remove the lines already present with Action or AddHandler
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        line: "{{ item }}"
+        state: absent
+      when: ac_add_out.stdout != ""
+      with_items:
+        - "{{ ac_add_out.stdout_lines }}"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000009 - The vRealize Operations Manager Apache server must have Web Distributed Authoring (WebDAV) disabled.
+# This will be fixed as part of VRPE-8X-000007 if configured from apache conf file, else fix this manually.
+
+###################################################################################################################################
+
+# VRPE-8X-000010 - The vRealize Operations Manager Apache servers users and scripts running on behalf of users must be contained to the document root or home directory tree of the web server.
+- name: VRPE-8X-000010 - The vRealize Operations Manager Apache servers users and scripts running on behalf of users must be contained to the document root or home directory tree of the web server
+  tags: [VRPE-8X-000010]
+  block:
+    - name: VRPE-8X-000010 - Check for location block config
+      ansible.builtin.shell: sed -n '/<Location \/>/,/<\/Location>/p' {{ apache_conf_path }}  # noqa: command-instead-of-module
+      register: loc_blck_out
+      changed_when: false
+
+    - name: VRPE-8X-000010 - Add or configure location block config
+      ansible.builtin.blockinfile:
+        path: "{{ apache_conf_path }}"
+        marker: '{mark}'
+        marker_begin: "<Location />"
+        marker_end: "</Location>"
+        block: "{{ location_block }}"
+        state: present
+      when: loc_blck_out.stdout  | trim != "<Location />\n<LimitExcept GET POST PUT DELETE PATCH>\norder deny,allow\ndeny from all\n</LimitExcept>\n</Location>"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000011 - The vRealize Operations Manager Apache server must only allow authenticated system administrators or the designated PKI Sponsor to access the web server's private key.
+- name: VRPE-8X-000011 - The vRealize Operations Manager Apache server must only allow authenticated system administrators or the designated PKI Sponsor to access the web server's private key
+  tags: [VRPE-8X-000011]
+  block:
+    - name: VRPE-8X-000011 - List files and file permissions in ssl directory
+      ansible.builtin.shell: find /storage/vcops/user/conf/ssl/*key.pem -xdev -type f -a -exec stat -c %n:%a:%U:%G {} \;
+      register: list_files_out
+      changed_when: false
+
+    - name: VRPE-8X-000011 - Verify and update file permissions
+      ansible.builtin.file:
+        path: "{{ item.split(':')[0] }}"
+        state: file
+        owner: 'admin'
+        group: 'admin'
+        mode: '400'
+      when: item.split(':')[1] != "400" or item.split(':')[2] not in ["admin", "postgres"]
+      with_items: "{{ list_files_out.stdout_lines }}"
+
+###################################################################################################################################
+
+# VRPE-8X-000012 - The vRealize Operations Manager Apache server must use cryptographic modules that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for such authentication.
+# Has to be fixed manually by activating FIPS from vROPs admin ui
+
+###################################################################################################################################
+
+# VRPE-8X-000013 - The vRealize Operations Manager Apache server accounts accessing the directory tree, the shell, or other operating system functions and utilities must only be administrative accounts.
+- name: VRPE-8X-000013 - The vRealize Operations Manager Apache server accounts accessing the directory tree, the shell, or other operating system functions and utilities must only be administrative accounts.
+  tags: [VRPE-8X-000013]
+  block:
+    - name: VRPE-8X-000013 - List files and file permissions in httpd directory
+      ansible.builtin.shell: find /etc/httpd -xdev -type f -a '(' '(' -not -user admin -o -not -group admin ')' -a '(' -not -user root -o -not -group root ')' ')' -exec stat -c %n:%a:%U:%G {} \;
+      register: list_files_out
+      changed_when: false
+
+    - name: VRPE-8X-000013 - Verify and update file permissions
+      ansible.builtin.file:
+        path: "{{ item.split(':')[0] }}"
+        state: file
+        owner: 'admin'
+        group: 'admin'
+      when: list_files_out.stdout != ""
+      with_items: "{{ list_files_out.stdout_lines }}"
+
+###################################################################################################################################
+
+# VRPE-8X-000014 - Anonymous user access to the vRealize Operations Manager Apache server application directories must be prohibited.
+- name: VRPE-8X-000014 - Anonymous user access to the vRealize Operations Manager Apache server application directories must be prohibited
+  tags: [VRPE-8X-000014]
+  block:
+    - name: VRPE-8X-000014 - List files and file permissions in httpd directory
+      ansible.builtin.shell: find /etc/httpd -xdev -type f -a '(' -perm /o+w,o+x ')' -exec stat -c %n:%a:%U:%G {} \;
+      register: list_files_out
+      changed_when: false
+
+    - name: VRPE-8X-000014 - Verify and update file permissions
+      ansible.builtin.file:
+        path: "{{ item.split(':')[0] }}"
+        state: file
+        mode: o-wx
+      when: list_files_out.stdout != ""
+      with_items: "{{ list_files_out.stdout_lines }}"
+
+###################################################################################################################################
+
+# VRPE-8X-000016 - The vRealize Operations Manager Apache server must limit the character set used for data entry.
+- name: VRPE-8X-000016 - The vRealize Operations Manager Apache server must limit the character set used for data entry.
+  tags: [VRPE-8X-000016]
+  block:
+    - name: VRPE-8X-000016 - Check AddDefaultCharset config
+      ansible.builtin.shell: grep AddDefaultCharset {{ apache_conf_path }} | grep -v '^#'
+      register: charset_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000016 - Add or configure AddDefaultCharset if not set already
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: 'AddDefaultCharset '
+        line: "AddDefaultCharset utf-8"
+        state: present
+      when: charset_out.stdout | trim != "AddDefaultCharset utf-8"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000017 - The vRealize Operations Manager Apache server must display a default hosted application web page, not a directory listing, when a requested web page cannot be found.
+- name: VRPE-8X-000017 - The vRealize Operations Manager Apache server must display a default hosted application web page, not a directory listing, when a requested web page cannot be found
+  tags: [VRPE-8X-000017]
+  block:
+    - name: VRPE-8X-000017 - Check ErrorDocument config
+      ansible.builtin.command: grep ErrorDocument {{ apache_conf_path }}
+      register: err_doc_saas_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000017 - Add or configure ErrorDocument if not set already
+      ansible.builtin.blockinfile:
+        path: "{{ apache_conf_path }}"
+        marker: '{mark}'
+        marker_begin: "<If \"env('IS_SAAS') -eq 1\">"
+        marker_end: "</Else>"
+        block: "{{ error_doc_block_all }}"
+        state: present
+      when: '"SaaS" not in err_doc_saas_out.stdout'
+      notify:
+        - Restart Apache
+
+    - name: VRPE-8X-000017 - Check ErrorDocument config
+      ansible.builtin.shell: grep ErrorDocument {{ apache_conf_path }}  | grep -v 'SaaS' | grep -v '^#'
+      register: err_doc_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000017 - Add or configure ErrorDocument if not set already (Else)
+      ansible.builtin.blockinfile:
+        path: "{{ apache_conf_path }}"
+        marker: '{mark}'
+        marker_begin: "<Else>"
+        marker_end: "</Else>"
+        block: "{{ error_doc_block_else }}"
+        insertafter: '<If.*IS_SAAS.*>\n.*\n.*\n</If>'
+        state: present
+      when: err_doc_out.stdout == "" or err_doc_out.stdout != "ErrorDocument 503 /serviceUnavailable\nErrorDocument 404 /notFound/notFound"
+      notify:
+        - Restart Apache
+
+    - name: VRPE-8X-000017 - Check vmware-vcopssuite-utilities for service errors
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -V vmware-vcopssuite-utilities|grep -E "notFound\.en|serviceUnavailable\.en" | grep -v "SaaS"|grep "^..5"
+      register: utilities_out
+      changed_when: false
+      failed_when: "utilities_out.rc not in [ 0, 1 ]"
+
+    - name: VRPE-8X-000017 - Setup files for service errors
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: touch
+        mode: u=rw,g=r,o=r
+      with_items:
+        - /usr/lib/vmware-vcopssuite/utilities/proxy/web/notFound/notFound.en.html
+        - /usr/lib/vmware-vcopssuite/utilities/proxy/web/serviceUnavailable.en.html
+      when: utilities_out.stdout != ""
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000018 - The vRealize Operations Manager Apache server warning and error messages displayed to clients must be modified to minimize the identity of the web server, patches, loaded modules, and directory paths.
+- name: VRPE-8X-000018 - The vRealize Operations Manager Apache server warning and error messages displayed to clients must be modified to minimize the identity of the web server, patches, loaded modules, and directory paths.
+  tags: [VRPE-8X-000018]
+  block:
+    - name: VRPE-8X-000018 - Check ServerSignature config
+      ansible.builtin.shell: grep ServerSignature {{ apache_conf_path }} | grep -v '^#'
+      register: ser_sig_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000018 - Add or configure ServerSignature to off
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: 'ServerSignature '
+        line: "ServerSignature Off"
+        insertafter: "ServerTokens"
+        state: present
+      when: ser_sig_out.stdout | trim != "ServerSignature Off"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000019 - The vRealize Operations Manager Apache server warning and error messages displayed to clients must be modified to minimize the identity of the web server, patches, loaded modules, and directory paths.
+- name: VRPE-8X-000019 - The vRealize Operations Manager Apache server warning and error messages displayed to clients must be modified to minimize the identity of the web server, patches, loaded modules, and directory paths.
+  tags: [VRPE-8X-000019]
+  block:
+    - name: VRPE-8X-000019 - Check ServerTokens config
+      ansible.builtin.shell: grep ServerTokens {{ apache_conf_path }} | grep -v '^#'
+      register: ser_tok_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000019 - Add or configure ServerTokens
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: 'ServerTokens '
+        line: "ServerTokens Prod"
+        insertbefore: "ServerSignature"
+        state: present
+      when: ser_tok_out.stdout | trim != "ServerTokens Prod"
+      notify:
+        - Restart Apache
+
+
+###################################################################################################################################
+
+# VRPE-8X-000020 - Debugging and trace information used to diagnose the vRealize Operations Manager Apache server must be disabled.
+- name: VRPE-8X-000020 - Debugging and trace information used to diagnose the vRealize Operations Manager Apache server must be disabled.
+  tags: [VRPE-8X-000020]
+  block:
+    - name: VRPE-8X-000020 - Check TraceEnable config
+      ansible.builtin.shell: grep TraceEnable {{ apache_conf_path }} | grep -v '^#'
+      register: trc_enb_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000020 - Add or configure TraceEnable to off
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: 'TraceEnable '
+        line: "TraceEnable off"
+        state: present
+      when: trc_enb_out.stdout | trim != "TraceEnable off"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000021 - The vRealize Operations Manager Apache server must use a logging mechanism that is configured to allocate log record storage capacity large enough to accommodate the logging requirements of the web server.
+- name: VRPE-8X-000021 - The vRealize Operations Manager Apache server must use a logging mechanism that is configured to allocate log record storage capacity large enough to accommodate the logging requirements of the web server.
+  tags: [VRPE-8X-000021]
+  block:
+    - name: VRPE-8X-000021 - Check ErrorLog config
+      ansible.builtin.shell: grep ErrorLog {{ apache_conf_path }} |sed 's/^[ \t]*//' | grep -v '^#'
+      register: err_log_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000021 - Add or configure ErrorLog
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: 'ErrorLog '
+        line: '    ErrorLog "|/usr/sbin/rotatelogs2 -n 35 /var/log/apache2/error_log 50M"'
+        insertbefore: "CustomLog"
+        state: present
+      when: err_log_out.stdout | trim != 'ErrorLog "|/usr/sbin/rotatelogs2 -n 35 /var/log/apache2/error_log 50M"'
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000022 - The vRealize Operations Manager Apache server must be protected from being stopped by a non-privileged user.
+- name: VRPE-8X-000022 - The vRealize Operations Manager Apache server must be protected from being stopped by a non-privileged user
+  tags: [VRPE-8X-000022]
+  block:
+    - name: VRPE-8X-000022 - List file permission for httpd service
+      ansible.builtin.command: stat -c %a:%U:%G {{ httpd_service_file }}
+      register: http_svc_out
+      changed_when: false
+
+    - name: VRPE-8X-000022 - Verify and update file permissions for httpd service
+      ansible.builtin.file:
+        path: "{{ httpd_service_file }}"
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '640'
+      when: http_svc_out.stdout != "640:root:root"
+
+###################################################################################################################################
+
+# VRPE-8X-000023 - The vRealize Operations Manager Apache server must be tuned to handle the operational requirements of the hosted application.
+- name: VRPE-8X-000023 - The vRealize Operations Manager Apache server must be tuned to handle the operational requirements of the hosted application.
+  tags: [VRPE-8X-000023]
+  block:
+    - name: VRPE-8X-000023 - Check LimitRequestLine config
+      ansible.builtin.shell: grep -E "LimitRequestLine" {{ apache_conf_path }} | sed 's/^\s*//' | grep -v '^#'
+      register: lmt_req_out
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000023 - Add or configure LimitRequestLine
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: 'LimitRequestLine '
+        line: "        LimitRequestLine 1048576"
+        insertafter: "LimitRequestBody"
+        state: present
+      when: lmt_req_out.stdout | trim != "LimitRequestLine 1048576"
+      notify:
+        - Restart Apache
+
+    - name: VRPE-8X-000023 - Check LimitRequestFieldSize config
+      ansible.builtin.shell: grep -E "LimitRequestFieldSize" {{ apache_conf_path }} | sed 's/^\s*//' | grep -v '^#'
+      register: lmt_reqsz_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000023 - Add or configure LimitRequestLine
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: 'LimitRequestFieldSize '
+        line: "        LimitRequestFieldSize 16384"
+        insertafter: "LimitRequestLine"
+        state: present
+      when: lmt_reqsz_out.stdout | trim != "LimitRequestFieldSize 16384"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000024 - The vRealize Operations Manager Apache server must employ cryptographic mechanisms (TLS/DTLS/SSL) preventing the unauthorized disclosure of information during transmission.
+- name: VRPE-8X-000024 - The vRealize Operations Manager Apache server must employ cryptographic mechanisms (TLS/DTLS/SSL) preventing the unauthorized disclosure of information during transmission.
+  tags: [VRPE-8X-000024]
+  block:
+    - name: VRPE-8X-000024 - Check SSLProtocol config
+      ansible.builtin.shell: grep SSLProtocol {{ apache_conf_path }} | grep -v '^#'
+      register: ssl_prot_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000024 - Add or configure SSLProtocol
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: "SSLProtocol "
+        line: "SSLProtocol All -SSLv2 -SSLv3 -TLSv1 -TLSv1.1"
+        insertbefore: "SSLHonorCipherOrder"
+        state: present
+      when: ssl_prot_out.stdout | trim != "SSLProtocol All -SSLv2 -SSLv3 -TLSv1 -TLSv1.1"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000025 - The vRealize Operations Manager Apache server must use strict transport security headers.
+- name: VRPE-8X-000025 - The vRealize Operations Manager Apache server must use strict transport security headers
+  tags: [VRPE-8X-000025]
+  block:
+    - name: VRPE-8X-000025 - Check Strict-Transport-Security config
+      ansible.builtin.shell: grep Strict-Transport-Security {{ apache_conf_path }} | grep -v '^#'
+      register: trans_sec_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000025 - Add or configure Strict-Transport-Security
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: "Header set Strict-Transport-Security"
+        line: 'Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"'
+        insertafter: "X-Content-Type-Options"
+        state: present
+      when: trans_sec_out.stdout | trim != 'Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"'
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000026 - The vRealize Operations Manager Apache server must enable cross site scripting protection.
+- name: VRPE-8X-000026 - The vRealize Operations Manager Apache server must enable cross site scripting protection
+  tags: [VRPE-8X-000026]
+  block:
+    - name: VRPE-8X-000026 - Check X-XSS-Protection config
+      ansible.builtin.shell: grep X-XSS-Protection {{ apache_conf_path }} | grep -v '^#'
+      register: xss_prot_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000026 - Add or configure X-XSS-Protection
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: "Header set X-XSS-Protection "
+        line: 'Header set X-XSS-Protection "1; mode=block"'
+        insertbefore: "X-Content-Type-Options"
+        state: present
+      when: xss_prot_out.stdout | trim != 'Header set X-XSS-Protection "1; mode=block"'
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000027 - The vRealize Operations Manager Apache server must secure MIME types.
+- name: VRPE-8X-000027 - The vRealize Operations Manager Apache server must secure MIME types
+  tags: [VRPE-8X-000027]
+  block:
+    - name: VRPE-8X-000027 - Check MIME config
+      ansible.builtin.shell: grep -E "nosniff" {{ apache_conf_path }} | grep -v '^#'
+      register: mime_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000027 - Add or configure MIME
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: "Header set X-Content-Type-Options "
+        line: 'Header set X-Content-Type-Options "nosniff"'
+        insertbefore: "X-XSS-Protection"
+        state: present
+      when: mime_out.stdout | trim != 'Header set X-Content-Type-Options "nosniff"'
+      notify:
+        - Restart Apache
+
+    - name: VRPE-8X-000027 - Check headers_module config
+      ansible.builtin.shell: grep -E "mod_headers.so" {{ apache_conf_path }} | grep -v '^#'
+      register: hdrs_mod_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000027 - Add or configure headers_module
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: "LoadModule  headers_module "
+        line: 'LoadModule  headers_module  /usr/lib64/httpd/modules/mod_headers.so'
+        insertbefore: "LoadModule "
+        firstmatch: true
+        state: present
+      when: hdrs_mod_out.stdout | trim != "LoadModule  headers_module  /usr/lib64/httpd/modules/mod_headers.so"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000028 - The vRealize Operations Manager Apache server must prevent clickjacking.
+- name: VRPE-8X-000028 - The vRealize Operations Manager Apache server must prevent clickjacking
+  tags: [VRPE-8X-000028]
+  block:
+    - name: VRPE-8X-000028 - Check X-Frame-Options config
+      ansible.builtin.shell: grep "X-Frame-Options" {{ apache_conf_path }} | sed 's/^[ ]*//' | grep -v '^#'
+      register: xframe_opt_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000028 - Add or configure X-Frame-Options
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: "Header set X-Frame-Options "
+        line: '          Header set X-Frame-Options "SAMEORIGIN"'
+        insertafter: "<LocationMatch.*ui.*"
+        state: present
+      when: xframe_opt_out.stdout | trim != 'Header set X-Frame-Options "SAMEORIGIN"'
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000029 - The vRealize Operations Manager Apache server must set a content security policy.
+- name: VRPE-8X-000029 - The vRealize Operations Manager Apache server must set a content security policy
+  tags: [VRPE-8X-000029]
+  block:
+    - name: VRPE-8X-000029 - Check Content-Security-Policy config
+      ansible.builtin.shell: grep Content-Security-Policy {{ apache_conf_path }} | grep -v '^#'
+      register: sec_pol_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000029 - Add or configure Content-Security-Policy
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: "Header set Content-Security-Policy "
+        line: "Header set Content-Security-Policy \"default-src https: wss: data: 'unsafe-inline' 'unsafe-eval'; child-src *; worker-src 'self' blob:\""
+        insertafter: "X-XSS-Protection"
+        state: present
+      notify:
+        - Restart Apache
+
+###################################################################################################################################
+
+# VRPE-8X-000030 - The vRealize Operations Manager Apache server must honor SSL cipher orders.
+- name: VRPE-8X-000030 - The vRealize Operations Manager Apache server must honor SSL cipher orders
+  tags: [VRPE-8X-000030]
+  block:
+    - name: VRPE-8X-000030 - Check SSLHonorCipherOrder config
+      ansible.builtin.shell: grep SSLHonorCipherOrder {{ apache_conf_path }} | grep -v '^#'
+      register: ssl_honor_cphr_out
+      failed_when: false
+      ignore_errors: true
+      changed_when: false
+
+    - name: VRPE-8X-000030 - Add or configure SSLHonorCipherOrder
+      ansible.builtin.lineinfile:
+        path: "{{ apache_conf_path }}"
+        regexp: "SSLHonorCipherOrder "
+        line: "SSLHonorCipherOrder on"
+        insertafter: "SSLProtocol"
+        state: present
+      when: ssl_honor_cphr_out.stdout | trim != "SSLHonorCipherOrder on"
+      notify:
+        - Restart Apache
+
+###################################################################################################################################

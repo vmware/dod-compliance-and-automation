@@ -1,0 +1,51 @@
+---
+# defaults file for apache
+apache_conf_path: /usr/lib/vmware-vcopssuite/utilities/conf/vcops-apache.conf
+apache_conf_file: /etc/httpd/httpd.conf
+fips_conf_path: /etc/httpd/conf/fips.conf
+photon_apache_conf_path: /usr/lib/vmware-vcopssuite/utilities/conf/vcops-photon-apache.conf
+
+# VRPE-8X-000001
+max_keep_alive_requests: 100
+
+# VRPE-8X-000002
+ssl_cipher_suite: "HIGH:!aNULL!ADH:!EXP:!MD5:!3DES:!CAMELLIA:!PSK:!SRP:!DH:!AES256-GCM-SHA384:!AES256-SHA256:!AES256-SHA:!AES128-GCM-SHA256:!AES128-SHA256:!AES128-SHA:@STRENGTH"
+
+# VRPE-8X-000005
+access_log_file: /var/log/apache2/access_log
+
+# VRPE-8X-000004
+custom_log_config:
+  - CustomLog "|/usr/sbin/rotatelogs2 -n 35 {{ access_log_file }} 50M" "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" Agent-Token:%{SSL_CLIENT_S_DN_CN}x " env=lather
+  - CustomLog "|/usr/sbin/rotatelogs2 -n 35 {{ access_log_file }} 50M" combined  env=!lather
+
+# VRPE-8X-000007
+modules:
+  - "LoadModulejk_module/usr/lib64/httpd/modules/mod_jk.so"
+  - "LoadModulerewrite_module/usr/lib64/httpd/modules/mod_rewrite.so"
+  - "LoadModuleheaders_module/usr/lib64/httpd/modules/mod_headers.so"
+  - "LoadModulehttp2_module/usr/lib64/httpd/modules/mod_http2.so"
+  - "LoadModuledeflate_module/usr/lib64/httpd/modules/mod_deflate.so"
+
+# VRPE-8X-000010
+location_block: |
+  <LimitExcept GET POST PUT DELETE PATCH>
+  order deny,allow
+  deny from all
+  </LimitExcept>
+
+# VRPE-8X-000017
+error_doc_block_all: |
+  ErrorDocument 503 /serviceUnavailableSaaS
+  ErrorDocument 404 /notFoundSaaS/notFound
+  </If>
+  <Else>
+  ErrorDocument 503 /serviceUnavailable
+  ErrorDocument 404 /notFound/notFound
+
+error_doc_block_else: |
+  ErrorDocument 503 /serviceUnavailable
+  ErrorDocument 404 /notFound/notFound
+
+# VRPE-8X-000022
+httpd_service_file: /usr/lib/systemd/system/httpd.service
