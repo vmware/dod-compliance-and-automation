@@ -13,11 +13,6 @@ tcp_keepalives_time: 7200
 tcp_keepalives_interval: 75
 tcp_keepalive_probes: 9
 
-# VRPP-8X-000049
-ssl_cert_file: /var/vmware/vpostgres/current/vpostgres_cert.pem
-ssl_key_file: /var/vmware/vpostgres/current/vpostgres_key.pem
-ssl_ca_file: /storage/vcops/user/conf/ssl/cacert.pem
-
 # VRPP-8X-000062
-# Postgres displays values in min/sec but while setting up statement_timeout pass value in milisec
+# Postgres displays values in min/sec but while setting up statement_timeout pass value in millisec
 statement_timeout: 60000
