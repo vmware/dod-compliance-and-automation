@@ -5,12 +5,12 @@
   tags: [VRPP-8X-000001]
   block:
     - name: VRPP-8X-000001 - Check number of concurrent sessions configured
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW max_connections;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW max_connections;"'
       register: max_conn_out
       changed_when: false
 
     - name: VRPP-8X-000001 - Set number of concurrent sessions(max_connections) to 210
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -c "ALTER SYSTEM SET max_connections TO '210';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -c "ALTER SYSTEM SET max_connections TO '200';"'
       when: max_conn_out.stdout == "-1" or max_conn_out.stdout == ""
       register: upd_max_conn
       changed_when: upd_max_conn.rc != 0
@@ -24,12 +24,12 @@
   tags: [VRPP-8X-000005]
   block:
     - name: VRPP-8X-000005 - List shared libraries
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW shared_preload_libraries;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW shared_preload_libraries;"'
       register: lib_out
       changed_when: false
 
     - name: VRPP-8X-000005 - Find path to default conf file
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -c "SHOW config_file;"' | grep postgres
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -c "SHOW config_file;"' | grep postgres
       when: '"pgaudit" not in lib_out.stdout'
       register: conf_path_out
       changed_when: false
@@ -56,12 +56,28 @@
 - name: VRPP-8X-000006 - PostgreSQL configuration files must not be accessible by unauthorized users
   tags: [VRPP-8X-000006]
   block:
-    - name: VRPP-8X-000006 - Search for files with permissions other than 600 and owner not as postgres
+    - name: VRPP-8X-000006 - Search for files with permissions other than 600 and owner not as postgres - data folder
       ansible.builtin.shell: find /storage/db/vcops/vpostgres/data/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group users ')' -exec ls -d {} \;
       register: file_search_out
       changed_when: false
 
-    - name: VRPP-8X-000006 - Updating file permissions
+    - name: VRPP-8X-000006 - Updating file permissions - data folder
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ pg_owner }}'
+        group: '{{ pg_group }}'
+        mode: '600'
+      when: file_search_out.stdout != ""
+      with_items:
+        - "{{ file_search_out.stdout_lines }}"
+
+    - name: VRPP-8X-000006 - Search for files with permissions other than 600 and owner not as postgres - repl folder
+      ansible.builtin.shell: find /storage/db/vcops/vpostgres/repl/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group users ')' -exec ls -d {} \;
+      register: file_search_out
+      changed_when: false
+
+    - name: VRPP-8X-000006 - Updating file permissions - repl folder
       ansible.builtin.file:
         path: "{{ item }}"
         state: file
@@ -79,12 +95,12 @@
   tags: [VRPP-8X-000007]
   block:
     - name: VRPP-8X-000007 - Find pgaudit log_catalog
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW pgaudit.log_catalog;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW pgaudit.log_catalog;"'
       register: log_catalog_out
       changed_when: false
 
     - name: VRPP-8X-000007 - Update pgaudit log_catalog
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -c "ALTER SYSTEM SET pgaudit.log_catalog = 'on';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -c "ALTER SYSTEM SET pgaudit.log_catalog = 'on';"'
       when: log_catalog_out.stdout != "on"
       register: upd_log_catalog
       changed_when: upd_log_catalog.rc != 0
@@ -92,25 +108,25 @@
         - Restart Postgres
 
     - name: VRPP-8X-000007 - Find pgaudit log
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW pgaudit.log;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW pgaudit.log;"'
       register: log_out
       changed_when: false
 
     - name: VRPP-8X-000007 - Update pgaudit log
-      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -c \"ALTER SYSTEM SET pgaudit.log = 'all, -misc';\""
-      when: log_out.stdout != "all, -misc"
+      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -p 5433 -c \"ALTER SYSTEM SET pgaudit.log = 'ddl, role';\""
+      when: log_out.stdout != "ddl, role"
       register: upd_log
       changed_when: upd_log.rc != 0
       notify:
         - Restart Postgres
 
     - name: VRPP-8X-000007 - Find pgaudit log_parameter
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW pgaudit.log_parameter;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW pgaudit.log_parameter;"'
       register: log_parameter_out
       changed_when: false
 
     - name: VRPP-8X-000007 - Update pgaudit log_parameter
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -c "ALTER SYSTEM SET pgaudit.log_parameter = 'on';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -c "ALTER SYSTEM SET pgaudit.log_parameter = 'on';"'
       when: log_parameter_out.stdout != "on"
       register: upd_log_param
       changed_when: upd_log_param.rc != 0
@@ -118,12 +134,12 @@
         - Restart Postgres
 
     - name: VRPP-8X-000007 - Find pgaudit log_statement_once
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW pgaudit.log_statement_once;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW pgaudit.log_statement_once;"'
       register: log_statement_once_out
       changed_when: false
 
     - name: VRPP-8X-000007 - Update pgaudit log_statement_once
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -c "ALTER SYSTEM SET pgaudit.log_statement_once = 'off';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -c "ALTER SYSTEM SET pgaudit.log_statement_once = 'off';"'
       when: log_statement_once_out.stdout != "off"
       register: upd_log_st
       changed_when: upd_log_st.rc != 0
@@ -131,12 +147,12 @@
         - Restart Postgres
 
     - name: VRPP-8X-000007 - Find pgaudit log_level
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW pgaudit.log_level;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW pgaudit.log_level;"'
       register: log_level_out
       changed_when: false
 
     - name: VRPP-8X-000007 - Update pgaudit log_level
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -c "ALTER SYSTEM SET pgaudit.log_level = 'log';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -c "ALTER SYSTEM SET pgaudit.log_level = 'log';"'
       when: log_level_out.stdout != "log"
       register: upd_log_level
       changed_when: upd_log_level.rc != 0
@@ -150,12 +166,12 @@
   tags: [VRPP-8X-000010]
   block:
     - name: VRPP-8X-000010 - Show log line prefix
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW log_line_prefix;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW log_line_prefix;"'
       register: log_pref_out
       changed_when: false
 
     - name: VRPP-8X-000010 - Updating file permissions
-      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -c \"ALTER SYSTEM SET log_line_prefix = '%m %c %x %d %u %r %p %l';\""
+      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -p 5433 -c \"ALTER SYSTEM SET log_line_prefix = '%m %c %x %d %u %r %p %l';\""
       when: log_pref_out.stdout != "%m %c %x %d %u %r %p %l"
       register: upd_log_pref
       changed_when: upd_log_pref.rc != 0
@@ -169,12 +185,12 @@
   tags: [VRPP-8X-000020]
   block:
     - name: VRPP-8X-000020 - Show log file mode
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW log_file_mode;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW log_file_mode;"'
       register: log_file_out
       changed_when: false
 
     - name: VRPP-8X-000020 - Updating log file mode
-      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -c \"ALTER SYSTEM SET log_file_mode = '0600';\""
+      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -p 5433 -c \"ALTER SYSTEM SET log_file_mode = '0600';\""
       when: log_file_out.stdout != "0600"
       register: upd_file_mode
       changed_when: upd_file_mode.rc != 0
@@ -182,12 +198,12 @@
         - Restart Postgres
 
     - name: VRPP-8X-000020 - Find out log directory
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW log_directory;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW log_directory;"'
       register: log_dir_out
       changed_when: false
 
     - name: VRPP-8X-000020 - Find out data directory
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW data_directory;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW data_directory;"'
       register: data_dir_out
       changed_when: false
 
@@ -226,12 +242,12 @@
   tags: [VRPP-8X-000032]
   block:
     - name: VRPP-8X-000032 - List pgextensions
-      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -t -c \"select * from pg_extension where extname != 'plpgsql';\""
+      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -p 5433 -t -c \"select * from pg_extension where extname != 'plpgsql';\""
       register: ext_out
       changed_when: false
 
     - name: VRPP-8X-000032 - Remove extensions other than plpgsql
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -c "DROP EXTENSION {{ item.split('|')[1] | trim }};"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -c "DROP EXTENSION {{ item.split('|')[1] | trim }};"'
       when: ext_out.stdout != "" and item.split('|')[1] | trim not in pg_approved_extensions
       register: upd_ext
       changed_when: upd_ext.rc != 0
@@ -245,7 +261,7 @@
   tags: [VRPP-8X-000041]
   block:
     - name: VRPP-8X-000041 - Find path to ssl_key_file
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW ssl_key_file;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW ssl_key_file;"'
       register: file_path_out
       changed_when: false
 
@@ -321,12 +337,12 @@
   tags: [VRPP-8X-000051]
   block:
     - name: VRPP-8X-000051 - Check for the postgres settings
-      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SELECT name, setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');\""
+      ansible.builtin.command: su - postgres -c "/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c \"SELECT name, setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');\""
       register: pg_settings_out
       changed_when: false
 
     - name: VRPP-8X-000051 - Update settings to turn on
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -c "ALTER SYSTEM SET {{ item.split('|')[0] }} TO 'on';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -c "ALTER SYSTEM SET {{ item.split('|')[0] }} TO 'on';"'
       when:
         - pg_settings_out.stdout != ""
         - item.split('|')[1] | trim != "on"
@@ -344,12 +360,12 @@
   tags: [VRPP-8X-000060]
   block:
     - name: VRPP-8X-00060 - Verify client_min_messages configuration
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW client_min_messages;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW client_min_messages;"'
       register: client_min_msg
       changed_when: false
 
     - name: VRPP-8X-000060 - Set client_min_messages to error
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "ALTER SYSTEM SET client_min_messages TO 'error';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "ALTER SYSTEM SET client_min_messages TO 'error';"'
       when: client_min_msg.stdout != "error"
       register: set_client_min_msg
       changed_when: set_client_min_msg.rc != 0
@@ -362,12 +378,12 @@
   tags: [VRPP-8X-000062]
   block:
     - name: VRPP-8X-000062 - Check statement_timeout
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW statement_timeout;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW statement_timeout;"'
       register: st_to_out
       changed_when: false
 
     - name: VRPP-8X-000062 - Update statement_timeout
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -c "ALTER SYSTEM SET statement_timeout = '{{ statement_timeout }}';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -c "ALTER SYSTEM SET statement_timeout = '{{ statement_timeout }}';"'
       when: st_to_out.stdout == "0"
       register: set_st_to
       changed_when: st_to_out.stdout == "0"
@@ -381,12 +397,12 @@
   tags: [VRPP-8X-000070]
   block:
     - name: VRPP-8X-00070 - Verify log collector configuration is enabled or not
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW logging_collector;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW logging_collector;"'
       register: log_coll_out
       changed_when: false
 
     - name: VRPP-8X-000070 - Update log collector to on
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "ALTER SYSTEM SET logging_collector TO 'on';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "ALTER SYSTEM SET logging_collector TO 'on';"'
       when: log_coll_out.stdout != "on"
       register: set_log_coll
       changed_when: set_log_coll.rc != 0
@@ -400,12 +416,12 @@
   tags: [VRPP-8X-000075]
   block:
     - name: VRPP-8X-00075 - Verify log timezone configuration
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW log_timezone;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW log_timezone;"'
       register: log_tz_out
       changed_when: false
 
     - name: VRPP-8X-000075 - Update log timezone configuration to UTC
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "ALTER SYSTEM SET log_timezone TO 'UTC';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "ALTER SYSTEM SET log_timezone TO 'UTC';"'
       when: log_tz_out.stdout != "UTC"
       register: set_log_tz
       changed_when: set_log_tz.rc != 0
@@ -419,12 +435,12 @@
   tags: [VRPP-8X-000110]
   block:
     - name: VRPP-8X-000110 - Verify log connection configuration is on or not
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW log_connections;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW log_connections;"'
       register: log_conn_out
       changed_when: false
 
     - name: VRPP-8X-000110 - Update log connection to on
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "ALTER SYSTEM SET log_connections TO 'on';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "ALTER SYSTEM SET log_connections TO 'on';"'
       when: log_conn_out.stdout != "on"
       register: set_log_conn
       changed_when: set_log_conn.rc != 0
@@ -438,12 +454,12 @@
   tags: [VRPP-8X-000114]
   block:
     - name: VRPP-8X-000114 - Verify log collection configuration for disconnections is on or not
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW log_disconnections;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW log_disconnections;"'
       register: log_dconn_out
       changed_when: false
 
     - name: VRPP-8X-000114 - Update log collection for disconnections to on
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "ALTER SYSTEM SET log_disconnections TO 'on';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "ALTER SYSTEM SET log_disconnections TO 'on';"'
       when: log_dconn_out.stdout != "on"
       register: set_log_dconn
       changed_when: set_log_dconn.rc != 0
@@ -457,12 +473,12 @@
   tags: [VRPP-8X-000122]
   block:
     - name: VRPP-8X-000122 - Find out log destination
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "SHOW log_destination;"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "SHOW log_destination;"'
       register: log_dest_out
       changed_when: false
 
     - name: VRPP-8X-000122 - Update log destination
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "ALTER SYSTEM SET log_destination = '{{ log_dest_out.stdout | trim }},syslog';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "ALTER SYSTEM SET log_destination = '{{ log_dest_out.stdout | trim }},syslog';"'
       when:
         - '"syslog" not in log_dest_out.stdout'
         - log_dest_out.stdout != ""
@@ -472,7 +488,7 @@
         - Restart Postgres
 
     - name: VRPP-8X-000122 - Update log destination
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "ALTER SYSTEM SET log_destination = 'syslog';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "ALTER SYSTEM SET log_destination = 'syslog';"'
       when:
         - '"syslog" not in log_dest_out.stdout'
         - log_dest_out.stdout == ""
@@ -482,7 +498,7 @@
         - Restart Postgres
 
     - name: VRPP-8X-000122 - Update syslog_facility
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "ALTER SYSTEM SET syslog_facility = 'LOCAL0';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "ALTER SYSTEM SET syslog_facility = 'local6';"'
       when: '"syslog" not in log_dest_out.stdout'
       register: set_syslog
       changed_when: set_syslog.rc != 0
@@ -490,7 +506,7 @@
         - Restart Postgres
 
     - name: VRPP-8X-000122 - Update log syslog_ident
-      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c "ALTER SYSTEM SET syslog_ident = 'postgres';"'
+      ansible.builtin.command: su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c "ALTER SYSTEM SET syslog_ident = 'vpostgres-repl';"'
       when: '"syslog" not in log_dest_out.stdout'
       register: set_syslog_id
       changed_when: set_syslog_id.rc != 0

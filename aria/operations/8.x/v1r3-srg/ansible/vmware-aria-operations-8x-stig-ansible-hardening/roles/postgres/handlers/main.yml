@@ -1,7 +1,7 @@
 ---
 - name: Restart Postgres
   ansible.builtin.service:
-    name: vpostgres.service
+    name: vpostgres-repl.service
     state: restarted
 
 - name: Reload system settings
