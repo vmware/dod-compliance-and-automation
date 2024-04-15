@@ -18,7 +18,7 @@ inputs:
     type: string
     description: "The ESXi cluster name to audit"
   - name: allesxi
-    value: false
+    value: true
     type: boolean
     description: "Set to true to audit all hosts"
   - name: exceptionUsers
