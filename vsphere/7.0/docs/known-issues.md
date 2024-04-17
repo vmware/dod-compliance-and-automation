@@ -2,6 +2,7 @@
 
 - [vCenter](#vcenter)
   - [VCSA-70-000077 FIPS mode and Smart Card authentication compatibility](#vcsa-70-000077-fips-mode-and-smart-card-authentication-compatibility)
+  - [VCSA-70-000077 Some Smart Card certificates may not be displayed to select on logon](#vcsa-70-000077-some-smart-card-certificates-may-not-be-displayed-to-select-on-logon)
   - [RESOLVED VCSA-70-000285 Other default roles have cryptographic permissions](#vcsa-70-000285-other-default-roles-have-cryptographic-permissions)
 - [ESXi](#esxi)
   - [RESOLVED ESXI-70-000084 Incorrect property shown in check](#esxi-70-000084-incorrect-property-shown-in-check)
@@ -46,6 +47,16 @@ In 7.0 U2 a global FIPS mode feature was made available for the vCenter applianc
 **Workaround:**
 
 - OCSP revocation validation will no longer function and should be disabled. CRL revocation validation can be utilized instead to provide certificate revocation validation.
+
+### [VCSA-70-000077] Some Smart Card certificates may not be displayed to select on logon 
+
+Related issue: None
+
+Newer DOD CAs may issue certificates that are not shown when attempting to login to vCenter.
+
+**Workaround:**
+
+- Add the new certificate chain to the vCenter trust store as normal. Disable FIPS mode on vCenter and confirm the certificates are now presented. Re-enable FIPS mode on vCenter and the new certificates should still be presented and able to be used for logon.
 
 ### [VCSA-70-000285] Other default roles have cryptographic permissions
 
