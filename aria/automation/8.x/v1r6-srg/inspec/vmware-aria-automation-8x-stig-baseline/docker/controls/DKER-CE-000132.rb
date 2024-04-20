@@ -1,4 +1,4 @@
-control 'DKER-CE-000131' do
+control 'DKER-CE-000132' do
   title 'Docker CE must not allow host user namespaces to be shared.'
   desc  'User namespaces ensure that a root process inside the container will be mapped to a non-root process outside the container. Sharing the user namespaces of the host with the container does not adequately isolate containers from the host and could allow an attacker to break out of a compromised container.'
   desc  'rationale', ''
@@ -13,10 +13,9 @@ control 'DKER-CE-000131' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000431-CTR-001065'
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: 'DKER-CE-000131'
-  tag fix_id: nil
+  tag gid: 'V-DKER-CE-000132'
+  tag rid: 'SV-DKER-CE-000132'
+  tag stig_id: 'DKER-CE-000132'
   tag cci: ['CCI-002530']
   tag nist: ['SC-39']
 

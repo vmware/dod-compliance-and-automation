@@ -1,4 +1,4 @@
-control 'DKER-CE-000115' do
+control 'DKER-CE-000116' do
   title 'Docker CE must disable non-essential, unnecessary, and unsecure DoD ports, protocols, and services.'
   desc  'The Docker Engine is configured by default to listen for API requests via a UNIX domain socket (or IPC socket) created at /var/run/docker.sock on supported Linux distributions. The Docker engine can also be configured to listen for API requests via additional socket types, including both TCP and FD (only on supported systemd-based Linux distributions). If configured to listen for API requests via the TCP socket type the instance is vulnerable to network based attacks and must not be used if unnecessary.'
   desc  'rationale', ''
@@ -9,7 +9,7 @@ control 'DKER-CE-000115' do
 
     If the command produces any output, this is a finding.
   "
-  desc 'fix', "
+  desc  'fix', "
     The Docker daemon can be configured to listen on other ports in several places which all must be checked to find the offending configuration.
 
     Navigate to and open:
@@ -31,10 +31,9 @@ control 'DKER-CE-000115' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000383-CTR-000910'
-  tag gid: nil
-  tag rid: nil
-  tag stig_id: 'DKER-CE-000115'
-  tag fix_id: nil
+  tag gid: 'V-DKER-CE-000116'
+  tag rid: 'SV-DKER-CE-000116'
+  tag stig_id: 'DKER-CE-000116'
   tag cci: ['CCI-001762']
   tag nist: ['CM-7 (1) (b)']
 
