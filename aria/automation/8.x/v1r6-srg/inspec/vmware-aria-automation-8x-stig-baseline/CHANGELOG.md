@@ -4,9 +4,10 @@
 
 #### Release Notes
 - Replaced Photon 3 content with Photon 4 content.
-- Removed Kubernetes content.
 - Fixed DKER-CE-000116 control (rename from 115)
 - Fixed DKER-CE-000132 control (rename from 131)
+- Updated Kubernetes control references (inclusion/exclusion)
+  - see Overview file in the xccdf zip for details
 
 ## [8.13.1 Version 1 Release 5] (2024-01-03)
 

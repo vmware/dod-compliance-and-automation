@@ -7,8 +7,8 @@ include_controls 'photon' do
   skip_control 'PHTN-40-000237'
 
   # Not configurable, other implementations exist
-  # skip_control 'PHTN-40-000013' # There OOB
-  # skip_control 'PHTN-40-000182' # There OOB
+  skip_control 'PHTN-40-000013' # There OOB if fips selected during install, not configurable after install
+  skip_control 'PHTN-40-000182' # There OOB if fips selected during install, not configurable after install
   skip_control 'PHTN-40-000245'
 
   # Rsyslogd is not present on the VMware Aria Automation appliances and other methods can be utilized instead to view ssh login events.
