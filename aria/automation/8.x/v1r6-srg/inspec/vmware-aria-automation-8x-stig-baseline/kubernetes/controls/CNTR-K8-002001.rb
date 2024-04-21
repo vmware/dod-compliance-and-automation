@@ -1,84 +1,163 @@
 control 'CNTR-K8-002001' do
-  title 'Kubernetes must have a Pod Security Admission feature gate set.'
-  desc "\"In order to implement Pod Security Admission controller feature gates must be enabled.
+  title 'Kubernetes must enable PodSecurity admission controller on static pods and Kubelets.'
+  desc 'PodSecurity admission controller is a component that validates and enforces security policies for pods running within a Kubernetes cluster. It is responsible for evaluating the security context and configuration of pods against defined policies.
 
-Feature gates are a set of key=value pairs that describe Kubernetes features. You can turn these features on or off using the --feature-gates command line flag on each Kubernetes component.\""
-  desc 'check', "Check Static Pods:
-On the Control Plane, change to the manifests' directory at /etc/kubernetes/manifests and run the command:
+To enable PodSecurity admission controller on Static Pods (kube-apiserver, kube-controller-manager, or kube-schedule), the argument "--feature-gates=PodSecurity=true" must be set.
 
-grep -i PodSecurity=true *
+To enable PodSecurity admission controller on Kubelets, the featureGates PodSecurity=true argument must be set.
 
-Ensure the argument \"--feature-gates=PodSecurity=true\" is present in each manifest file.
+(Note: The PodSecurity feature gate is GA as of  v1.25.)'
+  desc 'check', %q(On the Control Plane, change to the manifests' directory at /etc/kubernetes/manifests and run the command:
+grep -i feature-gates *
 
-If kube-apiserver, kube-controller-manager or kube-schedule is missing  the argument \"--feature-gates=PodSecurity=true\", this is a finding.
+For each manifest file, if the "--feature-gates" setting does not exist, does not contain the "--PodSecurity" flag, or sets the flag to "false", this is a finding.
 
-Check Kubelet:
-Run the following command on each Worker Node:
+On each Control Plane and Worker Node, run the command:
 ps -ef | grep kubelet
 
-Verify that the \"--feature-gates=PodSecurity=true\" argument exists. If it doesn't exisit, this is a finding.
+If the "--feature-gates" option exists, this is a finding.
 
-Check Control Plane Kubelet config file:
-On the Kubernetes Control Plane, run the command:
+Note the path to the config file (identified by --config).
+
+Inspect the content of the config file:
+If the "featureGates" setting is not present, does not contain the "PodSecurity" flag, or sets the flag to "false", this is a finding.)
+  desc 'fix', %q(On the Control Plane, change to the manifests' directory at /etc/kubernetes/manifests and run the command:
+grep -i feature-gates *
+
+Ensure the argument "--feature-gates=PodSecurity=true" is present in each manifest file.
+
+On each Control Plane and Worker Node, run the command:
 ps -ef | grep kubelet
-Check the config file (path identified by: --config).
 
-Verify that the \"--feature-gates=PodSecurity=true\" argument exists. If it doesn't exisit, this is a finding."
-  desc 'fix', "Add the \"--feature-gates=PodSecurity=true\"  argument to every component of Kubernetes.
+Remove the "--feature-gates" option if present.
 
-kube-apiserver, kube-controller-manager and kube-scheduler:
-These components are started as static pods, you can find their manifests in the /etc/kubernetes/manifests/ folder.
-add \"--feature-gates=PodSecurity=true\" argument in each of the files.
+Note the path to the config file (identified by --config).
 
-Kubelet:
-Edit the Kubernetes Kubelet file in the --config directory on the Kubernetes Control Plane:
-Add  \"--feature-gates=PodSecurity=true\"
+Edit the Kubernetes Kubelet config file:
+Add a "featureGates" setting if one does not yet exist. Add the feature gate "PodSecurity=true".
 
-Reset Kubelet service using the following command:
-service kubelet restart
-
-Note: if your cluster has multiple nodes you will need to make the changes on every node where the components are deployed."
+Restart the kubelet service using the following command:
+systemctl daemon-reload && systemctl restart kubelet)
   impact 0.7
+  ref 'DPMS Target Kubernetes'
+  tag check_id: 'C-58412r918278_chk'
   tag severity: 'high'
-  tag gtitle: 'SRG-APP-000342-CTR-000775'
   tag gid: 'V-254801'
-  tag rid: 'SV-254801r864044_rule'
+  tag rid: 'SV-254801r918279_rule'
   tag stig_id: 'CNTR-K8-002001'
-  tag fix_id: 'F-58358r863730_fix'
+  tag gtitle: 'SRG-APP-000342-CTR-000775'
+  tag fix_id: 'F-58358r918213_fix'
+  tag 'documentable'
   tag cci: ['CCI-002263']
   tag nist: ['AC-16 a']
 
-  describe kube_scheduler do
-    its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
-  end
-
-  describe kube_controller_manager do
-    its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
-  end
-
-  describe kube_apiserver do
-    its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
-  end
-
+  kubelet_process = input('kubelet_process')
   kubelet_conf_path = input('kubelet_conf_path')
 
-  if kubelet_conf_path
-    describe.one do
-      describe kubelet do
+  # This feature did not exist prior to 1.22. In 1.22 the default was false. In 1.23-1.27 the default was true. In 1.28+ this feature gate no longer exists. See https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates-removed/
+  server_version = Semverse::Version.new(bash("kubelet --version | awk -F' ' '{ print $2 }' |sed s/^v//").stdout.chomp)
+  server_version_major = server_version.major
+  server_version_minor = server_version.minor
+  if server_version_major.to_i >= 1 && server_version_minor.to_i < 22
+    impact 0.0
+    describe "PodSecurity did not exist in versions prior to 1.22 and is not applicable to version #{server_version}" do
+      skip "PodSecurity did not exist in versions prior to 1.22 and is not applicable to version #{server_version}"
+    end
+  elsif server_version_major.to_i >= 1 && server_version_minor.to_i == 22
+    if kube_apiserver.exist?
+      describe kube_apiserver do
         its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
       end
+    end
+
+    if kube_scheduler.exist?
+      describe kube_scheduler do
+        its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
+      end
+    end
+
+    if kube_controller_manager.exist?
+      describe kube_controller_manager do
+        its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
+      end
+    end
+    # Check kubelet part of this control
+    describe kubelet(kubelet_process) do
+      its('feature-gates.to_s') { should be nil }
+    end
+    if kubelet_conf_path
       describe kubelet_config_file(kubelet_conf_path) do
         its(['featureGates', 'PodSecurity']) { should cmp 'true' }
       end
-    end
-  else
-    describe.one do
-      describe kubelet do
-        its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
-      end
+    else
       describe kubelet_config_file do
         its(['featureGates', 'PodSecurity']) { should cmp 'true' }
       end
+    end
+  elsif server_version_major.to_i >= 1 && server_version_minor.to_i >= 23 && server_version_minor.to_i <= 28
+    if kube_apiserver.exist?
+      describe.one do
+        describe kube_apiserver do
+          its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
+        end
+        describe kube_apiserver do
+          its('feature-gates.to_s') { should_not match /PodSecurity/ }
+        end
+      end
+    end
+
+    if kube_scheduler.exist?
+      describe.one do
+        describe kube_scheduler do
+          its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
+        end
+        describe kube_scheduler do
+          its('feature-gates.to_s') { should_not match /PodSecurity/ }
+        end
+      end
+    end
+
+    if kube_controller_manager.exist?
+      describe.one do
+        describe kube_controller_manager do
+          its('feature-gates.to_s') { should match /PodSecurity=[T|t]rue/ }
+        end
+        describe kube_controller_manager do
+          its('feature-gates.to_s') { should_not match /PodSecurity/ }
+        end
+      end
+    end
+    # Check kubelet part of this control
+    describe kubelet(kubelet_process) do
+      its('feature-gates') { should be nil }
+    end
+    if kubelet_conf_path
+      describe.one do
+        describe kubelet_config_file(kubelet_conf_path) do
+          its(['featureGates', 'PodSecurity']) { should cmp 'true' }
+        end
+        describe kubelet_config_file(kubelet_conf_path) do
+          its(['featureGates', 'PodSecurity']) { should be nil }
+        end
+      end
+    else
+      describe.one do
+        describe kubelet_config_file do
+          its(['featureGates', 'PodSecurity']) { should cmp 'true' }
+        end
+        describe kubelet_config_file do
+          its(['featureGates', 'PodSecurity']) { should be nil }
+        end
+      end
+    end
+  elsif server_version_major.to_i >= 1 && server_version_minor.to_i >= 28
+    impact 0.0
+    describe "PodSecurity is no longer a feature gate in 1.28+ and is not applicable to version #{server_version}" do
+      skip "PodSecurity is no longer a feature gate in 1.28+ and is not applicable to version #{server_version}"
+    end
+  else
+    describe 'Did not detect Kubernetes version...skipping...' do
+      skip 'Did not detect Kubernetes version...skipping...'
     end
   end
 end
