@@ -4,6 +4,7 @@
 - [ESXi](#esxi)
   - [ESXI-80-000232 Persistent audit storage and capacity should be configured before enabling audit logs](#esxi-80-000232-persistent-audit-storage-and-capacity-should-be-configured-before-enabling-audit-logs)
   - [ESXI-80-000239 When attempting to configure Allowed IPs for the ESXi firewall you may see an error for some services](#esxi-80-000239-when-attempting-to-configure-allowed-ips-for-the-esxi-firewall-you-may-see-an-error-for-some-services)
+  - [ESXI-80-000239 Impact to VxRail Manager Plugin performance and VCF on VxRail add node workflows](#esxi-80-000239-impact-to-vxrail-manager-plugin-performance-and-vcf-on-vxrail-add-node-workflows)
 - [Virtual Machines](#vm)
 - [VCSA](#vcsa)
   - [RESOLVED PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
@@ -118,6 +119,19 @@ vltd                           false                        false               
 vsanhealth-unicasttest         false                        false                     true
 vsanmgmt-https-tunnel           true                        false                     true
 ```
+
+### [ESXI-80-000239] Impact to VxRail Manager Plugin performance and VCF on VxRail add node workflows
+
+Related issue: None
+
+When attempting to add a new host to an existing VxRail cluster the NIC configuration may not load and/or the validation step will fail and the host will not be added. The VxRail plugin in vCenter may also experience delays in loading.
+
+**Workaround:**
+
+**Option 1:** (Recommended) Do not implement ESXI-80-000239 in these environments until this issue is resolved.  
+**Option 2:** To add a node, disable the ESXi firewall on all hosts in the target cluster for the duration of the operation and re-enable once complete.  
+
+If using the `VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1` script provided in this repo to harden ESXi you can disable this rule by changing the variable `ESXI800000239` to `$false` before running. This can be found [here](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/8.0/v1r1-srg/vsphere/powercli/VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1#L254).  
 
 ## VM
 
