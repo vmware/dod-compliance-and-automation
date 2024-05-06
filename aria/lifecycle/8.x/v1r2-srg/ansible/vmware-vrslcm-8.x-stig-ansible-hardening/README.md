@@ -21,10 +21,10 @@ This is a hardening playbook that utilizes Ansible to perform automated remediat
 
 ## Playbook Structure
 - playbook.yml - Main playbook to run
-- /roles/<role name>/defaults/main.yml - Default variables to use during the run of the playbook
-- /roles/<role name>/tasks/main.yml - Default role task file
-- /roles/<role name>/handlers/main.yml - Dependencies for service restarts
-- /roles/<role name>/<role name>.yml - Task definitions for the role
+- /roles/\<role name>/defaults/main.yml - Default variables to use during the run of the playbook
+- /roles/\<role name>/tasks/main.yml - Default role task file
+- /roles/\<role name>/handlers/main.yml - Dependencies for service restarts
+- /roles/\<role name>/\<role name>.yml - Task definitions for the role
 
 ## How to run
 
