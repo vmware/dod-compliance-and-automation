@@ -3,11 +3,11 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|                     |        V1R2*       |        V1R4*       |
+|       Version       |        V1R2*       |        V1R4*       |
 |:-------------------:|:------------------:|:------------------:|
-|     `8.12.x`        | :heavy_check_mark: |         :x:        |
-|     `8.14.x`        |         :x:        | :heavy_check_mark: |
-|     `8.16.x`        |         :x:        | :heavy_check_mark: |
+|      `8.12.x`       | :heavy_check_mark: |         :x:        |
+|      `8.14.x`       |         :x:        | :heavy_check_mark: |
+|      `8.16.x`       |         :x:        | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide   
