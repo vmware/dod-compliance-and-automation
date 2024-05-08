@@ -25,11 +25,11 @@ This is a hardening playbook that utilizes Ansible to perform automated remediat
 - playbook.yml - Main playbook to run
 - requirements.yml - Requirements file for installing dependencies or other roles included in this playbook
 - vars-vcenter-example.yml - Example vars file to profile variable values to the playbook for use during execution
-- /roles/<role name>/defaults/main.yml - Default variables used to turn controls on/off in the playbook.  Set these to true/false
-- /roles/<role name>/handlers/main.yaml - handlers referenced in the tasks
-- /roles/<role name>/tasks/main.yml - Default role task file
-- /roles/<role name>/templates - Any template files used in the role
-- /roles/<role name>/vars/main.yml - variables referenced by tasks.  Update these variables as needed for your environment.
+- /roles/\<role name>/defaults/main.yml - Default variables used to turn controls on/off in the playbook.  Set these to true/false
+- /roles/\<role name>/handlers/main.yaml - handlers referenced in the tasks
+- /roles/\<role name>/tasks/main.yml - Default role task file
+- /roles/\<role name>/templates - Any template files used in the role
+- /roles/\<role name>/vars/main.yml - variables referenced by tasks.  Update these variables as needed for your environment.
 
 ## How to run
 

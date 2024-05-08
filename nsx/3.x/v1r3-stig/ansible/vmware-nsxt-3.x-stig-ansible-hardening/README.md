@@ -24,11 +24,11 @@ This is a hardening playbook that utilizes Ansible to perform automated remediat
 ## Playbook Structure
 - playbook.yml - Main playbook to run
 - requirements.yml - Requirements file for installing dependencies or other roles included in this playbook
-- /roles/<role name>/defaults/main.yml - Default variables used to turn controls on/off in the playbook.  Set these to true/false
-- /roles/<role name>/handlers/main.yaml - handlers referenced in the tasks
-- /roles/<role name>/tasks/main.yml - Default role playbook
-- /roles/<role name>/templates - Any template files used in the role
-- /roles/<role name>/vars/main.yml - variables referenced by tasks.  Update these variables as needed for your environment.
+- /roles/\<role name>/defaults/main.yml - Default variables used to turn controls on/off in the playbook.  Set these to true/false
+- /roles/\<role name>/handlers/main.yaml - handlers referenced in the tasks
+- /roles/\<role name>/tasks/main.yml - Default role playbook
+- /roles/\<role name>/templates - Any template files used in the role
+- /roles/\<role name>/vars/main.yml - variables referenced by tasks.  Update these variables as needed for your environment.
 
 ## Generate API Session Token
 This playbook uses Session-Based authentication to authenticate with NSX for remediation. A session token and cookie must be generated and provided an input for the profile. This can be generated in various ways via curl, tools like Postman, etc. For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1248/nsx-t).
