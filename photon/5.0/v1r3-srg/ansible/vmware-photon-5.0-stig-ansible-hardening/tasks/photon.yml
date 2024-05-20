@@ -2785,3 +2785,23 @@
         - aidecheckoutput.rc is defined
         - aidecheckoutput.rc != 0
         - aideinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000066 - Relabel files for SELinux
+  tags: [PHTN-50-000066]
+  when: run_enable_selinux | bool
+  block:
+    - name: PHTN-50-000066 - Check to see if setfiles is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep policycoreutils
+      register: selinuxinstalled
+      failed_when: selinuxinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000066 - Label files after hardening
+      ansible.builtin.command: setfiles /etc/selinux/default/contexts/files/file_contexts /
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - selinuxinstalled.stdout != ""

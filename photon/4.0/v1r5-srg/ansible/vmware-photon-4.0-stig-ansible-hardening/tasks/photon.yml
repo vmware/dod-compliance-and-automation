@@ -1906,20 +1906,6 @@
         line: auth       optional pam_faildelay.so delay=4000000
         insertafter: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+authfail$'
 
-    # - name: PHTN-40-000206 - Add pam_faildelay.so to system-auth if it doesn't exist
-    #   community.general.pamd:
-    #     name: system-auth
-    #     type: auth
-    #     control: required
-    #     module_path: pam_unix.so
-    #     new_type: auth
-    #     new_control: optional
-    #     new_module_path: pam_faildelay.so
-    #     module_arguments: 'delay=4000000'
-    #     state: after
-    #   when:
-    #     - sysauthfaildelay.stdout != "auth       optional pam_faildelay.so delay=4000000"
-
 ###################################################################################################################################
 - name: PHTN-40-000207 - Configure sshd PermitEmptyPasswords
   tags: [PHTN-40-000207, sshd]
@@ -2795,3 +2781,23 @@
         - aidecheckoutput.rc is defined
         - aidecheckoutput.rc != 0
         - aideinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000066 - Relabel files for SELinux
+  tags: [PHTN-40-000066]
+  when: run_enable_selinux | bool
+  block:
+    - name: PHTN-40-000066 - Check to see if setfiles is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep policycoreutils
+      register: selinuxinstalled
+      failed_when: selinuxinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000066 - Label files after hardening
+      ansible.builtin.command: setfiles /etc/selinux/default/contexts/files/file_contexts /
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - selinuxinstalled.stdout != ""
