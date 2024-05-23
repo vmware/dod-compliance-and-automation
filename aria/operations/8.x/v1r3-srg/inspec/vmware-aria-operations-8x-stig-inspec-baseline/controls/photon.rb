@@ -6,4 +6,6 @@ include_controls 'photon' do
   # AIDE package not available yet
   skip_control 'PHTN-40-000127'
   skip_control 'PHTN-40-000237'
+  # File permissions are different for Operations services
+  skip_control 'PHTN-40-000085'
 end
