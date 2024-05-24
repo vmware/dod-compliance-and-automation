@@ -126,10 +126,10 @@
       ansible.builtin.file:
         path: "{{ access_log_file }}"
         state: file
-        owner: 'admin'
-        group: 'admin'
+        owner: 'root'
+        group: 'root'
         mode: '640'
-      when: file_perm_out.stdout.split()[0] != "admin:admin" or file_perm_out.stdout.split()[1] != "640"
+      when: file_perm_out.stdout.split()[0] != "root:root" or file_perm_out.stdout.split()[1] != "640"
 
     - name: VRPE-8X-000005 - Update umask configuration
       ansible.builtin.lineinfile:
