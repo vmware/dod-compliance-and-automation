@@ -8,13 +8,80 @@ grep -q '^-w /var/log/sudo.log -p wa' /etc/audit/rules.d/audit.rules \
   && sed -i "s@.*\/var\/log\/sudo.log.*@-w /var/log/sudo.log -p wa -k sudo_log_file@" /etc/audit/rules.d/audit.rules \
   || echo '-w /var/log/sudo.log -p wa -k sudo_log_file' >> /etc/audit/rules.d/audit.rules
 
-# V-238216
-sed -i "s@MACs.*@MACs hmac-sha2-512,hmac-sha2-256@" /etc/ssh/sshd_config 
+# V-260532
+sed -i "s/MACs.*/MACs hmac-sha2-512,hmac-sha2-512-etm@openssh.com,hmac-sha2-256,hmac-sha2-256-etm@openssh.com/" /etc/ssh/sshd_config 
 
-# V-238217
-sed -i "s@Ciphers.*@Ciphers aes256-ctr,aes192-ctr,aes128-ctr@" /etc/ssh/sshd_config 
+# V-260531
+sed -i "s/Ciphers.*/Ciphers aes256-ctr,aes256-gcm@openssh.com,aes192-ctr,aes128-ctr,aes128-gcm@openssh.com/" /etc/ssh/sshd_config 
 
-# V-255912
+# V-260533
 grep -q '^KexAlgorithms' /etc/ssh/sshd_config  \
-  && sed -i "s@^KexAlgorithms.*@KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256@" /etc/ssh/sshd_config \
+  && sed -i "s/^KexAlgorithms.*/KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256/" /etc/ssh/sshd_config \
   || echo "KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256" >> /etc/ssh/sshd_config
+
+# V-260530
+grep -q '^X11UseLocalhost' /etc/ssh/sshd_config  \
+  && sed -i "s@^X11UseLocalhost.*@X11UseLocalhost yes@" /etc/ssh/sshd_config \
+  || echo "X11UseLocalhost yes" >> /etc/ssh/sshd_config
+
+# V-260512
+chmod 740 /usr/bin/journalctl
+
+# V-260542
+passwd -l root
+
+# V-260554
+if ! grep "TMOUT=900" /etc/profile.d/*; then
+  echo TMOUT=900 > /etc/profile.d/99-terminal_tmout.sh
+fi
+
+# V-260540
+if ! grep "^blacklist usb-storage" /etc/modprobe.d/stig.conf; then 
+  echo "blacklist usb-storage" > /etc/modprobe.d/stig.conf
+fi
+sed -i "s@install usb-storage .*@install usb-storage /bin/false@" /etc/modprobe.d/blacklist.conf
+
+# V-260476, V-260477
+cat <<EOF > /etc/apt/apt.conf.d/99_stig_hardening
+APT::Get::AllowUnauthenticated "false";
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+EOF
+
+# V-260549
+sed -i "s@[# ]*deny .*@deny = 3@;s@[# ]*unlock_time .*@unlock_time = 0@;s@[# ]*audit@audit@;s@[# ]*silent@silent@;s@[# ]*fail_interval .*@fail_interval = 900@" \
+/etc/security/faillock.conf
+
+# V-260552
+grep -qe "[# ]*\*[ ]*hard[ ]*maxlogins" /etc/security/limits.conf \
+  && sed -i "s@[# ]*\*[ ]*hard[ ]*maxlogins .*@               hard    maxlogins            10@" /etc/security/limits.conf \
+  || echo "*               hard    maxlogins            10" >> /etc/security/limits.conf
+
+# V-260547
+sed -i "s@[# ]*INACTIVE[ ]*=.*@INACTIVE=35@;" /etc/default/useradd
+
+# V-260611
+if ! auditctl -l | grep fdisk | grep -- "-w /usr/sbin/fdisk -p x -k"; then
+  echo "-w /usr/sbin/fdisk -p x -k fdisk" >> /etc/audit/rules.d/stig.rules
+fi
+
+# V-260636
+if ! auditctl -l | grep _module | grep -- "-a always,exit -F arch=b32 -S init_module,delete_module,finit_module -F key="; then
+  echo "-a always,exit -F arch=b32 -S init_module,delete_module,finit_module -F key=modules" >> /etc/audit/rules.d/stig.rules
+fi
+# V-260640
+if ! auditctl -l | grep journal | grep -- "-w /var/log/journal -p wa -k"; then
+  echo "-w /var/log/journal -p wa -k systemd_journal" >> /etc/audit/rules.d/stig.rules
+fi
+
+if [ -f /etc/audit/rules.d/stig.rules ]; then
+  chmod 640 /etc/audit/rules.d/stig.rules
+fi
+
+# V-260490
+find /run/log/journal /var/log/journal -type d ! -perm 2640 -exec chmod 2640 {} \;   2>/dev/null || true
+sed -i "s@z /var/log/journal 2755 root systemd-journal - -@z /var/log/journal 2640 root systemd-journal - -@" /usr/lib/tmpfiles.d/systemd.conf
+sed -i "s@z /var/log/journal/%m 2755 root systemd-journal - -@z /var/log/journal/%m 27640 root systemd-journal - -@" /usr/lib/tmpfiles.d/systemd.conf
+sed -i "s@z /run/log/journal 2755 root systemd-journal - -@z /run/log/journal 2640 root systemd-journal - -@" /usr/lib/tmpfiles.d/systemd.conf
+sed -i "s@Z /run/log/journal/%m ~2750 root systemd-journal - -@Z /run/log/journal/%m ~2640 root systemd-journal - -@" /usr/lib/tmpfiles.d/systemd.conf
+#sed -i "s@z /var/log/journal/%m/system.journal 0640 root systemd-journal - -@z /var/log/journal/%m/system.journal 0640 root systemd-journal - -@" /usr/lib/tmpfiles.d/systemd.conf

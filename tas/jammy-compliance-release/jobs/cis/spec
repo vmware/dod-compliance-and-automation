@@ -1,0 +1,45 @@
+---
+name: cis
+
+templates:
+  pre-start.sh.erb: bin/pre-start
+  post-start.sh: bin/post-start
+
+packages: []
+
+properties:
+  set_password_max_days:
+    default: false
+    description: set `PASS_MAX_DAYS` in `/etc/login.defs`
+  password_max_days:
+    default: 30
+    description: |
+      Applicable if `set_password_max_days` is set to `true`
+      If set, passwords to expire once they reach max days.
+  set_useradd_inactive:
+    default: false
+    description: set `INACTIVE` value for `useradd`
+  useradd_inactive:
+    default: 30
+    description: |
+      Applicable if `set_useradd_inactive` is set to `true`
+      If set, user accounts that have been inactive for over a given period of time can be automatically disabled.
+  set_user_shell_timeout:
+    default: false
+    description: set default user shell timeout
+  user_shell_timeout:
+    default: 900
+    description: |
+      Applicable if `set_useradd_inactive` is set to `true`
+      User shell timeout in seconds
+  restirct_su:
+    default: false
+    description: |
+      If set to `true`, `group` key for `pam_wheel.so` statement in `/etc/pam.d/su` will be set to a group with no users. 
+      This group is intentionally empty to reinforce the use of `sudo` instead of `su` for privileged access.
+  make_audit_rules_immutable:
+    default: false
+    description: |
+      If set to `true`, this job will make audot rules immutable. Any change to auditd rules will require a reboot. 
+
+
