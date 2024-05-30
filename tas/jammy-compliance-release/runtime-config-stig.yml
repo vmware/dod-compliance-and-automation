@@ -1,5 +1,5 @@
 addons:
-- name: jammy-stig
+- name: stig
   include:
     stemcell:
     - os: ubuntu-jammy
@@ -8,4 +8,4 @@ addons:
     release: jammy-compliance
 releases:
 - name: jammy-compliance
-  version: 0+dev.17
+  version: 0+dev.28

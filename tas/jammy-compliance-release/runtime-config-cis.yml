@@ -1,0 +1,17 @@
+addons:
+- name: cis
+  include:
+    stemcell:
+    - os: ubuntu-jammy
+  jobs:
+  - name: cis
+    release: jammy-compliance
+    properties:
+      set_useradd_inactive: true
+      set_password_max_days: true
+      set_user_shell_timeout: true
+      restirct_su: true
+      make_audit_rules_immutable: true
+releases:
+- name: jammy-compliance
+  version: 0+dev.32
