@@ -142,7 +142,7 @@
   block:
     - name: NDFW-4X-000029 - List SpoofGuard segment profiles excluding the default profile which cannot be modified
       ansible.builtin.uri:
-        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:SpoofGuardProfile%20AND%20!id:default-spoofguard-profile)"
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:SpoofGuardProfile%20AND%20_system_owned:false)"
         validate_certs: false
         headers:
           Cookie: "{{ var_jsession_id }}"
@@ -213,7 +213,7 @@
   block:
     - name: NDFW-4X-000034 - List IP Discovery segment profiles excluding the default profile which cannot be modified
       ansible.builtin.uri:
-        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:IPDiscoveryProfile%20AND%20!id:default-ip-discovery-profile%20AND%20!id:default-evpn-ip-discovery-profile%20AND%20!id:default-vlan-ip-discovery-profile)"
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:IPDiscoveryProfile%20AND%20_system_owned:false)"
         validate_certs: false
         headers:
           Cookie: "{{ var_jsession_id }}"

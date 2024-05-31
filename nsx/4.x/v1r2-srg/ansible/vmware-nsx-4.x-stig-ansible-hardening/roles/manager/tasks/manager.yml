@@ -244,9 +244,36 @@
       changed_when:
         - response.status == 200 or response.status == 202
 
-    - name: NMGR-4X-000012 - Pause for service restart when changes are made to auth policy
+    - name: NMGR-4X-000012 - Pause to give the service restart a chance to happen when changes are made to auth policy
       ansible.builtin.pause:
-        seconds: 90
+        seconds: 15
+      when:
+        - (authpolicy.json.api_failed_auth_lockout_period != 900) or
+          (authpolicy.json.api_failed_auth_reset_period != 900) or
+          (authpolicy.json.api_max_auth_failures != 3) or
+          (authpolicy.json.cli_failed_auth_lockout_period != 900) or
+          (authpolicy.json.cli_max_auth_failures != 3) or
+          (authpolicy.json.minimum_password_length != 15) or
+          (authpolicy.json.upper_chars != -1) or
+          (authpolicy.json.lower_chars != -1) or
+          (authpolicy.json.digits != -1) or
+          (authpolicy.json.special_chars != -1) or
+          (authpolicy.json.max_repeats != 8)
+
+    - name: NMGR-4X-000012 - Wait for service to come back up
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/aaa/auth-policy"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
       when:
         - (authpolicy.json.api_failed_auth_lockout_period != 900) or
           (authpolicy.json.api_failed_auth_reset_period != 900) or
@@ -386,9 +413,9 @@
       changed_when:
         - response.status == 200 or response.status == 202
 
-    - name: NMGR-4X-000038 - Pause for service restart when changes are made to API service policy
+    - name: NMGR-4X-000038 - Pause to give the service restart a chance to happen when changes are made to API service policy
       ansible.builtin.pause:
-        seconds: 90
+        seconds: 15
       when:
         - (apiservice.json.session_timeout != 300) or
           (apiservice.json.client_api_concurrency_limit != 40) or
@@ -396,6 +423,26 @@
           (apiservice.json.global_api_concurrency_limit != 199) or
           apiservice.json | community.general.json_query('protocol_versions[?name==`TLSv1.1`].enabled') == "true"
 
+    - name: NMGR-4X-000038 - Wait for service restart when changes are made to API service policy
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/cluster/api-service"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
+      when:
+        - (apiservice.json.session_timeout != 300) or
+          (apiservice.json.client_api_concurrency_limit != 40) or
+          (apiservice.json.client_api_rate_limit != 100) or
+          (apiservice.json.global_api_concurrency_limit != 199) or
+          apiservice.json | community.general.json_query('protocol_versions[?name==`TLSv1.1`].enabled') == "true"
 
 ###################################################################################################################################
 - name: NMGR-4X-000052 - The NSX Manager must terminate all network connections associated with a session after 10 minutes of inactivity.

@@ -27,7 +27,10 @@
   register: response
   when:
     - segmaps.json.result_count != 0
-    - segmaps.json.results[0].ip_discovery_profile_path == "/infra/ip-discovery-profiles/default-ip-discovery-profile"
+    - (segmaps.json.results[0].ip_discovery_profile_path == "/infra/ip-discovery-profiles/default-evpn-ip-discovery-profile") or
+      (segmaps.json.results[0].ip_discovery_profile_path == "/infra/ip-discovery-profiles/default-ip-discovery-profile") or
+      (segmaps.json.results[0].ip_discovery_profile_path == "/infra/ip-discovery-profiles/default-ip-discovery-profile-for-dvpg") or
+      (segmaps.json.results[0].ip_discovery_profile_path == "/infra/ip-discovery-profiles/default-vlan-ip-discovery-profile")
   changed_when:
     - response.status == 200
 
