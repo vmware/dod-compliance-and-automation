@@ -15,18 +15,18 @@ inputs:
 - name: usePwqualityConf
   type: boolean
   description: If /etc/security/pwquality.conf is used to configure pam_pwquality.so set this to true
-  value: true
+  value: false
 - name: useHistoryConf
   type: boolean
   description: If /etc/security/pwhistory.conf is used to configure pam_pwhistory.so set this to true
-  value: true
+  value: false
 - name: sshdcommand
   type: string
   value: 'sshd -T'
   description: If a different sshd command is needed then supply a different input value such as if there are user matching rules.
 - name: authprivlog
   type: string
-  value: "/var/log/messages"  #Enter expected log path for authpriv log in rsyslog conf
+  value: "/var/log/audit/sshinfo.log"  #Enter expected log path for authpriv log in rsyslog conf
 - name: disabled_modules
   description: List of Kernel modules that must be disabled
   type: array
