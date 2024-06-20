@@ -11,9 +11,12 @@ The table below provides supported interoperability between product and STIG ver
 |     `8.0 U1b`     | :heavy_check_mark: |         :x:        |         :x:        |
 |     `8.0 U1c`     | :heavy_check_mark: |         :x:        |         :x:        |
 |     `8.0 U1d`     | :heavy_check_mark: |         :x:        |         :x:        |
+|     `8.0 U1e`     | :heavy_check_mark: |         :x:        |         :x:        |
 |     `8.0 U2`      |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
 |     `8.0 U2a`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
 |     `8.0 U2b`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
+|     `8.0 U2c`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
+|     `8.0 U2d`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide  
