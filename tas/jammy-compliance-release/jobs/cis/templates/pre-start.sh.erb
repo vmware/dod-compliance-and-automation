@@ -4,7 +4,7 @@ set -euo pipefail
 [[ -z "${DEBUG:-}" ]] || set -x
 
 # CIS 1.4.2
-chmod 0400 /boot/grub/grub.cfg
+find /boot -name grub.cfg -exec chmod 0400 {} \;
 
 # CIS 3.2.2
 if grep "^net\.ipv6\.conf\.all\.forwarding" /etc/sysctl.d/60-bosh-sysctl.conf; then
