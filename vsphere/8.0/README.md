@@ -17,6 +17,7 @@ The table below provides supported interoperability between product and STIG ver
 |     `8.0 U2b`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
 |     `8.0 U2c`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
 |     `8.0 U2d`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
+|     `8.0 U3`      |        :x:         |        :x:         |        :x:         |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide  
