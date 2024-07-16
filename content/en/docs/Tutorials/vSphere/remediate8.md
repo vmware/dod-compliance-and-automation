@@ -16,7 +16,7 @@ To remediate vSphere, PowerCLI is the automation tool used, while for the VCSA w
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* Powershell 7.3.4/PowerCLI 13.1 or newer
+* Powershell 7.3.4/PowerCLI 13.3 or newer
 * [VMware.Vsphere.SsoAdmin PowerCLI Module 1.3.9](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) or newer
 * Ansible 2.14.2
 * A vSphere 8.x U1 or newer environment.
@@ -63,6 +63,40 @@ In order to run the script effectively it must be provided with the organization
 Review the below parameters and gather the information needed to run the script:
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
+{{< tab header="8.0 U3" lang="powershell" >}}
+[CmdletBinding()]
+param (
+  [Parameter(Mandatory=$true)]
+  [string]$vcenter,
+  [Parameter(Mandatory=$true)]
+  [pscredential]$vccred,
+  [Parameter(Mandatory=$true,ParameterSetName="hostname")]
+  [string]$hostname,
+  [Parameter(Mandatory=$true,ParameterSetName="cluster")]
+  [string]$cluster,
+  [Parameter(Mandatory=$false,
+  HelpMessage="Enter the path for the output report. Example /tmp")]
+  [string]$reportpath,  
+  [Parameter(Mandatory=$true,
+  HelpMessage="Enter the Active Directory Admins group to use for administrative access to ESXi")]
+  [string]$esxAdminGroup,
+  [Parameter(Mandatory=$true,
+  HelpMessage="Enter allowed IP ranges for the ESXi firewall in comma separated format.  For Example "192.168.0.0/16","10.0.0.0/8" ")]
+  [string[]]$allowedIPs,
+  [Parameter(Mandatory=$false,
+  HelpMessage="Enter the syslog server for the ESXi server(s). Example tcp://log.domain.local:514")]
+  [string]$syslogServer,
+  [Parameter(Mandatory=$false,
+  HelpMessage="Enable this option if VMware vRealize Log Insight is used to manage syslog on the ESXi host(s).")]
+  [switch]$logInsight,
+  [Parameter(Mandatory=$true,
+  HelpMessage="Enter NTP servers.  For Example "10.1.1.1","10.1.1.2" ")]
+  [string[]]$ntpServers,
+  [Parameter(Mandatory=$false,
+  HelpMessage="Specify the native VLAN Id configured on the ports going to the ESXi Hosts.  If none is specified the default of 1 will be used.")]
+  [string]$nativeVLAN = "1"
+)
+{{< /tab >}}
 {{< tab header="8.0 U2" lang="powershell" >}}
 [CmdletBinding()]
 param (
@@ -155,6 +189,60 @@ This example will remediate all hosts in the vSphere cluster named `cluster0`. I
 
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
+{{< tab header="8.0 U3" lang="powershell" >}}
+# Navigate to the powercli folder
+cd /usr/share/stigs/vsphere/8.0/v2r1-stig/vsphere/powercli
+
+# Running the script.
+./VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1 -vcenter 10.182.177.21 -vccred $vccred -cluster "cluster0" -esxAdminGroup "MyESXiGroup" -allowedIPs "10.10.10.0/24","10.10.11.0/24" -ntpServers "time-a-g.nist.gov","time-b-g.nist.gov" -syslogServer "tcp://loginsight.vmware.com:514" -reportpath /tmp/reports
+
+# Snippet from the output of running the script.
+2:11:17 PM ...Remediating STIG ID:ESXI-80-000244 with Title: The ESXi host must enforce the exclusive running of executables from approved VIBs.
+2:11:17 PM ...Setting VMkernel.Boot.execInstalledOnly was incorrectly set to False on 10.182.180.5...setting to true
+VMkernel.Boot.execI… True                 VMHost
+2:11:18 PM ...Setting VMkernel.Boot.execInstalledOnly was incorrectly set to False on 10.182.182.193...setting to true
+VMkernel.Boot.execI… True                 VMHost
+2:11:20 PM ...Setting VMkernel.Boot.execInstalledOnly was incorrectly set to False on 10.182.183.107...setting to true
+VMkernel.Boot.execI… True                 VMHost
+2:11:21 PM ...Remediating STIG ID:ESXI-80-000245 with Title: The ESXi host must use sufficient entropy for cryptographic operations.
+2:11:22 PM ...disableHwrng set correctly to FALSE on 10.182.180.5
+2:11:22 PM ...entropySources set correctly to 0 on 10.182.180.5
+2:11:23 PM ...disableHwrng set correctly to FALSE on 10.182.182.193
+2:11:24 PM ...entropySources set correctly to 0 on 10.182.182.193
+2:11:25 PM ...disableHwrng set correctly to FALSE on 10.182.183.107
+2:11:25 PM ...entropySources set correctly to 0 on 10.182.183.107
+2:11:25 PM ...Remediating STIG ID:ESXI-80-000246 with Title: The ESXi host must not enable log filtering.
+2:11:25 PM ...log filtering set correctly to false on 10.182.180.5
+2:11:25 PM ...log filtering set correctly to false on 10.182.182.193
+2:11:26 PM ...log filtering set correctly to false on 10.182.183.107
+2:11:26 PM ...Remediating STIG ID:ESXI-80-000008 with Title: The ESXi host must enable lockdown mode.
+2:11:26 PM ...Enabling Lockdown mode with level lockdownNormal on 10.182.180.5
+2:11:26 PM ...Enabling Lockdown mode with level lockdownNormal on 10.182.182.193
+2:11:27 PM ...Enabling Lockdown mode with level lockdownNormal on 10.182.183.107
+2:11:27 PM ...Configuration Summary:
+2:11:27 PM {
+  "vcenter": "10.182.177.21",
+  "hostname": "",
+  "cluster": "cluster0",
+  "vmhosts": [
+    "10.182.180.5",
+    "10.182.182.193",
+    "10.182.183.107"
+  ],
+  "reportpath": "/tmp/reports",
+  "ok": 99,
+  "changed": 123,
+  "skipped": 25,
+  "failed": 5,
+
+# A results file and Powershell transcript is provided in the report path specified.
+Directory: /tmp/reports
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---            6/8/2023  2:11 PM           6578 VMware_vSphere_8.0_STIG_ESXi_Remediation_Results_6-8-2023_14-6-38.json
+-a---            6/8/2023  2:11 PM          84552 VMware_vSphere_8.0_STIG_ESXi_Remediation_Transcript_6-8-2023_14-6-38.txt
+{{< /tab >}}
 {{< tab header="8.0 U2" lang="powershell" >}}
 # Navigate to the powercli folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/powercli
@@ -278,6 +366,30 @@ This example will remediate all hosts in the vSphere cluster named `cluster0`. I
 
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
+{{< tab header="8.0 U3" lang="powershell" >}}
+# Navigate to the powercli folder
+cd /usr/share/stigs/vsphere/8.0/v2r1-stig/vsphere/powercli
+
+# Running the script.
+./VMware_vSphere_8.0_STIG_VM_Remediation.ps1 -vcenter 10.182.177.21 -vccred $vccred -cluster "cluster0" -reportpath /tmp/reports
+
+# Snippet from the output of running the script.
+2:13:50 PM ...Connecting to vCenter Server 10.182.177.21
+2:13:52 PM ...Getting PowerCLI objects for all virtual machines in cluster: cluster0
+2:13:53 PM ...Remediating advanced settings on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 on 10.182.177.21
+2:13:53 PM ...Setting isolation.device.connectable.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
+2:13:53 PM ...Setting isolation.tools.copy.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
+2:13:53 PM ...Setting isolation.tools.diskShrink.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
+2:13:53 PM ...Setting isolation.tools.diskWiper.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
+
+# A results file and Powershell transcript is provided in the report path specified.
+Directory: /tmp/reports
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---            6/8/2023  2:14 PM          10743 VMware_vSphere_8.0_STIG_VM_Remediation_Transcript_6-8-2023_14-13-50.txt
+-a---            6/8/2023  2:14 PM           1105 VMware_vSphere_8.0_STIG_VM_Remediation_Transcript_6-8-2023_14-14-7.txt
+{{< /tab >}}
 {{< tab header="8.0 U2" lang="powershell" >}}
 # Navigate to the powercli folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/powercli
@@ -341,6 +453,24 @@ This script also uses the [VMware.Vsphere.SsoAdmin PowerCLI Module](https://www.
 Review the below parameters and gather the information needed to run the script:
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
+{{< tab header="8.0 U3" lang="powershell" >}}
+[CmdletBinding()]
+param (
+  [Parameter(Mandatory=$true)]
+  [string]$vcenter,
+  [Parameter(Mandatory=$true)]
+  [pscredential]$vccred,
+  [Parameter(Mandatory=$false,
+  HelpMessage="Enter the path for the output report. Example /tmp")]
+  [string]$reportpath,
+  [Parameter(Mandatory=$false,
+  HelpMessage="If Netflow is used enter the collector IP address")]
+  [string]$vcNetflowCollectorIp = "",
+  [Parameter(Mandatory=$false,
+  HelpMessage="To disable Netflow on all port groups if enabled set to true")]
+  [boolean]$vcNetflowDisableonallPortGroups = $false
+)
+{{< /tab >}}
 {{< tab header="8.0 U2" lang="powershell" >}}
 [CmdletBinding()]
 param (
@@ -397,6 +527,37 @@ This example will remediate all controls on a target vCenter server.
 
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
+{{< tab header="8.0 U3" lang="powershell" >}}
+# Navigate to the powercli folder
+cd /usr/share/stigs/vsphere/8.0/v2r1-stig/vsphere/powercli
+
+# Running the script.
+./VMware_vSphere_8.0_STIG_vCenter_Remediation.ps1 -vcenter 10.182.177.21 -vccred $vccred -vcNetflowDisableonallPortGroups $true -reportpath /tmp/reports
+
+# Snippet from the output of running the script.
+2:27:42 PM ...Connecting to vCenter Server 10.182.177.21
+2:27:44 PM ...Connecting to vCenter SSO Server 10.182.177.21
+2:27:45 PM ...Verifying vCenter 10.182.177.21 is version 8.0.x
+2:27:45 PM ...vCenter 10.182.177.21 is version 8.0.1 continuing...
+2:27:45 PM ...Getting PowerCLI objects for all virtual distributed switches in vCenter: 10.182.177.21
+2:27:45 PM ...Getting PowerCLI objects for all virtual distributed port groups in vCenter: 10.182.177.21
+2:27:46 PM ...Remediating STIG ID: VCSA-80-000009 with Title: The vCenter Server must use TLS 1.2, at a minimum, to protect the confidentiality of sensitive data during electronic dissemination using remote access.
+2:27:46 PM ...!!This control must be remediated manually!!
+2:27:46 PM ...Remediating STIG ID: VCSA-80-000023 with Title: The vCenter Server must enforce the limit of three consecutive invalid logon attempts by a user.
+2:27:47 PM ...SSO login attempts set incorrectly on 10.182.177.21
+2:27:47 PM ...Remediating STIG ID: VCSA-80-000024 with Title: The vCenter Server must display the Standard Mandatory DoD Notice and Consent Banner before logon.
+2:27:47 PM ...!!This control must be remediated manually!!
+2:27:47 PM ...Remediating STIG ID: VCSA-80-000034 with Title: The vCenter Server must produce audit records containing information to establish what type of events occurred.
+2:27:47 PM ...Setting config.log.level is already configured correctly to info on 10.182.177.21
+
+# A results file and Powershell transcript is provided in the report path specified.
+Directory: /tmp/reports
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---            6/8/2023  2:28 PM           2873 VMware_vSphere_8.0_STIG_vCenter_Remediation_Results_6-8-2023_14-27-42.json
+-a---            6/8/2023  2:28 PM          25530 VMware_vSphere_8.0_STIG_vCenter_Remediation_Transcript_6-8-2023_14-27-42.txt
+{{< /tab >}}
 {{< tab header="8.0 U2" lang="powershell" >}}
 # Navigate to the powercli folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/powercli
@@ -485,6 +646,35 @@ root@sc1-10-182-131-166 [ ~ ]# chsh -s /bin/bash root
 To run all of the VCSA controls, follow the example below:
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
+{{< tab header="8.0 U3" lang="bash" >}}
+# Navigate to the Ansible playbook folder
+cd /usr/share/stigs/vsphere/8.0/v2r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening
+
+# The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use.
+ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter.yml
+
+# Output example
+SSH password:
+
+PLAY [all] ********************************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************************************************************************************************************************
+ok: [10.182.177.21]
+
+TASK [vmware-photon-3.0-stig-ansible-hardening : Include Photon] **************************************************************************************************************************************************************
+included: /home/rlakey/.ansible/roles/vmware-photon-3.0-stig-ansible-hardening/tasks/photon.yml for 10.182.177.21
+
+TASK [vmware-photon-3.0-stig-ansible-hardening : Create time stamp] ***********************************************************************************************************************************************************
+ok: [10.182.177.21] => {"ansible_facts": {"backup_timestamp": "2023-05-25-12-25-58"}, "changed": false}
+
+TASK [vmware-photon-3.0-stig-ansible-hardening : Backup files...if restoring be sure to restore permissions that original file had!!] *****************************************************************************************
+ok: [10.182.177.21] => (item=/etc/rsyslog.conf) => {"ansible_loop_var": "item", "changed": false, "checksum": "7aa11dc58f144160e7e3dc2d40cb2f03a39a989c", "dest": "/tmp/ansible-backups-2023-05-25-12-25-58/rsyslog.conf", "gid": 0, "group": "root", "item": "/etc/rsyslog.conf", "md5sum": "d31d58ff2bbc5cff6b7f343c2580300c", "mode": "0644", "owner": "root", "size": 4000, "src": "/etc/rsyslog.conf", "state": "file", "uid": 0}
+ok: [10.182.177.21] => (item=/etc/issue) => {"ansible_loop_var": "item", "changed": false, "checksum": "930cb25fc842aca6047cb9fc1bfbd6ea191e686f", "dest": "/tmp/ansible-backups-2023-05-25-12-25-58/issue", "gid": 0, "group": "root", "item": "/etc/issue", "md5sum": "f498b74a84aaa39e292d9b815899144d", "mode": "0644", "owner": "root", "size": 104, "src": "/etc/issue", "state": "file", "uid": 0}
+ok: [10.182.177.21] => (item=/etc/audit/rules.d/audit.STIG.rules) => {"ansible_loop_var": "item", "changed": false, "checksum": "38f324fe67c6943e07ef1910b41dedeb0b256ca4", "dest": "/tmp/ansible-backups-2023-05-25-12-25-58/audit.STIG.rules", "gid": 0, "group": "root", "item": "/etc/audit/rules.d/audit.STIG.rules", "md5sum": "396d715044fc7a8d92a0332d3edb4112", "mode": "0640", "owner": "root", "size": 5080, "src": "/etc/audit/rules.d/audit.STIG.rules", "state": "file", "uid": 0}
+
+TASK [vmware-photon-3.0-stig-ansible-hardening : PHTN-30-000001 - Update/Create audit.STIG.rules file] ************************************************************************************************************************
+changed: [10.182.177.21] => {"changed": true, "checksum": "aaafa4e8c28743ce3cc22c818f28f4cb9a3f53b2", "dest": "/etc/audit/rules.d/audit.STIG.rules", "gid": 0, "group": "root", "md5sum": "91a31e7bbf9e3f0d7f390feb4360581b", "mode": "0640", "owner": "root", "size": 5180, "src": "/root/.ansible/tmp/ansible-tmp-1685039234.3606877-890-106251101523760/source", "state": "file", "uid": 0}
+{{< /tab >}}
 {{< tab header="8.0 U2" lang="bash" >}}
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening
@@ -548,6 +738,13 @@ changed: [10.182.177.21] => {"changed": true, "checksum": "aaafa4e8c28743ce3cc22
 A more conservative and preferred approach is to target any non-compliant controls or run each component separately allowed you to perform any functional testing in between.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
+{{< tab header="8.0 U3" lang="bash" >}}
+# Providing the tag "eam" will instruct the playbook to only run the eam role. This tag can be seen in each roles task/main.yml file.
+ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter.yml --tags eam
+
+# Providing the tag "VCEM-70-000001" will instruct the playbook to only run task tagged with the STIG ID of VCEM-80-000001.
+ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter.yml --tags VCEM-80-000001
+{{< /tab >}}
 {{< tab header="8.0 U2" lang="bash" >}}
 # Providing the tag "eam" will instruct the playbook to only run the eam role. This tag can be seen in each roles task/main.yml file.
 ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter-example.yml --tags eam
