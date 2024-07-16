@@ -143,3 +143,11 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/8.0/v1r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"
+  ansiblelint-vsphere80-v2r1-stig:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vsphere/8.0/v2r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"
