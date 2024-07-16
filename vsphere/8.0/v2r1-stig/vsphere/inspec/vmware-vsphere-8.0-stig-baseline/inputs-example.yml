@@ -1,0 +1,66 @@
+# ESXi
+# Choose whether to scan a single host, all hosts in a cluster, or all hosts in vCenter.
+vmhostName: '10.243.104.126'
+cluster: ''
+allesxi: false
+# Set to true if hosts are joined to active directory for authentication
+adJoined: false
+# If ESXi is joined to AD, enter the AD group that has administrative access to ESXi.
+adAdminGroup: 'MyAdAdminGroup'
+# Enter the environment specific syslog server ESXi should be forwarding logs to
+syslogServer: 'tcp://log.test.local:514'
+# Enter the environment specific time servers.
+esxiNtpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Enter the environment specific vMotion VLAN Id.
+vMotionVlanId: '100'
+# Enter the environment specific Management VLAN Id.
+mgtVlanId: '101'
+# Enter an array of users that should be in the lockdown mode exceptions list.
+exceptionUsers:
+  - root
+  - dcui
+# If snmp is used in the environment change to true.
+snmpEnabled: 'false'
+# Enter the latest build number for ESXi.
+esxiBuildNumber: '24022510'
+# vCenter
+# Enter the environment specific syslog server vCenter should be forwarding logs to.
+syslogServers:
+  - 'loginsight.vmware.com'
+  - 'syslog.server2.com'
+# Enter the environment specific time servers.
+ntpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# If an IPfix collector is used enter the IP.
+ipfixCollectorAddress: ''
+# List any users/groups that should be in the default roles that have crypto permissions. The default users/groups are provided below.
+vcCryptoAdmins:
+  - 'VSPHERE.LOCAL\Administrator'
+  - 'VSPHERE.LOCAL\Administrators'
+  - 'VSPHERE.LOCAL\vCLSAdmin'
+# List any roles that are approved to have crypto permissions. The default roles are provided below.
+vcCryptoRoles:
+  - 'Admin'
+  - 'NoTrustedAdmin'
+  - 'vCLSAdmin'
+  - 'vSphereKubernetesManager'
+  - 'VMOperatorController'
+# Enter any approved users in the bash shell administrators users group
+bashShellAdminUsers:
+  - 'Administrator'
+# Enter any approved group in the bash shell administrators group
+bashShellAdminGroups: []
+# Enter any approved users in the trusted admin users group
+trustedAdminUsers: []
+# Enter any approved users in the trusted admin group
+trustedAdminGroups: []
+# Set to false if file based backups are used via the VAMI
+backup3rdParty: false
+# Is Integrated Windows Authentication(IWA) configured? Set to true.  Leave false if not used.
+iwaEnabled: false
+# Choose whether to scan a single VM or all VMs in vCenter.
+vmName: ''
+allvms: true

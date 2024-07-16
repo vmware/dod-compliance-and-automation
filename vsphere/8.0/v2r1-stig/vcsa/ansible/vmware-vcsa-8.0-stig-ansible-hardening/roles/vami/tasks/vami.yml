@@ -1,0 +1,850 @@
+---
+# Ansible Playbook for vCenter Appliance 8.0 VAMI Service STIG Readiness Guide
+
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: run_create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vcsa-vami-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ var_opt_conf_path }}'
+        - '{{ var_var_conf_path }}'
+        - '{{ var_rsyslog_conf_path }}'
+
+###################################################################################################################################
+- name: VCLD-80-000001
+  tags: [VCLD-80-000001]
+  when: run_max_connections | bool
+  block:
+    - name: VCLD-80-000001 - Check to see if server.max-connections is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "server.max-connections"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000001 - Add server.max-connections if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        line: 'server.max-connections = 1024'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000001 - Update server.max-connections if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^(server\.max-connections\s*)=.*$'
+        line: '\1= 1024'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000004
+  tags: [VCLD-80-000004]
+  when: run_ssl_engine | bool
+  block:
+    - name: VCLD-80-000004 - Check to see if ssl.engine is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "ssl.engine"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000004 - Add ssl.engine if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        line: 'ssl.engine = "enable"'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000004 - Update ssl.engine if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        regexp: '^(ssl\.engine\s*)=.*$'
+        line: '\1= "enable"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000005
+  tags: [VCLD-80-000005]
+  when: run_mod_accesslog | bool
+  block:
+    - name: VCLD-80-000005 - Check to see if mod_accesslog is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | awk '/server\.modules/,/\)/' | grep mod_accesslog
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000005 - Add mod_accesslog if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        line: 'server.modules += ("mod_accesslog")'
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+###################################################################################################################################
+- name: VCLD-80-000010
+  tags: [VCLD-80-000010]
+  when: run_accesslog_format | bool
+  block:
+    - name: VCLD-80-000010 - Check to see if accesslog.format is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "accesslog.format"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000010 - Remove accesslog.format in var
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^accesslog\.format.*$'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000010 - Remove accesslog.format in opt
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        regexp: '^accesslog\.format.*$'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000019
+  tags: [VCLD-80-000019]
+  when: run_log_files_permissions | bool
+  block:
+    - name: VCLD-80-000019 - Find var logs with incorrect permissions
+      ansible.builtin.shell: find {{ var_log_dir }} {{ var_log_dir2 }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ var_log_owner }} -o -not -group {{ var_log_group }} ')';
+      register: files
+      failed_when: files.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000019 - Update permissions on var log files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ var_log_owner }}'
+        group: '{{ var_log_group }}'
+        mode: o-w
+      with_items:
+        - "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+    - name: VCLD-80-000019 - Find opt logs with incorrect permissions
+      ansible.builtin.shell: find {{ var_log_dir3 }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ var_log_owner2 }} -o -not -group {{ var_log_group2 }} ')';
+      register: files
+      failed_when: files.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000019 - Update permissions on opt log files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ var_log_owner2 }}'
+        group: '{{ var_log_group2 }}'
+        mode: o-w
+      with_items:
+        - "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000022
+  tags: [VCLD-80-000022]
+  when: run_rsyslog_conf | bool
+  block:
+    - name: VCLD-80-000022 - Configure rsyslog conf
+      ansible.builtin.template:
+        src: '{{ var_rsyslog_conf_name }}'
+        dest: '/etc/vmware-syslog/{{ var_rsyslog_conf_name }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+
+###################################################################################################################################
+- name: VCLD-80-000031
+  tags: [VCLD-80-000031]
+  when: run_mimetype_use_xattr | bool
+  block:
+    - name: VCLD-80-000031 - Check to see if mimetype.use-xattr is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "mimetype.use-xattr"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000031 - Add mimetype.use-xattr if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        line: 'mimetype.use-xattr = "disable"'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000031 - Update mimetype.use-xattr if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^(mimetype\.use-xattr\s*)=.*$'
+        line: '\1= "disable"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000033
+  tags: [VCLD-80-000033]
+  when: run_url_access_deny | bool
+  block:
+    - name: VCLD-80-000033 - Check to see if url.access-deny is present
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^url\.access-deny.*$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: VCLD-80-000033 - Add url.access-deny if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        line: 'url.access-deny = ( "~", ".inc" )'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.found == 0
+
+    - name: VCLD-80-000033 - Update url.access-deny if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^(url\.access-deny\s*)=.*$'
+        line: '\1= ( "~", ".inc" )'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.found == 1
+
+###################################################################################################################################
+- name: VCLD-80-000034
+  tags: [VCLD-80-000034]
+  when: run_mod_webdav | bool
+  block:
+    - name: VCLD-80-000034 - Check to see if mod_webdav is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | awk '/server\.modules/,/\)/' | grep mod_webdav
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000034 - Remove mod_webdav if present in multi-line configuration var
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        state: absent
+        regexp: '^\s+"mod_webdav",?$'
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000034 - Remove mod_webdav if present in single-line configuration var
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_webdav",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000034 - Remove mod_webdav if present in multi-line configuration opt
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: absent
+        regexp: '^\s+"mod_webdav",?$'
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000034 - Remove mod_webdav if present in single-line configuration opt
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_webdav",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000035
+  tags: [VCLD-80-000035]
+  when: run_max_keep_alive | bool
+  block:
+    - name: VCLD-80-000035 - Check to see if server.max-keep-alive-idle is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "server.max-keep-alive-idle"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000035 - Add server.max-keep-alive-idle if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        line: 'server.max-keep-alive-idle = 30'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000035 - Update server.max-keep-alive-idle if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^(server\.max-keep-alive-idle\s*)=.*$'
+        line: '\1= 30'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000040
+  tags: [VCLD-80-000040]
+  when: run_ssl_key_permissions | bool
+  block:
+    - name: VCLD-80-000040 - Update permissions on SSL key file
+      ansible.builtin.file:
+        path: '{{ var_ssl_key_path }}'
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '0600'
+
+###################################################################################################################################
+- name: VCLD-80-000060
+  tags: [VCLD-80-000060]
+  when: run_server_max_fds | bool
+  block:
+    - name: VCLD-80-000060 - Check to see if server.max-fds is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "server.max-fds"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000060 - Add server.max-fds if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        line: 'server.max-fds = 2048'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000060 - Update server.max-fds if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^(server\.max-fds\s*)=.*$'
+        line: '\1= 2048'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000061
+  tags: [VCLD-80-000061]
+  when: run_text_mime_utf8 | bool
+  block:
+    - name: VCLD-80-000061 - Find text mime types without charset
+      ansible.builtin.shell: >
+                          set -o pipefail && \
+                          grep 'text/' '{{ var_opt_conf_path }}' | grep -v 'charset=utf-8'
+      register: mimetypes
+      changed_when: false
+      failed_when: "mimetypes.rc == 2"
+
+    - name: VCLD-80-000061 - VAMI must set the encoding for all text mime types to UTF-8. Parse results
+      ansible.builtin.set_fact:
+        mimetypes: "{{ mimetypes.stdout_lines }}"
+      when:
+        - mimetypes | length | int > 0
+
+    - name: VCLD-80-000061 - VAMI must set the encoding for all text mime types to UTF-8.
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        state: present
+        regexp: "{{ item }}"
+        line: "{{ item | regex_replace('\",$', '') }}; charset=utf-8\","
+      with_items:
+        - "{{ mimetypes }}"
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - mimetypes | length | int > 0
+
+###################################################################################################################################
+- name: VCLD-80-000062
+  tags: [VCLD-80-000062]
+  when: run_dir_listing | bool
+  block:
+    - name: VCLD-80-000062 - Check to see if dir-listing.activate is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "dir-listing.activate"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000062 - Add dir-listing.activate if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        line: 'dir-listing.activate = "disable"'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000062 - Update dir-listing.activate if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^(dir-listing\.activate\s*)=.*$'
+        line: '\1= "disable"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000063
+  tags: [VCLD-80-000063]
+  when: run_mod_status | bool
+  block:
+    - name: VCLD-80-000063 - Check to see if mod_status is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | awk '/server\.modules/,/\)/' | grep mod_status
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000063 - Remove mod_status if present in multi-line configuration var
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        state: absent
+        regexp: '^\s+"mod_status",?$'
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000063 - Remove mod_status if present in single-line configuration var
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_status",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000063 - Remove mod_status if present in multi-line configuration opt
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: absent
+        regexp: '^\s+"mod_status",?$'
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000063 - Remove mod_status if present in single-line configuration opt
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_status",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000064
+  tags: [VCLD-80-000064]
+  when: run_debug_log_request | bool
+  block:
+    - name: VCLD-80-000064 - Check to see if debug.log-request-handling is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "debug.log-request-handling"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000064 - Add debug.log-request-handling if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        line: 'debug.log-request-handling = "disable"'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000064 - Update debug.log-request-handling if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^(debug\.log-request-handling\s*)=.*$'
+        line: '\1= "disable"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000097
+  tags: [VCLD-80-000097]
+  when: run_ssl_disable_client_reneg | bool
+  block:
+    - name: VCLD-80-000097 - Check to see if ssl.disable-client-renegotiation is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "ssl.disable-client-renegotiation"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000097 - Remove ssl.disable-client-renegotiation in var
+      ansible.builtin.lineinfile:
+        path: '{{ var_var_conf_path }}'
+        regexp: '^ssl\.disable-client-renegotiation.*$'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000097 - Remove ssl.disable-client-renegotiation in opt
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        regexp: '^ssl\.disable-client-renegotiation.*$'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000098
+  tags: [VCLD-80-000098]
+  when: run_server_tag | bool
+  block:
+    - name: VCLD-80-000098 - Check to see if server.tag is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | grep "server.tag"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000098 - Add server.tag if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        line: 'server.tag = "vami"'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000098 - Update server.tag if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        regexp: '^(server\.tag\s*)=.*$'
+        line: '\1= "vami"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000099
+  tags: [VCLD-80-000099]
+  when: run_header_hsts | bool
+  block:
+    - name: VCLD-80-000099 - Check to see if header "Strict-Transport-Security" present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | awk '/setenv\.add-response-header/,/\)/' | grep "Strict-Transport-Security"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000099 - Add header "Strict-Transport-Security" => "max-age=31536000; includeSubDomains; preload" if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        line: 'setenv.add-response-header += ("Strict-Transport-Security" => "max-age=31536000; includeSubDomains; preload")'
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000099 - Update header "Strict-Transport-Security" if present in multi-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^\s+"Strict-Transport-Security"\s+=>\s+)(".*")(.*$)'
+        line: '\1"max-age=31536000; includeSubDomains; preload"\3'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000099 - Update header "Strict-Transport-Security" if present in single-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^setenv\.add-response-header\s+)(=|\+=)(\s+\("Strict-Transport-Security"\s+=>\s+)(".*")(.*$)'
+        line: '\1\2\3"max-age=31536000; includeSubDomains; preload"\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000100
+  tags: [VCLD-80-000100]
+  when: run_header_xframe_deny | bool
+  block:
+    - name: VCLD-80-000100 - Check to see if header "X-Frame-Options" is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | awk '/setenv\.add-response-header/,/\)/' | grep "X-Frame-Options"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000100 - Add header "X-Frame-Options" => "Deny" if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        line: 'setenv.add-response-header += ("X-Frame-Options" => "Deny")'
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000100 - Update header "X-Frame-Options" if present in multi-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^\s+"X-Frame-Options"\s+=>\s+)(".*")(.*$)'
+        line: '\1"Deny"\3'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000100 - Update header "X-Frame-Options" if present in single-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^setenv\.add-response-header\s+)(=|\+=)(\s+\("X-Frame-Options"\s+=>\s+)(".*")(.*$)'
+        line: '\1\2\3"Deny"\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000101
+  tags: [VCLD-80-000101]
+  when: run_header_xcontenttype | bool
+  block:
+    - name: VCLD-80-000101 - Check to see if header "X-Content-Type-Options" is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | awk '/setenv\.add-response-header/,/\)/' | grep "X-Content-Type-Options"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000101 - Add header "X-Content-Type-Options" => "nosniff" if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        line: 'setenv.add-response-header += ("X-Content-Type-Options" => "nosniff")'
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000101 - Update header "X-Content-Type-Options" if present in multi-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^\s+"X-Content-Type-Options"\s+=>\s+)(".*")(.*$)'
+        line: '\1"nosniff"\3'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000101 - Update header "X-Content-Type-Options" if present in single-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^setenv\.add-response-header\s+)(=|\+=)(\s+\("X-Content-Type-Options"\s+=>\s+)(".*")(.*$)'
+        line: '\1\2\3"nosniff"\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCLD-80-000102
+  tags: [VCLD-80-000102]
+  when: run_header_csp | bool
+  block:
+    - name: VCLD-80-000102 - Check to see if header "Content-Security-Policy" is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ var_bin_path }} -p -f {{ var_var_conf_path }} 2>/dev/null | awk '/setenv\.add-response-header/,/\)/' | grep "Content-Security-Policy"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCLD-80-000102 - Add header "Content-Security-Policy" if not present
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        line: "setenv.add-response-header += (\"Content-Security-Policy\" => \"default-src 'self'; img-src 'self' data: https://vcsa.vmware.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\")"
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCLD-80-000102 - Update header "Content-Security-Policy" if present in multi-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^\s+"Content-Security-Policy"\s+=>\s+)(".*")(.*$)'
+        line: "\\1\"default-src 'self'; img-src 'self' data: https://vcsa.vmware.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\"\\3"
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCLD-80-000102 - Update header "Content-Security-Policy" if present in single-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ var_opt_conf_path }}'
+        state: present
+        regexp: '(^setenv\.add-response-header\s+)(=|\+=)(\s+\("Content-Security-Policy"\s+=>\s+)(".*")(.*$)'
+        line: "\\1\\2\\3\"default-src 'self'; img-src 'self' data: https://vcsa.vmware.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\"\\5"
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - check.stdout != ""

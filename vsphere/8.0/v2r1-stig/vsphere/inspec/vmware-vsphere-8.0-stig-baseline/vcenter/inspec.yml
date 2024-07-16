@@ -1,0 +1,71 @@
+---
+name: VMware vSphere 8.0 vCenter STIG
+title: VMware vSphere 8.0 vCenter STIG
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 2.0.1
+
+inputs:
+  - name: embeddedIdp
+    type: boolean
+    description: Is the embedded identity provider used? Set to true.  Leave false if a 3rd party identity provider is used.
+    value: true
+  - name: syslogServers
+    type: array
+    description: List authorized syslog servers that should be configured.
+    value:
+      - 'syslog.test.local'
+  - name: ntpServers
+    type: array
+    description: List authorized NTP servers that should be configured.
+    value:
+      - 'time-a-g.nist.gov'
+      - 'time-b-g.nist.gov' 
+  - name: ipfixCollectorAddress
+    value: ''
+    type: string
+    description: "If IpFix is used enter the collector address"
+  - name: vcCryptoAdmins
+    type: array
+    description: List of authorized users/groups that should have the Administrators role and cryptographic administrative privileges
+    value:
+      - 'VSPHERE.LOCAL\Administrator'
+      - 'VSPHERE.LOCAL\Administrators'
+      - 'VSPHERE.LOCAL\vCLSAdmin'
+  - name: vcCryptoRoles
+    type: array
+    description: List of authorized roles that should have cryptographic privileges. The default roles are listed and any custom roles should be added.
+    value:
+      - 'Admin'
+      - 'NoTrustedAdmin'
+      - 'vCLSAdmin'
+      - 'vSphereKubernetesManager'
+      - 'VMOperatorController'
+  - name: bashShellAdminUsers
+    type: array
+    description: List of authorized users that should be in the SystemConfiguration.BashShellAdministrators SSO group
+    value:
+      - 'Administrator'
+  - name: bashShellAdminGroups
+    type: array
+    description: List of authorized groups that should be in the SystemConfiguration.BashShellAdministrators SSO group
+    value: []
+  - name: trustedAdminUsers
+    type: array
+    description: List of authorized users that should be in the TrustedAdmins SSO group
+    value: []
+  - name: trustedAdminGroups
+    type: array
+    description: List of authorized groups that should be in the TrustedAdmins SSO group
+    value: []
+  - name: backup3rdParty
+    type: boolean
+    description: Is a 3rd party backup solution used to backup vCenter? Set to true.  Leave false if the native backup capabilities are used.
+    value: false
+  - name: iwaEnabled
+    type: boolean
+    description: Is Integrated Windows Authentication(IWA) configured? Set to true.  Leave false if not used.
+    value: false
