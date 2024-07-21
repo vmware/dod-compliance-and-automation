@@ -190,4 +190,7 @@ enable = false
     disable = false
   [[module.imports]]
     path = "github.com/google/docsy/dependencies"
-    disable = false    
+    disable = false  
+  [[module.mounts]]
+    source = "static"
+    target = "static"
