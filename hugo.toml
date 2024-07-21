@@ -1,4 +1,4 @@
-baseURL = "/"
+baseURL = "https://vmware.github.io/dod-compliance-and-automation/"
 title = "DoD Compliance and Automation"
 
 # Language settings
@@ -9,7 +9,7 @@ defaultContentLanguageInSubdir = false
 enableMissingTranslationPlaceholders = true
 
 # This is needed for GH pages to convert URLs correctly
-# canonifyURLs = true
+canonifyURLs = true
 
 enableRobotsTXT = true
 
