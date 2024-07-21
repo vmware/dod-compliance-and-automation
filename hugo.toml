@@ -9,7 +9,7 @@ defaultContentLanguageInSubdir = false
 enableMissingTranslationPlaceholders = true
 
 # This is needed for GH pages to convert URLs correctly
-canonifyURLs = true
+# canonifyURLs = true
 
 enableRobotsTXT = true
 
