@@ -5,7 +5,6 @@ title = "DoD Compliance and Automation"
 contentDir = "content/en"
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
-staticDir = ["static"]
 # Useful when translating.
 enableMissingTranslationPlaceholders = true
 
