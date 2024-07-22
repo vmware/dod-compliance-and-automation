@@ -88,11 +88,11 @@ Now when we convert this to a CKL file this information will be carried forward.
 saf convert hdf2ckl -i .\My_new_report_with_attestations.json -o my_new_ckl.ckl --hostname myesxihost --fqdn myesxihost.local --ip 10.1.2.3 --mac 00:00:00:00:00:00
 ```
 
-After importing into STIG viewer you can see the manual attestion on the ESXI-80-000006 in the finding details.  
-![alt text](/images/safcli_ckl_finding_details.png)
+After importing into STIG viewer you can see the manual attestation on the ESXI-80-000006 in the finding details.  
+![STIG Finding Details]({{< baseurl >}}/images/safcli_ckl_finding_details.png)
 
 The host info provided is also populated in the target data.  
-![alt text](/images/safcli_ckl_target_data.png)
+![STIG Host Info]({{< baseurl >}}/images/safcli_ckl_target_data.png)
 
 ### Converting XCCDF to InSpec
 When starting a new profile for a STIG it would not be feasible to manually populate all of a STIGs metadata (title,check,fix,discussion,ids,severity,etc) into the control files.

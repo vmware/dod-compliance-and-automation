@@ -90,5 +90,5 @@ If a STIG Viewer Checklist (CKL) file is needed then the results from the scans 
 saf convert hdf2ckl -i /tmp/reports/Aria_Lifecycle_8x_STIG_Report.json -o /tmp/reports/Aria_Lifecycle_8x_STIG_Report.ckl --hostname aria-lifecycle --fqdn aria-lifecycle.domain.path --ip 10.10.10.20 --mac 00:00:00:00:00:00
 ```
 
-Opening the CKL file in STIG Viewer will look like the example screenshot below. Note the InSpec results are included in the `Finding Details` pane.
-![Lifecycle Manager Screenshot]({{< baseurl >}}/images/VRSLCM_ckl_screenshot.png)
+Opening the CKL file in STIG Viewer will look like the example screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
+![STIG Viewer Checklist]({{< baseurl >}}/images/VRSLCM_ckl_screenshot.png)

@@ -56,10 +56,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
 {{< /tabpane >}}
 
 A token can also be generated UI by going to the Developer Center >> API Explorer >> Tokens.  
-![alt text](/images/vcf5_generate_token.png)
+![Token Generation]({{< baseurl >}}/images/vcf5_generate_token.png)
 
 Retrieve token by copying the value in the `accessToken` field.  
-![alt text](/images/vcf5_view_token.png)
+![Token Retrieval]({{< baseurl >}}/images/vcf5_view_token.png)
 
 ### Update profile inputs
 Included in the `vmware-cloud-foundation-sddcmgr-5x-stig-baseline` is an example inputs file with variables relevant to SDDC Manager. This is used to provide InSpec with values specific to the environment being audited.
@@ -251,5 +251,5 @@ If a STIG Viewer CKL file is needed then the results from the scans can be conve
 saf convert hdf2ckl -i /tmp/reports/VCF_5.1.0_SDDC_Manager_STIG_Report.json -o /tmp/reports/VCF_5.1.0_SDDC_Manager_STIG_Report.ckl --hostname sddc-manager.vsphere.local --fqdn sddc-manager.vsphere.local --ip 10.2.3.4 --mac 00:00:00:00:00:00
 ```
 
-Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.
-![alt text](/images/vcf_audit5_ckl_screenshot.png)
+Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
+![STIG Viewer Checklist]({{< baseurl >}}/images/vcf_audit5_ckl_screenshot.png)

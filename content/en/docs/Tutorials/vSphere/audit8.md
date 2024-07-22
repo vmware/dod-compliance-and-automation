@@ -1171,5 +1171,4 @@ saf convert hdf2ckl -i /tmp/reports/MyVCSA8Report.json -o /tmp/reports/MyVCSA8Re
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-
-![alt text](/images/vsphere_audit8_ckl_screenshot.png)
+![STIG Viewer Checklist]({{< baseurl >}}/images/vsphere_audit8_ckl_screenshot.png)

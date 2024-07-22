@@ -57,10 +57,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
 {{< /tabpane >}}
 
 A token can also be generated UI by going to the Developer Center >> API Explorer >> Tokens.  
-![alt text](/images/vcf5_generate_token.png)
+![Token Generation]({{< baseurl >}}/images/vcf5_generate_token.png)
 
 Retrieve token by copying the value in the `accessToken` field.  
-![alt text](/images/vcf5_view_token.png)
+![Token Retrieval]({{< baseurl >}}/images/vcf5_view_token.png)
 
 ### Update vars file
 In order to run the playbook, environment specific values need to be provided. An example vars file `vars-sddcmgr-example.yml` is provided.  

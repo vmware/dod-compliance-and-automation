@@ -83,5 +83,4 @@ saf convert hdf2ckl -i /tmp/reports/Aria_Automation_8x_STIG_Report.json -o /tmp/
 ```
 
 Opening the CKL file in STIG Viewer will look like the example screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-
-![alt text]({{< baseurl >}}/images/VRA_ckl_screenshot.png)
+![STIG Viewer Checklist]({{< baseurl >}}/images/VRA_ckl_screenshot.png)
