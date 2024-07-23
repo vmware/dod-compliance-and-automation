@@ -1,0 +1,14 @@
+---
+# Example vars file to use when running this playbook to update any required variables
+# To create backups of files modified under /tmp set to true
+create_backups: true
+# Enable the DoD login banner
+run_etc_issue_dod: true
+# Set to true if you want the playbook to install required packages. This requires access to a repo with the required packages.
+run_rsyslog_install: true
+run_openssl_fips_install: true
+run_auditd_install: true
+run_install_aide: true
+# Set to true/false to use conf files to configure pwquality. true is recommended
+var_pam_use_pwquality_conf: true
+var_pam_pwquality_control: 'required'
