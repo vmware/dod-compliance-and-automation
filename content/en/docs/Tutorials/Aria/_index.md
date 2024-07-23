@@ -1,7 +1,7 @@
 ---
-title: "Aria/vRealize"
-linkTitle: "Aria/vRealize"
+title: "Aria"
+linkTitle: "Aria"
 weight: 5
 description: >
-  Performing compliance automation tasks for Aria/vRealize Suite products.
+  Performing compliance automation tasks for Aria Suite products.
 ---
