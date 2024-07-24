@@ -5,7 +5,7 @@ STIG Type: STIG Readiness Guide
 Maintainers: Broadcom  
 
 ## Targets
-This version of the content is currently applicable for VMware Aria Operations for Logs versions 8.14, and will be updated as necessary for later releases.
+This version of the content is currently applicable for VMware Aria Operations for Logs versions 8.14-8.18, and will be updated as necessary for later releases.
 
 ## VMware Aria Operations for Logs InSpec Profiles
 
