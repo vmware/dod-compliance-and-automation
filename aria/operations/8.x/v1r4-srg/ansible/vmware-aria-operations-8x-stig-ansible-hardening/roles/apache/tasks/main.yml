@@ -1,0 +1,11 @@
+---
+# tasks file for apache
+
+- name: Include apache
+  ansible.builtin.include_tasks:
+    file: apache.yml
+    apply:
+      tags:
+        - apache
+  tags:
+    - always

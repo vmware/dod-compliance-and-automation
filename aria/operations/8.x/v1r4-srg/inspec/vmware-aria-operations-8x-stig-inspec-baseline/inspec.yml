@@ -1,0 +1,23 @@
+name: vmware-aria-operations-8.x-stig-inspec-baseline
+title: InSpec Wrapper Profile for VMware vRealize Operations Manager 8.x Appliances
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+version: 1.0.4
+
+depends:
+  - name: apache
+    path: apache
+  - name: api
+    path: api
+  - name: casa
+    path: casa
+  - name: photon
+    path: ../../../../../../photon/5.0/v2r1-srg/inspec/vmware-photon-5.0-stig-baseline
+  - name: vpostgres
+    path: vpostgres
+  - name: ui
+    path: ui
+  - name: application
+    path: application

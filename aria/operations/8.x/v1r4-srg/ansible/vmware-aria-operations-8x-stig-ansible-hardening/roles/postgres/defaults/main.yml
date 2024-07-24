@@ -1,0 +1,18 @@
+---
+# defaults file for postgres
+# VRPP-8X-000032
+pg_approved_extensions:
+  - plpgsql
+
+# VRPP-8X-000041
+pg_owner: postgres
+pg_group: users
+
+# VRPP-8X-000047
+tcp_keepalives_time: 7200
+tcp_keepalives_interval: 75
+tcp_keepalive_probes: 9
+
+# VRPP-8X-000062
+# Postgres displays values in min/sec but while setting up statement_timeout pass value in millisec
+statement_timeout: 60000
