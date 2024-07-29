@@ -7,7 +7,7 @@ STIG Type: STIG Readiness Guide
 This is a hardening playbook that utilizes Ansible to perform automated remediation for STIG compliance of the VMware Aria Suite Lifecycle 8.x Appliance STIG Readiness Guide.
 
 ## Supported Versions
-- VMware Aria Suite Lifecycle 8.14  
+- VMware Aria Suite Lifecycle 8.14-8.18  
 
 ## !!Important!!
 - Please read through the README carefully and familiarize yourself with the playbook and Ansible before running this playbook.

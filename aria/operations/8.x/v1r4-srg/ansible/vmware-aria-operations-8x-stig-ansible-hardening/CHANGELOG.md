@@ -1,6 +1,6 @@
 # Change Log
 
-## [8.x Version 1 Release 3] (2024-04-10)
+## [8.x Version 1 Release 4] (2024-07-24)
 
 #### Release Notes
 PHOTON:
