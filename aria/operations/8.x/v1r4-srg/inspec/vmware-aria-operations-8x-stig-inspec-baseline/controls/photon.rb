@@ -1,7 +1,4 @@
 include_controls 'photon' do
-  # File permissions are different for Operations services
-  # skip_control 'PHTN-40-000085'
-
   # Sudo users
   skip_control 'PHTN-50-000133'
 
