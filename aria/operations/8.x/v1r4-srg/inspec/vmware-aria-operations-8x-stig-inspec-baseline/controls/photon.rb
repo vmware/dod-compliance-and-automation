@@ -18,5 +18,4 @@ include_controls 'photon' do
   skip_control 'PHTN-50-000066'
   skip_control 'PHTN-50-000238'
   skip_control 'PHTN-50-000243'
-
 end
