@@ -95,6 +95,14 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "photon/5.0/v1r3-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/"
+  ansiblelint-photon5-v2r1-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "photon/5.0/v2r1-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/"
   ansiblelint-vcd10x-v1r1-srg:
     runs-on: ubuntu-latest
     steps:

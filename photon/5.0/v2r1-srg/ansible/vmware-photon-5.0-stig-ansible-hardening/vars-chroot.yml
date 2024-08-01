@@ -1,0 +1,30 @@
+---
+# Vars file for running playbook on a chroot
+# To create backups of files modified under /tmp set to true
+create_backups: false
+# Enable the DoD login banner
+run_etc_issue_dod: false
+# Enter organizations rsyslog server
+var_rsyslog_server_name: ''
+var_rsyslog_server_port: ''
+## udp, tcp, or tls
+var_rsyslog_server_protocol: 'tcp'
+## Select package to use for time sync. ntpd(default), chrony, or timesyncd
+var_time_type: 'ntpd'
+# Enter organizations time servers
+var_time_servers:
+  - ''
+  - ''
+# Set to true if you want the playbook to install required packages. This requires access to a repo with the required packages.
+run_rsyslog_install: false
+run_openssl_fips_install: false
+run_auditd_install: false
+run_time_install: false
+run_install_aide: false
+run_selinux_install: false
+# Set to true/false to use conf files to configure pwquality or pwhistory. true is recommended
+var_pam_use_pwhistory_conf: true
+var_pam_use_pwquality_conf: true
+var_pam_pwquality_control: 'required'
+# SELinux mode. 1 for enforcing and 0 for permissive
+var_selinux_enforcing: 0
