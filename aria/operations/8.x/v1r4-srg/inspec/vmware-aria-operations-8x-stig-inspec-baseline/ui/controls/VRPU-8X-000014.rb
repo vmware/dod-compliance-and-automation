@@ -40,7 +40,7 @@ control 'VRPU-8X-000014' do
   tag rid: 'SV-VRPU-8X-000014'
   tag stig_id: 'VRPU-8X-000014'
   tag cci: ['CCI-000067', 'CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000166', 'CCI-000169', 'CCI-000171', 'CCI-000172', 'CCI-001487', 'CCI-001889', 'CCI-002234']
-  tag nist: ['AC-17 (1)', 'AC-6 (9)', 'AU-10', 'AU-12 a', 'AU-12 b', 'AU-12 c', 'AU-3', 'AU-8 b']
+  tag nist: ['AC-17 (1)', 'AC-6 (9)', 'AU-10', 'AU-12 a', 'AU-12 b', 'AU-12 c', 'AU-3 a', 'AU-3 b', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 f', 'AU-8 b']
 
   # At least one should exist
   count = 0

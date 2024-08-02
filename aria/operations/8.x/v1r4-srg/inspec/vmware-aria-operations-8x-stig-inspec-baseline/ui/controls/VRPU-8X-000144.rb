@@ -24,7 +24,7 @@ control 'VRPU-8X-000144' do
   tag rid: 'SV-VRPU-8X-000144'
   tag stig_id: 'VRPU-8X-000144'
   tag cci: ['CCI-001813']
-  tag nist: ['CM-5 (1)']
+  tag nist: ['CM-5 (1) (a)']
 
   command("find '#{input('ui-tcInstance')}/conf' -type f -xdev").stdout.split.each do |fname|
     describe file(fname) do
