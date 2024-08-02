@@ -13,3 +13,4 @@
         # Disable N/A Photon Controls
         run_install_aide: false
         run_aide_config: false
+        run_sudo_no_password: false
