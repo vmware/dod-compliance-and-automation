@@ -1,7 +1,7 @@
 ---
 # defaults file for vrlcm
-vrlcm_hostname: "https://cava-n-81-141.eng.vmware.com"
+vrlcm_hostname: "https://lifecycle.domain.com"
 vrlcm_username: "admin@local"
-vrlcm_password: "VMware1!"
+vrlcm_password: "password"
 
 vrlcm_ntp_servers: "time-a-b.nist.gov,time.google.com"

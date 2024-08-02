@@ -1,0 +1,6 @@
+---
+
+- name: Restart UI
+  ansible.builtin.service:
+    name: vmware-vcops-web.service
+    state: restarted

@@ -1,0 +1,765 @@
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [casa, backup]
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vrops-CASA-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      with_items:
+        - '{{ server_xml_path }}'
+        - '{{ web_xml_path }}'
+        - '{{ catalina_prop_path }}'
+
+###################################################################################################################################
+
+# VRPS-8X-000001 - Tomcat server must limit the number of maximum concurrent connections permitted.
+- name: VRPS-8X-000001 - Tomcat server must limit the number of maximum concurrent connections permitted
+  tags: [VRPS-8X-000001]
+  block:
+    - name: VRPS-8X-000001 - Add or configure maximum concurrent connections permitted - Executor node
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '//Executor[@name="tomcatThreadPool"]'
+        attribute: 'maxThreads'
+        value: '{{ server_xml_maxthreads }}'
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000001 - Add or configure maximum concurrent connections permitted - Connector node
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '//Connector[not(@executor)] | //Connector[@executor != "tomcatThreadPool"]'
+        attribute: maxThreads
+        value: '{{ server_xml_maxthreads }}'
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000005 - Cookies must have secure flag set.
+- name: VRPS-8X-000005 - Cookies must have secure flag set
+  tags: [VRPS-8X-000005]
+  block:
+    - name: VRPS-8X-000005 - Configure secure cookies
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
+        value: 'true'
+        namespaces:
+          x: "{{ default_namespace }}"
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000013 - The Casa service must initiate session logging upon startup.
+# Configure the application to begin logging application events as soon as the application starts up.
+
+###################################################################################################################################
+
+# VRPS-8X-000014 - The Tomcat server must produce log records containing sufficient information regarding event details.
+- name: VRPS-8X-000014 - The Tomcat server must produce log records containing sufficient information regarding event details
+  tags: [VRPS-8X-000014]
+  block:
+    - name: VRPS-8X-000014 - Configure access log pattern
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
+        attribute: 'pattern'
+        value: '{{ server_xml_access_log_valve_pattern }}'
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000025 - The Casa service logs folder permissions must be set correctly.
+- name: VRPS-8X-000025 - The Casa service logs folder permissions must be set correctly
+  tags: [VRPS-8X-000025]
+  block:
+    - name: VRPS-8X-000025 - Check for file permissions of the logs folder
+      ansible.builtin.command: find {{ catalina_base }}/logs/ -xdev -type f -a '(' -perm -o+w -o -not -user admin -o -not -group admin ')' -exec ls {} \;
+      register: dir_perm_out
+      failed_when: false
+      changed_when: false
+
+    - name: VRPS-8X-000025 - Update directory permissions
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: 'admin'
+        group: 'admin'
+        mode: o-w
+      with_items: "{{ dir_perm_out.stdout_lines }}"
+      when:
+        - dir_perm_out.stdout != ""
+
+###################################################################################################################################
+
+# VRPS-8X-000034 - The Tomcat server must limit privileges for creating or modifying hosted application shared files.
+- name: VRPS-8X-000034 - The Tomcat server must limit privileges for creating or modifying hosted application shared files
+  tags: [VRPS-8X-000034]
+  block:
+    - name: VRPS-8X-000034 - Add Listener org.apache.catalina.security.SecurityListener
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '/Server/Listener[@className="org.apache.catalina.security.SecurityListener"]'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000034 - Check for minimumUmask attribute on org.apache.catalina.security.SecurityListener
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '/Server/Listener[@className="org.apache.catalina.security.SecurityListener"]/@minimumUmask'
+        count: true
+      register: minumask
+
+    - name: VRPS-8X-000034 - Update minimumUmask attribute on org.apache.catalina.security.SecurityListener
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '/Server/Listener[@className="org.apache.catalina.security.SecurityListener"]'
+        attribute: 'minimumUmask'
+        value: '0007'
+        pretty_print: true
+      when:
+        - minumask.count != 0
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000036 - Stack tracing must be disabled.
+- name: VRPS-8X-000036- Stack tracing must be disabled
+  tags: [VRPS-8X-000036]
+  block:
+    - name: VRPS-8X-000036 - Remove allowTrace attribute on connectors
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '/Server/Service/Connector/@allowTrace'
+        state: absent
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000057 - The Casa service must be configured to limit data exposure between applications.
+- name: VRPS-8X-000057 - The Casa service must be configured to limit data exposure between applications
+  tags: [VRPS-8X-000057]
+  block:
+    - name: VRPS-8X-000057 - Check for RECYCLE_FACADES config
+      ansible.builtin.command: grep RECYCLE_FACADES {{ catalina_prop_path }}
+      register: rec_fac_out
+      failed_when: false
+      changed_when: false
+
+    - name: VRPS-8X-000057 - Add or configure RECYCLE_FACADES if not set already or misconfigured
+      ansible.builtin.lineinfile:
+        path: "{{ catalina_prop_path }}"
+        regexp: 'RECYCLE_FACADES'
+        line: "org.apache.catalina.connector.RECYCLE_FACADES=true"
+        state: present
+      when: rec_fac_out.stdout | trim != "org.apache.catalina.connector.RECYCLE_FACADES=true"
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000062 - The Casa service must be built to fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+- name: VRPS-8X-000062 - The Casa service must be built to fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+  tags: [VRPS-8X-000062]
+  block:
+    - name: VRPS-8X-000062 - Check for EXIT_ON_INIT_FAILURE config
+      ansible.builtin.command: grep -i EXIT_ON_INIT_FAILURE {{ catalina_prop_path }}
+      register: exit_fail_out
+      failed_when: false
+      changed_when: false
+
+    - name: VRPS-8X-000062 - Add or configure EXIT_ON_INIT_FAILURE if not set already or misconfigured
+      ansible.builtin.lineinfile:
+        path: "{{ catalina_prop_path }}"
+        regexp: 'EXIT_ON_INIT_FAILURE'
+        line: "org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true"
+        state: present
+      when: exit_fail_out.stdout | trim != "org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true"
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000065- The Casa service must set URIEncoding to UTF-8.
+- name: VRPS-8X-000065 - The Casa service must set URIEncoding to UTF-8
+  tags: [VRPS-8X-000065]
+  block:
+    - name: VRPS-8X-000065 - Find incorrect URIEncoding attributes on connectors
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '//Connector[not(@URIEncoding)] | //Connector[@URIEncoding != "UTF-8"]'
+        count: true
+        pretty_print: true
+      register: uriecount
+
+    - name: VRPS-8X-000065 - Update incorrect URIEncoding attributes on connectors to UTF-8
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '//Connector[not(@URIEncoding)] | //Connector[@URIEncoding != "UTF-8"]'
+        attribute: 'URIEncoding'
+        value: 'UTF-8'
+        state: present
+        pretty_print: true
+      when: uriecount.count != 0
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000067- The Casa service "ErrorReportValve showServerInfo" must be set to "false".
+- name: VRPS-8X-000067 - The Casa service "ErrorReportValve showServerInfo" must be set to "false"
+  tags: [VRPS-8X-000067]
+  block:
+    - name: VRPS-8X-000067 - Configure showServerInfo on ErrorReportValve
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+        attribute: 'showServerInfo'
+        value: 'false'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000070- The Casa service must set an inactive timeout for sessions.
+- name: VRPS-8X-000070 - The Casa service must set an inactive timeout for sessions
+  tags: [VRPS-8X-000070]
+  block:
+    - name: VRPS-8X-000070 - Configure session timeout
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:session-config/x:session-timeout'
+        value: '{{ web_xml_session_timeout }}'
+        state: present
+        namespaces:
+          x: "{{ default_namespace }}"
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000125- The Casa service must limit the amount of time that each Transmission Control Protocol (TCP) connection is kept alive.
+- name: VRPS-8X-000125 - The Casa service must limit the amount of time that each Transmission Control Protocol (TCP) connection is kept alive
+  tags: [VRPS-8X-000125]
+  block:
+    - name: VRPS-8X-000125 - Find incorrect connectionTimeout attributes on connectors
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: "//Connector[@connectionTimeout='-1']"
+        count: true
+      register: ctcount
+
+    - name: VRPS-8X-000125 - Update incorrect connectionTimeout attributes on connectors
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: "//Connector[@connectionTimeout='-1']"
+        attribute: 'connectionTimeout'
+        value: '{{ server_xml_connection_timeout }}'
+        state: present
+        pretty_print: true
+      when: ctcount.count != 0
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000126- The Casa service must limit the number of times that each Transmission Control Protocol (TCP) connection is kept alive.
+- name: VRPS-8X-000126 - The Casa service must limit the number of times that each Transmission Control Protocol (TCP) connection is kept alive
+  tags: [VRPS-8X-000126]
+  block:
+    - name: VRPS-8X-000126 - Find incorrect maxKeepAliveRequests attributes on connectors
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: "//Connector[@maxKeepAliveRequests='-1']"
+        count: true
+      register: mkacount
+
+    - name: VRPS-8X-000126 - Update incorrect maxKeepAliveRequests attributes on connectors
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: "//Connector[@maxKeepAliveRequests='-1']"
+        attribute: 'maxKeepAliveRequests'
+        value: '{{ server_xml_max_keepalive_requests }}'
+        state: present
+        pretty_print: true
+      when: mkacount.count != 0
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000127- The Casa service must configure the "setCharacterEncodingFilter" filter.
+- name: VRPS-8X-000127 - The Casa service must configure the "setCharacterEncodingFilter" filter
+  tags: [VRPS-8X-000127]
+  block:
+    - name: VRPS-8X-000127 - Check for filter-mapping
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]'
+        count: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      register: filtermaphits
+
+    - name: VRPS-8X-000127 - Create filter-mapping element
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app'
+        add_children:
+          - filter-mapping:
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+      when:
+        - filtermaphits.count == 0
+
+    - name: VRPS-8X-000127 - Create filter-mapping name
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter-mapping[last()]/x:filter-name'
+        value: 'setCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+      when:
+        - filtermaphits.count == 0
+
+    - name: VRPS-8X-000127 - Configure filter-mapping url-pattern
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]/x:url-pattern'
+        value: '/*'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000127 - Check for bad filter configuration init-params
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param'
+        count: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      register: countbadinits
+
+    - name: VRPS-8X-000127 - Check for bad filter configuration duplicate filters
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        count: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      register: countbadfilters
+
+    - name: VRPS-8X-000127 - Delete bad filter configurations
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        state: absent
+        namespaces:
+          x: "{{ default_namespace }}"
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VRPS-8X-000127 - Create new filter
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app'
+        add_children:
+          - filter:
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VRPS-8X-000127 - Configure new filter-name
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[last()]/x:filter-name'
+        value: 'setCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VRPS-8X-000127 - Configure filter-class
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:filter-class'
+        value: 'org.apache.catalina.filters.SetCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000127 - Configure filter async
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:async-supported'
+        value: 'true'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000127 - Create filter init-param
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param/x:param-name'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000127 - Configure filter init-param encoding
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-name'
+        value: 'encoding'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000127 - Configure filter init-param encoding value
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-value'
+        value: 'UTF-8'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000127 - Check for second init-param existance
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]'
+        count: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      register: init2counts
+
+    - name: VRPS-8X-000127 - Create filter init-param
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        state: present
+        pretty_print: true
+        add_children:
+          - init-param:
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+      when:
+        - init2counts.count == 0
+
+    - name: VRPS-8X-000127 - Configure filter init-param ignore
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-name'
+        value: 'ignore'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000127 - Configure filter init-param ignore value
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-value'
+        value: 'true'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000129 - The Casa service cookies must have the "http-only" flag set.
+- name: VRPS-8X-000129 - The Casa service cookies must have the "http-only" flag set
+  tags: [VRPS-8X-000129]
+  block:
+    - name: VRPS-8X-000129 - Configure http-only cookies
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:session-config/x:cookie-config/x:http-only'
+        value: 'true'
+        namespaces:
+          x: "{{ default_namespace }}"
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000130 - The Casa service DefaultServlet must be set to "readonly" for "PUT" and "DELETE" commands.
+- name: VRPS-8X-000130 - The Casa service DefaultServlet must be set to "readonly" for "PUT" and "DELETE" commands
+  tags: [VRPS-8X-000130]
+  block:
+    - name: VRPS-8X-000130 - Remove readonly parameter if it exists
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/x:param-name[text()="readonly"]/..'
+        state: absent
+        namespaces:
+          x: "{{ default_namespace }}"
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000134 - The Casa service shutdown port must be disabled.
+- name: VRPS-8X-000134 - The Casa service shutdown port must be disabled
+  tags: [VRPS-8X-000134]
+  block:
+    - name: VRPS-8X-000134 - Configure shutdown port in server.xml
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '/Server'
+        attribute: 'port'
+        value: '${base.shutdown.port}'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+    - name: VRPS-8X-000134 - Configure base.shutdown.port in catalina.properties
+      ansible.builtin.lineinfile:
+        path: '{{ catalina_prop_path }}'
+        state: present
+        regexp: '^base\.shutdown\.port.*$'
+        line: base.shutdown.port=-1
+        firstmatch: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000136 - TThe Casa service debug parameter must be disabled.
+- name: VRPS-8X-000136 - The Casa service debug parameter must be disabled
+  tags: [VRPS-8X-000136]
+  block:
+    - name: VRPS-8X-000136 - Remove debug parameter if it exists
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/x:param-name[text()="debug"]/..'
+        state: absent
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000137 - The Casa service directory listings parameter must be disabled.
+- name: VRPS-8X-000137 - The Casa service directory listings parameter must be disabled
+  tags: [VRPS-8X-000137]
+  block:
+    - name: VRPS-8X-000137 - Remove listings parameter
+      community.general.xml:
+        path: '{{ web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/x:param-name[text()="listings"]/..'
+        state: absent
+        namespaces:
+          x: "{{ default_namespace }}"
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000138 - The Casa service deployXML attribute must be disabled.
+- name: VRPS-8X-000138 - The Casa service deployXML attribute must be disabled
+  tags: [VRPS-8X-000138]
+  block:
+    - name: VRPS-8X-000138 - Configure deployXML parameter
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host'
+        attribute: 'deployXML'
+        value: 'false'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000139 - The Casa service must have Autodeploy disabled.
+- name: VRPS-8X-000139 - The Casa service must have Autodeploy disabled
+  tags: [VRPS-8X-000139]
+  block:
+    - name: VRPS-8X-000139 - Configure autoDeploy parameter
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host'
+        attribute: 'autoDeploy'
+        value: 'false'
+        state: present
+        pretty_print: true
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000140 - The Casa service xpoweredBy attribute must be disabled.
+- name: VRPS-8X-000140 - The Casa service xpoweredBy attribute must be disabled
+  tags: [VRPS-8X-000140]
+  block:
+    - name: VRPS-8X-000140 - Find incorrect xpoweredBy attributes on connectors
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: "//Connector[@xpoweredBy != 'false']"
+        count: true
+      register: xpcount
+
+    - name: VRPS-8X-000140 - Configure xpoweredBy attributes on connectors
+      community.general.xml:
+        path: '{{ server_xml_path }}'
+        xpath: "//Connector[@xpoweredBy != 'false']"
+        attribute: 'xpoweredBy'
+        value: 'false'
+        state: present
+        pretty_print: true
+      when: xpcount.count != 0
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000141-42-43-154-155 - The Casa service example applications, ROOT web app, documentation must be removed.
+- name: VRPS-8X-000141-42-43-154-155 - The Casa service example applications, ROOT web app, documentation must be removed
+  tags: [VRPS-8X-000141, VRPS-8X-000142, VRPS-8X-000143, VRPS-8X-000154, VRPS-8X-000155]
+  block:
+    - name: VRPS-8X-000141-42-43-154-155 - Remove examples folder
+      ansible.builtin.file:
+        path: '{{ item }}'
+        state: absent
+      with_items:
+        - "{{ catalina_base }}/webapps/examples"
+        - "{{ catalina_base }}/webapps/ROOT"
+        - "{{ catalina_base }}/webapps/docs"
+        - "{{ catalina_base }}/webapps/manager"
+        - "{{ catalina_base }}/webapps/host-manager"
+
+###################################################################################################################################
+
+# VRPS-8X-000144 - The Casa service files must have permissions in an out-of-the-box state.
+- name: VRPS-8X-000144 - The Casa service files must have permissions in an out-of-the-box state
+  tags: [VRPS-8X-000144]
+  block:
+    - name: VRPS-8X-000144 - Find files in conf folder with incorrect permissions
+      ansible.builtin.command: find {{ catalina_base }}/conf -xdev -type f -a '(' -perm -o+w -o -not -user admin -o -not -group admin ')' -exec ls {} \;
+      register: files_out
+      changed_when: false
+
+    - name: VRPS-8X-000144 - Update file owner and permissions
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: 'admin'
+        group: 'admin'
+        mode: o-w
+      with_items: "{{ files_out.stdout_lines }}"
+      when:
+        - files_out.stdout != ""
+
+###################################################################################################################################
+
+# VRPS-8X-000151 - The Casa service must disable "ALLOW_BACKSLASH".
+- name: VRPS-8X-000151 - The Casa service must disable "ALLOW_BACKSLASH"
+  tags: [VRPS-8X-000151]
+  block:
+    - name: VRPS-8X-000151 - Search for ALLOW_BACKSLASH in catalina prop
+      ansible.builtin.command: grep -i ALLOW_BACKSLASH {{ catalina_prop_path }}
+      register: search_out
+      failed_when: false
+      changed_when: false
+
+    - name: VRPS-8X-000151 - Update or remove ALLOW_BACKSLASH line
+      ansible.builtin.lineinfile:
+        path: "{{ catalina_prop_path }}"
+        regexp: "ALLOW_BACKSLASH"
+        line: "org.apache.catalina.connector.ALLOW_BACKSLASH=false"
+        state: present
+      when: search_out.stdout != "" and search_out.stdout != "org.apache.catalina.connector.ALLOW_BACKSLASH=false"
+      notify:
+        - Restart CASA
+
+###################################################################################################################################
+
+# VRPS-8X-000152 - The Casa service must enable "ENFORCE_ENCODING_IN_GET_WRITER".
+- name: VRPS-8X-000152- The Casa service must enable "ENFORCE_ENCODING_IN_GET_WRITER"
+  tags: [VRPS-8X-000152]
+  block:
+    - name: VRPS-8X-000152 - Check if ENFORCE_ENCODING_IN_GET_WRITER is enabled
+      ansible.builtin.command: grep ENFORCE_ENCODING_IN_GET_WRITER {{ catalina_prop_path }}
+      register: enc_out
+      failed_when: false
+      changed_when: false
+
+    - name: VRPS-8X-000152 - Update/configure ENFORCE_ENCODING_IN_GET_WRITER
+      ansible.builtin.lineinfile:
+        path: "{{ catalina_prop_path }}"
+        regexp: 'ENFORCE_ENCODING_IN_GET_WRITER'
+        line: "org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER=true"
+        insertafter: "EXIT_ON_INIT_FAILURE"
+        state: present
+      when: enc_out.stdout != "" and enc_out.stdout != "org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER=true"
+      notify:
+        - Restart CASA
+
+###################################################################################################################################

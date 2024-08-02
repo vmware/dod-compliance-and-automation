@@ -26,7 +26,7 @@ control 'TCSV-00-000105' do
   tag nist: ['SC-5']
 
   # No easy way to get the tomcat version - call up the serverinfo jar
-  describe command("#{input('javaHome')}/bin/java -cp /usr/lib/loginsight/application/lib/web-tomcat-li.jar org.apache.catalina.util.ServerInfo") do
+  describe command("#{input('javaHome')} -cp /usr/lib/loginsight/application/lib/web-tomcat-li.jar org.apache.catalina.util.ServerInfo") do
     its('stdout') { should include input('tcVersion') }
   end
 end

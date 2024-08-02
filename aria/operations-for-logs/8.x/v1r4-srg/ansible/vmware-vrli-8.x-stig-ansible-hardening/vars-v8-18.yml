@@ -1,0 +1,4 @@
+---
+# defaults file for cassandra
+cassandra_config: /usr/lib/loginsight/application/lib/apache-cassandra-4.1.4/conf/cassandra.yaml
+cassandra_root: /usr/lib/loginsight/application/lib/apache-cassandra-4.1.4

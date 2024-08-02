@@ -1,0 +1,57 @@
+name: VMware Aria Operations 8.x Casa Profile
+title: VMware Aria Operations 8.x Casa Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.4
+
+inputs:
+  #FILE PATHS
+- name: casa-tcInstance
+  description: VRPS-8X-000025, 141, 142, 143, 144, 154, 155 - Path to Tomcat server instance base folder (equates to $CATALINA_BASE)
+  type: string
+  value: "/usr/lib/vmware-casa/casa-webapp"
+- name: casa-serverXmlPath
+  description: VRPS-8X-000001, 014, 034, 036, 065, 067, 125, 126, 134, 138, 139, 140 - Tomcat instance server.xml path (equates to $CATALINA_BASE/conf/server.xml)
+  type: string
+  value: "/usr/lib/vmware-casa/casa-webapp/conf/server.xml"
+- name: casa-tcCore
+  description: VRPS-8X-000013 - Tomcat server core path (path to main binaries) - equates to $CATALINA_HOME
+  type: string
+  value: "/usr/share/tomcat"
+- name: casa-catalinaPropsPath
+  description: VRPS-8X-000057, 062, 134, 151, 152
+  type: string
+  value: "/usr/lib/vmware-casa/casa-webapp/conf/catalina.properties"
+- name: casa-webXmlPath
+  description: VRPS-8X-000005, 070, 127, 129, 130, 136, 137 - Path to Tomcat instance web.xml file (equates to $CATALINA_BASE/conf/web.xml)
+  type: string
+  value: "/usr/lib/vmware-casa/casa-webapp/conf/web.xml"
+- name: casa-contextXmlFiles
+  description: VRPS-8X-000014 - List of Context.xml files (if present)
+  type: array
+  value:
+  - /usr/lib/vmware-casa/casa-webapp/conf/context.xml
+ 
+# OTHER SETTINGS 
+- name: casa-sessionTimeout
+  description: VRPS-8X-000070 - session timeout value in minutes
+  type: string
+  value: "30"
+- name: casa-maxThreads
+  description: VRPS-8X-000001
+  type: string
+  value: "300"
+- name: casa-accessLogPattern
+  description: VRPS-8X-000014 - List of values that must be present in the pattern property of the AccessLogValve
+  type: array
+  value:
+  - "%h"
+  - "%l"
+  - "%t"
+  - "%u"
+  - "&quot;%r&quot;"
+  - "%s"
+  - "%b"

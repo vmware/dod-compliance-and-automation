@@ -3,13 +3,12 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|       Version       |        V1R1*       |        V1R2*       |        V1R3*       |
-|:-------------------:|:------------------:|:------------------:|:------------------:|
-|      `8.10.x`       | :heavy_check_mark: |         :x:        |         :x:        |
-|      `8.12.x`       |         :x:        | :heavy_check_mark: |         :x:        |
-|      `8.14.x`       |         :x:        |         :x:        | :heavy_check_mark: |
-|      `8.16.x`       |         :x:        |         :x:        | :heavy_check_mark: |
-|      `8.17.1`       |         :x:        |         :x:        | :heavy_check_mark: |
+|       Version       |        V1R1*       |        V1R2*       |        V1R3*       |        V1R4*       |
+|:-------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
+|      `8.10.x`       | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |
+|      `8.12.x`       |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |
+|  `8.14.x`-`8.17.x`  |         :x:        |         :x:        | :heavy_check_mark: |         :x:        |
+|      `8.18.x`       |         :x:        |         :x:        |         :x:        | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide   
@@ -25,7 +24,7 @@ The VMware Aria Operations 8.x Security Technical Implementation Guides (STIGs) 
   - Application controls
   - Cassandra controls
   - tc Server controls
-  - Photon OS 4.0 controls
+  - Photon OS 5.0 controls
 
 The VMware Aria Operations 8.x STIGs presume operation in an environment compliant with all applicable DOD guidance.
 
