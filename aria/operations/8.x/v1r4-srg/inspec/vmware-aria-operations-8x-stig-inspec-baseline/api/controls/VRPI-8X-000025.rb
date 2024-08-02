@@ -25,7 +25,7 @@ control 'VRPI-8X-000025' do
   tag rid: 'SV-VRPI-8X-000025'
   tag stig_id: 'VRPI-8X-000025'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9']
+  tag nist: ['AU-9 a']
 
   logs = command("find '#{input('api-tcInstance')}/logs/' -type f").stdout
 

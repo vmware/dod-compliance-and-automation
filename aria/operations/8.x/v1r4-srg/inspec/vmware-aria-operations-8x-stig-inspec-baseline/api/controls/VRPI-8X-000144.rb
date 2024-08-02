@@ -24,7 +24,7 @@ control 'VRPI-8X-000144' do
   tag rid: 'SV-VRPI-8X-000144'
   tag stig_id: 'VRPI-8X-000144'
   tag cci: ['CCI-001813']
-  tag nist: ['CM-5 (1)']
+  tag nist: ['CM-5 (1) (a)']
 
   command("find '#{input('api-tcInstance')}/conf' -type f -xdev").stdout.split.each do |fname|
     describe file(fname) do
