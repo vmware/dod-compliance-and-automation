@@ -45,7 +45,7 @@ control 'VRPA-8X-000008' do
   tag rid: 'SV-VRPA-8X-000008'
   tag stig_id: 'VRPA-8X-000008'
   tag cci: ['CCI-002450', 'CCI-002470']
-  tag nist: ['SC-13', 'SC-23 (5)']
+  tag nist: ['SC-13 b', 'SC-23 (5)']
 
   describe 'This check is a manual or policy based check' do
     skip 'This must be reviewed manually'
