@@ -5,7 +5,7 @@ copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 1.0.3
+version: 1.0.4
 
 inputs:
 # FILE PATHS
