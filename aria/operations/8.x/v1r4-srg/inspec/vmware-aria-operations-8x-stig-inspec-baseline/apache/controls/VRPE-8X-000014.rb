@@ -27,7 +27,7 @@ control 'VRPE-8X-000014' do
   tag rid: 'SV-VRPE-8X-000014'
   tag stig_id: 'VRPE-8X-000014'
   tag cci: ['CCI-001082', 'CCI-001813']
-  tag nist: ['CM-5 (1)', 'SC-2']
+  tag nist: ['CM-5 (1) (a)', 'SC-2']
 
   describe command("find /etc/httpd -xdev -type f -a '(' -perm /o+w,o+x ')'") do
     its('stdout.strip') { should cmp '' }

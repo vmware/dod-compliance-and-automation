@@ -39,7 +39,7 @@ control 'VRPE-8X-000005' do
   tag rid: 'SV-VRPE-8X-000005'
   tag stig_id: 'VRPE-8X-000005'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9']
+  tag nist: ['AU-9 a']
 
   describe file(input('accessLogFile')) do
     it { should_not be_more_permissive_than('0640') }

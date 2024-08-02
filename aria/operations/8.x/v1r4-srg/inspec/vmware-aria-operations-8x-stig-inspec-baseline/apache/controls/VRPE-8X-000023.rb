@@ -37,7 +37,7 @@ control 'VRPE-8X-000023' do
   tag rid: 'SV-VRPE-8X-000023'
   tag stig_id: 'VRPE-8X-000023'
   tag cci: ['CCI-002385']
-  tag nist: ['SC-5']
+  tag nist: ['SC-5 a']
 
   describe apache_conf(input('apacheConfPath')) do
     its('LimitRequestLine') { should cmp '1048576' }

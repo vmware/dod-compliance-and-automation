@@ -40,7 +40,7 @@ control 'VRPE-8X-000002' do
   tag rid: 'SV-VRPE-8X-000002'
   tag stig_id: 'VRPE-8X-000002'
   tag cci: ['CCI-000068', 'CCI-002418', 'CCI-002450']
-  tag nist: ['AC-17 (2)', 'SC-13', 'SC-8']
+  tag nist: ['AC-17 (2)', 'SC-13 b', 'SC-8']
 
   describe apache_conf(input('apacheConfPath')) do
     its('SSLCipherSuite') { should cmp input('sslCipherSuite') }

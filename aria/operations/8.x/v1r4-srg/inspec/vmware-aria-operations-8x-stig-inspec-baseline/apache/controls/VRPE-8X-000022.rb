@@ -30,7 +30,7 @@ control 'VRPE-8X-000022' do
   tag rid: 'SV-VRPE-8X-000022'
   tag stig_id: 'VRPE-8X-000022'
   tag cci: ['CCI-002385']
-  tag nist: ['SC-5']
+  tag nist: ['SC-5 a']
 
   describe file(input('httpdServiceFile')) do
     it { should_not be_more_permissive_than('0640') }

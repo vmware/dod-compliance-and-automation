@@ -38,7 +38,7 @@ control 'VRPE-8X-000011' do
   tag rid: 'SV-VRPE-8X-000011'
   tag stig_id: 'VRPE-8X-000011'
   tag cci: ['CCI-000186']
-  tag nist: ['IA-5 (2) (b)']
+  tag nist: ['IA-5 (2) (a) (1)']
 
   command('find /storage/vcops/user/conf/ssl/*key.pem -type f -xdev').stdout.split.each do |fname|
     describe file(fname) do

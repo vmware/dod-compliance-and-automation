@@ -42,7 +42,7 @@ control 'VRPE-8X-000004' do
   tag rid: 'SV-VRPE-8X-000004'
   tag stig_id: 'VRPE-8X-000004'
   tag cci: ['CCI-000067', 'CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000169', 'CCI-001462', 'CCI-001464', 'CCI-001487', 'CCI-001889', 'CCI-001890']
-  tag nist: ['AC-17 (1)', 'AU-12 a', 'AU-14 (1)', 'AU-14 (2)', 'AU-3', 'AU-8 b']
+  tag nist: ['AC-17 (1)', 'AU-12 a', 'AU-14 (1)', 'AU-14 (2)', 'AU-3 a', 'AU-3 b', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 f', 'AU-8 b']
 
   customlogs = input('customLogSettings')
 
