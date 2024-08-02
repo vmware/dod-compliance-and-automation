@@ -33,7 +33,7 @@ control 'VRPP-8X-000006' do
   tag rid: 'SV-VRPP-8X-000006'
   tag stig_id: 'VRPP-8X-000006'
   tag cci: ['CCI-000171', 'CCI-001493', 'CCI-001494', 'CCI-001495', 'CCI-001813']
-  tag nist: ['AU-12 b', 'AU-9', 'CM-5 (1)']
+  tag nist: ['AU-12 b', 'AU-9', 'AU-9 a', 'CM-5 (1) (a)']
 
   pg_owner = input('pg_owner')
   pg_group = input('pg_group')

@@ -57,7 +57,7 @@ control 'VRPP-8X-000020' do
   tag rid: 'SV-VRPP-8X-000020'
   tag stig_id: 'VRPP-8X-000020'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9']
+  tag nist: ['AU-9 a']
 
   pg_log_dir = input('pg_log_dir')
   pg_owner = input('pg_owner')

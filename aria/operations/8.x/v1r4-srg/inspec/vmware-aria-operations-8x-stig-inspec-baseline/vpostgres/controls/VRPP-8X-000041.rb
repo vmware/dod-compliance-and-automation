@@ -41,7 +41,7 @@ control 'VRPP-8X-000041' do
   tag rid: 'SV-VRPP-8X-000041'
   tag stig_id: 'VRPP-8X-000041'
   tag cci: ['CCI-000186']
-  tag nist: ['IA-5 (2) (b)']
+  tag nist: ['IA-5 (2) (a) (1)']
 
   ssl_enabled = input('ssl_enabled')
 

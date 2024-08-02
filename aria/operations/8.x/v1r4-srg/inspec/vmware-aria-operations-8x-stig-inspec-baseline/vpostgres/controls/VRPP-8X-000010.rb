@@ -38,7 +38,7 @@ control 'VRPP-8X-000010' do
   tag rid: 'SV-VRPP-8X-000010'
   tag stig_id: 'VRPP-8X-000010'
   tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000135', 'CCI-001487', 'CCI-001889']
-  tag nist: ['AU-3', 'AU-3 (1)', 'AU-8 b']
+  tag nist: ['AU-3 (1)', 'AU-3 a', 'AU-3 b', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 f', 'AU-8 b']
 
   describe command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -p 5433 -A -t -c \"SHOW log_line_prefix;\"'") do
     its('stdout.strip') { should cmp '%m %c %x %d %u %r %p %l' }
