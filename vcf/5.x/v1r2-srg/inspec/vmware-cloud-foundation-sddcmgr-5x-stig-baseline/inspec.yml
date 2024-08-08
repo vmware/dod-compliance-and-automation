@@ -28,9 +28,6 @@ depends:
     path: sos
   - name: ui
     path: ui
-  # Remove for external use
-  - name: internal
-    path: internal
 
 # Specifying bearer token in parent profile so sensitive is honored.
 inputs:
