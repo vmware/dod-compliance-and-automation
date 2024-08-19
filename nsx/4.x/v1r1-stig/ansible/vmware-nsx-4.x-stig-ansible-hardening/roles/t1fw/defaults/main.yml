@@ -1,0 +1,13 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# NT1F-4X-000004
+run_t1fw_enable_rule_logging: true
+# NT1F-4X-000015
+run_t1fw_flood_protection: true
+# NT1F-4X-000016
+run_t1fw_default_rule_action: false
+# NT1F-4X-000020
+run_t1fw_configure_syslog: true
+# NT1F-4X-000027
+run_t1fw_app_based_rules: true

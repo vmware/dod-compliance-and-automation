@@ -1,0 +1,38 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# Create backups of files?
+run_create_backups: true
+
+# CFCS-5X-000014
+run_logging_config: true
+# CFCS-5X-000025
+run_log_files_permissions: true
+# CFCS-5X-000031
+run_rsyslog_conf: true
+# CFCS-5X-000034
+run_app_files_permissions: true
+# CFCS-5X-000065
+run_uri_encoding: true
+# CFCS-5X-000088
+run_app_conf_permissions: true
+# CFCS-5X-000124
+run_server_address: true
+# CFCS-5X-000125
+run_server_port: true
+# CFCS-5X-000126
+run_servlet_jsp_init_parameters_listings: true
+# CFCS-5X-000127
+run_server_error_whitelabel_enabled: true
+# CFCS-5X-000128
+run_server_error_include_stacktrace: true
+# CFCS-5X-000129
+run_servlet_jsp_init_parameters_debug: true
+# CFCS-5X-000130
+run_server_header: true
+# CFCS-5X-000131
+run_management_endpoint_shutdown_enabled: true
+# CFCS-5X-000132
+run_local_account: true
+# CFCS-5X-000133
+run_wrong_password_max_attempt: true
