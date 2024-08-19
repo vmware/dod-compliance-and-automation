@@ -89,7 +89,7 @@ Open the inputs file for editing.
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="bash" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/nsx/4.x/v1r2-srg/inspec/vmware-nsx-4.x-stig-baseline/
+cd /usr/share/stigs/nsx/4.x/v1r1-stig/inspec/vmware-nsx-4.x-stig-baseline/
 
 # Edit the inputs file
 vi inputs-nsx-4.x-example.yml
@@ -107,6 +107,7 @@ Update the inputs as shown below with values relevant to your environment. Speci
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="yaml" >}}
+# General
 # NSX Manager IP or FQDN
 nsxManager: '10.1.2.3'
 # Session token generated for access to NSX. Example ead781b8-0e0c-456f-a04a-584e9ae2e45a
@@ -132,7 +133,7 @@ ntpServers:
   - 'time-a-g.nist.gov'
   - 'time-b-g.nist.gov'
 # Enter latest NSX version. Example '4.1.1.0'
-nsxtVersion: '4.1.2.3'
+nsxtVersion: '4.2.0.0'
 # Enter an array of T0 Gateways that are approved to have multicast enabled.
 t0multicastlist: []
 # Enter an array of T0 Gateways interfaces that are approved to have multicast enabled.
@@ -180,7 +181,7 @@ In this example we will be scanning all NSX components, specifying an inputs fil
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="bash" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/nsx/4.x/v1r2-srg/inspec/vmware-nsx-4.x-stig-baseline/
+cd /usr/share/stigs/nsx/4.x/v1r1-stig/inspec/vmware-nsx-4.x-stig-baseline/
 
 # Run the audit
 cinc-auditor exec . --show-progress --enhanced-outcomes --input-file inputs-nsx-4.x-example.yml --reporter=cli json:/tmp/reports/MyNSXReport.json

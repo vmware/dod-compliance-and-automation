@@ -120,7 +120,7 @@ Open the inputs file for editing.
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="bash" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/nsx/4.x/v1r2-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening
+cd /usr/share/stigs/nsx/4.x/v1r1-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening
 
 # Edit the inputs file
 vi vars-nsx-4x-example.yml
@@ -267,7 +267,7 @@ To run all of the NSX controls, follow the example below.
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="bash" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/nsx/4.x/v1r2-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening
+cd /usr/share/stigs/nsx/4.x/v1r1-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening
 
 # Run the playbook
 ansible-playbook playbook.yml -v --extra-vars @vars-nsx-4x-example.yml
