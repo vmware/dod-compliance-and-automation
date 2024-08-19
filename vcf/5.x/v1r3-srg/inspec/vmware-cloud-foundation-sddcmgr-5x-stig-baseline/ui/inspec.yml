@@ -1,0 +1,8 @@
+name: VMware Cloud Foundation 5.x SDDC Manager UI Profile
+title: VMware Cloud Foundation 5.x SDDC Manager UI Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.3

@@ -1,0 +1,18 @@
+name: VMware Cloud Foundation SDDC Manager Domain Manager Profile
+title: VMware Cloud Foundation SDDC Manager Domain Manager Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.3
+
+inputs:
+- name: applicationPropertiesPath
+  type: string
+  value: '/etc/vmware/vcf/domainmanager/application.properties'
+  description: 'Path to the application.properties file'
+- name: applicationProdPropertiesPath
+  type: string
+  value: '/etc/vmware/vcf/domainmanager/application-prod.properties'
+  description: 'Path to the application-prod.properties file'

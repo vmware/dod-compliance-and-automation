@@ -1,0 +1,162 @@
+---
+
+###################################################################################################################################
+- name: Get all Tier-0 Gateways for use in tasks
+  tags: [always]
+  block:
+    - name: Get all Tier-0 Gateways for use in tasks
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/tier-0s"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: t0gateways
+      changed_when: false
+
+###################################################################################################################################
+- name: NT0F-4X-000004 - The NSX Tier-0 Gateway Firewall must generate traffic log entries.
+  tags: [NT0F-4X-000004]
+  when: run_t0fw_enable_rule_logging | bool
+  block:
+    - name: NT0F-4X-000004 - The NSX Tier-0 Gateway Firewall must generate traffic log entries. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0F-4X-000004 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0F-4X-000004 - Loop through Tier-0 Gateways and update firewall rules
+      ansible.builtin.include_tasks:
+        file: t0fw_update_rule_logging_get_policies.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+        - not var_outer_t0.disable_firewall
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: NT0F-4X-000015 - The NSX Tier-0 Gateway Firewall must manage excess bandwidth to limit the effects of packet flooding types of denial-of-service (DoS) attacks.
+  tags: [NT0F-4X-000015]
+  when: run_t0fw_flood_protection | bool
+  block:
+    - name: NT0F-4X-000015 - The NSX Tier-0 Gateway Firewall must manage excess bandwidth to limit the effects of packet flooding types of denial-of-service (DoS) attacks. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0F-4X-000015 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0F-4X-000015 - Check if flood protection profiles exists
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:(GatewayFloodProtectionProfile))"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code: 200
+      register: t0_floodprot_prof
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: NT0F-4X-000015 - Create a flood protection profile if doesn't exist
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/flood-protection-profiles/{{ var_t0fw_fpp_name }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0fw_create_flood_prot_prof.json.j2') }}"
+        body_format: json
+        status_code: 200
+      register: response_create
+      when:
+        - t0gateways.json.result_count != 0
+        - t0_floodprot_prof.json.result_count == 0
+      changed_when:
+        - response_create.status == 200
+
+    - name: NT0F-4X-000015 - Update existing flood protection profiles
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/flood-protection-profiles/{{ item.id }}"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './t0fw_upd_flood_prot_prof.json.j2') | to_json }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ t0_floodprot_prof.json.results }}"
+      register: response_update
+      when:
+        - t0gateways.json.result_count != 0
+        - t0_floodprot_prof.json.result_count != 0
+        - (item.udp_active_flow_limit != var_t0fw_fpp_udp_active_flow_limit) or
+          (item.icmp_active_flow_limit != var_t0fw_fpp_icmp_active_flow_limit) or
+          (item.tcp_half_open_conn_limit != var_t0fw_fpp_tcp_half_open_conn_limit) or
+          (item.other_active_conn_limit != var_t0fw_fpp_other_active_conn_limit)
+      changed_when:
+        - response_update.status == 200
+
+    - name: NT0F-4X-000015 - Loop through Tier-0 Gateways and apply flood protection profile if needed
+      ansible.builtin.include_tasks:
+        file: t0fw_apply_flood_protection_profile.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: NT0F-4X-000016 - The NSX Tier-0 Gateway Firewall must deny network communications traffic by default and allow network communications traffic by exception.
+  tags: [NT0F-4X-000016]
+  when: run_t0fw_default_rule_action | bool
+  block:
+    - name: NT0F-4X-000016 - The NSX Tier-0 Gateway Firewall must deny network communications traffic by default and allow network communications traffic by exception. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0F-4X-000016 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0F-4X-000016 - Loop through Tier-0 Gateways and update default firewall rule action
+      ansible.builtin.include_tasks:
+        file: t0fw_update_default_rule_action.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: NT0F-4X-000020 - The NSX Tier-0 Gateway Firewall must be configured to send traffic log entries to a central audit server.
+  tags: [NT0F-4X-000020]
+  when: run_t0fw_default_rule_action | bool
+  block:
+    - name: NT0F-4X-000020 - The NSX Tier-0 Gateway Firewall must be configured to send traffic log entries to a central audit server. No Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "NT0F-4X-000020 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: NT0F-4X-000020 - The NSX Tier-0 Gateway Firewall must be configured to send traffic log entries to a central audit server.
+      ansible.builtin.debug:
+        msg: "NT0F-4X-000020 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0

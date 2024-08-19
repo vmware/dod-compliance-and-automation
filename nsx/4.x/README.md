@@ -3,14 +3,17 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|      Version      |        V1R1*       |        V1R2*       |
-|:-----------------:|:------------------:|:------------------:|
-|     `4.1.0`       | :heavy_check_mark: |         :x:        |
-|     `4.1.0.2`     | :heavy_check_mark: |         :x:        |
-|     `4.1.1`       | :heavy_check_mark: |         :x:        |
-|     `4.1.2`       |         :x:        | :heavy_check_mark: |
-|     `4.1.2.1`     |         :x:        | :heavy_check_mark: |
-|     `4.1.2.3`     |         :x:        | :heavy_check_mark: |
+|      Version      |        V1R1*       |        V1R2*       |        V1R1       |
+|:-----------------:|:------------------:|:------------------:|:------------------:|
+|     `4.1.0`       | :heavy_check_mark: |         :x:        |         :x:        |
+|     `4.1.0.2`     | :heavy_check_mark: |         :x:        |         :x:        |
+|     `4.1.1`       | :heavy_check_mark: |         :x:        |         :x:        |
+|     `4.1.2`       |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
+|     `4.1.2.1`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
+|     `4.1.2.3`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
+|     `4.1.2.4`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
+|     `4.1.2.5`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
+|     `4.2.0.0`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide   

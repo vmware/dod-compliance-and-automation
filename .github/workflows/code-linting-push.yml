@@ -71,6 +71,14 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "nsx/4.x/v1r2-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
+  ansiblelint-nsx4-v1r1-stig:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "nsx/4.x/v1r1-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
   ansiblelint-photon3-v1r9-srg:
     runs-on: ubuntu-latest
     steps:
@@ -127,6 +135,14 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
+  ansiblelint-vcf5x-v1r3-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
   ansiblelint-vsphere70:
     runs-on: ubuntu-latest
     steps:

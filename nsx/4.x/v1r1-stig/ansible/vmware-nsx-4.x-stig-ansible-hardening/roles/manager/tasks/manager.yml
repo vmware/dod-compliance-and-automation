@@ -1,0 +1,753 @@
+---
+# To Do
+# -Banner fixes do not apply. Put/Post/Patch methods are not allowed it says.
+# -Syslog...is there an API for Fabric -> Node Profiles?
+# -tls_fips_enabled does not update. request is accepted but remains false
+
+###################################################################################################################################
+- name: NMGR-4X-000007 - The NSX Manager must configure logging levels for services to ensure audit records are generated.
+  tags: [NMGR-4X-000007]
+  when: run_mgr_service_log_levels | bool
+  block:
+    - name: NMGR-4X-000007 - Get current async_replicator service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/async_replicator"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: asyncservice
+      changed_when: false
+
+    - name: NMGR-4X-000007 - Update async_replicator service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/async_replicator"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_async_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - asyncservice.json.service_properties.logging_level != "INFO"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: NMGR-4X-000007 - Get current auth service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/auth"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: authservice
+      changed_when: false
+
+    - name: NMGR-4X-000007 - Update auth service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/auth"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_auth_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - authservice.json.service_properties.logging_level != "INFO"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: NMGR-4X-000007 - Get current http service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/http"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: httpservice
+      changed_when: false
+
+    - name: NMGR-4X-000007 - Construct http service payload json from template
+      ansible.builtin.template:
+        src: update_node_http_loglevel.json.j2
+        dest: "{{ role_path }}/templates/update_node_http_loglevel.json"
+        mode: "0640"
+      with_items:
+        - "{{ httpservice.json }}"
+      when:
+        - httpservice.json.service_properties.logging_level != "INFO"
+
+    - name: NMGR-4X-000007 - Prepare http service payload json for update
+      ansible.builtin.command: sed -i 's/NEWLINESPLVAR/\\n/g' "{{ role_path }}/templates/update_node_http_loglevel.json"
+      changed_when: true
+      when:
+        - httpservice.json.service_properties.logging_level != "INFO"
+
+    - name: NMGR-4X-000007 - Update http service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/http"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_http_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ httpservice.json }}"
+      register: response
+      when:
+        - httpservice.json.service_properties.logging_level != "INFO"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    # - name: NMGR-4X-000007 - clean up http service payload json file
+    #   ansible.builtin.command: rm -rf "{{ role_path }}/templates/update_node_http_loglevel.json"
+    #   when:
+    #     - httpservice.json.service_properties.logging_level != "info"
+
+    - name: NMGR-4X-000007 - Clean up http service payload json file
+      ansible.builtin.file:
+        path: "{{ role_path }}/templates/update_node_http_loglevel.json"
+        state: absent
+      when:
+        - httpservice.json.service_properties.logging_level != "INFO"
+
+    - name: NMGR-4X-000007 - Get current manager service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/manager"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: managerservice
+      changed_when: false
+
+    - name: NMGR-4X-000007 - Update manager service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/manager"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_manager_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - managerservice.json.service_properties.logging_level != "INFO"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: NMGR-4X-000007 - Get current telemetry service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/telemetry"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: telemetryservice
+      changed_when: false
+
+    - name: NMGR-4X-000007 - Update telemetry service log level
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/telemetry"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_telemetry_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - telemetryservice.json.service_properties.logging_level != "INFO"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: NMGR-4X-000010
+  tags: [NMGR-4X-000010]
+  when: run_mgr_verify_roles | bool
+  block:
+    - name: NMGR-4X-000010 - The NSX Manager must be configured to assign appropriate user roles or access levels to authenticated users.
+      ansible.builtin.debug:
+        msg: "NMGR-4X-000010 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: NMGR-4X-000012 - The NSX Manager must be configured to enforce the limit of three consecutive invalid logon attempts, after which time it must block any login attempt for 15 minutes.
+  tags: [NMGR-4X-000012, NMGR-4X-000039, NMGR-4X-000040, NMGR-4X-000041, NMGR-4X-000042, NMGR-4X-000043, NMGR-4X-000044]
+  when: run_mgr_auth_policy | bool
+  block:
+    - name: NMGR-4X-000012 - Get current authentication policy
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/aaa/auth-policy"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: authpolicy
+      changed_when: false
+
+    - name: NMGR-4X-000012 - Update authentication policy
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/aaa/auth-policy"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_auth_policy.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - (authpolicy.json.api_failed_auth_lockout_period != 900) or
+          (authpolicy.json.api_failed_auth_reset_period != 900) or
+          (authpolicy.json.api_max_auth_failures != 3) or
+          (authpolicy.json.cli_failed_auth_lockout_period != 900) or
+          (authpolicy.json.cli_max_auth_failures != 3) or
+          (authpolicy.json.minimum_password_length != 15) or
+          (authpolicy.json.upper_chars != -1) or
+          (authpolicy.json.lower_chars != -1) or
+          (authpolicy.json.digits != -1) or
+          (authpolicy.json.special_chars != -1) or
+          (authpolicy.json.max_repeats != 8)
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: NMGR-4X-000012 - Pause to give the service restart a chance to happen when changes are made to auth policy
+      ansible.builtin.pause:
+        seconds: 15
+      when:
+        - (authpolicy.json.api_failed_auth_lockout_period != 900) or
+          (authpolicy.json.api_failed_auth_reset_period != 900) or
+          (authpolicy.json.api_max_auth_failures != 3) or
+          (authpolicy.json.cli_failed_auth_lockout_period != 900) or
+          (authpolicy.json.cli_max_auth_failures != 3) or
+          (authpolicy.json.minimum_password_length != 15) or
+          (authpolicy.json.upper_chars != -1) or
+          (authpolicy.json.lower_chars != -1) or
+          (authpolicy.json.digits != -1) or
+          (authpolicy.json.special_chars != -1) or
+          (authpolicy.json.max_repeats != 8)
+
+    - name: NMGR-4X-000012 - Wait for service to come back up
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/aaa/auth-policy"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
+      when:
+        - (authpolicy.json.api_failed_auth_lockout_period != 900) or
+          (authpolicy.json.api_failed_auth_reset_period != 900) or
+          (authpolicy.json.api_max_auth_failures != 3) or
+          (authpolicy.json.cli_failed_auth_lockout_period != 900) or
+          (authpolicy.json.cli_max_auth_failures != 3) or
+          (authpolicy.json.minimum_password_length != 15) or
+          (authpolicy.json.upper_chars != -1) or
+          (authpolicy.json.lower_chars != -1) or
+          (authpolicy.json.digits != -1) or
+          (authpolicy.json.special_chars != -1) or
+          (authpolicy.json.max_repeats != 8)
+
+###################################################################################################################################
+- name: NMGR-4X-000013 - The NSX Manager must display the Standard Mandatory DoD Notice and Consent Banner before granting access.
+  tags: [NMGR-4X-000013, NMGR-4X-000014]
+  when: run_mgr_login_banner | bool
+  block:
+    - name: NMGR-4X-000013 - Get current login banner
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/loginbanner"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: loginbanner
+      changed_when: false
+
+    - name: NMGR-4X-000013 - Update login banner
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/loginbanner"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_loginbanner.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - (loginbanner.json.login_banner_content is not defined) or (loginbanner.json.login_banner_content != "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.\n\n    By using this IS (which includes any device attached to this IS), you consent to the following conditions:\n    -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.\n    -At any time, the USG may inspect and seize data stored on this IS.\n    -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.\n    -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.\n    -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.")
+        - (loginbanner.json.login_banner_checkbox_flag == "false") or
+          (loginbanner.login_banner_status == "false")
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: NMGR-4X-000015
+  tags: [NMGR-4X-000015]
+  when: run_mgr_configure_identity_provider | bool
+  block:
+    - name: NMGR-4X-000015 - The NSX Manager must be configured to integrate with an identity provider that supports Multi-factor authentication (MFA).
+      ansible.builtin.debug:
+        msg: "NMGR-4X-000015 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: NMGR-4X-000035 - The NSX Manager must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.
+  tags: [NMGR-4X-000035]
+  when: run_mgr_disable_local_accounts | bool
+  block:
+    - name: NMGR-4X-000035 - Get all local users
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/users"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: localusers
+      changed_when: false
+
+    - name: NMGR-4X-000035 - Deactivate audit/guestuser1/guestuser2 accounts
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/users/{{ item.userid }}?action=deactivate"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: POST
+        status_code:
+          - 200
+          - 202
+      when:
+        - item.username == "audit" or
+          item.username == "guestuser1" or
+          item.username == "guestuser2"
+        - item.status == "ACTIVE"
+      with_items:
+        - "{{ localusers.json.results }}"
+      register: response
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: NMGR-4X-000038 - The NSX Manager must only enable TLS 1.2.
+  tags: [NMGR-4X-000038, NMGR-4X-000052, NMGR-4X-000079]
+  when: run_mgr_conf_api_service | bool
+  block:
+    - name: NMGR-4X-000038 - Get current API service configuration
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/cluster/api-service"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: apiservice
+      changed_when: false
+
+    - name: NMGR-4X-000038 - Update API service policy
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/cluster/api-service"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_api_service.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      with_items:
+        - "{{ apiservice.json }}"
+      when:
+        - (apiservice.json.session_timeout != 300) or
+          (apiservice.json.client_api_concurrency_limit != 40) or
+          (apiservice.json.client_api_rate_limit != 100) or
+          (apiservice.json.global_api_concurrency_limit != 199) or
+          apiservice.json | community.general.json_query('protocol_versions[?name==`TLSv1.1`].enabled') == "true"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: NMGR-4X-000038 - Pause to give the service restart a chance to happen when changes are made to API service policy
+      ansible.builtin.pause:
+        seconds: 15
+      when:
+        - (apiservice.json.session_timeout != 300) or
+          (apiservice.json.client_api_concurrency_limit != 40) or
+          (apiservice.json.client_api_rate_limit != 100) or
+          (apiservice.json.global_api_concurrency_limit != 199) or
+          apiservice.json | community.general.json_query('protocol_versions[?name==`TLSv1.1`].enabled') == "true"
+
+    - name: NMGR-4X-000038 - Wait for service restart when changes are made to API service policy
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/cluster/api-service"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
+      when:
+        - (apiservice.json.session_timeout != 300) or
+          (apiservice.json.client_api_concurrency_limit != 40) or
+          (apiservice.json.client_api_rate_limit != 100) or
+          (apiservice.json.global_api_concurrency_limit != 199) or
+          apiservice.json | community.general.json_query('protocol_versions[?name==`TLSv1.1`].enabled') == "true"
+
+###################################################################################################################################
+- name: NMGR-4X-000052 - The NSX Manager must terminate all network connections associated with a session after 10 minutes of inactivity.
+  tags: [NMGR-4X-000052]
+  when: run_mgr_cli_timeout | bool
+  block:
+    - name: NMGR-4X-000052 - Get current node CLI timeout
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: clitimeout
+      changed_when: false
+
+    - name: NMGR-4X-000052 - Update node CLI timeout
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_cli_timeout.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - clitimeout.json.cli_timeout != 300
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: NMGR-4X-000067 - The NSX Manager must be configured to synchronize internal information system clocks using redundant authoritative time sources.
+  tags: [NMGR-4X-000067]
+  when: run_mgr_ntp_servers | bool
+  block:
+    - name: NMGR-4X-000067 - Get node NTP configuration
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ntp"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: ntpservers
+      changed_when: false
+
+    - name: NMGR-4X-000067 - Update node NTP configuration
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ntp"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_ntp_servers.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+      register: response
+      when:
+        - (var_ntp_server1 not in ntpservers.json.service_properties.servers) or
+          (var_ntp_server2 not in ntpservers.json.service_properties.servers) or
+          (ntpservers.json.service_properties.servers | length < 2)
+      changed_when:
+        - response.status == 200
+
+###################################################################################################################################
+- name: NMGR-4X-000068 - The NSX-T Manager must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC).
+  tags: [NMGR-4X-000068]
+  when: run_mgr_timezone | bool
+  block:
+    - name: NMGR-4X-000068 - Get current timezone
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: timezone
+      changed_when: false
+
+    - name: NMGR-4X-000068 - Update node timezone
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_timezone.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - timezone.json.timezone != "Etc/UTC"
+        - timezone.json.timezone != "UTC"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+# No API for Fabric -> Node Profiles?
+- name: NMGR-4X-000087 - The NSX Manager must be configured to send logs to a central log server.
+  tags: [NMGR-4X-000087]
+  when: run_mgr_configure_syslog | bool
+  block:
+    - name: NMGR-4X-000087 - The NSX Manager must be configured to send logs to a central log server.
+      ansible.builtin.debug:
+        msg: "NMGR-4X-000087 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: NMGR-4X-000088 - The NSX Manager must not provide environment information to third parties.
+  tags: [NMGR-4X-000088]
+  when: run_mgr_disable_ceip_acceptance | bool
+  block:
+    - name: NMGR-4X-000088 - Get telemetry config
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/telemetry/config"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: telemetry
+      changed_when: false
+
+    - name: NMGR-4X-000088 - Update ceip acceptance to false
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/telemetry/config"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_ceip_acceptance.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ telemetry.json }}"
+      register: response
+      when:
+        - telemetry.json.ceip_acceptance
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: NMGR-4X-000093
+  tags: [NMGR-4X-000093]
+  when: run_mgr_configure_backups | bool
+  block:
+    - name: NMGR-4X-000093 - The NSX Manager must be configured to conduct backups on an organizationally defined schedule.
+      ansible.builtin.debug:
+        msg: "NMGR-4X-000093 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: NMGR-4X-000094
+  tags: [NMGR-4X-000094]
+  when: run_mgr_configure_certificate | bool
+  block:
+    - name: NMGR-4X-000094 - The NSX Manager must obtain its public key certificates from an appropriate certificate policy through an approved service provider.
+      ansible.builtin.debug:
+        msg: "NMGR-4X-000094 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: NMGR-4X-000096
+  tags: [NMGR-4X-000096]
+  when: run_mgr_upgrade | bool
+  block:
+    - name: NMGR-4X-000096 - The NSX Manager must be running a release that is currently supported by the vendor.
+      ansible.builtin.debug:
+        msg: "NMGR-4X-000096 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: NMGR-4X-000097 - The NSX Manager must disable SSH.
+  tags: [NMGR-4X-000097]
+  when: run_mgr_disable_ssh | bool
+  block:
+    - name: NMGR-4X-000097 - Get manager ssh service status
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ssh/status"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: sshsstatus
+      changed_when: false
+
+    - name: NMGR-4X-000097 - Stop SSH service
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ssh/notify_mpa?action=stop"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: POST
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - sshsstatus.json.runtime_state != "stopped"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: NMGR-4X-000097 - Get manager ssh service properties
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ssh"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: sshservice
+      changed_when: false
+
+    - name: NMGR-4X-000097 - Update manager ssh service properties
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/api/v1/node/services/ssh"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_node_ssh_service.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ sshservice.json }}"
+      register: response
+      when:
+        - sshservice.json.service_properties.start_on_boot
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+
+###################################################################################################################################
+- name: NMGR-4X-000099 - The NSX Manager must enable the global FIPS compliance mode for load balancers
+  tags: [NMGR-4X-000099]
+  when: run_mgr_enable_fips_lb | bool
+  block:
+    - name: NMGR-4X-000099 - Get manager infra global config
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/global-config"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: GET
+      register: globalconfig
+      changed_when: false
+
+    - name: NMGR-4X-000099 - Update manager infra global config with fips
+      ansible.builtin.uri:
+        url: "https://{{ var_nsx_manager }}/policy/api/v1/infra/global-config"
+        validate_certs: false
+        headers:
+          Cookie: "{{ var_jsession_id }}"
+          X-XSRF-TOKEN: "{{ var_session_token }}"
+        method: PUT
+        body: "{{ lookup('template', './enable_fips_for_lbs.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ globalconfig.json }}"
+      register: response
+      when:
+        - not globalconfig.json.fips.lb_fips_enabled
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: NMGR-4X-000102
+  tags: [NMGR-4X-000102]
+  when: run_mgr_cluster | bool
+  block:
+    - name: NMGR-4X-000102 - The NSX Manager must be configured as a cluster.
+      ansible.builtin.debug:
+        msg: "NMGR-4X-000102 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: NMGR-4X-000103
+  tags: [NMGR-4X-000103]
+  when: run_mgr_separate_hosts | bool
+  block:
+    - name: NMGR-4X-000103 - The NSX Managers must be deployed on separate physical hosts.
+      ansible.builtin.debug:
+        msg: "NMGR-4X-000103 - This control must be manually remediated."
+      changed_when: false

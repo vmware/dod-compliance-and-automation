@@ -1,0 +1,26 @@
+{
+  "resource_type": "IPDiscoveryProfile",
+  "id": "{{ item.id }}",
+  "display_name": "{{ item.display_name }}",
+  "ip_v4_discovery_options": {
+    "arp_snooping_config": {
+      "arp_snooping_enabled": true,
+      "arp_binding_limit": 1
+    },
+    "dhcp_snooping_enabled": false,
+    "vmtools_enabled": false
+  },
+  "ip_v6_discovery_options": {
+    "nd_snooping_config": {
+      "nd_snooping_enabled": false,
+      "nd_snooping_limit": 3
+    },
+    "dhcp_snooping_v6_enabled": false,
+    "vmtools_v6_enabled": false
+  },
+  "tofu_enabled": true,
+  "arp_nd_binding_timeout": 10,
+  "duplicate_ip_detection": {
+    "duplicate_ip_detection_enabled": false
+  }
+}

@@ -3,11 +3,13 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|      Version      |        V1R1*       |         V1R2*      |
-|:-----------------:|:------------------:|:------------------:|
-|     `5.0.0.0`     | :heavy_check_mark: |         :x:        |
-|     `5.0.0.1`     | :heavy_check_mark: |         :x:        |
-|     `5.1.0.0`     |         :x:        | :heavy_check_mark: |
+|      Version      |        V1R1*       |         V1R2*      |         V1R3*      |
+|:-----------------:|:------------------:|:------------------:|:------------------:|
+|     `5.0.0.0`     | :heavy_check_mark: |         :x:        |         :x:        |
+|     `5.0.0.1`     | :heavy_check_mark: |         :x:        |         :x:        |
+|     `5.1.0.0`     |         :x:        | :heavy_check_mark: |         :x:        |
+|     `5.1.1.0`     |         :x:        | :heavy_check_mark: |         :x:        |
+|     `5.2.0.0`     |         :x:        |         :x:        | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide    
