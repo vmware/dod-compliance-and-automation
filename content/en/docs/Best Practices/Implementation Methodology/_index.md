@@ -10,7 +10,7 @@ The last thing any system administrator wants to do is break the systems they ar
 
 ## Workflow
 The workflow below can be applied to any product whether it is delivered as an applicance or not. If a product is not an appliance you can skip that part of the workflow.  
-![STIG Workflow]({{< baseurl >}}/images/bp_workflow.png)
+![STIG Workflow]({{< baseurl >}}images/bp_workflow.png)
 
 ## Tips
 -	Whenever possible, it is highly recommended to test any hardening guidance in a test environment first. This will help you get familiar with the procedures and tools involved in the process.

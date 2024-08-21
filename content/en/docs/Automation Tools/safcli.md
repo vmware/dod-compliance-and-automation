@@ -89,10 +89,10 @@ saf convert hdf2ckl -i .\My_new_report_with_attestations.json -o my_new_ckl.ckl 
 ```
 
 After importing into STIG viewer you can see the manual attestation on the ESXI-80-000006 in the finding details.  
-![STIG Finding Details]({{< baseurl >}}/images/safcli_ckl_finding_details.png)
+![STIG Finding Details]({{< baseurl >}}images/safcli_ckl_finding_details.png)
 
 The host info provided is also populated in the target data.  
-![STIG Host Info]({{< baseurl >}}/images/safcli_ckl_target_data.png)
+![STIG Host Info]({{< baseurl >}}images/safcli_ckl_target_data.png)
 
 ### Converting XCCDF to InSpec
 When starting a new profile for a STIG it would not be feasible to manually populate all of a STIGs metadata (title,check,fix,discussion,ids,severity,etc) into the control files.

@@ -37,10 +37,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
 ```
 
 A token can also be generated UI by going to the Developer Center >> API Explorer >> Tokens.  
-![Token Generation]({{< baseurl >}}/images/vcf5_generate_token.png)
+![Token Generation]({{< baseurl >}}images/vcf5_generate_token.png)
 
 Retrieve token by copying the value in the `accessToken` field.  
-![Token Retrieval]({{< baseurl >}}/images/vcf5_view_token.png)
+![Token Retrieval]({{< baseurl >}}images/vcf5_view_token.png)
 
 
 ### Update profile inputs
@@ -147,4 +147,4 @@ saf convert hdf2ckl -i /tmp/reports/VCF_4.5.1_SDDC_Manager_STIG_Report.json -o /
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}/images/vcf_audit4_ckl_screenshot.png)
+![STIG Viewer Checklist]({{< baseurl >}}images/vcf_audit4_ckl_screenshot.png)
