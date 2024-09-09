@@ -1,0 +1,16 @@
+---
+
+- name: restart vpostgres
+  ansible.builtin.command: vmon-cli --restart vmware-vpostgres
+  register: output
+  changed_when: output.rc == 0
+
+- name: reload vpostgres config
+  ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "SELECT pg_reload_conf();"
+  register: output
+  changed_when: output.rc == 0
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted

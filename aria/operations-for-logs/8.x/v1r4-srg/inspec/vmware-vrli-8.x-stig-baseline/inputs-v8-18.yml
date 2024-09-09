@@ -1,0 +1,16 @@
+# Application
+apipath:                   "loginsight.domain:9543/api/v2"
+username:                  "admin"
+password:                  "PASSWORD"
+ntpServers:                ["0.vmware.pool.ntp.org", "1.vmware.pool.ntp.org", "2.vmware.pool.ntp.org", "3.vmware.pool.ntp.org"]
+
+# Cassandra
+cassandraconfig:           "/usr/lib/loginsight/application/lib/apache-cassandra-4.1.4/conf/cassandra.yaml"
+cassandraroot:             "/usr/lib/loginsight/application/lib/apache-cassandra-4.1.4"
+ipaddress:                 "10.10.10.10"
+
+# Photon
+syslogServer:              "syslog.test.local:514"
+ntptype:                   "ntpd"
+ntpServer1:                "0.vmware.pool.ntp.org"
+ntpServer2:                "1.vmware.pool.ntp.org"

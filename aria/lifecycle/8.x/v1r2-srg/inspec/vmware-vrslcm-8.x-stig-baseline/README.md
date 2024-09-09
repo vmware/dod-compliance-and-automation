@@ -6,7 +6,7 @@ STIG Type: STIG Readiness Guide
 Maintainers: VTAE  
 
 ## Targets
-This version of the content is currently applicable for VMware Aria Suite Lifecycle version 8.14, and will be updated as necessary for later releases.
+This version of the content is currently applicable for VMware Aria Suite Lifecycle versions 8.14-8.18, and will be updated as necessary for later releases.
 
 ## VMware Aria Suite Lifecycle InSpec Profiles
 

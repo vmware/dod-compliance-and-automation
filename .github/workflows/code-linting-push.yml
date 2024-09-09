@@ -71,6 +71,14 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "nsx/4.x/v1r2-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
+  ansiblelint-nsx4-v1r1-stig:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "nsx/4.x/v1r1-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
   ansiblelint-photon3-v1r9-srg:
     runs-on: ubuntu-latest
     steps:
@@ -95,6 +103,14 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "photon/5.0/v1r3-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/"
+  ansiblelint-photon5-v2r1-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "photon/5.0/v2r1-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/"
   ansiblelint-vcd10x-v1r1-srg:
     runs-on: ubuntu-latest
     steps:
@@ -119,6 +135,14 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
+  ansiblelint-vcf5x-v1r3-srg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
   ansiblelint-vsphere70:
     runs-on: ubuntu-latest
     steps:
@@ -143,3 +167,11 @@ jobs:
       - uses: ansible-community/ansible-lint-action@main
         with:
           path: "vsphere/8.0/v1r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"
+  ansiblelint-vsphere80-v2r1-stig:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - uses: ansible-community/ansible-lint-action@main
+        with:
+          path: "vsphere/8.0/v2r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"

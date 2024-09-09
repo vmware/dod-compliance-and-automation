@@ -9,7 +9,7 @@ The table below provides supported interoperability between product and STIG ver
 |      `8.12.x`       |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |
 |      `8.13.0`       |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |
 |  `8.13.1`-`8.16.0`  |         :x:        |         :x:        | :heavy_check_mark: |         :x:        |
-|  `8.16.1`-`8.16.2`  |         :x:        |         :x:        |         :x:        | :heavy_check_mark: |
+|  `8.16.1`-`8.18.x`  |         :x:        |         :x:        |         :x:        | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide   

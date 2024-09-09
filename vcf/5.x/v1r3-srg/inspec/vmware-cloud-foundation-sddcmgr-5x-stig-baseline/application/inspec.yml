@@ -1,0 +1,40 @@
+name: VMware Cloud Foundation SDDC Manager Application Profile
+title: VMware Cloud Foundation SDDC Manager Application Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.3
+
+inputs:
+- name: sddcManager
+  type: string
+  value: 'sddc-manager.sfo01.rainpole.local'
+  description: 'IP or FQDN of SDDC Manager'
+# A token is required to authenticate with the SDDC Manager API...See https://vdc-download.vmware.com/vmwb-repository/dcr-public/dc7c5c82-a2d6-457b-85c7-216826fa36e9/edc37f05-fcab-4ffe-8d90-362c2ffb42fb/index.html#_access_token_and_refresh_token for more information on how to generate a token.
+- name: bearerToken
+  type: string
+  value: 'Bearer eyJhbGciOiJIUzI1NiJ9.ey...'
+  description: 'Bearer token for authentication'
+  sensitive: true
+- name: sftpBackupsEnabled
+  type: boolean
+  value: true
+  description: Set to true if SFTP backups are used for SDDC Manager or false if image based backups are used.
+- name: sftpServer
+  type: string
+  value: '10.0.0.1'
+  description: 'Enter SFTP backup server name or ip. This should not be the SDDC Manager itself!'
+- name: ntpServers
+  type: array
+  value: ['time-a-g.nist.gov', 'time-b-g.nist.gov']
+  description: 'Enter one or more NTP servers in an array format'
+- name: currentVersion
+  type: string
+  value: '5.2.0.0'
+  description: 'Enter the latest version for SDDC Manager.'
+- name: myVmwareAccount
+  type: string
+  value: 'myvmwarevcfaccount@test.local'
+  description: 'Enter the account name for the My VMware account configured to pull updates online if used. Leave blank if updates are downloaded offline.'

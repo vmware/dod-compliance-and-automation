@@ -10,7 +10,7 @@ InSpec profiles for VMware Aria Operations are available for each component or c
 [See the InSpec docs for more info on Profile dependencies and inheritence](https://www.inspec.io/docs/reference/profiles/)
 
 ## Supported Versions
-- 8.16.1-8.16.2
+- 8.16.1-8.18
 
 ## Requirements
 - [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH to the target. Tested with cinc-auditor version 6.6.0. Chef/CINC Workstation can also be installed and used.

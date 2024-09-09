@@ -1,10 +1,13 @@
 # Table of contents
 
 - [vCenter](#vcenter)
+  - [VCSA-80-000009 PowerCLI cmdlets in check and fix text are not found](#vcsa-80-000009-powercli-cmdlets-in-check-and-fix-text-are-not-found)
 - [ESXi](#esxi)
+  - [ESXI-80-000094 PowerCLI cmdlets in check and fix text are not found](#esxi-80-000094-powercli-cmdlets-in-check-and-fix-text-are-not-found)
   - [ESXI-80-000232 Persistent audit storage and capacity should be configured before enabling audit logs](#esxi-80-000232-persistent-audit-storage-and-capacity-should-be-configured-before-enabling-audit-logs)
   - [ESXI-80-000239 When attempting to configure Allowed IPs for the ESXi firewall you may see an error for some services](#esxi-80-000239-when-attempting-to-configure-allowed-ips-for-the-esxi-firewall-you-may-see-an-error-for-some-services)
   - [ESXI-80-000239 Impact to VxRail Manager Plugin performance and VCF on VxRail add node workflows](#esxi-80-000239-impact-to-vxrail-manager-plugin-performance-and-vcf-on-vxrail-add-node-workflows)
+  - [ESXI-80-000247 PowerCLI cmdlets in check and fix text are not found](#esxi-80-000247-powercli-cmdlets-in-check-and-fix-text-are-not-found)
 - [Virtual Machines](#vm)
 - [VCSA](#vcsa)
   - [RESOLVED PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
@@ -27,7 +30,27 @@ Please check the [open](https://github.com/vmware/dod-compliance-and-automation/
 
 ## vCenter
 
+### [VCSA-80-000009] PowerCLI cmdlets in check and fix text are not found
+
+Related issue: None
+
+When running the check and/or fix commands PowerCLI will error or report that the cmdlet is not found.  
+
+**Workaround:**
+
+- The new cmdlets did not exist until PowerCLI 13.3. Update to PowerCLI 13.3 where the cmdlets are available.  
+
 ## ESXi
+
+### [ESXI-80-000094] PowerCLI cmdlets in check and fix text are not found
+
+Related issue: None
+
+When running the check and/or fix commands PowerCLI will error or report that the cmdlet is not found.
+
+**Workaround:**
+
+- The new cmdlets did not exist until PowerCLI 13.3. Update to PowerCLI 13.3 where the cmdlets are available.  
 
 ### [ESXI-80-000232] Persistent audit storage and capacity should be configured before enabling audit logs
 
@@ -132,6 +155,16 @@ When attempting to add a new host to an existing VxRail cluster the NIC configur
 **Option 2:** To add a node, disable the ESXi firewall on all hosts in the target cluster for the duration of the operation and re-enable once complete.  
 
 If using the `VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1` script provided in this repo to harden ESXi you can disable this rule by changing the variable `ESXI800000239` to `$false` before running. This can be found [here](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/8.0/v1r1-srg/vsphere/powercli/VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1#L254).  
+
+### [ESXI-80-000247] PowerCLI cmdlets in check and fix text are not found
+
+Related issue: None
+
+When running the check and/or fix commands PowerCLI will error or report that the cmdlet is not found.
+
+**Workaround:**
+
+- The new cmdlets did not exist until PowerCLI 13.3. Update to PowerCLI 13.3 where the cmdlets are available.  
 
 ## VM
 

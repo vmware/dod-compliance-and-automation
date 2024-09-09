@@ -1,0 +1,28 @@
+- name: "NT0R-4X-000106 - Check to see if OSPF areas exist for: {{ var_outer_ospf.path }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1{{ var_outer_ospf.path }}/areas"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: GET
+    status_code: 200
+  register: ospfareas
+  changed_when: false
+
+- name: "NT0R-4X-000106 - Disable OSPF on the target tier-0 gateway."
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1{{ var_outer_ospf.path }}"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: PATCH
+    body: "{{ lookup('template', './t0rtr_disable_ospf.json.j2') }}"
+    body_format: json
+    status_code: 200
+  when:
+    - ospfareas.json.result_count == 0
+  register: response
+  changed_when:
+    - response.status == 200
