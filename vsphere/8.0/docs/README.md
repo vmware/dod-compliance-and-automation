@@ -29,6 +29,7 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |     `V2R1`        |    Official STIG   |     2024/07/16     |[U_VMW_vSphere_8-0_Y24M08_STIG.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_8-0_Y24M08_STIG.zip)|
 
 > [!NOTE]
+> - The latest release always take precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version.  
 > - \* V1R1 of the official STIG is also included in the V2R1 download.    
 
 ## Viewing
