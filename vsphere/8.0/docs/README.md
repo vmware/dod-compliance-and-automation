@@ -17,7 +17,7 @@ There are many engineered data center & hybrid cloud infrastructure products tha
 - Any supplemental files or documents
 
 ## Support and Compatibility
-Compatibility information is made available [here](../README.md).
+Compatibility information is made available [here](../README.md#compatibility).
 
 For information on support for STIGs see: https://knowledge.broadcom.com/external/article?legacyId=94398
 
