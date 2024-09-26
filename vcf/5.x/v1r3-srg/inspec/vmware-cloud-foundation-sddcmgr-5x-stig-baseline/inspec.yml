@@ -19,7 +19,7 @@ depends:
   - name: nginx
     path: nginx
   - name: photon
-    path: ../vmware-photon-4.0-stig-baseline
+    path: ../../../../../photon/4.0/v1r5-srg/inspec/vmware-photon-4.0-stig-baseline
   - name: operationsmanager
     path: operationsmanager
   - name: postgresql
