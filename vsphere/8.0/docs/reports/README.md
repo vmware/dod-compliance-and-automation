@@ -15,3 +15,4 @@ Hardening reports are made available for vSphere with Tanzu for both the Supervi
 |     `TKR`         |  `1.28.8` `Photon` |     October 2024   |[VMware_vSphere_with_Tanzu_8_TKr_1.28.8_STIG_Hardening_Overview.pdf](VMware_vSphere_with_Tanzu_8_TKr_1.28.8_STIG_Hardening_Overview.pdf)|
 |     `TKR`         |  `1.29.4` `Photon` |     October 2024   |[VMware_vSphere_with_Tanzu_8_TKr_1.29.4_STIG_Hardening_Overview.pdf](VMware_vSphere_with_Tanzu_8_TKr_1.29.4_STIG_Hardening_Overview.pdf)|
 |     `TKR`         |  `1.30.1` `Photon` |     October 2024   |[VMware_vSphere_with_Tanzu_8_TKr_1.30.1_STIG_Hardening_Overview.pdf](VMware_vSphere_with_Tanzu_8_TKr_1.30.1_STIG_Hardening_Overview.pdf)|
+|     `TKR`         |  `1.31.1` `Photon` |     October 2024   |[VMware_vSphere_with_Tanzu_8_TKr_1.31.1_STIG_Hardening_Overview.pdf](VMware_vSphere_with_Tanzu_8_TKr_1.31.1_STIG_Hardening_Overview.pdf)|
