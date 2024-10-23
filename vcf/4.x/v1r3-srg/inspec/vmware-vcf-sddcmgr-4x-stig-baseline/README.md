@@ -1,7 +1,7 @@
 # vmware-vcf-sddcmgr-4x-stig-baseline
 VMware Cloud Foundation SDDC Manager 4.x STIG Readiness Guide Chef InSpec Profile  
 Version: Release 1 Version 3 Date: 10 May 2022  
-STIG Type: [STIG Readiness Guide](https://confluence.eng.vmware.com/pages/viewpage.action?pageId=1231779155)  
+STIG Type: STIG Readiness Guide  
 Maintainers: SCOPE/VMTA  
 
 ## Overview

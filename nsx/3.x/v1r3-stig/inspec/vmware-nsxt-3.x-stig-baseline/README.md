@@ -2,7 +2,7 @@
 # vmware-nsxt-3.x-stig-baseline
 VMware NSX-T 3.x STIG Chef InSpec Profile  
 Version: Release 1 Version 3 Date: 26 July 2023 
-STIG Type: [Official STIG](https://confluence.eng.vmware.com/pages/viewpage.action?pageId=1231779155)  
+STIG Type: Official STIG  
 Maintainers: SCOPE/VMTA  
 
 ## Overview
