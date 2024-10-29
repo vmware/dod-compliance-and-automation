@@ -2,7 +2,7 @@
 
 - [VMware Identity Manager 3.3.x](#vmware-identity-manager-3.3.x)
   - [PHTN-30-000031 The grub2-mkpasswd-pbkdf2 command is not found](#phtn-30-000031-the-grub2-mkpasswd-pbkdf2-command-is-not-found)
-  - [WOAT-3X-000007/71 The server.xml file is read only](#woat-3X-000007/71-the-server.xml-file-is-read-only)
+  - [WOAT-3X-00000771 The server.xml file is read only](#woat-3X-000007/71-the-server.xml-file-is-read-only)
   - [WOAT-3X-000047 The check command generates a large list of files with incorrect permissions](#woat-3X-000047-the-check-command-generates-a-large-list-of-files-with-incorrect-permissions)
   - [WOAT-3X-000066 The fix text is unclear on how to address this control](#woat-3X-000066-the-fix-text-is-unclear-on-how-to-address-this-control)
 
