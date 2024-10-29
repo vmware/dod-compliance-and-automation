@@ -42,10 +42,10 @@ if grep "^#LogLevel" /etc/ssh/sshd_config; then
   sed -i "s/#LogLevel.*/LogLevel INFO/" /etc/ssh/sshd_config
 fi
 
-# CIS 5.2.16 (FIPS Algorithms)
+# CIS 5.2.16
 grep -q -- '^KexAlgorithms' /etc/ssh/sshd_config \
-  && sed -i 's/.*KexAlgorithms.*/KexAlgorithms diffie-hellman-group-exchange-sha256/' /etc/ssh/sshd_config \
-  || echo 'KexAlgorithms diffie-hellman-group-exchange-sha256' >> /etc/ssh/sshd_config
+  && sed -i 's/.*KexAlgorithms.*/KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,sntrup761x25519-sha512@openssh.com,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256/' /etc/ssh/sshd_config \
+  || echo 'KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,sntrup761x25519-sha512@openssh.com,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256' >> /etc/ssh/sshd_config
 
 # CIS 5.2.19
 grep -q -- '^MaxStartups' /etc/ssh/sshd_config \
