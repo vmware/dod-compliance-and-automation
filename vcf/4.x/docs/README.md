@@ -21,14 +21,17 @@ Compatibility information is made available [here](../README.md#compatibility).
 
 For information on support for STIGs see: https://knowledge.broadcom.com/external/article?legacyId=94398
 
+> [!NOTE]
+> - To download the zip files below, first click each file link to enter the raw view of the file, then click the "Download Raw File" button at the top right of the page. Right-clicking and choosing "Save as..." produces corrupt zip file downloads in many browsers.
+> - The latest release always takes precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version. 
+
+
 ## Content
 |      Version      |        Type        |     Release Date   |      Download      |
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |     `V1R3`        |STIG Readiness Guide|     2022/05/10     |[U_VMware_Cloud_Foundation_4_x_STIG_Readiness_Guide_v1r3.zip](U_VMware_Cloud_Foundation_4_x_STIG_Readiness_Guide_v1r3.zip)|
 |     `V1R4`        |STIG Readiness Guide|     2023/05/02     |[U_VMware_Cloud_Foundation_4_x_STIG_Readiness_Guide_v1r4.zip](U_VMware_Cloud_Foundation_4_x_STIG_Readiness_Guide_v1r4.zip)|
 
-> [!NOTE]
-> - The latest release always take precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version.  
 
 ## Viewing
 The XML files provided can be loaded into and viewed in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  
