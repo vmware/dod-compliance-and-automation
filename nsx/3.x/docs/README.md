@@ -1,3 +1,6 @@
+> [!NOTE]
+> - To download the zip files below, first click each file link to enter the raw view of the file, then click the "Download Raw File" button at the top right of the page. Right-clicking and choosing "Save as..." produces corrupt zip file downloads in many browsers.
+
 # VMware NSX-T 3.x STIG Documentation
 
 ## Overview
@@ -21,6 +24,10 @@ Compatibility information is made available [here](../README.md#compatibility).
 
 For information on support for STIGs see: https://knowledge.broadcom.com/external/article?legacyId=94398
 
+> [!NOTE]
+> - The latest release always takes precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version. 
+
+
 ## Content
 |      Version      |        Type        |     Release Date   |      Download      |
 |:-----------------:|:------------------:|:------------------:|:------------------:|
@@ -28,8 +35,6 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |     `V1R2`        |    Official STIG   |     2022/09/02     |[U_VMW_NSX-T_V1R2_STIG.zip](U_VMW_NSX-T_V1R2_STIG.zip)|
 |     `V1R3`        |    Official STIG   |     2023/07/26     |[U_VMW_NSX-T_Y23M07_STIG.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_NSX-T_Y23M07_STIG.zip)|
 
-> [!NOTE]
-> - The latest release always take precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version.  
 
 ## Viewing
 The XML files provided can be loaded into and viewed in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  

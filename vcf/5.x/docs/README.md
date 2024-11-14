@@ -1,3 +1,6 @@
+> [!NOTE]
+> - To download the zip files below, first click each file link to enter the raw view of the file, then click the "Download Raw File" button at the top right of the page. Right-clicking and choosing "Save as..." produces corrupt zip file downloads in many browsers.
+
 # VMware Cloud Foundation 5.x STIG Documentation
 
 ## Overview
