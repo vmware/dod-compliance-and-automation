@@ -1,3 +1,6 @@
+> [!NOTE]
+> - To download the zip files below, first click each file link to enter the raw view of the file, then click the "Download Raw File" button at the top right of the page. Right-clicking and choosing "Save as..." produces corrupt zip file downloads in many browsers.
+
 # VMware vSphere 8 STIG Documentation
 
 ## Overview
@@ -22,7 +25,6 @@ Compatibility information is made available [here](../README.md#compatibility).
 For information on support for STIGs see: https://knowledge.broadcom.com/external/article?legacyId=94398
 
 > [!NOTE]
-> - To download the zip files below, first click each file link to enter the raw view of the file, then click the "Download Raw File" button at the top right of the page. Right-clicking and choosing "Save as..." produces corrupt zip file downloads in many browsers.
 > - The latest release always takes precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version. 
 > - \* V1R1 of the official STIG is also included in the V2R1 download.  
 
