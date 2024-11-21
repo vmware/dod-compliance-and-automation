@@ -8,7 +8,7 @@
   - [POSTGRES-PROFILE Controls only apply to primary node](#postgres-profile-postgres-controls-only-apply-to-primary-node)
 - [UI](#ui)
 - [Photon](#photon)
-  - [PHTN-40-000073 Commands in check and fix do not produce expected results](#phtn-40-000073phtn-50-000073-commands-in-check-and-fix-do-not-produce-expected-results)
+  - [PHTN-40-000073, PHTN-50-000073 Commands in check and fix do not produce expected results](#phtn-40-000073phtn-50-000073-commands-in-check-and-fix-do-not-produce-expected-results)
 
 # Known Issues
 
