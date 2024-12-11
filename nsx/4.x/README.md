@@ -14,6 +14,9 @@ The table below provides supported interoperability between product and STIG ver
 |     `4.1.2.4`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
 |     `4.1.2.5`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
 |     `4.2.0.0`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
+|     `4.2.0.1`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
+|     `4.2.0.2`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
+|     `4.2.1.0`     |         :x:        | :heavy_check_mark: | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide   
