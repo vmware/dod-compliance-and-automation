@@ -33,6 +33,7 @@ The table below provides supported interoperability between product and STIG ver
 |     `7.0 U3q`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 |     `7.0 U3r`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 |     `7.0 U3s`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3t`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide  

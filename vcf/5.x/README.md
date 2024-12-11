@@ -10,6 +10,7 @@ The table below provides supported interoperability between product and STIG ver
 |     `5.1.0.0`     |         :x:        | :heavy_check_mark: |         :x:        |
 |     `5.1.1.0`     |         :x:        | :heavy_check_mark: |         :x:        |
 |     `5.2.0.0`     |         :x:        |         :x:        | :heavy_check_mark: |
+|     `5.2.1.0`     |         :x:        |         :x:        | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide    

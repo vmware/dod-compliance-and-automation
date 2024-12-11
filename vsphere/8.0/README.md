@@ -20,6 +20,8 @@ The table below provides supported interoperability between product and STIG ver
 |     `8.0 U3`      |        :x:         |        :x:         |        :x:         | :heavy_check_mark: |
 |     `8.0 U3a`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: |
 |     `8.0 U3b`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: |
+|     `8.0 U3c`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: |
+|     `8.0 U3d`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide  
