@@ -140,7 +140,7 @@ If($IsLinux){
     ForEach($vm in $vms){
       $name = $vm.Name
       $reportFile = $reportPath + "/VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
-      $command = {inspec exec $inspecPath -t vmware:// --input vmhostName=$name --show-progress --reporter=json:$reportFile}
+      $command = {inspec exec $inspecPath -t vmware:// --input vmName=$name --show-progress --reporter=json:$reportFile}
       Write-ToConsole "...Report path is $reportPath and report file is $reportFile"
       Write-ToConsole "...Running InSpec exec against $name with $command"
       Invoke-Command -ScriptBlock $command
@@ -189,7 +189,7 @@ If($IsLinux){
     ForEach($vm in $vms){
       $name = $vm.Name
       $reportFile = $reportPath + "\VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
-      $command = {inspec exec $inspecPath -t vmware:// --input vmhostName=$name --show-progress --reporter=json:$reportFile}
+      $command = {inspec exec $inspecPath -t vmware:// --input vmName=$name --show-progress --reporter=json:$reportFile}
       Write-ToConsole "...Report path is $reportPath and report file is $reportFile"
       Write-ToConsole "...Running InSpec exec against $name with $command"
       Invoke-Command -ScriptBlock $command
