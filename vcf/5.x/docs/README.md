@@ -30,6 +30,7 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |     `V1R1`        |STIG Readiness Guide|     2023/06/01     |[U_VMware_Cloud_Foundation_5_x_STIG_Readiness_Guide_v1r1.zip](U_VMware_Cloud_Foundation_5_x_STIG_Readiness_Guide_v1r1.zip)|
 |     `V1R2`        |STIG Readiness Guide|     2023/11/07     |[U_VMware_Cloud_Foundation_5_x_STIG_Readiness_Guide_v1r2.zip](U_VMware_Cloud_Foundation_5_x_STIG_Readiness_Guide_v1r2.zip)|
 |     `V1R3`        |STIG Readiness Guide|     2024/07/23     |[U_VMware_Cloud_Foundation_5_x_STIG_Readiness_Guide_v1r3.zip](U_VMware_Cloud_Foundation_5_x_STIG_Readiness_Guide_v1r3.zip)|
+|     `V1R4`        |STIG Readiness Guide|     2024/12/23     |[U_VMware_Cloud_Foundation_5_x_STIG_Readiness_Guide_v1r4.zip](U_VMware_Cloud_Foundation_5_x_STIG_Readiness_Guide_v1r4.zip)|
 
 > [!NOTE]
 > - The latest release always take precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version.  
