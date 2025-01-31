@@ -1,0 +1,31 @@
+name: VMware NSX ALB Service Engine STIG Readiness Guide Inspec Profile
+title: VMware NSX ALB Service Engine STIG Readiness Guide Inspec Profile
+maintainer: VMware
+copyright: VMware
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.1
+
+inputs:
+- name: avicontroller
+  type: string
+  value: 'x.x.x.x'
+  description: 'IP or FQDN of NSX ALB'
+- name: sessionCookieId
+  type: string
+  value: ''
+  description: 'Session ID for authentication'
+  sensitive: true
+- name: aviversion
+  type: string
+  value: ''
+  description: 'NSX ALB Version'
+- name: allowed_virtual_services
+  type: array
+  value: []
+  description: 'Enter array of allowed virtual services'
+- name: ocspavailable
+  type: boolean
+  value: true
+  description: 'Set to true if OCSP is available in the environment and should be used.'

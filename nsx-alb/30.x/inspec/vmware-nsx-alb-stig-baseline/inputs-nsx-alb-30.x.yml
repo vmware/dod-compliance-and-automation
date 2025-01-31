@@ -1,0 +1,15 @@
+# General
+avicontroller: '10.1.1.1'
+sessionCookieId: '92cd87e2e61e31c90885ec48cff6ff71'
+aviversion: '30.1.1'
+# Controller
+allowed_ntp_servers:
+  - time-a-g.nist.gov
+  - time-b-g.nist.gov
+portal_cert_issuer_organization: 'U.S. Government'
+# Service Engine
+allowed_virtual_services:
+   - 'vs1'
+   - 'vs2'
+# Set to true/false depending on if OCSP is available in the environment
+ocspavailable: true
