@@ -146,18 +146,21 @@ If($IsLinux){
       Invoke-Command -ScriptBlock $command
       If(Get-Command saf){
         Write-ToConsole "...Detected saf cli...generating STIG Viewer Checklist for $name"
+        # Prepare VM metadata to insert into CKL to better handle null data
+        $ip0 = if([string]::IsNullOrEmpty($vm.guest.IPAddress)){"0.0.0.0"}Else{$vm.guest.IPAddress | Select-Object -First 1}
+        $mac0 = if([string]::IsNullOrEmpty($vm.guest.Nics.Device.MacAddress)){"00:00:00:00:00:00"}Else{$vm.guest.Nics.Device.MacAddress | Select-Object -First 1}
         If($attestationFile){
           Write-ToConsole "...Attestion file: $attestationFile detected...applying to results for $name"
           $reportFileWithAttestations = $reportPath + "/VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.json"
           $attestCommand = {saf attest apply -i $reportFile $attestationFile -o $reportFileWithAttestations}
           Invoke-Command -ScriptBlock $attestCommand
           $cklFile = $reportPath + "/VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.ckl"
-          $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --fqdn $name --ip $vm.guest.IPAddress[0] --mac $vm.guest.Nics.Device.MacAddress}
+          $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --ip $ip0 --mac $mac0}
           Invoke-Command -ScriptBlock $cklCommand
         }Else{
           Write-ToConsole "...No attestion file provided for $name"
           $cklFile = $reportPath + "/VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".ckl"
-          $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --fqdn $name --ip $vm.guest.IPAddress[0] --mac $vm.guest.Nics.Device.MacAddress}
+          $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --ip $ip0 --mac $mac0}
           Invoke-Command -ScriptBlock $cklCommand
         }
       }
@@ -195,18 +198,21 @@ If($IsLinux){
       Invoke-Command -ScriptBlock $command
       If(Get-Command saf){
         Write-ToConsole "...Detected saf cli...generating STIG Viewer Checklist for $name"
+        # Prepare VM metadata to insert into CKL to better handle null data
+        $ip0 = if([string]::IsNullOrEmpty($vm.guest.IPAddress)){"0.0.0.0"}Else{$vm.guest.IPAddress | Select-Object -First 1}
+        $mac0 = if([string]::IsNullOrEmpty($vm.guest.Nics.Device.MacAddress)){"00:00:00:00:00:00"}Else{$vm.guest.Nics.Device.MacAddress | Select-Object -First 1}
         If($attestationFile){
           Write-ToConsole "...Attestion file: $attestationFile detected...applying to results for $name"
           $reportFileWithAttestations = $reportPath + "\VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.json"
           $attestCommand = {saf attest apply -i $reportFile $attestationFile -o $reportFileWithAttestations}
           Invoke-Command -ScriptBlock $attestCommand
           $cklFile = $reportPath + "\VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.ckl"
-          $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --fqdn $name --ip $vm.guest.IPAddress[0] --mac $vm.guest.Nics.Device.MacAddress}
+          $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --ip $ip0 --mac $mac0}
           Invoke-Command -ScriptBlock $cklCommand
         }Else{
           Write-ToConsole "...No attestion file provided for $name"
           $cklFile = $reportPath + "\VMware_vSphere_8.0_STIG_VM_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".ckl"
-          $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --fqdn $name --ip $vm.guest.IPAddress[0] --mac $vm.guest.Nics.Device.MacAddress}
+          $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --ip $ip0 --mac $mac0}
           Invoke-Command -ScriptBlock $cklCommand
         }
       }
