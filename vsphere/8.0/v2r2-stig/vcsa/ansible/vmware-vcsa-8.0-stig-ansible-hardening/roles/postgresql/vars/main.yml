@@ -1,0 +1,18 @@
+---
+
+# PostgreSQL files and paths
+var_vmw_vpg_config_path: '/opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py'
+var_postgresql_conf_path: '/storage/db/vpostgres/postgresql.conf'
+var_stig_conf_path: '/storage/db/vpostgres/stig.conf'
+var_postgresql_data_dir: '/storage/db/vpostgres'
+var_log_dir: '/var/log/vmware/vpostgres/'
+var_rsyslog_conf_path: '/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf'
+var_rsyslog_conf_name: 'vmware-services-vmware-vpostgres.conf'
+var_rsyslog_conf_arch_path: '/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf'
+var_rsyslog_conf_arch_name: 'vmware-services-vmware-postgres-archiver.conf'
+var_ssl_key_path: '/storage/db/vpostgres_ssl/server.key'
+
+# misc variables
+var_notify_service_name: 'vpostgres'
+var_log_owner: 'vpostgres'
+var_log_group: 'vpgmongrp'

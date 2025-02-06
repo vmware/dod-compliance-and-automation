@@ -1,0 +1,25 @@
+name: VMware NSX 4.x Distributed Firewall STIG InSpec Profile
+title: VMware NSX 4.x Distributed Firewall STIG InSpec Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+inputs:
+- name: nsxManager
+  type: string
+  value: ""
+  description: "IP or FQDN of NSX-T Manager"
+# We use session based authentication in this profile to avoid username/pass   See https://code.vmware.com/apis/1124/nsx-t on how to generate the session token and you will also need the JSESSIONID cookie
+- name: sessionToken
+  type: string
+  value: ""
+  description: "X-XSRF-TOKEN session token for authentication"
+  sensitive: true
+- name: sessionCookieId
+  type: string
+  value: ""
+  description: "JSESSIONID Cookie in the format JSESSIONID=ECEF0CE603677B7FC5F34523714B7F5A for example"
+  sensitive: true
