@@ -89,7 +89,7 @@ Open the inputs file for editing.
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="bash" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/nsx/4.x/v1r1-stig/inspec/vmware-nsx-4.x-stig-baseline/
+cd /usr/share/stigs/nsx/4.x/v1r2-stig/inspec/vmware-nsx-4.x-stig-baseline/
 
 # Edit the inputs file
 vi inputs-nsx-4.x-example.yml
@@ -181,7 +181,7 @@ In this example we will be scanning all NSX components, specifying an inputs fil
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="bash" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/nsx/4.x/v1r1-stig/inspec/vmware-nsx-4.x-stig-baseline/
+cd /usr/share/stigs/nsx/4.x/v1r2-stig/inspec/vmware-nsx-4.x-stig-baseline/
 
 # Run the audit
 cinc-auditor exec . --show-progress --enhanced-outcomes --input-file inputs-nsx-4.x-example.yml --reporter=cli json:/tmp/reports/MyNSXReport.json

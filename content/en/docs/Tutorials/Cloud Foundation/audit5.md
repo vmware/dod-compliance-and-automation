@@ -35,7 +35,16 @@ This example uses curl to generate a token. This can also be done via other meth
 
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.x" lang="bash" >}}
+{{< tab header="5.2.1.x" lang="bash" >}}
+curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' \
+    -d '{
+  "username" : "administrator@vsphere.local",
+  "password" : "replaceme"
+}'
+{{< /tab >}}
+{{< tab header="5.2.0.x" lang="bash" >}}
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -76,7 +85,13 @@ Included in the `vmware-cloud-foundation-sddcmgr-5x-stig-baseline` is an example
 Open the inputs file for editing.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.x" lang="bash" >}}
+{{< tab header="5.2.1.x" lang="bash" >}}
+cd /usr/share/stigs/vcf/5.x/v1r4-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
+
+# Edit the inputs file
+vi inputs-vcf-sddcmgr-example.yml
+{{< /tab >}}
+{{< tab header="5.2.0.x" lang="bash" >}}
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
@@ -102,7 +117,36 @@ vi inputs-vcf-sddcmgr-example.yml
 Update the inputs as shown below with values relevant to your environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.x" lang="yaml" >}}
+{{< tab header="5.2.1.x" lang="yaml" >}}
+# SDDC Manager Application
+# Enter SDDC Manager FQDN/IP
+sddcManager: 'sddc-manager.vsphere.local'
+# Enter bearer token for API based tests
+bearerToken: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqd...'
+# Set to true if file based/sftp backups are used for SDDC Manager. Set to false if image based backups are used.
+sftpBackupsEnabled: true
+# Enter environment specific sftp server.
+sftpServer: '10.1.2.3'
+# Enter environment specific ntp servers. This is an array.
+ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
+# Enter latest version of SDDC manager with build. 5.2.0.0
+currentVersion: '5.2.0.0'
+# Enter myvmware account used to pull updates in SDDC Manager if used.
+myVmwareAccount: 'myvmwarevcfaccount@test.local'
+# !!DO NOT EDIT THE VALUES BELOW!!
+# Inputs for Photon OS.
+authprivlog: /var/log/messages
+sshdcommand: "sshd -T -C 'user=vcf'"
+# Enter environment specific syslog server with port. replace.local:514
+syslogServer: 'replace.local:514'
+# Inputs for PostgreSQL. No updates needed.
+postgres_user: postgres
+pg_data_dir: /data/pgdata/
+pg_log_dir: /var/log/postgres
+pg_owner: postgres
+pg_group: users
+{{< /tab >}}
+{{< tab header="5.2.0.x" lang="yaml" >}}
 # SDDC Manager Application
 # Enter SDDC Manager FQDN/IP
 sddcManager: 'sddc-manager.vsphere.local'
@@ -206,7 +250,47 @@ In this example we will be scanning a target SDDC Manager, specifying an inputs 
 
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.x" lang="bash" >}}
+{{< tab header="5.2.1.x" lang="bash" >}}
+# Navigate to the InSpec profile folder
+cd /usr/share/stigs/vcf/5.x/v1r4-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
+
+# Run InSpec
+cinc-auditor exec . -t ssh://root@sddc-manager.vsphere.local --password 'replaceme' --show-progress --enhanced-outcomes --input-file inputs-vcf-sddcmgr-example.yml --reporter cli json:/tmp/reports/VCF_5.2.0_SDDC_Manager_STIG_Report.json
+
+# Shown below is the last part of the output at the CLI.
+  ✔  CFUI-5X-000019: The SDDC Manager UI service log files must only be accessible by privileged users.
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/access.log is expected not to be writable by others
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/access.log owner is expected to cmp == "vcf_sddc_manager_ui_app"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/access.log group is expected to cmp == "vcf"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/sddc-manager-ui-activity.log is expected not to be writable by others
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/sddc-manager-ui-activity.log owner is expected to cmp == "vcf_sddc_manager_ui_app"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/sddc-manager-ui-activity.log group is expected to cmp == "vcf"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/cspViolationReport.log is expected not to be writable by others
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/cspViolationReport.log owner is expected to cmp == "vcf_sddc_manager_ui_app"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/cspViolationReport.log group is expected to cmp == "vcf"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/sddcManagerServer.log is expected not to be writable by others
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/sddcManagerServer.log owner is expected to cmp == "vcf_sddc_manager_ui_app"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/sddcManagerServer.log group is expected to cmp == "vcf"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/supervisor.log is expected not to be writable by others
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/supervisor.log owner is expected to cmp == "vcf_sddc_manager_ui_app"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/supervisor.log group is expected to cmp == "vcf"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/user-logs/administrator-vsphere.local/administrator.server.log is expected not to be writable by others
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/user-logs/administrator-vsphere.local/administrator.server.log owner is expected to cmp == "vcf_sddc_manager_ui_app"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/user-logs/administrator-vsphere.local/administrator.server.log group is expected to cmp == "vcf"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/user-logs/administrator-vsphere.local/administrator.client.log is expected not to be writable by others
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/user-logs/administrator-vsphere.local/administrator.client.log owner is expected to cmp == "vcf_sddc_manager_ui_app"
+     ✔  File /var/log/vmware/vcf/sddc-manager-ui-app/user-logs/administrator-vsphere.local/administrator.client.log group is expected to cmp == "vcf"
+  ✔  CFUI-5X-000022: The SDDC Manager UI service must offload logs to a centralized logging server.
+     ✔  File /etc/rsyslog.d/stig-services-sddc-manager-ui-app.conf content is expected to eq "module(load=\"imfile\" mode=\"inotify\")\ninput(type=\"imfile\"\n      File=\"/var/log/vmware/vcf/sd...     Tag=\"vcf-sddc-manager-ui-app-user-logs\"\n      Severity=\"info\"\n      Facility=\"local0\")"
+  ✔  CFUI-5X-000034: The SDDC Manager UI service must have Web Distributed Authoring (WebDAV) disabled.
+     ✔  Command: `(cd /opt/vmware/vcf/sddc-manager-ui-app/server/node_modules/ && npm list 2>/dev/null | grep webdav)` stdout.strip is expected to eq ""
+  ✔  CFUI-5X-000044: The SDDC Manager UI service directory tree must be secured.
+     ✔  Command: `find /opt/vmware/vcf/sddc-manager-ui-app/ -xdev -type f -a '(' -perm -o+w -o -not -user vcf_sddc_manager_ui_app -o -not -group vcf ')' -exec ls -ld {} \;` stdout.strip is expected to eq ""
+
+Profile Summary: 200 successful controls, 9 control failures, 0 controls skipped
+Test Summary: 974 successful, 21 failures, 0 skipped
+{{< /tab >}}
+{{< tab header="5.2.0.x" lang="bash" >}}
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
@@ -333,7 +417,7 @@ If a STIG Viewer CKL file is needed then the results from the scans can be conve
 
 ```powershell
 # Converting the VCSA scan results from the prior section to CKL
-saf convert hdf2ckl -i /tmp/reports/VCF_5.1.0_SDDC_Manager_STIG_Report.json -o /tmp/reports/VCF_5.1.0_SDDC_Manager_STIG_Report.ckl --hostname sddc-manager.vsphere.local --fqdn sddc-manager.vsphere.local --ip 10.2.3.4 --mac 00:00:00:00:00:00
+saf convert hdf2ckl -i /tmp/reports/VCF_5.2.1.0_SDDC_Manager_STIG_Report.json -o /tmp/reports/VCF_5.2.1.0_SDDC_Manager_STIG_Report.ckl --hostname sddc-manager.vsphere.local --fqdn sddc-manager.vsphere.local --ip 10.2.3.4 --mac 00:00:00:00:00:00
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
