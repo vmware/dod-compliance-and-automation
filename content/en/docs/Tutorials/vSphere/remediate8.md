@@ -191,7 +191,7 @@ This example will remediate all hosts in the vSphere cluster named `cluster0`. I
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the powercli folder
-cd /usr/share/stigs/vsphere/8.0/v2r1-stig/vsphere/powercli
+cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/powercli
 
 # Running the script.
 ./VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1 -vcenter 10.182.177.21 -vccred $vccred -cluster "cluster0" -esxAdminGroup "MyESXiGroup" -allowedIPs "10.10.10.0/24","10.10.11.0/24" -ntpServers "time-a-g.nist.gov","time-b-g.nist.gov" -syslogServer "tcp://loginsight.vmware.com:514" -reportpath /tmp/reports
@@ -368,7 +368,7 @@ This example will remediate all hosts in the vSphere cluster named `cluster0`. I
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the powercli folder
-cd /usr/share/stigs/vsphere/8.0/v2r1-stig/vsphere/powercli
+cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/powercli
 
 # Running the script.
 ./VMware_vSphere_8.0_STIG_VM_Remediation.ps1 -vcenter 10.182.177.21 -vccred $vccred -cluster "cluster0" -reportpath /tmp/reports
@@ -529,7 +529,7 @@ This example will remediate all controls on a target vCenter server.
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the powercli folder
-cd /usr/share/stigs/vsphere/8.0/v2r1-stig/vsphere/powercli
+cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/powercli
 
 # Running the script.
 ./VMware_vSphere_8.0_STIG_vCenter_Remediation.ps1 -vcenter 10.182.177.21 -vccred $vccred -vcNetflowDisableonallPortGroups $true -reportpath /tmp/reports
@@ -648,7 +648,7 @@ To run all of the VCSA controls, follow the example below:
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="bash" >}}
 # Navigate to the Ansible playbook folder
-cd /usr/share/stigs/vsphere/8.0/v2r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening
+cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening
 
 # The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use.
 ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter.yml

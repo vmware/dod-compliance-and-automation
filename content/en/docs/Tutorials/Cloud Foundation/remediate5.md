@@ -36,7 +36,16 @@ This example uses curl to generate a token. This can also be done via other meth
 
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.x" lang="bash" >}}
+{{< tab header="5.2.1.x" lang="bash" >}}
+curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' \
+    -d '{
+  "username" : "administrator@vsphere.local",
+  "password" : "replaceme"
+}'
+{{< /tab >}}
+{{< tab header="5.2.0.x" lang="bash" >}}
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -77,7 +86,14 @@ In order to run the playbook, environment specific values need to be provided. A
 Open the inputs file for editing.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.x" lang="bash" >}}
+{{< tab header="5.2.1.x" lang="bash" >}}
+# Navigate to the Ansible playbook folder
+cd /usr/share/stigs/vcf/5.x/v1r4-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
+
+# Edit the vars file
+vi vars-sddcmgr-example.yml
+{{< /tab >}}
+{{< tab header="5.2.0.x" lang="bash" >}}
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -103,7 +119,30 @@ vi vars-sddcmgr-example.yml
 Update the variables as shown below with values relevant to your environment. Specifically `var_sddc_manager`, `var_bearer_token`, `var_time_servers`, `var_password_rotate_days`.  
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.x" lang="yaml" >}}
+{{< tab header="5.2.1.x" lang="yaml" >}}
+# General
+run_create_backups: true
+
+# Photon OS
+create_backups: true
+run_etc_issue_dod: true
+var_rsyslog_server_name: 'syslog.test.local'
+var_rsyslog_server_port: '514'
+var_rsyslog_server_protocol: 'tcp'
+
+# Application
+# Enter SDDC Manager FQDN or IP for API Calls
+var_sddc_manager: 'sddc-manager.vsphere.local'
+# Enter generated bearer token here
+var_bearer_token: ''
+# Enter an array of 1 to 2 NTP servers
+var_time_servers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Between 30 and 90
+var_password_rotate_days: 90
+{{< /tab >}}
+{{< tab header="5.2.0.x" lang="yaml" >}}
 # General
 run_create_backups: true
 
@@ -190,7 +229,32 @@ systemctl restart sshd
 To run all of the SDDC Manager controls, follow the example below.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.x" lang="bash" >}}
+{{< tab header="5.2.1.x" lang="bash" >}}
+# Navigate to the Ansible playbook folder
+cd /usr/share/stigs/vcf/5.x/v1r4-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
+
+# The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use. Command assume it is being ran from the playbook folder.
+> ansible-playbook -i 10.0.0.4, -u 'root' playbook.yml -k -v --extra-vars @vars-sddcmgr-example.yml
+
+# Output example
+TASK [application : CFAP-5X-000127 - Set credential rotate policy] ************************************************************************************************************************************************************************
+changed: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": true, "connection": "close", "content_type": "application/json", "cookies": {}, "cookies_string": "", "date": "Thu, 01 Jun 2023 18:19:36 GMT", "elapsed": 0, "expires": "0", "json": {"id": "f0f9e481-9555-46ea-bbc0-76d144323fe6", "status": "IN_PROGRESS"}, "location": "https://sddc-manager.vrack.vsphere.local/v1/tasks/f0f9e481-9555-46ea-bbc0-76d144323fe6", "msg": "OK (unknown bytes)", "pragma": "no-cache", "redirected": false, "server": "nginx", "status": 202, "transfer_encoding": "chunked", "url": "https://sddc-manager.vrack.vsphere.local/v1/credentials", "x_content_type_options": "nosniff", "x_frame_options": "DENY", "x_xss_protection": "1; mode=block"}
+
+TASK [application : CFAP-5X-000127 - Wait for task to complete] ***************************************************************************************************************************************************************************
+ok: [10.0.0.4] => {"attempts": 1, "cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": false, "connection": "close", "content_type": "application/json;charset=UTF-8", "cookies": {}, "cookies_string": "", "date": "Thu, 01 Jun 2023 18:19:37 GMT", "elapsed": 0, "expires": "0", "json": {"creationTimestamp": "2023-06-01T18:19:36.784Z", "errors": [], "id": "f0f9e481-9555-46ea-bbc0-76d144323fe6", "isCancellable": false, "name": "Credentials update auto rotate policy operation", "resolutionStatus": "UNRESOLVED", "status": "SUCCESSFUL", "subTasks": [{"completionTimestamp": "2023-06-01T18:19:36.784Z", "creationTimestamp": "2023-06-01T18:19:36.784Z", "description": "Prevalidation of password update auto rotate policy request", "name": "Password update auto rotate policy prevalidation", "status": "SUCCESSFUL"}], "type": "PASSWORD_AUTO_ROTATE_POLICY_UPDATE"}, "msg": "OK (unknown bytes)", "pragma": "no-cache", "redirected": false, "referrer_policy": "no-referrer", "server": "nginx", "status": 200, "strict_transport_security": "max-age=15768000", "transfer_encoding": "chunked", "url": "https://sddc-manager.vrack.vsphere.local/v1/tasks/f0f9e481-9555-46ea-bbc0-76d144323fe6", "x_content_type_options": "nosniff, nosniff", "x_frame_options": "DENY, SAMEORIGIN", "x_xss_protection": "1; mode=block"}
+
+TASK [application : CFAP-5X-000128 - The SDDC Manager must use an account dedicated for downloading updates and patches.] *****************************************************************************************************************
+ok: [10.0.0.4] => {
+    "msg": "CFAP-5X-000128 - This control must be manually remediated."
+}
+
+TASK [application : CFAP-5X-000129 - Get current basic auth status] ***********************************************************************************************************************************************************************
+ok: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": false, "connection": "close", "content_type": "application/json;charset=UTF-8", "cookies": {}, "cookies_string": "", "date": "Thu, 01 Jun 2023 18:19:39 GMT", "elapsed": 0, "expires": "0", "json": {"basicAuthDetails": {"status": "ENABLED", "username": "admin"}, "domain": {"id": "529797b0-1b5c-4f90-a956-44b2398edba9"}, "fqdn": "sddc-manager.vrack.vsphere.local", "id": "dd56c751-49b5-4a69-957c-009a7ea79147", "ipAddress": "10.0.0.4", "version": "5.0.0.0-21822418"}, "msg": "OK (unknown bytes)", "pragma": "no-cache", "redirected": false, "referrer_policy": "no-referrer", "server": "nginx", "status": 200, "strict_transport_security": "max-age=15768000", "transfer_encoding": "chunked", "url": "https://sddc-manager.vrack.vsphere.local/v1/sddc-manager", "x_content_type_options": "nosniff, nosniff", "x_frame_options": "DENY, SAMEORIGIN", "x_xss_protection": "1; mode=block"}
+
+TASK [application : CFAP-5X-000129 - Disable Basic Auth] **********************************************************************************************************************************************************************************
+changed: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": true, "connection": "close", "content_length": "0", "cookies": {}, "cookies_string": "", "date": "Thu, 01 Jun 2023 18:19:40 GMT", "elapsed": 0, "expires": "0", "msg": "OK (0 bytes)", "pragma": "no-cache", "redirected": false, "referrer_policy": "no-referrer", "server": "nginx", "status": 200, "strict_transport_security": "max-age=15768000", "url": "https://sddc-manager.vrack.vsphere.local/v1/sddc-manager", "x_content_type_options": "nosniff, nosniff", "x_frame_options": "DENY, SAMEORIGIN", "x_xss_protection": "1; mode=block"}
+{{< /tab >}}
+{{< tab header="5.2.0.x" lang="bash" >}}
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -270,7 +334,17 @@ changed: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-re
 A more conservative and preferred approach is to target any non-compliant controls or run each component separately allowed you to perform any functional testing in between.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.x" lang="bash" >}}
+{{< tab header="5.2.1.x" lang="bash" >}}
+# Navigate to the Ansible playbook folder
+cd /usr/share/stigs/vcf/5.x/v1r4-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
+
+# Providing the tag "application" will instruct the playbook to only run the application role. This tag can be seen in each roles task/main.yml file.
+> ansible-playbook -i 10.0.0.4, -u 'root' playbook.yml -k -v --extra-vars @vars-sddcmgr-example.yml --tags application
+
+# Providing the tag "CFAP-5X-000002" will instruct the playbook to only run task tagged with the STIG ID of CFAP-5X-000002.
+> ansible-playbook -i 10.0.0.4, -u 'root' playbook.yml -k -v --extra-vars @vars-sddcmgr-example.yml --tags CFAP-5X-000002
+{{< /tab >}}
+{{< tab header="5.2.0.x" lang="bash" >}}
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
