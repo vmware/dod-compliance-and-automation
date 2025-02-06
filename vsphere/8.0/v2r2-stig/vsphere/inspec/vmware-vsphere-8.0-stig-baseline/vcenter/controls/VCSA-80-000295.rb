@@ -33,29 +33,31 @@ Note: Any subscribed content libraries will need to be updated to enable authent
   command = 'Get-ContentLibrary | Select-Object -ExpandProperty Id'
   libraries = powercli_command(command).stdout.gsub("\r\n", "\n").split("\n")
 
-  setimpact = true
-  if !libraries.empty?
+  if !libraries.blank?
     libraries.each do |library|
       libinfo = powercli_command("Invoke-GetLibraryIdContent #{library} | ConvertTo-Json").stdout
       libinfojson = JSON.parse(libinfo)
-      if libinfojson['publish_info']['published'] == true
+      if !libinfojson['publish_info'].blank? && libinfojson['publish_info']['published'] == true
         describe "Authentication should be enabled on Content Library: #{libinfojson['name']}" do
           subject { libinfojson }
           its(['publish_info', 'authentication_method']) { should cmp 'BASIC' }
         end
-        setimpact = false
+      elsif !libinfojson['publish_info'].blank? && libinfojson['publish_info']['published'] == false
+        describe "Publishing not enabled on Content Library: #{libinfojson['name']}. Authentication not required." do
+          subject { libinfojson }
+          its(['publish_info', 'published']) { should cmp false }
+        end
       else
-        describe "Publishing not enabled on Content Library: #{libinfojson['name']}. This is not applicable." do
-          skip "Publishing not enabled on Content Library: #{libinfojson['name']}. This is not applicable."
+        describe "Subscribed content library: #{libinfojson['name']} found. Publishing should not be enabled." do
+          subject { libinfojson }
+          its(['publish_info']) { should be_blank }
         end
       end
     end
   else
+    impact 0.0
     describe 'No content libraries found. This is not applicable.' do
       skip 'No content libraries found. This is not applicable.'
     end
-  end
-  unless !setimpact
-    impact 0.0
   end
 end

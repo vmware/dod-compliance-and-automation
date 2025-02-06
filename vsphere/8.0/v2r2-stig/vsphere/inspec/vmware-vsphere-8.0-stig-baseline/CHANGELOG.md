@@ -6,8 +6,8 @@
 - Updated metadata to reflect official STIG v2r2 release
 - ESXI-80-000161 removed
 - VCSA-90-000294 updated fix text
-- VCSA-90-000295 updated check text
-- VCSA-90-000296 updated check text
+- VCSA-90-000295 updated check text and test
+- VCSA-90-000296 updated check text and test
 
 ## [8.0 Official STIG Version 2 Release 1] (2024-08-01)
 

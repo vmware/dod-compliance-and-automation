@@ -33,23 +33,19 @@ Note: If you disable the security policy of a content library, you cannot reuse 
   command = 'Get-ContentLibrary | Select-Object -ExpandProperty Id'
   libraries = powercli_command(command).stdout.gsub("\r\n", "\n").split("\n")
 
-  setimpact = true
-  if !libraries.empty?
+  if !libraries.blank?
     libraries.each do |library|
       libinfo = powercli_command("Invoke-GetLibraryIdContent #{library} | ConvertTo-Json").stdout
       libinfojson = JSON.parse(libinfo)
       describe "OVF security policy should be enabled on Content Library: #{libinfojson['name']}" do
         subject { libinfojson }
-        its(['security_policy_id']) { should_not be nil }
+        its(['security_policy_id']) { should_not be_blank }
       end
-      setimpact = false
     end
   else
+    impact 0.0
     describe 'No content libraries found. This is not applicable.' do
       skip 'No content libraries found. This is not applicable.'
     end
-  end
-  unless !setimpact
-    impact 0.0
   end
 end
