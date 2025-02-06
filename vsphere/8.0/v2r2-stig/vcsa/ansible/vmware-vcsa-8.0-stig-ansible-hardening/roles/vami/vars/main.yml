@@ -1,0 +1,19 @@
+---
+
+# lighttpd files and paths
+var_opt_conf_path: '/opt/vmware/etc/lighttpd/applmgmt-lighttpd.conf'
+var_var_conf_path: '/var/lib/vmware/cap-lighttpd/lighttpd.conf'
+var_bin_path: '/opt/vmware/cap_lighttpd/sbin/lighttpd'
+var_log_dir: '/var/log/vmware/applmgmt/'
+var_log_dir2: '/var/log/vmware/applmgmt-audit/'
+var_log_dir3: '/opt/vmware/var/log/lighttpd/'
+var_ssl_key_path: '/etc/applmgmt/appliance/server.pem'
+var_rsyslog_conf_path: '/etc/vmware-syslog/vmware-services-applmgmt.conf'
+var_rsyslog_conf_name: 'vmware-services-applmgmt.conf'
+
+# misc variables
+var_notify_service_name: 'vami'
+var_log_owner: 'root'
+var_log_group: 'root'
+var_log_owner2: 'lighttpd'
+var_log_group2: 'lighttpd'

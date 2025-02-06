@@ -34,6 +34,7 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |     `V1R1`        |STIG Readiness Guide|     2023/03/15     |[U_VMware_NSX_4.x_STIG_Readiness_Guide_v1r1.zip](U_VMware_NSX_4.x_STIG_Readiness_Guide_v1r1.zip)|
 |     `V1R2`        |STIG Readiness Guide|     2023/07/26     |[U_VMware_NSX_4.x_STIG_Readiness_Guide_v1r2.zip](U_VMware_NSX_4.x_STIG_Readiness_Guide_v1r2.zip)|
 |     `V1R1`        |    Official STIG   |     2024/08/14     |[U_VMW_NSX_4-x_Y24M08_STIG.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_NSX_4-x_Y24M08_STIG.zip)|
+|     `V1R2`        |    Official STIG   |     2025/01/30     |[U_VMW_NSX_4-x_Y25M01_STIG.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_NSX_4-x_Y25M01_STIG.zip)|
   
 
 ## Viewing
