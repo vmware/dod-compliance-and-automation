@@ -12,8 +12,8 @@
 - [VCSA](#vcsa)
   - [RESOLVED PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
   - [RESOLVED PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
-  - [RESOLVED VCLU-80-000037 Path incorrect in check](vclu-80-000037-path-incorrect-in-check)
-  - [VCPG-80-000007 pgaudit log generation exhausts disk space before rotation can occur](vcpg-80-000007-pgaudit-log-generation-exhausts-disk-space-before-rotation-can-occur)
+  - [RESOLVED VCLU-80-000037 Path incorrect in check](#vclu-80-000037-path-incorrect-in-check)
+  - [VCPG-80-000007 pgaudit log generation exhausts disk space before rotation can occur](#vcpg-80-000007-pgaudit-log-generation-exhausts-disk-space-before-rotation-can-occur)
 
 # Known Issues
 
