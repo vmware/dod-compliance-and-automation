@@ -1,0 +1,11 @@
+- name: vmware-nsx-4x-stig-ansible-hardening
+  hosts: 127.0.0.1
+  connection: local
+  gather_facts: false
+  roles:
+    - role: dfw
+    - role: manager
+    - role: t0fw
+    - role: t0rtr
+    - role: t1fw
+    - role: t1rtr

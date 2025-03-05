@@ -1,0 +1,15 @@
+{
+  "operationType" : "UPDATE_AUTO_ROTATE_POLICY",
+  "elements" : [ {
+    "resourceName" : "{{ item.resource.resourceName }}",
+    "resourceType" : "{{ item.resource.resourceType }}",
+    "credentials" : [ {
+      "credentialType" : "{{ item.credentialType }}",
+      "username" : "{{ item.username }}"
+    } ]
+  } ],
+  "autoRotatePolicy" : {
+    "frequencyInDays" : "{{ var_password_rotate_days }}",
+    "enableAutoRotatePolicy" : true
+  }
+}

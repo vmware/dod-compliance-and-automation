@@ -1,0 +1,29 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# NT0R-4X-000013
+run_t0rtr_disable_pim_on_interfaces: false
+# NT0R-4X-000016
+run_t0rtr_remove_inactive_interfaces: true
+# NT0R-4X-000027
+run_t0rtr_disable_dhcp: false
+# NT0R-4X-000029
+run_t0rtr_routing_ospf_auth: true
+# NT0R-4X-000051
+run_t0rtr_configure_urpf_interfaces: true
+# NT0R-4X-000055
+run_t0rtr_bgp_unique_auth: true
+# NT0R-4X-000064 T0R-4X-000065 NT0R-4X-000066
+run_t0rtr_icmp_firewall_rules: true
+# NT0R-4X-000067
+run_t0rtr_bgp_max_prefixes: true
+# NT0R-4X-000091
+run_t0rtr_ibgp_loopback: true
+# NT0R-4X-000102
+run_t0rtr_ipv6_hop_limit: true
+# NT0R-4X-000106
+run_t0rtr_disable_routing_protocols: true
+# NT0R-4X-000107
+run_t0rtr_disable_multicast: false
+# NT0R-4X-000108
+run_t0rtr_routing_bgp_auth: true

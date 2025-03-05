@@ -1,0 +1,50 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# Create backups of files?
+run_create_backups: true
+
+# VCLD-80-000001
+run_max_connections: true
+# VCLD-80-000004
+run_ssl_engine: true
+# VCLD-80-000005
+run_mod_accesslog: true
+# VCLD-80-000010
+run_accesslog_format: true
+# VCLD-80-000019
+run_log_files_permissions: true
+# VCLD-80-000022
+run_rsyslog_conf: true
+# VCLD-80-000031
+run_mimetype_use_xattr: true
+# VCLD-80-000033
+run_url_access_deny: true
+# VCLD-80-000034
+run_mod_webdav: true
+# VCLD-80-000035
+run_max_keep_alive: true
+# VCLD-80-000040
+run_ssl_key_permissions: true
+# VCLD-80-000060
+run_server_max_fds: true
+# VCLD-80-000061
+run_text_mime_utf8: true
+# VCLD-80-000062
+run_dir_listing: true
+# VCLD-80-000063
+run_mod_status: true
+# VCLD-80-000064
+run_debug_log_request: true
+# VCLD-80-000097
+run_ssl_disable_client_reneg: true
+# VCLD-80-000098
+run_server_tag: true
+# VCLD-80-000099
+run_header_hsts: true
+# VCLD-80-000100
+run_header_xframe_deny: true
+# VCLD-80-000101
+run_header_xcontenttype: true
+# VCLD-80-000102
+run_header_csp: true

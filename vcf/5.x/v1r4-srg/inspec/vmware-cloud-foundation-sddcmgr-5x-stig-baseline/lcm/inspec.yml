@@ -1,0 +1,18 @@
+name: VMware Cloud Foundation SDDC Manager LCM Profile
+title: VMware Cloud Foundation SDDC Manager LCM Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.4
+
+inputs:
+- name: applicationPropertiesPath
+  type: string
+  value: '/opt/vmware/vcf/lcm/lcm-app/conf/application.properties'
+  description: 'Path to the application.properties file'
+- name: applicationProdPropertiesPath
+  type: string
+  value: '/opt/vmware/vcf/lcm/lcm-app/conf/application-prod.properties'
+  description: 'Path to the application-prod.properties file'

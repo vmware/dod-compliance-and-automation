@@ -1,3 +1,6 @@
+> [!NOTE]
+> - To download the zip files below, first click each file link to enter the raw view of the file, then click the "Download Raw File" button at the top right of the page. Right-clicking and choosing "Save as..." produces corrupt zip file downloads in many browsers.
+
 # VMware vSphere 8 STIG Documentation
 
 ## Overview
@@ -21,16 +24,17 @@ Compatibility information is made available [here](../README.md#compatibility).
 
 For information on support for STIGs see: https://knowledge.broadcom.com/external/article?legacyId=94398
 
+> [!NOTE]
+> - The latest release always takes precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version. 
+> - \* V1R1 of the official STIG is also included in the V2R1 download.  
+
 ## Content
 |      Version      |        Type        |     Release Date   |      Download      |
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |     `V1R1`        |STIG Readiness Guide|     2023/04/18     |[U_VMware_vSphere_8_STIG_Readiness_Guide_v1r1.zip](U_VMware_vSphere_8_STIG_Readiness_Guide_v1r1.zip)|
 |     `V1R1*`       |    Official STIG   |     2023/11/03     |[U_VMW_vSphere_8-0_Y23M10_STIG.zip](U_VMW_vSphere_8-0_Y23M10_STIG.zip)|
 |     `V2R1`        |    Official STIG   |     2024/07/16     |[U_VMW_vSphere_8-0_Y24M08_STIG.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_8-0_Y24M08_STIG.zip)|
-
-> [!NOTE]
-> - The latest release always take precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version.  
-> - \* V1R1 of the official STIG is also included in the V2R1 download.    
+|     `V2R2`        |    Official STIG   |     2025/01/30     |[U_VMW_vSphere_8-0_Y25M01_STIG.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_8-0_Y25M01_STIG.zip)| 
 
 ## Viewing
 The XML files provided can be loaded into and viewed in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  

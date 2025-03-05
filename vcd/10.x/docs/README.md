@@ -1,3 +1,6 @@
+> [!NOTE]
+> - To download the zip files below, first click each file link to enter the raw view of the file, then click the "Download Raw File" button at the top right of the page. Right-clicking and choosing "Save as..." produces corrupt zip file downloads in many browsers.
+
 # VMware Cloud Director 10.x STIG Documentation
 
 ## Overview
@@ -21,13 +24,15 @@ Compatibility information is made available [here](../README.md#compatibility).
 
 For information on support for STIGs see: https://knowledge.broadcom.com/external/article?legacyId=94398
 
+> [!NOTE]
+> - The latest release always takes precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version. 
+
+
 ## Content
 |      Version      |        Type        |     Release Date   |      Download      |
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |     `V1R1`        |STIG Readiness Guide|     2022/07/14     |[U_VMware_Cloud_Director_10.x_STIG_Readiness_Guide_v1r1.zip](U_VMware_Cloud_Director_10.x_STIG_Readiness_Guide_v1r1.zip)|
-
-> [!NOTE]
-> - The latest release always take precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version.  
+ 
 
 ## Viewing
 The XML files provided can be loaded into and viewed in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  
