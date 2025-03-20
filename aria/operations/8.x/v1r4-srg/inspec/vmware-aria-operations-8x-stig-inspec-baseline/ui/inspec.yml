@@ -41,7 +41,7 @@ inputs:
 - name: ui-maxThreads
   description: VRPU-8X-000001 - Value for maxThreads attribute
   type: string
-  value: "300"
+  value: "200"
 - name: ui-accessLogPattern
   description: VRPU-8X-000014 - List of values that must be present in the pattern property of the AccessLogValve
   type: array
