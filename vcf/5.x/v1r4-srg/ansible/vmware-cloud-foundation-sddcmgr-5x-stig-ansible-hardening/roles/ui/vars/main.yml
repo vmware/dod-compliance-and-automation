@@ -1,0 +1,13 @@
+---
+
+# files and paths
+var_log_dir: '/var/log/vmware/vcf/sddc-manager-ui-app/'
+var_app_dir: '/opt/vmware/vcf/sddc-manager-ui-app/'
+var_rsyslog_conf_path: '/etc/rsyslog.d/stig-services-sddc-manager-ui-app.conf'
+var_rsyslog_conf_name: 'stig-services-sddc-manager-ui-app.conf'
+
+# misc variables
+var_app_owner: 'vcf_sddc_manager_ui_app'
+var_app_group: 'vcf'
+var_log_owner: 'vcf_sddc_manager_ui_app'
+var_log_group: 'vcf'

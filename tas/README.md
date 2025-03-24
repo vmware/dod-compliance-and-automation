@@ -7,8 +7,8 @@ This project contains content for compliance remediation of the Tanzu Applicatio
 ## Using this Repo
 
 This repos is split into 
-- jammy-stig-compliance-release - BOSH release to fix STIG controls for Jammy Stemcell(ubuntu 16.04).
-- xenial-compliance-release - BOSH release to fix STIG controls for Xenial Stemcell(ubuntu 22.04).
+- jammy-stig-compliance-release - BOSH release to fix STIG controls for Jammy Stemcell(ubuntu 22.04).
+- xenial-compliance-release - BOSH release to fix STIG controls for Xenial Stemcell(ubuntu 16.04).
 - \<VERSION\>/docs - TAS version specific upporting documentation will be made available here as needed.
 
 ## Disclaimer

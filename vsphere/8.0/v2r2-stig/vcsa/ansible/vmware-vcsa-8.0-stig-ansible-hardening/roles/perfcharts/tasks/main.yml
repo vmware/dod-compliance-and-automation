@@ -1,0 +1,10 @@
+---
+
+- name: Include Perfcharts
+  ansible.builtin.include_tasks:
+    file: perfcharts.yml
+    apply:
+      tags:
+        - perfcharts
+  tags:
+    - always

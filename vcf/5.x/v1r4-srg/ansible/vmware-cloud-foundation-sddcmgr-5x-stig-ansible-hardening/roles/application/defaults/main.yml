@@ -1,0 +1,27 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# CFAP-5X-000002
+run_fips_mode: true
+# CFAP-5X-000005
+run_role_check: true
+# CFAP-5X-000035
+run_configure_backups: true
+# CFAP-5X-000084
+run_configure_ntp: true
+# CFAP-5X-000113
+run_updates: true
+# CFAP-5X-000122
+run_replace_certificates: true
+# CFAP-5X-000124
+run_internet: true
+# CFAP-5X-000125
+run_disable_ceip: true
+# CFAP-5X-000126
+run_myvmw_account: true
+# CFAP-5X-000127
+run_password_rotation: true
+# CFAP-5X-000128
+run_api_admin: true
+# CFAP-5X-000129
+run_disable_basic_auth: true

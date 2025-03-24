@@ -1,0 +1,16 @@
+---
+# Session variables
+var_nsx_manager: ''
+var_jsession_id: ''
+var_session_token: ''
+
+# flood protection
+var_t1fw_fpp_name: 'stig-gateway-flood-protection-profile'
+var_t1fw_fpp_udp_active_flow_limit: 100
+var_t1fw_fpp_icmp_active_flow_limit: 30
+var_t1fw_fpp_tcp_half_open_conn_limit: 200
+var_t1fw_fpp_other_active_conn_limit: 50
+var_t1fw_fpp_apply_name: 'stig-gateway-flood-protection-profile'
+
+# t0fw allow, drop, reject
+var_t1fw_default_rule_action: 'DROP'

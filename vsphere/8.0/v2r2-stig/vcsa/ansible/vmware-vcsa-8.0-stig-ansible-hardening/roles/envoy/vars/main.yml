@@ -1,0 +1,18 @@
+---
+
+# Files and paths
+var_config_xml_path: '/etc/vmware-rhttpproxy/config.xml'
+var_log_dir: '/var/log/vmware/rhttpproxy/'
+var_log_dir2: '/var/log/vmware/envoy/'
+var_ssl_key_path: '/etc/vmware-rhttpproxy/ssl/rui.key'
+var_rsyslog_conf_path: '/etc/vmware-syslog/vmware-services-rhttpproxy.conf'
+var_rsyslog_conf_name: 'vmware-services-rhttpproxy.conf'
+var_rsyslog_conf_path2: '/etc/vmware-syslog/vmware-services-envoy.conf'
+var_rsyslog_conf_name2: 'vmware-services-envoy.conf'
+
+# misc variables
+var_notify_service_name: 'rhttpproxy'
+var_log_owner: 'rhttpproxy'
+var_log_group: 'rhttpproxy'
+var_log_owner2: 'envoy'
+var_log_group2: 'envoy'

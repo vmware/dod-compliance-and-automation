@@ -1,7 +1,7 @@
 # vmware-aria-operations-8.x-stig-baseline
 VMware Aria Operations 8.x STIG Readiness Guide Chef InSpec Profile  
 Version: Version 1 Release 4 Date: 24 July 2024  
-STIG Type: [STIG Readiness Guide](https://confluence.eng.vmware.com/pages/viewpage.action?pageId=1231779155)  
+STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
 
 ## InSpec Profiles

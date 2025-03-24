@@ -1,0 +1,10 @@
+---
+
+- name: Include LCM
+  ansible.builtin.include_tasks:
+    file: lcm.yml
+    apply:
+      tags:
+        - lcm
+  tags:
+    - always

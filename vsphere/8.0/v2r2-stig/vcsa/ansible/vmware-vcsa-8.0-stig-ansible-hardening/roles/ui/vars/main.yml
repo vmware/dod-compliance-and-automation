@@ -1,0 +1,39 @@
+---
+
+# Tomcat files and paths
+var_server_xml_path: '/usr/lib/vmware-vsphere-ui/server/conf/server.xml'
+var_web_xml_path: '/usr/lib/vmware-vsphere-ui/server/conf/web.xml'
+var_service_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json'
+var_catalina_props_path: '/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties'
+var_rsyslog_conf_path: '/etc/vmware-syslog/vmware-services-vsphere-ui.conf'
+var_log_dir: '/var/log/vmware/vsphere-ui/'
+var_rsyslog_conf_name: 'vmware-services-vsphere-ui.conf'
+var_examples_dir: '/usr/lib/vmware-vsphere-ui/server/webapps/examples'
+var_root_dir: '/usr/lib/vmware-vsphere-ui/server/webapps/ROOT'
+var_docs_dir: '/usr/lib/vmware-vsphere-ui/server/webapps/docs'
+var_manager_dir: '/usr/lib/vmware-vsphere-ui/server/webapps/manager'
+var_host_manager_dir: '/usr/lib/vmware-vsphere-ui/server/webapps/host-manager'
+
+# server.xml variables
+var_server_xml_maxthreads: '800'
+# This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+# Also &quot; needs to just be a " which turns into &quot;
+var_server_xml_access_log_valve_pattern: '{% raw %}%h %{x-forwarded-for}i %l %u %t "%r" %s %b %{#hashedClientId#}s %{#hashedRequestId#}r %I %D{% endraw %}'
+var_server_xml_security_listener_min_umask: '0007'
+var_server_xml_port: '${bio.http.port}'
+var_server_xml_address: 'localhost'
+var_server_xml_connection_timeout: '300000'
+var_server_xml_max_keepalive_requests: '100'
+
+# web.xml variables
+var_web_xml_session_timeout: '30'
+
+# service json variables
+var_stream_redirect_file: '%VMWARE_LOG_DIR%/vmware/vsphere-ui/logs/vsphere-ui-runtime.log'
+
+# catalina properties variables
+
+# misc variables
+var_notify_service_name: 'vsphere-ui'
+var_log_owner: 'vsphere-ui'
+var_log_group: 'users'

@@ -1,0 +1,11 @@
+---
+
+- name: restart vami
+  ansible.builtin.systemd:
+    name: cap-lighttpd
+    state: restarted
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted

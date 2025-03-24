@@ -1,0 +1,8 @@
+offline: true
+skip_list:
+  - name
+  - meta-no-info
+  - var-naming[no-role-prefix]
+warn_list:
+  - ignore-errors
+  - command-instead-of-module

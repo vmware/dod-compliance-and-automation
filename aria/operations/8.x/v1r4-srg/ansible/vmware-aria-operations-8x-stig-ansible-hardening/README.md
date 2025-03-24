@@ -1,7 +1,7 @@
 # vmware-aria-operations-8x-stig-ansible-hardening
 VMware Aria Operations 8.x STIG Readiness Guide Ansible Playbook  
 Version: Version 1 Release 4:  24 July 2024    
-STIG Type: [STIG Readiness Guide](https://confluence.eng.vmware.com/pages/viewpage.action?pageId=1231779155)  
+STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom 
 
 ## Overview

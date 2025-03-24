@@ -1,0 +1,41 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# NMGR-4X-000007
+run_mgr_service_log_levels: true
+# NMGR-4X-000010
+run_mgr_verify_roles: true
+# NMGR-4X-000012 NMGR-4X-000039 NMGR-4X-000040 NMGR-4X-000041 NMGR-4X-000042 NMGR-4X-000043 NMGR-4X-000044
+run_mgr_auth_policy: true
+# NMGR-4X-000013  Setting to false by default until this can be done. Currently it doesn't seem put/post operations are allowed.
+run_mgr_login_banner: false
+# NMGR-4X-000015
+run_mgr_configure_identity_provider: true
+# NMGR-4X-000035
+run_mgr_disable_local_accounts: true
+# NMGR-4X-000038 NMGR-4X-000052 NMGR-4X-000079
+run_mgr_conf_api_service: true
+# NMGR-4X-000052 2nd part
+run_mgr_cli_timeout: true
+# NMGR-4X-000067
+run_mgr_ntp_servers: true
+# NMGR-4X-000068
+run_mgr_timezone: true
+# NMGR-4X-000087
+run_mgr_configure_syslog: true
+# NMGR-4X-000088
+run_mgr_disable_ceip_acceptance: true
+# NMGR-4X-000093
+run_mgr_configure_backups: true
+# NMGR-4X-000094
+run_mgr_configure_certificate: true
+# NMGR-4X-000096
+run_mgr_upgrade: true
+# NMGR-4X-000097
+run_mgr_disable_ssh: true
+# NMGR-4X-000099
+run_mgr_enable_fips_lb: true
+# NMGR-4X-000102
+run_mgr_cluster: true
+# NMGR-4X-000103
+run_mgr_separate_hosts: true

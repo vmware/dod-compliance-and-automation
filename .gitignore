@@ -2,3 +2,4 @@
 vendor/
 .vscode/
 resources/
+.DS_Store

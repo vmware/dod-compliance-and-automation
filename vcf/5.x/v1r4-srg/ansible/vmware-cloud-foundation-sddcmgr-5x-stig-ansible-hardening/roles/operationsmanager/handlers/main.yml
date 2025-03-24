@@ -1,0 +1,11 @@
+---
+
+- name: restart operationsmanager
+  ansible.builtin.systemd:
+    name: operationsmanager
+    state: restarted
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted

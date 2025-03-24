@@ -1,0 +1,16 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# Create backups of files?
+run_create_backups: true
+
+# CFOM-5X-000025
+run_log_files_permissions: true
+# CFOM-5X-000031
+run_rsyslog_conf: true
+# CFOM-5X-000034
+run_app_files_permissions: true
+# CFOM-5X-000088
+run_app_conf_permissions: true
+# CFOM-5X-000130
+run_server_header: true

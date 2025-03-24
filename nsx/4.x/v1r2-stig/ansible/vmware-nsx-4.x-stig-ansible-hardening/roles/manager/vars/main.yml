@@ -1,0 +1,9 @@
+---
+# Session variables
+var_nsx_manager: ''
+var_jsession_id: ''
+var_session_token: ''
+
+# NTP variables
+var_ntp_server1: ''
+var_ntp_server2: ''

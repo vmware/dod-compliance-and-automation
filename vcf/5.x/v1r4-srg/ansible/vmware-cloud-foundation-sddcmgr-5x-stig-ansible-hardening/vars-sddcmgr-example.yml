@@ -1,0 +1,21 @@
+# General
+run_create_backups: true
+
+# Photon OS
+create_backups: true
+run_etc_issue_dod: true
+var_rsyslog_server_name: 'syslog.test.local'
+var_rsyslog_server_port: '514'
+var_rsyslog_server_protocol: 'tcp'
+
+# Application
+# Enter SDDC Manager FQDN or IP for API Calls
+var_sddc_manager: 'sddc-manager.vsphere.local'
+# Enter generated bearer token here
+var_bearer_token: ''
+# Enter an array of 1 to 2 NTP servers
+var_time_servers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Between 30 and 90
+var_password_rotate_days: 90

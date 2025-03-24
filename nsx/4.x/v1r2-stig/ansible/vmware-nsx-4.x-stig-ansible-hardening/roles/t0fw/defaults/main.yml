@@ -1,0 +1,11 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# NT0F-4X-000004
+run_t0fw_enable_rule_logging: true
+# NT0F-4X-000015
+run_t0fw_flood_protection: true
+# NT0F-4X-000016
+run_t0fw_default_rule_action: false
+# NT0F-4X-000020
+run_t0fw_configure_syslog: true

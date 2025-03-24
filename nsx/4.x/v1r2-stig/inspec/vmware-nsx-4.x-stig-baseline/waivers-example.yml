@@ -1,0 +1,4 @@
+# Example waiver file. See InSpec documentation for more details.
+NMGR-4X-000013:
+  run: false
+  justification: 'DoD Banner will not be configured out of the box.'

@@ -1,0 +1,13 @@
+---
+
+# files and paths
+var_log_dir: '/var/log/vmware/vcf/sddc-support/'
+var_app_dir: '/opt/vmware/sddc-support'
+var_rsyslog_conf_path: '/etc/rsyslog.d/stig-services-sos.conf'
+var_rsyslog_conf_name: 'stig-services-sos.conf'
+
+# misc variables
+var_app_owner: 'vcf_sos'
+var_app_group: 'vcf'
+var_log_owner: 'vcf_sos'
+var_log_group: 'vcf'

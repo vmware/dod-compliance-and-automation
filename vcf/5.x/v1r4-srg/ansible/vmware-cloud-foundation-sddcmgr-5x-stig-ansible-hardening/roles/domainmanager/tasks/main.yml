@@ -1,0 +1,10 @@
+---
+
+- name: Include Domain Manager
+  ansible.builtin.include_tasks:
+    file: domainmanager.yml
+    apply:
+      tags:
+        - domainmanager
+  tags:
+    - always

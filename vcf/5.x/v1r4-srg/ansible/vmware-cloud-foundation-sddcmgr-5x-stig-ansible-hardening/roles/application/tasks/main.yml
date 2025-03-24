@@ -1,0 +1,10 @@
+---
+
+- name: Include Application
+  ansible.builtin.include_tasks:
+    file: application.yml
+    apply:
+      tags:
+        - application
+  tags:
+    - always

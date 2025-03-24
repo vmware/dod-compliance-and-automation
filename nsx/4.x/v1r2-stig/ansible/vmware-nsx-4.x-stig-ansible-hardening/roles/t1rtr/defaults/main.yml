@@ -1,0 +1,11 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# NT1R-4X-000016
+run_t1rtr_remove_inactive_interfaces: true
+# NT1R-4X-000027
+run_t1rtr_disable_dhcp: false
+# NT1R-4X-000102
+run_t1rtr_ipv6_hop_limit: true
+# NT1R-4X-000107
+run_t1rtr_disable_multicast: false

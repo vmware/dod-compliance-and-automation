@@ -1,0 +1,33 @@
+---
+
+- name: "NT0F-4X-000016 - Find default firewall rule for Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1/search?query=(resource_type:Rule%20AND%20id:default_rule%20AND%20parent_path:*{{ var_outer_t0.id }})"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: GET
+    status_code: 200
+  register: defaultrule
+  changed_when: false
+
+- name: "NT0F-4X-000016 - Update default firewall rule action for Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1{{ item.path }}"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: PATCH
+    body: "{{ lookup('template', './t0fw_update_default_rule_action.json.j2') | to_json }}"
+    body_format: json
+    status_code: 200
+  with_items:
+    - "{{ defaultrule.json.results }}"
+  when:
+    - defaultrule.json.result_count == 1
+    - item.action != var_t0fw_default_rule_action
+  register: response
+  changed_when:
+    - response.status == 200

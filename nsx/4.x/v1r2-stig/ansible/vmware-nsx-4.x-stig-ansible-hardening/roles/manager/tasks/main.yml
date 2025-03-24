@@ -1,0 +1,10 @@
+---
+
+- name: Include Manager
+  ansible.builtin.include_tasks:
+    file: manager.yml
+    apply:
+      tags:
+        - manager
+  tags:
+    - always

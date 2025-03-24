@@ -1,0 +1,302 @@
+---
+# Ansible Playbook for VMware Cloud Foundation 5.x SDDC Manager Application STIG Readiness Guide
+
+###################################################################################################################################
+- name: CFAP-5X-000002
+  tags: [CFAP-5X-000002]
+  when: run_fips_mode | bool
+  block:
+    - name: CFAP-5X-000002 - The SDDC Manager must be deployed with FIPS mode enabled.
+      ansible.builtin.debug:
+        msg: "CFAP-5X-000002 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: CFAP-5X-000005
+  tags: [CFAP-5X-000005]
+  when: run_role_check | bool
+  block:
+    - name: CFAP-5X-000005 - The SDDC Manager must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
+      ansible.builtin.debug:
+        msg: "CFAP-5X-000005 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: CFAP-5X-000035
+  tags: [CFAP-5X-000035]
+  when: run_configure_backups | bool
+  block:
+    - name: CFAP-5X-000035 - The SDDC Manager must be capable of reverting to the last known good configuration in the event of failed installations and upgrades.
+      ansible.builtin.debug:
+        msg: "CFAP-5X-000035 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: CFAP-5X-000084
+  tags: [CFAP-5X-000084]
+  when: run_configure_ntp | bool
+  block:
+    - name: CFAP-5X-000084 - Get current NTP servers
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/system/ntp-configuration"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: GET
+      register: ntpconf
+      changed_when: false
+      when:
+        - var_time_servers != ''
+
+    - name: CFAP-5X-000084 - Build list of current NTP servers
+      ansible.builtin.set_fact:
+        current_time_servers: "{{ items }}"
+      vars:
+        items: "{{ ntpconf.json.ntpServers | map(attribute='ipAddress') | list }}"
+      when:
+        - var_time_servers != ''
+
+    - name: CFAP-5X-000084 - Validate new NTP servers
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/system/ntp-configuration/validations"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: POST
+        body: "{{ lookup('template', './update_ntp_servers.json.j2') }}"
+        body_format: json
+        status_code:
+          - 202
+      register: ntpvalidation
+      when:
+        - var_time_servers != current_time_servers
+        - var_time_servers != ''
+      changed_when:
+        - ntpvalidation.status == 202
+
+    - name: CFAP-5X-000084 - Validate new NTP servers - Wait for success
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/system/ntp-configuration/validations/{{ ntpvalidation.json.id }}"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: GET
+        body_format: json
+        status_code:
+          - 200
+      register: taskresult
+      until: taskresult.json.executionStatus == 'COMPLETED'
+      retries: 100
+      delay: 10
+      changed_when:
+        - taskresult.status == 200
+      failed_when:
+        - taskresult.json.resultStatus == 'FAILED'
+      when:
+        - var_time_servers != current_time_servers
+        - var_time_servers != ''
+        - ntpvalidation.status == 202
+
+    - name: CFAP-5X-000084 - Update NTP Servers
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/system/ntp-configuration"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: PUT
+        body: "{{ lookup('template', './update_ntp_servers.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: updatentpservers
+      when:
+        - var_time_servers != current_time_servers
+        - var_time_servers != ''
+      changed_when:
+        - response.status == 200 or response.status == 202
+        - taskresult.json.resultStatus == 'SUCCEEDED'
+
+    - name: CFAP-5X-000084 - Wait for task to complete
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/tasks/{{ updatentpservers.json.id }}"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: GET
+        body_format: json
+        status_code:
+          - 200
+      register: taskresult
+      until: taskresult.json.status != 'In Progress'
+      retries: 100
+      delay: 10
+      when:
+        - var_time_servers != current_time_servers
+        - var_time_servers != ''
+      changed_when:
+        - taskresult.status == 200
+        - taskresult.json.status == 'Successful'
+
+###################################################################################################################################
+- name: CFAP-5X-000113
+  tags: [CFAP-5X-000113]
+  when: run_updates | bool
+  block:
+    - name: CFAP-5X-000113 - The SDDC Manager must have all security patches and updates installed.
+      ansible.builtin.debug:
+        msg: "CFAP-5X-000113 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: CFAP-5X-000122
+  tags: [CFAP-5X-000122]
+  when: run_replace_certificates | bool
+  block:
+    - name: CFAP-5X-000122 - The SDDC Manager must use DoD- or CNSS-approved PKI Class 3 or Class 4 certificates.
+      ansible.builtin.debug:
+        msg: "CFAP-5X-000122 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: CFAP-5X-000124
+  tags: [CFAP-5X-000124]
+  when: run_internet | bool
+  block:
+    - name: CFAP-5X-000124 - The SDDC Manager must not be exposed directly to the internet.
+      ansible.builtin.debug:
+        msg: "CFAP-5X-000124 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: CFAP-5X-000125
+  tags: [CFAP-5X-000125]
+  when: run_disable_ceip | bool
+  block:
+    - name: CFAP-5X-000125 - Get current CEIP Status
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/system/ceip"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: GET
+      register: ceifconf
+      changed_when: false
+
+    - name: CFAP-5X-000125 - Disable CEIP
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/system/ceip"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './disable_ceip.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - ceifconf.json.status == 'ENABLED'
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: CFAP-5X-000125 - Wait for task to complete
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/tasks/{{ response.json.id }}"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: GET
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: taskresult
+      until: taskresult.json.status != 'In Progress'
+      retries: 100
+      delay: 10
+      when:
+        - ceifconf.json.status == 'ENABLED'
+      changed_when:
+        - taskresult.status == 200
+        - taskresult.json.status == 'Successful'
+
+###################################################################################################################################
+- name: CFAP-5X-000126
+  tags: [CFAP-5X-000126]
+  when: run_myvmw_account | bool
+  block:
+    - name: CFAP-5X-000126 - The SDDC Manager must use an account dedicated for downloading updates and patches.
+      ansible.builtin.debug:
+        msg: "CFAP-5X-000126 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: CFAP-5X-000127
+  tags: [CFAP-5X-000127]
+  when: run_password_rotation | bool
+  block:
+    - name: CFAP-5X-000127 - Get current credential rotation schedules
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/credentials"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: GET
+      register: creds
+      changed_when: false
+      no_log: true
+
+    - name: CFAP-5X-000127 - Set credential rotate policy
+      ansible.builtin.include_tasks:
+        file: cred_rotation.yml
+      no_log: true
+      with_items: "{{ creds.json.elements }}"
+      when:
+        - item.resource.resourceType != 'ESXI'
+        - item.resource.resourceType != 'PSC'
+        - (item.autoRotatePolicy.frequencyInDays is not defined) or (item.autoRotatePolicy.frequencyInDays != var_password_rotate_days)
+
+###################################################################################################################################
+- name: CFAP-5X-000128
+  tags: [CFAP-5X-000128]
+  when: run_api_admin | bool
+  block:
+    - name: CFAP-5X-000128 - The SDDC Manager must use an account dedicated for downloading updates and patches.
+      ansible.builtin.debug:
+        msg: "CFAP-5X-000128 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: CFAP-5X-000129
+  tags: [CFAP-5X-000129]
+  when: run_disable_basic_auth | bool
+  block:
+    - name: CFAP-5X-000129 - Get current basic auth status
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/sddc-manager"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: GET
+      register: basicauth
+      changed_when: false
+
+    - name: CFAP-5X-000129 - Disable Basic Auth
+      ansible.builtin.uri:
+        url: "https://{{ var_sddc_manager }}/v1/sddc-manager"
+        validate_certs: false
+        headers:
+          Authorization: "Bearer {{ var_bearer_token }}"
+        method: PATCH
+        body: "{{ lookup('template', './disable_basic_auth.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - basicauth.json.basicAuthDetails.status == 'ENABLED'
+      changed_when:
+        - response.status == 200 or response.status == 202

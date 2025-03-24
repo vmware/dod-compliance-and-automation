@@ -1,0 +1,10 @@
+{
+  "service_name": "ntp",
+  "service_properties": {
+    "start_on_boot": true,
+    "servers": [
+      "{{ var_ntp_server1 }}",
+      "{{ var_ntp_server2 }}"
+    ]
+  }
+}

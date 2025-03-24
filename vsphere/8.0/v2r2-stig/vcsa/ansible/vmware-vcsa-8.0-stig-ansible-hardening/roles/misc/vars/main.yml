@@ -1,0 +1,3 @@
+var_pamd_systemauth_file: '/etc/applmgmt/appliance/system-auth'
+var_pamd_systempassword_file: '/etc/applmgmt/appliance/system-password'
+var_pamd_faillockconf_file: '/etc/applmgmt/appliance/faillock.conf'

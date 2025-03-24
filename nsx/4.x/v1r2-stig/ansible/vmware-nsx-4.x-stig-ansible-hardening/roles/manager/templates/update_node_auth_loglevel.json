@@ -1,0 +1,6 @@
+{
+  "service_name": "auth",
+  "service_properties": {
+      "logging_level": "INFO"
+  }
+}

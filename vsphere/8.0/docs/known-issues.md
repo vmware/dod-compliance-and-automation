@@ -12,7 +12,8 @@
 - [VCSA](#vcsa)
   - [RESOLVED PHTN-30-000054/67 -S all is displayed in the check output](#phtn-30-000054/67--S-all-is-displayed-in-the-check-output)
   - [RESOLVED PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
-  - [RESOLVED VCLU-80-000037 Path incorrect in check](vclu-80-000037-path-incorrect-in-check)
+  - [RESOLVED VCLU-80-000037 Path incorrect in check](#vclu-80-000037-path-incorrect-in-check)
+  - [VCPG-80-000007 pgaudit log generation exhausts disk space before rotation can occur](#vcpg-80-000007-pgaudit-log-generation-exhausts-disk-space-before-rotation-can-occur)
 
 # Known Issues
 
@@ -207,3 +208,23 @@ In the check command the path to the server.xml file is incorrectly referencing 
 
 - The check command will be updated in a future STIG release as follows:  
 ```# xmllint --xpath "//Connector[(@port = '0') or not(@address)]" /usr/lib/vmware-lookupsvc/conf/server.xml```
+
+### [VCPG-80-000007] pgaudit log generation exhausts disk space before rotation can occur
+
+Related issue: None
+
+Enabling audit logging for PostgreSQL can exhaust disk space on the log partition in large deployments or environments with many integrations with vCenter that generate events.  
+
+**Workaround:**
+
+- The pgaudit parameters will be tuned to reduce log generation for certain events in a future STIG release.  
+- These steps assume the `/opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py --action stig_enable --pg-data-dir /storage/db/vpostgres` script has already been ran.  
+- Update the `/storage/db/vpostgres/stig.conf` file and remove the existing `pgaudit.log*` statements and add the following:  
+```
+pgaudit.log_catalog = off
+pgaudit.log_parameter = off
+pgaudit.log_relation = off
+pgaudit.log_statement = off
+pgaudit.log = 'all, -misc, -read'
+```
+- Restart PostgreSQL by running `vmon-cli --restart vmware-vpostgres` for the changes to take effect.  

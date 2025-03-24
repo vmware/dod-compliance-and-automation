@@ -1,0 +1,17 @@
+{
+  "api_failed_auth_lockout_period": 900,
+  "api_failed_auth_reset_period": 900,
+  "api_max_auth_failures": 3,
+  "cli_failed_auth_lockout_period": 900,
+  "cli_max_auth_failures": 3,
+  "digits": -1,
+  "lower_chars": -1,
+  "max_repeats": 8,
+  "max_sequence": 0,
+  "maximum_password_length": 128,
+  "minimum_password_length": 15,
+  "minimum_unique_chars": 0,
+  "password_remembrance": 0,
+  "special_chars": -1,
+  "upper_chars": -1
+}

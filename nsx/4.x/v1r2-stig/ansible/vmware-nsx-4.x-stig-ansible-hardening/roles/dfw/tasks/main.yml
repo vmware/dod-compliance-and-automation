@@ -1,0 +1,10 @@
+---
+
+- name: Include DFW
+  ansible.builtin.include_tasks:
+    file: dfw.yml
+    apply:
+      tags:
+        - dfw
+  tags:
+    - always

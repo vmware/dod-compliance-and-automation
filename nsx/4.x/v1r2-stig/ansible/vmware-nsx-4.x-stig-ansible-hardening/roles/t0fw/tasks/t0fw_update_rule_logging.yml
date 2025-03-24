@@ -1,0 +1,20 @@
+---
+
+- name: "NT0F-4X-000004 - Looping through rules for Gateway Policy: {{ var_outer_gp.id }} for Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ var_nsx_manager }}/policy/api/v1{{ item.path }}"
+    validate_certs: false
+    headers:
+      Cookie: "{{ var_jsession_id }}"
+      X-XSRF-TOKEN: "{{ var_session_token }}"
+    method: PATCH
+    body: "{{ lookup('template', './t0fw_update_rule_logging.json.j2') | to_json }}"
+    body_format: json
+    status_code: 200
+  with_items:
+    - "{{ var_outer_gp.rules }}"
+  when:
+    - not item.logged
+  register: response
+  changed_when:
+    - response.status == 200

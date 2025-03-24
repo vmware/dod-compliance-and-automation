@@ -1,0 +1,20 @@
+- name: vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
+  hosts: all
+  roles:
+    - role: vmware-photon-4.0-stig-ansible-hardening
+      vars:
+        # Set to true or false to configure dod banner for ssh
+        run_etc_issue_dod: false
+        # Disable N/A Photon Controls
+        run_enable_selinux: false
+        run_selinux_install: false
+        run_time_sync: false
+        run_fips_boot_enable: false
+    - role: application
+    - role: commonsvcs
+    - role: domainmanager
+    - role: lcm
+    - role: operationsmanager
+    - role: postgresql
+    - role: sos
+    - role: ui

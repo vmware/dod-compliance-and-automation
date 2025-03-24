@@ -1,0 +1,10 @@
+{
+  "resource_type": "DistributedFloodProtectionProfile",
+  "display_name": "{{ item.display_name}}",
+  "enable_syncache": "{{ var_dfw_fpp_syncache }}",
+  "enable_rst_spoofing": "{{ var_dfw_fpp_rst_spoofing }}",
+  "udp_active_flow_limit": "{{ var_dfw_fpp_udp_active_flow_limit }}",
+  "icmp_active_flow_limit": "{{ var_dfw_fpp_icmp_active_flow_limit }}",
+  "tcp_half_open_conn_limit": "{{ var_dfw_fpp_tcp_half_open_conn_limit }}",
+  "other_active_conn_limit": "{{ var_dfw_fpp_other_active_conn_limit }}"
+}

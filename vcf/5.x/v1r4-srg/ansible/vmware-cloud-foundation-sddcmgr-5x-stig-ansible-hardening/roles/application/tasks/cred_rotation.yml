@@ -1,0 +1,34 @@
+---
+- name: CFAP-5X-000127 - Set credential rotate policy
+  ansible.builtin.uri:
+    url: "https://{{ var_sddc_manager }}/v1/credentials"
+    validate_certs: false
+    headers:
+      Authorization: "Bearer {{ var_bearer_token }}"
+    method: PATCH
+    body: "{{ lookup('template', './enable_auto_rotate_policy.json.j2') }}"
+    body_format: json
+    status_code:
+      - 202
+  register: updatecred
+  changed_when:
+    - updatecred.status == 202
+
+- name: CFAP-5X-000127 - Wait for task to complete
+  ansible.builtin.uri:
+    url: "https://{{ var_sddc_manager }}/v1/tasks/{{ updatecred.json.id }}"
+    validate_certs: false
+    headers:
+      Authorization: "Bearer {{ var_bearer_token }}"
+    method: GET
+    body_format: json
+    status_code:
+      - 200
+      - 202
+  register: taskresult
+  until: taskresult.json.status != 'In Progress'
+  retries: 100
+  delay: 10
+  changed_when:
+    - taskresult.status == 200
+    - taskresult.json.status == 'Successful'

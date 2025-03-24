@@ -1,0 +1,10 @@
+---
+
+- name: Include Tier-1 Gateway Router
+  ansible.builtin.include_tasks:
+    file: t1rtr.yml
+    apply:
+      tags:
+        - t1rtr
+  tags:
+    - always

@@ -1,0 +1,6 @@
+{
+  "service_name": "telemetry",
+  "service_properties": {
+      "logging_level": "INFO"
+  }
+}
