@@ -15,6 +15,8 @@
 
 This document outlines known issues with the VMware Aria Operations 8 STIG content, including workarounds if known.
 
+***NOTE: Some configurations, files or settings may be overwritten after applying system updates. These changes will vary depending on what is contained within each update. The STIG settings should always be re-assessed, and potentially re-applied, after performing an update.***
+
 ## What should I do if...
 
 ### I have additional questions about an issue listed here?
