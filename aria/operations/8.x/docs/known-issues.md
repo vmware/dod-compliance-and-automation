@@ -10,7 +10,7 @@
 - [Photon](#photon)
   - [PHTN-40-000073, PHTN-50-000073 Commands in check and fix do not produce expected results](#phtn-40-000073phtn-50-000073-commands-in-check-and-fix-do-not-produce-expected-results)
   - [PHTN-40-000133 Require users to reauthenticate for privilege escalation](#phtn-40-000133-require-users-to-reauthenticate-for-privilege-escalation)
-  - [PHTN-40-000127, PHTN-40-000237, PHTN-50-000127, PHTN-50-000237 Aide package not available](#phtn-40-000127-aide-package-is-not-available)
+  - [PHTN-40-000127, PHTN-40-000237, PHTN-50-000127, PHTN-50-000237 Aide package is not available](#phtn-40-000127phtn-40-000237phtn-50-000127phtn-50-000237-aide-package-is-not-available)
 
 # Known Issues
 
