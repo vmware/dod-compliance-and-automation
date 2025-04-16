@@ -43,7 +43,7 @@ inputs:
 - name: api-maxThreads
   description: VRPI-8X-000001
   type: string
-  value: "300"
+  value: "200"
 - name: api-accessLogPattern
   description: VRPI-8X-000014 - List of values that must be present in the pattern property of the AccessLogValve
   type: array
