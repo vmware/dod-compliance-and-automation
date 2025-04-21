@@ -1,0 +1,11 @@
+---
+
+- name: restart syslog
+  ansible.builtin.service:
+    name: syslog
+    state: restarted
+
+- name: restart eam
+  ansible.builtin.command: vmon-cli --restart eam
+  register: output
+  changed_when: output.rc == 0

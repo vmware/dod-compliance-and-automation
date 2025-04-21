@@ -1,0 +1,89 @@
+name: vCenter Virtual Appliance 7.0 PostgreSQL STIG Profile
+title: vCenter Virtual Appliance 7.0 PostgreSQL STIG Profile
+maintainer: The Authors
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+inputs:
+- name: postgres_user
+  description: Enter username to connect to the postgres database.  Default is 'postgres'
+  type: string
+  value: "postgres"
+- name: postgres_pass
+  description: Postgres user password.  Blank is sufficient when ran as root
+  type: string
+  value: ""
+- name: postgres_host
+  description: Enter the host to connect to for the postgres connection.  Localhost in most cases
+  type: string
+  value: "localhost"
+- name: pg_max_connections
+  description: VCPG-70-000001
+  type: string
+  value: "384"
+- name: pg_log_line_prefix
+  description: VCPG-70-000002
+  type: string
+  value: "%m %c %x %d %u %r %p %l"
+- name: pg_install_dir
+  description: VCPG-70-000003
+  type: string
+  value: "/storage/db/vpostgres/"
+- name: pg_log_truncate_on_rotation
+  description: VCPG-70-000004
+  type: string
+  value: "on"  
+- name: pg_log_dir
+  description: VCPG-70-000005
+  type: string
+  value: "/var/log/vmware/vpostgres"
+- name: pg_log_file_mode
+  description: VCPG-70-000005
+  type: string
+  value: "0600"   
+- name: pg_port
+  description: VCPG-70-000008
+  type: string
+  value: "5432"
+- name: pg_pw_encryption
+  description: VCPG-70-000010
+  type: array
+  value: ["on","md5","scram-sha-256"]
+- name: pg_ssl
+  description: VCPG-70-000011
+  type: string
+  value: "on"
+- name: pg_ssl_key
+  description: VCPG-70-000012
+  type: string
+  value: "/storage/db/vpostgres_ssl/server.key"
+- name: pg_ssl_ciphers
+  description: VCPG-70-000013
+  type: string
+  value: "!aNULL:kECDH+AES:ECDH+AES:RSA+AES:@STRENGTH"
+- name: pg_client_min_messages
+  description: VCPG-70-000016
+  type: string
+  value: "notice"
+- name: pg_logging_collector
+  description: VCPG-70-000017
+  type: string
+  value: "on"
+- name: pg_log_destination
+  description: VCPG-70-000018
+  type: string
+  value: "stderr"
+- name: pg_syslog_conf
+  description: VCPG-70-000019
+  type: string
+  value: "/etc/vmware-syslog/stig-services-vpostgres.conf"
+- name: pg_log_timezone
+  description: VCPG-70-000020
+  type: array
+  value: ["Etc/UTC","UTC"]
+
+
+

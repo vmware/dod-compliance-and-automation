@@ -1,0 +1,13 @@
+---
+# Include Encrypted Variables
+- ansible.builtin.include_vars: vault.yml
+  tags:
+    - always
+
+- ansible.builtin.import_tasks: prelim.yml
+  tags:
+    - always
+    - vm_deps
+
+- ansible.builtin.import_tasks: vm_lockdown.yml
+  tags: stig

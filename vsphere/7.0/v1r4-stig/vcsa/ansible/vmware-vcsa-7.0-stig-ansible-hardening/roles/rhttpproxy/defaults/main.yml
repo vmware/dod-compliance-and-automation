@@ -1,0 +1,22 @@
+---
+
+# Turn specific controls on/off by setting the value to true or false
+# Create backups of files?
+create_backups: true
+
+# VCRP-70-000001
+run_config_tcpkeepalivetimesec: true
+# VCRP-70-000002
+run_config_maxhttpsconnections: true
+# VCRP-70-000003
+run_config_fips: true
+# VCRP-70-000004
+run_config_tls: true
+# VCRP-70-000005
+run_key_permissions: true
+# VCRP-70-000006
+run_config_ssl: true
+# VCRP-70-000007
+run_syslog_config_rhttpproxy: true
+# VCRP-70-000008
+run_syslog_config_envoy: true

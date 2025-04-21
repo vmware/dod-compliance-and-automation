@@ -1,0 +1,2 @@
+var_syslog_authpriv_log: /var/log/audit/sshinfo.log
+run_sshd_banner_issue: false

@@ -1,0 +1,11 @@
+---
+
+- name: restart lookupsvc
+  ansible.builtin.command: vmon-cli --restart lookupsvc
+  register: output
+  changed_when: output.rc == 0
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted

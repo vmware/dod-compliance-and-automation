@@ -1,0 +1,11 @@
+---
+
+- name: restart syslog
+  ansible.builtin.service:
+    name: syslog
+    state: restarted
+
+- name: restart rhttpproxy
+  ansible.builtin.command: vmon-cli --restart rhttpproxy
+  register: output
+  changed_when: output.rc == 0

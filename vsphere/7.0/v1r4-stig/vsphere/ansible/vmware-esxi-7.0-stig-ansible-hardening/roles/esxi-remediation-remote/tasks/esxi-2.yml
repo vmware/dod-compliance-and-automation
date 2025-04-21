@@ -1,0 +1,310 @@
+---
+- name: ESXI-70-000008 - The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system
+  ansible.builtin.template:
+    src: issue
+    dest: /etc/issue
+    owner: root
+    group: root
+    mode: "0644"
+    force: true
+  when:
+    - esxi_70_000008 | bool
+  tags:
+    - ESXI-70-000008
+
+- name: ESXI-70-000009 - The ESXi host SSH daemon must be configured with the DoD logon banner
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)Banner.*$
+    line: Banner /etc/issue
+  when:
+    - esxi_70_000009 | bool
+  tags:
+    - ESXI-70-000009
+
+- name: ESXI-70-000010 - The ESXi host SSH daemon must use DoD-approved encryption to protect the confidentiality of remote access sessions
+  ansible.builtin.shell:
+    cmd: esxcli system security fips140 ssh set -e true
+  args:
+    executable: /bin/sh
+  when:
+    - esxi_70_000010 | bool
+  tags:
+    - ESXI-70-000010
+
+- name: ESXI-70-000012 - The ESXi host SSH daemon must ignore .rhosts files
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)IgnoreRhosts.*$
+    line: IgnoreRhosts yes
+  when:
+    - esxi_70_000012 | bool
+  tags:
+    - ESXI-70-000012
+
+- name: ESXI-70-000013 - The ESXi host SSH daemon must not allow host-based authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)HostbasedAuthentication.*$
+    line: HostbasedAuthentication no
+  when:
+    - esxi_70_000013 | bool
+  tags:
+    - ESXI-70-000013
+
+- name: ESXI-70-000014 - The ESXi host SSH daemon must not permit root logins
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)PermitRootLogin.*$
+    line: PermitRootLogin no
+  when:
+    - esxi_70_000014 | bool
+  tags:
+    - ESXI-70-000014
+
+- name: ESXI-70-000015 - The ESXi host SSH daemon must not allow authentication using an empty password
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)PermitEmptyPasswords.*$
+    line: PermitEmptyPasswords no
+  when:
+    - esxi_70_000015 | bool
+  tags:
+    - ESXI-70-000015
+
+- name: ESXI-70-000016 - The ESXi host SSH daemon must not permit user environment settings
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)PermitUserEnvironment.*$
+    line: PermitUserEnvironment no
+  when:
+    - esxi_70_000016 | bool
+  tags:
+    - ESXI-70-000016
+
+- name: ESXI-70-000020 - The ESXi host SSH daemon must perform strict mode checking of home directory configuration files
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)StrictModes.*$
+    line: StrictModes yes
+  when:
+    - esxi_70_000020 | bool
+  tags:
+    - ESXI-70-000020
+
+- name: ESXI-70-000021 - The ESXi host SSH daemon must not allow compression or must only allow compression after successful authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)Compression.*$
+    line: Compression no
+  when:
+    - esxi_70_000021 | bool
+  tags:
+    - ESXI-70-000021
+
+- name: ESXI-70-000022 - The ESXi host SSH daemon must be configured to not allow gateway ports
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)GatewayPorts.*$
+    line: GatewayPorts no
+  when:
+    - esxi_70_000022 | bool
+  tags:
+    - ESXI-70-000022
+
+- name: ESXI-70-000023 - The ESXi host SSH daemon must be configured to not allow X11 forwarding
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)X11Forwarding.*$
+    line: X11Forwarding no
+  when:
+    - esxi_70_000023 | bool
+  tags:
+    - ESXI-70-000023
+
+- name: ESXI-70-000025 - The ESXi host SSH daemon must not permit tunnels
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)PermitTunnel.*$
+    line: PermitTunnel no
+  when:
+    - esxi_70_000025 | bool
+  tags:
+    - ESXI-70-000025
+
+- name: ESXI-70-000026 - The ESXi host SSH daemon must set a timeout count on idle sessions
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)ClientAliveCountMax.*$
+    line: ClientAliveCountMax 3
+  when:
+    - esxi_70_000026 | bool
+  tags:
+    - ESXI-70-000026
+
+- name: ESXI-70-000027 - The ESXi host SSH daemon must set a timeout interval on idle sessions
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)ClientAliveInterval.*$
+    line: ClientAliveInterval 200
+  when:
+    - esxi_70_000027 | bool
+  tags:
+    - ESXI-70-000027
+
+- name: ESXI-70-000053 - SNMP must be configured properly on the ESXi host
+  ansible.builtin.shell:
+    cmd: esxcli system snmp set -e no
+  args:
+    executable: /bin/sh
+  when:
+    - esxi_70_000053 | bool
+  tags:
+    - ESXI-70-000053
+
+- name: ESXI-70-000057 - The ESXi host must configure the firewall to block network traffic by default
+  ansible.builtin.shell:
+    cmd: esxcli network firewall set --default-action=false
+  args:
+    executable: /bin/sh
+  when:
+    - esxi_70_000057 | bool
+  tags:
+    - ESXI-70-000057
+
+- name: ESXI-70-000076 - The ESXi host must enable Secure Boot. Part 1 of 2
+  ansible.builtin.shell:
+    cmd: /usr/lib/vmware/secureboot/bin/secureBoot.py -s
+  args:
+    executable: /bin/sh
+  register: secure_boot_status
+  when:
+    - esxi_70_000076 | bool
+  tags:
+    - ESXI-70-000076
+
+- name: ESXI-70-000076 - The ESXi host must enable Secure Boot. Part 2 of 2
+  ansible.builtin.shell:
+    cmd: /usr/lib/vmware/secureboot/bin/secureBoot.py -c
+  args:
+    executable: /bin/sh
+  register: secure_boot_status
+  when:
+    - esxi_70_000076 | bool
+    - secure_boot_status.stdout is search("Disabled")
+  tags:
+    - ESXI-70-000076
+
+- name: ESXI-70-000082 - The password hashes stored on the ESXi host must have been generated using a FIPS 140-2 approved cryptographic hashing algorithm
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: (?i)AllowTcpForwarding.*$
+    line: AllowTcpForwarding no
+  when:
+    - esxi_70_000082 | bool
+  tags:
+    - ESXI-70-000082
+
+- name: ESXI-70-000084 - The ESXi host must enable audit logging
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  args:
+    executable: /bin/sh
+  with_items:
+    - esxcli system auditrecords local set --size=100
+    - esxcli system auditrecords local enable
+    - esxcli system auditrecords remote enable
+    - esxcli system syslog reload
+  when:
+    - esxi_70_000084 | bool
+  tags:
+    - ESXI-70-000084
+
+- name: ESXI-70-000085 - The ESXi host must enable strict x509 verification for SSL syslog endpoints.
+  ansible.builtin.shell:
+    cmd: "{{ item }}"
+  args:
+    executable: /bin/sh
+  with_items:
+    - esxcli system syslog config set --x509-strict="true"
+    - esxcli system syslog reload
+  when:
+    - esxi_70_000085 | bool
+  tags:
+    - ESXI-70-000085
+
+- name: ESXI-70-000090 - The ESXi host rhttpproxy daemon must use FIPS 140-2 validated cryptographic modules to protect the confidentiality of remote access sessions.
+  ansible.builtin.shell:
+    cmd: esxcli system security fips140 rhttpproxy set -e true
+  args:
+    executable: /bin/sh
+  when:
+    - esxi_70_000090 | bool
+  tags:
+    - ESXI-70-000090
+
+- name: ESXI-70-000092 - The ESXi host must not be configured to override virtual machine configurations
+  ansible.builtin.shell:
+    cmd: echo -n >/etc/vmware/settings
+  args:
+    executable: /bin/sh
+  when:
+    - esxi_70_000092 | bool
+  tags:
+    - ESXI-70-000092
+
+- name: ESXI-70-000093 - The ESXi host must not be configured to override virtual machine logger settings
+  ansible.builtin.lineinfile:
+    path: /etc/vmware/config
+    state: absent
+    regex: (?i)^vmx.*\.log.*$
+  when:
+    - esxi_70_000093 | bool
+  tags:
+    - ESXI-70-000093
+
+- name: ESXI-70-000094 - The ESXi host must require TPM-based configuration encryption.
+  ansible.builtin.shell:
+    cmd: esxcli system settings encryption set --mode=TPM
+  args:
+    executable: /bin/sh
+  when:
+    - esxi_70_000094 | bool
+  tags:
+    - ESXI-70-000094
+
+- name: ESXI-70-000095 - The ESXi host must enable Secure Boot.
+  ansible.builtin.shell:
+    cmd: esxcli system settings encryption set --require-secure-boot=true
+  args:
+    executable: /bin/sh
+  when:
+    - esxi_70_000095 | bool
+  tags:
+    - ESXI-70-000095
+
+- name: ESXI-70-000274 - The ESXi host SSH daemon must be configured to only use FIPS 140-2 validated ciphers.
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regex: ^Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr.*$
+    line: Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+  when:
+    - esxi_70_000010 | bool
+    - esxi_70_000274 | bool
+  tags:
+    - ESXI-70-000274
