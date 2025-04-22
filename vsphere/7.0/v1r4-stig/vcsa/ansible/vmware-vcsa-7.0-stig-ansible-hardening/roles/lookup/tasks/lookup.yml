@@ -1,0 +1,666 @@
+# VMware vSphere 7.0 vCenter Server Appliance Lookup Service Ansible Role
+
+---
+############################################
+
+# Backup files that may be modified in case restoration is needed
+
+- name: Create time stamp
+  ansible.builtin.set_fact:
+    backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+  when:
+    - create_backups | bool
+
+- name: Backup files...if restoring be sure to restore permissions that original file had!!
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ item }}"
+    dest: "/tmp/ansible-vcsa-lookup-backups-{{ backup_timestamp }}/"
+    mode: preserve
+  with_items:
+    - '{{ var_server_xml_path }}'
+    - '{{ var_web_xml_path }}'
+    - '{{ var_context_xml_path }}'
+    - '{{ var_json_path }}'
+    - '{{ var_catalina_props_path }}'
+    - '{{ var_syslog_conf_path }}'
+  changed_when: false
+  register: backupresult
+  failed_when:
+    - backupresult.msg is defined
+    - "'not found' not in backupresult.msg"
+  when:
+    - create_backups | bool
+
+############################################
+
+# Title: Lookup Service must limit the amount of time that each TCP connection is kept alive.
+
+- name: VCLU-70-000001 - Lookup Service must limit the amount of time that each TCP connection is kept alive.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${bio-custom.http.port}"]'
+    attribute: 'connectionTimeout'
+    value: '{{ var_server_xml_connectiontimeout }}'
+  tags:
+    - VCLU-70-000001
+  notify:
+    - restart lookupsvc
+  when:
+    - run_connection_timeout | bool
+
+############################################
+
+# Title: Lookup Service must limit the number of concurrent connections permitted.
+
+- name: VCLU-70-000002 - Lookup Service must limit the number of concurrent connections permitted.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${bio-custom.http.port}"]/@maxThreads'
+    state: absent
+  tags:
+    - VCLU-70-000002
+  notify:
+    - restart lookupsvc
+  when:
+    - run_max_threads | bool
+
+############################################
+
+# Title: Lookup Service must limit the maximum size of a POST request.
+
+- name: VCLU-70-000003 - Lookup Service must limit the maximum size of a POST request.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${bio-custom.http.port}"]/@maxPostSize'
+    state: absent
+  tags:
+    - VCLU-70-000003
+  notify:
+    - restart lookupsvc
+  when:
+    - run_max_post_size | bool
+
+############################################
+
+# Title: Lookup Service must protect cookies from cross-site scripting (XSS).
+
+- name: VCLU-70-000004 - Lookup Service must protect cookies from cross-site scripting (XSS).
+  community.general.xml:
+    path: '{{ var_context_xml_path }}'
+    xpath: '/Context'
+    attribute: 'useHttpOnly'
+    value: '{{ var_context_xml_http_only }}'
+  tags:
+    - VCLU-70-000004
+  notify:
+    - restart lookupsvc
+  when:
+    - run_http_only | bool
+
+############################################
+
+# Title: Lookup Service must record user access in a format that enables monitoring of remote access.
+
+- name: VCLU-70-000005 - Lookup Service must record user access in a format that enables monitoring of remote access.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
+    attribute: 'pattern'
+    value: '{{ var_server_xml_access_log_valve_pattern }}'
+  tags:
+    - VCLU-70-000005
+  notify:
+    - restart lookupsvc
+  when:
+    - run_access_valve_pattern | bool
+
+############################################
+
+# Title: Lookup Service must generate log records for system startup and shutdown.
+
+- name: VCLU-70-000006 - Lookup Service must generate log records for system startup and shutdown.
+  ansible.builtin.lineinfile:
+    path: '{{ var_json_path }}'
+    state: present
+    regexp: '^.*"StreamRedirectFile".*$'
+    line: '  "StreamRedirectFile": "{{ var_stream_redirect_file }}",'
+    insertbefore: ^.*WorkingDir.*$
+    firstmatch: true
+  tags:
+    - VCLU-70-000006
+  notify:
+    - restart lookupsvc
+  when:
+    - run_json_stream_redirect_file | bool
+
+############################################
+
+# Title: Lookup Service log files must only be accessible by privileged users.
+
+- name: VCLU-70-000007 - Find Lookupsvc log files
+  ansible.builtin.find:
+    paths: '{{ var_logs_path }}'
+    file_type: file
+    patterns:
+      - '*.current'
+      - '*.stdout'
+      - '*.stderr'
+      - '*.log'
+    excludes:
+      - 'lookupsvc-init.log'
+    recurse: true
+  register: logs
+  tags:
+    - VCLU-70-000007
+  when:
+    - run_logs_permissions | bool
+
+- name: VCLU-70-000007 - Set Lookupsvc log permissions
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "o-w"
+    owner: "lookupsvc"
+    group: "lookupsvc"
+  with_items: "{{ logs.files }}"
+  tags:
+    - VCLU-70-000007
+  when:
+    - run_logs_permissions | bool
+
+############################################
+
+# Title: Lookup Service application files must be verified for their integrity.
+# VCLU-70-000008 requires manual remediation
+
+############################################
+
+# Title: Lookup Service must only run one webapp.
+# VCLU-70-000009 requires manual remediation
+
+############################################
+
+# Title: Lookup Service must not be configured with the UserDatabaseRealm enabled.
+
+- name: VCLU-70-000010 - Lookup Service must not be configured with the UserDatabaseRealm enabled.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Realm'
+    state: absent
+  tags:
+    - VCLU-70-000010
+  notify:
+    - restart lookupsvc
+  when:
+    - run_user_database_realm | bool
+
+# - name: VCLU-70-000010 - Remove GlobalNamingResources
+#   community.general.xml:
+#     path: '{{ var_server_xml_path }}'
+#     xpath: '/Server/GlobalNamingResources'
+#     state: absent
+#   tags:
+#     - VCLU-70-000010
+# #   notify:
+#     - restart lookupsvc
+#   when:
+#     - run_user_database_realm | bool
+
+############################################
+
+# Title: Lookup Service must be configured to limit access to internal packages.
+
+- name: VCLU-70-000011 - Lookup Service must be configured to limit access to internal packages.
+  ansible.builtin.template:
+    src: catalina.properties
+    dest: '{{ var_catalina_props_path }}'
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  tags:
+    - VCLU-70-000011
+  notify:
+    - restart lookupsvc
+  when:
+    - run_catalina_properties | bool
+
+############################################
+
+# Title: Lookup Service must have Multipurpose Internet Mail Extensions (MIMEs) that invoke operating system shell programs disabled.
+
+- name: VCLU-70-000012 - Lookup Service must have Multipurpose Internet Mail Extensions (MIMEs) that invoke operating system shell programs disabled. CSH
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="csh"]/..'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000012
+  notify:
+    - restart lookupsvc
+  when:
+    - run_removed_mime_mappings | bool
+
+- name: VCLU-70-000012 - Lookup Service must have Multipurpose Internet Mail Extensions (MIMEs) that invoke operating system shell programs disabled. SH
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="sh"]/..'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000012
+  notify:
+    - restart lookupsvc
+  when:
+    - run_removed_mime_mappings | bool
+
+- name: VCLU-70-000012 - Lookup Service must have Multipurpose Internet Mail Extensions (MIMEs) that invoke operating system shell programs disabled. SHAR
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="shar"]/..'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000012
+  notify:
+    - restart lookupsvc
+  when:
+    - run_removed_mime_mappings | bool
+
+- name: VCLU-70-000012 - Lookup Service must have Multipurpose Internet Mail Extensions (MIMEs) that invoke operating system shell programs disabled. KSH
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="ksh"]/..'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000012
+  notify:
+    - restart lookupsvc
+  when:
+    - run_removed_mime_mappings | bool
+
+############################################
+
+# Title: Lookup Service must have mappings set for Java servlet pages.
+
+- name: VCLU-70-000013 - Lookup Service must have mappings set for Java servlet pages. jsp
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="jsp"]/x:url-pattern[1]'
+    value: '{{ var_web_xml_servlet_jsp_url_pattern1 }}'
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-67-000013
+  notify:
+    - restart lookupsvc
+  when:
+    - run_java_servlet | bool
+
+- name: VCLU-70-000013 - Lookup Service must have mappings set for Java servlet pages. jspx
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="jsp"]/x:url-pattern[2]'
+    value: '{{ var_web_xml_servlet_jsp_url_pattern2 }}'
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-67-000013
+  notify:
+    - restart lookupsvc
+  when:
+    - run_java_servlet | bool
+
+############################################
+
+# Title: Lookup Service must not have the Web Distributed Authoring (WebDAV) servlet installed.
+
+- name: VCLU-70-000014 - Lookup Service must not have the Web Distributed Authoring (WebDAV) servlet installed.
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="webdav"]/..'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000014
+  notify:
+    - restart lookupsvc
+  when:
+    - run_remove_webdav | bool
+
+############################################
+
+# Title: Lookup Service must be configured with memory leak protection.
+
+- name: VCLU-70-000015 - Lookup Service must be configured with memory leak protection.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Listener[@className="org.apache.catalina.core.JreMemoryLeakPreventionListener"]'
+    state: present
+  tags:
+    - VCLU-70-000015
+  notify:
+    - restart lookupsvc
+  when:
+    - run_mem_leak_prevention | bool
+
+############################################
+
+# Title: Lookup Service must not have any symbolic links in the web content directory tree.
+# VCLU-70-000016 requires manual remediation
+
+############################################
+
+# Title: Lookup Service directory tree must have permissions in an out-of-the-box state.
+
+- name: VCLU-70-000017 - Find Lookupsvc web files
+  ansible.builtin.shell: find {{ var_lib_path }} {{ var_conf_path }} -xdev -type f -a '(' -perm -o+w -o -not -user root -o -not -group root ')';
+  register: files
+  tags:
+    - VCLU-70-000017
+  changed_when: files.stdout != ""
+  when:
+    - run_web_files_permissions | bool
+
+- name: VCLU-70-000017 - Set Lookupsvc web files owner and group
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: file
+    owner: "root"
+    group: "root"
+    mode: '0644'
+  with_items: "{{ files.stdout_lines }}"
+  tags:
+    - VCLU-70-000017
+  when:
+    - run_web_files_permissions | bool
+    - files.stdout != ""
+
+############################################
+
+# Title: Lookup Service must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+
+- name: VCLU-70-000018 - Lookup Service must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+  ansible.builtin.template:
+    src: catalina.properties
+    dest: '{{ var_catalina_props_path }}'
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  tags:
+    - VCLU-70-000018
+  notify:
+    - restart lookupsvc
+  when:
+    - run_catalina_properties_shutdown | bool
+
+############################################
+
+# Title: Lookup Service must limit the number of allowed connections.
+
+- name: VCLU-70-000019 - Lookup Service must limit the number of allowed connections.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${bio-custom.http.port}"]'
+    attribute: 'acceptCount'
+    value: '{{ var_server_xml_acceptcount }}'
+  tags:
+    - VCLU-70-000019
+  notify:
+    - restart lookupsvc
+  when:
+    - run_accept_count | bool
+
+############################################
+
+# Title: Lookup Service must set URIEncoding to UTF-8.
+
+- name: VCLU-70-000020 - Lookup Service must set URIEncoding to UTF-8.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${bio-custom.http.port}"]'
+    attribute: 'URIEncoding'
+    value: '{{ var_server_xml_uriencoding }}'
+  tags:
+    - VCLU-70-000020
+  notify:
+    - restart lookupsvc
+  when:
+    - run_uri_encoding | bool
+
+############################################
+
+# Title: Lookup Service must set the welcome-file node to a default web page.
+
+- name: VCLU-70-000021 - Lookup Service must set the welcome-file node to a default web page. html
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[1]'
+    value: '{{ var_web_xml_welcome_file_list1 }}'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000021
+  notify:
+    - restart lookupsvc
+  when:
+    - run_web_welcome_file | bool
+
+- name: VCLU-70-000021 - Lookup Service must set the welcome-file node to a default web page. htm
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[2]'
+    value: '{{ var_web_xml_welcome_file_list2 }}'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000021
+  notify:
+    - restart lookupsvc
+  when:
+    - run_web_welcome_file | bool
+
+- name: VCLU-70-000021 - Lookup Service must set the welcome-file node to a default web page. jsp
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[3]'
+    value: '{{ var_web_xml_welcome_file_list3 }}'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000021
+  notify:
+    - restart lookupsvc
+  when:
+    - run_web_welcome_file | bool
+
+############################################
+
+# Title: The Lookup Service must not show directory listings.
+
+- name: VCLU-70-000022 - The Lookup Service must not show directory listings.
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet[x:servlet-name="default"]/x:init-param[x:param-name="listings"]/x:param-value'
+    value: 'false'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000022
+  notify:
+    - restart lookupsvc
+  when:
+    - run_web_remove_listings | bool
+
+############################################
+
+# Title: Lookup Service must be configured to hide the server version.
+
+- name: VCLU-70-000023 - Lookup Service must be configured to hide the server version.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector[@port="${bio-custom.http.port}"]'
+    attribute: 'server'
+    value: '{{ var_server_xml_server }}'
+  tags:
+    - VCLU-70-000023
+  notify:
+    - restart lookupsvc
+  when:
+    - run_server_anonymous | bool
+
+############################################
+
+# Title: Lookup Service must be configured to show error pages with minimal information.
+
+- name: VCLU-70-000024 - Lookup Service must be configured to show error pages with minimal information.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+    attribute: 'showServerInfo'
+    value: '{{ var_server_xml_show_server_info }}'
+  tags:
+    - VCLU-70-000024
+  notify:
+    - restart lookupsvc
+  when:
+    - run_hide_error_reports | bool
+
+- name: VCLU-70-000024 - ESX Agent Manager must be configured to not show error reports.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+    attribute: 'showReport'
+    value: '{{ var_server_xml_show_server_report }}'
+  tags:
+    - VCLU-70-000024
+  notify:
+    - restart lookupsvc
+  when:
+    - run_hide_error_reports | bool
+
+############################################
+
+# Title: Lookup Service must not enable support for TRACE requests.
+
+- name: VCLU-70-000025 - Lookup Service must not enable support for TRACE requests.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector/@allowTrace'
+    state: absent
+  tags:
+    - VCLU-70-000025
+  notify:
+    - restart lookupsvc
+  when:
+    - run_allow_trace | bool
+
+############################################
+
+# Title: Lookup Service must have the debug option turned off.
+
+- name: VCLU-70-000026 - Lookup Service must have the debug option turned off.
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet[x:servlet-name="default"]/x:init-param[x:param-name="debug"]/x:param-value'
+    value: '0'
+    state: present
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000026
+  notify:
+    - restart lookupsvc
+  when:
+    - run_web_remove_debug | bool
+
+############################################
+
+# Title: Lookup Service must use a logging mechanism that is configured to allocate log record storage capacity large enough to accommodate the logging requirements of the web server.
+# VCLU-70-000027 requires manual remediation
+
+############################################
+
+# Title: Lookup Service log files must be be offloaded to a central log server in real time.
+
+- name: VCLU-70-000028 - Lookup Service log files must be be offloaded to a central log server in real time.
+  ansible.builtin.template:
+    src: vmware-services-lookupsvc.conf
+    dest: /etc/vmware-syslog/vmware-services-lookupsvc.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  tags:
+    - VCLU-70-000028
+  notify:
+    - restart syslog
+  when:
+    - run_syslog_config | bool
+
+############################################
+
+# Title: ESX Agent Manager must be configured with the appropriate ports.
+
+- name: VCLU-70-000029 - ESX Agent Manager must be configured with the appropriate ports.
+  ansible.builtin.template:
+    src: catalina.properties
+    dest: '{{ var_catalina_props_path }}'
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  tags:
+    - VCLU-70-000029
+  notify:
+    - restart lookupsvc
+  when:
+    - run_catalina_properties_ports | bool
+
+############################################
+
+# Title: Lookup Service must disable the shutdown port.
+
+- name: VCLU-70-000030 - Lookup Service must disable the shutdown port.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server'
+    attribute: 'port'
+    value: '{{ var_server_xml_shutdownport }}'
+  tags:
+    - VCLU-70-000030
+  notify:
+    - restart lookupsvc
+  when:
+    - run_server_shutdownport | bool
+
+############################################
+
+# Title: Lookup Service must set the secure flag for cookies.
+
+- name: VCLU-70-000031 - Lookup Service must set the secure flag for cookies.
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
+    value: '{{ var_web_xml_cookie_secure }}'
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCLU-70-000031
+  notify:
+    - restart lookupsvc
+  when:
+    - run_web_cookie_secure | bool

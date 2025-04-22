@@ -1,0 +1,11 @@
+---
+- name: init pwsh
+  ansible.builtin.command:
+    cmd: /usr/bin/pwsh -c echo init
+
+- name: self signed certs
+  ansible.builtin.shell:
+    cmd: |
+      Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
+  args:
+    executable: /usr/bin/pwsh

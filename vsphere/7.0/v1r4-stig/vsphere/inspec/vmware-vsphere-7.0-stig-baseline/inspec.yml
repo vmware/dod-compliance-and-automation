@@ -1,0 +1,16 @@
+name: vmware-vsphere-7.0-stig-baseline
+title: InSpec Wrapper Profile for VMware vSphere 7.0 STIG Version 1 Release 4
+maintainer: SCOPE/VMTA
+copyright: The Authors
+copyright_email: stigs@vmware.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile that runs PowerCLI audit tests on ESXI, VMs, and vCenter
+version: 1.0.4
+
+depends:
+  - name: esxi
+    path: esxi
+  - name: vcenter
+    path: vcenter
+  - name: vm
+    path: vm

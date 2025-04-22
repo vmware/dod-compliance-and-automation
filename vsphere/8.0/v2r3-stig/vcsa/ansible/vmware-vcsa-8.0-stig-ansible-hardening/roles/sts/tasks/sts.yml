@@ -1,0 +1,880 @@
+---
+# Ansible Playbook for vCenter Appliance 8.0 STS Service STIG Readiness Guide
+
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: run_create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vcsa-sts-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ var_server_xml_path }}'
+        - '{{ var_web_xml_path }}'
+        - '{{ var_service_json_path }}'
+        - '{{ var_catalina_props_path }}'
+        - '{{ var_rsyslog_conf_path }}'
+
+###################################################################################################################################
+- name: VCST-80-000001
+  tags: [VCST-80-000001]
+  when: run_max_threads | bool
+  block:
+    - name: VCST-80-000001 - Configure maxThreads on executor
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Executor[@name="tomcatThreadPool"]'
+        attribute: 'maxThreads'
+        value: '{{ var_server_xml_maxthreads }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+# This one needs to go before the secure setting for XML validation
+- name: VCST-80-000129
+  tags: [VCST-80-000129]
+  when: run_cookie_http | bool
+  block:
+    - name: VCST-80-000129 - Configure http-only cookies
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:session-config/x:cookie-config/x:http-only'
+        value: 'true'
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000005
+  tags: [VCST-80-000005]
+  when: run_cookie_secure | bool
+  block:
+    - name: VCST-80-000005 - Configure secure cookies
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
+        value: 'true'
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000013
+  tags: [VCST-80-000013]
+  when: run_startup_logging | bool
+  block:
+    - name: VCST-80-000013 - Configure service logging at startup
+      ansible.builtin.lineinfile:
+        path: '{{ var_service_json_path }}'
+        state: present
+        regexp: '^\s+"StreamRedirectFile".*$'
+        line: '  "StreamRedirectFile" : "{{ var_stream_redirect_file }}",'
+        insertbefore: ^\s+"RecoveryActionProfiles.*$
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000014
+  tags: [VCST-80-000014]
+  when: run_access_valve_pattern | bool
+  block:
+    - name: VCST-80-000014 - Configure access log pattern
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
+        attribute: 'pattern'
+        value: '{{ var_server_xml_access_log_valve_pattern }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000025
+  tags: [VCST-80-000025]
+  when: run_log_files_permissions | bool
+  block:
+    - name: VCST-80-000025 - Find logs with incorrect permissions
+      ansible.builtin.shell: find {{ var_log_dir }} -xdev ! -name lookupsvc-init.log ! -name sts-prestart.log -type f -a '(' -perm -o+w -o -not -user {{ var_log_owner }} -o -not -group {{ var_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: VCST-80-000025 - Update permissions on log files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ var_log_owner }}'
+        group: '{{ var_log_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCST-80-000034
+  tags: [VCST-80-000034]
+  when: run_security_listener | bool
+  block:
+    - name: VCST-80-000034 - Add Listener org.apache.catalina.security.SecurityListener
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Listener[@className="org.apache.catalina.security.SecurityListener"]'
+        state: present
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000034 - Check for minimumUmask attribute on org.apache.catalina.security.SecurityListener
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Listener[@className="org.apache.catalina.security.SecurityListener"]/@minimumUmask'
+        count: true
+      register: minumask
+
+    - name: VCST-80-000034 - Update minimumUmask attribute on org.apache.catalina.security.SecurityListener
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Listener[@className="org.apache.catalina.security.SecurityListener"]'
+        attribute: 'minimumUmask'
+        value: '{{ var_server_xml_security_listener_min_umask }}'
+        pretty_print: true
+      when:
+        - minumask.count != 0
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000036
+  tags: [VCST-80-000036]
+  when: run_allow_trace | bool
+  block:
+    - name: VCST-80-000036 - Remove allowTrace attribute on connectors
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Connector/@allowTrace'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000037
+  tags: [VCST-80-000037]
+  when: run_port_address | bool
+  block:
+    - name: VCST-80-000037 - Update address on Connector(s)
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Connector[@port="${bio-custom.http.port}"]'
+        attribute: 'address'
+        value: '{{ var_server_xml_address }}'
+        state: present
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000037 - Update address on Connector(s)
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Connector[@port="${bio-ssl-localhost.https.port}"]'
+        attribute: 'address'
+        value: '{{ var_server_xml_address }}'
+        state: present
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+# Port configuration left out until a good way to identify a connector outside of its port is determined
+
+###################################################################################################################################
+- name: VCST-80-000057
+  tags: [VCST-80-000057]
+  when: run_recycle_facades | bool
+  block:
+    - name: VCST-80-000057 - Find org.apache.catalina.connector.RECYCLE_FACADES in catalina.properties
+      ansible.builtin.command: grep -c RECYCLE_FACADES {{ var_catalina_props_path }}
+      register: rfcount
+      changed_when: false
+      failed_when: (rfcount.rc != 0 and rfcount.rc != 1)
+
+    - name: VCST-80-000057 - Update org.apache.catalina.connector.RECYCLE_FACADES if found in catalina.properties
+      ansible.builtin.lineinfile:
+        path: '{{ var_catalina_props_path }}'
+        state: present
+        regexp: '^org\.apache\.catalina\.connector\.RECYCLE_FACADES.*$'
+        line: org.apache.catalina.connector.RECYCLE_FACADES=true
+        firstmatch: true
+      when: rfcount.stdout != "0"
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000062
+  tags: [VCST-80-000062]
+  when: run_exit_on_failure | bool
+  block:
+    - name: VCST-80-000062 - Configure org.apache.catalina.startup.EXIT_ON_INIT_FAILURE in catalina.properties
+      ansible.builtin.lineinfile:
+        path: '{{ var_catalina_props_path }}'
+        state: present
+        regexp: '^org\.apache\.catalina\.startup\.EXIT_ON_INIT_FAILURE.*$'
+        line: org.apache.catalina.startup.EXIT_ON_INIT_FAILURE=true
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000065
+  tags: [VCST-80-000065]
+  when: run_uri_encoding | bool
+  block:
+    - name: VCST-80-000065 - Find incorrect URIEncoding attributes on connectors
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: "//Connector[@URIEncoding != 'UTF-8'] | //Connector[not[@URIEncoding]]"
+        count: true
+        pretty_print: true
+      register: uriecount
+
+    - name: VCST-80-000065 - Update incorrect URIEncoding attributes on connectors
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Connector'
+        attribute: 'URIEncoding'
+        value: 'UTF-8'
+        state: present
+        pretty_print: true
+      when:
+        - uriecount.count != 0
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000067
+  tags: [VCST-80-000067]
+  when: run_error_report_valve | bool
+  block:
+    - name: VCST-80-000067 - Configure showServerInfo on org.apache.catalina.valves.ErrorReportValve
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+        attribute: 'showServerInfo'
+        value: 'false'
+        state: present
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000067 - Configure showServerInfo on org.apache.catalina.valves.ErrorReportValve
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+        attribute: 'showReport'
+        value: 'false'
+        state: present
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000070
+  tags: [VCST-80-000070]
+  when: run_session_timeout | bool
+  block:
+    - name: VCST-80-000070 - Configure session timeout
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:session-config/x:session-timeout'
+        value: '{{ var_web_xml_session_timeout }}'
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000081
+  tags: [VCST-80-000081]
+  when: run_rsyslog_conf | bool
+  block:
+    - name: VCST-80-000081 - Configure rsyslog conf
+      ansible.builtin.template:
+        src: '{{ var_rsyslog_conf_name }}'
+        dest: '/etc/vmware-syslog/{{ var_rsyslog_conf_name }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+
+###################################################################################################################################
+- name: VCST-80-000125
+  tags: [VCST-80-000125]
+  when: run_connection_timeout | bool
+  block:
+    - name: VCST-80-000125 - Find incorrect connectionTimeout attributes on connectors
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: "//Connector[@connectionTimeout = '-1']"
+        count: true
+      register: ctcount
+
+    - name: VCST-80-000125 - Update incorrect connectionTimeout attributes on connectors
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Connector'
+        attribute: 'connectionTimeout'
+        value: '{{ var_server_xml_connection_timeout }}'
+        state: present
+        pretty_print: true
+      when:
+        - ctcount.count != 0
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000126
+  tags: [VCST-80-000126]
+  when: run_max_keepalive_requests | bool
+  block:
+    - name: VCST-80-000126 - Find incorrect maxKeepAliveRequests attributes on connectors
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: "//Connector[@maxKeepAliveRequests = '-1']"
+        count: true
+      register: mkacount
+
+    - name: VCST-80-000126 - Update incorrect maxKeepAliveRequests attributes on connectors
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Connector'
+        attribute: 'maxKeepAliveRequests'
+        value: '{{ var_server_xml_max_keepalive_requests }}'
+        state: present
+        pretty_print: true
+      when:
+        - mkacount.count != 0
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000127
+  tags: [VCST-80-000127]
+  when: run_set_character_encoding_filter | bool
+  block:
+    - name: VCST-80-000127 - Check for filter-mapping
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]'
+        count: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      register: filtermaphits
+
+    - name: VCST-80-000127 - Create filter-mapping element
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app'
+        add_children:
+          - filter-mapping:
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - filtermaphits.count == 0
+
+    - name: VCST-80-000127 - Create filter-mapping name
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter-mapping[last()]/x:filter-name'
+        value: 'setCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - filtermaphits.count == 0
+
+    - name: VCST-80-000127 - Configure filter-mapping url-pattern
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]/x:url-pattern'
+        value: '/*'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000127 - Check for bad filter configuration init-params
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param'
+        count: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      register: countbadinits
+
+    - name: VCST-80-000127 - Check for bad filter configuration duplicate filters
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        count: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      register: countbadfilters
+
+    - name: VCST-80-000127 - Delete bad filter configurations
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        state: absent
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VCST-80-000127 - Create new filter
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app'
+        add_children:
+          - filter:
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VCST-80-000127 - Configure new filter-name
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[last()]/x:filter-name'
+        value: 'setCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VCST-80-000127 - Configure filter-class
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:filter-class'
+        value: 'org.apache.catalina.filters.SetCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000127 - Configure filter async
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:async-supported'
+        value: 'true'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000127 - Create filter init-param
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param/x:param-name'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000127 - Configure filter init-param encoding
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-name'
+        value: 'encoding'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000127 - Configure filter init-param encoding value
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-value'
+        value: 'UTF-8'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000127 - Check for second init-param existance
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]'
+        count: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      register: init2counts
+
+    - name: VCST-80-000127 - Create filter init-param
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        state: present
+        pretty_print: true
+        add_children:
+          - init-param:
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - init2counts.count == 0
+
+    - name: VCST-80-000127 - Configure filter init-param ignore
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-name'
+        value: 'ignore'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000127 - Configure filter init-param ignore value
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-value'
+        value: 'true'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000130
+  tags: [VCST-80-000130]
+  when: run_remove_readonly | bool
+  block:
+    - name: VCST-80-000130 - Remove read-only parameter if it exists
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/param-name[text()="readonly"]'
+        state: absent
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000134
+  tags: [VCST-80-000134]
+  when: run_base_shutdown_port | bool
+  block:
+    - name: VCST-80-000134 - Configure shutdown port in server.xml
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server'
+        attribute: 'port'
+        value: '${base.shutdown.port}'
+        state: present
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCST-80-000134 - Configure base.shutdown.port in catalina.properties
+      ansible.builtin.lineinfile:
+        path: '{{ var_catalina_props_path }}'
+        state: present
+        regexp: '^base\.shutdown\.port.*$'
+        line: base.shutdown.port=-1
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000136
+  tags: [VCST-80-000136]
+  when: run_debug_off | bool
+  block:
+    - name: VCST-80-000136 - Find existing incorrect debug parameters in web.xml
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="debug"]/../x:param-value[text()="1"]'
+        count: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      register: debugcount
+
+    - name: VCST-80-000136 - Remove debug parameter in web.xml
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="debug"]/..'
+        state: absent
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - debugcount.count != 0
+
+###################################################################################################################################
+- name: VCST-80-000137
+  tags: [VCST-80-000137]
+  when: run_remove_dir_listing | bool
+  block:
+    - name: VCST-80-000137 - Find existing incorrect listing parameters in web.xml
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="listings"]/../x:param-value[text()="true"]'
+        count: true
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      register: listingcount
+
+    - name: VCST-80-000137 - Remove listings parameter in web.xml
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="listings"]/..'
+        state: absent
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when:
+        - listingcount.count != 0
+
+###################################################################################################################################
+- name: VCST-80-000138
+  tags: [VCST-80-000138]
+  when: run_disable_deploy_xml | bool
+  block:
+    - name: VCST-80-000138 - Configure deployXML in server.xml
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host'
+        attribute: 'deployXML'
+        value: 'false'
+        state: present
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000139
+  tags: [VCST-80-000139]
+  when: run_disable_auto_deploy | bool
+  block:
+    - name: VCST-80-000139 - Configure autoDeploy in server.xml
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Engine/Host'
+        attribute: 'autoDeploy'
+        value: 'false'
+        state: present
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000140
+  tags: [VCST-80-000140]
+  when: run_xpoweredby | bool
+  block:
+    - name: VCST-80-000140 - Find incorrect xpoweredBy attributes on connectors
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: "//Connector[@xpoweredBy != 'false'] | //Connector[not[@xpoweredBy]]"
+        count: true
+      register: xpcount
+
+    - name: VCST-80-000140 - Update incorrect xpoweredBy attributes on connectors
+      community.general.xml:
+        path: '{{ var_server_xml_path }}'
+        xpath: '/Server/Service/Connector'
+        attribute: 'xpoweredBy'
+        value: 'false'
+        state: present
+        pretty_print: true
+      when:
+        - xpcount.count != 0
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000141
+  tags: [VCST-80-000141]
+  when: run_remove_examples | bool
+  block:
+    - name: VCST-80-000141 - Remove tomcat examples directory
+      ansible.builtin.file:
+        path: '{{ var_examples_dir }}'
+        state: absent
+
+###################################################################################################################################
+- name: VCST-80-000142
+  tags: [VCST-80-000142]
+  when: run_remove_root_files | bool
+  block:
+    - name: VCST-80-000142 - Check ROOT directory for files
+      ansible.builtin.find:
+        path: '{{ var_root_dir }}'
+        file_type: any
+        hidden: true
+        recurse: true
+      register: rootdirfiles
+
+    - name: VCST-80-000142 - Remove ROOT directory if not empty
+      ansible.builtin.file:
+        path: '{{ var_root_dir }}'
+        state: absent
+      when:
+        - rootdirfiles.matched != 0
+
+    - name: VCST-80-000142 - Recreate empty ROOT directory
+      ansible.builtin.file:
+        path: '{{ var_root_dir }}'
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+###################################################################################################################################
+- name: VCST-80-000143
+  tags: [VCST-80-000143]
+  when: run_remove_docs | bool
+  block:
+    - name: VCST-80-000143 - Remove tomcat docs directory
+      ansible.builtin.file:
+        path: '{{ var_docs_dir }}'
+        state: absent
+
+###################################################################################################################################
+- name: VCST-80-000144
+  tags: [VCST-80-000144]
+  when: run_app_files_permissions | bool
+  block:
+    - name: VCST-80-000144 - Find files with incorrect permissions
+      ansible.builtin.shell: find {{ var_app_dir }} -xdev -type f -a '(' -perm -o+w -o -not -user root -o -not -group root ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: VCST-80-000144 - Update permissions on app files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCST-80-000151
+  tags: [VCST-80-000151]
+  when: run_allow_backslash | bool
+  block:
+    - name: VCST-80-000151 - Find org.apache.catalina.connector.ALLOW_BACKSLASH in catalina.properties
+      ansible.builtin.command: grep -c ALLOW_BACKSLASH {{ var_catalina_props_path }}
+      register: abcount
+      changed_when: false
+      failed_when: (abcount.rc != 0 and abcount.rc != 1)
+
+    - name: VCST-80-000151 - Update org.apache.catalina.connector.ALLOW_BACKSLASH if found in catalina.properties
+      ansible.builtin.lineinfile:
+        path: '{{ var_catalina_props_path }}'
+        state: present
+        regexp: '^org\.apache\.catalina\.connector\.ALLOW_BACKSLASH.*$'
+        line: org.apache.catalina.connector.ALLOW_BACKSLASH=false
+        firstmatch: true
+      when: abcount.stdout != "0"
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000152
+  tags: [VCST-80-000152]
+  when: run_enforce_encoding_writer | bool
+  block:
+    - name: VCST-80-000152 - Find org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER in catalina.properties
+      ansible.builtin.command: grep -c ENFORCE_ENCODING_IN_GET_WRITER {{ var_catalina_props_path }}
+      register: ewcount
+      changed_when: false
+      failed_when: (ewcount.rc != 0 and ewcount.rc != 1)
+
+    - name: VCST-80-000152 - Update org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER if found in catalina.properties
+      ansible.builtin.lineinfile:
+        path: '{{ var_catalina_props_path }}'
+        state: present
+        regexp: '^org\.apache\.catalina\.connector\.response\.ENFORCE_ENCODING_IN_GET_WRITER*$'
+        line: org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER=true
+        firstmatch: true
+      when: ewcount.stdout != "0"
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCST-80-000154
+  tags: [VCST-80-000154]
+  when: run_remove_manager | bool
+  block:
+    - name: VCST-80-000154 - Remove tomcat manager directory
+      ansible.builtin.file:
+        path: '{{ var_manager_dir }}'
+        state: absent
+
+###################################################################################################################################
+- name: VCST-80-000155
+  tags: [VCST-80-000155]
+  when: run_remove_host_manager | bool
+  block:
+    - name: VCST-80-000155 - Remove tomcat host-manager directory
+      ansible.builtin.file:
+        path: '{{ var_host_manager_dir }}'
+        state: absent

@@ -1,0 +1,10 @@
+---
+
+- name: Include Envoy
+  ansible.builtin.include_tasks:
+    file: envoy.yml
+    apply:
+      tags:
+        - envoy
+  tags:
+    - always

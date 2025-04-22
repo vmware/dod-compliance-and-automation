@@ -1,0 +1,18 @@
+# VMware vSphere 7.0 vCenter Server Appliance Misc Ansible Role
+
+---
+############################################
+
+- name: Persisting PAM changes by copying files to /etc/applmgmt/appliance
+  ansible.builtin.copy:
+    remote_src: true
+    src: '/etc/pam.d/system-auth'
+    dest: '{{ var_pamd_systemauth_file }}'
+    mode: preserve
+
+- name: Persisting PAM changes by copying files to /etc/applmgmt/appliance
+  ansible.builtin.copy:
+    remote_src: true
+    src: '/etc/pam.d/system-password'
+    dest: '{{ var_pamd_systempassword_file }}'
+    mode: preserve
