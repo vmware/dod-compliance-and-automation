@@ -17,10 +17,10 @@ To audit vSphere using InSpec we utilize the VMware transport(train-vmware) whic
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
 * Powershell 7.3.4/PowerCLI 13.3 or newer
-* [VMware.Vsphere.SsoAdmin PowerCLI Module 1.3.9](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) or newer
-* InSpec/Cinc Auditor 6.6.0
+* [VMware.Vsphere.SsoAdmin PowerCLI Module 1.4.0](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) or newer
+* InSpec/Cinc Auditor 6.8.11
 * train-vmware 0.2.0
-* SAF CLI 1.4.0
+* SAF CLI 1.4.20
 * STIG Viewer 2.17
 * A vSphere 8.x U1 or newer environment.
 * An account with sufficient privileges to view SSO configuration in vCenter.
@@ -38,7 +38,7 @@ To install the plugin that is included with the `vmware-vsphere-8.0-stig-baselin
 ```powershell
 # These steps are not needed on the STIG Tools Appliance
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
-> cinc-auditor plugin install /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline/train-vmware-0.2.0.gem
+> cinc-auditor plugin install /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline/train-vmware-0.2.0.gem
 
 # To verify the installation
 > cinc-auditor plugin list
@@ -94,7 +94,7 @@ Open the inputs file for editing.
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="bash" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
 # Edit the inputs file
 vi inputs-example.yml
@@ -210,7 +210,7 @@ In this example we will be scanning a single ESXi host attached to the target vC
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
 # Run the audit
 > cinc-auditor exec ./esxi/ -t vmware:// --show-progress --enhanced-outcomes --input-file ./inputs-example.yml --reporter cli json:/tmp/reports/MyESXi8Report.json
@@ -306,7 +306,7 @@ Open the inputs file for editing.
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="bash" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
 # Edit the inputs file
 vi inputs-example.yml
@@ -353,7 +353,7 @@ In this example we will be scanning all VMs in the target vCenter, specifying an
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
 # Run the audit
 cinc-auditor exec ./vm/ -t vmware:// --show-progress --enhanced-outcomes --input-file ./inputs-example.yml --reporter cli json:/tmp/reports/MyVMs8Report.json
@@ -554,7 +554,7 @@ Open the inputs file for editing.
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="bash" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
 # Edit the inputs file
 vi inputs-example.yml
@@ -689,7 +689,7 @@ In this example we will be scanning vCenter controls in the target vCenter, spec
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
 # Run the audit
 cinc-auditor exec ./vcenter/ -t vmware:// --show-progress --enhanced-outcomes --input-file ./inputs-example.yml --reporter cli json:/tmp/reports/MyvCenter8Report.json
@@ -797,7 +797,7 @@ Instead of running each STIG for product controls separately you can also run al
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
 # Run the script
 cinc-auditor exec . -t vmware:// --show-progress --enhanced-outcomes --input-file ./inputs-example.yml --reporter cli json:/tmp/reports/MyvSphere8Report.json
@@ -838,10 +838,10 @@ $env:VISERVER_USERNAME='Administrator@vsphere.local'
 $env:VISERVER_PASSWORD='password'
 
 # Navigate to the powercli folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/powercli
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/powercli
 
 # Run the script
-./VMware_vSphere_8.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.186.30.81 -reportPath /tmp/reports -inspecPath /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline -inputsfile ./vmware-vsphere-8.0-stig-esxi-inspec-runner-inputs-example.yml
+./VMware_vSphere_8.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.186.30.81 -reportPath /tmp/reports -inspecPath /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline -inputsfile ./vmware-vsphere-8.0-stig-esxi-inspec-runner-inputs-example.yml
 
 # You will be prompted for credentials to vCenter. This is to connect via PowerCLI before running InSpec to collect all of the host names to use as an input to InSpec for each individual host audit.
 10:08:10 AM ...Enter credentials to connect to vCenter
@@ -883,7 +883,7 @@ Mode                 LastWriteTime         Length Name
 -a---            6/7/2023 10:13 AM         521082 VMware_vSphere_8.0_STIG_ESXi_Inspec_Report_10.186.25.26-6-7-2023_10-8-4.json
 
 # If you want to specify a attestation file to incorporate into the CKL results you can add the attestation argument to the command as follows:
-./VMware_vSphere_8.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.186.30.81 -reportPath /tmp/reports -inspecPath /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline -inputsfile ./vmware-vsphere-8.0-stig-esxi-inspec-runner-inputs-example.yml -attestationFile ./vmware-vsphere-8.0-stig-esxi-inspec-runner-attestation-example.yml
+./VMware_vSphere_8.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.186.30.81 -reportPath /tmp/reports -inspecPath /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline -inputsfile ./vmware-vsphere-8.0-stig-esxi-inspec-runner-inputs-example.yml -attestationFile ./vmware-vsphere-8.0-stig-esxi-inspec-runner-attestation-example.yml
 
 # Resulting output
 ls /tmp/reports
@@ -1085,7 +1085,7 @@ Updating the inputs file is not required for this profile but the `inputs-vcsa-8
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the InSpec profile folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vcsa/inspec/vmware-vcsa-8.0-stig-baseline
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vcsa/inspec/vmware-vcsa-8.0-stig-baseline
 
 # Run the audit
 cinc-auditor exec . -t ssh://root@10.186.30.81 --password 'password' --show-progress --enhanced-outcomes --reporter cli json:/tmp/reports/MyVCSA8Report.json

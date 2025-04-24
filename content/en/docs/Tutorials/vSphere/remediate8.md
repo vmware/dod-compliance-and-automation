@@ -17,7 +17,7 @@ To remediate vSphere, PowerCLI is the automation tool used, while for the VCSA w
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
 * Powershell 7.3.4/PowerCLI 13.3 or newer
-* [VMware.Vsphere.SsoAdmin PowerCLI Module 1.3.9](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) or newer
+* [VMware.Vsphere.SsoAdmin PowerCLI Module 1.4.0](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) or newer
 * Ansible 2.14.2
 * A vSphere 8.x U1 or newer environment.
 * An account with sufficient privileges to configure vSphere.
@@ -191,7 +191,7 @@ This example will remediate all hosts in the vSphere cluster named `cluster0`. I
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the powercli folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/powercli
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/powercli
 
 # Running the script.
 ./VMware_vSphere_8.0_STIG_ESXi_Remediation.ps1 -vcenter 10.182.177.21 -vccred $vccred -cluster "cluster0" -esxAdminGroup "MyESXiGroup" -allowedIPs "10.10.10.0/24","10.10.11.0/24" -ntpServers "time-a-g.nist.gov","time-b-g.nist.gov" -syslogServer "tcp://loginsight.vmware.com:514" -reportpath /tmp/reports
@@ -368,7 +368,7 @@ This example will remediate all hosts in the vSphere cluster named `cluster0`. I
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the powercli folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/powercli
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/powercli
 
 # Running the script.
 ./VMware_vSphere_8.0_STIG_VM_Remediation.ps1 -vcenter 10.182.177.21 -vccred $vccred -cluster "cluster0" -reportpath /tmp/reports
@@ -529,7 +529,7 @@ This example will remediate all controls on a target vCenter server.
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
 # Navigate to the powercli folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vsphere/powercli
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/powercli
 
 # Running the script.
 ./VMware_vSphere_8.0_STIG_vCenter_Remediation.ps1 -vcenter 10.182.177.21 -vccred $vccred -vcNetflowDisableonallPortGroups $true -reportpath /tmp/reports
@@ -648,7 +648,7 @@ To run all of the VCSA controls, follow the example below:
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="bash" >}}
 # Navigate to the Ansible playbook folder
-cd /usr/share/stigs/vsphere/8.0/v2r2-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening
+cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening
 
 # The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use.
 ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter.yml
@@ -742,21 +742,21 @@ A more conservative and preferred approach is to target any non-compliant contro
 # Providing the tag "eam" will instruct the playbook to only run the eam role. This tag can be seen in each roles task/main.yml file.
 ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter.yml --tags eam
 
-# Providing the tag "VCEM-70-000001" will instruct the playbook to only run task tagged with the STIG ID of VCEM-80-000001.
+# Providing the tag "VCEM-80-000001" will instruct the playbook to only run task tagged with the STIG ID of VCEM-80-000001.
 ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter.yml --tags VCEM-80-000001
 {{< /tab >}}
 {{< tab header="8.0 U2" lang="bash" >}}
 # Providing the tag "eam" will instruct the playbook to only run the eam role. This tag can be seen in each roles task/main.yml file.
 ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter-example.yml --tags eam
 
-# Providing the tag "VCEM-70-000001" will instruct the playbook to only run task tagged with the STIG ID of VCEM-80-000001.
+# Providing the tag "VCEM-80-000001" will instruct the playbook to only run task tagged with the STIG ID of VCEM-80-000001.
 ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter-example.yml --tags VCEM-80-000001
 {{< /tab >}}
 {{< tab header="8.0 U1" lang="bash" >}}
 # Providing the tag "eam" will instruct the playbook to only run the eam role. This tag can be seen in each roles task/main.yml file.
 ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter-example.yml --tags eam
 
-# Providing the tag "VCEM-70-000001" will instruct the playbook to only run task tagged with the STIG ID of VCEM-80-000001.
+# Providing the tag "VCEM-80-000001" will instruct the playbook to only run task tagged with the STIG ID of VCEM-80-000001.
 ansible-playbook -i 10.182.177.21, -u root playbook.yml -k -v --extra-vars @vars-vcenter-example.yml --tags VCEM-80-000001
 {{< /tab >}}
 {{< /tabpane >}}
