@@ -24,7 +24,7 @@ Versions listed below were used for this documentation. Other versions of these 
 * An account with sufficient privileges to configure vSphere.
 
 ### Create Powershell credential for vCenter connection
-The PowerCLI scripts provided use a [Powershell Credential](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-credential) stored in a varialbe to authenticate to vCenter and should be established before attempting to run the scripts.  
+The PowerCLI scripts provided use a [Powershell Credential](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-credential) stored in a variable to authenticate to vCenter and should be established before attempting to run the scripts.  
 
 ```powershell
 # Run the following command to generate a credential. Substitute the username as needed in your environment. Note if ran in Powershell 5.x on Windows this will popup a window to enter the credentials.
@@ -81,7 +81,7 @@ param (
 ```
 
 ### Disabling Controls
-The script includes varialbes to enable or disable controls by STIG ID. All controls are all enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
+The script includes variables to enable or disable controls by STIG ID. All controls are all enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
 A snippet of these variables is shown below.  
 ```powershell
@@ -206,7 +206,7 @@ param (
 ```
 
 ### Disabling Controls
-The script includes varialbes to enable or disable controls by STIG ID. All controls are all enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
+The script includes variables to enable or disable controls by STIG ID. All controls are all enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
 A snippet of these variables is shown below.  
 ```powershell
