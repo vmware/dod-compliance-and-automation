@@ -37,6 +37,6 @@ control 'VRAA-8X-000009' do
   end
 
   describe command('vracli ntp show-config | grep ntp_servers') do
-    its('stdout.strip') { should cmp "ntp_servers: #{input('ntpServers')}" }
+    its('stdout.strip') { should cmp "ntp_servers: #{input('automationNtpServers')}" }
   end
 end
