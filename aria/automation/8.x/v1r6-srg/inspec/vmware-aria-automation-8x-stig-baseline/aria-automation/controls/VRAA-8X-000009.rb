@@ -32,11 +32,32 @@ control 'VRAA-8X-000009' do
   tag cci: ['CCI-000159', 'CCI-001891', 'CCI-002046']
   tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)', 'AU-8 a']
 
-  describe command('vracli ntp show-config | grep ntp_enabled') do
-    its('stdout.strip') { should cmp 'ntp_enabled: True' }
+  # Get ntp enabled settings (cluster will return multiple lines)
+  ntp_enabled_settings = command('vracli ntp show-config | grep ntp_enabled').stdout.strip.split("\n")
+
+  # Loop through results, all should be enabled
+  ntp_enabled_settings.each do |ntp_enabled|
+    describe 'NTP enabled' do
+      subject { ntp_enabled.strip }
+      it { should cmp 'ntp_enabled: True' }
+    end
   end
 
-  describe command('vracli ntp show-config | grep ntp_servers') do
-    its('stdout.strip') { should cmp "ntp_servers: #{input('automationNtpServers')}" }
+  # Get ntp server settings (cluster will return multiple lines)
+  ntp_servers = command('vracli ntp show-config | grep ntp_servers').stdout.strip.split("\n")
+
+  if ntp_servers.blank?
+    describe 'NTP must be configured' do
+      subject { ntp_servers }
+      it { should_not be_blank }
+    end
+  else
+    # Loop through results, all should be set the same (if clustered)
+    ntp_servers.each do |ntp_server|
+      describe 'NTP server list' do
+        subject { ntp_server.strip }
+        it { should cmp "ntp_servers: #{input('automationNtpServers')}" }
+      end
+    end
   end
 end
