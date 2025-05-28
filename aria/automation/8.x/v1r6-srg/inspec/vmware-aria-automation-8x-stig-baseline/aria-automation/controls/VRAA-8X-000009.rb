@@ -35,11 +35,18 @@ control 'VRAA-8X-000009' do
   # Get ntp enabled settings (cluster will return multiple lines)
   ntp_enabled_settings = command('vracli ntp show-config | grep ntp_enabled').stdout.strip.split("\n")
 
-  # Loop through results, all should be enabled
-  ntp_enabled_settings.each do |ntp_enabled|
-    describe 'NTP enabled' do
-      subject { ntp_enabled.strip }
-      it { should cmp 'ntp_enabled: True' }
+  if ntp_enabled_settings.blank?
+    describe 'NTP must be enabled' do
+      subject { ntp_enabled_settings }
+      it { should_not be_blank }
+    end
+  else
+    # Loop through results, all should be enabled
+    ntp_enabled_settings.each do |ntp_enabled|
+      describe 'NTP enabled' do
+        subject { ntp_enabled.strip }
+        it { should cmp 'ntp_enabled: True' }
+      end
     end
   end
 
