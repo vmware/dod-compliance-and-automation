@@ -1,7 +1,7 @@
 ---
 title: "Support"
 linkTitle: "Support"
-weight: 5
+weight: 6
 description: >
   Support for Official STIGs, STIG Readiness Guides, and automation is provided through a variety of channels depending on the situation. It is important to adhere to the supported scenarios detailed here to avoid issues in unsupported situations.  
 ---
@@ -20,7 +20,7 @@ For the most up to date information on support please visit our STIG Support KB:
 
 ## Types of Support
 
-**Automation Support:** Issues related to running scripts, playbooks, etc found in this repository.
+**Automation Support:** Issues related to running scripts, playbooks, etc. found in this repository.
 
 **Content Support:** Problems with the guidance text found in a STIG.  
 Examples:
@@ -29,7 +29,7 @@ Examples:
 - Typos in the text
 - Check/Fix update suggestions
 
-**Product Support:** Break/fix bug type issues encountered when using features and functionality found inside a STIGs content.  
+**Product Support:** Break/fix bug type issues encountered when using features and functionality found inside a STIG's content.  
 Examples:
 - Enabling Secureboot causes a host not to boot.
 - Hardening a service causes it to not start.
@@ -46,7 +46,7 @@ Support for automation found in this repo is community based and provided on a b
 
 If an issue is encountered please check the [open](https://github.com/vmware/dod-compliance-and-automation/issues) and [closed](https://github.com/vmware/dod-compliance-and-automation/issues?q=is%3Aissue+is%3Aclosed) issues in the issue tracker for the details of your issue. If you can't find it, or if you're not sure, open a new issue.
 
-A known issues document may also be available for a product and version in that products docs folder in this repository.
+A known issues document may also be available for a product and version in that product's docs folder in this repository.
 
 ## Official STIG Support
 
@@ -64,9 +64,9 @@ A support request may be opened in these cases if a valid support agreement is i
 
 **Content Support**
 
-Support for issues related to content in a STIG Readiness Guide should be addressed by emailing: stigs@vmware.com 
+Support for issues related to content in a STIG Readiness Guide should be addressed by emailing: stigs@broadcom.com 
 
-Requests recieved will be processed on a best effort basis and any needed content updates published in the next content release. In between releases, issues will be documented in a known issues document available in a products folder in this repository.  
+Requests received will be processed on a best effort basis and any needed content updates will be published in the next content release. In between releases, issues will be documented in a known issues document available in a product's docs folder in this repository.  
 
 **Product Support**
 
@@ -88,4 +88,4 @@ VMware accepts no liability for the consequences of applying specific configurat
 
 For some production environments, failure to test before implementation may lead to a loss of required functionality. Evaluating the risks and benefits to a system’s particular circumstances and requirements is the system owner's responsibility. The evaluated risks resulting from not applying specified configuration settings must be approved by the responsible Authorizing Official.
 
-Furthermore, VMware implies no warranty that the application of all specified configurations will make a system 100 percent secure. Security guidance is provided for the Department of Defense. While other agencies and organizations are free to use it, care must be given to ensure that all applicable security guidance is applied both at the device hardening level as well as the architectural level. Some of the controls may not be configurable in environments outside the DoDIN.
+Furthermore, VMware implies no warranty that the application of all specified configurations will make a system 100 percent secure. Security guidance is provided for the Department of Defense. While other agencies and organizations may use it, care must be given to ensure that all applicable security guidance is applied both at the device hardening level as well as the architectural level. Some of the controls may not be configurable in environments outside the DoDIN.

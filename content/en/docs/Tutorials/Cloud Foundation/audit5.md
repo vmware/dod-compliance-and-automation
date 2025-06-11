@@ -19,13 +19,13 @@ Versions listed below were used for this documentation. Other versions of these 
 * An account with access to VCF.
 
 ### Assumptions
-* Commands are being ran from a Linux machine. Windows will also work but paths and commands may need to be adjusted from the examples.
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
+* Commands are being run from a Linux machine. Windows will also work but paths and commands may need to be adjusted from the examples.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
 * CINC Auditor is used in lieu of InSpec. If InSpec is used replace `cinc-auditor` with `inspec` when running commands.
 
 ## Auditing SDDC Manager
 {{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version you are running. Select the example command tabs for the version in your environment.
+The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
 {{% /alert %}}
 
 ### Generate bearer token for SDDC Manager
@@ -114,7 +114,7 @@ vi inputs-vcf-sddcmgr-example.yml
 {{< /tab >}}
 {{< /tabpane >}}
 
-Update the inputs as shown below with values relevant to your environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
+Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="5.2.1.x" lang="yaml" >}}
@@ -246,7 +246,7 @@ systemctl restart sshd
 ```
 
 ### Run the audit
-In this example we will be scanning a target SDDC Manager, specifying an inputs file, and outputting a report to the CLI and to a JSON file ran from a linux machine.  
+In this example a target SDDC Manager will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file ran from a linux machine.  
 
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}

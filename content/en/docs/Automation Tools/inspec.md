@@ -2,18 +2,18 @@
 title: "Chef InSpec/CINC"
 weight: 2
 description: >
-  How to use and install Chef InSpec or CINC
+  How to install and use Chef InSpec or CINC
 ---
 
-[Chef InSpec](https://docs.chef.io/inspec/) is an open-source framework for testing and auditing your applications and infrastructure. Chef InSpec works by comparing the actual state of your system with the desired state that you express in easy-to-read and easy-to-write Chef InSpec code. Chef InSpec detects violations and displays findings in the form of a report, but puts you in control of remediation.
+[Chef InSpec](https://docs.chef.io/inspec/) is an open-source framework for testing and auditing applications and infrastructure. Chef InSpec works by comparing the actual state of your system with the desired state expressed in easy-to-read and easy-to-write Chef InSpec code. Chef InSpec detects violations and displays findings in the form of a report, but puts you in control of remediation.
 
-[Cinc](https://cinc.sh/) is a recursive acronym for CINC Is Not Chef. Chef InSpec is free for non-commercial use so the Cinc project was able to remove any trademarks while still complying with Chef's policies and offer a free for any use alternative. Cinc Auditor is built off the same code base as Chef InSpec.
+[Cinc](https://cinc.sh/) is a recursive acronym for CINC Is Not Chef. Chef InSpec is free for non-commercial use so the Cinc project was able to remove any trademarks while still complying with Chef's policies and offer a free for any use alternative. Cinc Auditor is built off of the same code base as Chef InSpec.
 
 ## Why InSpec?
 
-Chef InSpec/CINC Auditor is currently being utilized to assess products as it is geared specifically towards compliance auditing and reporting. It is also something our DoD customers can use, along with the supporting tools from the MITRE Security Automation Framework, to create artifacts needed to accredit their environments.
+Chef InSpec/CINC Auditor is currently utilized to assess products as it is geared specifically towards compliance auditing and reporting. It is also something DoD customers can use, along with the supporting tools from the MITRE Security Automation Framework, to create artifacts needed to accredit their environments for use.
 
-Additionally, using a separate tool than what is used to fix or remediate controls is good practice and provides additional assurances that the configuration is in an agreed upon state from multiple points of view. One can think of this similar to a home builder and inspector where we don't rely on a builder to inspect things and tell us they are up to code.
+Using a separate tool for auditing than what is used to fix or remediate controls is good practice and provides additional assurances that the configuration is in an agreed upon state from multiple points of view. One can think of this similarly to home builder and inspector roles, where the builder is not relied on to perform inspections and report compliance to building codes.
 
 ## Prerequisites
 
@@ -23,13 +23,13 @@ Additionally, using a separate tool than what is used to fix or remediate contro
 
 ### Online
 
-Windows
+Windows:
 ```powershell
-# Run the following command from a Powershell prompt
+# Run the following command from a PowerShell prompt
 . { iwr -useb https://omnitruck.chef.io/install.ps1 } | iex; install -project inspec
 ```
 
-Linux
+Linux:
 ```bash
 curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 ```
@@ -39,7 +39,7 @@ Download the package for your OS [here](https://www.chef.io/downloads/tools/insp
 
 ## Concepts
 ### Profiles
-In InSpec terms we offer "profiles" to audit products. Simple profiles have the following structure:
+In InSpec terms "profiles" are offered to audit products. Simple profiles have the following structure:
 ```
 examples/profile
 ├── README.md
@@ -55,16 +55,16 @@ examples/profile
 
 The `inspec.yml` file includes some metadata about the profile and any inputs(variables) and dependencies.
 
-Inputs provide a way for us to provide values to tests without having to update the test to do so. For example, we may have an input for a syslog server to check that the correct syslog server for your environment is configured. Inputs can be given as an argument at the cli or in an inputs file that is then provided at the cli as well. We recommend using an inputs file because it is easier to manage and provide at the cli.
+Inputs provide a way to supply values to tests without having to update individual tests with specific values. For example, there may be an input for a syslog server to check that the correct syslog server for the environment is configured. Inputs can be given as an argument at the cli or in an inputs file that is then provided at the cli as well. It is recommended to use an inputs file because it is easier to manage and provide at the cli.
 
 ### Dependent Profiles
-In many cases our profiles are really made up of multiple profiles that are included in the same folder structure but can also be pulled in from another location.
+In many cases profiles can be made up of multiple profiles that are included in the same folder structure but can also be pulled in from other locations.
 
-We do this when a product may have multiple STIGs that we would like to audit together but also separate into its own profile for organizational purposes. Another reason to do this is it makes profile reuse easier like with Photon OS which many of our product appliances are based on. Instead of maintaining a profile for Photon with each product we can maintain Photon separately and it can be called as a dependency in a product's profile and then provided inputs and tweaked as needed for that specific product.
+Dependent profiles are used when a product may have multiple STIGs that need to be audited together, but can also be separated into its own profile for organizational purposes. Another reason to do this is it makes profile reuse easier, such as with Photon OS, which many of our product appliances are based on. Instead of maintaining a profile for Photon within each product, Photon can be maintained separately and it can be called as a dependency into a product's profile. Photon inputs could then be provided and tweaked as necessary for that specific product.
 
-If we look at the [vSphere 7 VCSA profile](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/inspec/vmware-vcsa-7.0-stig-baseline) we will see an example of this.
+An example of this can be observed in the [vSphere 7 VCSA profile](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/inspec/vmware-vcsa-7.0-stig-baseline).
 
-An abbreviated structure for this profile.
+An abbreviated structure for this profile:
 ```
 vmware-vcsa-7.0-stig-baseline
 ├── README.md
@@ -97,18 +97,18 @@ vmware-vcsa-7.0-stig-baseline
 For more information on dependent profiles, see [Profile Dependencies](https://docs.chef.io/inspec/profiles/#profile-dependencies).
 
 #### InSpec Vendoring
-Dependent profiles are "vendored" or cached into the /vendor folder in the profile. This is important to pay attention to because if changes are made to dependent profiles and this cache is not updated you will not see the changes when you run the profile though the parent.
+Dependent profiles are "vendored" or cached into the /vendor folder in the profile. This is important to pay attention to because if changes are made to dependent profiles and this cache is not updated the changes will not be seen when the parent profile is run.
 
-Update the vendor/cache.
+Update the vendor/cache:
 ```bash
 inspec vendor --overwrite
 Dependencies for profile /vmware-vcsa-7.0-stig-baseline successfully vendored to /vmware-vcsa-7.0-stig-baseline/vendor
 ```
 
 ### Controls
-For the profiles we develop, the controls folder contains a file for each STIG control that includes that controls metadata and a test for auditing.
+In each profile, the controls folder contains a file for each STIG control that includes that control's metadata and a test for auditing.
 
-Example control file
+Example control file:
 ```ruby
 control 'ESXI-70-000001' do
   title 'Access to the ESXi host must be limited by enabling lockdown mode.'
@@ -205,24 +205,24 @@ Train Plugins allow InSpec to connect to various types of endpoints for auditing
 * Azure as an API
 * VMware via PowerCLI
 
-For example, we audit a vCenter Appliance using the SSH plugin so it connects to vCenter over SSH to perform the audit.
+For example, a vCenter Appliance is audited using the SSH plugin so a connection is made to vCenter over SSH to perform the audit.
 
 ### Reporters
-InSpec can provide results in a variety of formats such as:
+InSpec can provide results in a variety of formats, such as:
 * cli
 * json
 * yaml
 * html,html2
 * junit
 
-These are useful for system admins to collect and monitor configuration drift and for accreditation tasks where with the SAF CLI tool you can convert results into a CKL file to import into STIG Viewer.
+These are useful for system admins to collect and monitor configuration drift as well as for accreditation tasks, such as using the SAF CLI tool to convert results into a CKL file for importing into STIG Viewer.
 
-For more information on reports, see [Reporters](https://docs.chef.io/inspec/reporters/)
+For more information on reports, see [Reporters](https://docs.chef.io/inspec/reporters/).
 
 ### Waivers
-Waivers allow you do document as code the controls that have a waiver/poam in place for your environment. This is done through a waivers file and provided as an argument at the command line.
+Waivers allow documentation as code for the controls that have a waiver/poam in the environment. This is done through a waivers file and can be provided as an argument at the command line.
 
-Example `waivers.yml` file
+Example `waivers.yml` file:
 ```yaml
 PHTN-30-000053:
   expiration_date: 2024-12-31
@@ -234,7 +234,7 @@ PHTN-30-000106:
   justification: "vRA runs Kubernetes which needs this kernel option to forward traffic"
 ```
 
-For more information on reports, see [Waivers](https://docs.chef.io/inspec/waivers/)
+For more information on reports, see [Waivers](https://docs.chef.io/inspec/waivers/).
 
 ## Running InSpec Examples and Common Arguments
 The examples below are for running InSpec from a Windows based machine with the vSphere 7 VCSA profile.

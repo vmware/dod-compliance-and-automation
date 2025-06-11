@@ -18,7 +18,7 @@ Versions listed below were used for this documentation. Other versions of these 
 
 * The [vmware-aria-automation-8x-stig-baseline](https://github.com/vmware/dod-compliance-and-automation/tree/master/aria/automation/8.x/v1r6-srg/inspec/vmware-aria-automation-8x-stig-baseline) profile downloaded.
 * The [vmware-photon-4.0-stig-baseline](https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/4.0/v1r5-srg/inspec/vmware-photon-4.0-stig-baseline) profile downloaded.
-* InSpec/Cinc Auditor 6.6.0
+* InSpec/Cinc Auditor 6.8.1
 * SAF CLI 1.4.0
 * [STIG Viewer 2.17](https://public.cyber.mil/stigs/srg-stig-tools/)
 * A VMware Aria Automation environment. Version 8.18 was used in these examples.
@@ -26,15 +26,15 @@ Versions listed below were used for this documentation. Other versions of these 
 
 ### Assumptions
 * Commands are initiated from a Linux machine. Windows will also work but paths and commands may need to be adjusted from the examples.
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
 * CINC Auditor is used in lieu of InSpec. If InSpec is used replace `cinc-auditor` with `inspec` when running commands.
 
 ## Auditing VMware Aria Automation
 ### Update profile inputs
 Included in each of the `vmware-vra-8x-stig-baseline` sub-folders (aria-automation, docker, and kubernetes) is an inspec input file named 'inspec.yml'. 
-Additionally, at the top level, an `inputs.yml` file can be created that "rolls up" all of the variables into one file, and can be utilized at the command line.
+Additionally, at the top level, an `inputs-example.yml` file can be created that "rolls up" all of the variables into one file, and can be utilized at the command line.
 
-Evaluate each of the input files (`aria-automation/inspec.yml`, `docker\inspec.yml`, `kubernetes\inspec.yml`), and if any of the input variables need to be over-ridden, then make sure those variables are included in the top level `inputs.yml` file. Examples are provided below.
+Evaluate each of the input files (`aria-automation/inspec.yml`, `docker\inspec.yml`, `kubernetes\inspec.yml`), and if any of the input variables need to be over-ridden, then make sure those variables are included in the top level `inputs-example.yml` file. Examples are provided below.
 
 #### VMware Aria Automation - Sample Inputs
 ```yaml
@@ -54,10 +54,13 @@ systemctl restart sshd
 ```
 
 ### Run the audit
-In this example we will be scanning a target VMware Aria Automation appliance, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
+### Navigate to the InSpec profile folder
+cd /usr/share/stigs/aria/automation/8.x/v1r6-srg/inspec/vmware-aria-automation-8x-stig-baseline  
+
+In this example a target VMware Aria Automation appliance will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
 ```bash
 # Note this command is run from the root of the profile folder. Update paths as needed (instead of '.', use './path/to/profile') if running from a different location.
-> cinc-auditor exec . -t ssh://root@aria-automation.domain.path --password 'replaceme' --show-progress --input-file inputs.yml --reporter cli json:/tmp/reports/Aria_Automation_8x_STIG_Report.json
+> cinc-auditor exec . -t ssh://root@aria-automation.domain.path --password 'replaceme' --show-progress --input-file inputs-example.yml --reporter cli json:/tmp/reports/Aria_Automation_8x_STIG_Report.json
 
 # Shown below is example output at the CLI.
   ✔  PHTN-40-000227: The Photon operating system must not send IPv4 Internet Control Message Protocol redirects.

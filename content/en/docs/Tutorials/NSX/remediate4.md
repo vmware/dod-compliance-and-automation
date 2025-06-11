@@ -18,13 +18,13 @@ Versions listed below were used for this documentation. Other versions of these 
 * An account with sufficient privileges to configure NSX.
 
 ### Assumptions
-* Commands are being ran from a Linux machine.
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
-* Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy roles install -r requirements.yml`.
+* Commands are being run from a Linux machine.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
+* Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy role install -r requirements.yml`.
 
 ## Important Considerations
 {{% alert title="Warning" color="warning" %}}
-Please read carefully before proceeding! Some NSX STIG controls can be very impactful to your environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic. Before running it is highly advised to have a backups taken and verified.
+Please read carefully before proceeding! Some NSX STIG controls can be very impactful to the environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic. Before running it is highly advised to have a backups taken and verified.
 {{% /alert %}}
 
 Below is a table of controls selected for consideration but all controls should be examined for impact before implementing.  
@@ -51,10 +51,10 @@ Also not all controls are covered by the Ansible playbook and may require manual
 
 ## Remediating NSX
 {{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version you are running. Select the example command tabs for the version in your environment.
+The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
 {{% /alert %}}
 
-To remediate NSX we have provided an [Ansible playbook](https://github.com/vmware/dod-compliance-and-automation/tree/master/nsx/4.x/ansible/vmware-nsx-4.x-stig-ansible-hardening) that will target an NSX Manager over the REST API and configure any non-compliant controls.  
+To remediate NSX an [Ansible playbook](https://github.com/vmware/dod-compliance-and-automation/tree/master/nsx/4.x/ansible/vmware-nsx-4.x-stig-ansible-hardening) has been provided that will target an NSX Manager over the REST API and configure any non-compliant controls.  
 
 ### Generate API Session Token
 This profile uses Session-Based authentication to authenticate with NSX for auditing. A session token and cookie must be generated and provided an input for the profile. This can be generated in various ways via curl, tools like Postman, etc. For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1733/).
@@ -135,7 +135,7 @@ vi vars-nsx-4x-example.yml
 {{< /tabpane >}}
 
 
-Update the variables as shown below with values relevant to your environment. Specifically `var_nsx_manager`, `var_jsession_id`, `var_session_token`, `var_ntp_server1`, `var_ntp_server2` variables at a minimum.  
+Update the variables as shown below with values relevant to the environment. Specifically the `var_nsx_manager`, `var_jsession_id`, `var_session_token`, `var_ntp_server1`, `var_ntp_server2` variables at a minimum.  
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="bash" >}}
@@ -299,7 +299,7 @@ changed: [127.0.0.1] => {"cache_control": "no-cache, no-store, max-age=0, must-r
 {{< /tab >}}
 {{< /tabpane >}}
 
-A more conservative and preferred approach is to target any non-compliant controls or run each component separately allowed you to perform any functional testing in between.
+A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="bash" >}}

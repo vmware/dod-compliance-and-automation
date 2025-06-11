@@ -18,13 +18,13 @@ Versions listed below were used for this documentation. Other versions of these 
 * An NSX 4.x environment. The environment used in these examples has 1 T0 Gateway configured with BGP to an upstream router and 1 T1 Gateway deployed.
 
 ### Assumptions
-* Commands are being ran from a Linux machine. Windows will also work but paths and commands may need to be adjusted from the examples.
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
+* Commands are being run from a Linux machine. Windows will also work but paths and commands may need to be adjusted from the examples.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
 * CINC Auditor is used in lieu of InSpec. If InSpec is used replace `cinc-auditor` with `inspec` when running commands.
 
 ## Auditing NSX
 {{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version you are running. Select the example command tabs for the version in your environment.
+The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
 {{% /alert %}}
 
 ### Generate API Session Token
@@ -103,7 +103,7 @@ vi inputs-nsx-4.x-example.yml
 {{< /tab >}}
 {{< /tabpane >}}
 
-Update the inputs as shown below with values relevant to your environment. Specifically `nsxManager`,`sessionToken`,`sessionCookieId`,`syslogServers`,`sftpServer`,`ntpServers`,`ntpServers`,and `nsxtVersion` at a minimum. The other inputs are optional depending on your environment.
+Update the inputs as shown below with values relevant to the environment. Specifically the `nsxManager`,`sessionToken`,`sessionCookieId`,`syslogServers`,`sftpServer`,`ntpServers`,`ntpServers`,and `nsxtVersion` inputs at a minimum. The other inputs are optional depending on the environment.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="4.1.2+" lang="yaml" >}}
@@ -175,7 +175,7 @@ t1multicastlist: []
 {{< /tabpane >}}
 
 ### Run the audit
-In this example we will be scanning all NSX components, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
+In this example all NSX components will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
 
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
