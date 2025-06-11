@@ -8,7 +8,7 @@ description: >
 Remediating vSphere for STIG compliance involves configuring ESXi, Virtual Machines, vCenter, and the vCenter appliance.
 
 When remediating vSphere we will split up tasks between product and appliance based controls which are defined as follows:
-* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration effecting availability of the product is low but could impact how the environment is operated if not assessed.
+* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration affecting availability of the product is low but could impact how the environment is operated if not assessed.
 * **Appliance Control:** Appliance controls deal with the underlying components (databases, web servers, Photon OS, etc) that make up the product. Altering these add risk to product availability without precautionary steps and care in implementation. Identifying and relying on Default settings in this category makes this category less risky (Default Appliance Controls should be seen as a positive).
 
 To remediate vSphere, PowerCLI is the automation tool used, while for the VCSA we will use Ansible. For the vCenter appliance the remediation is performed via SSH. It is recommended to disable SSH on vCenter after configuration is complete.  
@@ -16,49 +16,49 @@ To remediate vSphere, PowerCLI is the automation tool used, while for the VCSA w
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* Powershell 7.3.4/PowerCLI 13.3 or newer
+* PowerShell 7.3.4/PowerCLI 13.3 or newer
 * [VMware.Vsphere.SsoAdmin PowerCLI Module 1.4.0](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) or newer
 * Ansible 2.14.2
 * A vSphere 8.x U1 or newer environment.
 * An account with sufficient privileges to configure vSphere.
 
 ### Assumptions
-* Commands are being ran from a Linux machine. Windows will also work (for the PowerCLI portions only) but paths and commands may need to be adjusted from the examples.
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
-* Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy roles install -r requirements.yml`.
+* Commands are being run from a Linux machine. Windows will also work (for the PowerCLI portions only) but paths and commands may need to be adjusted from the examples.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
+* Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy role install -r requirements.yml`.
 * The dependent Photon OS Ansible roles(Photon 3.0 for U1 and Photon 4 for U2) installed and available.  Verify role installation with `ansible-galaxy role list`.
 
 ## Remediate vSphere (Product Controls)
 {{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version you are running. Select the example command tabs for the version in your environment.
+The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
 {{% /alert %}}
 
 {{% alert title="Warning" color="warning" %}}
-Before running it is highly advised to have a backup of vCenter and/or snapshot available if a rollback is required. For VCSA only the playbook will backup files configured before updates and place them under the /tmp directory in a folder directly on the vCenter appliance.
+Before running it is highly advised to have a backup of vCenter and/or snapshot available if a rollback is required. For VCSA only the playbook will back up files configured before performing updates and place them under the /tmp directory in a folder directly on the vCenter appliance.
 {{% /alert %}}
 
-### Create Powershell credential for vCenter connection
-The PowerCLI scripts provided use a [Powershell Credential](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-credential) stored in a variable to authenticate to vCenter and should be established before attempting to run the scripts.  
+### Create PowerShell credential for vCenter connection
+The PowerCLI scripts provided use a [PowerShell Credential](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-credential) stored in a variable to authenticate to vCenter and should be established before attempting to run the scripts.  
 
 ```powershell
-# Run the following command to generate a credential. Substitute the username as needed in your environment.
+# Run the following command to generate a credential. Substitute the username as needed in the environment.
 pwsh
 
 $vccred = Get-Credential
 
 PowerShell credential request
-Enter your credentials.
+Enter the credentials.
 User: administrator@vsphere.local
 Password for user administrator@vsphere.local: ****************
 ```
 
 ### Remediating ESXi product controls
-To remediate ESXi hosts we have provided a PowerCLI script that will target a single host or a vSphere cluster based on parameters provided to the script.
+To remediate ESXi hosts a PowerCLI script has been provided that will target a single host or a vSphere cluster based on parameters provided to the script.
 
 **Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
 
 #### Gather environment information
-In order to run the script effectively it must be provided with the organizations environment specific information.  
+In order to run the script effectively it must be provided the organization's environment specific information.  
 
 Review the below parameters and gather the information needed to run the script:
 {{< tabpane text=false right=false persist=header >}}
@@ -168,11 +168,11 @@ param (
 {{< /tabpane >}}
 
 {{% alert title="Warning" color="warning" %}}
-The `allowedIPs` parameter is used to configure ESXi service firewall rules and updates each service from allowing all IP addresses to restricting traffic to the ranges provided. Carefully evaluate the value provided here for suitable ranges in your environment. If service specific IP ranges are desired then this control should be disabled and remediated manually or with other means outside of the script provided.
+The `allowedIPs` parameter is used to configure ESXi service firewall rules and updates each service from allowing all IP addresses to restricting traffic to the ranges provided. Carefully evaluate the value provided here for suitable ranges in the environment. If service specific IP ranges are desired then this control should be disabled and remediated manually or with other means outside of the script provided.
 {{% /alert %}}
 
 #### Disabling Controls
-The script includes variables to enable or disable controls by STIG ID. All controls are all enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
+The script includes variables to enable or disable controls by STIG ID. All controls are enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
 A snippet of these variables is shown below.  
 ```powershell
@@ -235,7 +235,7 @@ VMkernel.Boot.execI… True                 VMHost
   "skipped": 25,
   "failed": 5,
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: /tmp/reports
 
 Mode                 LastWriteTime         Length Name
@@ -289,7 +289,7 @@ VMkernel.Boot.execI… True                 VMHost
   "skipped": 25,
   "failed": 5,
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: /tmp/reports
 
 Mode                 LastWriteTime         Length Name
@@ -343,7 +343,7 @@ VMkernel.Boot.execI… True                 VMHost
   "skipped": 25,
   "failed": 5,
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: /tmp/reports
 
 Mode                 LastWriteTime         Length Name
@@ -354,12 +354,12 @@ Mode                 LastWriteTime         Length Name
 {{< /tabpane >}}
 
 ### Remediating virtual machines
-To remediate virtual machines we have provided a PowerCLI script that will target a single VM, all VMs in a cluster, or all VMs in vCenter based on parameters provided to the script.  
+To remediate virtual machines a PowerCLI script has been provided that will target a single VM, all VMs in a cluster, or all VMs in vCenter based on parameters provided to the script.  
 
 **Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. See the scripts description text for more details.**
 
 #### Disabling Controls
-For processing efficiency it is not constructed to run each control individually so the STIG ID variables are not included to enabled/disable controls such as in the ESXi/vCenter scripts. If it is desired to skip some controls they could be commented out in the `$vmconfig` variable in the script.  
+For processing efficiency this script is not constructed to run each control individually, so the STIG ID variables to enable/disable controls are not included as in the ESXi/vCenter scripts. If it is desired to skip some controls they could be commented out in the `$vmconfig` variable in the script. 
 
 #### Run remediation script on target virtual machines
 This example will remediate all hosts in the vSphere cluster named `cluster0`. If running on a single host is desired, specify the `hostname` parameter instead of `cluster` and provide the hostname as displayed in vCenter.  
@@ -382,7 +382,7 @@ cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/powercli
 2:13:53 PM ...Setting isolation.tools.diskShrink.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
 2:13:53 PM ...Setting isolation.tools.diskWiper.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: /tmp/reports
 
 Mode                 LastWriteTime         Length Name
@@ -406,7 +406,7 @@ cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/powercli
 2:13:53 PM ...Setting isolation.tools.diskShrink.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
 2:13:53 PM ...Setting isolation.tools.diskWiper.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: /tmp/reports
 
 Mode                 LastWriteTime         Length Name
@@ -430,7 +430,7 @@ cd /usr/share/stigs/vsphere/8.0/v1r1-srg/vsphere/powercli
 2:13:53 PM ...Setting isolation.tools.diskShrink.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
 2:13:53 PM ...Setting isolation.tools.diskWiper.disable does not exist on vCLS-1ef92498-69e3-4c68-b4fa-ef5a25b671b7 and is compliant by default...
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: /tmp/reports
 
 Mode                 LastWriteTime         Length Name
@@ -441,12 +441,12 @@ Mode                 LastWriteTime         Length Name
 {{< /tabpane >}}
 
 ### Remediating vCenter
-To remediate vCenter we have provided a PowerCLI script that will target a single vCenter server.  
+To remediate vCenter a PowerCLI script has been provided that will target a single vCenter server.  
 
 **Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
 
 #### Gather environment information
-In order to run the script effectively it must be provided with the organizations environment specific information.  
+In order to run the script effectively it must be provided the organization's environment specific information.  
 
 This script also uses the [VMware.Vsphere.SsoAdmin PowerCLI Module](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) to configure vCenter SSO controls. This module connects to vCenter separately using the `Connect-SsoAdminServer` command that requires using an account that has sufficient privileges in vCenter to modify SSO settings.  
 
@@ -510,7 +510,7 @@ param (
 {{< /tabpane >}}
 
 #### Disabling Controls
-The script includes variables to enable or disable controls by STIG ID. All controls are all enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
+The script includes variables to enable or disable controls by STIG ID. All controls are enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
 A snippet of these variables is shown below.  
 ```powershell
@@ -550,7 +550,7 @@ cd /usr/share/stigs/vsphere/8.0/v2r3-stig/vsphere/powercli
 2:27:47 PM ...Remediating STIG ID: VCSA-80-000034 with Title: The vCenter Server must produce audit records containing information to establish what type of events occurred.
 2:27:47 PM ...Setting config.log.level is already configured correctly to info on 10.182.177.21
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: /tmp/reports
 
 Mode                 LastWriteTime         Length Name
@@ -581,7 +581,7 @@ cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/powercli
 2:27:47 PM ...Remediating STIG ID: VCSA-80-000034 with Title: The vCenter Server must produce audit records containing information to establish what type of events occurred.
 2:27:47 PM ...Setting config.log.level is already configured correctly to info on 10.182.177.21
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: /tmp/reports
 
 Mode                 LastWriteTime         Length Name
@@ -612,7 +612,7 @@ cd /usr/share/stigs/vsphere/8.0/v1r1-srg/vsphere/powercli
 2:27:47 PM ...Remediating STIG ID: VCSA-80-000034 with Title: The vCenter Server must produce audit records containing information to establish what type of events occurred.
 2:27:47 PM ...Setting config.log.level is already configured correctly to info on 10.182.177.21
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: /tmp/reports
 
 Mode                 LastWriteTime         Length Name
@@ -623,7 +623,7 @@ Mode                 LastWriteTime         Length Name
 {{< /tabpane >}}
 
 ## Remediating vCenter (Appliance Controls)
-To remediate vCenter we have provided an Ansible playbook that will target a single vCenter server appliance over SSH and configure any non-compliant controls.  
+To remediate vCenter an Ansible playbook has been provided that will target a single vCenter server appliance over SSH and configure any non-compliant controls.  
 
 ### Update the default shell for root
 The default shell for root must be changed to `/bin/bash` before running. The appliance shell causes issues with some controls running.
@@ -735,7 +735,7 @@ changed: [10.182.177.21] => {"changed": true, "checksum": "aaafa4e8c28743ce3cc22
 {{< /tab >}}
 {{< /tabpane >}}
 
-A more conservative and preferred approach is to target any non-compliant controls or run each component separately allowed you to perform any functional testing in between.
+A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="bash" >}}

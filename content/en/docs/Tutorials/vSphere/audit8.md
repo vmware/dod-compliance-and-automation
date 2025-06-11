@@ -8,7 +8,7 @@ description: >
 Auditing vSphere for STIG compliance involves scanning ESXi, Virtual Machines, vCenter, and the vCenter appliance.
 
 When auditing vSphere we will split up tasks between product and appliance based controls which are defined as follows:
-* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration effecting availability of the product is low but could impact how the environment is operated if not assessed.
+* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration affecting availability of the product is low but could impact how the environment is operated if not assessed.
 * **Appliance Control:** Appliance controls deal with the underlying components (databases, web servers, Photon OS, etc) that make up the product. Altering these add risk to product availability if precautionary steps and care in implementation are not taken. Identifying and relying on Default settings in this category makes this category less risky (Default Appliance Controls should be seen as a positive).
 
 To audit vSphere using InSpec we utilize the VMware transport(train-vmware) which connects to vCenter via PowerCLI and performs queries. For the vCenter appliance the auditing is performed via SSH. It is recommended to disable SSH on vCenter after the auditing is complete.
@@ -16,7 +16,7 @@ To audit vSphere using InSpec we utilize the VMware transport(train-vmware) whic
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* Powershell 7.3.4/PowerCLI 13.3 or newer
+* PowerShell 7.3.4/PowerCLI 13.3 or newer
 * [VMware.Vsphere.SsoAdmin PowerCLI Module 1.4.0](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) or newer
 * InSpec/Cinc Auditor 6.8.11
 * train-vmware 0.2.0
@@ -27,8 +27,8 @@ Versions listed below were used for this documentation. Other versions of these 
 * Example distributed switches, VMs, and a content library were created in the testbed to produce audit results for those objects.  
 
 ### Assumptions
-* Commands are being ran from a Linux machine. Windows will also work but paths and commands may need to be adjusted from the examples.
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
+* Commands are being run from a Linux machine. Windows will also work but paths and commands may need to be adjusted from the examples.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
 * CINC Auditor is used in lieu of InSpec. If InSpec is used replace `cinc-auditor` with `inspec` when running commands.
 
 ### Install the custom VMware transport for InSpec
@@ -69,13 +69,13 @@ To install the plugin that is included with the `vmware-vsphere-8.0-stig-baselin
 
 ## Auditing vSphere (Product Controls)
 {{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version you are running. Select the example command tabs for the version in your environment.
+The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
 {{% /alert %}}
 
 ### Setup environment variables for vCenter connection
-Connectivity to vCenter is established via environment variables. Take care to clear your history and close the Powershell session to avoid any credentials left in memory/history.
+Connectivity to vCenter is established via environment variables. Take care to clear the history and close the PowerShell session to avoid any credentials left in memory/history.
 ```bash
-#Enter Powershell
+#Enter PowerShell
 pwsh
 
 # Note: VISERVER is referencing vCenter and not an ESXi host.
@@ -83,7 +83,7 @@ $env:VISERVER='10.186.30.81'
 $env:VISERVER_USERNAME='Administrator@vsphere.local'
 $env:VISERVER_PASSWORD='password'
 ```
-*Note: If your password has a single ' in it you must substitute it with '''' for it to be properly escaped all the way through the process.*
+*Note: If the password includes a single tick (') it must be substituted with four ticks ('''') in order for it to be properly escaped all the way through the process.*
 
 ### Auditing ESXi
 #### Update profile inputs
@@ -115,7 +115,7 @@ vi inputs-example.yml
 {{< /tab >}}
 {{< /tabpane >}}
 
-Update the inputs as shown below with values relevant to your environment.
+Update the inputs as shown below with values relevant to the environment.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="yaml" >}}
@@ -205,7 +205,7 @@ esxiBuildNumber: '21813344'
 {{< /tabpane >}}
 
 #### Run the audit
-In this example we will be scanning a single ESXi host attached to the target vCenter, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
+In this example a single ESXi host attached to the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
@@ -327,7 +327,7 @@ vi inputs-example.yml
 {{< /tab >}}
 {{< /tabpane >}}
 
-Update the inputs as shown below with values relevant to your environment.
+Update the inputs as shown below with values relevant to the environment.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="yaml" >}}
@@ -348,7 +348,7 @@ allvms: true
 {{< /tabpane >}}
 
 #### Run the audit
-In this example we will be scanning all VMs in the target vCenter, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
+In this example all VMs in the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
@@ -575,7 +575,7 @@ vi inputs-example.yml
 {{< /tab >}}
 {{< /tabpane >}}
 
-Update the inputs as shown below with values relevant to your environment.
+Update the inputs as shown below with values relevant to the environment.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="yaml" >}}
@@ -684,7 +684,7 @@ backup3rdParty: false
 {{< /tabpane >}}
 
 #### Run the audit
-In this example we will be scanning vCenter controls in the target vCenter, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
+In this example vCenter controls in the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
@@ -792,7 +792,8 @@ Test Summary: 136 successful, 26 failures, 20 skipped
 {{< /tabpane >}}
 
 ### Run a combined scan for all vSphere product controls
-Instead of running each STIG for product controls separately you can also run all of the vCenter, ESXi, and VM controls for a combined report.
+Instead of running each STIG for product controls separately, all of the vCenter, ESXi, and VM controls can be run for a combined report.
+
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
@@ -821,14 +822,14 @@ cinc-auditor exec . -t vmware:// --show-progress --enhanced-outcomes --input-fil
 ### InSpec runner scripts
 For accreditation purposes there may be a requirement to produce a CKL file for each ESXi host and/or VM. We have also created a PowerCLI script that acts as a runner for InSpec to loop through a list of hosts or VMs, then produce a json report for each, and if the SAF CLI is installed also create a CKL file.  
 
-With this script you can also provide an [attestation](/docs/automation-tools/safcli/#creating-and-applying-manual-attestations) file that will be applied to the results and incorporated into the CKL file.
+With this script an [attestation](/docs/automation-tools/safcli/#creating-and-applying-manual-attestations) file can also be provided that will be applied to the results and incorporated into the CKL file.
 
 #### Using the ESXi runner script
 To use the runner script, do the following:
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="8.0 U3" lang="powershell" >}}
-# Enter Powershell
+# Enter PowerShell
 pwsh
 
 # If not already previously done setup the credential for the vCenter connection.
@@ -903,7 +904,7 @@ Mode                 LastWriteTime         Length Name
 -a---            6/7/2023 10:42 AM         521082 VMware_vSphere_8.0_STIG_ESXi_Inspec_Report_10.186.25.26-6-7-2023_10-37-15.json
 {{< /tab >}}
 {{< tab header="8.0 U2" lang="powershell" >}}
-# Enter Powershell
+# Enter PowerShell
 pwsh
 
 # If not already previously done setup the credential for the vCenter connection.
@@ -978,7 +979,7 @@ Mode                 LastWriteTime         Length Name
 -a---            6/7/2023 10:42 AM         521082 VMware_vSphere_8.0_STIG_ESXi_Inspec_Report_10.186.25.26-6-7-2023_10-37-15.json
 {{< /tab >}}
 {{< tab header="8.0 U1" lang="powershell" >}}
-# Enter Powershell
+# Enter PowerShell
 pwsh
 
 # If not already previously done setup the credential for the vCenter connection.
@@ -1075,7 +1076,7 @@ root@sc1-10-182-131-166 [ ~ ]# chsh -s /bin/bash root
 ```
 
 ### Run the audit
-In this example we will be scanning the vCenter appliance, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
+In this example a vCenter appliance will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
 
 Updating the inputs file is not required for this profile but the `inputs-vcsa-8.0.yml` should be specified because it contains inputs for the Photon profile.  
 
