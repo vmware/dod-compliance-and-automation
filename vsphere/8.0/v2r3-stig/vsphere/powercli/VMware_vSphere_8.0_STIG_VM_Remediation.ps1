@@ -37,7 +37,7 @@
 .PARAMETER cluster
   Specifying the -cluster option only remediates virtual machines in the target vCenter and specified cluster
 .PARAMETER virtualmachine
-  Specifying the -vm option will only remediate the target virtual machine
+  Specifying the -virtualmachine option will only remediate the target virtual machine
 #>
 [CmdletBinding()]
 param (
