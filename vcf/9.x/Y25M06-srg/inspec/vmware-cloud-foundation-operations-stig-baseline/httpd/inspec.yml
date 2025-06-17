@@ -1,0 +1,138 @@
+name: VMware Cloud Foundation 9.x Operations Appliance Apache HTTP Server STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Operations Appliance Apache HTTP Server STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Operations Appliance Apache HTTP Server STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+- name: apache_httpd_conf_file
+  description: The main config file for httpd
+  type: string
+  value: '/etc/httpd/conf/httpd.conf'
+- name: apache_virtualhost_conf_file
+  description: The config file with the virtual host configuration
+  type: string
+  value: /usr/lib/vmware-vcopssuite/utilities/conf/vcops-apache.conf
+- name: apache_httpd_user
+  description: The user account running the apache service
+  type: string
+  value: 'admin'
+- name: apache_httpd_group
+  description: The group account running the apache service
+  type: string
+  value: 'admin'
+- name: apache_allowed_protocols
+  description: An array of allowed SSL Protocols to enable
+  type: array
+  value:
+    - '-All'
+    - '+TLSv1.2'
+    - '+TLSv1.3'
+- name: apache_log_patterns
+  description:
+  type: array
+  value:
+    - '%h'
+    - '%l'
+    - '%u'
+    - '%t'
+    - '%r'
+    - '%>s'
+    - '%b'
+- name: apache_error_log
+  description: The main config file for httpd
+  type: string
+  value: '/var/log/apache2/error_log'
+- name: apache_log_dir
+  description: The log directory for httpd
+  type: string
+  value: '/var/log/httpd/access.log'
+- name: apache_approved_modules
+  description: An array of allowed SSL Protocols to enable
+  type: array
+  value:
+    - 'core_module'
+    - 'so_module'
+    - 'http_module'
+    - 'mpm_worker_module'
+    - 'authn_file_module'
+    - 'authn_dbm_module'
+    - 'authn_core_module'
+    - 'authz_host_module'
+    - 'authz_groupfile_module'
+    - 'authz_user_module'
+    - 'authz_core_module'
+    - 'access_compat_module'
+    - 'auth_basic_module'
+    - 'socache_shmcb_module'
+    - 'reqtimeout_module'
+    - 'include_module'
+    - 'filter_module'
+    - 'mime_module'
+    - 'log_config_module'
+    - 'env_module'
+    - 'expires_module'
+    - 'headers_module'
+    - 'setenvif_module'
+    - 'version_module'
+    - 'ssl_module'
+    - 'unixd_module'
+    - 'status_module'
+    - 'autoindex_module'
+    - 'negotiation_module'
+    - 'dir_module'
+    - 'actions_module'
+    - 'userdir_module'
+    - 'alias_module'
+    - 'jk_module'
+    - 'rewrite_module'
+    - 'http2_module'
+    - 'deflate_module'
+    - 'proxy_module'
+    - 'proxy_http_module'
+- name: apache_private_key
+  description: Private key file
+  type: string
+  value: '/storage/vcops/user/conf/ssl/web_key.pem'
+- name: apache_document_dir
+  description: Directory for httpd content
+  type: string
+  value: '/storage/db/apache/proxy/web/'
+- name: apache_config_dir
+  description: Directory for httpd content
+  type: string
+  value: '/etc/httpd/'  
+- name: apache_allowed_listeners
+  description: An array of allowed Listen directives
+  type: array
+  value:
+    - '443'
+    - '80'
+    - '127.0.0.1:443'
+- name: apache_header_protocols
+  description: Protocols header value
+  type: string
+  value: 'Protocols h2 h2c http/1.1'
+- name: apache_header_hsts
+  description: HSTS header value
+  type: string
+  value: 'Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"'
+- name: apache_header_xframe_options
+  description: X-Frame Options header value
+  type: string
+  value: 'Header set X-Frame-Options "SAMEORIGIN"'
+- name: apache_header_content_type_options
+  description: X-Content-Type header value
+  type: string
+  value: 'Header set X-Content-Type-Options "nosniff"'
+- name: apache_header_csp
+  description: Content-Security-Policy header value
+  type: string
+  value: "Header set Content-Security-Policy \"default-src https: wss: data: 'unsafe-inline' 'unsafe-eval'; child-src *; worker-src 'self' blob:\""
+- name: apache_header_referrer_policy
+  description: Referrer-Policy header value
+  type: string
+  value: 'Header set Referrer-Policy "no-referrer"'

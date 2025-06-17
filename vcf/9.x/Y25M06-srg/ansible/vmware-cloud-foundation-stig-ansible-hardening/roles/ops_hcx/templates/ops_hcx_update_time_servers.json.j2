@@ -1,0 +1,8 @@
+{
+  "ntpServer": [
+    {% for item in ops_hcx_defaults_time_servers %}
+    "{{ item }}",
+    {% endfor %}
+  ],
+  "timezone": "UTC"
+}

@@ -1,0 +1,70 @@
+- name: Include Playbook Variables
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Include playbook variables from ./vars/vars_playbook.yml
+      ansible.builtin.include_vars:
+        file: vars_playbook.yml
+      tags:
+        - always
+    - name: Include playbook variables overrides from ./vars/vars_playbook_overrides.yml
+      ansible.builtin.include_vars:
+        file: vars_playbook_overrides.yml
+      tags:
+        - always
+- name: vmware-cloud-foundation-vcenter-stig-ansible-hardening
+  hosts: vcenter
+  roles:
+    - role: photon_5
+    - role: vcenter_envoy
+    - role: vcenter_postgresql
+    - role: vcenter_vami
+- name: vmware-cloud-foundation-sddcmgr-stig-ansible-hardening
+  hosts: sddcmanager
+  roles:
+    - role: photon_5
+    - role: sddcmgr_postgresql
+    - role: sddcmgr_nginx
+- name: vmware-cloud-foundation-operations-stig-ansible-hardening
+  hosts: operations
+  roles:
+    - role: photon_5
+    - role: ops_apache_httpd
+    - role: ops_postgresql
+- name: vmware-cloud-foundation-operations-data-stig-ansible-hardening
+  hosts: operations_data
+  roles:
+    - role: photon_5
+    - role: ops_apache_httpd
+- name: vmware-cloud-foundation-operations-cloud-proxy-stig-ansible-hardening
+  hosts: operations_cloud_proxy
+  roles:
+    - role: photon_5
+- name: vmware-cloud-foundation-operations-for-logs-stig-ansible-hardening
+  hosts: operations_logs
+  roles:
+    - role: photon_5
+    - role: ops_logs_apache_tomcat
+- name: vmware-cloud-foundation-operations-fleet-management-stig-ansible-hardening
+  hosts: operations_fm
+  roles:
+    - role: photon_5
+    - role: ops_fm_nginx
+- name: vmware-cloud-foundation-operations-for-networks-platform-stig-ansible-hardening
+  hosts: operations_networks_platform
+  roles:
+    - role: ubuntu_2204
+    - role: ops_net_platform_nginx
+- name: vmware-cloud-foundation-operations-for-networks-proxy-stig-ansible-hardening
+  hosts: operations_networks_proxy
+  roles:
+    - role: ubuntu_2204
+- name: vmware-cloud-foundation-operations-hcx-stig-ansible-hardening
+  hosts: operations_hcx_mgr
+  roles:
+    - role: photon_5
+    - role: ops_hcx_mgr_apache_httpd
+- name: vmware-cloud-foundation-operations-hcx-connector-stig-ansible-hardening
+  hosts: operations_hcx_conn
+  roles:
+    - role: photon_5

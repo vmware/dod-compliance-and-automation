@@ -1,0 +1,39 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+nsx_routing_defaults_run_vcfr_9x_000013: true
+nsx_routing_defaults_run_vcfr_9x_000016: true
+nsx_routing_defaults_run_vcfr_9x_000027: true
+nsx_routing_defaults_run_vcfr_9x_000029: true
+nsx_routing_defaults_run_vcfr_9x_000051: true
+nsx_routing_defaults_run_vcfr_9x_000055: true
+nsx_routing_defaults_run_vcfr_9x_000067: true
+nsx_routing_defaults_run_vcfr_9x_000091: true
+nsx_routing_defaults_run_vcfr_9x_000102: true
+nsx_routing_defaults_run_vcfr_9x_000109: true
+nsx_routing_defaults_run_vcfr_9x_000110: true
+nsx_routing_defaults_run_vcfr_9x_000111: true
+nsx_routing_defaults_run_vcfr_9x_000112: true
+nsx_routing_defaults_run_vcfr_9x_000113: true
+nsx_routing_defaults_run_vcfr_9x_000114: true
+nsx_routing_defaults_run_vcfr_9x_000115: true
+
+# NSX T0 Routing Configuration
+# Array of T0 ids that should have multicast enabled
+nsx_routing_defaults_t0_gateways_with_multicast_enabled: []
+# Array of T0 interface ids that should have multicast enabled
+nsx_routing_defaults_t0_gateway_interfaces_with_multicast_enabled: []
+# Array of T0 ids that should have dhcp enabled
+nsx_routing_defaults_t0_gateways_with_dhcp_enabled: []
+nsx_routing_defaults_t0_interface_urpf: 'STRICT'
+nsx_routing_defaults_t0_bgp_max_prefixes: 200
+nsx_routing_defaults_t0_ipv6_hop_limit: 64
+
+# NSX T1 Routing Configuration
+# Array of T1 ids that should have multicast enabled
+nsx_routing_defaults_t1_gateways_with_multicast_enabled: []
+# Array of T1 ids that should have dhcp enabled
+nsx_routing_defaults_t1_gateways_with_dhcp_enabled: []
+nsx_routing_defaults_t1_ipv6_hop_limit: 64

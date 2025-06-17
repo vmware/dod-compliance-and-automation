@@ -1,0 +1,16 @@
+---
+- name: Include VCF Operations for Networks tasks
+  ansible.builtin.include_tasks:
+    file: ops_net.yml
+    apply:
+      tags:
+        - ops-net
+  tags:
+    - ops-net
+    - VCFA-9X-000024
+    - VCFA-9X-000376
+    - VCFA-9X-000377
+    - VCFA-9X-000378
+    - VCFA-9X-000379
+    - VCFA-9X-000380
+    - VCFA-9X-000386

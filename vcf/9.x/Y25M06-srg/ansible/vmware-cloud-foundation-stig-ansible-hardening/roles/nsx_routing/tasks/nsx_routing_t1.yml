@@ -1,0 +1,171 @@
+---
+
+###################################################################################################################################
+- name: Get all Tier-1 Gateways for use in tasks
+  tags: [always]
+  block:
+    - name: Get all Tier-1 Gateways for use in tasks
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/infra/tier-1s"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: t1gateways
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFR-9X-000112
+  tags: [VCFR-9X-000112]
+  when: nsx_routing_defaults_run_vcfr_9x_000112 | bool
+  block:
+    - name: VCFR-9X-000112 - Log no Tier-1 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000112 - No Tier-1 Gateways found."
+      changed_when: false
+      when:
+        - t1gateways.json.result_count == 0
+
+    - name: VCFR-9X-000112 - The VMware Cloud Foundation NSX Tier-1 Gateway must be configured to have all inactive interfaces removed.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000112 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t1gateways.json.result_count != 0
+
+###################################################################################################################################
+- name: VCFR-9X-000113
+  tags: [VCFR-9X-000113]
+  when: nsx_routing_defaults_run_vcfr_9x_000113 | bool
+  block:
+    - name: VCFR-9X-000113 - Log no Tier-1 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000113 - No Tier-1 Gateways found."
+      changed_when: false
+      when:
+        - t1gateways.json.result_count == 0
+
+    - name: VCFR-9X-000113 - Loop through Tier-1 Gateways and disable dhcp if not on approved list.
+      ansible.builtin.include_tasks:
+        file: nsx_routing_t1_disable_dhcp.yml
+      with_items:
+        - "{{ t1gateways.json.results }}"
+      when:
+        - t1gateways.json.result_count != 0
+        - var_outer_t1.dhcp_config_paths is defined
+        - var_outer_t1.id not in nsx_routing_defaults_t1_gateways_with_dhcp_enabled
+      loop_control:
+        loop_var: var_outer_t1
+        label: "T1 Info: {{ var_outer_t1.id }}"
+
+###################################################################################################################################
+- name: VCFR-9X-000114
+  tags: [VCFR-9X-000114]
+  when: nsx_routing_defaults_run_vcfr_9x_000114 | bool
+  block:
+    - name: VCFR-9X-000114 - Log no Tier-1 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000114 - No Tier-1 Gateways found."
+      changed_when: false
+      when:
+        - t1gateways.json.result_count == 0
+
+    - name: VCFR-9X-000114 - Check to see if IPv6 forwarding is enabled
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/infra/global-config"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: ipv6enabled
+      changed_when: false
+      when:
+        - t1gateways.json.result_count != 0
+
+    - name: VCFR-9X-000114 - Find IPv6 ND Profiles with a hop limit set incorrectly
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/search?query=(resource_type:Ipv6NdraProfile%20AND%20!ra_config.hop_limit:(64%20OR%20{{ nsx_routing_defaults_t1_ipv6_hop_limit }}))"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: badipv6profiles
+      changed_when: false
+      when:
+        - t1gateways.json.result_count != 0
+        - ipv6enabled.json.l3_forwarding_mode == "IPV4_AND_IPV6"
+
+    - name: "VCFR-9X-000114 - Update IPv6 profiles with an incorrect hop limit to {{ nsx_routing_defaults_t1_ipv6_hop_limit }}."
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ item.path }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PATCH
+        body: "{{ lookup('template', './nsx_routing_t1_update_ipv6_ndra_profile.json.j2') | to_json }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ badipv6profiles.json.results }}"
+      register: ipv6ndraupdate
+      when:
+        - t1gateways.json.result_count != 0
+        - ipv6enabled.json.l3_forwarding_mode == "IPV4_AND_IPV6"
+        - badipv6profiles.json.result_count != 0
+      changed_when:
+        - ipv6ndraupdate.status == 200
+
+###################################################################################################################################
+- name: VCFR-9X-000115
+  tags: [VCFR-9X-000115]
+  when: nsx_routing_defaults_run_vcfr_9x_000115 | bool
+  block:
+    - name: VCFR-9X-000115 - Log no Tier-1 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000115 - No Tier-1 Gateways found."
+      changed_when: false
+      when:
+        - t1gateways.json.result_count == 0
+
+    - name: VCFR-9X-000115 - Find enabled Tier-1 Multicast Policies
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/search?query=(resource_type:PolicyMulticastConfig%20AND%20enabled:true)"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: multicastenabled
+      changed_when: false
+      when:
+        - t1gateways.json.result_count != 0
+
+    - name: VCFR-9X-000115 - Disable multicast on Tier-1 Gateways if not in approved list.
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ item.path }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PATCH
+        body: "{{ lookup('template', './nsx_routing_t1_disable_multicast_gateway.json.j2') }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ multicastenabled.json.results }}"
+      register: multicastupdate
+      when:
+        - t1gateways.json.result_count != 0
+        - multicastenabled.json.result_count != 0
+        # extract T1 ID from path and see if it's in list given
+        - item.path | regex_search('\/infra\/tier-1s\/(.*?)\/', '\\1') | first not in nsx_routing_defaults_t1_gateways_with_multicast_enabled
+      changed_when:
+        - multicastupdate.status == 200

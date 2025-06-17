@@ -1,0 +1,340 @@
+---
+
+###################################################################################################################################
+- name: VCFA-9X-000001
+  tags: [VCFA-9X-000001]
+  when: operations_defaults_run_vcfa_9x_000001 | bool
+  block:
+    - name: VCFA-9X-000001 - Get concurrent sessions setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/deployment/config/globalsettings/ALLOW_CONCURRENT_LOGIN_SESSIONS"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: sessionsettings
+      changed_when: false
+
+    - name: VCFA-9X-000001 - Update concurrent sessions setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/deployment/config/globalsettings/ALLOW_CONCURRENT_LOGIN_SESSIONS/false"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+          Accept: "application/json"
+        method: PUT
+        status_code:
+          - 201
+      register: sessionresponse
+      when:
+        - sessionsettings.json['values'] is defined and sessionsettings.json['values'][0] is defined
+        - sessionsettings.json['values'][0] | bool
+      changed_when:
+        - sessionresponse.status == 201
+
+###################################################################################################################################
+- name: VCFA-9X-000054
+  tags: [VCFA-9X-000054]
+  when: operations_defaults_run_vcfa_9x_000054 | bool
+  block:
+    - name: VCFA-9X-000054 - Multifactor authentication
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000054 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000141
+  tags: [VCFA-9X-000141]
+  when: operations_defaults_run_vcfa_9x_000141 | bool
+  block:
+    - name: VCFA-9X-000141 - Forward vSphere logs to a central log server
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000141 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000262
+  tags: [VCFA-9X-000262]
+  when: operations_defaults_run_vcfa_9x_000262 | bool
+  block:
+    - name: VCFA-9X-000262 - Get certificate validation setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/deployment/config/globalsettings/ENABLE_CERTIFICATE_VALIDATION_STANDARD_WAY"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: certsettings
+      changed_when: false
+
+    - name: VCFA-9X-000262 - Update certificate validation setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/deployment/config/globalsettings/ENABLE_CERTIFICATE_VALIDATION_STANDARD_WAY/true"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+          Accept: "application/json"
+        method: PUT
+        status_code:
+          - 201
+      register: certresponse
+      when:
+        - certsettings.json['values'] is defined and certsettings.json['values'][0] is defined
+        - not certsettings.json['values'][0] | bool
+      changed_when:
+        - certresponse.status == 201
+
+###################################################################################################################################
+- name: VCFA-9X-000292
+  tags: [VCFA-9X-000292]
+  when: operations_defaults_run_vcfa_9x_000292 | bool
+  block:
+    - name: VCFA-9X-000292 - Disable unsigned management pack installation
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000292 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000346
+  tags: [VCFA-9X-000346]
+  when: operations_defaults_run_vcfa_9x_000346 | bool
+  block:
+    - name: VCFA-9X-000346 - Enforce password complexity requirements
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000346 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000347
+  tags: [VCFA-9X-000347]
+  when: operations_defaults_run_vcfa_9x_000347 | bool
+  block:
+    - name: VCFA-9X-000347 - Display the Standard Mandatory DOD Notice and Consent Banner before logon
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000347 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000348
+  tags: [VCFA-9X-000348]
+  when: operations_defaults_run_vcfa_9x_000348 | bool
+  block:
+    - name: VCFA-9X-000348 - Enforce the limit of three consecutive invalid logon attempts
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000348 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000349
+  tags: [VCFA-9X-000349]
+  when: operations_defaults_run_vcfa_9x_000349 | bool
+  block:
+    - name: VCFA-9X-000349 - Get session timeout setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/deployment/config/globalsettings/SESSION_TIMEOUT_IN_MINUTES"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: timeoutsettings
+      changed_when: false
+
+    - name: VCFA-9X-000349 - Update session timeout setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/deployment/config/globalsettings/SESSION_TIMEOUT_IN_MINUTES/{{ operations_defaults_session_timeout_minutes }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+          Accept: "application/json"
+        method: PUT
+        status_code:
+          - 201
+      register: timeoutresponse
+      when:
+        - timeoutsettings.json['values'] is defined and timeoutsettings.json['values'][0] is defined
+        - timeoutsettings.json['values'][0] != operations_defaults_session_timeout_minutes
+      changed_when:
+        - timeoutresponse.status == 201
+
+###################################################################################################################################
+- name: VCFA-9X-000350
+  tags: [VCFA-9X-000350]
+  when: operations_defaults_run_vcfa_9x_000350 | bool
+  block:
+    - name: VCFA-9X-000350 - Get credential ownership enforcement setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/deployment/config/globalsettings/ACTIVATE_CREDENTIAL_OWNERSHIP"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: credsettings
+      changed_when: false
+
+    - name: VCFA-9X-000350 - Update credential ownership enforcement setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/deployment/config/globalsettings/ACTIVATE_CREDENTIAL_OWNERSHIP/true"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+          Accept: "application/json"
+        method: PUT
+        status_code:
+          - 201
+      register: credresponse
+      when:
+        - credsettings.json['values'] is defined and credsettings.json['values'][0] is defined
+        - not credsettings.json['values'][0] | bool
+      changed_when:
+        - credresponse.status == 201
+
+###################################################################################################################################
+- name: VCFA-9X-000351
+  tags: [VCFA-9X-000351]
+  when: operations_defaults_run_vcfa_9x_000351 | bool
+  block:
+    - name: VCFA-9X-000351 - Verify assigned roles and scopes
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000351 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000352
+  tags: [VCFA-9X-000352]
+  when: operations_defaults_run_vcfa_9x_000352 | bool
+  block:
+    - name: VCFA-9X-000352 - Enable FIPS-validated cryptography
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000352 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000353
+  tags: [VCFA-9X-000353]
+  when: operations_defaults_run_vcfa_9x_000353 | bool
+  block:
+    - name: VCFA-9X-000353 - Enable firewall hardening
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000353 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000361
+  tags: [VCFA-9X-000361]
+  when: operations_defaults_run_vcfa_9x_000361 | bool
+  block:
+    - name: VCFA-9X-000361 - Include only approved trust anchors in trust stores or certificate stores managed by the organization
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000361 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000363
+  tags: [VCFA-9X-000363]
+  when: operations_defaults_run_vcfa_9x_000363 | bool
+  block:
+    - name: VCFA-9X-000363 - VCF Operations log forwarding settings
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000363 - This control must be manually remediated."
+      changed_when: false
+
+  # API doesn't work - returns status 200 on PUT, but doesn't actually update settings.
+  # block:
+  #   - name: VCFA-9X-000363 - Get VCF Operations log forwarding settings
+  #     ansible.builtin.uri:
+  #       url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/logs/forwarding"
+  #       validate_certs: "{{ validate_certificate_uri }}"
+  #       headers:
+  #         Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+  #         Accept: "application/json"
+  #       method: GET
+  #     register: logsettings
+  #     changed_when: false
+
+  #     # If logging is already enabled, then keep current host, protocol, ssl, and cluster settings
+  #   - name: VCFA-9X-000363 - Parse previous results and override provided host variable if there.
+  #     ansible.builtin.set_fact:
+  #       operations_defaults_log_server: "{{ logsettings.json['host'] }}"
+  #       operations_defaults_log_server_protocol: "{{ logsettings.json['protocol'] }}"
+  #       operations_defaults_log_server_use_ssl: "{{ logsettings.json['useSSL'] }}"
+  #     when:
+  #       - logsettings.json['enabled'] is defined and logsettings.json['enabled'] | bool
+
+  #   - name: VCFA-9X-000363 - Parse previous results and override provided cluster variable if there.
+  #     ansible.builtin.set_fact:
+  #       operations_defaults_log_server_cluster_name: "{{ logsettings.json['cluster'] }}"
+  #     when:
+  #       - logsettings.json['enabled'] is defined and logsettings.json['enabled'] | bool
+
+  #   - name: VCFA-9X-000363 - Update VCF Operations log forwarding settings
+  #     ansible.builtin.uri:
+  #       url: "https://{{ lookup('vars', 'ansible_host') }}/suite-api/api/logs/forwarding"
+  #       validate_certs: "{{ validate_certificate_uri }}"
+  #       headers:
+  #         Authorization: "OpsToken {{ lookup('vars', 'var_vault_operations_session_token') }}"
+  #         Accept: "application/json"
+  #       method: PUT
+  #       body: "{{ lookup('template', './operations_update_log_shipping.json.j2') }}"
+  #       body_format: json
+  #       status_code:
+  #         - 200
+  #     register: logresponse
+  #     when:
+  #       - logsettings.json['entities'] is defined
+  #       - operations_defaults_logs_to_offload | sort != logsettings.json['entities'] | sort
+  #     changed_when:
+  #       - logresponse.status == 200
+
+###################################################################################################################################
+- name: VCFA-9X-000365
+  tags: [VCFA-9X-000365]
+  when: operations_defaults_run_vcfa_9x_000365 | bool
+  block:
+    - name: VCFA-9X-000365 - Forward VCF Operations Fleet Management logs to a central log server
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000365 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000366
+  tags: [VCFA-9X-000366]
+  when: operations_defaults_run_vcfa_9x_000366 | bool
+  block:
+    - name: VCFA-9X-000366 - Compare internal information system clocks with an authoritative time server
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000366 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000368
+  tags: [VCFA-9X-000368]
+  when: operations_defaults_run_vcfa_9x_000368 | bool
+  block:
+    - name: VCFA-9X-000368 - Configure Operations for Networks to compare internal system clocks with an authoritative time server
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000366 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000369
+  tags: [VCFA-9X-000369]
+  when: operations_defaults_run_vcfa_9x_000369 | bool
+  block:
+    - name: VCFA-9X-000369 - Configure Automation to compare internal system clocks with an authoritative time server
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000366 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000370
+  tags: [VCFA-9X-000370]
+  when: operations_defaults_run_vcfa_9x_000370 | bool
+  block:
+    - name: VCFA-9X-000370 - Configure Identity Broker to compare internal system clocks with an authoritative time server
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000366 - This control must be manually remediated."
+      changed_when: false

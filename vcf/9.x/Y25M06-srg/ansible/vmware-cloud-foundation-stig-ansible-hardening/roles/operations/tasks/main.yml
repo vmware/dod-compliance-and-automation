@@ -1,0 +1,30 @@
+---
+
+- name: Include Operations tasks
+  ansible.builtin.include_tasks:
+    file: operations.yml
+    apply:
+      tags:
+        - operations
+  tags:
+    - operations
+    - VCFA-9X-000001
+    - VCFA-9X-000054
+    - VCFA-9X-000141
+    - VCFA-9X-000262
+    - VCFA-9X-000292
+    - VCFA-9X-000346
+    - VCFA-9X-000347
+    - VCFA-9X-000348
+    - VCFA-9X-000349
+    - VCFA-9X-000350
+    - VCFA-9X-000351
+    - VCFA-9X-000352
+    - VCFA-9X-000353
+    - VCFA-9X-000361
+    - VCFA-9X-000363
+    - VCFA-9X-000365
+    - VCFA-9X-000366
+    - VCFA-9X-000368
+    - VCFA-9X-000369
+    - VCFA-9X-000370

@@ -1,0 +1,418 @@
+# You may add here your
+# server {
+#       ...
+# }
+# statements for each of your virtual hosts to this file
+
+##
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+proxy_cache_path /var/cache/nginx keys_zone=vip_cache:1m max_size=100m inactive=600m use_temp_path=off;
+
+server {
+        listen   80 default;
+        location / {
+                rewrite ^ https://$host$request_uri? permanent;
+        }
+
+            #Location for Nginx status check. This url is used by datadog
+            location /nginx_status {
+          stub_status on;
+        }
+
+}
+
+upstream lbrest {
+    server 127.0.0.1:8080;
+}
+
+upstream lbrest_any {
+        server platform1:8080;
+        server platform2:8080;
+        server platform3:8080;
+
+}
+
+upstream lbrest_platform1 {
+        server platform1:8080;
+        server localhost:8080   backup;
+}
+upstream lbrest_platform2 {
+        server platform2:8080;
+        server localhost:8080   backup;
+}
+upstream lbrest_platform3 {
+        server platform3:8080;
+        server localhost:8080   backup;
+}
+
+
+map $cookie_vrniRoutingId $lbrest_non_sticky_pool {
+        # If the cookie is not present, route all request to localhost for debuggability
+        "" "lbrest";
+        # otherwise, use lbrest_any which does round robin load balancing
+        default "lbrest_any";
+}
+
+map $cookie_vrniRoutingId $lbrest_sticky_pool {
+        default "lbrest";
+        cGxhdGZvcm0x "lbrest_platform1";
+        cGxhdGZvcm0y "lbrest_platform2";
+        cGxhdGZvcm0z "lbrest_platform3";
+
+}
+
+# UI Assets Cache Expires map
+map $request_uri $expires {
+    # Default
+    default                                               epoch;
+
+    # For Stable Static Assets
+    ~*\.(js|css|png|svg|jpg|gif|woff|woff2|eot|ttf)$     max;
+}
+
+# In below block please DO NOT REMOVE : #federation-ssl-verify, it is used to reconfigure nginx while federation paring.
+# This is applicable only for onprem setups, when it tries to pair with Federation Primary OnSaas
+server {
+    listen localhost:6060;
+    server_tokens off;
+    resolver 127.0.0.1 valid=60s ipv6=off;
+    proxy_ssl_protocols TLSv1.2 TLSv1.3;
+    proxy_ssl_ciphers   !aNULL:ECDHE+AESGCM;
+
+    location ~* /(.*)/fedpeertosaasservlet$ {
+        set $FEDERATION_PRIMARY_FQDN $1;
+        rewrite ^/(.*)/(.*) /saas$2 break;
+        proxy_pass https://$FEDERATION_PRIMARY_FQDN;
+        proxy_redirect off;
+        proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+        proxy_ssl_verify off; #federation-ssl-verify
+        proxy_ssl_verify_depth 7;
+        proxy_ssl_session_reuse on;
+    }
+    location ~* /(.*)/saastofedpeerservlet$ {
+        set $FEDERATION_PRIMARY_FQDN $1;
+        rewrite ^/(.*)/(.*) /saas$2 break;
+        proxy_pass https://$FEDERATION_PRIMARY_FQDN;
+        proxy_redirect off;
+        proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+        proxy_ssl_verify off; #federation-ssl-verify
+        proxy_ssl_verify_depth 7;
+        proxy_ssl_session_reuse on;
+    }
+}
+
+# This virtual server hosts static assets.
+server {
+    listen localhost:3100;
+    server_name localhost;
+    server_tokens off;
+
+    root /usr/share/nginx/www;
+    index index.html index.htm;
+    client_max_body_size 1M;
+
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to index.html
+        try_files $uri $uri/ =404;
+
+
+        # Set Caching Headers
+        expires $expires;
+
+        # Content-security
+        add_header Content-Security-Policy "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.vmware.com https://*.vmware-aws.com https://*.googleapis.com; object-src 'none'";
+        add_header X-XSS-Protection "1; mode=block";
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        add_header X-Content-Type-Options nosniff;
+        add_header Referrer-Policy "no-referrer";
+    }
+}
+
+# HTTPS server
+server {
+    listen 443 ssl;
+    http2 on;
+
+    client_max_body_size 10G;
+    lingering_time 60m;
+
+    ssl_certificate /etc/nginx/ssl/vnera.com.crt;
+    ssl_certificate_key /etc/nginx/ssl/vnera.com.key;
+    ssl_dhparam /etc/nginx/dhparams.pem;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header Set-Cookie "Path=/; HttpOnly; Secure";
+    add_header X-Content-Type-Options nosniff;
+    add_header Referrer-Policy "no-referrer";
+    add_header Content-Security-Policy "default-src 'self'; font-src 'self' data:; img-src 'self' data:; style-src 'self' 'unsafe-inline';";
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers !aNULL:ECDHE+AESGCM;
+    ssl_prefer_server_ciphers on;
+    proxy_ssl_protocols TLSv1.2 TLSv1.3;
+    proxy_ssl_ciphers   !aNULL:ECDHE+AESGCM;
+
+    location / {
+        if ($arg_state) {
+            rewrite ^/ /api/auth/vidm/callback last;
+        }
+        proxy_pass http://localhost:3100;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    #Location for Nginx status check. This url is used by datadog
+    location /nginx_status {
+        stub_status on;
+    }
+    # VIP service endpoint to get the i18n translations
+    location /api/vip {
+        proxy_cache vip_cache;
+        proxy_cache_valid 30m;
+        proxy_ignore_headers Cache-Control X-Accel-Expires Expires;
+        rewrite ^/api/vip/(.*)$ /$1 break;
+        proxy_pass https://localhost:10001;
+        proxy_redirect off;
+        proxy_buffering on;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    # To route upload requests only to platform1/singlenode
+    location /api/uploads {
+        auth_request /api/auth/validate;
+        rewrite ^/api/uploads/upgrade-bundle$ /management/upgrade/uploadbundle break;
+        proxy_pass http://platform1:8080;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location = /api/auth/validate {
+        proxy_pass http://lbrest/auth/validate;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+    }
+    location /api/le-mans {
+        return 403 'Forbidden';
+    }
+    location /api/csp/gateway {
+        return 403 'Forbidden';
+    }
+    # To route all upgrade related requests, except upgrade/status, only to platform1/singlenode
+    # This entry is added so that P1 specific APIs will work seamlessly on non-P1 UI
+    location /api/management/upgrade/status {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://lbrest;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location /api/management/upgrade {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://platform1:8080;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    # To route all clustering related requests only to platform1/singlenode
+    # This entry is added so that P1 specific APIs will work seamlessly on non-P1 UI
+    location /api/management/clustering {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://platform1:8080;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    # To route all capacity reconfiguring related requests only to platform1/singlenode
+    # This entry is added so that P1 specific APIs will work seamlessly on non-P1 UI
+    location /api/management/capacity-reconfigure {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://platform1:8080;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    # APIs that are stateless that can be served by any upstream can use $lbrest_non_sticky_pool upstream
+    # to balance the load among all the available rest API services in a cluster
+    # For adding any other APIs to $lbrest_non_sticky_pool upstream, copy paste the block below and update the location
+    #
+    # APIs not mapped to $lbrest_non_sticky_pool will be mapped to $lbrest_sticky_pool
+    # which uses the same upstream throughout the user sesssion
+    location /api/metrics/entities {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://$lbrest_non_sticky_pool;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /api {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://$lbrest_sticky_pool;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header        X-Http-Scheme   $scheme;
+    }
+    location = /saassaastocollectorservlet {
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location = /saassaastocollectordatalinkservlet {
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location = /saasfedpeertosaasservlet {
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location = /saassaastofedpeerservlet {
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location /saas {
+        # To fix security issue restrict any resttosaas called externally.
+        location ~ resttosaas {
+          deny all;
+        }
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location /upgradetarget/ {
+        alias /usr/share/nginx/upgradebundle/;
+    }
+    location /saasupgradetarget/ {
+        alias /usr/share/nginx/upgradebundle/;
+    }
+}
+
+server {
+    listen localhost:7070;
+
+    proxy_ssl_protocols TLSv1.2 TLSv1.3;
+    proxy_ssl_ciphers   !aNULL:ECDHE+AESGCM;
+
+    proxy_redirect off;
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+
+    location / {
+        proxy_pass https://svc.ni.vmware.com:443/remoteservicecontrol;
+    }
+    location /downloads {
+        proxy_pass https://svc.ni.vmware.com:443/downloads;
+    }
+
+    location /metricsvc {
+        proxy_pass https://svc.ni.vmware.com:443/newmetric;
+    }
+    location /dummy {
+        return 200 'DUMMY!';
+    }
+}
+
+server {
+    listen localhost:7071;
+
+    proxy_ssl_protocols TLSv1.2 TLSv1.3;
+    proxy_ssl_ciphers   !aNULL:ECDHE+AESGCM;
+
+    location / {
+        proxy_pass https://reg.ni.vmware.com:443/regserver/;
+        proxy_redirect off;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+}
+log_format postdata $request_body;
+server {
+        proxy_cache_bypass $request_body_file;
+        client_max_body_size 1M;
+        client_body_buffer_size 1M;
+        client_body_in_single_buffer on;
+        listen localhost:7074;
+        gzip off;
+        location /api/v1/check_run {
+                access_log /var/log/ddlogs/checkrun$msec.log postdata;
+                proxy_pass http://localhost:7070/metricsvc$request_uri;
+        }
+        location /api/v1/series {
+                access_log /var/log/ddlogs/series$msec.log postdata;
+                proxy_pass http://localhost:7070/metricsvc$request_uri;
+        }
+        location /intake/ {
+                access_log /var/log/ddlogs/intake$msec.log postdata;
+                proxy_pass http://localhost:7070/metricsvc$request_uri;
+        }
+}
+
+server {
+        proxy_cache_bypass $request_body_file;
+        client_max_body_size 1M;
+        client_body_buffer_size 1M;
+        client_body_in_single_buffer on;
+        listen localhost:7072;
+        gzip off;
+        location /api/v1/check_run {
+                access_log /var/log/ddlogs/checkrun$msec.log postdata;
+                proxy_pass http://localhost:7070/dummy;
+        }
+        location /api/v1/series {
+                access_log /var/log/ddlogs/series$msec.log postdata;
+                proxy_pass http://localhost:7070/dummy;
+        }
+        location /intake/ {
+                access_log /var/log/ddlogs/intake$msec.log postdata;
+                proxy_pass http://localhost:7070/dummy;
+        }
+}

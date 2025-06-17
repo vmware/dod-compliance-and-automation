@@ -1,0 +1,161 @@
+# Ubuntu 22.04 STIG auditd rules
+# Updated 6/17/2024
+
+# First rule - delete all
+-D
+
+# Increase the buffers to survive stress events.
+# Make this bigger for busy systems
+-b 640
+
+# UBTU-22-654010
+-a always,exit -F path=/sbin/apparmor_parser -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng
+
+# UBTU-22-654015
+-a always,exit -F path=/usr/bin/chacl -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng
+
+# UBTU-22-654020
+-a always,exit -F path=/usr/bin/chage -F perm=x -F auid>=1000 -F auid!=unset -k privileged-chage
+
+# UBTU-22-654025
+-a always,exit -F path=/usr/bin/chcon -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng
+
+# UBTU-22-654030
+-a always,exit -F path=/usr/bin/chfn -F perm=x -F auid>=1000 -F auid!=unset -k privileged-chfn
+
+# UBTU-22-654035
+-a always,exit -F path=/usr/bin/chsh -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd
+
+# UBTU-22-654040
+-a always,exit -F path=/usr/bin/crontab -F perm=x -F auid>=1000 -F auid!=unset -k privileged-crontab
+
+# UBTU-22-654045
+-w /usr/sbin/fdisk -p x -k fdisk
+
+# UBTU-22-654050
+-a always,exit -F path=/usr/bin/gpasswd -F perm=x -F auid>=1000 -F auid!=unset -k privileged-gpasswd
+
+# UBTU-22-654055
+-w /bin/kmod -p x -k modules
+
+# UBTU-22-654060 Commenting out because this rule exists currently on NSX in /etc/audit/rules.d/audit.rules
+# -w /sbin/modprobe -p x -k modules 
+
+# UBTU-22-654065
+-a always,exit -F path=/usr/bin/mount -F perm=x -F auid>=1000 -F auid!=unset -k privileged-mount
+
+# UBTU-22-654070
+-a always,exit -F path=/usr/bin/newgrp -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd
+
+# UBTU-22-654075
+-a always,exit -F path=/usr/sbin/pam_timestamp_check -F perm=x -F auid>=1000 -F auid!=unset -k privileged-pam_timestamp_check
+
+# UBTU-22-654080
+-a always,exit -F path=/usr/bin/passwd -F perm=x -F auid>=1000 -F auid!=unset -k privileged-passwd
+
+# UBTU-22-654085
+-a always,exit -F path=/usr/bin/setfacl -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng
+
+# UBTU-22-654090
+-a always,exit -F path=/usr/bin/ssh-agent -F perm=x -F auid>=1000 -F auid!=unset -k privileged-ssh
+
+# UBTU-22-654095
+-a always,exit -F path=/usr/lib/openssh/ssh-keysign -F perm=x -F auid>=1000 -F auid!=unset -k privileged-ssh
+
+# UBTU-22-654100
+-a always,exit -F path=/bin/su -F perm=x -F auid>=1000 -F auid!=unset -k privileged-priv_change
+
+# UBTU-22-654105
+-a always,exit -F path=/usr/bin/sudo -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd
+
+# UBTU-22-654110
+-a always,exit -F path=/usr/bin/sudoedit -F perm=x -F auid>=1000 -F auid!=unset -k priv_cmd
+
+# UBTU-22-654115
+-a always,exit -F path=/usr/bin/umount -F perm=x -F auid>=1000 -F auid!=unset -k privileged-umount
+
+# UBTU-22-654120
+-a always,exit -F path=/sbin/unix_update -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update
+
+# UBTU-22-654125
+-a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid>=1000 -F auid!=unset -k privileged-usermod
+
+# UBTU-22-654130
+-w /etc/group -p wa -k usergroup_modification
+
+# UBTU-22-654135
+-w /etc/gshadow -p wa -k usergroup_modification
+
+# UBTU-22-654140
+-w /etc/security/opasswd -p wa -k usergroup_modification
+
+# UBTU-22-654145
+-w /etc/passwd -p wa -k usergroup_modification
+
+# UBTU-22-654150
+-w /etc/shadow -p wa -k usergroup_modification
+
+# UBTU-22-654155
+-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -k perm_chng 
+-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=unset -k perm_chng
+
+# UBTU-22-654160
+-a always,exit -F arch=b32 -S chown,fchown,fchownat,lchown -F auid>=1000 -F auid!=unset -k perm_chng  
+-a always,exit -F arch=b64 -S chown,fchown,fchownat,lchown -F auid>=1000 -F auid!=unset -k perm_chng
+
+# UBTU-22-654165
+-a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -k perm_access  
+-a always,exit -F arch=b32 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -k perm_access  
+-a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=unset -k perm_access  
+-a always,exit -F arch=b64 -S creat,open,openat,open_by_handle_at,truncate,ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=unset -k perm_access
+
+# UBTU-22-654170
+-a always,exit -F arch=b32 -S delete_module -F auid>=1000 -F auid!=unset -k module_chng  
+-a always,exit -F arch=b64 -S delete_module -F auid>=1000 -F auid!=unset -k module_chng
+
+# UBTU-22-654175
+-a always,exit -F arch=b32 -S init_module,finit_module -F auid>=1000 -F auid!=unset -k module_chng  
+-a always,exit -F arch=b64 -S init_module,finit_module -F auid>=1000 -F auid!=unset -k module_chng
+
+# UBTU-22-654180
+-a always,exit -F arch=b32 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid>=1000 -F auid!=unset -k perm_mod  
+-a always,exit -F arch=b32 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid=0 -k perm_mod   
+-a always,exit -F arch=b64 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid>=1000 -F auid!=unset -k perm_mod  
+-a always,exit -F arch=b64 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid=0 -k perm_mod
+
+# UBTU-22-654185
+-a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat,rmdir -F auid>=1000 -F auid!=unset -k delete  
+-a always,exit -F arch=b32 -S unlink,unlinkat,rename,renameat,rmdir -F auid>=1000 -F auid!=unset -k delete
+
+# UBTU-22-654190
+-w /var/log/journal -p wa -k systemd_journal
+
+# UBTU-22-654195
+-w /var/log/btmp -p wa -k logins
+
+# UBTU-22-654200
+-w /var/log/wtmp -p wa -k logins
+
+# UBTU-22-654205
+-w /var/run/utmp -p wa -k logins
+
+# UBTU-22-654210 Commenting out because this rule exists currently on NSX in /etc/audit/rules.d/audit.rules
+# -w /var/log/faillog -p wa -k logins
+
+# UBTU-22-654215 Commenting out because this rule exists currently on NSX in /etc/audit/rules.d/audit.rules
+# -w /var/log/lastlog -p wa -k logins
+
+# UBTU-22-654220
+-w /etc/sudoers -p wa -k privilege_modification
+
+# UBTU-22-654225
+-w /etc/sudoers.d -p wa -k privilege_modification
+
+# UBTU-22-654230
+-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k execpriv 
+-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k execpriv 
+-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k execpriv 
+-a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv
+
+# UBTU-22-654235
+-w /var/log/sudo.log -p wa -k maintenance
