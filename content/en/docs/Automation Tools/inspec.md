@@ -62,7 +62,7 @@ In many cases profiles can be made up of multiple profiles that are included in 
 
 Dependent profiles are used when a product may have multiple STIGs that need to be audited together, but can also be separated into its own profile for organizational purposes. Another reason to do this is it makes profile reuse easier, such as with Photon OS, which many of our product appliances are based on. Instead of maintaining a profile for Photon within each product, Photon can be maintained separately and it can be called as a dependency into a product's profile. Photon inputs could then be provided and tweaked as necessary for that specific product.
 
-An example of this can be observed in the [vSphere 7 VCSA profile](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/inspec/vmware-vcsa-7.0-stig-baseline).
+An example of this can be observed in the [vSphere 7 VCSA profile](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/v1r4-stig/vcsa/inspec/vmware-vcsa-7.0-stig-baseline).
 
 An abbreviated structure for this profile:
 ```

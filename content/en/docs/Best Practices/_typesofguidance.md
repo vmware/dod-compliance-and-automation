@@ -34,7 +34,7 @@ In the absence of a STIG a DoD customer must fall back to SRGs to harden their e
 
 For a customer this is often a daunting task to figure out how these generic requirements are met for products with often very little documentation available to aid in the research.  
 
-DISA elaborates on this issue for us further in their FAQ here: https://public.cyber.mil/stigs/faqs/#toggle-id-11  
+DISA elaborates on this issue for us further in their FAQ here: https://public.cyber.mil/stigs/faqs/#toggle-id-10  
 
 **“What do I use if there is no STIG?**
 {{% pageinfo color="info" %}}

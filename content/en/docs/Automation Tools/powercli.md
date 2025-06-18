@@ -17,7 +17,7 @@ PowerCLI uses PowerShell’s basic syntax and concepts.
 * PowerShell comes installed on Windows and Windows Server by default.
 * For Linux and MAC PowerShell must be installed.
 
-For more information, see the [PowerCLI Compatability matrixes](https://developer.vmware.com/docs/18505/).
+For more information, see the [PowerCLI Compatability matrixes](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/power-cli/latest/vmware-powercli-compatibility-matrix.html).
 
 ## Installation
 
@@ -31,7 +31,7 @@ Install-Module -Name VMware.PowerCLI
 ```
 
 ### Offline
-Download the .zip file with the latest released PowerCLI version from [here](https://developer.vmware.com/docs/18611/).
+Download the .zip file with the latest released PowerCLI version from [here](https://developer.broadcom.com/tools/vmware-powercli/latest).
 
 ```powershell
 # To retrieve the folder(s) on your machine that contain PowerShell modules, run the following command.
@@ -60,4 +60,4 @@ Connect-VIServer -Server 10.23.112.235 -Protocol https -Credential $cred
 
 ## References
 
-For the full PowerCLI documentation, see the [PowerCLI Installation Guide](https://developer.vmware.com/powercli/installation-guide)
+For the full PowerCLI documentation, see the [PowerCLI Installation Guide](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/power-cli/latest/powercli/installing-vmware-vsphere-powercli.html)
