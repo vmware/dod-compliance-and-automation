@@ -5,6 +5,7 @@ Date: 02 April 2025
 STIG Type: Official STIG  
 Maintainers: Broadcom   
 
+
 ## Overview
 This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the Canonical Ubuntu 22.04 LTS STIG.  
 
