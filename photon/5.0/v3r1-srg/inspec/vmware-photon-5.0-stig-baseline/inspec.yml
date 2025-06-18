@@ -1,0 +1,68 @@
+name: vmware-photon-5.0-stig-inspec-baseline
+title: VMware Photon OS 5.0 STIG Readiness Guide InSpec Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 3.0.1
+
+inputs:
+- name: useFaillockConf
+  type: boolean
+  description: If /etc/security/faillock.conf is used to configure pam_faillock.so set this to true
+  value: true
+- name: usePwqualityConf
+  type: boolean
+  description: If /etc/security/pwquality.conf is used to configure pam_pwquality.so set this to true
+  value: true
+- name: containerHost
+  type: boolean
+  description: Used to indicate if system is a container host and running Kubernetes/Docker/etc for controls where this would make them N/A
+  value: false
+- name: sshdcommand
+  type: string
+  value: 'sshd -T'
+  description: If a different sshd command is needed then supply a different input value such as if there are user matching rules.
+- name: authprivlog
+  type: string
+  description: Enter expected log path for authpriv log in rsyslog conf
+  value: '/var/log/messages'
+- name: disabled_modules
+  description: List of Kernel modules that must be disabled
+  type: array
+  value:
+    - sctp
+    - dccp
+    - dccp_ipv4
+    - dccp_ipv6
+    - ipx
+    - appletalk
+    - decnet
+    - rds
+    - tipc
+    - bluetooth
+    - usb_storage
+    - ieee1394
+    - cramfs
+    - freevxfs
+    - jffs2
+    - hfs
+    - hfsplus
+    - squashfs
+    - udf
+- name: sshdCiphers
+  type: array
+  description: List of FIPS validated SSH Ciphers
+  value:
+    - aes256-gcm@openssh.com
+    - aes128-gcm@openssh.com
+    - aes256-ctr
+    - aes192-ctr
+    - aes128-ctr
+- name: sshdMacs
+  type: array
+  description: List of FIPS validated SSH MACs
+  value:
+    - hmac-sha2-512
+    - hmac-sha2-256
