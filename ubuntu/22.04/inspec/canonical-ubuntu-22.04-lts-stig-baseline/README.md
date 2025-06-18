@@ -1,5 +1,3 @@
-| [![Lint InSpec on Pushes.](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-22.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml/badge.svg?branch=main)](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-22.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml) | Main | [![Lint InSpec on Pushes.](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-22.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml/badge.svg?branch=development)](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-22.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml) | Development |
-|:-|:-|:-|:-|
 # canonical_ubuntu_22.04_lts_stig_baseline
 Canonical Ubuntu 22.04 LTS STIG Chef InSpec Profile  
 Version: Release 2 Version 4  
