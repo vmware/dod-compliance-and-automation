@@ -46,7 +46,7 @@ Retrieve token by copying the value in the `accessToken` field.
 ### Update profile inputs
 Included in the `vmware-vcf-sddcmgr-4x-stig-baseline` is an example [inputs-vcf-sddcmgr-4x-example](https://github.com/vmware/dod-compliance-and-automation/tree/master/vcf/4.x/inspec/vmware-vcf-sddcmgr-4x-stig-baseline/inputs-vcf-sddcmgr-4x-example.yml) file with the following inputs relevant to SDDC Manager.
 
-Update the inputs as shown below with values relevant to your environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
+Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
 ```yaml
 # Inputs for NGINX
 nginx_conf_path: /etc/nginx/nginx.conf
@@ -88,7 +88,7 @@ systemctl restart sshd
 ```
 
 ### Run the audit
-In this example we will be scanning a target SDDC Manager, specifying an inputs file, and outputting a report to the CLI and to a JSON file ran from a linux machine.  
+In this example a target SDDC Manager will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file ran from a linux machine.  
 ```bash
 # Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec . -t ssh://root@sddc-manager.vsphere.local --password 'replaceme' --show-progress --input-file inputs-vcf-sddcmgr-4x-example.yml --reporter cli json:/tmp/reports/VCF_4.5.1_SDDC_Manager_STIG_Report.json

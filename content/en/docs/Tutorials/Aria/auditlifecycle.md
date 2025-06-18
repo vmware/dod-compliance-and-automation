@@ -9,7 +9,7 @@ description: >
 Auditing VMware Aria Suite Lifecycle for STIG compliance involves scanning the NGINX and vpostgres components, the underlying Photon OS, and the application itself.
 
 When auditing VMware Aria Suite Lifecycle we will split up tasks between product and appliance based controls which are defined as follows:
-* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration effecting availability of the product is low but could impact how the environment is operated if not assessed.
+* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration affecting availability of the product is low but could impact how the environment is operated if not assessed.
 * **Appliance Control:** Appliance controls deal with the underlying components (databases, web servers, Photon OS, etc) that make up the product. Altering these add risk to product availability if precautionary steps and care in implementation are not taken. Identifying and relying on Default settings in this category makes this category less risky (Default Appliance Controls should be seen as a positive).
 
 To audit VMware Aria Suite Lifecycle using InSpec we utilize the ssh transport which connects to the appliance via ssh and performs queries. It is recommended to disable SSH on the appliance after the auditing is complete.
@@ -18,7 +18,7 @@ To audit VMware Aria Suite Lifecycle using InSpec we utilize the ssh transport w
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to utilize the versions listed here.  
 
 * The [vmware-vrslcm-8.x-stig-baseline](https://github.com/vmware/dod-compliance-and-automation/tree/master/aria/lifecycle/8.x/v1r2-srg/inspec/vmware-vrslcm-8.x-stig-baseline) profile downloaded.
-* InSpec/Cinc Auditor 6.6.0
+* InSpec/Cinc Auditor 6.8.1
 * SAF CLI 1.4.0
 * [STIG Viewer 2.17](https://public.cyber.mil/stigs/srg-stig-tools/)
 * A VMware Aria Suite Lifecycle environment. Version 8.18 was used in these examples.
@@ -26,10 +26,13 @@ Versions listed below were used for this documentation. Other versions of these 
 
 ### Assumptions
 * Commands are initiated from a Linux machine. Windows will also work but paths and commands may need to be adjusted from the examples.
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
 * CINC Auditor is used in lieu of InSpec. If InSpec is used replace `cinc-auditor` with `inspec` when running commands.
 
 ## Auditing VMware Aria Suite Lifecycle
+### Navigate to the InSpec profile folder
+cd /usr/share/stigs/aria/lifecycle/8.x/v1r2-srg/inspec/vmware-vrslcm-8.x-stig-baseline  
+
 ### Update profile inputs
 Included in each of the `vmware-vrslcm-8.x-stig-baseline` sub-folders (application, nginx, photon, and vpostgres) is an inspec input file named 'inspec.yml'. 
 Additionally, at the top level, an `inputs-example.yml` file is included that "rolls up" all of the variables into one file, and can be edited and utilized at the command line.
@@ -62,7 +65,7 @@ systemctl restart sshd
 ```
 
 ### Run the audit
-In this example we will be scanning a target VMware Aria Suite Lifecycle appliance, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
+In this example a target VMware Aria Suite Lifecycle appliance will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
 ```bash
 # Note this command is run from the root of the profile folder. Update paths as needed (instead of '.', use './path/to/profile') if running from a different location.
 > cinc-auditor exec . -t ssh://root@aria-lifecycle.domain.path --password 'replaceme' --show-progress --input-file inputs-example.yml --reporter cli json:/tmp/reports/Aria_Lifecycle_8x_STIG_Report.json

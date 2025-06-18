@@ -8,7 +8,7 @@ description: >
 Remediating vSphere for STIG compliance involves configuring ESXi, Virtual Machines, vCenter, and the vCenter appliance.
 
 When remediating vSphere we will split up tasks between product and appliance based controls which are defined as follows:
-* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration effecting availability of the product is low but could impact how the environment is operated if not assessed.
+* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration affecting availability of the product is low but could impact how the environment is operated if not assessed.
 * **Appliance Control:** Appliance controls deal with the underlying components (databases, web servers, Photon OS, etc) that make up the product. Altering these add risk to product availability without precautionary steps and care in implementation. Identifying and relying on Default settings in this category makes this category less risky (Default Appliance Controls should be seen as a positive).
 
 To remediate vSphere, PowerCLI is the automation tool used, while for the VCSA we will use Ansible. For the vCenter appliance the remediation is performed via SSH. It is recommended to disable SSH on vCenter after configuration is complete.  
@@ -18,31 +18,31 @@ Versions listed below were used for this documentation. Other versions of these 
 
 * The [vSphere 7.0 PowerCLI](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vsphere/powercli) scripts downloaded.
 * The [vmware-vcsa-7.0-stig-ansible-hardening](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening) playbook downloaded.
-* Powershell 7.3.4/PowerCLI 13.1
+* PowerShell 7.3.4/PowerCLI 13.1
 * [VMware.Vsphere.SsoAdmin PowerCLI Module 1.3.9](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin)
 * A vSphere 7.x environment. 7.0 U3l was used in these examples.
 * An account with sufficient privileges to configure vSphere.
 
-### Create Powershell credential for vCenter connection
-The PowerCLI scripts provided use a [Powershell Credential](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-credential) stored in a variable to authenticate to vCenter and should be established before attempting to run the scripts.  
+### Create PowerShell credential for vCenter connection
+The PowerCLI scripts provided use a [PowerShell Credential](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-credential) stored in a variable to authenticate to vCenter and should be established before attempting to run the scripts.  
 
 ```powershell
-# Run the following command to generate a credential. Substitute the username as needed in your environment. Note if ran in Powershell 5.x on Windows this will popup a window to enter the credentials.
+# Run the following command to generate a credential. Substitute the username as needed in the environment. Note if ran in PowerShell 5.x on Windows this will popup a window to enter the credentials.
 $vccred = Get-Credential
 
 PowerShell credential request
-Enter your credentials.
+Enter the credentials.
 User: administrator@vsphere.local
 Password for user administrator@vsphere.local: ****************
 ```
 
 ## Remediating ESXi product controls
-To remediate ESXi hosts we have provided a [PowerCLI script](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_ESXi_Remediation.ps1) that will target a single host or a vSphere cluster based on parameters provided to the script.
+To remediate ESXi hosts a [PowerCLI script](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_ESXi_Remediation.ps1) has been provided that will target a single host or a vSphere cluster based on parameters provided to the script.
 
 **Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
 
 ### Gather environment information
-In order to run the script effectively it must be provided with the organizations environment specific information.  
+In order to run the script effectively it must be provided the organization's environment specific information.  
 
 Review the below parameters and gather the information needed to run the script:
 ```powershell
@@ -81,7 +81,7 @@ param (
 ```
 
 ### Disabling Controls
-The script includes variables to enable or disable controls by STIG ID. All controls are all enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
+The script includes variables to enable or disable controls by STIG ID. All controls are enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
 A snippet of these variables is shown below.  
 ```powershell
@@ -127,7 +127,7 @@ Syslog.global.logHo… tcp://loginsight.vm… VMHost
 9:27:28 AM ...Setting Syslog.global.logHost was incorrectly set to  on 10.182.138.1...setting to tcp://loginsight.vmware.com:514
 Syslog.global.logHo… tcp://loginsight.vm… VMHost
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: C:\Temp
 
 Mode                 LastWriteTime         Length Name
@@ -137,12 +137,12 @@ Mode                 LastWriteTime         Length Name
 ```
 
 ## Remediating virtual machines product controls
-To remediate virtual machines we have provided a [PowerCLI script](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_VM_Remediation.ps1) that will target a single VM, all VMs in a cluster, or all VMs in vCenter based on parameters provided to the script.  
+To remediate virtual machines a [PowerCLI script](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_VM_Remediation.ps1) has been provided that will target a single VM, all VMs in a cluster, or all VMs in vCenter based on parameters provided to the script.  
 
 **Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. See the scripts description text for more details.**
 
 ### Disabling Controls
-For processing efficiency it is not constructed to run each control individually so the STIG ID variables are not included to enabled/disable controls such as in the ESXi/vCenter scripts. If it is desired to skip some controls they could be commented out in the `$vmconfig` variable in the script.  
+For processing efficiency this script is not constructed to run each control individually, so the STIG ID variables to enable/disable controls are not included as in the ESXi/vCenter scripts. If it is desired to skip some controls they could be commented out in the `$vmconfig` variable in the script.  
 
 ### Run remediation script on target virtual machines
 This example will remediate all hosts in the vSphere cluster named `cluster0`. If running on a single host is desired, specify the `hostname` parameter instead of `cluster` and provide the hostname as displayed in vCenter.  
@@ -166,7 +166,7 @@ isolation.tools.cop… True                 VM
 10:19:36 AM ...Setting isolation.tools.diskShrink.disable does not exist on stig space test creating setting...
 isolation.tools.dis… True                 VM
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: C:\Temp
 
 Mode                 LastWriteTime         Length Name
@@ -176,12 +176,12 @@ Mode                 LastWriteTime         Length Name
 ```
 
 ## Remediating vCenter product controls
-To remediate vCenter we have provided a [PowerCLI script](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_vCenter_Remediation.ps1) that will target a single vCenter server.  
+To remediate vCenter a [PowerCLI script](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_vCenter_Remediation.ps1) has been provided that will target a single vCenter server.  
 
 **Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
 
 ### Gather environment information
-In order to run the script effectively it must be provided with the organizations environment specific information.  
+In order to run the script effectively it must be provided the organization's environment specific information.  
 
 This script also uses the [VMware.Vsphere.SsoAdmin PowerCLI Module](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) to configure vCenter SSO controls. This module connects to vCenter separately using the `Connect-SsoAdminServer` command that requires using an account that has sufficient privileges in vCenter to modify SSO settings.  
 
@@ -206,7 +206,7 @@ param (
 ```
 
 ### Disabling Controls
-The script includes variables to enable or disable controls by STIG ID. All controls are all enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
+The script includes variables to enable or disable controls by STIG ID. All controls are enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
 A snippet of these variables is shown below.  
 ```powershell
@@ -246,7 +246,7 @@ Transcript started, output file is C:\Temp\VMware_vSphere_7.0_STIG_ESXi_Remediat
 11:31:03 AM ...Remediating STIG ID: VCSA-70-000034 with Title: The vCenter Server must produce audit records containing information to establish what type of events occurred.
 11:31:03 AM ...Setting config.log.level is already configured correctly to info on 10.182.131.166
 
-# A results file and Powershell transcript is provided in the report path specified.
+# A results file and PowerShell transcript is provided in the report path specified.
 Directory: C:\Temp
 
 Mode                 LastWriteTime         Length Name
@@ -256,12 +256,12 @@ Mode                 LastWriteTime         Length Name
 ```
 
 ## Remediating vCenter server appliance controls
-To remediate vCenter we have provided an [Ansible playbook](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening) that will target a single vCenter server appliance over SSH and configure any non-compliant controls.  
+To remediate vCenter an [Ansible playbook](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening) has been provided that will target a single vCenter server appliance over SSH and configure any non-compliant controls.  
 
-Since Ansible can only be ran from Linux based systems, the examples below are being ran on an Ubuntu 22.04 WSL2 instance on Windows 11 for reference.  
+Since Ansible can only be run from Linux based systems, the examples below are being run on an Ubuntu 22.04 WSL2 instance on Windows 11 for reference.  
 
 ### Backups
-Before running it is highly advised to have a backup of the VCSA and/or snapshot available if a rollback is required. Also the playbook will backup files configured before updates and place them under the /tmp directory in a folder directly on the VCSA. 
+Before running it is highly advised to have a backup of the VCSA and/or snapshot available if a rollback is required. Also the playbook will back up files configured before performing updates and place them under the /tmp directory in a folder directly on the VCSA. 
 
 ### Update the default shell for root
 The default shell for root must be changed to `/bin/bash` before running. The appliance shell causes issues with some controls running.
@@ -281,13 +281,13 @@ root@sc1-10-182-131-166 [ ~ ]# chsh -s /bin/bash root
 ```
 
 ### Ansible dependencies
-The playbook is written to use the separate Photon 3.0 playbook we have avaiable and must be installed as a role prior to running.  
+The playbook is written to use the separate Photon 3.0 playbook available and must be installed as a role prior to running.  
 
-Also there are two ansible collections that must be installed if on a version of Ansible newer than 2.9.  
+Also there are two Ansible collections that must be installed if on a version of Ansible newer than 2.9.  
 
 ```bash
 # Installing playbook requirements from the requirements.yml file provided.
-ansible-galaxy roles install -r requirements.yml
+ansible-galaxy role install -r requirements.yml
 ```
 
 ### Running the playbook
@@ -319,7 +319,7 @@ TASK [vmware-photon-3.0-stig-ansible-hardening : PHTN-30-000001 - Update/Create 
 changed: [10.182.131.166] => {"changed": true, "checksum": "aaafa4e8c28743ce3cc22c818f28f4cb9a3f53b2", "dest": "/etc/audit/rules.d/audit.STIG.rules", "gid": 0, "group": "root", "md5sum": "91a31e7bbf9e3f0d7f390feb4360581b", "mode": "0640", "owner": "root", "size": 5180, "src": "/root/.ansible/tmp/ansible-tmp-1685039234.3606877-890-106251101523760/source", "state": "file", "uid": 0}
 ```
 
-A more conservative and preferred approach is to target any non-compliant controls or run each component separately allowed you to perform any functional testing in between.
+A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
 ```bash
 # Providing the tag "eam" will instruct the playbook to only run the eam role. This tag can be seen in each roles task/main.yml file.
 > ansible-playbook -i 10.182.131.166, -u root playbook.yml -k -v --extra-vars @vars-vcenter-7.0U3eplus.yml --tags eam

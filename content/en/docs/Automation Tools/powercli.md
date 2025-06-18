@@ -1,8 +1,8 @@
 ---
-title: "Powershell/PowerCLI"
+title: "PowerShell/PowerCLI"
 weight: 1
 description: >
-  How to use and install VMware's PowerCLI module for Powershell
+  How to install and use VMware's PowerCLI module for PowerShell
 ---
 
 PowerCLI is a command-line interface for managing and automating all aspects of vSphere management, including networking, storage, VMs, guest OS, and more.
@@ -14,24 +14,24 @@ PowerCLI uses PowerShell’s basic syntax and concepts.
 ## Prerequisites
 
 * PowerShell version 5.1 or later is required to run PowerCLI cmdlets.
-* Powershell comes installed on Windows and Windows Server by default.
-* For Linux and MAC Powershell must be installed.
+* PowerShell comes installed on Windows and Windows Server by default.
+* For Linux and MAC PowerShell must be installed.
 
-For more information, see the [PowerCLI Compatability matrixes](https://developer.vmware.com/docs/18505/).
+For more information, see the [PowerCLI Compatability matrixes](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/power-cli/latest/vmware-powercli-compatibility-matrix.html).
 
 ## Installation
 
 ### Online
-You can install PowerCLI directly from the [PowerShell Gallery](https://www.powershellgallery.com/).
+PowerCLI can be installed directly from the [PowerShell Gallery](https://www.powershellgallery.com/).
 
 
 ```powershell
-# Run the following command from a Powershell prompt
+# Run the following command from a PowerShell prompt
 Install-Module -Name VMware.PowerCLI
 ```
 
 ### Offline
-Download the .zip file with the latest released PowerCLI version from [here](https://developer.vmware.com/docs/18611/).
+Download the .zip file with the latest released PowerCLI version from [here](https://developer.broadcom.com/tools/vmware-powercli/latest).
 
 ```powershell
 # To retrieve the folder(s) on your machine that contain PowerShell modules, run the following command.
@@ -48,7 +48,7 @@ Get-Module -Name VMware.PowerCLI -ListAvailable
 ## Basic Usage
 PowerCLI includes cmdlets to connect to supported VMware products. This must be done before any other PowerCLI cmdlets can be run successfully.
 
-Connect to vCenter or ESXi directly
+Connect to vCenter or ESXi directly:
 ```powershell
 # Connects to a vSphere server by using the User and Password parameters.
 Connect-VIServer -Server 10.23.112.235 -Protocol https -User admin -Password pass
@@ -60,4 +60,4 @@ Connect-VIServer -Server 10.23.112.235 -Protocol https -Credential $cred
 
 ## References
 
-For the full PowerCLI documentation, see the [PowerCLI Installation Guide](https://developer.vmware.com/powercli/installation-guide)
+For the full PowerCLI documentation, see the [PowerCLI Installation Guide](https://techdocs.broadcom.com/us/en/vmware-cis/vcf/power-cli/latest/powercli/installing-vmware-vsphere-powercli.html)

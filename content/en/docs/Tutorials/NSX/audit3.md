@@ -50,7 +50,7 @@ Server: NSX
 ### Update profile inputs
 Included in the `vmware-nsxt-3.x-stig-baseline` is an example [inputs-nsxt-3.x.yml](https://github.com/vmware/dod-compliance-and-automation/blob/master/nsx/3.x/inspec/vmware-nsxt-3.x-stig-baseline/inputs-nsxt-3.x.yml) file with the following inputs relevant to NSX-T.
 
-Update the inputs as shown below with values relevant to your environment.
+Update the inputs as shown below with values relevant to the environment.
 ```yaml
 # General
 # NSX Manager IP or FQDN
@@ -82,7 +82,7 @@ t1multicastlist: []
 ```
 
 ### Run the audit
-In this example we will be scanning all NSX components, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
+In this example all NSX components will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
 ```bash
 # Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec . --show-progress --input-file inputs-nsxt-3.x.yml --reporter=cli json:/mnt/c/Inspec/Reports/MyNSX3Report.json

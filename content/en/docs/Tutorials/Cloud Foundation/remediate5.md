@@ -16,17 +16,17 @@ Versions listed below were used for this documentation. Other versions of these 
 * An account with access to VCF.
 
 ### Assumptions
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
-* Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy roles install -r requirements.yml`.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
+* Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy role install -r requirements.yml`.
 * The dependent Photon OS Ansible roles(Photon 3.0 for VCF 5.0.x and Photon 4 for VCF 5.1.x and 5.2.x) installed and available.  Verify role installation with `ansible-galaxy role list`.
 
 ## Remediating SDDC Manager
 {{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version you are running. Select the example command tabs for the version in your environment.
+The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
 {{% /alert %}}
 
 {{% alert title="Warning" color="warning" %}}
-Before running it is highly advised to have a backup of the SDDC Manager and/or snapshot available if a rollback is required. Also the playbook will backup files configured before updates and place them under the /tmp directory in a folder directly on the SDDC Manager appliance.
+Before running it is highly advised to have a backup of the SDDC Manager and/or snapshot available if a rollback is required. Also the playbook will back up files configured before performing updates and place them under the /tmp directory in a folder directly on the SDDC Manager appliance.
 {{% /alert %}}
 
 ### Generate bearer token for SDDC Manager
@@ -116,7 +116,7 @@ vi vars-sddcmgr-example.yml
 {{< /tab >}}
 {{< /tabpane >}}
 
-Update the variables as shown below with values relevant to your environment. Specifically `var_sddc_manager`, `var_bearer_token`, `var_time_servers`, `var_password_rotate_days`.  
+Update the variables as shown below with values relevant to the environment. Specifically `var_sddc_manager`, `var_bearer_token`, `var_time_servers`, `var_password_rotate_days`.  
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="5.2.1.x" lang="yaml" >}}
@@ -331,7 +331,7 @@ changed: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-re
 {{< /tab >}}
 {{< /tabpane >}}
 
-A more conservative and preferred approach is to target any non-compliant controls or run each component separately allowed you to perform any functional testing in between.
+A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
 {{< tabpane text=false right=false persist=header >}}
 {{% tab header="**Version**:" disabled=true /%}}
 {{< tab header="5.2.1.x" lang="bash" >}}

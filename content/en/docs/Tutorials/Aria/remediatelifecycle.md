@@ -8,7 +8,7 @@ description: >
 Remediating VMware Aria Suite Lifecycle for STIG compliance involves configuring nginx, postgres, photon, and the appliance.
 
 When remediating we will split up tasks between product and appliance based controls which are defined as follows:
-* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration effecting availability of the product is low but could impact how the environment is operated if not assessed.
+* **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration affecting availability of the product is low but could impact how the environment is operated if not assessed.
 * **Appliance Control:** Appliance controls deal with the underlying components (databases, web servers, Photon OS, etc) that make up the product. Altering these add risk to product availability without precautionary steps and care in implementation. Identifying and relying on Default settings in this category makes this category less risky (Default Appliance Controls should be seen as a positive).
 
 Ansible will be used to perform remediation.
@@ -22,17 +22,17 @@ Versions listed below were used for this documentation. Other versions of these 
 
 ### Assumptions
 * Commands are initiated from a Linux machine.
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository downloaded and extracted to `/usr/share/stigs`.
-* Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy roles install -r requirements.yml`.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
+* Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy role install -r requirements.yml`.
 * The dependent Photon OS Ansible roles(Photon 3.0) installed and available. Verify role installation with `ansible-galaxy role list`.
 
 ## Remediate VMware Aria Suite Lifecycle (Appliance and/or Product Controls)
 {{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version you are running.
+The example commands below are specific to the product version and the supported STIG content for the version being run.
 {{% /alert %}}
 
 {{% alert title="Warning" color="warning" %}}
-The playbook will attempt to backup configuration files before updating and place them under the /tmp directory in a folder directly on the appliance, but before remediating it is highly advised to have a backup and/or snapshot available if a rollback is required.
+The playbook will attempt to back up configuration files before updating and place them under the /tmp directory in a folder directly on the appliance, but before remediating it is highly advised to have a backup and/or snapshot available if a rollback is required.
 {{% /alert %}}
 
 An Ansible playbook has been provided that will target a single VMware Aria Suite Lifecycle server over SSH and configure any non-compliant controls.  

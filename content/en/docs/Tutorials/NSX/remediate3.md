@@ -21,7 +21,7 @@ Versions listed below were used for this documentation. Other versions of these 
 ## Important Considerations
 <div class="-text-red pt-3 display-4">Please read carefully before proceeding!</div>  
 
-Some NSX-T STIG controls can be very impactful to your environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic.  
+Some NSX-T STIG controls can be very impactful to the environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic.  
 
 Below is a table of controls selected for consideration but all controls should be examined for impact before implementing.  
 
@@ -42,9 +42,9 @@ These can be turned on/off by with a variable that must be set to true as a cond
 Also not all controls are covered by the Ansible playbook and may require manual remediation.  
 
 ## Remediating NSX-T
-To remediate NSX-T we have provided an [Ansible playbook](https://github.com/vmware/dod-compliance-and-automation/tree/master/nsx/3.x/ansible/vmware-nsxt-3.x-stig-ansible-hardening) that will target an NSX-T Manager over the REST API and configure any non-compliant controls.  
+To remediate NSX-T an [Ansible playbook](https://github.com/vmware/dod-compliance-and-automation/tree/master/nsx/3.x/ansible/vmware-nsxt-3.x-stig-ansible-hardening) has been provided that will target an NSX-T Manager over the REST API and configure any non-compliant controls.  
 
-Since Ansible can only be ran from Linux based systems, the examples below are being ran on an Ubuntu 22.04 WSL2 instance on Windows 11 for reference.  
+Since Ansible can only be run from Linux based systems, the examples below are being run on an Ubuntu 22.04 WSL2 instance on Windows 11 for reference.  
 
 ### Generate API Session Token
 This playbook uses Session-Based authentication to authenticate with NSX for remediation. A session token and cookie must be generated and provided an input for the profile. This can be generated in various ways via curl, tools like Postman, etc. For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1248/nsx-t).
@@ -235,7 +235,7 @@ changed: [127.0.0.1] => (item={'rule_id': 4, 'sequence_number': 50000, 'path': '
 changed: [127.0.0.1] => (item={'rule_id': 3, 'sequence_number': 25000, 'path': '/infra/domains/default/security-policies/default-layer3-section/rules/default_rule_NDP', 'logged': False, 'action': 'ALLOW', 'id': 'default_rule_NDP'}) => {"ansible_loop_var": "item", "cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": true, "connection": "close", "content_length": "0", "cookies": {}, "cookies_string": "", "date": "Fri, 07 Jul 2023 01:04:57 GMT", "elapsed": 0, "expires": "0", "item": {"action": "ALLOW", "id": "default_rule_NDP", "logged": false, "path": "/infra/domains/default/security-policies/default-layer3-section/rules/default_rule_NDP", "rule_id": 3, "sequence_number": 25000}, "msg": "OK (0 bytes)", "pragma": "no-cache", "redirected": false, "server": "NSX", "status": 200, "strict_transport_security": "max-age=31536000 ; includeSubDomains", "url": "https://10.43.173.83/policy/api/v1/infra/domains/default/security-policies/default-layer3-section/rules/default_rule_NDP", "x_content_type_options": "nosniff", "x_frame_options": "SAMEORIGIN", "x_nsx_requestid": "88ad2a48-7039-41d6-a758-84999467a2b3", "x_xss_protection": "1; mode=block"}
 ```
 
-A more conservative and preferred approach is to target any non-compliant controls or run each component separately allowed you to perform any functional testing in between.
+A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
 ```bash
 # Providing the tag "dfw" will instruct the playbook to only run the dfw role. This tag can be seen in each roles task/main.yml file.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsxt-3.x-example.yml --tags dfw
