@@ -1,0 +1,6 @@
+_internal/
+*.lock
+/wrapper/vendor
+/vendor
+*.json
+.DS_Store

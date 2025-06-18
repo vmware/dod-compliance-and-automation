@@ -1,0 +1,16 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+automation_defaults_run_vcfa_9x_000104: true
+automation_defaults_run_vcfa_9x_000373: true
+automation_defaults_run_vcfa_9x_000374: true
+automation_defaults_run_vcfa_9x_000375: true
+automation_defaults_run_vcfa_9x_000381: true
+
+# Automation Configuration
+automation_defaults_api_version: 'application/*;version=40.0'
+automation_defaults_disable_branding_without_login: 'true'
+## Enter an list of approved feature flags. Use the display name for the value.
+automation_defaults_approved_feature_flags: []

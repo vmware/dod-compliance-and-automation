@@ -1,0 +1,7 @@
+# Example waivers file. Update STIG IDs, justification, and whether to run the tests or not when running the profile.
+ESXI-80-000006:
+  run: false
+  justification: 'DoD Banner will not be configured out of the box.'
+ESXI-80-000006:
+  run: false
+  justification: 'AD integration is an optional configuration.'

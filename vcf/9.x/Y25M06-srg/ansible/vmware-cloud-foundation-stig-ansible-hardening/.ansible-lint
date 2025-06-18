@@ -1,0 +1,11 @@
+offline: true
+skip_list:
+  - name
+  - var-naming[no-role-prefix]
+warn_list:
+  - ignore-errors
+  - meta-no-info
+  - no-changed-when
+  - command-instead-of-module
+exclude_paths:
+  - ~/.ansible/roles

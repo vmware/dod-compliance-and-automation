@@ -1,0 +1,1054 @@
+---
+###################################################################################################################################
+- name: VCFN-9X-000007
+  tags: [VCFN-9X-000007]
+  when: nsx_manager_defaults_run_vcfn_9x_000007 | bool
+  block:
+    - name: VCFN-9X-000007 - Get current async_replicator service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/async_replicator"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: asyncservice
+      changed_when: false
+
+    - name: VCFN-9X-000007 - Update async_replicator service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/async_replicator"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_async_loglevel.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - asyncservice.json.service_properties.logging_level != nsx_manager_defaults_service_log_level
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000007 - Get current auth service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/auth"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: authservice
+      changed_when: false
+
+    - name: VCFN-9X-000007 - Update auth service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/auth"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_auth_loglevel.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - authservice.json.service_properties.logging_level != nsx_manager_defaults_service_log_level
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000007 - Get current http service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/http"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: httpservice
+      changed_when: false
+
+    - name: VCFN-9X-000007 - Construct http service payload json from template
+      ansible.builtin.template:
+        src: nsx_manager_update_node_http_loglevel.json.j2
+        dest: "{{ role_path }}/templates/nsx_manager_update_node_http_loglevel.json"
+        mode: "0640"
+      with_items:
+        - "{{ httpservice.json }}"
+      when:
+        - httpservice.json.service_properties.logging_level != nsx_manager_defaults_service_log_level
+
+    - name: VCFN-9X-000007 - Prepare http service payload json for update
+      ansible.builtin.command: sed -i 's/NEWLINESPLVAR/\\n/g' "{{ role_path }}/templates/update_node_http_loglevel.json"
+      changed_when: true
+      when:
+        - httpservice.json.service_properties.logging_level != nsx_manager_defaults_service_log_level
+
+    - name: VCFN-9X-000007 - Update http service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/http"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_http_loglevel.json') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ httpservice.json }}"
+      register: response
+      when:
+        - httpservice.json.service_properties.logging_level != nsx_manager_defaults_service_log_level
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000007 - Clean up http service payload json file
+      ansible.builtin.file:
+        path: "{{ role_path }}/templates/nsx_manager_update_node_http_loglevel.json"
+        state: absent
+      when:
+        - httpservice.json.service_properties.logging_level != nsx_manager_defaults_service_log_level
+
+    - name: VCFN-9X-000007 - Get current manager service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/manager"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: managerservice
+      changed_when: false
+
+    - name: VCFN-9X-000007 - Update manager service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/manager"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_manager_loglevel.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - managerservice.json.service_properties.logging_level != nsx_manager_defaults_service_log_level
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000007 - Get current telemetry service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/telemetry"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: telemetryservice
+      changed_when: false
+
+    - name: VCFN-9X-000007 - Update telemetry service log level
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/telemetry"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_telemetry_loglevel.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - telemetryservice.json.service_properties.logging_level != nsx_manager_defaults_service_log_level
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFN-9X-000010
+  tags: [VCFN-9X-000010]
+  when:
+    - nsx_manager_defaults_run_vcfn_9x_000010 | bool
+  block:
+    - name: VCFN-9X-000010 - The VMware Cloud Foundation NSX Manager must be configured to assign appropriate user roles or access levels to authenticated users.
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: VCFN-9X-000012
+  tags: [VCFN-9X-000012]
+  when:
+    - nsx_manager_defaults_run_vcfn_9x_000012 | bool
+  block:
+    - name: VCFN-9X-000012 - Get current authentication policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/aaa/auth-policy"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: authpolicy
+      changed_when: false
+
+    - name: VCFN-9X-000012 - Update authentication policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/aaa/auth-policy"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_auth_policy_lockout.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - (authpolicy.json.api_failed_auth_lockout_period != nsx_manager_defaults_api_lockout_period) or
+          (authpolicy.json.api_failed_auth_reset_period != nsx_manager_defaults_api_lockout_reset_period) or
+          (authpolicy.json.api_max_auth_failures != nsx_manager_defaults_api_max_auth_failures) or
+          (authpolicy.json.cli_failed_auth_lockout_period != nsx_manager_defaults_cli_lockout_period) or
+          (authpolicy.json.cli_max_auth_failures != nsx_manager_defaults_cli_max_auth_failures)
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000012 - Pause to give the service restart a chance to happen when changes are made to auth policy
+      ansible.builtin.pause:
+        seconds: 15
+      when:
+        - (authpolicy.json.api_failed_auth_lockout_period != nsx_manager_defaults_api_lockout_period) or
+          (authpolicy.json.api_failed_auth_reset_period != nsx_manager_defaults_api_lockout_reset_period) or
+          (authpolicy.json.api_max_auth_failures != nsx_manager_defaults_api_max_auth_failures) or
+          (authpolicy.json.cli_failed_auth_lockout_period != nsx_manager_defaults_cli_lockout_period) or
+          (authpolicy.json.cli_max_auth_failures != nsx_manager_defaults_cli_max_auth_failures)
+
+    - name: VCFN-9X-000012 - Wait for service to come back up
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/aaa/auth-policy"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
+      when:
+        - (authpolicy.json.api_failed_auth_lockout_period != nsx_manager_defaults_api_lockout_period) or
+          (authpolicy.json.api_failed_auth_reset_period != nsx_manager_defaults_api_lockout_reset_period) or
+          (authpolicy.json.api_max_auth_failures != nsx_manager_defaults_api_max_auth_failures) or
+          (authpolicy.json.cli_failed_auth_lockout_period != nsx_manager_defaults_cli_lockout_period) or
+          (authpolicy.json.cli_max_auth_failures != nsx_manager_defaults_cli_max_auth_failures)
+
+###################################################################################################################################
+# Disabling by default because put, post, patch is not an allowed method
+- name: VCFN-9X-000013
+  tags: [VCFN-9X-000013]
+  when: nsx_manager_defaults_run_vcfn_9x_000013 | bool
+  block:
+    - name: VCFN-9X-000013 - Get current login banner
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/loginbanner"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: loginbanner
+      changed_when: false
+
+    - name: VCFN-9X-000013 - Update login banner
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/loginbanner"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_loginbanner.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - (loginbanner.json.login_banner_content is not defined) or (loginbanner.json.login_banner_content != "nsx_manager_defaults_login_banner_content")
+        - (loginbanner.json.login_banner_title is not defined) or (loginbanner.json.login_banner_title != nsx_manager_defaults_login_banner_title)
+        - (loginbanner.json.login_banner_checkbox_flag != nsx_manager_defaults_login_banner_checkbox) or
+          (loginbanner.login_banner_status != nsx_manager_defaults_login_banner_status)
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFN-9X-000034
+  tags: [VCFN-9X-000034]
+  when: nsx_manager_defaults_run_vcfn_9x_000034 | bool
+  block:
+    - name: VCFN-9X-000034 - Get all local users
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/users"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: localusers
+      changed_when: false
+
+    - name: VCFN-9X-000034 - Deactivate audit/guestuser1/guestuser2 accounts
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/users/{{ item.userid }}?action=deactivate"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: POST
+        status_code:
+          - 200
+          - 202
+      when:
+        - item.username in nsx_manager_defaults_disable_local_accounts
+        - item.status == "ACTIVE"
+      with_items:
+        - "{{ localusers.json.results }}"
+      register: response
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFN-9X-000037
+  tags: [VCFN-9X-000037]
+  when: nsx_manager_defaults_run_vcfn_9x_000037 | bool
+  block:
+    - name: VCFN-9X-000037 - Get current API service configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: apiservice
+      changed_when: false
+
+    - name: VCFN-9X-000037 - Set fact for current TLSv1.1 enabled state
+      ansible.builtin.set_fact:
+        tls11enabled: "{{ apiservice.json | community.general.json_query('protocol_versions[?name==`TLSv1.1`].enabled') | join() }}"
+
+    - name: VCFN-9X-000037 - Update API service policy TLS Protocols
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_api_service_tls_protocol.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ apiservice.json }}"
+      register: response
+      when:
+        - tls11enabled != nsx_manager_defaults_enable_tls_11
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000037 - Pause to give the service restart a chance to happen when changes are made to API service policy
+      ansible.builtin.pause:
+        seconds: 15
+      when:
+        - tls11enabled != nsx_manager_defaults_enable_tls_11
+
+    - name: VCFN-9X-000037 - Wait for service restart when changes are made to API service policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
+      when:
+        - tls11enabled != nsx_manager_defaults_enable_tls_11
+
+###################################################################################################################################
+- name: VCFN-9X-000038
+  tags: [VCFN-9X-000038, VCFN-9X-000039, VCFN-9X-000040, VCFN-9X-000041, VCFN-9X-000042, VCFN-9X-000043]
+  when:
+    - nsx_manager_defaults_run_vcfn_9x_000038 | bool
+    - nsx_manager_defaults_run_vcfn_9x_000039 | bool
+    - nsx_manager_defaults_run_vcfn_9x_000040 | bool
+    - nsx_manager_defaults_run_vcfn_9x_000041 | bool
+    - nsx_manager_defaults_run_vcfn_9x_000042 | bool
+    - nsx_manager_defaults_run_vcfn_9x_000043 | bool
+  block:
+    - name: VCFN-9X-000038-43 - Get current authentication policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/aaa/auth-policy"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: authpolicy
+      changed_when: false
+
+    - name: VCFN-9X-000038-43 - Update authentication policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/aaa/auth-policy"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_auth_policy_password.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - (authpolicy.json.minimum_password_length != nsx_manager_defaults_min_pass_length) or
+          (authpolicy.json.lower_chars != nsx_manager_defaults_min_pass_lower_chars) or
+          (authpolicy.json.upper_chars != nsx_manager_defaults_min_pass_upper_chars) or
+          (authpolicy.json.digits != nsx_manager_defaults_min_pass_digit_chars) or
+          (authpolicy.json.special_chars != nsx_manager_defaults_min_pass_special_chars) or
+          (authpolicy.json.max_repeats != nsx_manager_defaults_pass_max_repeats)
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000038-43 - Pause to give the service restart a chance to happen when changes are made to auth policy
+      ansible.builtin.pause:
+        seconds: 15
+      when:
+        - (authpolicy.json.minimum_password_length != nsx_manager_defaults_min_pass_length) or
+          (authpolicy.json.lower_chars != nsx_manager_defaults_min_pass_lower_chars) or
+          (authpolicy.json.upper_chars != nsx_manager_defaults_min_pass_upper_chars) or
+          (authpolicy.json.digits != nsx_manager_defaults_min_pass_digit_chars) or
+          (authpolicy.json.special_chars != nsx_manager_defaults_min_pass_special_chars) or
+          (authpolicy.json.max_repeats != nsx_manager_defaults_pass_max_repeats)
+
+    - name: VCFN-9X-000038-43 - Wait for service to come back up
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/aaa/auth-policy"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
+      when:
+        - (authpolicy.json.minimum_password_length != nsx_manager_defaults_min_pass_length) or
+          (authpolicy.json.lower_chars != nsx_manager_defaults_min_pass_lower_chars) or
+          (authpolicy.json.upper_chars != nsx_manager_defaults_min_pass_upper_chars) or
+          (authpolicy.json.digits != nsx_manager_defaults_min_pass_digit_chars) or
+          (authpolicy.json.special_chars != nsx_manager_defaults_min_pass_special_chars) or
+          (authpolicy.json.max_repeats != nsx_manager_defaults_pass_max_repeats)
+
+###################################################################################################################################
+- name: VCFN-9X-000050
+  tags: [VCFN-9X-000050]
+  when: nsx_manager_defaults_run_vcfn_9x_000050 | bool
+  block:
+    - name: VCFN-9X-000050 - Get current node CLI timeout
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: clitimeout
+      changed_when: false
+
+    - name: VCFN-9X-000050 - Update node CLI timeout
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_cli_timeout.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - clitimeout.json.cli_timeout != nsx_manager_defaults_node_cli_timeout
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000050 - Get current API service configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: apiservice
+      changed_when: false
+
+    - name: VCFN-9X-000050 - Update API service policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_api_service_session_timeout.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ apiservice.json }}"
+      register: response
+      when:
+        - apiservice.json.session_timeout != nsx_manager_defaults_api_session_timeout
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000050 - Pause to give the service restart a chance to happen when changes are made to API service policy
+      ansible.builtin.pause:
+        seconds: 15
+      when:
+        - apiservice.json.session_timeout != nsx_manager_defaults_api_session_timeout
+
+    - name: VCFN-9X-000050 - Wait for service restart when changes are made to API service policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
+      when:
+        - apiservice.json.session_timeout != nsx_manager_defaults_api_session_timeout
+
+###################################################################################################################################
+- name: VCFN-9X-000065
+  tags: [VCFN-9X-000065]
+  when: nsx_manager_defaults_run_vcfn_9x_000065 | bool
+  block:
+    - name: VCFN-9X-000065 - Get node timezome configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: timezone
+      changed_when: false
+
+    - name: VCFN-9X-000065 - Update node timezone configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_timezone.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - timezone.json.timezone != nsx_manager_defaults_node_timezone
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFN-9X-000075
+  tags: [VCFN-9X-000075]
+  when: nsx_manager_defaults_run_vcfn_9x_000075 | bool
+  block:
+    - name: VCFN-9X-000075 - Get current API service configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: apiservice
+      changed_when: false
+
+    - name: VCFN-9X-000075 - Set fact for current ciphers enabled state
+      ansible.builtin.set_fact:
+        tls_ecdhe_rsa_with_aes_128_cbc_sha_enabled: "{{ apiservice.json | community.general.json_query('cipher_suites[?name==`TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA`].enabled') | join() }}"
+        tls_ecdhe_rsa_with_aes_128_cbc_sha256_enabled: "{{ apiservice.json | community.general.json_query('cipher_suites[?name==`TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256`].enabled') | join() }}"
+        tls_ecdhe_rsa_with_aes_256_cbc_sha_enabled: "{{ apiservice.json | community.general.json_query('cipher_suites[?name==`TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA`].enabled') | join() }}"
+        tls_ecdhe_rsa_with_aes_256_cbc_sha384_enabled: "{{ apiservice.json | community.general.json_query('cipher_suites[?name==`TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384`].enabled') | join() }}"
+        tls_rsa_with_aes_128_cbc_sha_enabled: "{{ apiservice.json | community.general.json_query('cipher_suites[?name==`TLS_RSA_WITH_AES_128_CBC_SHA`].enabled') | join() }}"
+        tls_rsa_with_aes_128_cbc_sha256_enabled: "{{ apiservice.json | community.general.json_query('cipher_suites[?name==`TLS_RSA_WITH_AES_128_CBC_SHA256`].enabled') | join() }}"
+        tls_rsa_with_aes_256_cbc_sha_enabled: "{{ apiservice.json | community.general.json_query('cipher_suites[?name==`TLS_RSA_WITH_AES_256_CBC_SHA`].enabled') | join() }}"
+        tls_rsa_with_aes_256_cbc_sha256_enabled: "{{ apiservice.json | community.general.json_query('cipher_suites[?name==`TLS_RSA_WITH_AES_256_CBC_SHA256`].enabled') | join() }}"
+
+    - name: VCFN-9X-000075 - Update API service policy TLS ciphers
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_api_service_tls_ciphers.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ apiservice.json }}"
+      register: response
+      when:
+        - (tls_ecdhe_rsa_with_aes_128_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_128_cbc_sha) or
+          (tls_ecdhe_rsa_with_aes_128_cbc_sha256_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_128_cbc_sha256) or
+          (tls_ecdhe_rsa_with_aes_256_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_256_cbc_sha) or
+          (tls_ecdhe_rsa_with_aes_256_cbc_sha384_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_256_cbc_sha384) or
+          (tls_rsa_with_aes_128_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_128_cbc_sha) or
+          (tls_rsa_with_aes_128_cbc_sha256_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_128_cbc_sha256) or
+          (tls_rsa_with_aes_256_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_256_cbc_sha) or
+          (tls_rsa_with_aes_256_cbc_sha256_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_256_cbc_sha256)
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000075 - Pause to give the service restart a chance to happen when changes are made to API service policy
+      ansible.builtin.pause:
+        seconds: 15
+      when:
+        - (tls_ecdhe_rsa_with_aes_128_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_128_cbc_sha) or
+          (tls_ecdhe_rsa_with_aes_128_cbc_sha256_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_128_cbc_sha256) or
+          (tls_ecdhe_rsa_with_aes_256_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_256_cbc_sha) or
+          (tls_ecdhe_rsa_with_aes_256_cbc_sha384_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_256_cbc_sha384) or
+          (tls_rsa_with_aes_128_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_128_cbc_sha) or
+          (tls_rsa_with_aes_128_cbc_sha256_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_128_cbc_sha256) or
+          (tls_rsa_with_aes_256_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_256_cbc_sha) or
+          (tls_rsa_with_aes_256_cbc_sha256_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_256_cbc_sha256)
+
+    - name: VCFN-9X-000075 - Wait for service restart when changes are made to API service policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
+      when:
+        - (tls_ecdhe_rsa_with_aes_128_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_128_cbc_sha) or
+          (tls_ecdhe_rsa_with_aes_128_cbc_sha256_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_128_cbc_sha256) or
+          (tls_ecdhe_rsa_with_aes_256_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_256_cbc_sha) or
+          (tls_ecdhe_rsa_with_aes_256_cbc_sha384_enabled != nsx_manager_defaults_enable_tls_cipher_tls_ecdhe_rsa_with_aes_256_cbc_sha384) or
+          (tls_rsa_with_aes_128_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_128_cbc_sha) or
+          (tls_rsa_with_aes_128_cbc_sha256_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_128_cbc_sha256) or
+          (tls_rsa_with_aes_256_cbc_sha_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_256_cbc_sha) or
+          (tls_rsa_with_aes_256_cbc_sha256_enabled != nsx_manager_defaults_enable_tls_cipher_tls_rsa_with_aes_256_cbc_sha256)
+
+###################################################################################################################################
+- name: VCFN-9X-000076
+  tags: [VCFN-9X-000076]
+  when: nsx_manager_defaults_run_vcfn_9x_000076 | bool
+  block:
+    - name: VCFN-9X-000076 - Get current API service configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: apiservice
+      changed_when: false
+
+    - name: VCFN-9X-000076 - Update API service policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_api_service_api_limits.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ apiservice.json }}"
+      register: response
+      when:
+        - (apiservice.json.client_api_concurrency_limit != nsx_manager_defaults_client_api_concurrency_limit) or
+          (apiservice.json.client_api_rate_limit != nsx_manager_defaults_client_api_rate_limit) or
+          (apiservice.json.global_api_concurrency_limit != nsx_manager_defaults_global_api_concurrency_limit)
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000076 - Pause to give the service restart a chance to happen when changes are made to API service policy
+      ansible.builtin.pause:
+        seconds: 15
+      when:
+        - (apiservice.json.client_api_concurrency_limit != nsx_manager_defaults_client_api_concurrency_limit) or
+          (apiservice.json.client_api_rate_limit != nsx_manager_defaults_client_api_rate_limit) or
+          (apiservice.json.global_api_concurrency_limit != nsx_manager_defaults_global_api_concurrency_limit)
+
+    - name: VCFN-9X-000076 - Wait for service restart when changes are made to API service policy
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/cluster/api-service"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code:
+          - 200
+      until: servicerestart.status == 200
+      retries: 48
+      delay: 5
+      register: servicerestart
+      when:
+        - (apiservice.json.client_api_concurrency_limit != nsx_manager_defaults_client_api_concurrency_limit) or
+          (apiservice.json.client_api_rate_limit != nsx_manager_defaults_client_api_rate_limit) or
+          (apiservice.json.global_api_concurrency_limit != nsx_manager_defaults_global_api_concurrency_limit)
+
+###################################################################################################################################
+- name: VCFN-9X-000085
+  tags: [VCFN-9X-000085]
+  when: nsx_manager_defaults_run_vcfn_9x_000085 | bool
+  block:
+    - name: VCFN-9X-000085 - Get node syslog configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/syslog/exporters"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: syslogservers
+      changed_when: false
+
+    - name: VCFN-9X-000085 - Delete any unknown syslog servers
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/syslog/exporters/{{ item.exporter_name }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: DELETE
+        status_code:
+          - 200
+      register: response
+      with_items:
+        - "{{ syslogservers.json.results }}"
+      when:
+        - item.server not in nsx_manager_defaults_syslog_servers | map(attribute='server') | list
+        - syslogservers.json.result_count != 0
+      changed_when:
+        - response.status == 200
+
+    - name: VCFN-9X-000085 - Add any missing syslog servers
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/syslog/exporters"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: POST
+        body: "{{ lookup('template', './nsx_manager_update_node_syslog_servers.json.j2') }}"
+        body_format: json
+        status_code:
+          - 201
+      register: response
+      with_items:
+        - "{{ nsx_manager_defaults_syslog_servers }}"
+      when:
+        - item.server not in syslogservers.json.results | map(attribute='server') | list
+        - nsx_manager_defaults_syslog_servers is iterable
+      changed_when:
+        - response.status == 201
+
+###################################################################################################################################
+- name: VCFN-9X-000086
+  tags: [VCFN-9X-000086]
+  when: nsx_manager_defaults_run_vcfn_9x_000086 | bool
+  block:
+    - name: VCFN-9X-000086 - Get manager ssh service status
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/ssh/status"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: sshsstatus
+      changed_when: false
+
+    - name: VCFN-9X-000086 - Stop SSH service
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/ssh/notify_mpa?action=stop"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: POST
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - sshsstatus.json.runtime_state != "stopped"
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+    - name: VCFN-9X-000086 - Get manager ssh service properties
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/ssh"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: sshservice
+      changed_when: false
+
+    - name: VCFN-9X-000086 - Update manager ssh service properties
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/ssh"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_ssh_service.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ sshservice.json }}"
+      register: response
+      when:
+        - (sshservice.json.service_properties.start_on_boot != nsx_manager_defaults_ssh_start_on_boot) or
+          (sshservice.json.service_properties.root_login != nsx_manager_defaults_ssh_root_login)
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFN-9X-000091
+  tags: [VCFN-9X-000091]
+  when: nsx_manager_defaults_run_vcfn_9x_000091 | bool
+  block:
+    - name: VCFN-9X-000091 - The VMware Cloud Foundation NSX Manager must be configured to conduct backups on an organizationally defined schedule.
+      ansible.builtin.debug:
+        msg: "VCFN-9X-000091 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFN-9X-000111
+  tags: [VCFN-9X-000111]
+  when: nsx_manager_defaults_run_vcfn_9x_000111 | bool
+  block:
+    - name: VCFN-9X-000111 - Get node NTP configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/ntp"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: ntpservers
+      changed_when: false
+
+    - name: VCFN-9X-000111 - Update node NTP configuration if configured NTP servers are not in the list of expected NTP servers
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/ntp"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_ntp_servers.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+      register: response
+      with_items:
+        - "{{ ntpservers.json.service_properties.servers }}"
+      when:
+        - item not in nsx_manager_defaults_ntp_servers
+        - ntpservers.json.service_properties.servers is iterable
+        - nsx_manager_defaults_ntp_servers | length > 0
+      changed_when:
+        - response.status == 200
+
+    - name: VCFN-9X-000111 - Get node NTP configuration again to verify all expected NTP servers are configured
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/ntp"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: ntpservers
+      changed_when: false
+
+    - name: VCFN-9X-000111 - Update node NTP configuration if expected NTP servers are not in the list of current NTP servers
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/ntp"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_node_ntp_servers.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+      register: response
+      with_items:
+        - "{{ nsx_manager_defaults_ntp_servers }}"
+      when:
+        - item not in ntpservers.json.service_properties.servers
+        - nsx_manager_defaults_ntp_servers is iterable
+      changed_when:
+        - response.status == 200
+
+###################################################################################################################################
+- name: VCFN-9X-000113
+  tags: [VCFN-9X-000113]
+  when: nsx_manager_defaults_run_vcfn_9x_000113 | bool
+  block:
+    - name: VCFN-9X-000113 - Get current SNMP configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/snmp"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: snmpconfig
+      changed_when: false
+
+    - name: VCFN-9X-000113 - Disable SNMP v2
+      ansible.builtin.debug:
+        msg: "VCFN-9X-000113 - SNMP V2 is enabled. This control must be manually remediated."
+      changed_when: false
+      when:
+        - snmpconfig.json.service_properties.v2_configured == 'true'
+
+## Does not work currently.
+    # - name: VCFN-9X-000113 - Disable SNMP v2
+    #   ansible.builtin.uri:
+    #     url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/node/services/snmp"
+    #     validate_certs: "{{ validate_certificate_uri }}"
+    #     headers:
+    #       Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+    #       X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+    #     method: PUT
+    #     body: "{{ lookup('template', './nsx_manager_update_node_snmp_service.json.j2') | to_json }}"
+    #     body_format: json
+    #     status_code:
+    #       - 200
+    #       - 202
+    #   register: response
+    #   when:
+    #     - snmpconfig.json.service_properties.v2_configured == true
+    #   changed_when:
+    #     - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFN-9X-000114
+  tags: [VCFN-9X-000114]
+  when: nsx_manager_defaults_run_vcfn_9x_000114 | bool
+  block:
+    - name: VCFN-9X-000114 - Get manager infra global config
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/infra/global-config"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: globalconfig
+      changed_when: false
+
+    - name: VCFN-9X-000114 - Update manager infra global config with fips
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/infra/global-config"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_manager_update_fips_for_lbs.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ globalconfig.json }}"
+      register: response
+      when:
+        - globalconfig.json.fips.lb_fips_enabled != nsx_manager_defaults_enable_lb_fips
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFN-9X-000115
+  tags: [VCFN-9X-000115]
+  when: nsx_manager_defaults_run_vcfn_9x_000115 | bool
+  block:
+    - name: VCFN-9X-000115 - The VMware Cloud Foundation NSX Manager must be configured as a cluster.
+      ansible.builtin.debug:
+        msg: "VCFN-9X-000115 - This control must be manually remediated."
+      changed_when: false

@@ -1,0 +1,27 @@
+name: VMware Cloud Foundation 9.x Application SDDC Manager STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Application STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Application SDDC Manager STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: sddcmgr_url
+    value: ''
+    type: string
+    description: 'Enter target SDDC Manager URL IP or FQDN.'
+  - name: sddcmgr_sessionToken
+    value: ''
+    type: string
+    description: 'Enter session token for API authentication.'
+    sensitive: true
+  - name: sddcmgr_authorizedPermissions
+    type: array
+    description: 'Enter a list of users and their authorized roles to validate.'
+    value:
+      - user: 'administrator@vsphere.local'
+        role: 'Administrator'
+      - user: 'vsphere.local\sddcadmins'
+        role: 'Administrator'

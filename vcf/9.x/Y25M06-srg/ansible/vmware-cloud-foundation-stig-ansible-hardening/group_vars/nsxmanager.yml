@@ -1,0 +1,20 @@
+# Variables defined here are to override role variables in /default/main.yml and apply to all nodes in the ansible inventory group with the same name as this file.
+# For example, if you want to disable a specific STIG ID, the variable that controls that rule can be placed in here and disabled.
+
+# NSX Manager environment specific variables
+## Enter an array of NTP servers to configure for NSX Manager
+nsx_manager_defaults_ntp_servers: []
+
+## Enter an array of syslog servers to configure for NSX Manager
+### Server is the IP or FQDN of the syslog server
+### Port defaults to 514 for TCP, TLS, UDP protocols or 9000 for LI, LI-TLS protocols
+### Protocol is one of TCP, TLS, UDP, LI, LI-TLS
+### Level is one of EMERG, ALERT, CRIT, ERR, WARNING, NOTICE, INFO, DEBUG
+nsx_manager_defaults_syslog_servers:
+  - server: ''
+    port: ''
+    protocol: ''
+    level: ''
+
+# Ubuntu variables for NSX Manager. Currently unused.
+ubuntu_2204_defaults_auditd_rule_template_file: 'nsx_audit.STIG.rules'

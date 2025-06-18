@@ -1,0 +1,11 @@
+---
+
+- name: Include Operations Fleet Management tasks
+  ansible.builtin.include_tasks:
+    file: ops_fm.yml
+    apply:
+      tags:
+        - ops_fm
+  tags:
+    - ops_fm
+    - VCFA-9X-000371

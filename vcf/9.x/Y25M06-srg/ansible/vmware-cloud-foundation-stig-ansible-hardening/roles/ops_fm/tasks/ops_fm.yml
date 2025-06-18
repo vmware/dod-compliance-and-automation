@@ -1,0 +1,37 @@
+---
+
+###################################################################################################################################
+- name: VCFA-9X-000371
+  tags: [VCFA-9X-000371]
+  when: ops_fm_defaults_run_vcfa_9x_000371 | bool
+  block:
+    - name: VCFA-9X-000371 - Get authoritative time server
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/lcm/lcops/api/v2/settings/system-details/time"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Basic {{ lookup('vars', 'var_vault_operations_fm_api_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: timesettings
+      changed_when: false
+
+    - name: VCFA-9X-000371 - Update time server settings
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/lcm/lcops/api/v2/settings/system-details/time"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Basic {{ lookup('vars', 'var_vault_operations_fm_api_token') }}"
+          Accept: "application/json"
+        method: POST
+        body: "{{ lookup('template', './ops_fm_update_time_servers.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+      register: sessionresponse
+      when:
+        - not timesettings.json['ntpServerEnabled'] | bool or
+          not timesettings.json['ntpServerStarted'] | bool or
+          timesettings.json['ntpServers'] != ops_fm_defaults_time_servers
+      changed_when:
+        - sessionresponse.status == 200

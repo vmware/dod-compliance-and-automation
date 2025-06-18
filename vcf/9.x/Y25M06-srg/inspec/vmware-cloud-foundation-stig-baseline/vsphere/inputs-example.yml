@@ -1,0 +1,38 @@
+# ESX
+# Choose whether to scan a single host, all hosts in a cluster, or all hosts in vCenter. Precedence is allHosts > cluster > single host if multiple values are provided.
+esx_vmhostName: ''
+esx_cluster: ''
+esx_allHosts: true
+# Enter the environment specific time servers.
+esx_ntpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Enter the environment specific vMotion VLAN Id.
+esx_vmotionVlanId: '100'
+# Enter an array of users that should be in the lockdown mode exceptions list.
+esx_lockdownExceptionUsers: []
+# If snmp is used in the environment change to true.
+esx_snmpEnabled: 'false'
+
+# vCenter inputs
+## Enter an array of authorized NTP servers
+vcenter_ntpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+## If IpFix is used enter an array of collector addresses that are authorized.
+vcenter_ipfixCollectorAddresses: []
+## If any portgroups are authorized to be configuring for trunking provide an array of portgroup names.
+vcenter_allowedTrunkingPortgroups: []
+## Array of authorized users that should be in the SystemConfiguration.BashShellAdministrators SSO group.
+vcenter_bashShellAdminUsers:
+  - 'Administrator'
+## Array of authorized groups that should be in the SystemConfiguration.BashShellAdministrators SSO group.
+vcenter_bashShellAdminGroups: []
+## Array of authorized port mirroring sessions by session name.
+vcenter_portMirrorSessions: []
+
+# VM inputs
+# Choose whether to scan a single vm, all vms in a cluster, or all vm in vCenter. Precedence is allvms > cluster > single vm if multiple values are provided.
+vm_Name: ''
+vm_cluster: ''
+vm_allvms: true

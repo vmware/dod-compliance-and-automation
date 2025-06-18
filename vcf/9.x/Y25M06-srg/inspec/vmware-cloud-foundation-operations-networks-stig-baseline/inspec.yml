@@ -1,0 +1,21 @@
+name: vmware-cloud-foundation-operations-networks-stig-baseline
+title: InSpec Profile for the VMware Cloud Foundation Operations for Networks Appliance 9.0 STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: InSpec Profile for the VMware Cloud Foundation Operations for Networks Appliance 9.0 STIG Readiness Guide
+version: 1.0.1
+
+depends:
+  - name: nginx-platform
+    path: nginx-platform
+  - name: ubuntu
+    path: ../canonical-ubuntu-22.04-lts-stig-baseline
+
+inputs:
+  - name: sudo_accounts
+    description: UBTU-22-432015 Array of users who need access to security functions are part of the sudo group.
+    type: Array
+    value: ['ubuntu','support']
+    profile: ubuntu

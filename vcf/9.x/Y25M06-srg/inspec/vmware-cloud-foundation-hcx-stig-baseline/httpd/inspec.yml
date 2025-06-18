@@ -1,0 +1,127 @@
+name: VMware Cloud Foundation 9.x Operations HCX Manager Appliance Apache HTTP Server STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Operations HCX Manager Appliance Apache HTTP Server STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Operations HCX Manager Appliance Apache HTTP Server STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+- name: apache_httpd_conf_file
+  description: The main config file for httpd
+  type: string
+  value: '/etc/httpd/httpd.conf'
+- name: apache_virtualhost_conf_file
+  description: The config file with the virtual host configuration
+  type: string
+  value: '/opt/vmware/config/apache-httpd/hcx-virtual-hosts.conf'
+- name: apache_httpd_user
+  description: The user account running the apache service
+  type: string
+  value: 'admin'
+- name: apache_httpd_group
+  description: The group account running the apache service
+  type: string
+  value: 'secureall'
+- name: apache_allowed_protocols
+  description: An array of allowed SSL Protocols to enable
+  type: array
+  value:
+    - '+TLSv1.2'
+    - '+TLSv1.3'
+- name: apache_log_patterns
+  description:
+  type: array
+  value:
+    - '%h'
+    - '%l'
+    - '%u'
+    - '%t'
+    - '%r'
+    - '%>s'
+    - '%b'
+- name: apache_error_log
+  description: The main config file for httpd
+  type: string
+  value: '/common/logs/httpd/error.log'
+- name: apache_log_dir
+  description: The log directory for httpd
+  type: string
+  value: '/common/logs/httpd'
+- name: apache_approved_modules
+  description: An array of allowed SSL Protocols to enable
+  type: array
+  value:
+    - 'core_module'
+    - 'so_module'
+    - 'http_module'
+    - 'mpm_event_module'
+    - 'authn_file_module'
+    - 'authn_core_module'
+    - 'authz_host_module'
+    - 'authz_groupfile_module'
+    - 'authz_user_module'
+    - 'authz_core_module'
+    - 'access_compat_module'
+    - 'reqtimeout_module'
+    - 'filter_module'
+    - 'mime_module'
+    - 'log_config_module'
+    - 'env_module'
+    - 'headers_module'
+    - 'usertrack_module'
+    - 'setenvif_module'
+    - 'version_module'
+    - 'proxy_module'
+    - 'proxy_connect_module'
+    - 'proxy_http_module'
+    - 'proxy_wstunnel_module'
+    - 'proxy_balancer_module'
+    - 'proxy_express_module'
+    - 'slotmem_shm_module'
+    - 'ssl_module'
+    - 'unixd_module'
+    - 'status_module'
+    - 'autoindex_module'
+    - 'dir_module'
+    - 'alias_module'
+    - 'rewrite_module'
+- name: apache_private_key
+  description: Private key file
+  type: string
+  value: '/common/httpd/.privatekey.pem'
+- name: apache_document_dir
+  description: Directory for httpd content
+  type: string
+  value: '/opt/vmware/web/'
+- name: apache_config_dir
+  description: Directory for httpd content
+  type: string
+  value: '/etc/httpd/'
+- name: apache_allowed_listeners
+  description: An array of allowed Listen directives
+  type: array
+  value:
+    - '*:443'
+    - '80'
+- name: apache_header_hsts
+  description: HSTS header value
+  type: string
+  value: 'Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"'
+- name: apache_header_xframe_options
+  description: X-Frame Options header value
+  type: string
+  value: 'Header set X-Frame-Options "SAMEORIGIN"'
+- name: apache_header_content_type_options
+  description: X-Content-Type header value
+  type: string
+  value: 'Header set X-Content-Type-Options "nosniff"'
+- name: apache_header_csp
+  description: Content-Security-Policy header value
+  type: string
+  value: "Header set Content-Security-Policy \"style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:\""
+- name: apache_header_referrer_policy
+  description: Referrer-Policy header value
+  type: string
+  value: 'Header set Referrer-Policy "no-referrer"'

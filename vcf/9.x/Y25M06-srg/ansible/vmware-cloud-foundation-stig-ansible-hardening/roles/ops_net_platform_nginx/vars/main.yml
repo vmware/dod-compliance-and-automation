@@ -1,0 +1,26 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+## nginx service variables
+ops_net_platform_nginx_vars_notify_service_name: 'nginx'
+ops_net_platform_nginx_vars_nginx_conf_file: '/etc/nginx/nginx.conf'
+ops_net_platform_nginx_vars_nginx_vnera_conf_file: '/etc/nginx/sites-available/vnera'
+ops_net_platform_nginx_vars_conf_folder: '/etc/nginx'
+ops_net_platform_nginx_vars_log_folder: '/var/log/nginx/'
+ops_net_platform_nginx_vars_ssl_key_file: '/etc/nginx/ssl/vnera.com.key'
+
+## configuration values
+ops_net_platform_nginx_vars_conf_owner: 'root'
+ops_net_platform_nginx_vars_conf_group: 'root'
+ops_net_platform_nginx_vars_conf_file_mode: 'o-w'
+ops_net_platform_nginx_vars_log_owner: 'www-data'
+ops_net_platform_nginx_vars_log_group: 'adm'
+ops_net_platform_nginx_vars_log_file_mode: '0640'
+
+## misc
+ops_net_platform_nginx_vars_deployment_info_file: '/home/ubuntu/build-target/deployment/deployment-set.info'

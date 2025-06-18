@@ -1,0 +1,1025 @@
+---
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible_backups_ops_apache_httpd_{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ ops_apache_httpd_vars_http_conf_file }}'
+        - '{{ ops_apache_httpd_vars_ssl_conf_file }}'
+        - '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+
+###################################################################################################################################
+# This setting is part of the core module so assuming it is compiled in and does not need to be loaded.
+- name: VCFH-9X-000001
+  tags: [VCFH-9X-000001]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000001 | bool
+  block:
+    - name: 'VCFH-9X-000001 - If present, update KeepAlive to {{ ops_apache_httpd_defaults_keepalive }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*KeepAlive\s+)(.*)$'  # using s+ to ensure one space, otherwise it matches KeepAliveTimeout
+        line: '\1{{ ops_apache_httpd_defaults_keepalive }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000001 - If present, update MaxKeepAliveRequests to {{ ops_apache_httpd_defaults_max_keepalive_requests }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*MaxKeepAliveRequests\s+)(.*)$'
+        line: '\g<1>{{ ops_apache_httpd_defaults_max_keepalive_requests }}'  # Use alternate backref method to avoid conflict with variable value
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+###################################################################################################################################
+# ssl_module
+- name: VCFH-9X-000003
+  tags: [VCFH-9X-000003]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000003 | bool
+  block:
+    - name: 'VCFH-9X-000003 - Check that the ssl_module is loaded.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        httpd -M | grep ssl_module
+      register: checkmod
+      failed_when: checkmod.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000003 - Load ssl_module if not loaded.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        line: 'LoadModule ssl_module {{ ops_apache_httpd_defaults_ssl_module_file }}'
+        state: present
+        insertafter: EOF
+      when:
+        - checkmod.stdout == ""
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000003 - Update ssl_module if path incorrect.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LoadModule\s*)(ssl_module\s?)(.*)$'
+        line: '\1\2{{ ops_apache_httpd_defaults_ssl_module_file }}'
+        state: present
+        backrefs: true
+      when:
+        - checkmod.stdout != ""
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000003 - Check to see if SSLProtocol is present in {{ ops_apache_httpd_vars_ssl_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_ssl_conf_file }}'
+        regexp: '(?!^#)(^\s*SSLProtocol\s*)(.*)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000003 - Add SSLProtocol if not present to {{ ops_apache_httpd_vars_ssl_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_ssl_conf_file }}'
+        line: 'SSLProtocol {{ ops_apache_httpd_defaults_ssl_protocol }}'
+        state: present
+        insertafter: EOF
+      when:
+        - check.found == 0
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000003 - Update SSLProtocol to {{ ops_apache_httpd_defaults_ssl_protocol }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_ssl_conf_file }}'
+        regexp: '(?!^#)(^\s*SSLProtocol\s*)(.*)$'
+        line: '\1{{ ops_apache_httpd_defaults_ssl_protocol }}'
+        state: present
+        backrefs: true
+      when:
+        - check.found == 1
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+###################################################################################################################################
+# log_config_module
+- name: VCFH-9X-000007
+  tags: [VCFH-9X-000007]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000007 | bool
+  block:
+    - name: 'VCFH-9X-000007 - Check that the log_config_module is loaded.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        httpd -M | grep log_config_module
+      register: checkmod
+      failed_when: checkmod.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000007 - Load log_config_module if not loaded.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        line: 'LoadModule log_config_module {{ ops_apache_httpd_defaults_log_config_module_file }}'
+        state: present
+        insertafter: EOF
+      when:
+        - checkmod.stdout == ""
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000007 - Update log_config_module if path incorrect.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LoadModule\s*)(log_config_module\s?)(.*)$'
+        line: '\1\2{{ ops_apache_httpd_defaults_log_config_module_file }}'
+        state: present
+        backrefs: true
+      when:
+        - checkmod.stdout != ""
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000007 - Check to see if common LogFormat is present in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LogFormat\s*)(.*)(common)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000007 - Add common LogFormat if not present to {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        line: 'LogFormat {{ ops_apache_httpd_defaults_log_format_common }}common'
+        state: present
+        insertafter: EOF
+      when:
+        - check.found == 0
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000007 - Update common LogFormat to {{ ops_apache_httpd_defaults_log_format_common }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LogFormat\s*)(.*)(common)$'
+        line: '\1{{ ops_apache_httpd_defaults_log_format_common }}\3'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+    - name: 'VCFH-9X-000007 - Check to see if combined LogFormat is present in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LogFormat\s*)(.*)(combined)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000007 - Add combined LogFormat if not present to {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        line: 'LogFormat {{ ops_apache_httpd_defaults_log_format_combined }}combined'
+        state: present
+        insertafter: EOF
+      when:
+        - check.found == 0
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000007 - Update combined LogFormat to {{ ops_apache_httpd_defaults_log_format_combined }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LogFormat\s*)(.*)(combined)$'
+        line: '\1{{ ops_apache_httpd_defaults_log_format_combined }}\3'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+###################################################################################################################################
+# log_config_module
+- name: VCFH-9X-000008
+  tags: [VCFH-9X-000008]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000008 | bool
+  block:
+    - name: 'VCFH-9X-000008 - Check that the log_config_module is loaded.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        httpd -M | grep log_config_module
+      register: checkmod
+      failed_when: checkmod.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000008 - Load log_config_module if not loaded.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        line: 'LoadModule log_config_module {{ ops_apache_httpd_defaults_log_config_module_file }}'
+        state: present
+        insertafter: EOF
+      when:
+        - checkmod.stdout == ""
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000008 - Update log_config_module if path incorrect.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LoadModule\s*)(log_config_module\s?)(.*)$'
+        line: '\1\2{{ ops_apache_httpd_defaults_log_config_module_file }}'
+        state: present
+        backrefs: true
+      when:
+        - checkmod.stdout != ""
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000008 - Check to see if CustomLog is present in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*CustomLog\s*)(.*)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000008 - Add CustomLog if not present to {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        line: 'CustomLog {{ ops_apache_httpd_defaults_custom_log_file }}{{ ops_apache_httpd_defaults_custom_log_format_name }}'
+        state: present
+        insertafter: EOF
+      when:
+        - check.found == 0
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000008 - Update CustomLog to {{ ops_apache_httpd_defaults_log_format_common }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*CustomLog\s*)(.*)({{ ops_apache_httpd_defaults_custom_log_format_name }})$'
+        line: '\1{{ ops_apache_httpd_defaults_custom_log_file }}{{ ops_apache_httpd_defaults_custom_log_format_name }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+###################################################################################################################################
+# This setting is part of the core module so assuming it is compiled in and does not need to be loaded.
+- name: VCFH-9X-000009
+  tags: [VCFH-9X-000009]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000009 | bool
+  block:
+    - name: 'VCFH-9X-000009 - Check to see if ErrorLog is present in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*ErrorLog\s*)(.*)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000009 - Add ErrorLog if not present to {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        line: 'ErrorLog {{ ops_apache_httpd_defaults_error_log_file }}'
+        state: present
+        insertafter: EOF
+      when:
+        - check.found == 0
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000009 - Update ErrorLog to {{ ops_apache_httpd_defaults_error_log_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*ErrorLog\s*)(.*)$'
+        line: '\1{{ ops_apache_httpd_defaults_error_log_file }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+    - name: 'VCFH-9X-000009 - Check to see if LogLevel is present in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LogLevel\s*)(.*)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000009 - Add LogLevel if not present to {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        line: 'LogLevel {{ ops_apache_httpd_defaults_log_level }}'
+        state: present
+        insertafter: EOF
+      when:
+        - check.found == 0
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000009 - Update LogLevel to {{ ops_apache_httpd_defaults_error_log_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LogLevel\s*)(.*)$'
+        line: '\1{{ ops_apache_httpd_defaults_log_level }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+###################################################################################################################################
+- name: VCFH-9X-000018
+  tags: [VCFH-9X-000018]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000018 | bool
+  block:
+    - name: 'VCFH-9X-000018 - Find logs with incorrect permissions in {{ ops_apache_httpd_vars_log_folder }}.'
+      ansible.builtin.shell: find {{ ops_apache_httpd_vars_log_folder }} -xdev -type f -a '(' -perm -o+r -o -not -user {{ ops_apache_httpd_vars_log_owner }} -o -not -group {{ ops_apache_httpd_vars_log_group }} ')';
+      register: files
+      failed_when: files.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000018 - Update permissions on log files found to be incorrect in {{ ops_apache_httpd_vars_log_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ ops_apache_httpd_vars_log_owner }}'
+        group: '{{ ops_apache_httpd_vars_log_group }}'
+        mode: o-r
+      with_items:
+        - "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFH-9X-000023
+  tags: [VCFH-9X-000023]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000023 | bool
+  block:
+    - name: 'VCFH-9X-000023 - Get a list of currently loaded modules.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        httpd -M | grep -v "Loaded Modules:"
+      register: loadedmods
+      failed_when: loadedmods.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000023 - Create an array of currently loaded modules.'
+      ansible.builtin.set_fact:
+        currentmods: "{{ currentmods | default([]) | union([item | regex_replace('(\\s+)(.*?)(\\s+.*)', '\\2')]) }}"
+      with_items:
+        - "{{ loadedmods.stdout_lines }}"
+
+    - name: 'VCFH-9X-000023 - Print new curated array of loaded modules.'
+      ansible.builtin.debug:
+        msg: '{{ currentmods }}'
+
+    - name: 'VCFH-9X-000023 - Commented out loaded modules not in the approved modules list.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LoadModule\s*)({{ item }}\s?)(.*)$'
+        line: '#\1\2\3'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - item not in ops_apache_httpd_defaults_approved_modules
+      with_items:
+        - '{{ currentmods }}'
+
+###################################################################################################################################
+- name: VCFH-9X-000024
+  tags: [VCFH-9X-000024]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000024 | bool
+  block:
+    - name: 'VCFH-9X-000024 - Commented out AuthUserFile if present.'
+      ansible.builtin.lineinfile:
+        path: '{{ item }}'
+        regexp: '(?!^#)(^\s*AuthUserFile\s*)(.*)$'
+        line: '#\1\2'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      with_items:
+        - '{{ ops_apache_httpd_vars_http_conf_file }}'
+        - '{{ ops_apache_httpd_vars_ssl_conf_file }}'
+        - '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+
+###################################################################################################################################
+- name: VCFH-9X-000030
+  tags: [VCFH-9X-000030]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000030 | bool
+  block:
+    - name: 'VCFH-9X-000030 - Commented out AddHandler if present for .exe, .dll, .com, .bat, or .csh file types.'
+      ansible.builtin.lineinfile:
+        path: '{{ item.path }}'
+        regexp: '(?!^#)(^\s*AddHandler\s*)(.*\s*)(\.{{ item.filetype }})$'
+        line: '#\1\2\3'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      with_items:
+        - { filetype: 'exe', path: '{{ ops_apache_httpd_vars_http_conf_file }}' }
+        - { filetype: 'dll', path: '{{ ops_apache_httpd_vars_http_conf_file }}' }
+        - { filetype: 'com', path: '{{ ops_apache_httpd_vars_http_conf_file }}' }
+        - { filetype: 'bar', path: '{{ ops_apache_httpd_vars_http_conf_file }}' }
+        - { filetype: 'csh', path: '{{ ops_apache_httpd_vars_http_conf_file }}' }
+        - { filetype: 'exe', path: '{{ ops_apache_httpd_vars_ssl_conf_file }}' }
+        - { filetype: 'dll', path: '{{ ops_apache_httpd_vars_ssl_conf_file }}' }
+        - { filetype: 'com', path: '{{ ops_apache_httpd_vars_ssl_conf_file }}' }
+        - { filetype: 'bar', path: '{{ ops_apache_httpd_vars_ssl_conf_file }}' }
+        - { filetype: 'csh', path: '{{ ops_apache_httpd_vars_ssl_conf_file }}' }
+        - { filetype: 'exe', path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}' }
+        - { filetype: 'dll', path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}' }
+        - { filetype: 'com', path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}' }
+        - { filetype: 'bar', path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}' }
+        - { filetype: 'csh', path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}' }
+
+###################################################################################################################################
+- name: VCFH-9X-000033
+  tags: [VCFH-9X-000033]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000033 | bool
+  block:
+    - name: 'VCFH-9X-000033 - Check that the dav_module is loaded.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        httpd -M | grep dav_module
+      register: checkmod
+      failed_when: checkmod.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000033 - Comment out dav_module if found loaded.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LoadModule\s*)(dav_module\s?)(.*)$'
+        line: '#\1\2\3'
+        state: present
+        backrefs: true
+      when:
+        - checkmod.stdout != ""
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+
+###################################################################################################################################
+# This setting is part of the core module so assuming it is compiled in and does not need to be loaded.
+- name: VCFH-9X-000034
+  tags: [VCFH-9X-000034]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000034 | bool
+  block:
+    - name: 'VCFH-9X-000034 - Check to see if User is present and correct in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*User\s*)({{ ops_apache_httpd_defaults_service_user }})$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000034 - No User configuration found. This requires manual remediation.'
+      ansible.builtin.debug:
+        msg: 'VCFH-9X-000034 - No User configuration found. This requires manual remediation.'
+      when:
+        - check.found == 0
+
+    - name: 'VCFH-9X-000034 - Check to see if Group is present and correct in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*Group\s*)({{ ops_apache_httpd_defaults_service_group }})$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000034 - No Group configuration found. This requires manual remediation.'
+      ansible.builtin.debug:
+        msg: 'VCFH-9X-000034 - No Group configuration found. This requires manual remediation.'
+      when:
+        - check.found == 0
+
+###################################################################################################################################
+- name: VCFH-9X-000035
+  tags: [VCFH-9X-000035]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000035 | bool
+  block:
+    - name: 'VCFH-9X-000035 -  Deny access to / in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.replace:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^<Directory \/>\n)([\s\S]*?)(<\/Directory>)'
+        replace: |-
+          <Directory />
+              AllowOverride none
+              Require all denied
+          </Directory>
+
+###################################################################################################################################
+- name: VCFH-9X-000039
+  tags: [VCFH-9X-000039]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000039 | bool
+  block:
+    - name: Get stats of a file to find symlink target
+      ansible.builtin.stat:
+        path: "{{ ops_apache_httpd_vars_ssl_key_file }}"
+      register: keyfile
+      changed_when: false
+
+    - name: 'VCFH-9X-000039 - Update permissions on SSL key file: {{ keyfile.stat.lnk_target }}'
+      ansible.builtin.file:
+        path: "{{ keyfile.stat.lnk_target }}"
+        state: file
+        owner: 'admin'
+        group: 'admin'
+        mode: '0400'
+        follow: true
+      when: keyfile.stat.islnk is defined and keyfile.stat.islnk
+
+    - name: 'VCFH-9X-000039 - Update permissions on SSL key file: {{ keyfile.stat.path }} (not a symlink)'
+      ansible.builtin.file:
+        path: "{{ keyfile.stat.path }}"
+        state: file
+        owner: 'admin'
+        group: 'admin'
+        mode: '0400'
+        follow: true
+      when: keyfile.stat.islnk is undefined
+
+###################################################################################################################################
+- name: VCFH-9X-000043
+  tags: [VCFH-9X-000043]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000043 | bool
+  block:
+    - name: 'VCFH-9X-000043 - Find files with incorrect permissions in {{ ops_apache_httpd_vars_web_folder }}.'
+      ansible.builtin.shell: find {{ ops_apache_httpd_vars_web_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ ops_apache_httpd_vars_web_files_owner }} -o -not -group {{ ops_apache_httpd_vars_web_files_group }} ')';
+      register: files
+      failed_when: files.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000043 - Update permissions on files found to be incorrect in {{ ops_apache_httpd_vars_web_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ ops_apache_httpd_vars_web_files_owner }}'
+        group: '{{ ops_apache_httpd_vars_web_files_group }}'
+        mode: o-w
+      with_items:
+        - "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+# This setting is part of the core module so assuming it is compiled in and does not need to be loaded.
+- name: VCFH-9X-000061
+  tags: [VCFH-9X-000061]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000061 | bool
+  block:
+    - name: 'VCFH-9X-000061 - Check to see if TimeOut is present in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*TimeOut\s*)(.*)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000061 - Update TimeOut to {{ ops_apache_httpd_defaults_timeout }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*TimeOut\s*)(.*)$'
+        line: '\1{{ ops_apache_httpd_defaults_timeout }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+###################################################################################################################################
+# http2_module
+- name: VCFH-9X-000063
+  tags: [VCFH-9X-000063]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000063 | bool
+  block:
+    - name: 'VCFH-9X-000063 - Check that the http2_module is loaded.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        httpd -M | grep log_config_module
+      register: checkmod
+      failed_when: checkmod.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000063 - Load http2_module if not loaded.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        line: 'LoadModule http2_module {{ ops_apache_httpd_defaults_http2_module_file }}'
+        state: present
+        insertafter: EOF
+      when:
+        - checkmod.stdout == ""
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000063 - Update http2_module if path incorrect.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*LoadModule\s*)(http2_module\s?)(.*)$'
+        line: '\1\2{{ ops_apache_httpd_defaults_http2_module_file }}'
+        state: present
+        backrefs: true
+      when:
+        - checkmod.stdout != ""
+      notify:
+        - '{{ role_name }} : restart {{ ops_apache_httpd_vars_notify_service_name }}'
+
+###################################################################################################################################
+# This setting is part of the core module so assuming it is compiled in and does not need to be loaded.
+- name: VCFH-9X-000066
+  tags: [VCFH-9X-000066]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000066 | bool
+  block:
+    - name: 'VCFH-9X-000066 - Check to see if ServerSignature is present in {{ ops_apache_httpd_vars_virtualhosts_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*ServerSignature\s*)(.*)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000066 - Update ServerSignature to {{ ops_apache_httpd_defaults_server_signature }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*ServerSignature\s*)(.*)$'
+        line: '\1{{ ops_apache_httpd_defaults_server_signature }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+    - name: 'VCFH-9X-000066 - Check to see if ServerTokens is present in {{ ops_apache_httpd_vars_virtualhosts_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*ServerTokens\s*)(.*)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000066 - Add ServerTokens if not present to {{ ops_apache_httpd_vars_virtualhosts_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        line: 'ServerTokens {{ ops_apache_httpd_defaults_server_tokens }}'
+        state: present
+        insertafter: EOF
+      when:
+        - check.found == 0
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+
+    - name: 'VCFH-9X-000066 - Update ServerTokens to {{ ops_apache_httpd_defaults_server_tokens }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*ServerTokens\s*)(.*)$'
+        line: '\1{{ ops_apache_httpd_defaults_server_tokens }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+###################################################################################################################################
+# This setting is part of the core module so assuming it is compiled in and does not need to be loaded.
+- name: VCFH-9X-000067
+  tags: [VCFH-9X-000067]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000067 | bool
+  block:
+    - name: 'VCFH-9X-000067 - Check to see if TraceEnable is present in {{ ops_apache_httpd_vars_http_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*TraceEnable\s*)(.*)$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: 'VCFH-9X-000067 - Update TraceEnable to {{ ops_apache_httpd_defaults_trace_enable }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_http_conf_file }}'
+        regexp: '(?!^#)(^\s*TraceEnable\s*)(.*)$'
+        line: '\1{{ ops_apache_httpd_defaults_trace_enable }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+###################################################################################################################################
+- name: VCFH-9X-000080
+  tags: [VCFH-9X-000080]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000080 | bool
+  block:
+    - name: 'VCFH-9X-000080 - Find config files with incorrect permissions in {{ ops_apache_httpd_vars_conf_folder }}.'
+      ansible.builtin.shell: find {{ ops_apache_httpd_vars_conf_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ ops_apache_httpd_vars_conf_files_owner }} -o -not -group {{ ops_apache_httpd_vars_conf_files_group }} ')';
+      register: files
+      failed_when: files.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000080 - Update permissions on config files found to be incorrect in {{ ops_apache_httpd_vars_conf_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ ops_apache_httpd_vars_conf_files_owner }}'
+        group: '{{ ops_apache_httpd_vars_conf_files_group }}'
+        mode: o-w
+      with_items:
+        - "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFH-9X-000081
+  tags: [VCFH-9X-000081]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000081 | bool
+  block:
+    - name: 'VCFH-9X-000081 - This rule requires manual remediation.'
+      ansible.builtin.debug:
+        msg: 'VCFH-9X-000081 - This rule requires manual remediation.'
+
+
+###################################################################################################################################
+- name: VCFH-9X-000094
+  tags: [VCFH-9X-000094]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000094 | bool
+  block:
+    - name: 'VCFH-9X-000094 - Check for existing Protocols directive.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        cat {{ ops_apache_httpd_vars_virtualhosts_conf_file }} | sed -n "/^<VirtualHost\\s\\*:443>/,/<\\/VirtualHost>/p" | grep -E "^\s*?Protocols h2 h2c"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000094 - Add Protocols directive if not present to {{ ops_apache_httpd_vars_virtualhosts_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        line: '        Protocols h2 h2c http/1.1'
+        state: present
+        insertafter: '^<VirtualHost \*:443>'
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: 'VCFH-9X-000094 - Update Protocols directive.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*Protocols\s+)(.*)$'
+        line: '\1h2 h2c http/1.1'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFH-9X-000101
+  tags: [VCFH-9X-000101]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000101 | bool
+  block:
+    - name: 'VCFH-9X-000101 - Check for existing Strict-Transport-Security header.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        cat {{ ops_apache_httpd_vars_virtualhosts_conf_file }} | sed -n "/^<VirtualHost\\s\\*:443>/,/<\\/VirtualHost>/p" | grep -E "^\s*?Header set Strict-Transport-Security"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000101 - Add Strict-Transport-Security header if not present to {{ ops_apache_httpd_vars_virtualhosts_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        line: '    Header set Strict-Transport-Security "{{ ops_apache_httpd_defaults_header_hsts }}"'
+        state: present
+        insertafter: '^<VirtualHost \*:443>'
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: 'VCFH-9X-000101 - Update Strict-Transport-Security header to {{ ops_apache_httpd_defaults_header_hsts }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*Header set Strict-Transport-Security\s*)(.*)$'
+        line: '\1"{{ ops_apache_httpd_defaults_header_hsts }}"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFH-9X-000125
+  tags: [VCFH-9X-000125]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000125 | bool
+  block:
+    - name: 'VCFH-9X-000125 - Check for existing X-Frame-Options header.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        cat {{ ops_apache_httpd_vars_virtualhosts_conf_file }} | sed -n "/^<VirtualHost\\s\\*:443>/,/<\\/VirtualHost>/p" | grep -E "^\s*?Header set X-Frame-Options"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000125 - Add X-Frame-Options header if not present to {{ ops_apache_httpd_vars_virtualhosts_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        line: '    Header set X-Frame-Options "{{ ops_apache_httpd_defaults_header_xframe_options }}"'
+        state: present
+        insertafter: '^<VirtualHost \*:443>'
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: 'VCFH-9X-000125 - Update X-Frame-Options header to {{ ops_apache_httpd_defaults_header_xframe_options }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*Header set X-Frame-Options\s*)(.*)$'
+        line: '\1"{{ ops_apache_httpd_defaults_header_xframe_options }}"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFH-9X-000126
+  tags: [VCFH-9X-000126]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000126 | bool
+  block:
+    - name: 'VCFH-9X-000126 - Check for existing X-Content-Type-Options header.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        cat {{ ops_apache_httpd_vars_virtualhosts_conf_file }} | sed -n "/^<VirtualHost\\s\\*:443>/,/<\\/VirtualHost>/p" | grep -E "^\s*?Header set X-Content-Type-Options"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000126 - Add X-Content-Type-Options header if not present to {{ ops_apache_httpd_vars_virtualhosts_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        line: '    Header set X-Content-Type-Options "{{ ops_apache_httpd_defaults_header_xcontent_type_options }}"'
+        state: present
+        insertafter: '^<VirtualHost \*:443>'
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: 'VCFH-9X-000126 - Update X-Content-Type-Options header to {{ ops_apache_httpd_defaults_header_xcontent_type_options }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*Header set X-Content-Type-Options\s*)(.*)$'
+        line: '\1"{{ ops_apache_httpd_defaults_header_xcontent_type_options }}"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFH-9X-000127
+  tags: [VCFH-9X-000127]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000127 | bool
+  block:
+    - name: 'VCFH-9X-000127 - Check for existing Content-Security-Policy header.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        cat {{ ops_apache_httpd_vars_virtualhosts_conf_file }} | sed -n "/^<VirtualHost\\s\\*:443>/,/<\\/VirtualHost>/p" | grep -E "^\s*?Header set Content-Security-Policy"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000127 - Add Content-Security-Policy header if not present to {{ ops_apache_httpd_vars_virtualhosts_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        line: '    Header set Content-Security-Policy "{{ ops_apache_httpd_defaults_header_csp }}"'
+        state: present
+        insertafter: '^<VirtualHost \*:443>'
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: 'VCFH-9X-000127 - Update Content-Security-Policy header to {{ ops_apache_httpd_defaults_header_csp }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*Header set Content-Security-Policy\s*)(.*)$'
+        line: '\1"{{ ops_apache_httpd_defaults_header_csp }}"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFH-9X-000128
+  tags: [VCFH-9X-000128]
+  when:
+    - ops_apache_httpd_defaults_run_vcfh_9x_000128 | bool
+  block:
+    - name: 'VCFH-9X-000128 - Check for existing Referrer-Policy header.'
+      ansible.builtin.shell: |
+        set -o pipefail
+        cat {{ ops_apache_httpd_vars_virtualhosts_conf_file }} | sed -n "/^<VirtualHost\\s\\*:443>/,/<\\/VirtualHost>/p" | grep -E "^\s*?Header set Referrer-Policy"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFH-9X-000128 - Add Referrer-Policy header if not present to {{ ops_apache_httpd_vars_virtualhosts_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        line: '    Header set Referrer-Policy "{{ ops_apache_httpd_defaults_header_referrer_policy }}"'
+        state: present
+        insertafter: '^<VirtualHost \*:443>'
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: 'VCFH-9X-000128 - Update Referrer-Policy header to {{ ops_apache_httpd_defaults_header_referrer_policy }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_apache_httpd_vars_virtualhosts_conf_file }}'
+        regexp: '(?!^#)(^\s*Header set Referrer-Policy\s*)(.*)$'
+        line: '\1"{{ ops_apache_httpd_defaults_header_referrer_policy }}"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : reload {{ ops_apache_httpd_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""

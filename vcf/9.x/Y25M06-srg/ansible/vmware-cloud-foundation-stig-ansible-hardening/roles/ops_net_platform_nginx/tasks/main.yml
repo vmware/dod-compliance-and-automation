@@ -1,0 +1,41 @@
+---
+
+- name: Include Operations for Networks Platform NGINX tasks
+  ansible.builtin.include_tasks:
+    file: nginx.yml
+    apply:
+      tags:
+        - ops-net-platform-nginx
+  tags:
+    - ops-net-platform-nginx
+    - VCFO-9X-000001
+    - VCFO-9X-000003
+    - VCFO-9X-000004
+    - VCFO-9X-000007
+    - VCFO-9X-000009
+    - VCFO-9X-000010
+    - VCFO-9X-000019
+    - VCFO-9X-000025
+    - VCFO-9X-000026
+    - VCFO-9X-000034
+    - VCFO-9X-000035
+    - VCFO-9X-000037
+    - VCFO-9X-000040
+    - VCFO-9X-000047
+    - VCFO-9X-000048
+    - VCFO-9X-000060
+    - VCFO-9X-000062
+    - VCFO-9X-000063
+    - VCFO-9X-000078
+    - VCFO-9X-000090
+    - VCFO-9X-000096
+    - VCFO-9X-000098
+    - VCFO-9X-000099
+    - VCFO-9X-000100
+    - VCFO-9X-000102
+    - VCFO-9X-000103
+    - VCFO-9X-000104
+    - VCFO-9X-000105
+    - VCFO-9X-000106
+    - VCFO-9X-000111
+    - VCFO-9X-000137

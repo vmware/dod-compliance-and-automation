@@ -1,0 +1,25 @@
+# Waiver file to document rules that are not applicable or not supported on Tanzu Kubernetes Releases (TKR) for vSphere with Tanzu
+UBTU-22-251015:
+  run: false
+  justification: 'Iptables is used instead of UFW for the local firewall solution.'
+UBTU-22-612010:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612015:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612020:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612025:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612030:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612035:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612040:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
