@@ -1,0 +1,60 @@
+name: VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide
+title: VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: nsx_managerAddress
+    type: string
+    value: ''
+    description: 'IP or FQDN of NSX Manager. This is the target for the scan.'
+  # We use session based authentication in this profile to avoid username/pass   See https://developer.broadcom.com/xapis/nsx-t-data-center-rest-api/latest/ on how to generate the session token and you will also need the JSESSIONID cookie
+  - name: nsx_sessionToken
+    type: string
+    value: ''
+    description: 'X-XSRF-TOKEN session token for authentication. For example: fea5f9e8-10c9-4c58-bf86-4668828be556'
+    sensitive: true
+  - name: nsx_sessionCookieId
+    type: string
+    value: ''
+    description: 'JSESSIONID for authentication. For example: JSESSIONID=ECEF0CE603677B7FC5F34523714B7F5A'
+    sensitive: true
+  - name: nsx_syslogServers
+    type: array
+    value: []
+    description: 'Enter an array of syslog servers.'
+  - name: nsx_authorizedPermissions
+    type: hash
+    description: 'Enter a list of users and their authorized roles to validate.'
+    value:
+      admin:
+        role: 'Enterprise Admin'
+      audit:
+        role: 'Auditor'
+      guestuser1:
+        role: 'Auditor'
+      guestuser2:
+        role: 'Auditor'
+  - name: nsx_allowedProtocols
+    type: array
+    value:
+      - TLSv1.2
+      - TLSv1.3
+  - name: nsx_allowedCiphers
+    type: array
+    value:
+      - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+      - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+      - TLS_RSA_WITH_AES_128_GCM_SHA256
+      - TLS_RSA_WITH_AES_256_GCM_SHA384
+      - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+      - TLS_AES_128_GCM_SHA256
+      - TLS_AES_256_GCM_SHA384
+  - name: nsx_ntpServers
+    type: array
+    description: 'Enter an array  of authorized NTP servers.'
+    value: []

@@ -1,0 +1,23 @@
+name: VMware Cloud Foundation 9.x Application Operations Fleet Management STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Application STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Application Operations Fleet Management STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: fm_apihostname
+    description: Hostname for Fleet Management API endpoint
+    type: string
+    value: ''
+  - name: fm_apitoken
+    description: API token for Fleet Management API endpoint
+    type: string
+    value: ''
+    sensitive: true
+  - name: fm_ntpServers
+    description: 'Enter an array of authorized NTP servers'
+    type: array  
+    value: []

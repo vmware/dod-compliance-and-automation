@@ -1,0 +1,39 @@
+name: VMware Cloud Foundation 9.x Application Automation STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Application STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Application Automation STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: automation_deployed
+    value: true
+    type: boolean
+    description: 'Is Automation deployed in the environment? Set to false to mark Automation related rules N/A.'
+  - name: automation_url
+    value: ''
+    type: string
+    description: 'Enter target VCF Automation URL IP or FQDN.'
+  - name: automation_sessionToken
+    value: ''
+    type: string
+    description: 'Enter session token for API authentication.'
+    sensitive: true
+  - name: automation_apiVersion
+    value: 'application/*;version=40.0'
+    type: string
+    description: 'Enter API version to use in Automation OpenAPI calls.'
+  - name: automation_trustedCertificateCNs
+    value:
+      - 'tenant-manager-0.tenant-manager.prelude.svc.cluster.local'
+      - 'tenant-manager-1.tenant-manager.prelude.svc.cluster.local'
+      - 'tenant-manager-2.tenant-manager.prelude.svc.cluster.local'
+      - 'vcf-cluster-ca'
+    type: array
+    description: 'Enter an array of trusted certificate common names that are validated and trusted. The internal Automation CAs are provided here by default.'
+  - name: automation_approvedFeatureFlags
+    type: array
+    description: 'Enter an array of Feature Flags that should be enabled.'
+    value: []

@@ -1,0 +1,27 @@
+name: VMware Cloud Foundation 9.x Application Operations HCX STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Application STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Application Operations HCX STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: opshcx_deployed
+    value: true
+    type: boolean
+    description: 'Is Operations HCX deployed in the environment? Set to false to mark Operations HCX related rules N/A.'
+  - name: opshcx_url
+    value: ''
+    type: string
+    description: 'Enter target VCF Operations HCX Manager URL IP or FQDN.'
+  - name: opshcx_apiToken
+    value: ''
+    type: string
+    description: 'Enter session token for API authentication. From https://<IP or FQDN>/hybridity/api/sessions and capturing the x-hm-authorization header'
+    sensitive: true
+  - name: opshcx_ntpServers
+    type: array
+    value: []
+    description: 'Enter an array of NTP servers.'

@@ -1,0 +1,6 @@
+# Enter target Fleet Management URL IP or FQDN.
+fm_apihostname: ''
+# Enter bearer token for API authentication.
+fm_apitoken: ''
+# Enter an array of trusted certificate common names that are validated and trusted. The internal Automation CAs are provided here by default.
+fm_ntpServers: []

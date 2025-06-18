@@ -1,0 +1,10 @@
+# Enter target VCF Operations URL IP or FQDN.
+operations_apihostname: ''
+# Enter token for API authentication.
+operations_apitoken: ''
+# Is Automation deployed in the environment? Set to false to mark Automation related rules N/A.
+automation_deployed: true
+# Is VCF Operations for Networks deployed in the environment? Set to false to mark VCF Operations for Networks related rules N/A.
+opsnet_deployed: true
+# Is an external VCF Identity Broker appliance deployed in the environment? Set to false to mark VCF Identity Broker related rules N/A.
+vidb_deployed: true
