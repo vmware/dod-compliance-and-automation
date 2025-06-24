@@ -22,8 +22,9 @@ Versions listed below were used for this documentation. Other versions of these 
 
 ### Assumptions
 * Commands are being run from a Linux machine. Windows will also work but paths and commands may need to be adjusted from the examples.
-* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
 * CINC Auditor is used in lieu of InSpec. If InSpec is used replace `cinc-auditor` with `inspec` when running commands.
+* The [DOD Compliance and Automation](https://github.com/vmware/dod-compliance-and-automation) repository has been downloaded and extracted to `/usr/share/stigs`.
+* The `vmware-photon-5.0-stig-baseline` profile has been staged under the same parent folder as this `vmware-cloud-foundation-hcx-stig-baseline` profile.
 
 ## Auditing Operations HCX Appliance Rules
 Auditing the Operations HCX appliances is done over SSH which must be enabled for the scan.
