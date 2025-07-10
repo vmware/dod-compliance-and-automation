@@ -7,9 +7,9 @@ description: >
 ## Overview
 This tutorial covers auditing NSX product rules in VCF deployments.  
 
-{{% alert title="Important" color="primary" %}}
+
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-{{% /alert %}}
+
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -165,7 +165,7 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_NSX_Report.json -o /tmp/reports/VCF_9_
 {{< /tabpane >}}
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/nsx_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/nsx_audit9_ckl_screenshot.png)
 
 ## Manually audit rules
 The following rules require manual auditing and are not automated.  

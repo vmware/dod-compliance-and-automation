@@ -17,7 +17,7 @@ For the best experience, prior to using the STIG automation provided here please
 - Have read the README and understand the structure of the Ansible playbook provided here.
 
 **Failure to do so can result in unintended behavior in the environment.**  
-{{% /alert %}}
+
 
 ## Supported Versions
 - VCF 9.0.0.0  

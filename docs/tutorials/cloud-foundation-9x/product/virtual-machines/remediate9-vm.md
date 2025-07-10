@@ -15,11 +15,11 @@ For the best experience, prior to using the STIG automation provided here please
 - Have read the [PowerCLI Overview](/docs/automation-tools/powercli/).
 
 **Failure to do so can result in unintended behavior in the environment.**  
-{{% /alert %}}
 
-{{% alert title="Important" color="primary" %}}
+
+
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-{{% /alert %}}
+
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  

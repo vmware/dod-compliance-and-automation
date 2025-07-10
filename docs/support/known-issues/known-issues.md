@@ -1,10 +1,3 @@
----
-title: "Known Issues"
-linkTitle: "Known Issues"
-weight: 1
-description: >
-  Known issues for STIG rules.
----
 # Known Issues
 This section documents known issues for STIG rules, including workarounds if known.
 

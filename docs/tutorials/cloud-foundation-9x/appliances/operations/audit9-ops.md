@@ -7,9 +7,9 @@ description: >
 ## Overview
 This tutorial covers auditing the Operations appliance in VCF deployments.  
 
-{{% alert title="Important" color="primary" %}}
+
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-{{% /alert %}}
+
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -102,7 +102,7 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_Operations_Master_Report.json -o /tmp/
 Repeat the previous steps for each node in the Operations deployment.  
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/ops_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/ops_audit9_ckl_screenshot.png)
 
 ## Next
 If needed proceed to the remediation tutorial for the Operations appliance [here](/docs/tutorials/cloud-foundation-9.x/appliances/operations/remediate9-ops/).

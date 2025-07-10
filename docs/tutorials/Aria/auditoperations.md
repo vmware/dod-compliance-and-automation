@@ -1,9 +1,3 @@
----
-title: "Audit VMware Aria Operations 8"
-weight: 7
-description: >
-  Auditing VMware Aria Operations 8.x for STIG Compliance
----
 ## Overview
 Auditing VMware Aria Operations for STIG compliance involves scanning the application, the web services, the vpostgres service, and the underlying Photon OS.  
 
@@ -95,4 +89,4 @@ saf convert hdf2ckl -i /tmp/reports/Aria_Ops_8x_STIG_Report.json -o /tmp/reports
 ```
 
 Opening the CKL file in STIG Viewer will look like the example screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/VROPS_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/VROPS_ckl_screenshot.png)

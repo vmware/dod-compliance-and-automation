@@ -68,9 +68,9 @@ To install the plugin that is included with the `vmware-vsphere-8.0-stig-baselin
  ```
 
 ## Auditing vSphere (Product Controls)
-{{% alert title="Important" color="primary" %}}
+
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
-{{% /alert %}}
+
 
 ### Setup environment variables for vCenter connection
 Connectivity to vCenter is established via environment variables. Take care to clear the history and close the PowerShell session to avoid any credentials left in memory/history.
@@ -1173,4 +1173,4 @@ saf convert hdf2ckl -i /tmp/reports/MyVCSA8Report.json -o /tmp/reports/MyVCSA8Re
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/vsphere_audit8_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/vsphere_audit8_ckl_screenshot.png)

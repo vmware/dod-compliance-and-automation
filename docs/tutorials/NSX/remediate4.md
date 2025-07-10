@@ -23,9 +23,9 @@ Versions listed below were used for this documentation. Other versions of these 
 * Ansible installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy role install -r requirements.yml`.
 
 ## Important Considerations
-{{% alert title="Warning" color="warning" %}}
+
 Please read carefully before proceeding! Some NSX STIG controls can be very impactful to the environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic. Before running it is highly advised to have a backups taken and verified.
-{{% /alert %}}
+
 
 Below is a table of controls selected for consideration but all controls should be examined for impact before implementing.  
 
@@ -50,9 +50,9 @@ These can be turned on/off by with a variable that must be set to true as a cond
 Also not all controls are covered by the Ansible playbook and may require manual remediation.  
 
 ## Remediating NSX
-{{% alert title="Important" color="primary" %}}
+
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
-{{% /alert %}}
+
 
 To remediate NSX an [Ansible playbook](https://github.com/vmware/dod-compliance-and-automation/tree/master/nsx/4.x/ansible/vmware-nsx-4.x-stig-ansible-hardening) has been provided that will target an NSX Manager over the REST API and configure any non-compliant controls.  
 

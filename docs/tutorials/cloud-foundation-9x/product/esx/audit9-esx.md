@@ -7,9 +7,9 @@ description: >
 ## Overview
 This tutorial covers auditing ESX hosts in VCF deployments.  
 
-{{% alert title="Important" color="primary" %}}
+
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-{{% /alert %}}
+
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -74,9 +74,9 @@ To install the plugin that is included with the `vmware-cloud-foundation-stig-ba
  **Note - Plugins are installed per user and must be installed as the user running InSpec.**
 
 ## Auditing ESX
-{{% alert title="Important" color="primary" %}}
+
 `Export-Clixml` only exports encrypted credentials on Windows. On non-Windows operating systems such as macOS and Linux, credentials are exported as plain text stored as a Unicode character array. This provides some obfuscation but does not provide encryption.
-{{% /alert %}}
+
 
 ### Setup Connection to vCenter
 This profile uses a custom VMware InSpec transport(train) to run PowerCLI commands that must be installed in order for this profile to run. This custom transport is derived from the default InSpec VMware transport and extends it by adding support for the `VMware.Vsphere.SsoAdmin` PowerShell module as well as an optional connection method using a PowerShell credential file.  
@@ -222,7 +222,7 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_ESX_esx1_Report.json -o /tmp/reports/V
 {{< /tabpane >}}
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/esx_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/esx_audit9_ckl_screenshot.png)
 
 ## Auditing ESX hosts in bulk
 For accreditation purposes there may be a requirement to produce a CKL file for each ESX host and/or VM. To support this use case a PowerCLI script has been created that acts as a runner for InSpec to loop through a list of hosts or VMs, then produce a json report for each, and if the SAF CLI is installed also create a CKL file.  

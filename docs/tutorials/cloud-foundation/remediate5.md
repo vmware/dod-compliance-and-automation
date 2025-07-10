@@ -21,13 +21,13 @@ Versions listed below were used for this documentation. Other versions of these 
 * The dependent Photon OS Ansible roles(Photon 3.0 for VCF 5.0.x and Photon 4 for VCF 5.1.x and 5.2.x) installed and available.  Verify role installation with `ansible-galaxy role list`.
 
 ## Remediating SDDC Manager
-{{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
-{{% /alert %}}
 
-{{% alert title="Warning" color="warning" %}}
+The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
+
+
+
 Before running it is highly advised to have a backup of the SDDC Manager and/or snapshot available if a rollback is required. Also the playbook will back up files configured before performing updates and place them under the /tmp directory in a folder directly on the SDDC Manager appliance.
-{{% /alert %}}
+
 
 ### Generate bearer token for SDDC Manager
 The SDDC Manager Ansible playbook connects to the API via a bearer token to update product controls while the appliance controls are configured via SSH.  
@@ -75,10 +75,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
 {{< /tabpane >}}
 
 A token can also be generated UI by going to the Developer Center >> API Explorer >> Tokens.  
-![Token Generation]({{< baseurl >}}images/vcf5_generate_token.png)
+![Token Generation](../../../images/vcf5_generate_token.png)
 
 Retrieve token by copying the value in the `accessToken` field.  
-![Token Retrieval]({{< baseurl >}}images/vcf5_view_token.png)
+![Token Retrieval](../../../images/vcf5_view_token.png)
 
 ### Update vars file
 In order to run the playbook, environment specific values need to be provided. An example vars file `vars-sddcmgr-example.yml` is provided.  

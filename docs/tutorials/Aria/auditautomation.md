@@ -1,9 +1,3 @@
----
-title: "Audit VMware Aria Automation 8"
-weight: 1
-description: >
-  Auditing VMware Aria Automation 8.x for STIG Compliance
----
 ## Overview
 Auditing VMware Aria Automation for STIG compliance involves scanning the application, the Kubernetes and Docker services running on the appliance, and the underlying Photon OS.  
 
@@ -86,4 +80,4 @@ saf convert hdf2ckl -i /tmp/reports/Aria_Automation_8x_STIG_Report.json -o /tmp/
 ```
 
 Opening the CKL file in STIG Viewer will look like the example screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/VRA_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/VRA_ckl_screenshot.png)

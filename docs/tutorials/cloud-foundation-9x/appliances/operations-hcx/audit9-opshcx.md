@@ -7,9 +7,9 @@ description: >
 ## Overview
 This tutorial covers auditing the Operations HCX appliances in VCF deployments.  
 
-{{% alert title="Important" color="primary" %}}
+
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-{{% /alert %}}
+
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -92,7 +92,7 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_Operations_HCX_Mgr_Report.json -o /tmp
 {{< /tabpane >}}
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/opshcx_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/opshcx_audit9_ckl_screenshot.png)
 
 ## Next
 If needed proceed to the remediation tutorial for the Operations HCX appliances [here](/docs/tutorials/cloud-foundation-9.x/appliances/operations-hcx/remediate9-opshcx/).

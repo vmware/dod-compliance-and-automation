@@ -29,13 +29,13 @@ Versions listed below were used for this documentation. Other versions of these 
 * The dependent Photon OS Ansible roles(Photon 3.0 for U1 and Photon 4 for U2) installed and available.  Verify role installation with `ansible-galaxy role list`.
 
 ## Remediate vSphere (Product Controls)
-{{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
-{{% /alert %}}
 
-{{% alert title="Warning" color="warning" %}}
+The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
+
+
+
 Before running it is highly advised to have a backup of vCenter and/or snapshot available if a rollback is required. For VCSA only the playbook will back up files configured before performing updates and place them under the /tmp directory in a folder directly on the vCenter appliance.
-{{% /alert %}}
+
 
 ### Create PowerShell credential for vCenter connection
 The PowerCLI scripts provided use a [PowerShell Credential](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-credential) stored in a variable to authenticate to vCenter and should be established before attempting to run the scripts.  
@@ -167,9 +167,9 @@ param (
 {{< /tab >}}
 {{< /tabpane >}}
 
-{{% alert title="Warning" color="warning" %}}
+
 The `allowedIPs` parameter is used to configure ESXi service firewall rules and updates each service from allowing all IP addresses to restricting traffic to the ranges provided. Carefully evaluate the value provided here for suitable ranges in the environment. If service specific IP ranges are desired then this control should be disabled and remediated manually or with other means outside of the script provided.
-{{% /alert %}}
+
 
 #### Disabling Controls
 The script includes variables to enable or disable controls by STIG ID. All controls are enabled by default and can be turned off by changing these variables to `$false` for a specific control.  

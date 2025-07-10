@@ -18,9 +18,9 @@ This tutorial covers auditing the VCF Application STIG in VCF deployments which 
 
 Auditing these components can occur individually or together.  
 
-{{% alert title="Important" color="primary" %}}
+
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-{{% /alert %}}
+
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -95,9 +95,9 @@ Connection Options:
   - Create a PowerShell credential file and then provide the file name via an environment variable
     - For more information on exporting credentials to XML see [Export-Clixml](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-clixml?view=powershell-7.5).
 
-{{% alert title="Important" color="primary" %}}
+
 `Export-Clixml` only exports encrypted credentials on Windows. On non-Windows operating systems such as macOS and Linux, credentials are exported as plain text stored as a Unicode character array. This provides some obfuscation but does not provide encryption.
-{{% /alert %}}
+
 
 #### Connecting via username/password
 From a PowerShell session create the following environment variables:
@@ -396,7 +396,7 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_Application_Report.json -o /tmp/report
 {{< /tabpane >}}
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/app_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/app_audit9_ckl_screenshot.png)
 
 ## Manually audit rules
 The following rules require manual auditing and are not automated.  

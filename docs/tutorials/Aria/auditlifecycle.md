@@ -1,10 +1,3 @@
----
-title: "Audit VMware Aria Suite Lifecycle 8"
-weight: 3
-description: >
-  Auditing VMware Aria Suite Lifecycle for STIG Compliance
----
-
 ## Overview
 Auditing VMware Aria Suite Lifecycle for STIG compliance involves scanning the NGINX and vpostgres components, the underlying Photon OS, and the application itself.
 
@@ -94,4 +87,4 @@ saf convert hdf2ckl -i /tmp/reports/Aria_Lifecycle_8x_STIG_Report.json -o /tmp/r
 ```
 
 Opening the CKL file in STIG Viewer will look like the example screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/VRSLCM_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/VRSLCM_ckl_screenshot.png)

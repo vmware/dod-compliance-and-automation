@@ -23,9 +23,9 @@ Versions listed below were used for this documentation. Other versions of these 
 * CINC Auditor is used in lieu of InSpec. If InSpec is used replace `cinc-auditor` with `inspec` when running commands.
 
 ## Auditing NSX
-{{% alert title="Important" color="primary" %}}
+
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
-{{% /alert %}}
+
 
 ### Generate API Session Token
 This profile uses Session-Based authentication to authenticate with NSX for auditing. A session token and cookie must be generated and provided an input for the profile. This can be generated in various ways via curl, tools like Postman, etc. For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1733/).
@@ -280,4 +280,4 @@ saf convert hdf2ckl -i /tmp/reports/MyNSXReport.json -o /tmp/reports/MyNSXReport
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/nsx_audit4_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/nsx_audit4_ckl_screenshot.png)

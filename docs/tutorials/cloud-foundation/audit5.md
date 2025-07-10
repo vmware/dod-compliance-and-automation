@@ -1,9 +1,3 @@
----
-title: "Audit Cloud Foundation 5.x"
-weight: 1
-description: >
-  Auditing VCF 5.x for STIG Compliance
----
 ## Overview
 Auditing VCF for STIG compliance involves scanning the SDDC Manager appliance.  
 
@@ -24,18 +18,18 @@ Versions listed below were used for this documentation. Other versions of these 
 * CINC Auditor is used in lieu of InSpec. If InSpec is used replace `cinc-auditor` with `inspec` when running commands.
 
 ## Auditing SDDC Manager
-{{% alert title="Important" color="primary" %}}
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
-{{% /alert %}}
+
 
 ### Generate bearer token for SDDC Manager
 The SDDC Manager InSpec profile connects to the API via a bearer token to query some configurations when auditing.
 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.1.x" lang="bash" >}}
+
+
+### Version: 5.2.1.x
+```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -43,8 +37,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
   "username" : "administrator@vsphere.local",
   "password" : "replaceme"
 }'
-{{< /tab >}}
-{{< tab header="5.2.0.x" lang="bash" >}}
+```
+
+### Version: 5.2.0.x
+```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -52,8 +48,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
   "username" : "administrator@vsphere.local",
   "password" : "replaceme"
 }'
-{{< /tab >}}
-{{< tab header="5.1.x" lang="bash" >}}
+```
+
+### Version: 5.1.x
+```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -61,8 +59,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
   "username" : "administrator@vsphere.local",
   "password" : "replaceme"
 }'
-{{< /tab >}}
-{{< tab header="5.0.x" lang="bash" >}}
+```
+
+### Version: 5.0.x
+```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -70,23 +70,20 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
   "username" : "administrator@vsphere.local",
   "password" : "replaceme"
 }'
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 A token can also be generated UI by going to the Developer Center >> API Explorer >> Tokens.  
-![Token Generation]({{< baseurl >}}images/vcf5_generate_token.png)
+![Token Generation](../../../images/vcf5_generate_token.png)
 
 Retrieve token by copying the value in the `accessToken` field.  
-![Token Retrieval]({{< baseurl >}}images/vcf5_view_token.png)
+![Token Retrieval](../../../images/vcf5_view_token.png)
 
 ### Update profile inputs
 Included in the `vmware-cloud-foundation-sddcmgr-5x-stig-baseline` is an example inputs file with variables relevant to SDDC Manager. This is used to provide InSpec with values specific to the environment being audited.
 
 Open the inputs file for editing.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.1.x" lang="bash" >}}
-cd /usr/share/stigs/vcf/5.x/v1r4-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
+
+`cd /usr/share/stigs/vcf/5.x/v1r4-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/`
 
 # Edit the inputs file
 vi inputs-vcf-sddcmgr-example.yml
@@ -421,4 +418,4 @@ saf convert hdf2ckl -i /tmp/reports/VCF_5.2.1.0_SDDC_Manager_STIG_Report.json -o
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/vcf_audit5_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/vcf_audit5_ckl_screenshot.png)

@@ -1,10 +1,3 @@
----
-title: "Types of Guidance"
-linkTitle: "Types of Guidance"
-weight: 1
-description: >
-  VMware works with DISA to publish official STIGs but also creates self-published STIG Readiness Guides.
----
 For more information on the different types of STIG guidance VMware offers see the [VMware STIG Program Overview](https://www.vmware.com/docs/vmw-stig-program-overview).
 
 ## Overview
@@ -13,9 +6,7 @@ VMware is a trusted partner in highly secure, mission critical systems around th
 ## What is a STIG/SRG?
 First let’s look at how these terms are defined in `DoDI 8510.01` as follows:  
 
-{{% pageinfo color="info" %}}
 *STIGs are product-specific and document applicable DoD policies and security requirements, as well as best practices and configuration guidelines. STIGs are associated with security controls through CCIs, which are decompositions of NIST SP 800-53 security controls into single, actionable, measurable items. SRGs are developed by DISA to provide general security compliance guidelines and serve as source guidance documents for STIGs. When a STIG is not available for a product, an SRG may be used.*
-{{% /pageinfo %}}
 
 A STIG in our terms is a product specific hardening guide based on security requirements from the DOD that contains detailed and comprehensive steps to audit and remediate the requirements that have actionable configurations associated with them.  
 
@@ -36,11 +27,9 @@ For a customer this is often a daunting task to figure out how these generic req
 
 DISA elaborates on this issue for us further in their FAQ here: https://public.cyber.mil/stigs/faqs/#toggle-id-10  
 
-**“What do I use if there is no STIG?**
-{{% pageinfo color="info" %}}
+**What do I use if there is no STIG?**
 *Determine if a STIG has been published for an earlier version of the same product. Many checks and fixes in earlier versions of STIGs can be applied to the new version of the product. If a STIG for an older version of the product is available, review the check and fix procedures to determine which of these work with the new product version. Where possible, use the checks and fixes that work directly with the new version. The remainder of checks and fixes that no longer work with the new product version will need to be evaluated and proper check and fix procedures will need to be determined for each requirement. New product features and configuration settings must also be accounted for based on the relevant SRG.*
 
 *If there is no related STIG, the most relevant SRG can be used to determine compliance with DoD policies. If assistance is needed in determining which SRG applies to the product, please open a ticket with the STIG Customer Support Helpdesk at disa.stig_spt@mail.mil In fulfilling a requirement, be it from an SRG or an earlier version of a STIG, vendor documentation may be followed for configuration guidance.*
-{{% /pageinfo %}}
 
 Using this information, we are able to provide STIG Readiness Guides for use in order to alleviate the burden of trying to carry old STIGs forward to newer product versions or analyzing SRGs.  

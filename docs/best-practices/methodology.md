@@ -1,10 +1,3 @@
----
-title: "Implementation Methodology"
-linkTitle: "Implementation Methodology"
-weight: 3
-description: >
-  VMware STIG Implementation Methodology
----
 ## Overview
 The last thing any system administrator wants to do is break the systems they are responsible for by hardening them. Implementing STIG controls in a methodical and consistent manner will reduce the risk of operational impacts to an organization's environment.  
 
@@ -20,9 +13,6 @@ A given rule will either be in a compliant state by default or in need of remedi
 ## Workflow
 The workflow presented is an example methodology for STIG assessment and remediation that is intended to provide a repeatable process that generates needed artifacts while also reducing the risk of impacting the operation of the target environment.
 
-![STIG Workflow]({{< baseurl >}}images/bp_workflow.png)
-
-{{% alert title="Tips" color="dark" %}}
 -	Whenever possible, it is highly recommended to evaluate any hardening guidance in a test environment first. This will help you get familiar with the procedures and tools involved in the process.
 - Make sure you have a back out plan! Snapshots, backups, and making copies of files before modification are all good ideas.
 -	Perform service restarts and/or appliance restarts after each appliance component is remediated. Many problems will not manifest until this is done.
@@ -35,7 +25,6 @@ The workflow presented is an example methodology for STIG assessment and remedia
 - Read finding statements carefully. Some controls may not be applicable in your scenario.
 - Consider how your environment is operated for impacts. If some of your tools or integrations utilize SSH to function then disabling SSH will impact daily operations and alternatives should be explored or risk accepted to waive a control by the appropriate authority.
 - Document changes so you and your co-workers can remember what changes were made.
-{{% /alert %}}
 
 ### Incremental Implementations
 It is also a valid strategy, especially in larger environments with multiple vCenters and clusters, to incrementally implement STIGs to one site, vCenter, or vSphere cluster at a time to figure out any issues without impacting the entire environment.  

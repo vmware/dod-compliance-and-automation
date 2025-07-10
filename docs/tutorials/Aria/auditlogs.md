@@ -1,10 +1,3 @@
----
-title: "Audit VMware Aria Operations for Logs 8"
-weight: 5
-description: >
-  Auditing VMware Aria Operations for Logs 8.x for STIG Compliance
----
-
 ## Overview
 Auditing VMware Aria Operations for Logs for STIG compliance involves scanning the application, the cassandra and tc server services, and the underlying Photon OS.  
 
@@ -104,4 +97,4 @@ saf convert hdf2ckl -i /tmp/reports/Aria_Ops_Logs_8x_STIG_Report.json -o /tmp/re
 ```
 
 Opening the CKL file in STIG Viewer will look like the example screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist]({{< baseurl >}}images/VRLI_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../images/VRLI_ckl_screenshot.png)

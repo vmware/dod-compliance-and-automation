@@ -1,10 +1,3 @@
----
-title: "Overview"
-linkTitle: "Overview"
-weight: 1
-description: >
-  Overview of the VMware DoD Compliance and Automation project.
----
 
 ## What is the VMware DoD Compliance and Automation Project for?
 

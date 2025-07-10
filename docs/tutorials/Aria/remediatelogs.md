@@ -27,13 +27,13 @@ Versions listed below were used for this documentation. Other versions of these 
 * The dependent Photon OS Ansible roles(Photon 4.0) installed and available. Verify role installation with `ansible-galaxy role list`.
 
 ## Remediate VMware Aria Operations for Logs (Appliance and/or Product Controls)
-{{% alert title="Important" color="primary" %}}
-The example commands below are specific to the product version and the supported STIG content for the version being run.
-{{% /alert %}}
 
-{{% alert title="Warning" color="warning" %}}
+The example commands below are specific to the product version and the supported STIG content for the version being run.
+
+
+
 The playbook will attempt to back up configuration files before updating and place them under the /tmp directory in a folder directly on the appliance, but before remediating it is highly advised to have a backup and/or snapshot available if a rollback is required.
-{{% /alert %}}
+
 
 An Ansible playbook has been provided that will target a single VMware Aria Operations for Logs server over SSH and configure any non-compliant controls.  
 
