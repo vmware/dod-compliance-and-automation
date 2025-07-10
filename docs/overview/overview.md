@@ -12,7 +12,7 @@ The example automation provided will help with the following tasks:
 
 ## Where should I go next?
 
-* [Best Practices](/docs/best-practices/): Learn about general best practices for implementing STIGs.
-* [Automation Tools](/docs/automation-tools/): Learn about the tools used for STIG automation.
-* [Tutorials](/docs/tutorials/): Product specific tutorials on implementing STIGs.
-* [Support](/docs/support/): Find out more about what type of support is available for STIGs and automation.
+* [Best Practices](../best-practices/): Learn about general best practices for implementing STIGs.
+* [Automation Tools](../automation-tools/): Learn about the tools used for STIG automation.
+* [Tutorials](../tutorials/): Product specific tutorials on implementing STIGs.
+* [Support](../support/): Find out more about what type of support is available for STIGs and automation.

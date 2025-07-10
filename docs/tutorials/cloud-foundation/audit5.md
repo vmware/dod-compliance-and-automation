@@ -1,7 +1,7 @@
 ## Overview
 Auditing VCF for STIG compliance involves scanning the SDDC Manager appliance.  
 
-Scanning other components of a VCF deployment such as [vSphere](/docs/tutorials/vsphere) and [NSX](/docs/tutorials/NSX) is documented in those sections on this site.
+Scanning other components of a VCF deployment such as [vSphere](../vSphere/) and [NSX](../NSX/) is documented in those sections on this site.
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
