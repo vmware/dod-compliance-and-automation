@@ -25,10 +25,12 @@ Related issue: None
 
 We believe that it was originally wrongly assumed the `pam_faillock.so authfail` would only be executed if previous rules reported failures. However, in reality, each rule does not depend on the return status of previous rules. Instead, each rule can branch to other rules or terminate the processing based on it's own return code. Essentially, think of the rules as C functions with prototype `int pam_func(args...)`, and the required/requisite/sufficient/optional as the `if` branches act on the return codes. Specifically:
 
+```
 required   = [success=ok new_authtok_reqd=ok ignore=ignore default=bad]
 requisite  = [success=ok new_authtok_reqd=ok ignore=ignore default=die]
 sufficient = [success=done new_authtok_reqd=done default=ignore]
 optional   = [success=ok new_authtok_reqd=ok default=ignore]
+```
 
 E.g., for "required pam_unix.so", if pam_unix(...) gives success(0), then use this return code to override the previous return code, if any. If pam_unix(...) gives errors other than new_authtok_reqd(12) or ignore(25), then use the return code, if it's the first one, as the return code of the whole stack.
 
@@ -61,5 +63,8 @@ End /etc/pam.d/system-auth
 
 **Workaround:**
 
-- We will fix this issue in a future STIG update. For now as workaround in the system-auth file replace `auth    required    pam_unix.so` with `auth    sufficient    pam_unix.so`.
+- We will fix this issue in a future STIG update. For now as workaround in the system-auth file replace 
+`auth    required    pam_unix.so` 
+with 
+`auth    sufficient    pam_unix.so`
 
