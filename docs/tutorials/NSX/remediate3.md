@@ -1,9 +1,6 @@
----
-title: "Remediate NSX-T 3.x"
-weight: 5
-description: >
-  Remediating NSX-T 3.x for STIG Compliance
----
+# Remediate NSX-T 3.x
+Remediating NSX-T 3.x for STIG Compliance
+
 ## Overview
 Remediating NSX-T 3.x for STIG compliance involves configuring the NSX Managers, DFW, and any gateways deployed.  
 
@@ -19,7 +16,7 @@ Versions listed below were used for this documentation. Other versions of these 
 * An account with sufficient privileges to configure NSX-T.
 
 ## Important Considerations
-<div class="-text-red pt-3 display-4">Please read carefully before proceeding!</div>  
+## **⚠️ Please read carefully before proceeding!**
 
 Some NSX-T STIG controls can be very impactful to the environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic.  
 

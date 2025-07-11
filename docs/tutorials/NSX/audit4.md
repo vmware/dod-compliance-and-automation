@@ -1,9 +1,6 @@
----
-title: "Audit NSX 4.x"
-weight: 2
-description: >
-  Auditing NSX 4.x for STIG Compliance
----
+# Audit NSX 4.x
+Auditing NSX 4.x for STIG Compliance
+
 ## Overview
 Auditing NSX 4.x for STIG compliance involves scanning the NSX Managers, DFW, and any gateways deployed.
 
@@ -33,9 +30,8 @@ This profile uses Session-Based authentication to authenticate with NSX for audi
 **Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
 
 Curl example:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="4.1.2+" lang="bash" >}}
+### Version: 4.1.2+
+```
 curl -k -i -X POST -d 'j_username=admin&j_password=C3.UwJ7TTK1P' https://10.215.77.149/api/session/create
 
 # Example response
@@ -56,8 +52,10 @@ content-security-policy: frame-src 'self' blob:; frame-ancestors 'self'
 server: envoy
 
 {"roles":[{"role":"superusers","permissions":["read-api","read-write-api","read-cli","read-write-cli"]}]}
-{{< /tab >}}
-{{< tab header="4.1.0-4.1.1" lang="bash" >}}
+```
+
+### Version: 4.1.0-4.1.1
+```
 curl -k -i -X POST -d 'j_username=admin&j_password=C3.UwJ7TTK1P' https://10.215.77.149/api/session/create
 
 # Example response
@@ -78,35 +76,24 @@ content-security-policy: frame-src 'self' blob:; frame-ancestors 'self'
 server: envoy
 
 {"roles":[{"role":"superusers","permissions":["read-api","read-write-api","read-cli","read-write-cli"]}]}
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Update profile inputs
 Included in the `vmware-nsx-4.x-stig-baseline` is an example inputs file with variables relevant to NSX. This is used to provide InSpec with values specific to the environment being audited.
 
 Open the inputs file for editing.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="4.1.2+" lang="bash" >}}
+### Version: 4.1.2+
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r2-stig/inspec/vmware-nsx-4.x-stig-baseline/
 
 # Edit the inputs file
 vi inputs-nsx-4.x-example.yml
-{{< /tab >}}
-{{< tab header="4.1.0-4.1.1" lang="bash" >}}
-# Navigate to the InSpec profile folder
-cd /usr/share/stigs/nsx/4.x/v1r1-srg/inspec/vmware-nsx-4.x-stig-baseline/
-
-# Edit the inputs file
-vi inputs-nsx-4.x-example.yml
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 Update the inputs as shown below with values relevant to the environment. Specifically the `nsxManager`,`sessionToken`,`sessionCookieId`,`syslogServers`,`sftpServer`,`ntpServers`,`ntpServers`,and `nsxtVersion` inputs at a minimum. The other inputs are optional depending on the environment.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="4.1.2+" lang="yaml" >}}
+
+```
 # General
 # NSX Manager IP or FQDN
 nsxManager: '10.1.2.3'
@@ -144,8 +131,21 @@ t0dhcplist: []
 t1dhcplist: []
 # Enter an array of T1 Gateways that are approved to have multicast enabled.
 t1multicastlist: []
-{{< /tab >}}
-{{< tab header="4.1.0-4.1.1" lang="yaml" >}}
+```
+
+
+### Version: 4.1.0-4.1.1
+```
+# Navigate to the InSpec profile folder
+cd /usr/share/stigs/nsx/4.x/v1r1-srg/inspec/vmware-nsx-4.x-stig-baseline/
+
+# Edit the inputs file
+vi inputs-nsx-4.x-example.yml
+```
+
+Update the inputs as shown below with values relevant to the environment. Specifically the `nsxManager`,`sessionToken`,`sessionCookieId`,`syslogServers`,`sftpServer`,`ntpServers`,`ntpServers`,and `nsxtVersion` inputs at a minimum. The other inputs are optional depending on the environment.
+
+```
 # NSX Manager IP or FQDN
 nsxManager: ''
 # Session token generated for access to NSX
@@ -171,15 +171,13 @@ t0dhcplist: []
 t1dhcplist: []
 # Enter an array of T1 Gateways that are approved to have multicast enabled.
 t1multicastlist: []
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Run the audit
 In this example all NSX components will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
 
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="4.1.2+" lang="bash" >}}
+### Version: 4.1.2+
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r2-stig/inspec/vmware-nsx-4.x-stig-baseline/
 
@@ -223,8 +221,10 @@ Target ID: e45dd517-9256-59e3-8503-3351c863444c
 
 Profile Summary: 21 successful controls, 30 control failures, 10 controls skipped
 Test Summary: 162 successful, 57 failures, 12 skipped
-{{< /tab >}}
-{{< tab header="4.1.0-4.1.1" lang="bash" >}}
+```
+
+### Version: 4.1.0-4.1.1
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r1-srg/inspec/vmware-nsx-4.x-stig-baseline/
 
@@ -268,8 +268,7 @@ Target ID: e45dd517-9256-59e3-8503-3351c863444c
 
 Profile Summary: 21 successful controls, 30 control failures, 10 controls skipped
 Test Summary: 162 successful, 57 failures, 12 skipped
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ## Convert the results to CKL
 If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).

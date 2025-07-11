@@ -1,9 +1,6 @@
----
-title: "Audit vSphere 8"
-weight: 1
-description: >
-  Auditing vSphere 8 for STIG Compliance
----
+# Audit vSphere 8
+Auditing vSphere 8 for STIG Compliance
+
 ## Overview
 Auditing vSphere for STIG compliance involves scanning ESXi, Virtual Machines, vCenter, and the vCenter appliance.
 
@@ -87,6 +84,7 @@ $env:VISERVER_PASSWORD='password'
 
 ### Auditing ESXi
 #### Update profile inputs
+
 Included in the `vmware-vsphere-8.0-stig-baseline` is an example `inputs-example.yml` file with variables relevant to ESXi.  This is used to provide InSpec with values specific to the environment being audited.
 
 Open the inputs file for editing.

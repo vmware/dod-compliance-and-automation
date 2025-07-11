@@ -1,9 +1,6 @@
----
-title: "Remediate NSX 4.x"
-weight: 3
-description: >
-  Remediating NSX 4.x for STIG Compliance
----
+# Remediate NSX 4.x
+Remediating NSX 4.x for STIG Compliance
+
 ## Overview
 Remediating NSX 4.x for STIG compliance involves configuring the NSX Managers, DFW, and any gateways deployed.  
 
@@ -62,9 +59,8 @@ This profile uses Session-Based authentication to authenticate with NSX for audi
 **Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
 
 Curl example:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="4.1.2+" lang="bash" >}}
+### Version: 4.1.2+
+```
 curl -k -i -X POST -d 'j_username=admin&j_password=C3.UwJ7TTK1P' https://10.215.77.149/api/session/create
 
 # Example response
@@ -85,8 +81,10 @@ content-security-policy: frame-src 'self' blob:; frame-ancestors 'self'
 server: envoy
 
 {"roles":[{"role":"superusers","permissions":["read-api","read-write-api","read-cli","read-write-cli"]}]}
-{{< /tab >}}
-{{< tab header="4.1.0-4.1.1" lang="bash" >}}
+```
+
+### Version: 4.1.0-4.1.1
+```
 curl -k -i -X POST -d 'j_username=admin&j_password=C3.UwJ7TTK1P' https://10.215.77.149/api/session/create
 
 # Example response
@@ -107,8 +105,7 @@ content-security-policy: frame-src 'self' blob:; frame-ancestors 'self'
 server: envoy
 
 {"roles":[{"role":"superusers","permissions":["read-api","read-write-api","read-cli","read-write-cli"]}]}
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Update vars file
 In order to run the playbook, environment specific values need to be provided. An example vars file `vars-nsx-4x-example.yml` is provided.  
@@ -116,29 +113,18 @@ In order to run the playbook, environment specific values need to be provided. A
 In order to run the playbook, environment specific values need to be provided. An example vars file `vars-nsx-4x-example.yml` is provided and values need to be updated for the `var_nsx_manager`, `var_jsession_id`, `var_session_token`, `var_ntp_server1`, `var_ntp_server2` variables at a minimum.  
 
 Open the inputs file for editing.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="4.1.2+" lang="bash" >}}
+### Version: 4.1.2+
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r2-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening
 
 # Edit the inputs file
 vi vars-nsx-4x-example.yml
-{{< /tab >}}
-{{< tab header="4.1.0-4.1.1" lang="bash" >}}
-# Navigate to the InSpec profile folder
-cd /usr/share/stigs/nsx/4.x/v1r1-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening
-
-# Edit the inputs file
-vi vars-nsx-4x-example.yml
-{{< /tab >}}
-{{< /tabpane >}}
-
+```
 
 Update the variables as shown below with values relevant to the environment. Specifically the `var_nsx_manager`, `var_jsession_id`, `var_session_token`, `var_ntp_server1`, `var_ntp_server2` variables at a minimum.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="4.1.2+" lang="bash" >}}
+
+```
 # Connection information
 var_nsx_manager: '10.180.98.230'
 var_jsession_id: 'JSESSIONID=BDE1B5A54690B453F8968293D3C8A1E4'
@@ -197,8 +183,21 @@ run_t1rtr_disable_multicast: true
 # array of t1 ids that should have multicast enabled
 var_t1rtr_gateways_with_multicast_enabled:
   - Tier1Gateway1
-{{< /tab >}}
-{{< tab header="4.1.0-4.1.1" lang="bash" >}}
+```
+
+
+### Version: 4.1.0-4.1.1
+```
+# Navigate to the InSpec profile folder
+cd /usr/share/stigs/nsx/4.x/v1r1-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening
+
+# Edit the inputs file
+vi vars-nsx-4x-example.yml
+```
+
+Update the variables as shown below with values relevant to the environment. Specifically the `var_nsx_manager`, `var_jsession_id`, `var_session_token`, `var_ntp_server1`, `var_ntp_server2` variables at a minimum.  
+
+```
 # Example vars file
 # Connection information
 var_nsx_manager: '10.180.98.230'
@@ -258,14 +257,13 @@ run_t1rtr_disable_multicast: true
 # array of t1 ids that should have multicast enabled
 var_t1rtr_gateways_with_multicast_enabled:
   - Tier1Gateway1
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Running the playbook
 To run all of the NSX controls, follow the example below.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="4.1.2+" lang="bash" >}}
+
+### Version: 4.1.2+
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r2-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening
 
@@ -280,8 +278,10 @@ ok: [127.0.0.1] => {"cache_control": "no-cache, no-store, max-age=0, must-revali
 
 TASK [dfw : NDFW-4X-000016 - Update DFW default layer 3 rule action to desired value] *********************************************************************************************************************************
 changed: [127.0.0.1] => {"cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": true, "connection": "close", "content_length": "0", "cookies": {}, "cookies_string": "", "date": "Mon, 10 Jul 2023 16:49:54 GMT", "elapsed": 0, "expires": "0", "msg": "OK (0 bytes)", "pragma": "no-cache", "redirected": false, "server": "envoy", "status": 200, "strict_transport_security": "max-age=31536000; includeSubDomains", "url": "https://10.180.98.230/policy/api/v1/infra/domains/default/security-policies/default-layer3-section/rules/default-layer3-rule", "x_content_type_options": "nosniff", "x_envoy_upstream_service_time": "69", "x_frame_options": "SAMEORIGIN", "x_nsx_requestid": "ce242eda-7340-4097-a72c-ff10ae72c4e8", "x_xss_protection": "1; mode=block"}
-{{< /tab >}}
-{{< tab header="4.1.0-4.1.1" lang="bash" >}}
+```
+
+### Version: 4.1.0-4.1.1
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r1-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening
 
@@ -296,24 +296,23 @@ ok: [127.0.0.1] => {"cache_control": "no-cache, no-store, max-age=0, must-revali
 
 TASK [dfw : NDFW-4X-000016 - Update DFW default layer 3 rule action to desired value] *********************************************************************************************************************************
 changed: [127.0.0.1] => {"cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": true, "connection": "close", "content_length": "0", "cookies": {}, "cookies_string": "", "date": "Mon, 10 Jul 2023 16:49:54 GMT", "elapsed": 0, "expires": "0", "msg": "OK (0 bytes)", "pragma": "no-cache", "redirected": false, "server": "envoy", "status": 200, "strict_transport_security": "max-age=31536000; includeSubDomains", "url": "https://10.180.98.230/policy/api/v1/infra/domains/default/security-policies/default-layer3-section/rules/default-layer3-rule", "x_content_type_options": "nosniff", "x_envoy_upstream_service_time": "69", "x_frame_options": "SAMEORIGIN", "x_nsx_requestid": "ce242eda-7340-4097-a72c-ff10ae72c4e8", "x_xss_protection": "1; mode=block"}
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="4.1.2+" lang="bash" >}}
+### Version: 4.1.2+
+```
 # Providing the tag "dfw" will instruct the playbook to only run the dfw role. This tag can be seen in each roles task/main.yml file.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsx-4.x-example.yml --tags dfw
 
 # Providing the tag " NDFW-4X-000004" will instruct the playbook to only run task tagged with the STIG ID of  NDFW-4X-000004.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsx-4.x-example.yml --tags NDFW-4X-000004
-{{< /tab >}}
-{{< tab header="4.1.0-4.1.1" lang="bash" >}}
+```
+
+### Version: 4.1.0-4.1.1
+```
 # Providing the tag "dfw" will instruct the playbook to only run the dfw role. This tag can be seen in each roles task/main.yml file.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsx-4.x-example.yml --tags dfw
 
 # Providing the tag " NDFW-4X-000004" will instruct the playbook to only run task tagged with the STIG ID of  NDFW-4X-000004.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsx-4.x-example.yml --tags NDFW-4X-000004
-{{< /tab >}}
-{{< /tabpane >}}
+```

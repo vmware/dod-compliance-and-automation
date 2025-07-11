@@ -1,10 +1,6 @@
----
-title: "Automation"
-linkTitle: "Automation"
-weight: 1
-description: >
-  Performing compliance automation tasks for VMware Cloud Foundation 9.x Automation Appliance STIGs.
----
+# Automation
+Performing compliance automation tasks for VMware Cloud Foundation 9.x Automation Appliance STIGs.
+
 ## Compliance support for VCF Automation appliances
 VCF Automation appliances by design are intended to be immutable and it is not supported to perform any compliance activities to the appliances.  
 

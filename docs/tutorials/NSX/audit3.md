@@ -1,9 +1,6 @@
----
-title: "Audit NSX-T 3.x"
-weight: 4
-description: >
-  Auditing NSX-T 3.x for STIG Compliance
----
+# Audit NSX-T 3.x
+Auditing NSX-T 3.x for STIG Compliance
+
 ## Overview
 Auditing NSX-T 3.x for STIG compliance involves scanning the NSX Managers, DFW, and any gateways deployed.
 

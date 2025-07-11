@@ -1,9 +1,6 @@
----
-title: "Audit vSphere 7"
-weight: 3
-description: >
-  Auditing vSphere 7 for STIG Compliance
----
+# Audit vSphere 7
+Auditing vSphere 7 for STIG Compliance
+
 ## Overview
 Auditing vSphere for STIG compliance involves scanning ESXi, Virtual Machines, vCenter, and the vCenter appliance.
 
@@ -297,10 +294,11 @@ To use the runner script, do the following:
 ```
 *Note: If the password includes a single tick (') it must be substituted with four ticks ('''') in order for it to be properly escaped all the way through the process.*
 
-# Adjust the paths in the command as needed. The inspec and inputs paths in the example are assuming this is being ran from the root of the InSpec profile folder.
+Adjust the paths in the command as needed. The inspec and inputs paths in the example are assuming this is being ran from the root of the InSpec profile folder.
 > C:\github\VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.182.131.166 -reportPath C:\Inspec\Reports\Runner -inspecPath .\esxi\ -inputsfile .\inputs-example.yml
 
-# You will be prompted for credentials to vCenter. This is to connect via PowerCLI before running InSpec to collect all of the host names to use as an input to InSpec for each individual host audit.
+You will be prompted for credentials to vCenter. This is to connect via PowerCLI before running InSpec to collect all of the host names to use as an input to InSpec for each individual host audit.
+```
 8:48:29 AM ...Enter credentials to connect to vCenter
 
 PowerShell credential request
@@ -324,8 +322,10 @@ FFF......FFFFF....FFFF.FFFF.*...***********...FF.FF.....F.F..FFFF..FFF***FFFF.FF
 FFF......FFFFF....FFFF.FFFF.*...***********...FF.FF.....F.F..FFFF..FFF***FFFF.FFF.FF.FF....FFFFFF..F...***FF*FF*FF**...***...FFFFFFFFFFFFFFF.FFFFFFFFFFFFFFFFFFFF.FFFFF...................FF....FF...............................*......*FFF......*......F..FF..F....FF.***FF....FF....FF.**FFFFFFF.F...*
 8:57:50 AM ...Detected saf cli...generating STIG Viewer Checklist for 10.182.138.1
 8:57:54 AM ...Disconnecting from vCenter
+```
 
-# Resulting output
+### Resulting output
+```
 > dir C:\inspec\Reports\Runner\
 
     Directory: C:\Inspec\Reports\Runner

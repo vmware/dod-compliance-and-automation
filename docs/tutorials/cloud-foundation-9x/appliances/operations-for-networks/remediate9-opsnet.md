@@ -1,13 +1,9 @@
----
-title: "Remediate VCF Operations for Networks 9.x"
-weight: 2
-description: >
-  Remediating VCF Operations for Networks 9.x for STIG Compliance
----
+# Remediate VCF Operations for Networks 9.x
+Remediating VCF Operations for Networks 9.x for STIG Compliance
+
 ## Overview
 This tutorial covers remediating the Operations for Networks appliance in VCF deployments.  
 
-{{% alert title="Important" color="warning" %}}
 For the best experience, prior to using the STIG automation provided here please ensure you:  
 - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
 - Have an understanding of Ansible playbooks and concepts.
@@ -17,10 +13,7 @@ For the best experience, prior to using the STIG automation provided here please
 
 **Failure to do so can result in unintended behavior in the environment.**  
 
-
-
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -40,9 +33,8 @@ To remediate Operations for Networks an Ansible playbook has been provided that 
 
 ### Update Ansible Inventory and Vault with target Operations for Networks Server details
 In the Ansible inventory file and vault ensure the target Operations for Networks server details are correct.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+### Version: 9.0.0.0
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -95,16 +87,14 @@ var_vault_operations_networks_platform_1_support_password:
 var_vault_operations_networks_platform_2_support_password:
 var_vault_operations_networks_platform_3_support_password:
 var_vault_operations_networks_proxy_1_support_password:
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Running the playbook
 To remediate all Operations for Networks rules, follow the example below:
 
 **Note - Only the supported Ubuntu 22.04 STIG rules are enabled via the group inventory vars. Modifications that impact this filtering are not supported.**  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+### Version: 9.0.0.0
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -143,8 +133,7 @@ changed: [ops_networks_platform_1] => {"changed": true, "cmd": "find /var/log/ng
 PLAY RECAP ********************************************************************************************************************************************************************************************************************
 ops_networks_platform_1    : ok=35   changed=18   unreachable=0    failed=0    skipped=196  rescued=0    ignored=0
 ops_networks_proxy_1       : ok=23   changed=14   unreachable=0    failed=0    skipped=192  rescued=0    ignored=0
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ## Functional Testing
 Perform any needed functional testing to ensure the functionality and operation of the environment remain intact.
@@ -155,4 +144,4 @@ If needed, to troubleshoot any issues files can be restored from the backups the
 Backed up files can be found in the associated `/tmp/ansible-backups-*` folder and restored from there to their original location.
 
 ## Rerun auditing after remediation
-To audit the Operations for Networks post-remediation rerun the auditing steps [here](/docs/tutorials/cloud-foundation-9.x/appliances/operations-for-networks/audit9-opsnet/).
+To audit the Operations for Networks post-remediation rerun the auditing steps [here](./audit9-opsnet.md).

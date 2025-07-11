@@ -1,13 +1,7 @@
----
-title: "Remediate Cloud Foundation 5.x"
-weight: 2
-description: >
-  Remediating VCF 5.x for STIG Compliance
----
 ## Overview
 Remediating VCF for STIG compliance involves running an Ansible playbook against the target SDDC Manager appliance over SSH to configure any non-compliant controls.    
 
-Remediating other components of a VCF deployment such as [vSphere](/docs/tutorials/vsphere) and [NSX](/docs/tutorials/NSX) is documented in those sections on this site. 
+Remediating other components of a VCF deployment such as [vSphere](../vSphere/) and [NSX](../NSX/) is documented in those sections on this site. 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
@@ -24,8 +18,6 @@ Versions listed below were used for this documentation. Other versions of these 
 
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
 
-
-
 Before running it is highly advised to have a backup of the SDDC Manager and/or snapshot available if a rollback is required. Also the playbook will back up files configured before performing updates and place them under the /tmp directory in a folder directly on the SDDC Manager appliance.
 
 
@@ -34,9 +26,8 @@ The SDDC Manager Ansible playbook connects to the API via a bearer token to upda
 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.1.x" lang="bash" >}}
+### Version: 5.2.1.x
+```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -44,8 +35,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
   "username" : "administrator@vsphere.local",
   "password" : "replaceme"
 }'
-{{< /tab >}}
-{{< tab header="5.2.0.x" lang="bash" >}}
+```
+
+### Version: 5.2.0.x
+```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -53,8 +46,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
   "username" : "administrator@vsphere.local",
   "password" : "replaceme"
 }'
-{{< /tab >}}
-{{< tab header="5.1.x" lang="bash" >}}
+```
+
+### Version: 5.1.x
+```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -62,8 +57,10 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
   "username" : "administrator@vsphere.local",
   "password" : "replaceme"
 }'
-{{< /tab >}}
-{{< tab header="5.0.x" lang="bash" >}}
+```
+
+### Version: 5.0.x
+```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -71,8 +68,7 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
   "username" : "administrator@vsphere.local",
   "password" : "replaceme"
 }'
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 A token can also be generated UI by going to the Developer Center >> API Explorer >> Tokens.  
 ![Token Generation](../../../images/vcf5_generate_token.png)
@@ -84,111 +80,126 @@ Retrieve token by copying the value in the `accessToken` field.
 In order to run the playbook, environment specific values need to be provided. An example vars file `vars-sddcmgr-example.yml` is provided.  
 
 Open the inputs file for editing.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.1.x" lang="bash" >}}
+
+### Version: 5.2.1.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r4-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
 # Edit the vars file
 vi vars-sddcmgr-example.yml
-{{< /tab >}}
-{{< tab header="5.2.0.x" lang="bash" >}}
+```
+
+Update the variables as shown below with values relevant to the environment. Specifically`var_sddc_manager`, `var_bearer_token`, `var_time_servers`,` var_password_rotate_days`.
+
+```
+# General
+run_create_backups: true
+
+# Photon OS
+create_backups: true
+run_etc_issue_dod: true
+var_rsyslog_server_name: 'syslog.test.local'
+var_rsyslog_server_port: '514'
+var_rsyslog_server_protocol: 'tcp'
+
+# Application
+# Enter SDDC Manager FQDN or IP for API Calls
+var_sddc_manager: 'sddc-manager.vsphere.local'
+# Enter generated bearer token here
+var_bearer_token: ''
+# Enter an array of 1 to 2 NTP servers
+var_time_servers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Between 30 and 90
+var_password_rotate_days: 90
+```
+
+### Version: 5.2.0.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
 # Edit the vars file
 vi vars-sddcmgr-example.yml
-{{< /tab >}}
-{{< tab header="5.1.x" lang="bash" >}}
+```
+
+Update the variables as shown below with values relevant to the environment. Specifically`var_sddc_manager`, `var_bearer_token`, `var_time_servers`,` var_password_rotate_days`.
+
+```
+# General
+run_create_backups: true
+
+# Photon OS
+create_backups: true
+run_etc_issue_dod: true
+var_rsyslog_server_name: 'syslog.test.local'
+var_rsyslog_server_port: '514'
+var_rsyslog_server_protocol: 'tcp'
+
+# Application
+# Enter SDDC Manager FQDN or IP for API Calls
+var_sddc_manager: 'sddc-manager.vsphere.local'
+# Enter generated bearer token here
+var_bearer_token: ''
+# Enter an array of 1 to 2 NTP servers
+var_time_servers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Between 30 and 90
+var_password_rotate_days: 90
+```
+
+
+### Version: 5.1.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
 # Edit the vars file
 vi vars-sddcmgr-example.yml
-{{< /tab >}}
-{{< tab header="5.0.x" lang="bash" >}}
+```
+
+Update the variables as shown below with values relevant to the environment. Specifically`var_sddc_manager`, `var_bearer_token`, `var_time_servers`,` var_password_rotate_days`.
+
+```
+# General
+run_create_backups: true
+
+# Photon OS
+create_backups: true
+run_etc_issue_dod: true
+var_rsyslog_server_name: 'syslog.test.local'
+var_rsyslog_server_port: '514'
+var_rsyslog_server_protocol: 'tcp'
+
+# Application
+# Enter SDDC Manager FQDN or IP for API Calls
+var_sddc_manager: 'sddc-manager.vsphere.local'
+# Enter generated bearer token here
+var_bearer_token: ''
+# Enter an array of 1 to 2 NTP servers
+var_time_servers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Between 30 and 90
+var_password_rotate_days: 90
+```
+
+
+### Version: 5.0.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
 # Edit the vars file
 vi vars-sddcmgr-example.yml
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
-Update the variables as shown below with values relevant to the environment. Specifically `var_sddc_manager`, `var_bearer_token`, `var_time_servers`, `var_password_rotate_days`.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.1.x" lang="yaml" >}}
-# General
-run_create_backups: true
+Update the variables as shown below with values relevant to the environment. Specifically`var_sddc_manager`, `var_bearer_token`, `var_time_servers`,` var_password_rotate_days`.
 
-# Photon OS
-create_backups: true
-run_etc_issue_dod: true
-var_rsyslog_server_name: 'syslog.test.local'
-var_rsyslog_server_port: '514'
-var_rsyslog_server_protocol: 'tcp'
-
-# Application
-# Enter SDDC Manager FQDN or IP for API Calls
-var_sddc_manager: 'sddc-manager.vsphere.local'
-# Enter generated bearer token here
-var_bearer_token: ''
-# Enter an array of 1 to 2 NTP servers
-var_time_servers:
-  - 'time-a-g.nist.gov'
-  - 'time-b-g.nist.gov'
-# Between 30 and 90
-var_password_rotate_days: 90
-{{< /tab >}}
-{{< tab header="5.2.0.x" lang="yaml" >}}
-# General
-run_create_backups: true
-
-# Photon OS
-create_backups: true
-run_etc_issue_dod: true
-var_rsyslog_server_name: 'syslog.test.local'
-var_rsyslog_server_port: '514'
-var_rsyslog_server_protocol: 'tcp'
-
-# Application
-# Enter SDDC Manager FQDN or IP for API Calls
-var_sddc_manager: 'sddc-manager.vsphere.local'
-# Enter generated bearer token here
-var_bearer_token: ''
-# Enter an array of 1 to 2 NTP servers
-var_time_servers:
-  - 'time-a-g.nist.gov'
-  - 'time-b-g.nist.gov'
-# Between 30 and 90
-var_password_rotate_days: 90
-{{< /tab >}}
-{{< tab header="5.1.x" lang="yaml" >}}
-# General
-run_create_backups: true
-
-# Photon OS
-create_backups: true
-run_etc_issue_dod: true
-var_rsyslog_server_name: 'syslog.test.local'
-var_rsyslog_server_port: '514'
-var_rsyslog_server_protocol: 'tcp'
-
-# Application
-# Enter SDDC Manager FQDN or IP for API Calls
-var_sddc_manager: 'sddc-manager.vsphere.local'
-# Enter generated bearer token here
-var_bearer_token: ''
-# Enter an array of 1 to 2 NTP servers
-var_time_servers:
-  - 'time-a-g.nist.gov'
-  - 'time-b-g.nist.gov'
-# Between 30 and 90
-var_password_rotate_days: 90
-{{< /tab >}}
-{{< tab header="5.0.x" lang="yaml" >}}
+```
 # General
 run_create_backups: true
 
@@ -210,8 +221,8 @@ var_time_servers:
   - 'time-b-g.nist.gov'
 # Between 30 and 90
 var_password_rotate_days: 90
-{{< /tab >}}
-{{< /tabpane >}}
+```
+
 
 ### Update the SSH config to allow scan
 By default the SDDC Manager appliance does not allow root SSH and the `vcf` does not have the required privileges to complete the scan so root SSH must be temporarily enabled to complete the scan. These steps can be reversed once remediation is complete.  
@@ -227,9 +238,9 @@ systemctl restart sshd
 
 ### Running the playbook
 To run all of the SDDC Manager controls, follow the example below.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.1.x" lang="bash" >}}
+
+### Version: 5.2.1.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r4-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -253,8 +264,10 @@ ok: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalid
 
 TASK [application : CFAP-5X-000129 - Disable Basic Auth] **********************************************************************************************************************************************************************************
 changed: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": true, "connection": "close", "content_length": "0", "cookies": {}, "cookies_string": "", "date": "Thu, 01 Jun 2023 18:19:40 GMT", "elapsed": 0, "expires": "0", "msg": "OK (0 bytes)", "pragma": "no-cache", "redirected": false, "referrer_policy": "no-referrer", "server": "nginx", "status": 200, "strict_transport_security": "max-age=15768000", "url": "https://sddc-manager.vrack.vsphere.local/v1/sddc-manager", "x_content_type_options": "nosniff, nosniff", "x_frame_options": "DENY, SAMEORIGIN", "x_xss_protection": "1; mode=block"}
-{{< /tab >}}
-{{< tab header="5.2.0.x" lang="bash" >}}
+```
+
+### Version: 5.2.0.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -278,8 +291,10 @@ ok: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalid
 
 TASK [application : CFAP-5X-000129 - Disable Basic Auth] **********************************************************************************************************************************************************************************
 changed: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": true, "connection": "close", "content_length": "0", "cookies": {}, "cookies_string": "", "date": "Thu, 01 Jun 2023 18:19:40 GMT", "elapsed": 0, "expires": "0", "msg": "OK (0 bytes)", "pragma": "no-cache", "redirected": false, "referrer_policy": "no-referrer", "server": "nginx", "status": 200, "strict_transport_security": "max-age=15768000", "url": "https://sddc-manager.vrack.vsphere.local/v1/sddc-manager", "x_content_type_options": "nosniff, nosniff", "x_frame_options": "DENY, SAMEORIGIN", "x_xss_protection": "1; mode=block"}
-{{< /tab >}}
-{{< tab header="5.1.x" lang="bash" >}}
+```
+
+### Version: 5.1.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -303,8 +318,10 @@ ok: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalid
 
 TASK [application : CFAP-5X-000129 - Disable Basic Auth] **********************************************************************************************************************************************************************************
 changed: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": true, "connection": "close", "content_length": "0", "cookies": {}, "cookies_string": "", "date": "Thu, 01 Jun 2023 18:19:40 GMT", "elapsed": 0, "expires": "0", "msg": "OK (0 bytes)", "pragma": "no-cache", "redirected": false, "referrer_policy": "no-referrer", "server": "nginx", "status": 200, "strict_transport_security": "max-age=15768000", "url": "https://sddc-manager.vrack.vsphere.local/v1/sddc-manager", "x_content_type_options": "nosniff, nosniff", "x_frame_options": "DENY, SAMEORIGIN", "x_xss_protection": "1; mode=block"}
-{{< /tab >}}
-{{< tab header="5.0.x" lang="bash" >}}
+```
+
+### Version: 5.0.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -328,13 +345,13 @@ ok: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalid
 
 TASK [application : CFAP-5X-000129 - Disable Basic Auth] **********************************************************************************************************************************************************************************
 changed: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-revalidate", "changed": true, "connection": "close", "content_length": "0", "cookies": {}, "cookies_string": "", "date": "Thu, 01 Jun 2023 18:19:40 GMT", "elapsed": 0, "expires": "0", "msg": "OK (0 bytes)", "pragma": "no-cache", "redirected": false, "referrer_policy": "no-referrer", "server": "nginx", "status": 200, "strict_transport_security": "max-age=15768000", "url": "https://sddc-manager.vrack.vsphere.local/v1/sddc-manager", "x_content_type_options": "nosniff, nosniff", "x_frame_options": "DENY, SAMEORIGIN", "x_xss_protection": "1; mode=block"}
-{{< /tab >}}
-{{< /tabpane >}}
+```
+
 
 A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.1.x" lang="bash" >}}
+
+### Version: 5.2.1.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r4-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -343,8 +360,10 @@ cd /usr/share/stigs/vcf/5.x/v1r4-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-
 
 # Providing the tag "CFAP-5X-000002" will instruct the playbook to only run task tagged with the STIG ID of CFAP-5X-000002.
 > ansible-playbook -i 10.0.0.4, -u 'root' playbook.yml -k -v --extra-vars @vars-sddcmgr-example.yml --tags CFAP-5X-000002
-{{< /tab >}}
-{{< tab header="5.2.0.x" lang="bash" >}}
+```
+
+### Version: 5.2.0.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -353,8 +372,10 @@ cd /usr/share/stigs/vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-
 
 # Providing the tag "CFAP-5X-000002" will instruct the playbook to only run task tagged with the STIG ID of CFAP-5X-000002.
 > ansible-playbook -i 10.0.0.4, -u 'root' playbook.yml -k -v --extra-vars @vars-sddcmgr-example.yml --tags CFAP-5X-000002
-{{< /tab >}}
-{{< tab header="5.1.x" lang="bash" >}}
+```
+
+### Version: 5.1.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -363,8 +384,10 @@ cd /usr/share/stigs/vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-
 
 # Providing the tag "CFAP-5X-000002" will instruct the playbook to only run task tagged with the STIG ID of CFAP-5X-000002.
 > ansible-playbook -i 10.0.0.4, -u 'root' playbook.yml -k -v --extra-vars @vars-sddcmgr-example.yml --tags CFAP-5X-000002
-{{< /tab >}}
-{{< tab header="5.0.x" lang="bash" >}}
+```
+
+### Version: 5.0.x
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -373,5 +396,4 @@ cd /usr/share/stigs/vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-
 
 # Providing the tag "CFAP-5X-000002" will instruct the playbook to only run task tagged with the STIG ID of CFAP-5X-000002.
 > ansible-playbook -i 10.0.0.4, -u 'root' playbook.yml -k -v --extra-vars @vars-sddcmgr-example.yml --tags CFAP-5X-000002
-{{< /tab >}}
-{{< /tabpane >}}
+```

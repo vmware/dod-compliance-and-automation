@@ -1,10 +1,6 @@
----
-title: "vSphere Kubernetes release"
-linkTitle: "vSphere Kubernetes release"
-weight: 1
-description: >
-  Performing compliance automation tasks for VMware Cloud Foundation 9.x vSphere Kubernetes release Appliance STIGs.
----
+# vSphere Kubernetes release
+Performing compliance automation tasks for VMware Cloud Foundation 9.x vSphere Kubernetes release Appliance STIGs.
+
 ## Compliance support for VCF vSphere Kubernetes release appliances
 VCF vSphere Kubernetes release appliances by design are intended to be immutable and it is not supported to perform any compliance activities to the appliances.  
 

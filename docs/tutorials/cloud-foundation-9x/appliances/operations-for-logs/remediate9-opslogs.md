@@ -1,22 +1,16 @@
----
-title: "Remediate VCF Operations for Logs 9.x"
-weight: 2
-description: >
-  Remediating VCF Operations for Logs 9.x for STIG Compliance
----
+# Remediate VCF Operations for Logs 9.x
+Remediating VCF Operations for Logs 9.x for STIG Compliance
+
 ## Overview
 This tutorial covers remediating the Operations for Logs appliance in VCF deployments.  
 
-{{% alert title="Important" color="warning" %}}
 For the best experience, prior to using the STIG automation provided here please ensure you:  
 - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
 - Have an understanding of Ansible playbooks and concepts.
 - Have a back out plan so that the changes can be rolled back if necessary.
-- Have read the [Ansible Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook_overview/) and understand the structure of the Ansible playbook provided here.
+- Have read the [Ansible Overview](../../ansible-playbook-overview.md) and understand the structure of the Ansible playbook provided here.
 
 **Failure to do so can result in unintended behavior in the environment.**  
-
-
 
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
 
@@ -39,9 +33,8 @@ To remediate Operations for Logs an Ansible playbook has been provided that will
 
 ### Update Ansible Inventory and Vault with target Operations for Logs Server details
 In the Ansible inventory file and vault ensure the target Operations for Logs server details are correct.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+### Version: 9.0.0.0
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -75,14 +68,12 @@ ansible-vault edit vault_vcf.yml
 var_vault_operations_logs_1_root_password:
 var_vault_operations_logs_2_root_password:
 var_vault_operations_logs_3_root_password:
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Running the playbook
 To remediate all Operations for Logs rules, follow the example below:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+### Version: 9.0.0.0
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -117,8 +108,7 @@ ok: [ops_logs_1] => {"backup": "", "changed": false, "msg": ""}
 
 PLAY RECAP ********************************************************************************************************************************************************************************************************************
 ops_logs_1                 : ok=207  changed=5    unreachable=0    failed=0    skipped=62   rescued=0    ignored=0
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Manually remediate any remaining rules
 The following rules require manual remediation and are not automated.  
@@ -136,4 +126,4 @@ If needed, to troubleshoot any issues files can be restored from the backups the
 Backed up files can be found in the associated `/tmp/ansible-backups-*` folder and restored from there to their original location.
 
 ## Rerun auditing after remediation
-To audit the Operations for Logs post-remediation rerun the auditing steps [here](/docs/tutorials/cloud-foundation-9.x/appliances/operations-for-logs/audit9-opslogs/).
+To audit the Operations for Logs post-remediation rerun the auditing steps [here](./audit9-opslogs.md).

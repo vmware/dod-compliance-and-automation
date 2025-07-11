@@ -1,9 +1,5 @@
----
-title: "VCF 9.x Ansible Playbook Overview"
-weight: 3
-description: >
-  VCF 9.x Ansible Playbook Overview
----
+# VCF 9.x Ansible Playbook Overview
+
 ## Overview
 This is an Ansible playbook that can be used to perform automated remediation for STIG compliance of the VMware Cloud Foundation STIGs.  
 

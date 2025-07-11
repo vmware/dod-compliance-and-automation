@@ -1,13 +1,9 @@
----
-title: "Remediate VCF Operations 9.x"
-weight: 2
-description: >
-  Remediating VCF Operations 9.x for STIG Compliance
----
+# Remediate VCF Operations 9.x
+Remediating VCF Operations 9.x for STIG Compliance
+
 ## Overview
 This tutorial covers remediating the Operations appliances in VCF deployments.  
 
-{{% alert title="Important" color="warning" %}}
 For the best experience, prior to using the STIG automation provided here please ensure you:  
 - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
 - Have an understanding of Ansible playbooks and concepts.
@@ -16,10 +12,7 @@ For the best experience, prior to using the STIG automation provided here please
 
 **Failure to do so can result in unintended behavior in the environment.**  
 
-
-
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -40,9 +33,9 @@ To remediate Operations an Ansible playbook has been provided that will target O
 
 ### Update Ansible Inventory and Vault with target Operations Server details
 In the Ansible inventory file and vault ensure the target Operations server details are correct.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+### Version: 9.0.0.0
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -85,14 +78,13 @@ var_vault_operations_master_root_password:
 var_vault_operations_replica_root_password:
 var_vault_operations_data_1_root_password:
 var_vault_operations_cp_1_root_password:
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Running the playbook
 To remediate all Operations rules, follow the example below:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+### Version: 9.0.0.0
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -130,8 +122,7 @@ ops_cp_1                   : ok=164  changed=7    unreachable=0    failed=0    s
 ops_data_1                 : ok=226  changed=11   unreachable=0    failed=0    skipped=70   rescued=0    ignored=0
 ops_master                 : ok=258  changed=22   unreachable=0    failed=0    skipped=88   rescued=0    ignored=0
 ops_replica                : ok=258  changed=22   unreachable=0    failed=0    skipped=88   rescued=0    ignored=0
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Manually remediate any remaining rules
 The following rules require manual remediation and are not automated.  
@@ -149,4 +140,4 @@ If needed, to troubleshoot any issues files can be restored from the backups the
 Backed up files can be found in the associated `/tmp/ansible-backups-*` folder and restored from there to their original location.
 
 ## Rerun auditing after remediation
-To audit the Operations appliances post-remediation, rerun the auditing steps [here](/docs/tutorials/cloud-foundation-9.x/appliances/operations/audit9-ops/).
+To audit the Operations appliances post-remediation, rerun the auditing steps [here](./audit9-ops.md).

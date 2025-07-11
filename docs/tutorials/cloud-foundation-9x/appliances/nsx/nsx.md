@@ -1,10 +1,6 @@
----
-title: "NSX"
-linkTitle: "NSX"
-weight: 1
-description: >
-  Performing compliance automation tasks for VMware Cloud Foundation 9.x NSX Appliance STIGs.
----
+# NSX
+Performing compliance automation tasks for VMware Cloud Foundation 9.x NSX Appliance STIGs.
+
 ## Compliance support for VCF NSX appliances
 It is not supported to makes changes to NSX appliances directly for compliance activities.  
 

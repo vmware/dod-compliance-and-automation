@@ -1,10 +1,6 @@
----
-title: "vSphere Supervisor"
-linkTitle: "vSphere Supervisor"
-weight: 1
-description: >
-  Performing compliance automation tasks for VMware Cloud Foundation 9.x vSphere Supervisor Appliance STIGs.
----
+# vSphere Supervisor
+Performing compliance automation tasks for VMware Cloud Foundation 9.x vSphere Supervisor Appliance STIGs.
+
 ## Compliance support for VCF vSphere Supervisor appliances
 VCF vSphere Supervisor appliances by design are intended to be immutable and it is not supported to perform any compliance activities to the appliances.  
 

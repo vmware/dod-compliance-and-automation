@@ -26,8 +26,6 @@ The SDDC Manager InSpec profile connects to the API via a bearer token to query 
 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
-
-
 ### Version: 5.2.1.x
 ```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
@@ -83,96 +81,101 @@ Included in the `vmware-cloud-foundation-sddcmgr-5x-stig-baseline` is an example
 
 Open the inputs file for editing.
 
-`cd /usr/share/stigs/vcf/5.x/v1r4-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/`
+### Version: 5.2.1.x
+```
+cd /usr/share/stigs/vcf/5.x/v1r4-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
 # Edit the inputs file
 vi inputs-vcf-sddcmgr-example.yml
-{{< /tab >}}
-{{< tab header="5.2.0.x" lang="bash" >}}
+```
+
+Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
+
+```
+# SDDC Manager Application
+# Enter SDDC Manager FQDN/IP
+sddcManager: 'sddc-manager.vsphere.local'
+# Enter bearer token for API based tests
+bearerToken: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqd...'
+# Set to true if file based/sftp backups are used for SDDC Manager. Set to false if image based backups are used.
+sftpBackupsEnabled: true
+# Enter environment specific sftp server.
+sftpServer: '10.1.2.3'
+# Enter environment specific ntp servers. This is an array.
+ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
+# Enter latest version of SDDC manager with build. 5.2.0.0
+currentVersion: '5.2.0.0'
+# Enter myvmware account used to pull updates in SDDC Manager if used.
+myVmwareAccount: 'myvmwarevcfaccount@test.local'
+# !!DO NOT EDIT THE VALUES BELOW!!
+# Inputs for Photon OS.
+authprivlog: /var/log/messages
+sshdcommand: "sshd -T -C 'user=vcf'"
+# Enter environment specific syslog server with port. replace.local:514
+syslogServer: 'replace.local:514'
+# Inputs for PostgreSQL. No updates needed.
+postgres_user: postgres
+pg_data_dir: /data/pgdata/
+pg_log_dir: /var/log/postgres
+pg_owner: postgres
+pg_group: users
+```
+
+
+### Version: 5.2.0.x
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
 # Edit the inputs file
 vi inputs-vcf-sddcmgr-example.yml
-{{< /tab >}}
-{{< tab header="5.1.x" lang="bash" >}}
+```
+
+Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
+
+```
+# SDDC Manager Application
+# Enter SDDC Manager FQDN/IP
+sddcManager: 'sddc-manager.vsphere.local'
+# Enter bearer token for API based tests
+bearerToken: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqd...'
+# Set to true if file based/sftp backups are used for SDDC Manager. Set to false if image based backups are used.
+sftpBackupsEnabled: true
+# Enter environment specific sftp server.
+sftpServer: '10.1.2.3'
+# Enter environment specific ntp servers. This is an array.
+ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
+# Enter latest version of SDDC manager with build. 5.2.0.0
+currentVersion: '5.2.0.0'
+# Enter myvmware account used to pull updates in SDDC Manager if used.
+myVmwareAccount: 'myvmwarevcfaccount@test.local'
+# !!DO NOT EDIT THE VALUES BELOW!!
+# Inputs for Photon OS.
+authprivlog: /var/log/messages
+sshdcommand: "sshd -T -C 'user=vcf'"
+# Enter environment specific syslog server with port. replace.local:514
+syslogServer: 'replace.local:514'
+# Inputs for PostgreSQL. No updates needed.
+postgres_user: postgres
+pg_data_dir: /data/pgdata/
+pg_log_dir: /var/log/postgres
+pg_owner: postgres
+pg_group: users
+
+```
+
+### Version: 5.1.x
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
 # Edit the inputs file
 vi inputs-vcf-sddcmgr-example.yml
-{{< /tab >}}
-{{< tab header="5.0.x" lang="bash" >}}
-# Navigate to the InSpec profile folder
-cd /usr/share/stigs/vcf/5.x/v1r1-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
-
-# Edit the inputs file
-vi inputs-vcf-sddcmgr-example.yml
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.1.x" lang="yaml" >}}
-# SDDC Manager Application
-# Enter SDDC Manager FQDN/IP
-sddcManager: 'sddc-manager.vsphere.local'
-# Enter bearer token for API based tests
-bearerToken: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqd...'
-# Set to true if file based/sftp backups are used for SDDC Manager. Set to false if image based backups are used.
-sftpBackupsEnabled: true
-# Enter environment specific sftp server.
-sftpServer: '10.1.2.3'
-# Enter environment specific ntp servers. This is an array.
-ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
-# Enter latest version of SDDC manager with build. 5.2.0.0
-currentVersion: '5.2.0.0'
-# Enter myvmware account used to pull updates in SDDC Manager if used.
-myVmwareAccount: 'myvmwarevcfaccount@test.local'
-# !!DO NOT EDIT THE VALUES BELOW!!
-# Inputs for Photon OS.
-authprivlog: /var/log/messages
-sshdcommand: "sshd -T -C 'user=vcf'"
-# Enter environment specific syslog server with port. replace.local:514
-syslogServer: 'replace.local:514'
-# Inputs for PostgreSQL. No updates needed.
-postgres_user: postgres
-pg_data_dir: /data/pgdata/
-pg_log_dir: /var/log/postgres
-pg_owner: postgres
-pg_group: users
-{{< /tab >}}
-{{< tab header="5.2.0.x" lang="yaml" >}}
-# SDDC Manager Application
-# Enter SDDC Manager FQDN/IP
-sddcManager: 'sddc-manager.vsphere.local'
-# Enter bearer token for API based tests
-bearerToken: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqd...'
-# Set to true if file based/sftp backups are used for SDDC Manager. Set to false if image based backups are used.
-sftpBackupsEnabled: true
-# Enter environment specific sftp server.
-sftpServer: '10.1.2.3'
-# Enter environment specific ntp servers. This is an array.
-ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
-# Enter latest version of SDDC manager with build. 5.2.0.0
-currentVersion: '5.2.0.0'
-# Enter myvmware account used to pull updates in SDDC Manager if used.
-myVmwareAccount: 'myvmwarevcfaccount@test.local'
-# !!DO NOT EDIT THE VALUES BELOW!!
-# Inputs for Photon OS.
-authprivlog: /var/log/messages
-sshdcommand: "sshd -T -C 'user=vcf'"
-# Enter environment specific syslog server with port. replace.local:514
-syslogServer: 'replace.local:514'
-# Inputs for PostgreSQL. No updates needed.
-postgres_user: postgres
-pg_data_dir: /data/pgdata/
-pg_log_dir: /var/log/postgres
-pg_owner: postgres
-pg_group: users
-{{< /tab >}}
-{{< tab header="5.1.x" lang="yaml" >}}
+
+```
 # Inputs for Photon OS.
 authprivlog: /var/log/messages
 sshdcommand: "sshd -T -C 'user=vcf'"
@@ -199,8 +202,21 @@ ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
 currentVersion: '5.1.0.0-22688368'
 # Enter myvmware account used to pull updates in SDDC Manager if used.
 myVmwareAccount: 'myvmwarevcfaccount@test.local'
-{{< /tab >}}
-{{< tab header="5.0.x" lang="yaml" >}}
+
+```
+
+### Version: 5.0.x
+```
+# Navigate to the InSpec profile folder
+cd /usr/share/stigs/vcf/5.x/v1r1-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
+
+# Edit the inputs file
+vi inputs-vcf-sddcmgr-example.yml
+```
+
+Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
+
+```
 # Inputs for Photon OS.
 authprivlog: /var/log/audit/auth.log
 sshdcommand: "sshd -T -C 'user=vcf'"
@@ -227,8 +243,7 @@ ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
 currentVersion: '5.0.0.0-21822418'
 # Enter myvmware account used to pull updates in SDDC Manager if used.
 myVmwareAccount: 'myvmwarevcfaccount@test.local'
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Update the SSH config to allow scan
 By default the SDDC Manager appliance does not allow root SSH and the `vcf` does not have the required privileges to complete the scan so root SSH must be temporarily enabled to complete the scan. These steps can be reversed once the audit is complete.  
@@ -245,9 +260,8 @@ systemctl restart sshd
 ### Run the audit
 In this example a target SDDC Manager will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file ran from a linux machine.  
 
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="5.2.1.x" lang="bash" >}}
+### Version: 5.2.1.x
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r4-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
@@ -286,8 +300,10 @@ cinc-auditor exec . -t ssh://root@sddc-manager.vsphere.local --password 'replace
 
 Profile Summary: 200 successful controls, 9 control failures, 0 controls skipped
 Test Summary: 974 successful, 21 failures, 0 skipped
-{{< /tab >}}
-{{< tab header="5.2.0.x" lang="bash" >}}
+```
+
+### Version: 5.2.0.x
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
@@ -326,8 +342,10 @@ cinc-auditor exec . -t ssh://root@sddc-manager.vsphere.local --password 'replace
 
 Profile Summary: 200 successful controls, 9 control failures, 0 controls skipped
 Test Summary: 974 successful, 21 failures, 0 skipped
-{{< /tab >}}
-{{< tab header="5.1.x" lang="bash" >}}
+```
+
+### Version: 5.1.x
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
@@ -366,8 +384,10 @@ cinc-auditor exec . -t ssh://root@sddc-manager.vsphere.local --password 'replace
 
 Profile Summary: 200 successful controls, 9 control failures, 0 controls skipped
 Test Summary: 974 successful, 21 failures, 0 skipped
-{{< /tab >}}
-{{< tab header="5.0.x" lang="bash" >}}
+```
+
+### Version: 5.0.x
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r1-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
@@ -406,8 +426,7 @@ cinc-auditor exec . -t ssh://root@sddc-manager.vsphere.local --password 'replace
 
 Profile Summary: 200 successful controls, 9 control failures, 0 controls skipped
 Test Summary: 974 successful, 21 failures, 0 skipped
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ## Convert the results to CKL
 If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
