@@ -34,19 +34,20 @@ E.g., for "required pam_unix.so", if pam_unix(...) gives success(0), then use th
 
 Therefore, the examples on the man page has the following (which only invoke the pam_faillock.so authfail when needed):
 
+```
 auth     [success=1 default=bad] pam_unix.so       # Jump to pam_faillock.so authsucc if returns success(0)
 auth     [default=die]  pam_faillock.so authfail
 auth     sufficient     pam_faillock.so authsucc
-
+```
 Or
-
+```
 auth     sufficient     pam_unix.so                # Exit the stack if returns success(0)
 auth     [default=die]  pam_faillock.so authfail   # Else, let the pam_failllock.so abort the whole stack
 auth     required       pam_deny.so
-
+```
 With the original config on the top, pam_faillock would record login failure regardless of pam_unix.so's return code, thus treating login success as failures. The system-auth would be changed to:
-
-# Begin /etc/pam.d/system-auth
+```
+Begin /etc/pam.d/system-auth
 
 auth    required      pam_faillock.so preauth
 auth    sufficient    pam_unix.so                 # Exit the stack if returns success(0)
@@ -55,8 +56,8 @@ auth    optional      pam_faildelay.so delay=4000000
 auth    required      pam_deny.so                 # Need this as pam_faillock.so authfail will return ignore(25)
                                                   # And we want to fail the authentication explicitly
 
-# End /etc/pam.d/system-auth
-
+End /etc/pam.d/system-auth
+```
 
 **Workaround:**
 
