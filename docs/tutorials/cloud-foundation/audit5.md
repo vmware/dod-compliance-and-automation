@@ -28,7 +28,7 @@ The SDDC Manager InSpec profile connects to the API via a bearer token to query 
 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
-### Version: 5.2.1.x
+=== "Version: 5.2.1.x"
 ```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
@@ -39,7 +39,7 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
 }'
 ```
 
-### Version: 5.2.0.x
+=== "Version: 5.2.0.x"
 ```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
@@ -50,7 +50,7 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
 }'
 ```
 
-### Version: 5.1.x
+=== "Version: 5.1.x"
 ```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
@@ -61,7 +61,7 @@ curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
 }'
 ```
 
-### Version: 5.0.x
+=== "Version: 5.0.x"
 ```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
