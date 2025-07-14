@@ -1,3 +1,5 @@
+# Control Types
+
 VMware STIG controls can be broken up into two categories: Product or Appliance. This helps differentiate where and how these controls are handled.
 
 **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration affecting availability of the product is low but could impact how the environment is operated if not assessed.  

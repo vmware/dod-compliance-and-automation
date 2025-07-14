@@ -1,9 +1,6 @@
----
-title: "PowerShell/PowerCLI"
-weight: 1
-description: >
-  How to install and use VMware's PowerCLI module for PowerShell
----
+# PowerShell/PowerCLI
+
+## Overview
 
 PowerCLI is a command-line interface for managing and automating all aspects of vSphere management, including networking, storage, VMs, guest OS, and more.
 PowerCLI functions as a collection of PowerShell modules that contain more than 700 cmdlets (commands) to manage VMware infrastructure.

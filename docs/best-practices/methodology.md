@@ -1,3 +1,5 @@
+# Implementation Methodology
+
 ## Overview
 The last thing any system administrator wants to do is break the systems they are responsible for by hardening them. Implementing STIG controls in a methodical and consistent manner will reduce the risk of operational impacts to an organization's environment.  
 

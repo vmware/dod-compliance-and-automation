@@ -1,9 +1,6 @@
----
-title: "MITRE SAF CLI"
-weight: 4
-description: >
-  How to install and use MITRE's SAF CLI
----
+# MITRE SAF CLI
+
+## Overview
 
 The [MITRE Security Automation Framework (SAF) Command Line Interface (CLI)](https://github.com/mitre/saf) brings together applications, techniques, libraries, and tools developed by MITRE and the security community to streamline security automation for systems and DevOps pipelines.
 

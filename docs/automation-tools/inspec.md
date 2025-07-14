@@ -1,9 +1,6 @@
----
-title: "Chef InSpec/CINC"
-weight: 2
-description: >
-  How to install and use Chef InSpec or CINC
----
+# Chef InSpec/CINC
+
+## Overview
 
 [Chef InSpec](https://docs.chef.io/inspec/) is an open-source framework for testing and auditing applications and infrastructure. Chef InSpec works by comparing the actual state of your system with the desired state expressed in easy-to-read and easy-to-write Chef InSpec code. Chef InSpec detects violations and displays findings in the form of a report, but puts you in control of remediation.
 

@@ -1,9 +1,7 @@
----
-title: "MITRE Heimdall"
-weight: 5
-description: >
-  How to install and use MITRE's Heimdall Server
----
+# MITRE Heimdall
+
+## Overview
+
 [MITRE's Heimdall Server](https://github.com/mitre/heimdall2) allows you to visualize, store, and compare scan results from various security tools.
 
 ## Prerequisites
