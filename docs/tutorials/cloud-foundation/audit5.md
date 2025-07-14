@@ -28,33 +28,36 @@ The SDDC Manager InSpec profile connects to the API via a bearer token to query 
 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
-<details>
-<summary>Version: 5.2.1.x</summary>
-    ```
-    curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
-        -H 'Content-Type: application/json' \
-        -H 'Accept: application/json' \
-        -d '{
-      "username" : "administrator@vsphere.local",
-      "password" : "replaceme"
-    }'
-    ```
-</details>
+<table>
+<tr><td>Version:</td><td>Syntax</td></tr>
+<tr><td>5.2.1.x</td><td>
 
-<br />
+```
+curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' \
+    -d '{
+  "username" : "administrator@vsphere.local",
+  "password" : "replaceme"
+}'
+```
 
-<details>
-<summary>Version: 5.2.0.x</summary>
-    ```
-    curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
-        -H 'Content-Type: application/json' \
-        -H 'Accept: application/json' \
-        -d '{
-      "username" : "administrator@vsphere.local",
-      "password" : "replaceme"
-    }'
-    ```
-</details>
+</td></tr>
+<tr><td>5.2.0.x</td><td>
+
+```
+curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
+    -H 'Content-Type: application/json' \
+    -H 'Accept: application/json' \
+    -d '{
+  "username" : "administrator@vsphere.local",
+  "password" : "replaceme"
+}'
+```
+
+</td></tr>
+</table>
+
 
 <br />
 
