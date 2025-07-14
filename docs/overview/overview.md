@@ -1,4 +1,4 @@
-# Overview
+# VMware Cloud Foundation STIG Documentation
 
 ## What is the VMware DoD Compliance and Automation Project for?
 

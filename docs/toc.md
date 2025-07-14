@@ -1,4 +1,4 @@
-* [Overview](overview/overview.md)
+* [VMware STIG Documentation](overview/overview.md)
 * [Best Practices](best-practices/best-practices.md)
   * [Types of Guidance](best-practices/types-of-guidance.md)
   * [Control Types](best-practices/control-types.md)
