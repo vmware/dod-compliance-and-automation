@@ -176,7 +176,6 @@ convert hdf2ckl               Translate a Heimdall Data Format JSON file into a
     $ saf convert hdf2ckl -i rhel8-results.json -o rhel8.ckl -m rhel8-metadata.json
 ```
 
-
 #### Convert HDF(InSpec JSON) to STIG Checklist example
 ```powershell
 saf convert hdf2ckl -i .\My_new_report_with_attestations.json -o my_new_ckl.ckl --hostname myesxihost --fqdn myesxihost.local --ip 10.1.2.3 --mac 00:00:00:00:00:00
@@ -192,7 +191,6 @@ The host info provided is also populated in the target data:
 When starting a new profile for a STIG it is not feasible to manually populate all of a STIG's metadata (title,check,fix,discussion,ids,severity,etc.) into the control files.
 
 SAF CLI offers a command to take an XCCDF xml file from a STIG as an input and output a stubbed out InSpec profile that includes all of this data where then only the tests for each control need to be added.
-
 
 #### XCCDF to InSpec Profile Usage Help
 ```
@@ -228,7 +226,7 @@ EXAMPLES
   $ saf generate xccdf_benchmark2inspec_stub -X ./U_RHEL_6_STIG_V2R2_Manual-xccdf.xml -T group --logLevel debug -r rhel-6-update-report.md
   $ saf generate xccdf_benchmark2inspec_stub -X ./CIS_Ubuntu_Linux_18.04_LTS_Benchmark_v1.1.0-xccdf.xml -O ./CIS_Ubuntu_Linux_18.04_LTS_Benchmark_v1.1.0-oval.xml --logLevel debug
 ```
-<br /><br />
+
 #### Convert XCCDF to InSpec Profile Example
 ```powershell
 # The -T argument sets which ID to use as the control ID for InSpec. In this case STIG IDs are preferred as they are easier to reference. Other options are rule(Rule ID) and group(Vul ID)

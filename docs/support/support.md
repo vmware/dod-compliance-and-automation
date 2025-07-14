@@ -1,3 +1,4 @@
+# Support
 
 For the most up to date information on support please visit our STIG Support KB: https://knowledge.broadcom.com/external/article?legacyId=94398
 
@@ -17,6 +18,7 @@ For the most up to date information on support please visit our STIG Support KB:
 
 **Content Support:** Problems with the guidance text found in a STIG.  
 Examples:
+
 - Clarification on guidance text
 - A command does not work as expected
 - Typos in the text
@@ -24,10 +26,12 @@ Examples:
 
 **Product Support:** Break/fix bug type issues encountered when using features and functionality found inside a STIG's content.  
 Examples:
+
 - Enabling Secureboot causes a host not to boot.
 - Hardening a service causes it to not start.
 
 ## Unsupported Scenarios
+
 - Content and product version mismatched. For example applying the vSphere 7 STIG to vSphere 8.
 - Attempting to apply guidance from one STIG to a product it was not intended for.
 - A product that is no longer generally supported by VMware. See the [VMware Product Lifecycle Matrix](https://lifecycle.vmware.com/) for product end of general support dates.
