@@ -193,6 +193,7 @@ end
 
 ### Train (Transport Interfaces)
 Train Plugins allow InSpec to connect to various types of endpoints for auditing. Some common plugins are:
+
 * Local execution
 * SSH
 * WinRM
@@ -206,6 +207,7 @@ For example, a vCenter Appliance is audited using the SSH plugin so a connection
 
 ### Reporters
 InSpec can provide results in a variety of formats, such as:
+
 * cli
 * json
 * yaml
