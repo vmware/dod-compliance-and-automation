@@ -1,6 +1,7 @@
-# Overview
+# Types of Guidance
 For more information on the different types of STIG guidance VMware offers see the [VMware STIG Program Overview](https://www.vmware.com/docs/vmw-stig-program-overview).
 
+## Overview
 VMware is a trusted partner in highly secure, mission critical systems around the world, including the US Department of Defense (DOD). In the DOD, all IT systems must adhere to the rigorous Risk Management Framework (RMF) as defined in `DoDI 8510.01`. A critical component of RMF is the mandatory implementation of Security Technical Implementation Guides (STIGs) and Security Requirements Guidelines (SRGs) as maintained by the Defense Information Systems Agency (DISA). To serve VMware Cloud Foundation customers in the DOD, as well as others who wish to meet the bar set by the DOD, VMware actively engages with DISA to produce and publish STIGs through their vendor STIG development process.  
 
 ## What is a STIG/SRG?
