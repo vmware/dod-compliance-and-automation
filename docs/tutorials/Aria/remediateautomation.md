@@ -1,3 +1,5 @@
+# Remediate Aria Automation 8
+
 ## Overview
 Remediating VMware Aria Automation for STIG compliance includes the application, the Kubernetes and Docker services running on the appliance, and the underlying Photon OS. 
 

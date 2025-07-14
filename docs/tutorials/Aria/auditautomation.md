@@ -1,3 +1,5 @@
+# Audit Aria Automation 8
+
 ## Overview
 Auditing VMware Aria Automation for STIG compliance involves scanning the application, the Kubernetes and Docker services running on the appliance, and the underlying Photon OS.  
 

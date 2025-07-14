@@ -1,7 +1,10 @@
+# Audit Aria Suite Lifecycle 8
+
 ## Overview
 Auditing VMware Aria Suite Lifecycle for STIG compliance involves scanning the NGINX and vpostgres components, the underlying Photon OS, and the application itself.
 
 When auditing VMware Aria Suite Lifecycle we will split up tasks between product and appliance based controls which are defined as follows:
+
 * **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration affecting availability of the product is low but could impact how the environment is operated if not assessed.
 * **Appliance Control:** Appliance controls deal with the underlying components (databases, web servers, Photon OS, etc) that make up the product. Altering these add risk to product availability if precautionary steps and care in implementation are not taken. Identifying and relying on Default settings in this category makes this category less risky (Default Appliance Controls should be seen as a positive).
 

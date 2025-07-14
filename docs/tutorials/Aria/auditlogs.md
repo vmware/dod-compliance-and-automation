@@ -1,7 +1,10 @@
+# Audit Aria Operations for Logs 8
+
 ## Overview
 Auditing VMware Aria Operations for Logs for STIG compliance involves scanning the application, the cassandra and tc server services, and the underlying Photon OS.  
 
 When auditing VMware Aria Operations for Logs we will split up tasks between product and appliance based controls which are defined as follows:
+
 * **Product Control:** Configurations that interact with the Product via the User Interface or API that are exposed to administrators. Whether these are Default or Non-Default, the risk of mis-configuration affecting availability of the product is low but could impact how the environment is operated if not assessed.
 * **Appliance Control:** Appliance controls deal with the underlying components (databases, web servers, Photon OS, etc.) that make up the product. Altering these add risk to product availability if precautionary steps and care in implementation are not taken. Identifying and relying on Default settings in this category makes this category less risky (Default Appliance Controls should be seen as a positive).
 
