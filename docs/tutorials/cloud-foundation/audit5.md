@@ -28,7 +28,7 @@ The SDDC Manager InSpec profile connects to the API via a bearer token to query 
 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
-<details open>
+<details>
 <summary>Version: 5.2.1.x</summary>
 <br />
     ```
