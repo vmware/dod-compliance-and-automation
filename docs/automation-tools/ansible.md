@@ -44,15 +44,15 @@ vmware-photon-4.0-stig-ansible-hardening
 By default Ansible will look in each directory for a `main.yml` file.  
 
 The purpose of each folder is as follows:  
-`defaults/main.yml` - Default variables for the role/playbook. These variables have the lowest priority of any variables available, and can be easily overridden at another level. For VMware STIG controls, these variables are used to enable/disable individual STIG controls.  
-`handlers/main.yml` - Sometimes a task should only run when a change is made on a machine. For example, a service may need to be restarted if a task updates the configuration of that service, but not if the configuration is unchanged. Ansible uses handlers to address this use case. Handlers are tasks that only run when notified.  
-`meta/main.yml` -  Metadata for the role, including role dependencies and optional Galaxy metadata such as supported platforms.  
-`tasks/main.yml` - The main list of tasks that the playbook runs.  
-`templates` - Templates that the playbook uses.  For example, any complete files that may be replaced instead of edited.  
-`vars/main.yml` - Other variables for the role. Variables for setting values specific to the environment are placed in here. Examples include variables for syslog or ntp servers.  
-`playbook.yml` - A list of plays that define the order in which Ansible performs operations, from top to bottom, to achieve an overall goal.  
-`requirements.yml` - Some playbooks may depend on collections or other roles and are specified here for installation with the `ansible-galaxy` command.  
-`vars-example.yml` - Example vars files may be provided for use and customization when running a playbook for a given environment. It is recommended to specify any variable values here instead of editing the playbook files themselves.  
+* `defaults/main.yml` - Default variables for the role/playbook. These variables have the lowest priority of any variables available, and can be easily overridden at another level. For VMware STIG controls, these variables are used to enable/disable individual STIG controls.  
+* `handlers/main.yml` - Sometimes a task should only run when a change is made on a machine. For example, a service may need to be restarted if a task updates the configuration of that service, but not if the configuration is unchanged. Ansible uses handlers to address this use case. Handlers are tasks that only run when notified.  
+* `meta/main.yml` -  Metadata for the role, including role dependencies and optional Galaxy metadata such as supported platforms.  
+* `tasks/main.yml` - The main list of tasks that the playbook runs.  
+* `templates` - Templates that the playbook uses.  For example, any complete files that may be replaced instead of edited.  
+* `vars/main.yml` - Other variables for the role. Variables for setting values specific to the environment are placed in here. Examples include variables for syslog or ntp servers.  
+* `playbook.yml` - A list of plays that define the order in which Ansible performs operations, from top to bottom, to achieve an overall goal.  
+* `requirements.yml` - Some playbooks may depend on collections or other roles and are specified here for installation with the `ansible-galaxy` command.  
+* `vars-example.yml` - Example vars files may be provided for use and customization when running a playbook for a given environment. It is recommended to specify any variable values here instead of editing the playbook files themselves.  
 
 ### Roles
 Ansible roles can be thought of as playbooks inside of playbooks, and are meant to be reusable. For example, the Photon OS playbook may be included as a dependency in another playbook and used as a role so that multiple copies of the Photon playbook do not have to be maintained.  
