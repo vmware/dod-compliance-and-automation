@@ -227,9 +227,8 @@ ALIASES
 EXAMPLES
   $ saf generate xccdf_benchmark2inspec_stub -X ./U_RHEL_6_STIG_V2R2_Manual-xccdf.xml -T group --logLevel debug -r rhel-6-update-report.md
   $ saf generate xccdf_benchmark2inspec_stub -X ./CIS_Ubuntu_Linux_18.04_LTS_Benchmark_v1.1.0-xccdf.xml -O ./CIS_Ubuntu_Linux_18.04_LTS_Benchmark_v1.1.0-oval.xml --logLevel debug
-```  
-  
-  
+```
+<br /><br />
 #### Convert XCCDF to InSpec Profile Example
 ```powershell
 # The -T argument sets which ID to use as the control ID for InSpec. In this case STIG IDs are preferred as they are easier to reference. Other options are rule(Rule ID) and group(Vul ID)
