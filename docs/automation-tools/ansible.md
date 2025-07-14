@@ -43,7 +43,8 @@ vmware-photon-4.0-stig-ansible-hardening
 
 By default Ansible will look in each directory for a `main.yml` file.  
 
-The purpose of each folder is as follows:  
+The purpose of each folder is as follows:
+
 * `defaults/main.yml` - Default variables for the role/playbook. These variables have the lowest priority of any variables available, and can be easily overridden at another level. For VMware STIG controls, these variables are used to enable/disable individual STIG controls.  
 * `handlers/main.yml` - Sometimes a task should only run when a change is made on a machine. For example, a service may need to be restarted if a task updates the configuration of that service, but not if the configuration is unchanged. Ansible uses handlers to address this use case. Handlers are tasks that only run when notified.  
 * `meta/main.yml` -  Metadata for the role, including role dependencies and optional Galaxy metadata such as supported platforms.  
