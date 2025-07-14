@@ -1,5 +1,3 @@
-# VMware STIG Documentation
-
 * [Overview](overview/overview.md)
 * [Best Practices](best-practices/best-practices.md)
   * [Types of Guidance](best-practices/types-of-guidance.md)
