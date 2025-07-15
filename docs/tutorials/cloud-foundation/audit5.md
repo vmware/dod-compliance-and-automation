@@ -31,10 +31,11 @@ This example uses curl to generate a token. This can also be done via other meth
 <table>
 <tr><td style='width: 15%;'>**Version:***</td><td>**Syntax:**</td></tr>
 <tr>
-<td>5.2.1.x<br />
-    5.2.0.x<br />
-    5.1.x<br />
-    5.0.x
+<td><br />
+  5.2.1.x<br />
+  5.2.0.x<br />
+  5.1.x<br />
+  5.0.x
 </td>
 <td>
 
