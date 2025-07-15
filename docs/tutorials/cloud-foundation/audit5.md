@@ -29,7 +29,6 @@ The SDDC Manager InSpec profile connects to the API via a bearer token to query 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
 <details>
-
   <summary>Click me</summary>
 
   | Header 1 | Header 2 |
@@ -40,7 +39,6 @@ This example uses curl to generate a token. This can also be done via other meth
 </details>
 
 <details>
-
   <summary>Click me</summary>
 
   | Header 1 | Header 2 |
