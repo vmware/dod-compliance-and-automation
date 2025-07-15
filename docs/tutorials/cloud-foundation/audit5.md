@@ -63,7 +63,6 @@ Included in the `vmware-cloud-foundation-sddcmgr-5x-stig-baseline` is an example
 
 Open the inputs file for editing.
 
-
 <table>
 <tr><td style='width: 15%;'>**Version:**</td><td>**Syntax:**</td></tr>
 <tr>
@@ -80,7 +79,6 @@ vi inputs-vcf-sddcmgr-example.yml
 ```
 
 </td></tr>
-
 <tr>
 <td><br />
  5.2.0.x
@@ -96,7 +94,6 @@ vi inputs-vcf-sddcmgr-example.yml
 ```
 
 </td></tr>
-
 <tr>
 <td><br />
  5.1.x
@@ -112,7 +109,6 @@ vi inputs-vcf-sddcmgr-example.yml
 ```
 
 </td></tr>
-
 <tr>
 <td><br />
  5.0.x
@@ -129,6 +125,7 @@ vi inputs-vcf-sddcmgr-example.yml
 
 </td></tr>
 </table>
+
 
 <table>
 <tr><td style='width: 15%;'>**Version:**</td><td>**Inputs:**</td></tr>
