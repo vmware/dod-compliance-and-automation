@@ -28,7 +28,6 @@ The SDDC Manager InSpec profile connects to the API via a bearer token to query 
 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
-### Version: 5.1.x
 ```
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
@@ -50,7 +49,6 @@ Included in the `vmware-cloud-foundation-sddcmgr-5x-stig-baseline` is an example
 
 Open the inputs file for editing.
 
-### Version: 5.1.x
 ```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
@@ -107,7 +105,6 @@ systemctl restart sshd
 ### Run the audit
 In this example a target SDDC Manager will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file ran from a linux machine.  
 
-### Version: 5.1.x
 ```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
