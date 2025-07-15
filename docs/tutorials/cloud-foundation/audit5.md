@@ -29,23 +29,30 @@ The SDDC Manager InSpec profile connects to the API via a bearer token to query 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
 <details>
-  <summary>Click me</summary>
 
-  | Header 1 | Header 2 |
-  | -------- | -------- |
-  | Row 1    | Row 1    |
-  | Row 2    | Row 2    |
-  
-</details>
+<summary> MISC </summary>
 
-<details>
-  <summary>Click me</summary>
-
-  | Header 1 | Header 2 |
-  | -------- | -------- |
-  | Row 1    | Row 1    |
-  | Row 2    | Row 2    |
-  
+<ul>
+    <li><a href="Link to Stuff A">Stuff A</a></li>
+    <li><a href="Link to Stuff B">Stuff B</a></li>
+    <li>
+        <details>
+            <summary><a href="Link to Stuff C">Stuff C</a></summary>
+            <ul>
+                <li><a href="Link to Stuff C-1">Stuff C-1</a></li>
+            </ul>
+        </details>
+    </li>
+    <li>
+        <details>
+            <summary><a href="Link to Stuff D">Stuff D</a></summary>
+            <ul>
+                <li><a href="Link to Stuff D-1">Stuff D-1</a></li>
+            </ul>
+        </details>
+    </li>
+    <li><a href="Link to Stuff E">Stuff E</a></li>
+</ul>
 </details>
 
 <table>
