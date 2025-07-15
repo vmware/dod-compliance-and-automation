@@ -7,7 +7,7 @@ Scanning other components of a VCF deployment such as [vSphere](../vSphere/) and
 
 Specific version documentation:
 
-* [VCF 5.2.1.x](./audit5/audit5-2-1-x.md)
-* [VCF 5.2.0.x](./audit5/audit5-2-0-x.md)
-* [VCF 5.1.x](./audit5/audit5-1-x.md)
-* [VCF 5.0.x](./audit5/audit5-0-x.md)
+* [VCF 5.2.1.x](./audit5-2-1-x.md)
+* [VCF 5.2.0.x](./audit5-2-0-x.md)
+* [VCF 5.1.x](./audit5-1-x.md)
+* [VCF 5.0.x](./audit5-0-x.md)
