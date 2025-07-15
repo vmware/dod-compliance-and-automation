@@ -1,4 +1,4 @@
-# Audit VCF 5.x
+# Audit VCF 5.0.x
 
 ## Overview
 Auditing VCF for STIG compliance involves scanning the SDDC Manager appliance.  
