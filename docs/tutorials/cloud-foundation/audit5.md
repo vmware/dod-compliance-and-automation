@@ -29,7 +29,7 @@ The SDDC Manager InSpec profile connects to the API via a bearer token to query 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
 <table>
-<tr><td style='width: 15%;'>**Version:***</td><td>**Syntax:**</td></tr>
+<tr><td style='width: 15%;'>**Version:**</td><td>**Syntax:**</td></tr>
 <tr>
 <td><br />
   5.2.1.x<br />
@@ -63,7 +63,15 @@ Included in the `vmware-cloud-foundation-sddcmgr-5x-stig-baseline` is an example
 
 Open the inputs file for editing.
 
-### Version: 5.2.1.x
+
+<table>
+<tr><td style='width: 15%;'>**Version:**</td><td>**Syntax:**</td></tr>
+<tr>
+<td><br />
+ 5.2.1.x
+</td>
+<td>
+
 ```
 cd /usr/share/stigs/vcf/5.x/v1r4-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
 
@@ -71,40 +79,14 @@ cd /usr/share/stigs/vcf/5.x/v1r4-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-s
 vi inputs-vcf-sddcmgr-example.yml
 ```
 
-Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
+</td></tr>
 
-```
-# SDDC Manager Application
-# Enter SDDC Manager FQDN/IP
-sddcManager: 'sddc-manager.vsphere.local'
-# Enter bearer token for API based tests
-bearerToken: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqd...'
-# Set to true if file based/sftp backups are used for SDDC Manager. Set to false if image based backups are used.
-sftpBackupsEnabled: true
-# Enter environment specific sftp server.
-sftpServer: '10.1.2.3'
-# Enter environment specific ntp servers. This is an array.
-ntpServers: ['time-a-g.nist.gov','time-b-g.nist.gov']
-# Enter latest version of SDDC manager with build. 5.2.0.0
-currentVersion: '5.2.0.0'
-# Enter myvmware account used to pull updates in SDDC Manager if used.
-myVmwareAccount: 'myvmwarevcfaccount@test.local'
-# !!DO NOT EDIT THE VALUES BELOW!!
-# Inputs for Photon OS.
-authprivlog: /var/log/messages
-sshdcommand: "sshd -T -C 'user=vcf'"
-# Enter environment specific syslog server with port. replace.local:514
-syslogServer: 'replace.local:514'
-# Inputs for PostgreSQL. No updates needed.
-postgres_user: postgres
-pg_data_dir: /data/pgdata/
-pg_log_dir: /var/log/postgres
-pg_owner: postgres
-pg_group: users
-```
+<tr>
+<td><br />
+ 5.2.0.x
+</td>
+<td>
 
-
-### Version: 5.2.0.x
 ```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/5.x/v1r3-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
@@ -113,6 +95,50 @@ cd /usr/share/stigs/vcf/5.x/v1r3-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-s
 vi inputs-vcf-sddcmgr-example.yml
 ```
 
+</td></tr>
+
+<tr>
+<td><br />
+ 5.1.x
+</td>
+<td>
+
+```
+# Navigate to the InSpec profile folder
+cd /usr/share/stigs/vcf/5.x/v1r2-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
+
+# Edit the inputs file
+vi inputs-vcf-sddcmgr-example.yml
+```
+
+</td></tr>
+
+<tr>
+<td><br />
+ 5.0.x
+</td>
+<td>
+
+```
+# Navigate to the InSpec profile folder
+cd /usr/share/stigs/vcf/5.x/v1r1-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
+
+# Edit the inputs file
+vi inputs-vcf-sddcmgr-example.yml
+```
+
+</td></tr>
+</table>
+
+<table>
+<tr><td style='width: 15%;'>**Version:**</td><td>**Inputs:**</td></tr>
+<tr>
+<td><br />
+ 5.2.1.x<br />
+ 5.2.0.x
+</td>
+<td>
+
 Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
 
 ```
@@ -135,7 +161,7 @@ myVmwareAccount: 'myvmwarevcfaccount@test.local'
 # Inputs for Photon OS.
 authprivlog: /var/log/messages
 sshdcommand: "sshd -T -C 'user=vcf'"
-# Enter environment specific syslog server with port. replace.local:514
+# Enter environment specific syslog server with port.
 syslogServer: 'replace.local:514'
 # Inputs for PostgreSQL. No updates needed.
 postgres_user: postgres
@@ -143,17 +169,14 @@ pg_data_dir: /data/pgdata/
 pg_log_dir: /var/log/postgres
 pg_owner: postgres
 pg_group: users
-
 ```
 
-### Version: 5.1.x
-```
-# Navigate to the InSpec profile folder
-cd /usr/share/stigs/vcf/5.x/v1r2-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
-
-# Edit the inputs file
-vi inputs-vcf-sddcmgr-example.yml
-```
+</td></tr>
+<tr>
+<td><br />
+ 5.1.x
+</td>
+<td>
 
 Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
 
@@ -161,7 +184,7 @@ Update the inputs as shown below with values relevant to the environment. Specif
 # Inputs for Photon OS.
 authprivlog: /var/log/messages
 sshdcommand: "sshd -T -C 'user=vcf'"
-# Enter environment specific syslog server with port. replace.local:514
+# Enter environment specific syslog server with port.
 syslogServer: 'replace.local:514'
 # Inputs for PostgreSQL. No updates needed.
 postgres_user: postgres
@@ -187,14 +210,12 @@ myVmwareAccount: 'myvmwarevcfaccount@test.local'
 
 ```
 
-### Version: 5.0.x
-```
-# Navigate to the InSpec profile folder
-cd /usr/share/stigs/vcf/5.x/v1r1-srg/inspec/vmware-cloud-foundation-sddcmgr-5x-stig-baseline/
-
-# Edit the inputs file
-vi inputs-vcf-sddcmgr-example.yml
-```
+</td></tr>
+<tr>
+<td><br />
+ 5.0.x
+</td>
+<td>
 
 Update the inputs as shown below with values relevant to the environment. Specifically `syslogServer`,`sddcManager`,`bearerToken`,`sftpBackupsEnabled`,`sftpServer`,`ntpServers`,`currentVersion`,and `myVmwareAccount`.
 
@@ -202,7 +223,7 @@ Update the inputs as shown below with values relevant to the environment. Specif
 # Inputs for Photon OS.
 authprivlog: /var/log/audit/auth.log
 sshdcommand: "sshd -T -C 'user=vcf'"
-# Enter environment specific syslog server with port. replace.local:514
+# Enter environment specific syslog server with port.
 syslogServer: 'replace.local:514'
 # Inputs for PostgreSQL. No updates needed.
 postgres_user: postgres
@@ -226,6 +247,9 @@ currentVersion: '5.0.0.0-21822418'
 # Enter myvmware account used to pull updates in SDDC Manager if used.
 myVmwareAccount: 'myvmwarevcfaccount@test.local'
 ```
+
+</td></tr>
+</table>
 
 ### Update the SSH config to allow scan
 By default the SDDC Manager appliance does not allow root SSH and the `vcf` does not have the required privileges to complete the scan so root SSH must be temporarily enabled to complete the scan. These steps can be reversed once the audit is complete.  
