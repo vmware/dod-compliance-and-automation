@@ -21,7 +21,7 @@
       * [Remediate Operations](tutorials/Aria/remediateoperations.md)
   * [VMware Cloud Foundation](tutorials/cloud-foundation/cloud-foundation.md)
       * [Audit VCF 4.x](tutorials/cloud-foundation/audit4.md)
-      * [Audit VCF 5.x](tutorials/cloud-foundation/audit5.md)
+      * [Audit VCF 5.x](tutorials/cloud-foundation/audit5/audit5.md)
           * [VCF 5.2.1.x](tutorials/cloud-foundation/audit5/audit5.2.1.x.md)
           * [VCF 5.2.0.x](tutorials/cloud-foundation/audit5/audit5.2.0.x.md)
           * [VCF 5.1.x](tutorials/cloud-foundation/audit5/audit5.1.x.md)
