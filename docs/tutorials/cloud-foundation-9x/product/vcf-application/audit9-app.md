@@ -48,9 +48,8 @@ The functions provided are: `Set-vCenterCredentials` `Get-vCenterCredentials` `S
 To extend the functionality of the VMware transport that ships with InSpec a custom one has been created that also incorporates the `VMware.Vsphere.SsoAdmin` module to extend automation coverage to the vCenter SSO STIG controls.  
 
 To install the plugin that is included with the `vmware-cloud-foundation-stig-baseline` profile, do the following:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
 > cinc-auditor plugin install /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere/train-vmware-1.0.0.gem
 
@@ -79,29 +78,30 @@ To install the plugin that is included with the `vmware-cloud-foundation-stig-ba
 │ train-winrm                            │ 0.2.13  │ gem (system) │ train-1 │ Windows WinRM API Transport for Train                                  │
 └────────────────────────────────────────┴─────────┴──────────────┴─────────┴────────────────────────────────────────────────────────────────────────┘
  17 plugin(s) total
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
- **Note - Plugins are installed per user and must be installed as the user running InSpec.**
+**Note - Plugins are installed per user and must be installed as the user running InSpec.**
 
 ## Auditing VCF
 
 ### Setup Connection to vCenter
 This profile uses a custom VMware InSpec transport(train) to run PowerCLI commands that must be installed in order for this profile to run. This custom transport is derived from the default InSpec VMware transport and extends it by adding support for the `VMware.Vsphere.SsoAdmin` PowerShell module as well as an optional connection method using a PowerShell credential file.  
 
-Connection Options:  
+Connection Options:
+
   - Provide vCenter credentials via environment variables
     - Take care to clear the history and close the PowerShell session to avoid any credentials left in memory/history if using this option.
   - Create a PowerShell credential file and then provide the file name via an environment variable
     - For more information on exporting credentials to XML see [Export-Clixml](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-clixml?view=powershell-7.5).
-
 
 `Export-Clixml` only exports encrypted credentials on Windows. On non-Windows operating systems such as macOS and Linux, credentials are exported as plain text stored as a Unicode character array. This provides some obfuscation but does not provide encryption.
 
 
 #### Connecting via username/password
 From a PowerShell session create the following environment variables:
-```powershell
+
+```
+powershell
 #Enter PowerShell
 pwsh
 
@@ -111,13 +111,13 @@ $env:VISERVER_PASSWORD="password"
 # For PowerShell Core only
 $env:NO_COLOR=$true
 ```
+
 *Note: If the password includes a single tick (') it must be substituted with four ticks ('''') in order for it to be properly escaped all the way through the process.*
 
 #### Connecting via a PowerShell Credential file
 From a PowerShell session create a PowerShell credential file:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="powershell" >}}
+
+```
 # Enter PowerShell
 pwsh
 
@@ -148,8 +148,8 @@ $env:PCLICREDFILE="/usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-found
 $env:NO_COLOR=$true
 
 # Leave the PowerShell session open for the remaining steps
-{{< /tab >}}
-{{< /tabpane >}}
+```
+
 **Note: If the `PCLICREDFILE` environment variable exists it will take precedence over username and password when attempting the connection to vCenter.**
 
 #### Generate API tokens for VCF Components
@@ -167,9 +167,8 @@ Once gathered these tokens will be specified in the next step in the inputs prov
 **Note: These tasks are time sensitive as the API tokens will expire.**
 
 If some components are not deployed then skip those steps.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="powershell" >}}
+
+```
 # Generate an API token for VCF Automation
 
 ## A session token can be retrieved in different ways but curl is shown in this example.
@@ -233,16 +232,14 @@ curl -k 'https://<sddcmgr_fqdn>/v1/tokens' -i -X POST \
 base64 <<< 'admin@local:password'
 
 ## Capture the value returned and enter this in the inputs file used for the value of the `opshcx_apiToken` input.
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Update profile inputs
 Included in the `vmware-cloud-foundation-stig-baseline` is an example `inputs-example.yml` file with inputs needed to run the audit.  This is used to provide InSpec with values specific to the environment being audited.
 
 Update profile inputs for the target environment.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/
 
@@ -335,14 +332,12 @@ opshcx_url: ''
 opshcx_apiToken: ''
 # Enter an array of NTP servers.
 opshcx_ntpServers: []
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Run the audit
 In this example all VCF application rules will be audited, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="powershell" >}}
+
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/application
 
@@ -352,29 +347,25 @@ cinc-auditor exec . -t vmware:// --show-progress --enhanced-outcomes --input-fil
 # Shown below is the last part of the output at the CLI.
 Profile Summary: 119 successful controls, 25 control failures, 36 controls not reviewed, 6 controls not applicable, 0 controls have error
 Test Summary: 208 successful, 42 failures, 43 skipped
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 In this example a single component of VCF and its associated application rules will be audited, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="powershell" >}}
+
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere/vcenter
 
 # Run the audit
 cinc-auditor exec . -t vmware:// --show-progress --enhanced-outcomes --input-file ../../inputs-example.yml --reporter cli json:/tmp/reports/VCF_9_Application_vCenter_Report.json
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ## Convert the results to CKL
 If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
 
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Update the saf_cli_hdf2ckl_metadata.json file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 
@@ -382,18 +373,15 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-basel
 "hostip": "10.1.1.20",
 "hostmac": "00:00:00:00:00:00",
 "hostfqdn": "many.rainpole.local",
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Run SAF CLI to create the CKL file
 The following command will convert the json result from the InSpec audit into a STIG Checklist file and ensure the correct metadata is inserted so that it displays correctly in STIG Viewer.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Convert the InSpec report to a STIG Checklist
 saf convert hdf2ckl -i /tmp/reports/VCF_9_Application_Report.json -o /tmp/reports/VCF_9_Application_Report.ckl -m /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
 ![STIG Viewer Checklist](../../../images/app_audit9_ckl_screenshot.png)
@@ -448,9 +436,8 @@ Optionally a manual attestation file can be created and applied to the InSpec re
 
 ### Update/Create attestation file and apply to report
 An example attestation file has been provided that includes all known manually audited rules.  Update the description, status, and updated_by fields as needed.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Update attestation file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/attestations-example.yml
 
@@ -462,8 +449,7 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-basel
 
 # Apply attestations to report
 saf attest apply -i /tmp/reports/VCF_9_Application_Report.json /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/attestations-example.yml -o /tmp/reports/VCF_9_Application_Report_with_attestations.json
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ## Next
 If needed proceed to the remediation tutorial for VCF Application rules [here](/docs/tutorials/cloud-foundation-9.x/product/vcf-application/remediate9-app/).
