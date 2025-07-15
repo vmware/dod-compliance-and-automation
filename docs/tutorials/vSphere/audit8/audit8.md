@@ -6,6 +6,6 @@ Auditing vSphere for STIG compliance involves scanning ESXi, Virtual Machines, v
 
 Specific version documentation:
 
-* [vSphere 8.0 U3](./audit8-0-u3.md)
-* [vShpere 8.0 U2](./audit8-0-u2.md)
-* [vSphere 8.0 U1](./audit8-0-u1.md)
+* [Audit vSphere 8.0 U3](./audit8-0-u3.md)
+* [Audit vShpere 8.0 U2](./audit8-0-u2.md)
+* [Audit vSphere 8.0 U1](./audit8-0-u1.md)
