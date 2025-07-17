@@ -91,6 +91,10 @@ envstigsettings = [ordered]@{
 
 ** ?? testing **
 
+More...
+[!WARNING]
+This is critical stuff.
+
 After remediation of VCFE-9X-000014 a reboot is required to complete the process.  
 
 ```
