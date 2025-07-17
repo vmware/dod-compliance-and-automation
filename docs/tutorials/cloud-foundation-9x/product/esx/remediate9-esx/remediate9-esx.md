@@ -87,33 +87,9 @@ envstigsettings = [ordered]@{
 
 ### Run the remediation script
 
-**⚠️ For rule VCFE-9X-000014 if it is needed to update the TLS profile the host must be in maintenance mode prior to running the script or this rule will be skipped.** 
+> **Caution** For rule VCFE-9X-000014 if it is needed to update the TLS profile the host must be in maintenance mode prior to running the script or this rule will be skipped.
 
-> **Caution** This is a caution.
-
-
-3. Again, on the `Build` and `Run` clusters, discover the `CLUSTER_URL` and `CLUSTER_TOKEN` values.
-
-    v1.23 or earlier
-    : If you're watching a v1.23 or earlier, run:
-
-      ```console
-      SAMPLE CODE
-      ```
-
-    v1.24 or later
-    : If you're watching a v1.24 or later, run:
-
-      ```console
-      SAMPLE CODE
-      ```
-
-   > **Note** You can create a short-lived token with the `kubectl create token` command if that is
-   > the preferred method. This method requires frequent token rotation.
-
-
-
-After remediation of VCFE-9X-000014 a reboot is required to complete the process.  
+> **Note** After remediation of VCFE-9X-000014 a reboot is required to complete the process.  
 
 ```
 # Launch PowerShell
