@@ -31,6 +31,7 @@ The workflow presented is an example methodology for STIG assessment and remedia
 ### Incremental Implementations
 It is also a valid strategy, especially in larger environments with multiple vCenters and clusters, to incrementally implement STIGs to one site, vCenter, or vSphere cluster at a time to figure out any issues without impacting the entire environment.  
 
-When pursuing this approach here are some items to consider:  
+When pursuing this approach here are some items to consider:
+
 - Do not mix hardened with non-hardened ESXi hosts in the same cluster.
 - If multiple vCenter servers exist consider how they are linked to each other or share an SSO domain.

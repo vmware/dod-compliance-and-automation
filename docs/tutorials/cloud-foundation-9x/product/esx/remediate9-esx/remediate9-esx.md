@@ -1,14 +1,10 @@
----
-title: "Remediate VCF ESX 9.x"
-weight: 2
-description: >
-  Remediating VCF ESX 9.x for STIG Compliance
----
+# Remediate ESX 9.0.0.0
+
 ## Overview
 This tutorial covers remediating ESX hosts in VCF deployments.  
 
-{{% alert title="Important" color="warning" %}}
-For the best experience, prior to using the STIG automation provided here please ensure you:  
+For the best experience, prior to using the STIG automation provided here please ensure you:
+
 - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
 - Have an understanding of PowerShell and PowerCLI.
 - Have a back out plan so that the changes can be rolled back if necessary.
@@ -16,10 +12,7 @@ For the best experience, prior to using the STIG automation provided here please
 
 **Failure to do so can result in unintended behavior in the environment.**  
 
-
-
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -65,9 +58,8 @@ The follow parameters are available in all remediation scripts.
 Update the `VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables.ps1` and `VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation_Variables.ps1` files with the target environment values for remediation. The file provided can be used or a copy can be made and updated.  
 
 **NOTE** Update paths as needed for the environment.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Navigate to the PowerCLI hardening folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/powercli/vmware-cloud-foundation-stig-powercli-hardening/
 
@@ -91,20 +83,17 @@ envstigsettings = [ordered]@{
   allowedips              = @("10.0.0.0/8","172.16.0.0/16") # VCFE-9X-000217 Allows IP ranges for the ESX firewall. Enter a comma separated list, for example: @("10.0.0.0/8","172.16.0.0/16")
   esxAdminsGroup          = "" # VCFE-9X-000239 Enter the environment specific AD group here if hosts are joined to AD and this capability is used.
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Run the remediation script
 
-{{% alert title="Important" color="warning" %}}
-For rule VCFE-9X-000014 if it is needed to update the TLS profile the host must be in maintenance mode prior to running the script or this rule will be skipped.  
+**⚠️ For rule VCFE-9X-000014 if it is needed to update the TLS profile the host must be in maintenance mode prior to running the script or this rule will be skipped. ** 
+
+** ?? testing **
 
 After remediation of VCFE-9X-000014 a reboot is required to complete the process.  
 
-
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="powershell" >}}
+```
 # Launch PowerShell
 pwsh
 
@@ -160,8 +149,7 @@ Mode                 LastWriteTime         Length Name
 -a---            5/14/2025  14:46 PM          84552 VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation_Transcript_5-14-2025_14-46-40.txt
 
 # Update global variables target and rerun script as needed
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ## Manually remediate rules
 The following rules require manual remediation if not compliant and are not automated by the provided scripts.  
