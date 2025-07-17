@@ -88,8 +88,8 @@ envstigsettings = [ordered]@{
 ### Run the remediation script
 
 > **Caution** For rule VCFE-9X-000014 if it is needed to update the TLS profile the host must be in maintenance mode prior to running the script or this rule will be skipped.
-  
-> **Note** After remediation of VCFE-9X-000014 a reboot is required to complete the process.
+
+** After remediation of VCFE-9X-000014 a reboot is required to complete the process.**
 
 ```
 # Launch PowerShell
