@@ -91,13 +91,25 @@ envstigsettings = [ordered]@{
 
 > **Caution** This is a caution.
 
-Testing One
-: This is tab one
-    Content for tab one
 
-Testing Two
-: Other stuff Tab 2
-    Content for Tab 2
+3. Again, on the `Build` and `Run` clusters, discover the `CLUSTER_URL` and `CLUSTER_TOKEN` values.
+
+    v1.23 or earlier
+    : If you're watching a v1.23 or earlier, run:
+
+      ```console
+      SAMPLE CODE
+      ```
+
+    v1.24 or later
+    : If you're watching a v1.24 or later, run:
+
+      ```console
+      SAMPLE CODE
+      ```
+
+   > **Note** You can create a short-lived token with the `kubectl create token` command if that is
+   > the preferred method. This method requires frequent token rotation.
 
 
 
