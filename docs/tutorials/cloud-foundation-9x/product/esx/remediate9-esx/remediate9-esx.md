@@ -93,13 +93,10 @@ envstigsettings = [ordered]@{
 
 Testing One
 : This is tab one
-
     Content for tab one
-
 
 Testing Two
 : Other stuff Tab 2
-
     Content for Tab 2
 
 
