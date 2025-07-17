@@ -91,15 +91,17 @@ envstigsettings = [ordered]@{
 
 > **Caution** This is a caution.
 
-Tab 1
-: #### Tab 1 stuff
-    > - blah tab 1
-    > - blah blah tab 1
+Testing One
+: This is tab one
 
-Tab 2
+    Content for tab one
+
+
+Testing Two
 : Other stuff Tab 2
-    - blah tab 2
-    - blah blah tab 2
+
+    Content for Tab 2
+
 
 
 After remediation of VCFE-9X-000014 a reboot is required to complete the process.  
