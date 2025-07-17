@@ -89,7 +89,18 @@ envstigsettings = [ordered]@{
 
 **⚠️ For rule VCFE-9X-000014 if it is needed to update the TLS profile the host must be in maintenance mode prior to running the script or this rule will be skipped.** 
 
-> **Caution**: This is a caution.
+> **Caution** This is a caution.
+
+Tab 1
+: #### Tab 1 stuff
+    > - blah tab 1
+    > - blah blah tab 1
+
+Tab 2
+: Other stuff Tab 2
+    - blah tab 2
+    - blah blah tab 2
+
 
 After remediation of VCFE-9X-000014 a reboot is required to complete the process.  
 
