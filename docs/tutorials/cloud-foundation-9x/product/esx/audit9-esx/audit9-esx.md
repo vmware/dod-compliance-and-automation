@@ -6,7 +6,6 @@ This tutorial covers auditing ESX hosts in VCF deployments.
 
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
 
-
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
@@ -34,6 +33,7 @@ To extend the functionality of the VMware transport that ships with InSpec a cus
 
 To install the plugin that is included with the `vmware-cloud-foundation-stig-baseline` profile, do the following:
 
+```
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
 > cinc-auditor plugin install /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere/train-vmware-1.0.0.gem
 
@@ -62,6 +62,7 @@ To install the plugin that is included with the `vmware-cloud-foundation-stig-ba
 │ train-winrm                            │ 0.2.13  │ gem (system) │ train-1 │ Windows WinRM API Transport for Train                                  │
 └────────────────────────────────────────┴─────────┴──────────────┴─────────┴────────────────────────────────────────────────────────────────────────┘
  17 plugin(s) total
+```
 
 **Note - Plugins are installed per user and must be installed as the user running InSpec.**
 
