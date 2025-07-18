@@ -149,7 +149,7 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_NSX_Report.json -o /tmp/reports/VCF_9_
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist](../../../images/nsx_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../../images/nsx_audit9_ckl_screenshot.png)
 
 ## Manually audit rules
 The following rules require manual auditing and are not automated.  

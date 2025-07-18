@@ -1,22 +1,14 @@
----
-title: "Remediate VCF NSX 9.x"
-weight: 2
-description: >
-  Remediating VCF NSX 9.x for STIG Compliance
----
 ## Overview
 This tutorial covers remediating NSX in VCF deployments.  
 
-{{% alert title="Important" color="warning" %}}
-For the best experience, prior to using the STIG automation provided here please ensure you:  
-- Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
-- Have an understanding of Ansible playbooks and concepts.
-- Have a back out plan so the changes can be rolled back if necessary.
-- Have read the [Ansible Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook_overview/) and understand the structure of the Ansible playbook provided here.
+> **Important** For the best experience, prior to using the STIG automation provided here please ensure you:  
 
-**Failure to do so can result in unintended behavior in the environment.**  
+> - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
+> - Have an understanding of Ansible playbooks and concepts.
+> - Have a back out plan so the changes can be rolled back if necessary.
+> - Have read the [Ansible Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook_overview/) and understand the structure of the Ansible playbook provided here.
 
-
+> **Failure to do so can result in unintended behavior in the environment.**  
 
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
 
