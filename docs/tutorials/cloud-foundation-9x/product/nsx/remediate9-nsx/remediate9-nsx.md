@@ -1,3 +1,5 @@
+# Remediate NSX 9.0.0.0
+
 ## Overview
 This tutorial covers remediating NSX in VCF deployments.  
 
@@ -10,8 +12,7 @@ This tutorial covers remediating NSX in VCF deployments.
 
 > **Failure to do so can result in unintended behavior in the environment.**  
 
-The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-
+The example commands below are specific to the product version and the supported STIG content for the version being run.
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -35,12 +36,11 @@ A token can be generated via curl or other REST client. A curl example is shown 
 
 For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1733/).
 
-**Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured identity source or a configured LDAP identity source.  
+> **Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured identity source or a configured LDAP identity source.  
 
 Curl example:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Replace myuser, mypassword, and update the url
 curl -k -i -X POST -d 'j_username=myuser&j_password=mypassword' https://nsxmgr.rainpole.local/api/session/create
 
@@ -48,14 +48,12 @@ curl -k -i -X POST -d 'j_username=myuser&j_password=mypassword' https://nsxmgr.r
 HTTP/1.1 200
 Set-Cookie: JSESSIONID=0FB1F72478DDE578AB7E3473F54BCF50; Path=/; Secure; HttpOnly
 X-XSRF-TOKEN: ae5ee920-bca1-4ba3-ac1f-385e76f2c66a
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Update Ansible Inventory and Vault with the target NSX details
 In the Ansible inventory file and vault ensure the target NSX Manager details are correct.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -100,15 +98,12 @@ nsx_manager_defaults_syslog_servers:
     port: 514
     protocol: 'TCP'
     level: 'INFO'
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Running the playbook
 To remediate all NSX rules, follow the example below:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
-# Navigate to the Ansible playbook folder
+
+```# Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
 # Prior to running please ensure the Ansible inventory, vault, and any environment specific variables are updated.  Enter the vault password when prompted.
@@ -134,8 +129,7 @@ ok: [nsx_mgmt_mgr_1] => {"changed": false, "delta": 15, "echo": true, "rc": 0, "
 
 PLAY RECAP ********************************************************************************************************************************************************************************************************************
 nsx_mgmt_mgr_1             : ok=80   changed=9    unreachable=0    failed=0    skipped=65   rescued=0    ignored=0
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Manually remediate any remaining rules
 The following rules require manual remediation and are not automated.  

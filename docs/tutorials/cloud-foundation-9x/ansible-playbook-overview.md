@@ -5,15 +5,14 @@ This is an Ansible playbook that can be used to perform automated remediation fo
 
 All Ansible roles needed to remediate STIG compliance for VCF have been consolidated into a single playbook starting in 9.0.0.0.   
 
-{{% alert title="Important" color="warning" %}}
-For the best experience, prior to using the STIG automation provided here please ensure you:  
-- Have familiarity with the rules contained in the various VMware STIGs and have evaluated them for impact and implementation considerations in the environment.  
-- Have an understanding of Ansible playbooks and concepts.
-- Have a backout plan so that the changes can be rolled back if necessary.
-- Have read the README and understand the structure of the Ansible playbook provided here.
+> **Important** For the best experience, prior to using the STIG automation provided here please ensure you:  
 
-**Failure to do so can result in unintended behavior in the environment.**  
+> - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
+> - Have an understanding of Ansible playbooks and concepts.
+> - Have a back out plan so the changes can be rolled back if necessary.
+> - Have read the README and understand the structure of the Ansible playbook provided here.
 
+> **Failure to do so can result in unintended behavior in the environment.**  
 
 ## Supported Versions
 - VCF 9.0.0.0  

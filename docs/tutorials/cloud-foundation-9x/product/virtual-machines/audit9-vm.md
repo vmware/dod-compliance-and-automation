@@ -8,7 +8,7 @@ description: >
 This tutorial covers auditing Virtual Machines in VCF deployments.  
 
 
-The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
+The example commands below are specific to the product version and the supported STIG content for the version being run.
 
 
 ### Prerequisites

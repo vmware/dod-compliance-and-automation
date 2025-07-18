@@ -3,7 +3,7 @@
 ## Overview
 This tutorial covers auditing NSX product rules in VCF deployments.  
 
-The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
+The example commands below are specific to the product version and the supported STIG content for the version being run.
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  

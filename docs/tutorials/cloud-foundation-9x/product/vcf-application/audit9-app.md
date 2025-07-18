@@ -19,7 +19,7 @@ This tutorial covers auditing the VCF Application STIG in VCF deployments which 
 Auditing these components can occur individually or together.  
 
 
-The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
+The example commands below are specific to the product version and the supported STIG content for the version being run.
 
 
 ### Prerequisites

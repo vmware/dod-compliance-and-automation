@@ -18,20 +18,17 @@ This tutorial covers remediating the VCF Application STIG in VCF deployments whi
 
 Auditing these components can occur individually or together. vCenter remediation is accomplished via a PowerCLI script while the remaining components are remediated with Ansible.  
 
-{{% alert title="Important" color="warning" %}}
-For the best experience, prior to using the STIG automation provided here please ensure you:  
-- Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
-- Have an understanding of Ansible playbooks and concepts, PowerShell, and PowerCLI.
-- Have a back out plan so that the changes can be rolled back if necessary.
-- Have read the [Ansible Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook_overview/) and understand the structure of the Ansible playbook provided here.
-- Have read the [PowerCLI Overview](/docs/automation-tools/powercli/).
+> **Important** For the best experience, prior to using the STIG automation provided here please ensure you:  
 
-**Failure to do so can result in unintended behavior in the environment.**  
+> - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
+> - Have an understanding of Ansible playbooks and concepts, PowerShell, and PowerCLI.
+> - Have a back out plan so the changes can be rolled back if necessary.
+> - Have read the [Ansible Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook_overview/) and understand the structure of the Ansible playbook provided here.
+> - Have read the [PowerCLI Overview](/docs/automation-tools/powercli/).
 
+> **Failure to do so can result in unintended behavior in the environment.**  
 
-
-The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-
+The example commands below are specific to the product version and the supported STIG content for the version being run.
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
