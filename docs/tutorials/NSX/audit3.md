@@ -82,7 +82,7 @@ t1multicastlist: []
 In this example all NSX components will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.
 
 ```bash
-# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+# Note this command is being initiated from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec . --show-progress --input-file inputs-nsxt-3.x.yml --reporter=cli json:/mnt/c/Inspec/Reports/MyNSX3Report.json
 
 # Shown below is the last part of the output at the CLI.

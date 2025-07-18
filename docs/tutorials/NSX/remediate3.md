@@ -16,7 +16,7 @@ Versions listed below were used for this documentation. Other versions of these 
 * An account with sufficient privileges to configure NSX-T.
 
 ## Important Considerations
-## **⚠️ Please read carefully before proceeding!**
+> **Caution** **Please read carefully before proceeding!**
 
 Some NSX-T STIG controls can be very impactful to the environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic.  
 
@@ -216,7 +216,7 @@ var_t1rt_gateways_with_multicast_enabled: []
 To run all of the NSX-T controls, follow the example below.
 
 ```bash
-# The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use. Command assumes it is being ran from the playbook folder.
+# The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use. Command assumes it is being initiated from the playbook folder.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsxt-3.x-example.yml
 
 # Output example

@@ -28,7 +28,7 @@ Versions listed below were used for this documentation. Other versions of these 
 The PowerCLI scripts provided use a [PowerShell Credential](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-credential) stored in a variable to authenticate to vCenter and should be established before attempting to run the scripts.  
 
 ```powershell
-# Run the following command to generate a credential. Substitute the username as needed in the environment. Note if ran in PowerShell 5.x on Windows this will popup a window to enter the credentials.
+# Run the following command to generate a credential. Substitute the username as needed in the environment. Note if run in PowerShell 5.x on Windows this will popup a window to enter the credentials.
 $vccred = Get-Credential
 
 PowerShell credential request

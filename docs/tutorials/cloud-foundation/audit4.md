@@ -23,7 +23,7 @@ The SDDC Manager InSpec profile connects to the API via a bearer token to query 
 This is a curl example. This can also be done via other methods such as Postman.
 
 ```bash
-# Ran from a Linux machine.
+# Run from a Linux machine.
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -90,7 +90,7 @@ systemctl restart sshd
 In this example a target SDDC Manager will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file - initiated from a linux machine.
 
 ```bash
-# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+# Note this command is being run from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec . -t ssh://root@sddc-manager.vsphere.local --password 'replaceme' --show-progress --input-file inputs-vcf-sddcmgr-4x-example.yml --reporter cli json:/tmp/reports/VCF_4.5.1_SDDC_Manager_STIG_Report.json
 
 # Shown below is the last part of the output at the CLI.

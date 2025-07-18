@@ -106,7 +106,7 @@ Connectivity to vCenter is established via environment variables. Take care to c
 In this example all ESXi hosts attached to the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.
 
 ```powershell
-# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+# Note this command is being initiated from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec .\esxi\ -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyESXiReport.json
 
 # Shown below is the last part of the output at the CLI.
@@ -165,7 +165,7 @@ If was done in the previous step it is not necessary to do again.
 In this example all VMs in the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.
 
 ```powershell
-# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+# Note this command is being initiated from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec .\vm\ -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyVMsReport.json
 
 # Shown below is the last part of the output at the CLI.
@@ -250,7 +250,7 @@ If was done in the previous step it is not necessary to do again.
 ### Run the audit
 In this example vCenter controls in the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 ```powershell
-# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+# Note this command is being initiated from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec .\vcenter\ -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyvCenterReport.json
 
 # Shown below is the last part of the output at the CLI.
@@ -281,7 +281,7 @@ Test Summary: 52 successful, 19 failures, 22 skipped
 Instead of running each STIG for product controls separately, all of the vCenter, ESXi, and VM controls can be run for a combined report.
 
 ```powershell
-# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+# Note this command is being initiated from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec . -t vmware:// --show-progress --input-file .\inputs-example.yml --reporter=cli json:C:\InSpec\Reports\MyvSphereReport.json
 ```
 
@@ -304,7 +304,7 @@ To use the runner script, do the following:
 ```
 *Note: If the password includes a single tick (') it must be substituted with four ticks ('''') in order for it to be properly escaped all the way through the process.*
 
-Adjust the paths in the command as needed. The inspec and inputs paths in the example are assuming this is being ran from the root of the InSpec profile folder.
+Adjust the paths in the command as needed. The inspec and inputs paths in the example are assuming this is being initiated from the root of the InSpec profile folder.
 
 ```bash
 > C:\github\VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.182.131.166 -reportPath C:\Inspec\Reports\Runner -inspecPath .\esxi\ -inputsfile .\inputs-example.yml
@@ -378,7 +378,7 @@ In this example a vCenter appliance will be scanned, specifying an inputs file, 
 Updating the inputs file is not required for this profile but the `inputs-vcsa-7.0.yml` should be specified because it contains inputs for the Photon profile.
 
 ```powershell
-# Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
+# Note this command is being initiated from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec . -t ssh://root@10.182.131.166 --password 'password' --show-progress --input-file .\inputs-vcsa-7.0.yml --reporter=cli json:C:\InSpec\Reports\MyVCSAReport.json
 
 # Shown below is the last part of the output at the CLI.

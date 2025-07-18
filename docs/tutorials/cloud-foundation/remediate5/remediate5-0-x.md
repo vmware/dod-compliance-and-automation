@@ -104,7 +104,7 @@ To run all of the SDDC Manager controls, follow the example below.
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
-# The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use. Command assume it is being ran from the playbook folder.
+# The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use. Command assumes it is being initiated from the playbook folder.
 > ansible-playbook -i 10.0.0.4, -u 'root' playbook.yml -k -v --extra-vars @vars-sddcmgr-example.yml
 
 # Output example

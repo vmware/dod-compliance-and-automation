@@ -21,8 +21,9 @@ Versions listed below were used for this documentation. Other versions of these 
 
 ## Important Considerations
 
-Please read carefully before proceeding! Some NSX STIG controls can be very impactful to the environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic. Before running it is highly advised to have a backups taken and verified.
+> **Caution** **Please read carefully before proceeding!**
 
+Some NSX STIG controls can be very impactful to the environment if care is not taken during implementation especially in a brownfield scenario. For example, changing the default DFW rule to deny traffic without first creating rules to allow authorized traffic. Before running it is highly advised to have a backups taken and verified.
 
 Below is a table of controls selected for consideration but all controls should be examined for impact before implementing.  
 

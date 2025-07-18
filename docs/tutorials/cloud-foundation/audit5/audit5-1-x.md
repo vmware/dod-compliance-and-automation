@@ -103,7 +103,7 @@ systemctl restart sshd
 ```
 
 ### Run the audit
-In this example a target SDDC Manager will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file ran from a linux machine.  
+In this example a target SDDC Manager will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file - initiated from a linux machine.  
 
 ```bash
 # Navigate to the InSpec profile folder
