@@ -40,12 +40,13 @@ Password for user administrator@vsphere.local: ****************
 ## Remediating ESXi product controls
 To remediate ESXi hosts a [PowerCLI script](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_ESXi_Remediation.ps1) has been provided that will target a single host or a vSphere cluster based on parameters provided to the script.
 
-**Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
+> **Note** There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.
 
 ### Gather environment information
 In order to run the script effectively it must be provided the organization's environment specific information.  
 
 Review the below parameters and gather the information needed to run the script:
+
 ```powershell
 [CmdletBinding()]
 param (
@@ -84,7 +85,8 @@ param (
 ### Disabling Controls
 The script includes variables to enable or disable controls by STIG ID. All controls are enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
-A snippet of these variables is shown below.  
+A snippet of these variables is shown below.
+
 ```powershell
 ##### Enable or Disable specific STIG Remediations #####
 $controlsenabled = [ordered]@{
@@ -95,7 +97,8 @@ $controlsenabled = [ordered]@{
 ```
 
 ### Run remediation script on target ESXi hosts
-This example will remediate all hosts in the vSphere cluster named `cluster0`. If running on a single host is desired, specify the `hostname` parameter instead of `cluster` and provide the hostname as displayed in vCenter.  
+This example will remediate all hosts in the vSphere cluster named `cluster0`. If running on a single host is desired, specify the `hostname` parameter instead of `cluster` and provide the hostname as displayed in vCenter.
+
 ```powershell
 # Running the script.
 > .\VMware_vSphere_7.0_STIG_ESXi_Remediation.ps1 -vcenter 10.182.131.166 -vccred $vccred -cluster "cluster0" -esxAdminGroup "MyESXiGroup" -allowedIPs "10.0.0.0/8" -ntpServers "time-a-g.nist.gov","time-b-g.nist.gov" -syslogServer "tcp://loginsight.vmware.com:514" -reportpath C:\Temp
@@ -140,13 +143,14 @@ Mode                 LastWriteTime         Length Name
 ## Remediating virtual machines product controls
 To remediate virtual machines a [PowerCLI script](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_VM_Remediation.ps1) has been provided that will target a single VM, all VMs in a cluster, or all VMs in vCenter based on parameters provided to the script.  
 
-**Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. See the scripts description text for more details.**
+> **Note** There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. See the scripts description text for more details.
 
 ### Disabling Controls
 For processing efficiency this script is not constructed to run each control individually, so the STIG ID variables to enable/disable controls are not included as in the ESXi/vCenter scripts. If it is desired to skip some controls they could be commented out in the `$vmconfig` variable in the script.  
 
 ### Run remediation script on target virtual machines
-This example will remediate all hosts in the vSphere cluster named `cluster0`. If running on a single host is desired, specify the `hostname` parameter instead of `cluster` and provide the hostname as displayed in vCenter.  
+This example will remediate all hosts in the vSphere cluster named `cluster0`. If running on a single host is desired, specify the `hostname` parameter instead of `cluster` and provide the hostname as displayed in vCenter.
+
 ```powershell
 # Running the script.
 > .\VMware_vSphere_7.0_STIG_VM_Remediation.ps1 -vcenter 10.182.131.166 -vccred $vccred -cluster "cluster0" -reportpath C:\Temp
@@ -179,7 +183,7 @@ Mode                 LastWriteTime         Length Name
 ## Remediating vCenter product controls
 To remediate vCenter a [PowerCLI script](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_vCenter_Remediation.ps1) has been provided that will target a single vCenter server.  
 
-**Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
+> **Note** There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.
 
 ### Gather environment information
 In order to run the script effectively it must be provided the organization's environment specific information.  
@@ -187,6 +191,7 @@ In order to run the script effectively it must be provided the organization's en
 This script also uses the [VMware.Vsphere.SsoAdmin PowerCLI Module](https://www.powershellgallery.com/packages/VMware.vSphere.SsoAdmin) to configure vCenter SSO controls. This module connects to vCenter separately using the `Connect-SsoAdminServer` command that requires using an account that has sufficient privileges in vCenter to modify SSO settings.  
 
 Review the below parameters and gather the information needed to run the script:
+
 ```powershell
 [CmdletBinding()]
 param (
@@ -209,7 +214,8 @@ param (
 ### Disabling Controls
 The script includes variables to enable or disable controls by STIG ID. All controls are enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
-A snippet of these variables is shown below.  
+A snippet of these variables is shown below.
+
 ```powershell
 ##### Enable or Disable specific STIG Remediations #####
 $controlsenabled = [ordered]@{
@@ -221,7 +227,8 @@ $controlsenabled = [ordered]@{
 ```
 
 ### Run remediation script on target vCenter server
-This example will remediate all controls on a target vCenter server.   
+This example will remediate all controls on a target vCenter server.
+
 ```powershell
 # Running the script.
 > .\VMware_vSphere_7.0_STIG_vCenter_Remediation.ps1 -vcenter 10.182.131.166 -vccred $vccred -reportpath C:\Temp
@@ -293,6 +300,7 @@ ansible-galaxy role install -r requirements.yml
 
 ### Running the playbook
 To run all of the VCSA controls, follow the example below.
+
 ```bash
 # The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use.
 > ansible-playbook -i 10.182.131.166, -u root playbook.yml -k -v --extra-vars @vars-vcenter-7.0U3eplus.yml
@@ -321,6 +329,7 @@ changed: [10.182.131.166] => {"changed": true, "checksum": "aaafa4e8c28743ce3cc2
 ```
 
 A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
+
 ```bash
 # Providing the tag "eam" will instruct the playbook to only run the eam role. This tag can be seen in each roles task/main.yml file.
 > ansible-playbook -i 10.182.131.166, -u root playbook.yml -k -v --extra-vars @vars-vcenter-7.0U3eplus.yml --tags eam

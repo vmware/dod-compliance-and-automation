@@ -2,7 +2,7 @@
 
 ## Overview
 
-[MITRE's Heimdall Server](https://github.com/mitre/heimdall2) allows you to visualize, store, and compare scan results from various security tools.
+[MITRE's Heimdall Server](https://github.com/mitre/heimdall2) allows for visualizing, storing, and comparing scan results from various security tools.
 
 ## Prerequisites
 
@@ -23,13 +23,13 @@ All of the documentation below will be in the context of working with InSpec res
 
 ### Viewing Results
 
-After login in you can simply drag your files over to the window to load them or click "Choose files to upload" and browse to your result file:  
+After login in files can either simply be dragged over to the window to load them or the "Choose files to upload" link can be clicked to browse for results files:  
 ![Heimdall Load File](../../images/heimdall_load_file.png)
 
-After loading a result you are shown a visualization of that result where you can view the compliance status and filter the results based on any available criteria, for example, only showing controls that failed:  
+After loading a result a visualization of that result is shown where the compliance status can be viewed and filtered based on any available criteria - for example, only showing controls that failed:  
 ![Heimdall Results View](../../images/heimdall_view_result.png)
 
-Further down the page you can drill down into the specifics of each control and the test results:  
+Further down the page each control can be expanded to view specifics and test results:  
 ![Heimdall Test Results View](../../images/heimdall_view_result2.png)
 
 ### Exporting Results
@@ -37,10 +37,10 @@ Results can also be exported to various other formats as shown in the screenshot
 ![Heimdall Export](../../images/heimdall_export_options.png)
 
 ### Comparing Results
-If you have more than one scan you would like to compare (from "like" scan results) you can load them both and enable the comparison view using the button show below:  
+If more than one scan needs to be compared (from "like" scan results), multiple scan results can be loaded, and the comparison view can be enabled by using the button shown below:  
 ![Heimdall Compare Button](../../images/heimdall_comparison_button.png)
 
-After the comparison view is enabled you are presented with visualization of the differences between the two results and which controls changed status:  
+After the comparison view is enabled a visualization of the differences between the two results is shown, including which controls changed status:  
 ![Heimdall Compare View](../../images/heimdall_comparison_view.png)
 
 ## References

@@ -28,8 +28,7 @@ The SDDC Manager Ansible playbook connects to the API via a bearer token to upda
 
 This example uses curl to generate a token. This can also be done via other methods such as Postman or the UI as shown below. 
 
-### Version: 5.1.x
-```
+```bash
 curl -k 'https://sddc-manager.vrack.vsphere.local/v1/tokens' -i -X POST \
     -H 'Content-Type: application/json' \
     -H 'Accept: application/json' \
@@ -50,8 +49,7 @@ In order to run the playbook, environment specific values need to be provided. A
 
 Open the inputs file for editing.
 
-### Version: 5.1.x
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -61,7 +59,7 @@ vi vars-sddcmgr-example.yml
 
 Update the variables as shown below with values relevant to the environment. Specifically`var_sddc_manager`, `var_bearer_token`, `var_time_servers`,` var_password_rotate_days`.
 
-```
+```yml
 # General
 run_create_backups: true
 
@@ -100,8 +98,7 @@ systemctl restart sshd
 ### Running the playbook
 To run all of the SDDC Manager controls, follow the example below.
 
-### Version: 5.1.x
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 
@@ -129,8 +126,7 @@ changed: [10.0.0.4] => {"cache_control": "no-cache, no-store, max-age=0, must-re
 
 A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
 
-### Version: 5.1.x
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening
 

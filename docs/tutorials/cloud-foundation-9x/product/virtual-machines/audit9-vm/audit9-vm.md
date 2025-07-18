@@ -32,7 +32,7 @@ To extend the functionality of the VMware transport that ships with InSpec we ha
 
 To install the plugin that is included with the `vmware-cloud-foundation-stig-baseline` profile, do the following:
 
-```
+```bash
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
 > cinc-auditor plugin install /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere/train-vmware-1.0.0.gem
 
@@ -99,7 +99,7 @@ $env:NO_COLOR=$true
 #### Connecting via a PowerShell Credential file
 From a PowerShell session create a PowerShellcredential file:
 
-```
+```powershell
 # Enter PowerShell
 pwsh
 
@@ -130,14 +130,14 @@ $env:PCLICREDFILE="/usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-found
 $env:NO_COLOR=$true
 ```
 
-**Note: If the `PCLICREDFILE` environment variable exists it will take precedence over username and password when attempting the connection to vCenter.**
+> **Note** If the `PCLICREDFILE` environment variable exists it will take precedence over username and password when attempting the connection to vCenter.
 
 ### Update profile inputs
 Included in the `vmware-cloud-foundation-stig-baseline` is an example `inputs-example.yml` file with variables relevant to VMs.  This is used to provide InSpec with values specific to the environment being audited.
 
 Update profile inputs for the target environment.
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere
 
@@ -154,7 +154,7 @@ vm_allvms: true
 ### Run the audit directly with InSpec
 In this example all VMs managed by the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere
 
@@ -175,11 +175,12 @@ Test Summary: 743 successful, 25 failures, 0 skipped
 ## Convert the results to CKL
 If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
 
-**Note: These steps are only valid if the audit was conducted against a single VM. For multiple hosts see the section below on using the InSpec runner script.**
+> **Note** These steps are only valid if the audit was conducted against a single VM. For multiple hosts see the section below on using the InSpec runner script.
+
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
 
-```
+```bash
 # Update the saf_cli_hdf2ckl_metadata.json file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 
@@ -256,7 +257,7 @@ Redirecting to cinc-auditor...
 [2025-05-14 16:39:21] [INFO] Generating CKL file: /tmp/reports/VMware_Cloud_Foundation_vSphere_VM_9.x_STIG_InSpec_Report_automation-qlbvq_with_Attestations_2025-5-14-16-38-54.ckl for VM: automation-qlbvq
 ```
 
-**Note** Not all options for the script are shown. For more details run `Get-Help ./VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner.ps1 -Detailed`.
+> **Note** Not all options for the script are shown. For more details run `Get-Help ./VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner.ps1 -Detailed`.
 
 ## Next
 If needed proceed to the remediation tutorial for Virtual Machines [here](/docs/tutorials/cloud-foundation-9.x/product/virtual-machines/remediate9-vm/).

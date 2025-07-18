@@ -1,5 +1,5 @@
-# Remediate VCF Operations HCX 9.x
-Remediating VCF Operations HCX 9.x for STIG Compliance
+# Remediate VCF Operations HCX 9.0.0.0
+Remediating VCF Operations HCX 9.0.0.0 for STIG Compliance
 
 ## Overview
 This tutorial covers remediating the Operations HCX appliance in VCF deployments.  
@@ -33,8 +33,8 @@ To remediate Operations HCX an Ansible playbook has been provided that will targ
 
 ### Update Ansible Inventory and Vault with target Operations HCX Server details
 In the Ansible inventory file and vault ensure the target Operations HCX server details are correct.
-### Version: 9.0.0.0
-```
+
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -89,8 +89,8 @@ var_vault_operations_hcx_conn_2_root_password:
 
 ### Running the playbook
 To remediate all Operations HCX rules, follow the example below:
-### Version: 9.0.0.0
-```
+
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 

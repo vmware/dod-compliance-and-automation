@@ -1,5 +1,5 @@
-# Remediate VCF SDDC Manager 9.x
-Remediating VCF SDDC Manager 9.x for STIG Compliance
+# Remediate VCF SDDC Manager 9.0.0.0
+Remediating VCF SDDC Manager 9.0.0.0 for STIG Compliance
 
 ## Overview
 This tutorial covers remediating the SDDC Manager appliance in VCF deployments.  
@@ -45,8 +45,8 @@ systemctl restart sshd
 
 ### Update Ansible Inventory and Vault with target SDDC Manager Server details
 In the Ansible inventory file and vault ensure the target SDDC Manager server details are correct.
-### Version: 9.0.0.0
-```
+
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -74,8 +74,8 @@ var_vault_sddcmgr_root_password:
 
 ### Running the playbook
 To remediate all SDDC Manager rules, follow the example below:
-### Version: 9.0.0.0
-```
+
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 

@@ -40,7 +40,7 @@ For more information see the [NSX API Documentation](https://developer.vmware.co
 
 Curl example:
 
-```
+```bash
 # Replace myuser, mypassword, and update the url
 curl -k -i -X POST -d 'j_username=myuser&j_password=mypassword' https://nsxmgr.rainpole.local/api/session/create
 
@@ -53,7 +53,7 @@ X-XSRF-TOKEN: ae5ee920-bca1-4ba3-ac1f-385e76f2c66a
 ### Update Ansible Inventory and Vault with the target NSX details
 In the Ansible inventory file and vault ensure the target NSX Manager details are correct.
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -103,7 +103,8 @@ nsx_manager_defaults_syslog_servers:
 ### Running the playbook
 To remediate all NSX rules, follow the example below:
 
-```# Navigate to the Ansible playbook folder
+```bash
+# Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
 # Prior to running please ensure the Ansible inventory, vault, and any environment specific variables are updated.  Enter the vault password when prompted.

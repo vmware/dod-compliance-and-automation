@@ -19,7 +19,7 @@ Versions listed below were used for this documentation. Other versions of these 
 ### Generate API Session Token
 This profile uses Session-Based authentication to authenticate with NSX for auditing. A session token and cookie must be generated and provided an input for the profile. This can be generated in various ways via curl, tools like Postman, etc. For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1248/nsx-t).
 
-**Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
+> **Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
 
 Curl example
 ```bash
@@ -79,7 +79,8 @@ t1multicastlist: []
 ```
 
 ### Run the audit
-In this example all NSX components will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
+In this example all NSX components will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.
+
 ```bash
 # Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec . --show-progress --input-file inputs-nsxt-3.x.yml --reporter=cli json:/mnt/c/Inspec/Reports/MyNSX3Report.json

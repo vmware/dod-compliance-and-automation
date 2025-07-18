@@ -46,9 +46,10 @@ Since Ansible can only be run from Linux based systems, the examples below are b
 ### Generate API Session Token
 This playbook uses Session-Based authentication to authenticate with NSX for remediation. A session token and cookie must be generated and provided an input for the profile. This can be generated in various ways via curl, tools like Postman, etc. For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1248/nsx-t).
 
-**Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
+> **Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
 
-Curl example
+Curl example:
+
 ```bash
 curl -k -i -X POST -d 'j_username=admin&j_password=replacethis' https://10.43.173.83/api/session/create
 
@@ -74,7 +75,7 @@ Server: NSX
 ### Update vars file
 In order to run the playbook, environment specific values need to be provided. An example vars file `vars-nsxt-3.x-example.yml` is provided and values need to be updated for the `var_nsx_manager`, `var_jsession_id`, `var_session_token`, `var_ntp_server1`, `var_ntp_server2` variables at a minimum.  
 
-```yaml
+```yml
 # Manager variables
 # NSX Manager IP or FQDN
 var_nsx_manager: '10.43.173.83'
@@ -213,6 +214,7 @@ var_t1rt_gateways_with_multicast_enabled: []
 
 ### Running the playbook
 To run all of the NSX-T controls, follow the example below.
+
 ```bash
 # The -k parameter will prompt for password and we are using extra-vars to specify a variable file for the playbook to use. Command assumes it is being ran from the playbook folder.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsxt-3.x-example.yml
@@ -233,6 +235,7 @@ changed: [127.0.0.1] => (item={'rule_id': 3, 'sequence_number': 25000, 'path': '
 ```
 
 A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
+
 ```bash
 # Providing the tag "dfw" will instruct the playbook to only run the dfw role. This tag can be seen in each roles task/main.yml file.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsxt-3.x-example.yml --tags dfw

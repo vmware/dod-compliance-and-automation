@@ -36,7 +36,8 @@ Additionally, at the top level, an `inputs-example.yml` file is included that "r
 Evaluate each of the input files (`application/inspec.yml`, `nginx/inspec.yml`, `photon/inspec.yml`, `vpostgres/inspec.yml`), and if any of the input variables need to be over-ridden, then make sure those variables are included in the top level `inputs-example.yml` file. Examples are provided below.
 
 #### VMware Aria Operations for Logs - Sample Inputs
-```yaml
+
+```yml
 # Application
 hostname:                         "lifecycle.domain"
 username:                         "admin@local"
@@ -61,7 +62,8 @@ systemctl restart sshd
 ```
 
 ### Run the audit
-In this example a target VMware Aria Suite Lifecycle appliance will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
+In this example a target VMware Aria Suite Lifecycle appliance will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.
+
 ```bash
 # Note this command is run from the root of the profile folder. Update paths as needed (instead of '.', use './path/to/profile') if running from a different location.
 > cinc-auditor exec . -t ssh://root@aria-lifecycle.domain.path --password 'replaceme' --show-progress --input-file inputs-example.yml --reporter cli json:/tmp/reports/Aria_Lifecycle_8x_STIG_Report.json

@@ -1,9 +1,5 @@
----
-title: "Audit VCF 9.x"
-weight: 1
-description: >
-  Auditing VCF Application rules 9.x for STIG Compliance
----
+# Audit VCF 9.0.0.0
+
 ## Overview
 This tutorial covers auditing the VCF Application STIG in VCF deployments which includes product rules for the following components:
   - Automation
@@ -49,7 +45,7 @@ To extend the functionality of the VMware transport that ships with InSpec a cus
 
 To install the plugin that is included with the `vmware-cloud-foundation-stig-baseline` profile, do the following:
 
-```
+```bash
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
 > cinc-auditor plugin install /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere/train-vmware-1.0.0.gem
 
@@ -100,7 +96,7 @@ Connection Options:
 #### Connecting via username/password
 From a PowerShell session create the following environment variables:
 
-```
+```powershell
 powershell
 #Enter PowerShell
 pwsh
@@ -117,7 +113,7 @@ $env:NO_COLOR=$true
 #### Connecting via a PowerShell Credential file
 From a PowerShell session create a PowerShell credential file:
 
-```
+```powershell
 # Enter PowerShell
 pwsh
 
@@ -150,7 +146,7 @@ $env:NO_COLOR=$true
 # Leave the PowerShell session open for the remaining steps
 ```
 
-**Note: If the `PCLICREDFILE` environment variable exists it will take precedence over username and password when attempting the connection to vCenter.**
+> **Note** If the `PCLICREDFILE` environment variable exists it will take precedence over username and password when attempting the connection to vCenter.
 
 #### Generate API tokens for VCF Components
 An API token is required in order for auditing to interact with the API for the following components:
@@ -164,11 +160,11 @@ An API token is required in order for auditing to interact with the API for the 
 
 Once gathered these tokens will be specified in the next step in the inputs provided to the InSpec profile.
 
-**Note: These tasks are time sensitive as the API tokens will expire.**
+> **Note** These tasks are time sensitive as the API tokens will expire.
 
 If some components are not deployed then skip those steps.  
 
-```
+```bash
 # Generate an API token for VCF Automation
 
 ## A session token can be retrieved in different ways but curl is shown in this example.
@@ -239,7 +235,7 @@ Included in the `vmware-cloud-foundation-stig-baseline` is an example `inputs-ex
 
 Update profile inputs for the target environment.
 
-```
+```yml
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/
 
@@ -337,7 +333,7 @@ opshcx_ntpServers: []
 ### Run the audit
 In this example all VCF application rules will be audited, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/application
 
@@ -351,7 +347,7 @@ Test Summary: 208 successful, 42 failures, 43 skipped
 
 In this example a single component of VCF and its associated application rules will be audited, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere/vcenter
 
@@ -365,7 +361,7 @@ If a STIG Viewer CKL file is needed then the results from the scans can be conve
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
 
-```
+```bash
 # Update the saf_cli_hdf2ckl_metadata.json file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 
@@ -378,7 +374,7 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-basel
 ### Run SAF CLI to create the CKL file
 The following command will convert the json result from the InSpec audit into a STIG Checklist file and ensure the correct metadata is inserted so that it displays correctly in STIG Viewer.  
 
-```
+```bash
 # Convert the InSpec report to a STIG Checklist
 saf convert hdf2ckl -i /tmp/reports/VCF_9_Application_Report.json -o /tmp/reports/VCF_9_Application_Report.ckl -m /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 ```
@@ -437,7 +433,7 @@ Optionally a manual attestation file can be created and applied to the InSpec re
 ### Update/Create attestation file and apply to report
 An example attestation file has been provided that includes all known manually audited rules.  Update the description, status, and updated_by fields as needed.
 
-```
+```bash
 # Update attestation file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/attestations-example.yml
 
@@ -445,7 +441,7 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-basel
   explanation: 'Add explanation here and update status to passed or failed.'
   frequency: 3y
   status: passed
-  updated_by: Chris Kringle
+  updated_by: Kris Kringle
 
 # Apply attestations to report
 saf attest apply -i /tmp/reports/VCF_9_Application_Report.json /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/attestations-example.yml -o /tmp/reports/VCF_9_Application_Report_with_attestations.json

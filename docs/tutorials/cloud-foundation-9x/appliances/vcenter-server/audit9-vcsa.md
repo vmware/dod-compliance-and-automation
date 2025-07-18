@@ -1,5 +1,5 @@
-# Audit VCF vCenter Server 9.x
-Auditing VCF vCenter Server 9.x for STIG Compliance
+# Audit VCF vCenter Server 9.0.0.0
+Auditing VCF vCenter Server 9.0.0.0 for STIG Compliance
 
 ## Overview
 This tutorial covers auditing the vCenter server appliance in VCF deployments.  
@@ -44,8 +44,7 @@ root@myvcenter [ ~ ]# chsh -s /bin/bash root
 ### Run the audit
 In this example a vCenter appliance will be scanned, outputting a report to the CLI and to a JSON file.  
 
-### Version: 9.0.0.0
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-vcsa-stig-baseline/
 
@@ -62,7 +61,8 @@ If a STIG Viewer CKL file is needed then the results from the scans can be conve
 
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
-```
+
+```bash
 # Update the saf_cli_hdf2ckl_metadata.json file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-vcsa-stig-baseline/saf_cli_hdf2ckl_metadata.json
 
@@ -74,7 +74,8 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-vcsa-stig-
 
 ### Run SAF CLI to create the CKL file
 The following command will convert the json result from the InSpec audit into a STIG Checklist file and ensure the correct metadata is inserted so that it displays correctly in STIG Viewer.  
-```
+
+```bash
 # Convert the InSpec report to a STIG Checklist
 saf convert hdf2ckl -i /tmp/reports/VCF_9_VCSA_Report.json -o /tmp/reports/VCF_9_VCSA_Report.ckl -m /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-vcsa-stig-baseline/saf_cli_hdf2ckl_metadata.json
 ```

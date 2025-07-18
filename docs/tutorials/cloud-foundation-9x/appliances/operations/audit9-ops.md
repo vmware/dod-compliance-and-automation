@@ -1,5 +1,5 @@
-# Audit VCF Operations 9.x
-Auditing VCF Operations 9.x for STIG Compliance
+# Audit VCF Operations 9.0.0.0
+Auditing VCF Operations 9.0.0.0 for STIG Compliance
 
 ## Overview
 This tutorial covers auditing the Operations appliance in VCF deployments.  
@@ -35,9 +35,7 @@ Example deployment:
 - Operations Data
 - Operations Cloud Proxy
 
-### Version: 9.0.0.0
-
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-operations-stig-baseline/
 
@@ -72,8 +70,7 @@ If a STIG Viewer CKL file is needed then the results from the scans can be conve
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
 
-### Version: 9.0.0.0
-```
+```bash
 # Update the saf_cli_hdf2ckl_metadata.json file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-operations-stig-baseline/saf_cli_hdf2ckl_metadata.json
 
@@ -85,8 +82,8 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-operations
 
 ### Run SAF CLI to create the CKL file
 The following command will convert the json result from the InSpec audit into a STIG Checklist file and ensure the correct metadata is inserted so that it displays correctly in STIG Viewer.  
-### Version: 9.0.0.0
-```
+
+```bash
 # Convert the InSpec report to a STIG Checklist
 saf convert hdf2ckl -i /tmp/reports/VCF_9_Operations_Master_Report.json -o /tmp/reports/VCF_9_Operations_Master_Report.ckl -m /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-operations-stig-baseline/saf_cli_hdf2ckl_metadata.json
 ```

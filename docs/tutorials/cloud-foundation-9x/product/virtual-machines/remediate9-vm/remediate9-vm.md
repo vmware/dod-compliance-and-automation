@@ -53,7 +53,7 @@ The follow parameters are available in all remediation scripts.
 ### Update environment specific variables
 Update the `VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables.ps1` and `VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation_Variables.ps1` files with the target environment values for remediation. The file provided can be used or a copy can be made and updated.  
 
-**Note** Update paths as needed for the environment.  
+> **Note** Update paths as needed for the environment.  
 
 ```powershell
 # Navigate to the PowerCLI hardening folder

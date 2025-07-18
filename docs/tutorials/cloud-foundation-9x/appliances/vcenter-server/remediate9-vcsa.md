@@ -1,5 +1,5 @@
-# Remediate VCF vCenter Server 9.x
-Remediating VCF vCenter Server 9.x for STIG Compliance
+# Remediate VCF vCenter Server 9.0.0.0
+Remediating VCF vCenter Server 9.0.0.0 for STIG Compliance
 
 ## Overview
 This tutorial covers remediating the vCenter server appliance in VCF deployments.  
@@ -50,8 +50,8 @@ root@sc1-10-182-131-166 [ ~ ]# chsh -s /bin/bash root
 
 ### Update Ansible Inventory and Vault with target vCenter Server details
 In the Ansible inventory file and vault ensure the target vCenter server details are correct.
-### Version: 9.0.0.0
-```
+
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -84,8 +84,8 @@ var_vault_vcenter_wld_1_root_password:
 
 ### Running the playbook
 To remediate all VCSA rules, follow the example below:
-### Version: 9.0.0.0
-```
+
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 

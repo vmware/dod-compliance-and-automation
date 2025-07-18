@@ -21,12 +21,14 @@ Using a separate tool for auditing than what is used to fix or remediate control
 ### Online
 
 Windows:
+
 ```powershell
 # Run the following command from a PowerShell prompt
 . { iwr -useb https://omnitruck.chef.io/install.ps1 } | iex; install -project inspec
 ```
 
 Linux:
+
 ```bash
 curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec
 ```
@@ -37,7 +39,8 @@ Download the package for your OS [here](https://www.chef.io/downloads/tools/insp
 ## Concepts
 ### Profiles
 In InSpec terms "profiles" are offered to audit products. Simple profiles have the following structure:
-```
+
+```yml
 examples/profile
 ├── README.md
 ├── controls
@@ -62,7 +65,8 @@ Dependent profiles are used when a product may have multiple STIGs that need to 
 An example of this can be observed in the [vSphere 7 VCSA profile](https://github.com/vmware/dod-compliance-and-automation/tree/master/vsphere/7.0/v1r4-stig/vcsa/inspec/vmware-vcsa-7.0-stig-baseline).
 
 An abbreviated structure for this profile:
-```
+
+```yml
 vmware-vcsa-7.0-stig-baseline
 ├── README.md
 ├── controls
@@ -97,6 +101,7 @@ For more information on dependent profiles, see [Profile Dependencies](https://d
 Dependent profiles are "vendored" or cached into the /vendor folder in the profile. This is important to pay attention to because if changes are made to dependent profiles and this cache is not updated the changes will not be seen when the parent profile is run.
 
 Update the vendor/cache:
+
 ```bash
 inspec vendor --overwrite
 Dependencies for profile /vmware-vcsa-7.0-stig-baseline successfully vendored to /vmware-vcsa-7.0-stig-baseline/vendor
@@ -106,6 +111,7 @@ Dependencies for profile /vmware-vcsa-7.0-stig-baseline successfully vendored to
 In each profile, the controls folder contains a file for each STIG control that includes that control's metadata and a test for auditing.
 
 Example control file:
+
 ```ruby
 control 'ESXI-70-000001' do
   title 'Access to the ESXi host must be limited by enabling lockdown mode.'
@@ -222,7 +228,8 @@ For more information on reports, see [Reporters](https://docs.chef.io/inspec/rep
 Waivers allow documentation as code for the controls that have a waiver/poam in the environment. This is done through a waivers file and can be provided as an argument at the command line.
 
 Example `waivers.yml` file:
-```yaml
+
+```yml
 PHTN-30-000053:
   expiration_date: 2024-12-31
   run: false

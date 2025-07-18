@@ -33,7 +33,7 @@ To extend the functionality of the VMware transport that ships with InSpec a cus
 
 To install the plugin that is included with the `vmware-cloud-foundation-stig-baseline` profile, do the following:
 
-```
+```bash
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
 > cinc-auditor plugin install /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere/train-vmware-1.0.0.gem
 
@@ -82,6 +82,7 @@ Connection Options:
 
 #### Connecting via username/password
 From a PowerShell session create the following environment variables:
+
 ```powershell
 #Enter PowerShell
 pwsh
@@ -89,15 +90,17 @@ pwsh
 $env:VISERVER="vcenter.rainpole.local"
 $env:VISERVER_USERNAME="Administrator@vsphere.local"
 $env:VISERVER_PASSWORD="password"
+
 # For PowerShell Core only
 $env:NO_COLOR=$true
 ```
+
 *Note: If the password includes a single tick (') it must be substituted with four ticks ('''') in order for it to be properly escaped all the way through the process.*
 
 #### Connecting via a PowerShell Credential file
 From a PowerShell session create a PowerShell credential file:
 
-```
+```powershell
 # Enter PowerShell
 pwsh
 
@@ -128,14 +131,14 @@ $env:PCLICREDFILE="/usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-found
 $env:NO_COLOR=$true
 ```
 
-**Note: If the `PCLICREDFILE` environment variable exists it will take precedence over username and password when attempting the connection to vCenter.**
+> **Note** If the `PCLICREDFILE` environment variable exists it will take precedence over username and password when attempting the connection to vCenter.
 
 ### Update profile inputs
 Included in the `vmware-cloud-foundation-stig-baseline` profile is an example `inputs-example.yml` file with variables relevant to ESX.  This is used to provide InSpec with values specific to the environment being audited.
 
 Update profile inputs for the target environment.
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere
 
@@ -162,7 +165,7 @@ esx_snmpEnabled: 'false'
 ### Run the audit directly with InSpec
 In this example a single ESX host attached to the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere
 
@@ -183,11 +186,12 @@ Test Summary: 55 successful, 59 failures, 5 skipped
 ## Convert the results to CKL
 If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
 
-**Note: These steps are only valid if the audit was conducted against a single ESX host. For multiple hosts see the section below on using the InSpec runner script.**
+> **Note** These steps are only valid if the audit was conducted against a single ESX host. For multiple hosts see the section below on using the InSpec runner script.
+
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
 
-```
+```bash
 # Update the saf_cli_hdf2ckl_metadata.json file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 
@@ -200,7 +204,7 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-basel
 ### Run SAF CLI to create the CKL file
 The following command will convert the json result from the InSpec audit into a STIG Checklist file and ensure the correct metadata is inserted so that it displays correctly in STIG Viewer.  
 
-```
+```bash
 # Convert the InSpec report to a STIG Checklist
 saf convert hdf2ckl -i /tmp/reports/VCF_9_ESX_esx1_Report.json -o /tmp/reports/VCF_9_ESX_esx1_Report.ckl -m /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 ```
@@ -220,7 +224,7 @@ With this script an [attestation](/docs/automation-tools/safcli/#creating-and-ap
 ### Using the ESX runner script
 To use the runner script, do the following:
 
-```
+```powershell
 # Enter PowerShell
 pwsh
 
@@ -266,7 +270,7 @@ FFF.F.FF....FFF.F..FF..F.*.*.FFF.F...F....*.FFFF............FFFFFFFFFFFFFFFFFFFF
 [2025-05-13 21:50:19] [INFO] Generating CKL file: /tmp/reports/VMware_Cloud_Foundation_vSphere_ESX_9.x_STIG_InSpec_Report_esx1.rainpole.local_with_Attestations_2025-5-13-21-49-2.ckl with attestations for ESX host: esx1.rainpole.local.internal
 ```
 
-**Note: Not all options for the script are shown. For more details run `Get-Help ./VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_InSpec_Runner.ps1 -Detailed`.**
+> **Note** Not all options for the script are shown. For more details run `Get-Help ./VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_InSpec_Runner.ps1 -Detailed`.
 
 ## Manually audit rules
 The following rules require manual auditing and are not automated.  

@@ -1,5 +1,5 @@
-# Remediate VCF Operations 9.x
-Remediating VCF Operations 9.x for STIG Compliance
+# Remediate VCF Operations 9.0.0.0
+Remediating VCF Operations 9.0.0.0 for STIG Compliance
 
 ## Overview
 This tutorial covers remediating the Operations appliances in VCF deployments.  
@@ -35,8 +35,7 @@ To remediate Operations an Ansible playbook has been provided that will target O
 ### Update Ansible Inventory and Vault with target Operations Server details
 In the Ansible inventory file and vault ensure the target Operations server details are correct.
 
-### Version: 9.0.0.0
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -84,8 +83,7 @@ var_vault_operations_cp_1_root_password:
 ### Running the playbook
 To remediate all Operations rules, follow the example below:
 
-### Version: 9.0.0.0
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 

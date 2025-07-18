@@ -27,11 +27,12 @@ The example commands below are specific to the product version and the supported
 ### Generate API Session Token
 This profile uses Session-Based authentication to authenticate with NSX for auditing. A session token and cookie must be generated and provided an input for the profile. This can be generated in various ways via curl, tools like Postman, etc. For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1733/).
 
-**Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
+> **Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
 
 Curl example:
 ### Version: 4.1.2+
-```
+
+```bash
 curl -k -i -X POST -d 'j_username=admin&j_password=C3.UwJ7TTK1P' https://10.215.77.149/api/session/create
 
 # Example response
@@ -55,7 +56,8 @@ server: envoy
 ```
 
 ### Version: 4.1.0-4.1.1
-```
+
+```bash
 curl -k -i -X POST -d 'j_username=admin&j_password=C3.UwJ7TTK1P' https://10.215.77.149/api/session/create
 
 # Example response
@@ -83,7 +85,8 @@ Included in the `vmware-nsx-4.x-stig-baseline` is an example inputs file with va
 
 Open the inputs file for editing.
 ### Version: 4.1.2+
-```
+
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r2-stig/inspec/vmware-nsx-4.x-stig-baseline/
 
@@ -93,7 +96,7 @@ vi inputs-nsx-4.x-example.yml
 
 Update the inputs as shown below with values relevant to the environment. Specifically the `nsxManager`,`sessionToken`,`sessionCookieId`,`syslogServers`,`sftpServer`,`ntpServers`,`ntpServers`,and `nsxtVersion` inputs at a minimum. The other inputs are optional depending on the environment.
 
-```
+```yml
 # General
 # NSX Manager IP or FQDN
 nsxManager: '10.1.2.3'
@@ -135,7 +138,8 @@ t1multicastlist: []
 
 
 ### Version: 4.1.0-4.1.1
-```
+
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r1-srg/inspec/vmware-nsx-4.x-stig-baseline/
 
@@ -145,7 +149,7 @@ vi inputs-nsx-4.x-example.yml
 
 Update the inputs as shown below with values relevant to the environment. Specifically the `nsxManager`,`sessionToken`,`sessionCookieId`,`syslogServers`,`sftpServer`,`ntpServers`,`ntpServers`,and `nsxtVersion` inputs at a minimum. The other inputs are optional depending on the environment.
 
-```
+```yml
 # NSX Manager IP or FQDN
 nsxManager: ''
 # Session token generated for access to NSX
@@ -177,7 +181,8 @@ t1multicastlist: []
 In this example all NSX components will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
 
 ### Version: 4.1.2+
-```
+
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r2-stig/inspec/vmware-nsx-4.x-stig-baseline/
 
@@ -224,7 +229,8 @@ Test Summary: 162 successful, 57 failures, 12 skipped
 ```
 
 ### Version: 4.1.0-4.1.1
-```
+
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r1-srg/inspec/vmware-nsx-4.x-stig-baseline/
 

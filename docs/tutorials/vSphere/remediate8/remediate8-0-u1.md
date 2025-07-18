@@ -29,7 +29,7 @@ Versions listed below were used for this documentation. Other versions of these 
 
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the example command tabs for the version in the environment.
 
-**Caution** Before running it is highly advised to have a backup of vCenter and/or snapshot available if a rollback is required. For VCSA only the playbook will back up files configured before performing updates and place them under the /tmp directory in a folder directly on the vCenter appliance.
+> **Caution** Before running it is highly advised to have a backup of vCenter and/or snapshot available if a rollback is required. For VCSA only the playbook will back up files configured before performing updates and place them under the /tmp directory in a folder directly on the vCenter appliance.
 
 ### Create PowerShell credential for vCenter connection
 The PowerCLI scripts provided use a [PowerShell Credential](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/get-credential) stored in a variable to authenticate to vCenter and should be established before attempting to run the scripts.  
@@ -49,7 +49,7 @@ Password for user administrator@vsphere.local: ****************
 ### Remediating ESXi product controls
 To remediate ESXi hosts a PowerCLI script has been provided that will target a single host or a vSphere cluster based on parameters provided to the script.
 
-**Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
+> **Note** There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.
 
 #### Gather environment information
 In order to run the script effectively it must be provided the organization's environment specific information.  
@@ -169,7 +169,7 @@ Mode                 LastWriteTime         Length Name
 ### Remediating virtual machines
 To remediate virtual machines a PowerCLI script has been provided that will target a single VM, all VMs in a cluster, or all VMs in vCenter based on parameters provided to the script.  
 
-**Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. See the scripts description text for more details.**
+> **Note** There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. See the scripts description text for more details.
 
 #### Disabling Controls
 For processing efficiency this script is not constructed to run each control individually, so the STIG ID variables to enable/disable controls are not included as in the ESXi/vCenter scripts. If it is desired to skip some controls they could be commented out in the `$vmconfig` variable in the script. 
@@ -205,7 +205,7 @@ Mode                 LastWriteTime         Length Name
 ### Remediating vCenter
 To remediate vCenter a PowerCLI script has been provided that will target a single vCenter server.  
 
-**Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
+> **Note** There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.
 
 #### Gather environment information
 In order to run the script effectively it must be provided the organization's environment specific information.  
@@ -236,7 +236,8 @@ param (
 #### Disabling Controls
 The script includes variables to enable or disable controls by STIG ID. All controls are enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
-A snippet of these variables is shown below.  
+A snippet of these variables is shown below.
+
 ```powershell
 ##### Enable or Disable specific STIG Remediations #####
 $controlsenabled = [ordered]@{

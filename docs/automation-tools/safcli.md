@@ -26,7 +26,8 @@ Attest to 'Not Reviewed' controls - sometimes requirements can’t be tested aut
 The example covered will work with InSpec results but this process can be applied to any report from various supported security tools in the SAF ecosystem.
 
 #### Create Attestations Usage Help
-```
+
+```bash
 attest create              Create attestation files for use with `saf attest apply`
 
 USAGE
@@ -51,7 +52,8 @@ EXAMPLES
 ```
 
 #### Apply Attestations Usage Help
-```
+
+```bash
 attest apply              Apply one or more attestation files to one or more HDF results sets
 
 USAGE
@@ -77,6 +79,7 @@ EXAMPLES
 An attestation file can be created by using SAF CLI or by just manually creating a file.
 
 Using SAF CLI to create a file:
+
 ```powershell
 # Provide the report json as input and in this example yml is being used as the format but json is also supported
 saf attest create -i .\vSphere_ESXi_8.0.1_GA_21495797_ootb_04-12-2023-09-05.json -o .\attestation-example.yml -t yml
@@ -96,7 +99,8 @@ Enter a control ID, search for a control, or enter 'q' to exit: q
 ```
 
 This results in a yaml file that looks like the following:
-```yaml
+
+```yml
 - control_id: ESXI-80-000006
   explanation: The banner is displayed
   frequency: 1y
@@ -116,6 +120,7 @@ saf attest apply -i .\vSphere_ESXi_8.0.1_GA_21495797_ootb_04-12-2023-09-05.json 
 ```
 
 Examining the new report will then reveal this on the control the attestation was provided for:
+
 ```json
 {
   "code_desc": "Manually verified status provided through attestation",
@@ -124,11 +129,13 @@ Examining the new report will then reveal this on the control the attestation wa
   "start_time": "2023-05-17T13:49:06.601Z"
 }
 ```
+
 Now when this report is converted to a CKL file this information will be carried forward.
 
 ### Converting InSpec results to CKL
 #### HDF to Checklist Usage Help
-```
+
+```bash
 convert hdf2ckl               Translate a Heimdall Data Format JSON file into a
                               DISA checklist file
 
@@ -177,6 +184,7 @@ convert hdf2ckl               Translate a Heimdall Data Format JSON file into a
 ```
 
 #### Convert HDF(InSpec JSON) to STIG Checklist example
+
 ```powershell
 saf convert hdf2ckl -i .\My_new_report_with_attestations.json -o my_new_ckl.ckl --hostname myesxihost --fqdn myesxihost.local --ip 10.1.2.3 --mac 00:00:00:00:00:00
 ```
@@ -193,7 +201,8 @@ When starting a new profile for a STIG it is not feasible to manually populate a
 SAF CLI offers a command to take an XCCDF xml file from a STIG as an input and output a stubbed out InSpec profile that includes all of this data where then only the tests for each control need to be added.
 
 #### XCCDF to InSpec Profile Usage Help
-```
+
+```bash
 generate inspec_profile              Generate a new skeleton profile based on a (STIG or CIS) XCCDF benchmark file 
 
 USAGE
@@ -228,13 +237,15 @@ EXAMPLES
 ```
 
 #### Convert XCCDF to InSpec Profile Example
+
 ```powershell
 # The -T argument sets which ID to use as the control ID for InSpec. In this case STIG IDs are preferred as they are easier to reference. Other options are rule(Rule ID) and group(Vul ID)
 saf generate inspec_profile -T version -i .\U_VMware_vSphere_8_ESXi_STIG_Readiness_Guide_V1R1-xccdf.xml -o my_esxi_profile
 ```
 
 This will give us a profile with this folder structure:
-```
+
+```yml
 my_esxi_profile
 ├── controls
 │   ├── ESXI-80-000005.rb
@@ -245,6 +256,7 @@ my_esxi_profile
 ```
 
 Control file example:
+
 ```ruby
 control 'ESXI-80-000005' do
   title 'The ESXi host must enforce the limit of three consecutive invalid logon attempts by a user.'

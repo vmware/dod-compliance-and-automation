@@ -1,5 +1,5 @@
-# Remediate VCF Operations Fleet Management 9.x
-Remediating VCF Operations Fleet Management 9.x for STIG Compliance
+# Remediate VCF Operations Fleet Management 9.0.0.0
+Remediating VCF Operations Fleet Management 9.0.0.0 for STIG Compliance
 
 ## Overview
 This tutorial covers remediating the Operations Fleet Management appliance in VCF deployments.  
@@ -34,8 +34,7 @@ To remediate Operations Fleet Management an Ansible playbook has been provided t
 ### Update Ansible Inventory and Vault with target Operations Fleet Management Server details
 In the Ansible inventory file and vault ensure the target Operations Fleet Management server details are correct.
 
-### Version: 9.0.0.0
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -63,8 +62,8 @@ var_vault_operations_fm_root_password:
 
 ### Running the playbook
 To remediate all Operations Fleet Management rules, follow the example below:
-### Version: 9.0.0.0
-```
+
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 

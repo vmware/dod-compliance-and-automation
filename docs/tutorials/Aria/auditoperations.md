@@ -37,7 +37,8 @@ Additionally, at the top level, an `inputs-example.yml` file can be created that
 Evaluate each of the input files (`application/inspec.yml`, `apache/inspec.yml`, etc.), and if any of the input variables need to be over-ridden, then make sure those variables are included in the top level `inputs-example.yml` file. Examples are provided below.
 
 #### VMware Aria Operations - Sample Inputs
-```yaml
+
+```yml
 api-sessionTimeout:        "30"
 api-maxThreads:            "300"
 casa-sessionTimeout:       "30"

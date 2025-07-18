@@ -30,6 +30,7 @@ Versions listed below were used for this documentation. Other versions of these 
 To extend the functionality of the VMware transport that ships with InSpec we have created a custom one that also incorporates the `VMware.Vsphere.SsoAdmin` module to extend automation coverage to the vCenter SSO STIG controls.  
 
 To install the plugin that is included with the `vmware-vsphere-7.0-stig-baseline` profile, do the following:
+
 ```powershell
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
 > inspec plugin install C:\vmware-vsphere-7.0-stig-baseline\train-vmware-0.2.0.gem
@@ -64,7 +65,8 @@ To install the plugin that is included with the `vmware-vsphere-7.0-stig-baselin
 Included in the `vmware-vsphere-7.0-stig-baseline` is an example [inputs-example.yml](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/inspec/vmware-vsphere-7.0-stig-baseline/inputs-example.yml) file with the following inputs relevant to ESXi.
 
 Update the inputs as shown below with values relevant to the environment.
-```yaml
+
+```yml
 # Choose whether to scan a single host, all hosts in a cluster, or all hosts in vCenter.
 vmhostName: ""
 cluster: ""
@@ -97,10 +99,12 @@ Connectivity to vCenter is established via environment variables. Take care to c
 > $env:VISERVER_USERNAME='Administrator@vsphere.local'
 > $env:VISERVER_PASSWORD='password'
 ```
+
 *Note: If the password includes a single tick (') it must be substituted with four ticks ('''') in order for it to be properly escaped all the way through the process.*
 
 ### Run the audit
-In this example all ESXi hosts attached to the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
+In this example all ESXi hosts attached to the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.
+
 ```powershell
 # Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec .\esxi\ -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyESXiReport.json
@@ -137,7 +141,8 @@ Test Summary: 143 successful, 120 failures, 34 skipped
 Included in the `vmware-vsphere-7.0-stig-baseline` is an example [inputs-example.yml](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/inspec/vmware-vsphere-7.0-stig-baseline/inputs-example.yml) file with the following inputs relevant to VMs.
 
 Update the inputs as shown below with values relevant to the environment.
-```yaml
+
+```yml
 # Choose whether to scan a single VM or all VMs in vCenter.
 vmName: ""
 allvms: true
@@ -153,10 +158,12 @@ If was done in the previous step it is not necessary to do again.
 > $env:VISERVER_USERNAME='Administrator@vsphere.local'
 > $env:VISERVER_PASSWORD='password'
 ```
+
 *Note: If the password includes a single tick (') it must be substituted with four ticks ('''') in order for it to be properly escaped all the way through the process.*
 
 ### Run the audit
-In this example all VMs in the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
+In this example all VMs in the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.
+
 ```powershell
 # Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec .\vm\ -t vmware:// --show-progress --input-file .\inputs-example.yml --enhanced-outcomes --reporter=cli json:C:\InSpec\Reports\MyVMsReport.json
@@ -202,7 +209,8 @@ Test Summary: 75 successful, 55 failures, 2 skipped
 Included in the `vmware-vsphere-7.0-stig-baseline` is an example [inputs-example.yml](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/inspec/vmware-vsphere-7.0-stig-baseline/inputs-example.yml) file with the following inputs relevant to vCenter.
 
 Update the inputs as shown below with values relevant to the environment.
-```yaml
+
+```yml
 # Enter the environment specific syslog server vCenter should be forwarding logs to.
 syslogServers:
   - "loginsight.test.com"
@@ -230,6 +238,7 @@ backup3rdParty: false
 Connectivity to vCenter is established via environment variables. Take care to clear the history and close the PowerShell session to avoid any credentials left in memory/history.
 
 If was done in the previous step it is not necessary to do again.
+
 ```powershell
 # Note: VISERVER is referencing vCenter and not an ESXi host.
 > $env:VISERVER='10.186.30.81'
@@ -297,10 +306,9 @@ To use the runner script, do the following:
 
 Adjust the paths in the command as needed. The inspec and inputs paths in the example are assuming this is being ran from the root of the InSpec profile folder.
 
-```
+```bash
 > C:\github\VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1 -vcenter 10.182.131.166 -reportPath C:\Inspec\Reports\Runner -inspecPath .\esxi\ -inputsfile .\inputs-example.yml
-You will be prompted for credentials to vCenter. This is to connect via PowerCLI before running InSpec to collect all of the host names to use as an input to InSpec for each individual host audit.
-```
+# You will be prompted for credentials to vCenter. This is to connect via PowerCLI before running InSpec to collect all of the host names to use as an input to InSpec for each individual host audit.
 
 8:48:29 AM ...Enter credentials to connect to vCenter
 
@@ -328,7 +336,8 @@ FFF......FFFFF....FFFF.FFFF.*...***********...FF.FF.....F.F..FFFF..FFF***FFFF.FF
 ```
 
 ### Resulting output
-```
+
+```bash
 > dir C:\inspec\Reports\Runner\
 
     Directory: C:\Inspec\Reports\Runner
@@ -366,7 +375,8 @@ root@sc1-10-182-131-166 [ ~ ]# chsh -s /bin/bash root
 ### Run the audit
 In this example a vCenter appliance will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
 
-Updating the inputs file is not required for this profile but the `inputs-vcsa-7.0.yml` should be specified because it contains inputs for the Photon profile.  
+Updating the inputs file is not required for this profile but the `inputs-vcsa-7.0.yml` should be specified because it contains inputs for the Photon profile.
+
 ```powershell
 # Note this command is being ran from the root of the profile folder. Update paths as needed if running from a different location.
 > inspec exec . -t ssh://root@10.182.131.166 --password 'password' --show-progress --input-file .\inputs-vcsa-7.0.yml --reporter=cli json:C:\InSpec\Reports\MyVCSAReport.json

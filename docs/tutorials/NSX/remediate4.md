@@ -56,11 +56,12 @@ To remediate NSX an [Ansible playbook](https://github.com/vmware/dod-compliance-
 ### Generate API Session Token
 This profile uses Session-Based authentication to authenticate with NSX for auditing. A session token and cookie must be generated and provided an input for the profile. This can be generated in various ways via curl, tools like Postman, etc. For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1733/).
 
-**Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
+> **Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured VIDM identity source or a configured LDAP identity source.  
 
 Curl example:
 ### Version: 4.1.2+
-```
+
+```bash
 curl -k -i -X POST -d 'j_username=admin&j_password=C3.UwJ7TTK1P' https://10.215.77.149/api/session/create
 
 # Example response
@@ -84,7 +85,8 @@ server: envoy
 ```
 
 ### Version: 4.1.0-4.1.1
-```
+
+```bash
 curl -k -i -X POST -d 'j_username=admin&j_password=C3.UwJ7TTK1P' https://10.215.77.149/api/session/create
 
 # Example response
@@ -114,7 +116,8 @@ In order to run the playbook, environment specific values need to be provided. A
 
 Open the inputs file for editing.
 ### Version: 4.1.2+
-```
+
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r2-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening
 
@@ -124,7 +127,7 @@ vi vars-nsx-4x-example.yml
 
 Update the variables as shown below with values relevant to the environment. Specifically the `var_nsx_manager`, `var_jsession_id`, `var_session_token`, `var_ntp_server1`, `var_ntp_server2` variables at a minimum.  
 
-```
+```yml
 # Connection information
 var_nsx_manager: '10.180.98.230'
 var_jsession_id: 'JSESSIONID=BDE1B5A54690B453F8968293D3C8A1E4'
@@ -187,7 +190,8 @@ var_t1rtr_gateways_with_multicast_enabled:
 
 
 ### Version: 4.1.0-4.1.1
-```
+
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r1-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening
 
@@ -197,7 +201,7 @@ vi vars-nsx-4x-example.yml
 
 Update the variables as shown below with values relevant to the environment. Specifically the `var_nsx_manager`, `var_jsession_id`, `var_session_token`, `var_ntp_server1`, `var_ntp_server2` variables at a minimum.  
 
-```
+```yml
 # Example vars file
 # Connection information
 var_nsx_manager: '10.180.98.230'
@@ -263,7 +267,8 @@ var_t1rtr_gateways_with_multicast_enabled:
 To run all of the NSX controls, follow the example below.
 
 ### Version: 4.1.2+
-```
+
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r2-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening
 
@@ -281,7 +286,8 @@ changed: [127.0.0.1] => {"cache_control": "no-cache, no-store, max-age=0, must-r
 ```
 
 ### Version: 4.1.0-4.1.1
-```
+
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/nsx/4.x/v1r1-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening
 
@@ -300,7 +306,8 @@ changed: [127.0.0.1] => {"cache_control": "no-cache, no-store, max-age=0, must-r
 
 A more conservative and preferred approach is to target any non-compliant controls, or run each component separately, allowing for performing any functional testing in between.
 ### Version: 4.1.2+
-```
+
+```bash
 # Providing the tag "dfw" will instruct the playbook to only run the dfw role. This tag can be seen in each roles task/main.yml file.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsx-4.x-example.yml --tags dfw
 
@@ -309,7 +316,8 @@ A more conservative and preferred approach is to target any non-compliant contro
 ```
 
 ### Version: 4.1.0-4.1.1
-```
+
+```bash
 # Providing the tag "dfw" will instruct the playbook to only run the dfw role. This tag can be seen in each roles task/main.yml file.
 > ansible-playbook playbook.yml -v --extra-vars @vars-nsx-4.x-example.yml --tags dfw
 

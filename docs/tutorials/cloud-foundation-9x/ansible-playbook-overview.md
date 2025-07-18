@@ -153,7 +153,8 @@ It is supported to override role variables in the following ways:
 Ansible inventory is a list or groups of lists of the hosts (or VCF appliances in this case) that are targets of the Ansible playbook. The playbook is designed to target specific roles against specific inventory hosts.  
 
 For example, from the `playbook.yml` file these are the roles that will run against hosts in the vcenter inventory group:
-```
+
+```yml
 - name: vmware-cloud-foundation-vcenter-stig-ansible-hardening
   hosts: vcenter
   roles:
@@ -178,7 +179,8 @@ Inventory Guidelines:
 * Do not add new groups
 
 Default inventory for vCenter servers in `inventory_vcf.yml`:
-```
+
+```yml
 vcenter:
   hosts:
     vcenter_mgmt:
@@ -192,7 +194,8 @@ vcenter:
 ```
 
 Customized example inventory for vCenter servers:
-```
+
+```yml
 vcenter:
   hosts:
     vcenter_mgmt: 
@@ -213,7 +216,8 @@ vcenter:
 Ansible tags are primarily used in this playbook to associate STIG rules with specific tasks. These are useful in targeting specific tasks for a run.
 
 Tags associated with STIG IDs for tasks example:
-```
+
+```yml
 - name: PHTN-50-000005
   tags: [PHTN-50-000005, sshd]
   when: photon_5_defaults_run_phtn_50_000005 | bool
@@ -222,7 +226,8 @@ Tags associated with STIG IDs for tasks example:
 ```
 
 Tags are also present for each role so that a single role may be targeted for a run. These tags match the role name, except with a "-", for example:
-```
+
+```yml
 - name: Include vCenter PostgreSQL tasks
   ansible.builtin.include_tasks:
     file: postgresql.yml
@@ -245,23 +250,32 @@ After updating the file it needs to be encrypted. For more information on how th
 __NOTE__: All command examples below are assumed to be run from the folder where the vault file resides.  
 
 To encrypt the vault file, run the following command and supply a password for encryption:
-```
+
+```bash
 ansible-vault encrypt vault_vcf.yml
 ```
+
 To view an encrypted vault file, run the following command:
-```
+
+```bash
 ansible-vault view vault_vcf.yml
 ```
+
 To edit an encrypted vault file, run the following command:
-```
+
+```bash
 ansible-vault edit vault_vcf.yml
 ```
+
 To change the password on an encrypted vault file, run the following command:
-```
+
+```bash
 ansible-vault rekey vault_vcf.yml
 ```
+
 To decrypt the vault file, run the following command:
-```
+
+```bash
 ansible-vault decrypt vault_vcf.yml
 ```
 

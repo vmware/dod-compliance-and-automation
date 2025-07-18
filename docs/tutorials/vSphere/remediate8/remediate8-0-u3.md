@@ -49,12 +49,13 @@ Password for user administrator@vsphere.local: ****************
 ### Remediating ESXi product controls
 To remediate ESXi hosts a PowerCLI script has been provided that will target a single host or a vSphere cluster based on parameters provided to the script.
 
-**Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
+> **Note** There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.
 
 #### Gather environment information
 In order to run the script effectively it must be provided the organization's environment specific information.  
 
 Review the below parameters and gather the information needed to run the script:
+
 ```powershell
 [CmdletBinding()]
 param (
@@ -95,7 +96,8 @@ The `allowedIPs` parameter is used to configure ESXi service firewall rules and 
 #### Disabling Controls
 The script includes variables to enable or disable controls by STIG ID. All controls are enabled by default and can be turned off by changing these variables to `$false` for a specific control.  
 
-A snippet of these variables is shown below.  
+A snippet of these variables is shown below.
+
 ```powershell
 ##### Enable or Disable specific STIG Remediations #####
 $controlsenabled = [ordered]@{
@@ -166,7 +168,7 @@ Mode                 LastWriteTime         Length Name
 ### Remediating virtual machines
 To remediate virtual machines a PowerCLI script has been provided that will target a single VM, all VMs in a cluster, or all VMs in vCenter based on parameters provided to the script.  
 
-**Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. See the scripts description text for more details.**
+> **Note** There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. See the scripts description text for more details.
 
 #### Disabling Controls
 For processing efficiency this script is not constructed to run each control individually, so the STIG ID variables to enable/disable controls are not included as in the ESXi/vCenter scripts. If it is desired to skip some controls they could be commented out in the `$vmconfig` variable in the script. 
@@ -202,7 +204,7 @@ Mode                 LastWriteTime         Length Name
 ### Remediating vCenter
 To remediate vCenter a PowerCLI script has been provided that will target a single vCenter server.  
 
-**Note: There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.**
+> **Note** There are some controls that cannot be remediated with PowerCLI and are not addressed by this script. The output will indicate that these are manual controls.
 
 #### Gather environment information
 In order to run the script effectively it must be provided the organization's environment specific information.  

@@ -28,11 +28,11 @@ A token can be generated via curl or other REST client. A curl example is shown 
 
 For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1733/).
 
-**Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured identity source or a configured LDAP identity source.  
+> **Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured identity source or a configured LDAP identity source.  
 
 Curl example:
 
-```
+```bash
 # Replace myuser, mypassword, and update the url
 curl -k -i -X POST -d 'j_username=myuser&j_password=mypassword' https://nsxmgr.rainpole.local/api/session/create
 
@@ -68,7 +68,7 @@ Below is a list of inputs available for this profile that can be provided.
 #### Updating the inputs file
 Update the example inputs file or create one and provide the environment specific values for the audit.  
 
-```
+```bash
 # Navigate to the NSX InSpec profile
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/nsx/
 
@@ -111,7 +111,7 @@ nsx_t1multicastlist: []
 ### Run the audit
 In this example NSX will be scanned and reporting will output to the CLI and to a JSON file.  
 
-```
+```bash
 # Navigate to the NSX InSpec profile
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/nsx/
 
@@ -130,7 +130,7 @@ If a STIG Viewer CKL file is needed then the results from the scans can be conve
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
 
-```
+```bash
 # Update the saf_cli_hdf2ckl_metadata.json file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 
@@ -143,7 +143,7 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-basel
 ### Run SAF CLI to create the CKL file
 The following command will convert the json result from the InSpec audit into a STIG Checklist file and ensure the correct metadata is inserted so that it displays correctly in STIG Viewer.  
 
-```
+```bash
 # Convert the InSpec report to a STIG Checklist
 saf convert hdf2ckl -i /tmp/reports/VCF_9_NSX_Report.json -o /tmp/reports/VCF_9_NSX_Report.ckl -m /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 ```

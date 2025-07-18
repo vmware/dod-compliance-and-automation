@@ -20,7 +20,8 @@ Installation of Ansible varies by platform with detailed instructions available 
 Ansible Playbooks offer a repeatable, re-usable, simple configuration management and multi-machine deployment system, one that is well-suited to deploying complex applications. If a task needs to be invoked with Ansible more than once, a playbook should be written and placed under source control. Then the playbook can be used repeatedly to push out new configurations or confirm the configurations of remote systems.
 
 Playbook structure example:
-```
+
+```yml
 vmware-photon-4.0-stig-ansible-hardening
 ├── defaults
 │   └── main.yml
@@ -61,7 +62,8 @@ Ansible roles can be thought of as playbooks inside of playbooks, and are meant 
 Roles have the same folder structure as a playbook, and will either be included inside a `roles` folder in the playbook, or specified as a dependency in the `playbook.yml`.
 
 Example `playbook.yml` with roles (Note the Photon role is external to this playbook's structure):
-```
+
+```yml
 - name: vmware-vcsa-8.0-stig-ansible-hardening
   hosts: all
   roles:
@@ -84,6 +86,7 @@ Collections are a format in which Ansible content is distributed that can contai
 Collections are primarily used in this project to install modules, which are the code or binaries that Ansible copies to and runs on each managed node (when needed) to accomplish the action defined in each Task. Each module has a particular use, including from administering users on a specific type of database to managing VLAN interfaces on a specific type of network device.
 
 In the example below the `ansible.builtin.template` module is being used:
+
 ```yml
 ###################################################################################################################################
 - name: PHTN-40-000003 - Update audit.STIG.rules file
@@ -105,6 +108,7 @@ In the example below the `ansible.builtin.template` module is being used:
 For a list of all available modules, see [Index of all Modules](https://docs.ansible.com/ansible/latest/collections/index_module.html).
 
 #### Installing Collections and Roles
+
 ```bash
 # Install a collection directly from Ansible galaxy
 ansible-galaxy collection install ansible-posix
@@ -156,6 +160,7 @@ For more options, see [ansible-playbook](https://docs.ansible.com/ansible/latest
 Ansible enables host key checking by default. Checking host keys guards against server spoofing and man-in-the-middle attacks. If a host is not trusted before running Ansible an error may be shown stating that the authenticity of the host cannot be verified.
 
 This can be corrected by running the following:
+
 ```bash
 ssh-keyscan -H <IP or FQDN> >> /root/.ssh/known_hosts
 ```

@@ -33,7 +33,7 @@ Additionally, at the top level, an `inputs-example.yml` file can be created that
 Evaluate each of the input files (`aria-automation/inspec.yml`, `docker\inspec.yml`, `kubernetes\inspec.yml`), and if any of the input variables need to be over-ridden, then make sure those variables are included in the top level `inputs-example.yml` file. Examples are provided below.
 
 #### VMware Aria Automation - Sample Inputs
-```yaml
+```yml
 syslogHost: "log.test.local"
 ntpServers: "['time1.server.org', 'time2.server.org']"
 maxAuthTries: "2"
@@ -53,7 +53,8 @@ systemctl restart sshd
 ### Navigate to the InSpec profile folder
 cd /usr/share/stigs/aria/automation/8.x/v1r6-srg/inspec/vmware-aria-automation-8x-stig-baseline  
 
-In this example a target VMware Aria Automation appliance will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.  
+In this example a target VMware Aria Automation appliance will be scanned, specifying an inputs file, and outputting a report to the CLI and to a JSON file.
+  
 ```bash
 # Note this command is run from the root of the profile folder. Update paths as needed (instead of '.', use './path/to/profile') if running from a different location.
 > cinc-auditor exec . -t ssh://root@aria-automation.domain.path --password 'replaceme' --show-progress --input-file inputs-example.yml --reporter cli json:/tmp/reports/Aria_Automation_8x_STIG_Report.json

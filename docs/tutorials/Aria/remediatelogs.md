@@ -42,8 +42,9 @@ To run all of the controls, follow the example below:
 * The -k parameter will prompt for password.  
 `ansible-playbook -i 10.10.10.20, -u root playbook.yml -k -v -b`
 
-* Output example:  
-```
+* Output example:
+
+```bash
 SSH password:
 
 PLAY [VRLI 8.x Remediation Automation] ******************************************************

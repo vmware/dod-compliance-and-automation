@@ -1,9 +1,5 @@
----
-title: "Remediate VCF 9.x"
-weight: 2
-description: >
-  Remediating VCF 9.x for STIG Compliance
----
+# Remediate VCF 9.x
+
 ## Overview
 This tutorial covers remediating the VCF Application STIG in VCF deployments which includes product rules for the following components:
 
@@ -74,9 +70,9 @@ The follow parameters are available in all remediation scripts.
 ### Update environment specific variables
 Update the `VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables.ps1` and `VMware_Cloud_Foundation_vSphere_vCenter_9.0_STIG_Remediation_Variables.ps1` files with the target environment values for remediation. The file provided can be used or a copy can be made and updated.  
 
-> **NOTE** Update paths as needed for the environment.  
+> **Note** Update paths as needed for the environment.  
 
-```
+```bash
 # Navigate to the PowerCLI hardening folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/powercli/vmware-cloud-foundation-stig-powercli-hardening/
 
@@ -106,7 +102,7 @@ envstigsettings = [ordered]@{
 
 > **Caution** If remediation is needed for rule VCFA-9X-000004 to change the TLS profile of vCenter a service restart will take place and a loss of connectivity to vCenter may be seen for a few minutes.  
 
-```
+```powershell
 # Launch PowerShell
 pwsh
 
@@ -183,7 +179,7 @@ To remediate VCF Automation an Ansible playbook has been provided that will targ
 ### Update Ansible Inventory and Vault with target Automation Server details
 In the Ansible inventory file and vault ensure the target Automation server details are correct.
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -228,7 +224,8 @@ var_vault_automation_session_token:
 ### Update Ansible variables for Automation tasks
 Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
 
-```# Navigate to the Ansible playbook folder
+```bash
+# Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
 # Open the inventory file for editing. Replace the name if using a different inventory file for the environment.
@@ -245,7 +242,7 @@ automation_defaults_approved_feature_flags: []
 ### Running the playbook
 To remediate all Automation product rules, follow the example below:
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -272,7 +269,7 @@ To remediate Operations an Ansible playbook has been provided that will target O
 ### Update Ansible Inventory and Vault with target Operations server details
 In the Ansible inventory file and vault ensure the target Operations server details are correct.
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -307,7 +304,7 @@ var_vault_operations_session_token:
 ### Running the playbook
 To remediate all Operations product rules, follow the example below:
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -359,7 +356,7 @@ To remediate Operations Fleet Management an Ansible playbook has been provided t
 ### Update Ansible Inventory and Vault with target Operations Fleet Management Server details
 In the Ansible inventory file and vault ensure the target Operations Fleet Management server details are correct.
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -394,7 +391,7 @@ var_vault_operations_fm_api_token:
 ### Update Ansible variables for Operations Fleet Management tasks
 Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -409,7 +406,7 @@ ops_fm_defaults_time_servers: ''
 ### Running the playbook
 To remediate all Operations Fleet Management product rules, follow the example below:
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -440,7 +437,7 @@ To remediate Operations for Logs an Ansible playbook has been provided that will
 ### Update Ansible Inventory and Vault with target Operations for Logs Server details
 In the Ansible inventory file and vault ensure the target Operations for Logs server details are correct.
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -475,7 +472,7 @@ var_vault_operations_logs_api_token:
 ### Update Ansible variables for Operations for Logs tasks
 Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -490,7 +487,7 @@ ops_logs_defaults_ntp_servers:
 ### Running the playbook
 To remediate all Operations for Logs product rules, follow the example below:
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -532,7 +529,7 @@ To remediate Operations for Networks an Ansible playbook has been provided that 
 ### Update Ansible Inventory and Vault with target Operations for Networks Server details
 In the Ansible inventory file and vault ensure the target Operations for Networks server details are correct.
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -566,10 +563,11 @@ ansible-vault edit vault_vcf.yml
 # Locate the Operations for Networks credential variables and update and save (:wq)
 var_vault_operations_networks_api_token:
 ```
+
 ### Running the playbook
 To remediate all Operations for Networks product rules, follow the example below:
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -609,7 +607,7 @@ To remediate Operations HCX an Ansible playbook has been provided that will targ
 ### Update Ansible Inventory and Vault with target Operations HCX Server details
 In the Ansible inventory file and vault ensure the target Operations HCX server details are correct.
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -648,7 +646,7 @@ var_vault_operations_hcx_session_token:
 ### Update Ansible variables for Operations HCX tasks
 Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -663,7 +661,7 @@ ops_hcx_defaults_time_servers: []
 ### Running the playbook
 To remediate all Operations HCX product rules, follow the example below:
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -690,7 +688,7 @@ To remediate SDDC Manager an Ansible playbook has been provided that will target
 ### Update Ansible Inventory and Vault with target SDDC Manager Server details
 In the Ansible inventory file and vault ensure the target SDDC Manager server details are correct.
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -739,7 +737,7 @@ var_vault_sddcmgr_bearer_token:
 ### Update Ansible variables for SDDC Manager tasks
 Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 
@@ -754,7 +752,7 @@ sddcmgr_defaults_basic_auth: 'DISABLED'
 ### Running the playbook
 To remediate all SDDC Manager product rules, follow the example below:
 
-```
+```bash
 # Navigate to the Ansible playbook folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansible-hardening/
 

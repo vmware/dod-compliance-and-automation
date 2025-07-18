@@ -33,6 +33,7 @@ Versions listed below were used for this documentation. Other versions of these 
 To extend the functionality of the VMware transport that ships with InSpec we have created a custom one that also incorporates the `VMware.Vsphere.SsoAdmin` module to extend automation coverage to the vCenter SSO STIG controls.  
 
 To install the plugin that is included with the `vmware-vsphere-8.0-stig-baseline` profile, do the following:
+
 ```powershell
 # These steps are not needed on the STIG Tools Appliance
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
@@ -71,6 +72,7 @@ The example commands below are specific to the product version and the supported
 
 ### Setup environment variables for vCenter connection
 Connectivity to vCenter is established via environment variables. Take care to clear the history and close the PowerShell session to avoid any credentials left in memory/history.
+
 ```bash
 #Enter PowerShell
 pwsh
@@ -80,6 +82,7 @@ $env:VISERVER='10.186.30.81'
 $env:VISERVER_USERNAME='Administrator@vsphere.local'
 $env:VISERVER_PASSWORD='password'
 ```
+
 *Note: If the password includes a single tick (') it must be substituted with four ticks ('''') in order for it to be properly escaped all the way through the process.*
 
 ### Auditing ESXi
@@ -89,7 +92,7 @@ Included in the `vmware-vsphere-8.0-stig-baseline` is an example `inputs-example
 
 Open the inputs file for editing.
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
@@ -99,7 +102,7 @@ vi inputs-example.yml
 
 Update the inputs as shown below with values relevant to the environment.
 
-```
+```yml
 # Choose whether to scan a single host, all hosts in a cluster, or all hosts in vCenter.
 vmhostName: '10.186.25.26'
 cluster: ''
@@ -131,7 +134,7 @@ esxiBuildNumber: '22380479'
 #### Run the audit
 In this example a single ESXi host attached to the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
@@ -167,7 +170,7 @@ Included in the `vmware-vsphere-8.0-stig-baseline` is an example `inputs-example
 
 Open the inputs file for editing.
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
@@ -177,7 +180,7 @@ vi inputs-example.yml
 
 Update the inputs as shown below with values relevant to the environment.
 
-```
+```yml
 # Choose whether to scan a single VM or all VMs in vCenter.
 vmName: ""
 allvms: true
@@ -186,7 +189,7 @@ allvms: true
 #### Run the audit
 In this example all VMs in the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
@@ -257,7 +260,7 @@ Included in the `vmware-vsphere-8.0-stig-baseline` is an example `inputs-example
 
 Open the inputs file for editing.
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
@@ -267,7 +270,7 @@ vi inputs-example.yml
 
 Update the inputs as shown below with values relevant to the environment.
 
-```
+```yml
 # Enter the environment specific syslog server vCenter should be forwarding logs to.
 syslogServers:
   - 'loginsight.vmware.com'
@@ -305,7 +308,7 @@ backup3rdParty: false
 #### Run the audit
 In this example vCenter controls in the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
@@ -343,6 +346,7 @@ Test Summary: 136 successful, 26 failures, 20 skipped
 ### Run a combined scan for all vSphere product controls
 Instead of running each STIG for product controls separately, all of the vCenter, ESXi, and VM controls can be run for a combined report.
 
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vsphere/inspec/vmware-vsphere-8.0-stig-baseline
 
@@ -358,7 +362,7 @@ With this script an [attestation](/docs/automation-tools/safcli/#creating-and-ap
 #### Using the ESXi runner script
 To use the runner script, do the following:
 
-```
+```powershell
 # Enter PowerShell
 pwsh
 
@@ -461,7 +465,7 @@ Updating the inputs file is not required for this profile but the `inputs-vcsa-8
 
 *Note: An inputs file is no longer required when running the v2r2 automation or newer for the VCSA scan.*  
 
-```
+```bash
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vsphere/8.0/v1r1-stig/vcsa/inspec/vmware-vcsa-8.0-stig-baseline
 
