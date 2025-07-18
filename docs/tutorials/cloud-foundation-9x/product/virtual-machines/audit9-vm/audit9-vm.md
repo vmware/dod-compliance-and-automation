@@ -1,15 +1,9 @@
----
-title: "Audit VCF Virtual Machines 9.x"
-weight: 1
-description: >
-  Auditing VCF Virtual Machines 9.x for STIG Compliance
----
+# Audit VCF Virtual Machines 9.0.0.0
+
 ## Overview
 This tutorial covers auditing Virtual Machines in VCF deployments.  
 
-
 The example commands below are specific to the product version and the supported STIG content for the version being run.
-
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -37,9 +31,8 @@ The functions provided are: `Set-vCenterCredentials` `Get-vCenterCredentials` `S
 To extend the functionality of the VMware transport that ships with InSpec we have created a custom one that also incorporates the `VMware.Vsphere.SsoAdmin` module to extend automation coverage to the vCenter SSO STIG controls.  
 
 To install the plugin that is included with the `vmware-cloud-foundation-stig-baseline` profile, do the following:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Install the custom train-vmware plugin. Update the path to the gem as needed. The command will be the same on Windows and Linux.
 > cinc-auditor plugin install /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere/train-vmware-1.0.0.gem
 
@@ -68,27 +61,27 @@ To install the plugin that is included with the `vmware-cloud-foundation-stig-ba
 │ train-winrm                            │ 0.2.13  │ gem (system) │ train-1 │ Windows WinRM API Transport for Train                                  │
 └────────────────────────────────────────┴─────────┴──────────────┴─────────┴────────────────────────────────────────────────────────────────────────┘
  17 plugin(s) total
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
- **Note - Plugins are installed per user and must be installed as the user running InSpec.**
+**Note - Plugins are installed per user and must be installed as the user running InSpec.**
 
 ## Auditing Virtual Machines
 
 `Export-Clixml` only exports encrypted credentials on Windows. On non-Windows operating systems such as macOS and Linux, credentials are exported as a plain text stored as a Unicode character array. This provides some obfuscation but does not provide encryption.
 
-
 ### Setup Connection to vCenter
 This profile uses a custom VMware InSpec transport(train) to run PowerCLI commands that must be installed in order for this profile to run. This custom transport is derived from the default InSpec VMware transport and extends it by adding support for the `VMware.Vsphere.SsoAdmin` PowerShell module as well as an optional connection method using a PowerShell credential file.  
 
 Connection Options:  
-  - Provide vCenter credentials via environment variables
-    - Take care to clear the history and close the PowerShell session to avoid any credentials left in memory/history if using this option.
-  - Create a PowerShell credential file and then provide the file name via an environment variable
-    - For more information on exporting credentials to XML see [Export-Clixml](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-clixml?view=powershell-7.5).
+
+- Provide vCenter credentials via environment variables
+  - Take care to clear the history and close the PowerShell session to avoid any credentials left in memory/history if using this option.
+- Create a PowerShell credential file and then provide the file name via an environment variable
+  - For more information on exporting credentials to XML see [Export-Clixml](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/export-clixml?view=powershell-7.5).
 
 #### Connecting via username/password
 From a PowerShell session create the following environment variables:
+
 ```powershell
 #Enter PowerShell
 pwsh
@@ -96,16 +89,17 @@ pwsh
 $env:VISERVER="vcenter.rainpole.local"
 $env:VISERVER_USERNAME="Administrator@vsphere.local"
 $env:VISERVER_PASSWORD="password"
+
 # For PowerShell Core only
 $env:NO_COLOR=$true
 ```
+
 *Note: If the password includes a single tick (') it must be substituted with four ticks ('''') in order for it to be properly escaped all the way through the process.*
 
 #### Connecting via a PowerShell Credential file
 From a PowerShell session create a PowerShellcredential file:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="powershell" >}}
+
+```
 # Enter PowerShell
 pwsh
 
@@ -134,17 +128,16 @@ $env:PCLICREDFILE="/usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-found
 
 # For PowerShell Core only (Not needed on STIG Tools Appliance)
 $env:NO_COLOR=$true
-{{< /tab >}}
-{{< /tabpane >}}
+```
+
 **Note: If the `PCLICREDFILE` environment variable exists it will take precedence over username and password when attempting the connection to vCenter.**
 
 ### Update profile inputs
 Included in the `vmware-cloud-foundation-stig-baseline` is an example `inputs-example.yml` file with variables relevant to VMs.  This is used to provide InSpec with values specific to the environment being audited.
 
 Update profile inputs for the target environment.
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere
 
@@ -156,14 +149,12 @@ vi inputs-example.yml
 vm_Name: ''
 vm_cluster: ''
 vm_allvms: true
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Run the audit directly with InSpec
 In this example all VMs managed by the target vCenter will be scanned, specifying an inputs file, enabling enhanced outcomes in InSpec, and outputting a report to the CLI and to a JSON file.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="powershell" >}}
+
+```
 # Navigate to the InSpec profile folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/vsphere
 
@@ -179,8 +170,7 @@ cinc-auditor exec ./vm/ -t vmware:// --show-progress --enhanced-outcomes --input
 
 Profile Summary: 23 successful controls, 2 control failures, 0 controls not reviewed, 0 controls not applicable, 0 controls have error
 Test Summary: 743 successful, 25 failures, 0 skipped
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ## Convert the results to CKL
 If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
@@ -188,9 +178,8 @@ If a STIG Viewer CKL file is needed then the results from the scans can be conve
 **Note: These steps are only valid if the audit was conducted against a single VM. For multiple hosts see the section below on using the InSpec runner script.**
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Update the saf_cli_hdf2ckl_metadata.json file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 
@@ -198,18 +187,15 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-basel
 "hostip": "10.1.1.99",
 "hostmac": "00:00:00:00:00:00",
 "hostfqdn": "vm1.rainpole.local",
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Run SAF CLI to create the CKL file
 The following command will convert the json result from the InSpec audit into a STIG Checklist file and ensure the correct metadata is inserted so that it displays correctly in STIG Viewer.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```bash
 # Convert the InSpec report to a STIG Checklist
 saf convert hdf2ckl -i /tmp/reports/VCF_9_VM_Report.json -o /tmp/reports/VCF_9_VM_Report.ckl -m /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
 ![STIG Viewer Checklist](../../../images/vm_audit9_ckl_screenshot.png)
@@ -225,9 +211,8 @@ With this script an [attestation](/docs/automation-tools/safcli/#creating-and-ap
 
 ### Using the VM runner script
 To use the runner script, do the following:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="powershell" >}}
+
+```powershell
 # Enter PowerShell
 pwsh
 
@@ -269,8 +254,7 @@ Redirecting to cinc-auditor...
 [2025-05-14 16:39:21] [INFO] Detected MITRE SAF CLI. Generating STIG Viewer Checklist for VM: automation-qlbvq
 [2025-05-14 16:39:21] [INFO] Attestation file: ./VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner_Attestations_Example.yml detected. Applying to results for VM: automation-qlbvq
 [2025-05-14 16:39:21] [INFO] Generating CKL file: /tmp/reports/VMware_Cloud_Foundation_vSphere_VM_9.x_STIG_InSpec_Report_automation-qlbvq_with_Attestations_2025-5-14-16-38-54.ckl for VM: automation-qlbvq
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 **Note: Not all options for the script are shown. For more details run `Get-Help ./VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner.ps1 -Detailed`.**
 

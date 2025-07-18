@@ -36,7 +36,7 @@ A token can be generated via curl or other REST client. A curl example is shown 
 
 For more information see the [NSX API Documentation](https://developer.vmware.com/apis/1733/).
 
-> **Note**: If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured identity source or a configured LDAP identity source.  
+> **Note** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured identity source or a configured LDAP identity source.  
 
 Curl example:
 
