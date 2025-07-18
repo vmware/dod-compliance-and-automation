@@ -1,15 +1,9 @@
----
-title: "Audit VCF NSX 9.x"
-weight: 1
-description: >
-  Auditing VCF NSX 9.x for STIG Compliance
----
+# Audit NSX 9.0.0.0
+
 ## Overview
 This tutorial covers auditing NSX product rules in VCF deployments.  
 
-
 The example commands below are specific to the product version and the supported STIG content for the version being run. Select the appropriate tab for the target version.
-
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -37,9 +31,8 @@ For more information see the [NSX API Documentation](https://developer.vmware.co
 **Note:** If the user is a remote user, append "@domain" to the username, for example, "joe@example.com". The domain must match a domain for a configured identity source or a configured LDAP identity source.  
 
 Curl example:
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Replace myuser, mypassword, and update the url
 curl -k -i -X POST -d 'j_username=myuser&j_password=mypassword' https://nsxmgr.rainpole.local/api/session/create
 
@@ -47,8 +40,7 @@ curl -k -i -X POST -d 'j_username=myuser&j_password=mypassword' https://nsxmgr.r
 HTTP/1.1 200
 Set-Cookie: JSESSIONID=0FB1F72478DDE578AB7E3473F54BCF50; Path=/; Secure; HttpOnly
 X-XSRF-TOKEN: ae5ee920-bca1-4ba3-ac1f-385e76f2c66a
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Update InSpec input values
 Inputs for an InSpec profile are sometimes needed to provide environment specific values in order for tests to run correctly. These can be provided by specifying an inputs file with the relevant environmental values.
@@ -57,27 +49,26 @@ An example inputs file is provided with this profile and can be found in the `in
 
 Below is a list of inputs available for this profile that can be provided.  
 
-|     Input Name       |       Default Value       | Description |     Type    |   STIG IDs  |
-|----------------------|---------------------------|-------------|-------------|-------------|
-|nsx_managerAddress    |`blank`                    |Target NSX Manager IP or FQDN.|String|All|
-|nsx_sessionToken      |`blank`                    |Session token generated for access to NSX.|Boolean|All|
-|nsx_sessionCookieId   |`blank`                    |Session cookie id generated for access to NSX. Example 'JSESSIONID=2A165FCF851CA50FCD038DFC8E770038'|String|All|
-|nsx_authorizedPermissions |See inputs example file    |A list of authorized users and their roles to validate assigned permissions in NSX. The default local users and their roles are provided as an example. This currently only validates roles assigned to all of NSX and not to Projects or other scopes.|Hash|VCFN-9X-000010|
-|nsx_allowedProtocols  |`TLSv1.2` `TLSv1.3`        |Allowed TLS protocols|Array|VCFN-9X-000037|
-|nsx_allowedCiphers    |`TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256` `TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384` `TLS_RSA_WITH_AES_128_GCM_SHA256` `TLS_RSA_WITH_AES_256_GCM_SHA384` `TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384` `TLS_AES_128_GCM_SHA256` `TLS_AES_128_GCM_SHA384`|Allowed TLS ciphers|Array|VCFN-9X-000075|
-|nsx_syslogServers     |`[]`                       |A list of Syslog servers to which the system should forward logs.|Array|VCFN-9X-000085|
-|nsx_ntpServers        |`[]`                       |A list of NTP servers with which the system should sync.|Array|VCFN-9X-000111|
-|nsx_t0multicastlist   |`[]`                       |A list of T0 Gateways that are approved to have multicast enabled.|Array|VCFR-9X-000013,VCFR-9X-000110|
-|nsx_t0mcinterfacelist |`[]`                       |A list of T0 Gateways interfaces that are approved to have multicast enabled.|Array|VCFR-9X-000013|
-|nsx_t0dhcplist        |`[]`                       |A list of T0 Gateways that are approved to have DHCP enabled.|Array|VCFR-9X-000027|
-|nsx_t1dhcplist        |`[]`                       |A list of T1 Gateways that are approved to have DHCP enabled.|Array|VCFR-9X-000113|
-|nsx_t1multicastlist   |`[]`                       |A list of T1 Gateways that are approved to have multicast enabled.|Array|VCFR-9X-000115|
+|        Input Name         |       Default Value       | Description                     |     Type    |   STIG IDs  |
+|---------------------------|---------------------------|---------------------------------|-------------|-------------|
+|nsx_managerAddress         |`blank`                    |Target NSX Manager IP or FQDN.   |String|All|
+|nsx_sessionToken           |`blank`                    |Session token generated for access to NSX.|Boolean|All|
+|nsx_sessionCookieId        |`blank`                    |Session cookie id generated for access to NSX. Example 'JSESSIONID=2A165FCF851CA50FCD038DFC8E770038'|String|All|
+|nsx_authorizedPermissions  |See inputs example file    |A list of authorized users and their roles to validate assigned permissions in NSX. The default local users and their roles are provided as an example. This currently only validates roles assigned to all of NSX and not to Projects or other scopes.|Hash|VCFN-9X-000010|
+|nsx_allowedProtocols       |`TLSv1.2` `TLSv1.3`        |Allowed TLS protocols            |Array|VCFN-9X-000037|
+|nsx_allowedCiphers         |`TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256` `TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384` `TLS_RSA_WITH_AES_128_GCM_SHA256` `TLS_RSA_WITH_AES_256_GCM_SHA384` `TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384` `TLS_AES_128_GCM_SHA256` `TLS_AES_128_GCM_SHA384`|Allowed TLS ciphers|Array|VCFN-9X-000075|
+|nsx_syslogServers          |`[]`                       |A list of Syslog servers to which the system should forward logs.|Array|VCFN-9X-000085|
+|nsx_ntpServers             |`[]`                       |A list of NTP servers with which the system should sync.|Array|VCFN-9X-000111|
+|nsx_t0multicastlist        |`[]`                       |A list of T0 Gateways that are approved to have multicast enabled.|Array|VCFR-9X-000013,VCFR-9X-000110|
+|nsx_t0mcinterfacelist      |`[]`                       |A list of T0 Gateways interfaces that are approved to have multicast enabled.|Array|VCFR-9X-000013|
+|nsx_t0dhcplist             |`[]`                       |A list of T0 Gateways that are approved to have DHCP enabled.|Array|VCFR-9X-000027|
+|nsx_t1dhcplist             |`[]`                       |A list of T1 Gateways that are approved to have DHCP enabled.|Array|VCFR-9X-000113|
+|nsx_t1multicastlist        |`[]`                       |A list of T1 Gateways that are approved to have multicast enabled.|Array|VCFR-9X-000115|
 
 #### Updating the inputs file
 Update the example inputs file or create one and provide the environment specific values for the audit.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Navigate to the NSX InSpec profile
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/nsx/
 
@@ -115,15 +106,12 @@ nsx_t0dhcplist: []
 nsx_t1dhcplist: []
 # Enter an array of T1 Gateways that are approved to have multicast enabled.
 nsx_t1multicastlist: []
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Run the audit
 In this example NSX will be scanned and reporting will output to the CLI and to a JSON file.  
 
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+```
 # Navigate to the NSX InSpec profile
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/nsx/
 
@@ -134,16 +122,15 @@ cinc-auditor exec . --show-progress --enhanced-outcomes --input-file inputs-exam
 Profile Summary: 62 successful controls, 10 control failures, 4 controls not reviewed, 2 controls not applicable, 0 controls have error
 Test Summary: 121 successful, 24 failures, 6 skipped
 
-{{< /tab >}}
-{{< /tabpane >}}
+```
+
 ## Convert the results to CKL
 If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
 
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Update the saf_cli_hdf2ckl_metadata.json file
 vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
 
@@ -151,18 +138,15 @@ vi /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-basel
 "hostip": "10.1.1.30",
 "hostmac": "00:00:00:00:00:00",
 "hostfqdn": "nsxmgr.rainpole.local",
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Run SAF CLI to create the CKL file
 The following command will convert the json result from the InSpec audit into a STIG Checklist file and ensure the correct metadata is inserted so that it displays correctly in STIG Viewer.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+
+```
 # Convert the InSpec report to a STIG Checklist
 saf convert hdf2ckl -i /tmp/reports/VCF_9_NSX_Report.json -o /tmp/reports/VCF_9_NSX_Report.ckl -m /usr/share/stigs/vcf/9.x/Y25M06-srg/inspec/vmware-cloud-foundation-stig-baseline/saf_cli_hdf2ckl_metadata.json
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
 ![STIG Viewer Checklist](../../../images/nsx_audit9_ckl_screenshot.png)
