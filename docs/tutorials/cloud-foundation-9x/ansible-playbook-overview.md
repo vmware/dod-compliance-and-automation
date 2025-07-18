@@ -168,7 +168,8 @@ The `inventory_vcf.yml` file serves as a starting point to building inventory fo
 #### Inventory Customization
 Depending on the size of the VCF instance a single inventory file may be sufficient, or if multiple sites/instances are deployed it may make sense to create an inventory file for each.
 
-Inventory Guidelines
+Inventory Guidelines:
+
 * Do not alter the group names since these are tied to specific roles in the playbook files.
 * Host names in a group can be changed or hosts added to a group as needed.
   * If host specific variables are desired, a corresponding file matching the hostname must exist in the `host_vars` folder.
@@ -279,6 +280,7 @@ If desired this backup task can be disabled by changing the variable `create_bac
 ### General Ansible Playbook arguments
 
 These arguments are commonly used for various use cases when running this playbook:
+
 * `-v` - Causes Ansible to print more verbose output. Can be increased by adding more v's up to `-vvvvvv`.
 * `-i` - Specifies an inventory target or inventory file to run against.
 * `-l` - Limits the selection of hosts to run the playbook against. Normally should be used to not run against everything in inventory. For example only run against vCenter servers.
