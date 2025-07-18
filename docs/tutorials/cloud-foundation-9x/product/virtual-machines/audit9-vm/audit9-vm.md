@@ -198,7 +198,7 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_VM_Report.json -o /tmp/reports/VCF_9_V
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist](../../../images/vm_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../../images/vm_audit9_ckl_screenshot.png)
 
 ## Auditing Virtual Machines in bulk
 For accreditation purposes there may be a requirement to produce a CKL file for each ESX host and/or VM. To support this use case we have also created a PowerCLI script that acts as a runner for InSpec to loop through a list of hosts or VMs, then produce a json report for each, and if the SAF CLI is installed also create a CKL file.  
@@ -256,7 +256,7 @@ Redirecting to cinc-auditor...
 [2025-05-14 16:39:21] [INFO] Generating CKL file: /tmp/reports/VMware_Cloud_Foundation_vSphere_VM_9.x_STIG_InSpec_Report_automation-qlbvq_with_Attestations_2025-5-14-16-38-54.ckl for VM: automation-qlbvq
 ```
 
-**Note: Not all options for the script are shown. For more details run `Get-Help ./VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner.ps1 -Detailed`.**
+**Note** Not all options for the script are shown. For more details run `Get-Help ./VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner.ps1 -Detailed`.
 
 ## Next
 If needed proceed to the remediation tutorial for Virtual Machines [here](/docs/tutorials/cloud-foundation-9.x/product/virtual-machines/remediate9-vm/).

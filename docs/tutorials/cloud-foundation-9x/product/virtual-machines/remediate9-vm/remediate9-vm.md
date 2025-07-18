@@ -1,9 +1,5 @@
----
-title: "Remediate VCF Virtual Machines 9.x"
-weight: 2
-description: >
-  Remediating VCF Virtual Machines 9.x for STIG Compliance
----
+# Remediate VCF Virtual Machines 9.0.0.0
+
 ## Overview
 This tutorial covers remediating Virtual Machines in VCF deployments.  
 
@@ -34,10 +30,11 @@ The VCF STIG Helpers PowerShell module provides additional supporting functions 
 The functions provided are: `Set-vCenterCredentials` `Get-vCenterCredentials` `Set-PowerCLICredential` `Get-PowerCLICredentialUsername` `Get-PowerCLICredentialPassword` `Write-Message` `Write-Header` `Test-PowerCLI` `Test-vCenter` `Test-ESX`
 
 #### Included Scripts
-`VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables.ps1` - Global variables used throughout all scripts.  
-`VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner.ps1` - Audits target VMs and facilitates creating accreditation artifacts that would require a more manual process with InSpec/CINC alone.  
-`VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation_Variables.ps1` - Variables specific to VM remediation. Environment specific, rule enablement/disablement, expected STIG values, default values for revert workflow.  
-`VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation.ps1` - Remediation script for VMs.  
+
+- `VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables.ps1` - Global variables used throughout all scripts.  
+- `VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner.ps1` - Audits target VMs and facilitates creating accreditation artifacts that would require a more manual process with InSpec/CINC alone.  
+- `VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation_Variables.ps1` - Variables specific to VM remediation. Environment specific, rule enablement/disablement, expected STIG values, default values for revert workflow.  
+- `VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation.ps1` - Remediation script for VMs.  
 
 ## Remediating ESX
 Prior to running any scripts it is recommended to familiarize yourself with the scripts and the required parameters as well as test them out in a non-production environment.  
@@ -56,10 +53,9 @@ The follow parameters are available in all remediation scripts.
 ### Update environment specific variables
 Update the `VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables.ps1` and `VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation_Variables.ps1` files with the target environment values for remediation. The file provided can be used or a copy can be made and updated.  
 
-**NOTE** Update paths as needed for the environment.  
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="bash" >}}
+**Note** Update paths as needed for the environment.  
+
+```powershell
 # Navigate to the PowerCLI hardening folder
 cd /usr/share/stigs/vcf/9.x/Y25M06-srg/powercli/vmware-cloud-foundation-stig-powercli-hardening/
 
@@ -86,14 +82,11 @@ envstigsettings = [ordered]@{
   usbExceptions           = @("") # VCFV-9X-000218 Provide an array of VM names that are approved to have USB devices present.
   passthruExceptions      = @("") # VCFV-9X-000219 Provide an array of VM names that are approved to have passthrough DirectPath I/O devices present.
 }
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ### Run the remediation script
 
-{{< tabpane text=false right=false persist=header >}}
-{{% tab header="**Version**:" disabled=true /%}}
-{{< tab header="9.0.0.0" lang="powershell" >}}
+```powershell
 # Launch PowerShell
 pwsh
 
@@ -151,8 +144,7 @@ Mode                 LastWriteTime         Length Name
 -a---            5/14/2025  17:52 PM          84552 VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation_Transcript_5-14-2025_17-52-44.txt
 
 # Update global variables target and rerun script as needed
-{{< /tab >}}
-{{< /tabpane >}}
+```
 
 ## Manually remediate rules
 The following rules require manual remediation if not compliant and are not automated by the provided scripts or the VM must be powered off to perform the action.  
