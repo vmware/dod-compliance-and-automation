@@ -173,7 +173,7 @@ Test Summary: 743 successful, 25 failures, 0 skipped
 ```
 
 ## Convert the results to CKL
-If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli.md).
 
 > **Note** These steps are only valid if the audit was conducted against a single VM. For multiple hosts see the section below on using the InSpec runner script.
 
@@ -199,12 +199,12 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_VM_Report.json -o /tmp/reports/VCF_9_V
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist](../../../../images/vm_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../../../../images/vm_audit9_ckl_screenshot.png)
 
 ## Auditing Virtual Machines in bulk
 For accreditation purposes there may be a requirement to produce a CKL file for each ESX host and/or VM. To support this use case we have also created a PowerCLI script that acts as a runner for InSpec to loop through a list of hosts or VMs, then produce a json report for each, and if the SAF CLI is installed also create a CKL file.  
 
-With this script an [attestation](/docs/automation-tools/safcli/#creating-and-applying-manual-attestations) file can also be provided that will be applied to the results and incorporated into the CKL file.
+With this script an [attestation](/docs/automation-tools/safcli.md) file can also be provided that will be applied to the results and incorporated into the CKL file.
 
 ### Prerequisites
 * Authentication configured for vCenter. See previous section for details.
@@ -260,4 +260,4 @@ Redirecting to cinc-auditor...
 > **Note** Not all options for the script are shown. For more details run `Get-Help ./VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner.ps1 -Detailed`.
 
 ## Next
-If needed proceed to the remediation tutorial for Virtual Machines [here](/docs/tutorials/cloud-foundation-9.x/product/virtual-machines/remediate9-vm/).
+If needed proceed to the remediation tutorial for Virtual Machines [here](/docs/tutorials/cloud-foundation-9x/product/virtual-machines/remediate9-vm/remediate9-vm.md).

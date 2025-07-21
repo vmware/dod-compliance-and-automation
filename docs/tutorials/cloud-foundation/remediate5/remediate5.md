@@ -3,7 +3,7 @@
 ## Overview
 Remediating VCF for STIG compliance involves running an Ansible playbook against the target SDDC Manager appliance over SSH to configure any non-compliant controls.    
 
-Remediating other components of a VCF deployment such as [vSphere](../vSphere/) and [NSX](../NSX/) is documented in those sections on this site. 
+Remediating other components of a VCF deployment such as [vSphere](../../vsphere/vsphere.md) and [NSX](../../nsx/nsx.md) is documented in those sections on this site. 
 
 Specific version documentation:
 

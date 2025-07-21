@@ -3,7 +3,7 @@
 ## Overview
 Auditing VCF for STIG compliance involves scanning the SDDC Manager appliance.  
 
-Scanning other components of a VCF deployment such as [vSphere](../vSphere/) and [NSX](../NSX/) is documented in those sections on this site.
+Scanning other components of a VCF deployment such as [vSphere](../vsphere/vsphere.md) and [NSX](../nsx/nsx.md) is documented in those sections on this site.
 
 ## Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -139,7 +139,7 @@ Test Summary: 691 successful, 36 failures, 4 skipped
 ```
 
 ## Convert the results to CKL
-If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli.md).
 
 ```powershell
 # Converting the VCSA scan results from the prior section to CKL

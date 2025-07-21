@@ -14,9 +14,7 @@ This tutorial covers auditing the VCF Application STIG in VCF deployments which 
 
 Auditing these components can occur individually or together.  
 
-
 The example commands below are specific to the product version and the supported STIG content for the version being run.
-
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
@@ -356,7 +354,7 @@ cinc-auditor exec . -t vmware:// --show-progress --enhanced-outcomes --input-fil
 ```
 
 ## Convert the results to CKL
-If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli.md).
 
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
@@ -380,7 +378,7 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_Application_Report.json -o /tmp/report
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist](../../../images/app_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../../../../images/app_audit9_ckl_screenshot.png)
 
 ## Manually audit rules
 The following rules require manual auditing and are not automated.  
@@ -448,4 +446,4 @@ saf attest apply -i /tmp/reports/VCF_9_Application_Report.json /usr/share/stigs/
 ```
 
 ## Next
-If needed proceed to the remediation tutorial for VCF Application rules [here](/docs/tutorials/cloud-foundation-9.x/product/vcf-application/remediate9-app/).
+If needed proceed to the remediation tutorial for VCF Application rules [here](/docs/tutorials/cloud-foundation-9x/product/vcf-application/remediate9-app/remediate9-app.md).

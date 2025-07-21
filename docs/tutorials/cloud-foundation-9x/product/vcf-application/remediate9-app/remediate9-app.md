@@ -20,8 +20,8 @@ Auditing these components can occur individually or together. vCenter remediatio
 > - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
 > - Have an understanding of Ansible playbooks and concepts, PowerShell, and PowerCLI.
 > - Have a back out plan so the changes can be rolled back if necessary.
-> - Have read the [Ansible Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook_overview/) and understand the structure of the Ansible playbook provided here.
-> - Have read the [PowerCLI Overview](/docs/automation-tools/powercli/).
+> - Have read the [Ansible Overview](/docs/tutorials/cloud-foundation-9x/ansible-playbook-overview.md) and understand the structure of the Ansible playbook provided here.
+> - Have read the [PowerCLI Overview](/docs/automation-tools/powercli.md).
 
 > **Failure to do so can result in unintended behavior in the environment.**  
 
@@ -222,7 +222,7 @@ var_vault_automation_session_token:
 ```
 
 ### Update Ansible variables for Automation tasks
-Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
+Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](/docs/tutorials/cloud-foundation-9x/ansible-playbook-overview.md) for more details on how variables are structured and for alternative approaches.    
 
 ```bash
 # Navigate to the Ansible playbook folder
@@ -470,7 +470,7 @@ var_vault_operations_logs_api_token:
 ```
 
 ### Update Ansible variables for Operations for Logs tasks
-Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
+Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](/docs/tutorials/cloud-foundation-9x/ansible-playbook-overview.md) for more details on how variables are structured and for alternative approaches.    
 
 ```bash
 # Navigate to the Ansible playbook folder
@@ -785,4 +785,4 @@ The following rules require manual remediation and are not automated.
 Perform any needed functional testing to ensure the functionality and operation of the environment remain intact.
 
 ## Rerun auditing after remediation
-To audit VCF application STIG rules post-remediation rerun the auditing steps [here](/docs/tutorials/cloud-foundation-9.x/product/vcf-application/audit9-app/).
+To audit VCF application STIG rules post-remediation rerun the auditing steps [here](/docs/tutorials/cloud-foundation-9x/product/vcf-application/audit9-app/audit9-app.md).

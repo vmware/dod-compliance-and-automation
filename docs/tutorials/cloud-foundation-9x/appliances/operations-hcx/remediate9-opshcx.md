@@ -9,7 +9,7 @@ This tutorial covers remediating the Operations HCX appliance in VCF deployments
 > - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
 > - Have an understanding of Ansible playbooks and concepts.
 > - Have a back out plan so the changes can be rolled back if necessary.
-> - Have read the [Ansible Overview](/docs/tutorials/cloud-foundation-9.x/ansible-playbook_overview/) and understand the structure of the Ansible playbook provided here.
+> - Have read the [Ansible Overview](/docs/tutorials/cloud-foundation-9x/ansible-playbook-overview.md) and understand the structure of the Ansible playbook provided here.
 
 > **Failure to do so can result in unintended behavior in the environment.**  
 

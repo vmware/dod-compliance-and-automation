@@ -184,7 +184,7 @@ Test Summary: 55 successful, 59 failures, 5 skipped
 ```
 
 ## Convert the results to CKL
-If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli.md).
 
 > **Note** These steps are only valid if the audit was conducted against a single ESX host. For multiple hosts see the section below on using the InSpec runner script.
 
@@ -210,12 +210,12 @@ saf convert hdf2ckl -i /tmp/reports/VCF_9_ESX_esx1_Report.json -o /tmp/reports/V
 ```
 
 Opening the CKL file in STIG Viewer will look like the screenshot below. Note the InSpec results are included in the `Finding Details` pane.  
-![STIG Viewer Checklist](../../../images/esx_audit9_ckl_screenshot.png)
+![STIG Viewer Checklist](../../../../../../images/esx_audit9_ckl_screenshot.png)
 
 ## Auditing ESX hosts in bulk
 For accreditation purposes there may be a requirement to produce a CKL file for each ESX host and/or VM. To support this use case a PowerCLI script has been created that acts as a runner for InSpec to loop through a list of hosts or VMs, then produce a json report for each, and if the SAF CLI is installed also create a CKL file.  
 
-With this script an [attestation](/docs/automation-tools/safcli/#creating-and-applying-manual-attestations) file can also be provided that will be applied to the results and incorporated into the CKL file.
+With this script an [attestation](/docs/automation-tools/safcli.md) file can also be provided that will be applied to the results and incorporated into the CKL file.
 
 ### Prerequisites
 * Authentication configured for vCenter. See previous section for details.
@@ -281,4 +281,4 @@ The following rules require manual auditing and are not automated.
 | `VCFE-9X-000233`     |The ESX host must not be configured to override virtual machine (VM) logger settings.                                                    |
 
 ## Next
-If needed proceed to the remediation tutorial for ESX [here](/docs/tutorials/cloud-foundation-9.x/product/esx/remediate9-esx/).
+If needed proceed to the remediation tutorial for ESX [here](/docs/tutorials/cloud-foundation-9x/product/esx/remediate9-esx/remediate9-esx.md).
