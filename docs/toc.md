@@ -1,3 +1,5 @@
+# VMware Cloud Foundation STIG Documentation
+
 * [VMware Cloud Foundation STIG Documentation](overview/overview.md)
 * [Best Practices](best-practices/best-practices.md)
   * [Types of Guidance](best-practices/types-of-guidance.md)
