@@ -389,7 +389,7 @@ var_vault_operations_fm_api_token:
 ```
 
 ### Update Ansible variables for Operations Fleet Management tasks
-Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](../../../../../tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
+Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](../../../../../tutorials/cloud-foundation-9x/ansible-playbook-overview.md) for more details on how variables are structured and for alternative approaches.    
 
 ```bash
 # Navigate to the Ansible playbook folder
@@ -644,7 +644,7 @@ var_vault_operations_hcx_session_token:
 ```
 
 ### Update Ansible variables for Operations HCX tasks
-Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](../../../../../tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
+Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](../../../../../tutorials/cloud-foundation-9x/ansible-playbook-overview.md) for more details on how variables are structured and for alternative approaches.    
 
 ```bash
 # Navigate to the Ansible playbook folder
@@ -735,7 +735,7 @@ var_vault_sddcmgr_bearer_token:
 ```
 
 ### Update Ansible variables for SDDC Manager tasks
-Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](../../../../../tutorials/cloud-foundation-9.x/ansible-playbook-overview) for more details on how variables are structured and for alternative approaches.    
+Update environment specific variable values before running the playbook. In this example the group vars are being updated, see the [VCF 9.x Ansible Playbook Overview](../../../../../tutorials/cloud-foundation-9x/ansible-playbook-overview.md) for more details on how variables are structured and for alternative approaches.    
 
 ```bash
 # Navigate to the Ansible playbook folder

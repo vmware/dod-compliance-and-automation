@@ -292,7 +292,7 @@ We have also created a PowerCLI script that acts as a runner for InSpec to loop 
 
 Currently we have an example for doing this with ESXi hosts available [here](https://github.com/vmware/dod-compliance-and-automation/blob/master/vsphere/7.0/vsphere/powercli/VMware_vSphere_7.0_STIG_ESXi_InSpec_Runner.ps1).
 
-With this script an [attestation](../../automation-tools/safcli/#creating-and-applying-manual-attestations) file can also be provided that will be applied to the results and incorporated into the CKL file.
+With this script an [attestation](../../automation-tools/safcli.md) file can also be provided that will be applied to the results and incorporated into the CKL file.
 
 To use the runner script, do the following:
 ```powershell
@@ -403,7 +403,7 @@ Test Summary: 1516 successful, 106 failures, 0 skipped
 ```
 
 ## Convert the results to CKL
-If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](../../automation-tools/safcli/).
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](../../automation-tools/safcli.md).
 
 ```powershell
 # Converting the VCSA scan results from the prior section to CKL
