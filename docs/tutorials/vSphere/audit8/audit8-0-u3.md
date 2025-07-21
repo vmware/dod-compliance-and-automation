@@ -358,7 +358,7 @@ cinc-auditor exec . -t vmware:// --show-progress --enhanced-outcomes --input-fil
 ### InSpec runner scripts
 For accreditation purposes there may be a requirement to produce a CKL file for each ESXi host and/or VM. We have also created a PowerCLI script that acts as a runner for InSpec to loop through a list of hosts or VMs, then produce a json report for each, and if the SAF CLI is installed also create a CKL file.  
 
-With this script an [attestation](/docs/automation-tools/safcli/#creating-and-applying-manual-attestations) file can also be provided that will be applied to the results and incorporated into the CKL file.
+With this script an [attestation](../../../automation-tools/safcli/#creating-and-applying-manual-attestations) file can also be provided that will be applied to the results and incorporated into the CKL file.
 
 #### Using the ESXi runner script
 To use the runner script, do the following:
@@ -494,7 +494,7 @@ Test Summary: 1240 successful, 80 failures, 0 skipped
 ```
 
 ## Convert the results to CKL
-If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli/).
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](../../../automation-tools/safcli/).
 
 ```bash
 # Converting the VCSA scan results from the prior section to CKL

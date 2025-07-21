@@ -125,7 +125,7 @@ Test Summary: 121 successful, 24 failures, 6 skipped
 ```
 
 ## Convert the results to CKL
-If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli.md).
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](../../../../../automation-tools/safcli.md).
 
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
@@ -162,4 +162,4 @@ The following rules require manual auditing and are not automated.
 | `VCFR-9X-000112`     |The VMware Cloud Foundation NSX Tier-1 Gateway must be configured to have all inactive interfaces removed.                               |
 
 ## Next
-If needed proceed to the remediation tutorial for NSX [here](/docs/tutorials/cloud-foundation-9x/product/nsx/remediate9-nsx/remediate9-nsx.md).
+If needed proceed to the remediation tutorial for NSX [here](../../../../../tutorials/cloud-foundation-9x/product/nsx/remediate9-nsx/remediate9-nsx.md).

@@ -8,7 +8,7 @@ This tutorial covers remediating Virtual Machines in VCF deployments.
 > - Have familiarity with the rules contained in the various VMware STIGs and have evaluated those for impact and implementation considerations in the environment.  
 > - Have an understanding of PowerShell and PowerCLI.
 > - Have a back out plan so the changes can be rolled back if necessary.
-> - Have read the [PowerCLI Overview](/docs/automation-tools/powercli.md).
+> - Have read the [PowerCLI Overview](../../../../../automation-tools/powercli.md).
 
 > **Failure to do so can result in unintended behavior in the environment.**  
 
@@ -162,4 +162,4 @@ The following rules require manual remediation if not compliant and are not auto
 Perform any needed functional testing to ensure the functionality and operation of the environment remain intact.
 
 ## Rerun auditing after remediation
-To audit ESX hosts post-remediation rerun the auditing steps [here](/docs/tutorials/cloud-foundation-9x/product/virtual-machines/audit9-vm/audit9-vm.md).
+To audit ESX hosts post-remediation rerun the auditing steps [here](../../../../../tutorials/cloud-foundation-9x/product/virtual-machines/audit9-vm/audit9-vm.md).

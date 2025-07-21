@@ -40,7 +40,7 @@ Test Summary: 547 successful, 28 failures, 2 skipped
 ```
 
 ## Convert the results to CKL
-If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli.md).
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](../../../../automation-tools/safcli.md).
 
 ### Update the target details in the metadata file
 

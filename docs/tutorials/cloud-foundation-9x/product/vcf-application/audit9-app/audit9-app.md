@@ -354,7 +354,7 @@ cinc-auditor exec . -t vmware:// --show-progress --enhanced-outcomes --input-fil
 ```
 
 ## Convert the results to CKL
-If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](/docs/automation-tools/safcli.md).
+If a STIG Viewer CKL file is needed then the results from the scans can be converted to CKL with the [SAF CLI](../../../../../automation-tools/safcli.md).
 
 ### Update the target details in the metadata file
 First update the target hostname, hostip, hostmac, and hostfqdn fields in the `saf_cli_hdf2ckl_metadata.json` metadata file
@@ -446,4 +446,4 @@ saf attest apply -i /tmp/reports/VCF_9_Application_Report.json /usr/share/stigs/
 ```
 
 ## Next
-If needed proceed to the remediation tutorial for VCF Application rules [here](/docs/tutorials/cloud-foundation-9x/product/vcf-application/remediate9-app/remediate9-app.md).
+If needed proceed to the remediation tutorial for VCF Application rules [here](../../../../../tutorials/cloud-foundation-9x/product/vcf-application/remediate9-app/remediate9-app.md).
