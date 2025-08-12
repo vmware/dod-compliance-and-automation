@@ -1,9 +1,6 @@
----
-title: "Remediate vSphere 7"
-weight: 4
-description: >
-  Remediating vSphere 7 for STIG Compliance
----
+# Remediate vSphere 7
+Remediating vSphere 7 for STIG Compliance
+
 ## Overview
 Remediating vSphere for STIG compliance involves configuring ESXi, Virtual Machines, vCenter, and the vCenter appliance.
 

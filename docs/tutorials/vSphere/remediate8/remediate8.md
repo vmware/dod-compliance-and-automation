@@ -1,4 +1,4 @@
-* Remediate vSphere 8
+# Remediate vSphere 8
 
 ## Overview
 Remediating vSphere for STIG compliance involves configuring ESXi, Virtual Machines, vCenter, and the vCenter appliance.

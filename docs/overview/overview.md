@@ -7,6 +7,7 @@ STIG documents are written to be portable, offline hardening documentation where
 ## Why do I want it?
 
 The example automation provided will help with the following tasks:
+
 - Scanning VMware products for STIG compliance.
 - Generating artifacts such as compliance reports to visualize compliance status and CKL files for accreditation.
 - Remediating VMware products for STIG compliance.
