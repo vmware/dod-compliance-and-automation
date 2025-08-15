@@ -112,13 +112,13 @@ cd /usr/share/stigs/vcf/9.x/Y25M06-srg/ansible/vmware-cloud-foundation-stig-ansi
 ansible-playbook playbook_api.yml -i inventory_vcf.yml -l nsx_mgmt_mgr_1 -v --ask-vault-pass -e @vault_vcf.yml
 
 # Run a subset of STIG rules by STIG ID on a single NSX Manager in inventory named nsx_mgmt_mgr_1.
-ansible-playbook playbook.yml -i inventory_vcf.yml -l nsx_mgmt_mgr_1 -v --ask-vault-pass -e @vault_vcf.yml --tags VCFN-9X-000007
+ansible-playbook playbook_api.yml -i inventory_vcf.yml -l nsx_mgmt_mgr_1 -v --ask-vault-pass -e @vault_vcf.yml --tags VCFN-9X-000007
 
 # Run a specific role by tag on a single NSX Manager in inventory named nsx_mgmt_mgr_1.
-ansible-playbook playbook.yml -i inventory_vcf.yml -l nsx_mgmt_mgr_1 -v --ask-vault-pass -e @vault_vcf.yml --tags nsx-manager
+ansible-playbook playbook_api.yml -i inventory_vcf.yml -l nsx_mgmt_mgr_1 -v --ask-vault-pass -e @vault_vcf.yml --tags nsx-manager
 
 # Run all applicable roles on all NSX Managers in inventory.
-ansible-playbook playbook.yml -i inventory_vcf.yml -l nsxmanager -v --ask-vault-pass -e @vault_vcf.yml
+ansible-playbook playbook_api.yml -i inventory_vcf.yml -l nsxmanager -v --ask-vault-pass -e @vault_vcf.yml
 
 # Output example
 TASK [nsx_manager : VCFN-9X-000012 - Update authentication policy] ************************************************************************************************************************************************************
