@@ -1,0 +1,10 @@
+---
+
+- name: Include vPostgres
+  ansible.builtin.include_tasks:
+    file: vpostgres.yml
+    apply:
+      tags:
+        - vpostgres
+  tags:
+    - always

@@ -1,0 +1,5 @@
+run_sshd_listenaddress: false
+var_syslog_authpriv_log: '/var/log/messages'
+run_enable_pgaudit: false
+run_configure_pgaudit: false
+var_password_encryption: md5
