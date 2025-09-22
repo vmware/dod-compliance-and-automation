@@ -29,12 +29,12 @@ control 'PSQL-00-000110' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000503-DB-000350'
-  tag satisfies: ['SRG-APP-000503-DB-000351', 'SRG-APP-000508-DB-000358', 'SRG-APP-000506-DB-000353']
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000503-DB-000351', 'SRG-APP-000506-DB-000353', 'SRG-APP-000508-DB-000358']
+  tag gid: 'V-PSQL-00-000110'
+  tag rid: 'SV-PSQL-00-000110'
   tag stig_id: 'PSQL-00-000110'
-  tag cci: ['CCI-000172', 'CCI-000172', 'CCI-000172', 'CCI-000172']
-  tag nist: ['AU-12 c', 'AU-12 c', 'AU-12 c', 'AU-12 c']
+  tag cci: ['CCI-000172']
+  tag nist: ['AU-12 c']
 
   sql_result = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SHOW log_connections;\"'")
 

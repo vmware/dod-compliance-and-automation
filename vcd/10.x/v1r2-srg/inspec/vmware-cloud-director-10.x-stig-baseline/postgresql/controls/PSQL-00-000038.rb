@@ -32,14 +32,14 @@ control 'PSQL-00-000038' do
 
     # service postgresql reload
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000171-DB-000074'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PSQL-00-000038'
+  tag rid: 'SV-PSQL-00-000038'
   tag stig_id: 'PSQL-00-000038'
-  tag cci: ['CCI-000196']
-  tag nist: ['IA-5 (1) (c)']
+  tag cci: ['CCI-004062']
+  tag nist: ['IA-5 (1) (d)']
 
   sql_result = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SHOW password_encryption;\"'")
 

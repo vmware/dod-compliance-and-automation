@@ -38,11 +38,11 @@ control 'PSQL-00-000010' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000095-DB-000039'
   tag satisfies: ['SRG-APP-000096-DB-000040', 'SRG-APP-000097-DB-000041', 'SRG-APP-000098-DB-000042', 'SRG-APP-000099-DB-000043', 'SRG-APP-000100-DB-000201', 'SRG-APP-000101-DB-000044', 'SRG-APP-000375-DB-000323']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PSQL-00-000010'
+  tag rid: 'SV-PSQL-00-000010'
   tag stig_id: 'PSQL-00-000010'
-  tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-001487', 'CCI-000135', 'CCI-001889']
-  tag nist: ['AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3 (1)', 'AU-8 b']
+  tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000135', 'CCI-001487', 'CCI-001889']
+  tag nist: ['AU-3 (1)', 'AU-3 a', 'AU-3 b', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 f', 'AU-8 b']
 
   sql_result = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SHOW log_line_prefix;\"'")
 

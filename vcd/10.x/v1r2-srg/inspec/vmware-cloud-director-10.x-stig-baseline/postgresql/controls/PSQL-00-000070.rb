@@ -34,11 +34,11 @@ control 'PSQL-00-000070' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000356-DB-000314'
   tag satisfies: ['SRG-APP-000381-DB-000361']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PSQL-00-000070'
+  tag rid: 'SV-PSQL-00-000070'
   tag stig_id: 'PSQL-00-000070'
-  tag cci: ['CCI-001844', 'CCI-001814']
-  tag nist: ['AU-3 (2)', 'CM-5 (1)']
+  tag cci: ['CCI-001844', 'CCI-003938']
+  tag nist: ['AU-3 (2)', 'CM-5 (1) (b)']
 
   sql_result = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SHOW logging_collector;\"'")
 

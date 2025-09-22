@@ -33,8 +33,8 @@ control 'PSQL-00-000114' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000505-DB-000352'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PSQL-00-000114'
+  tag rid: 'SV-PSQL-00-000114'
   tag stig_id: 'PSQL-00-000114'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']

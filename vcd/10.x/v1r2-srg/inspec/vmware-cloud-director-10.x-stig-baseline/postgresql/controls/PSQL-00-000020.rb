@@ -25,7 +25,7 @@ control 'PSQL-00-000020' do
 
     After finding the log destination, execute the following command:
 
-    find <log dir>/* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group postgres ')' -exec ls -ld {} \\;
+    $ find <log dir>/* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group postgres ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
@@ -53,15 +53,11 @@ control 'PSQL-00-000020' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000118-DB-000059'
   tag satisfies: ['SRG-APP-000119-DB-000060', 'SRG-APP-000120-DB-000061']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PSQL-00-000020'
+  tag rid: 'SV-PSQL-00-000020'
   tag stig_id: 'PSQL-00-000020'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9', 'AU-9', 'AU-9']
-
-  pg_log_dir = input('pg_log_dir')
-  pg_owner = input('pg_owner')
-  pg_group = input('pg_group')
+  tag nist: ['AU-9 a']
 
   sql_lfm = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SHOW log_file_mode;\"'")
 
@@ -69,7 +65,7 @@ control 'PSQL-00-000020' do
     subject { sql_lfm.stdout.strip }
     it { should cmp '0600' }
   end
-  
+
   sql_ld = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SHOW log_directory;\"'")
 
   describe "Log Directory - '#{sql_ld.stdout.strip}'" do

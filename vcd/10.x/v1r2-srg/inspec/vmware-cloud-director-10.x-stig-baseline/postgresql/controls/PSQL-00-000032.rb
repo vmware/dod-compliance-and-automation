@@ -26,11 +26,11 @@ control 'PSQL-00-000032' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-DB-000091'
   tag satisfies: ['SRG-APP-000141-DB-000093']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PSQL-00-000032'
+  tag rid: 'SV-PSQL-00-000032'
   tag stig_id: 'PSQL-00-000032'
-  tag cci: ['CCI-000381', 'CCI-000381']
-  tag nist: ['CM-7 a', 'CM-7 a']
+  tag cci: ['CCI-000381']
+  tag nist: ['CM-7 a']
 
   pg_approved_extensions = input('pg_approved_extensions')
 

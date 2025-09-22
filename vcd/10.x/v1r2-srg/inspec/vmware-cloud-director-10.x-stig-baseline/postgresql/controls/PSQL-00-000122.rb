@@ -42,11 +42,12 @@ control 'PSQL-00-000122' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000515-DB-000318'
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000745-DB-000120', 'SRG-APP-000795-DB-000130']
+  tag gid: 'V-PSQL-00-000122'
+  tag rid: 'SV-PSQL-00-000122'
   tag stig_id: 'PSQL-00-000122'
-  tag cci: ['CCI-001851']
-  tag nist: ['AU-4 (1)']
+  tag cci: ['CCI-001851', 'CCI-003821', 'CCI-003831']
+  tag nist: ['AU-4 (1)', 'AU-6 (4)', 'AU-9 b']
 
   syslog_enabled = input('syslog_enabled')
 

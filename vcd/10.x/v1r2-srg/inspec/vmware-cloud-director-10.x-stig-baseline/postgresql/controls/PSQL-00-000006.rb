@@ -28,12 +28,12 @@ control 'PSQL-00-000006' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000090-DB-000065'
-  tag satisfies: ['SRG-APP-000380-DB-000360', 'SRG-APP-000121-DB-000202', 'SRG-APP-000122-DB-000203', 'SRG-APP-000123-DB-000204']
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000121-DB-000202', 'SRG-APP-000122-DB-000203', 'SRG-APP-000123-DB-000204', 'SRG-APP-000380-DB-000360']
+  tag gid: 'V-PSQL-00-000006'
+  tag rid: 'SV-PSQL-00-000006'
   tag stig_id: 'PSQL-00-000006'
-  tag cci: ['CCI-000171', 'CCI-001813', 'CCI-001493', 'CCI-001494', 'CCI-001495']
-  tag nist: ['AU-12 b', 'CM-5 (1)', 'AU-9', 'AU-9', 'AU-9']
+  tag cci: ['CCI-000171', 'CCI-001493', 'CCI-001494', 'CCI-001495', 'CCI-001813']
+  tag nist: ['AU-12 b', 'AU-9', 'AU-9 a', 'CM-5 (1) (a)']
 
   pg_owner = input('pg_owner')
   pg_group = input('pg_group')

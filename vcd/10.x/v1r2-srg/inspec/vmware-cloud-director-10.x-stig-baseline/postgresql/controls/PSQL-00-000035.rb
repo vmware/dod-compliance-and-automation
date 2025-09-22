@@ -38,11 +38,11 @@ control 'PSQL-00-000035' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000142-DB-000094'
   tag satisfies: ['SRG-APP-000383-DB-000364']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-PSQL-00-000035'
+  tag rid: 'SV-PSQL-00-000035'
   tag stig_id: 'PSQL-00-000035'
   tag cci: ['CCI-000382', 'CCI-001762']
-  tag nist: ['CM-7 b', 'CM-7 (1) (b)']
+  tag nist: ['CM-7 (1) (b)', 'CM-7 b']
 
   sql_result = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SHOW port;\"'")
 
