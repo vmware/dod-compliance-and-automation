@@ -41,9 +41,17 @@ control 'NGNX-WB-000099' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
-  command('nginx -T 2>&1 | grep "ssi "').stdout.split.each do |result|
-    describe result do
-      it { should cmp 'ssi off;' }
+  ssis = command('nginx -T 2>&1 | grep "ssi "').stdout
+
+  if !ssis.empty?
+    ssis.split.each do |result|
+      describe result do
+        it { should cmp 'ssi off;' }
+      end
+    end
+  else
+    describe 'Server Side Includes should be disabled...' do
+      skip 'Server Side Includes should be disabled...skipping...'
     end
   end
 end

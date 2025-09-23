@@ -52,17 +52,8 @@ nginx_content_security_policy: ["Content-Security-Policy", "default-src 'self'; 
 authprivlog: /var/log/messages
 
 # PostgreSQL
-postgres_user: postgres
-postgres_pass: 'Welcome%401234'
-postgres_host: localhost
 syslog_enabled: false
 pg_data_dir: /var/vmware/vpostgres/current/pgdata/
 pg_log_dir: /var/vmware/vpostgres/current/pgdata/log
 pg_owner: postgres
 pg_group: users
-ssl_enabled: true
-pg_ssl_key:  /opt/vmware/appliance/etc/ssl/vcd_ova.key
-allowed_object_owners:
-  - postgres
-  - vcloud
-  - repmgr

@@ -1,3 +1,1 @@
-include_controls 'photon' do
-
-end
+include_controls 'photon'

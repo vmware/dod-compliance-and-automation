@@ -36,9 +36,17 @@ control 'NGNX-WB-000062' do
   tag cci: ['CCI-001312', 'CCI-001310']
   tag nist: ['SI-11 a', 'SI-10']
 
-  command('nginx -T 2>&1 | grep "autoindex"').stdout.split.each do |result|
-    describe result do
-      it { should cmp 'autoindex off;' }
+  autos = command('nginx -T 2>&1 | grep "autoindex"').stdout
+
+  if !autos.empty?
+    autos.split.each do |result|
+      describe result do
+        it { should cmp 'autoindex off;' }
+      end
+    end
+  else
+    describe 'Directory Listings should be disabled...' do
+      skip 'Directory Listings should be disabled...skipping...'
     end
   end
 end

@@ -70,15 +70,15 @@ control 'PSQL-00-000020' do
 
   describe "Log Directory - '#{sql_ld.stdout.strip}'" do
     subject { sql_ld.stdout.strip }
-    it { should cmp pg_log_dir }
+    it { should cmp input('pg_log_dir') }
   end
 
-  logfiles = command("find #{pg_log_dir}/* -xdev -type f -a '(' -not -perm 600 -o -not -user #{pg_owner} -o -not -group #{pg_group} ')'")
+  logfiles = command("find #{input('pg_log_dir')}/* -xdev -type f -a '(' -not -perm 600 -o -not -user #{input('pg_owner')} -o -not -group #{input('pg_group')} ')'")
   logfiles.stdout.split.each do |fname|
     describe file(fname) do
       its('mode') { should cmp '0600' }
-      its('owner') { should cmp pg_owner }
-      its('group') { should cmp pg_group }
+      its('owner') { should cmp input('pg_owner') }
+      its('group') { should cmp input('pg_group') }
     end
   end
 end

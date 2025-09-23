@@ -52,7 +52,8 @@ control 'CDAP-10-000136' do
   approvedDenyLists = input('approvedDenyLists')
   result = command('/opt/vmware/vcloud-director/bin/cell-management-tool manage-test-connection-denylist --list | grep Connection').stdout
   denylists = result.strip.split("\n")
-  if denylists
+
+  if !denylists.empty?
     denylists.each do |denylist|
       denylist = denylist.scan(/Connection specification: "(.*)"/).flatten
       describe denylist do
@@ -60,7 +61,8 @@ control 'CDAP-10-000136' do
       end
     end
   else
-    describe result do
+    describe 'Test Connection Deny List' do
+      subject { result }
       it { should_not be_empty }
     end
   end

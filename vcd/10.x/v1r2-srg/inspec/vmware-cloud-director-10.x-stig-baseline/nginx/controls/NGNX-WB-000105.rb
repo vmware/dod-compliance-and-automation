@@ -51,8 +51,12 @@ control 'NGNX-WB-000105' do
   header_value = input('nginx_content_security_policy')
   header_name = 'Content-Security-Policy'
 
+  http_header_found = false
+
   # Check to see if headers exist in the http block, if they do if any are defined in a server or location block must also include this header
   if http_block_headers
+    http_header_found = true
+
     describe http_block_headers do
       it { should include header_value }
     end
@@ -66,28 +70,28 @@ control 'NGNX-WB-000105' do
         end
       end
     end
+  end
+
   # If none exist in the http block check the server and location blocks
-  else
-    # Check each server block
-    servers.each do |server|
-      server_headers = server.params['add_header']
-      server_name = server.params['server_name']
-      next unless server_headers && server_name == [['localhost']]
-      if server_headers
-        describe "Found headers defined in server: #{server.params['server_name']}" do
-          it "should have a #{header_name} header" do
-            expect(server_headers).to include(header_value)
-          end
+  # Check each server block
+  servers.each do |server|
+    server_headers = server.params['add_header']
+
+    if server_headers
+      describe 'Found headers defined' do
+        it "Server should have a #{header_name} header" do
+          expect(server_headers).to include(header_value)
         end
-      else
-        describe "No headers defined in server: #{server.params['server_name']}" do
-          it "should have a #{header_name} header" do
-            expect(server_headers).to_not eq nil
-          end
+      end
+    elsif !http_header_found
+      describe "No headers defined in server: #{server.params['server_name']}" do
+        it "should have a #{header_name} header" do
+          expect(server_headers).to_not eq nil
         end
       end
     end
   end
+
   locations.each do |location|
     location_headers = location.params['add_header']
     next unless location_headers
