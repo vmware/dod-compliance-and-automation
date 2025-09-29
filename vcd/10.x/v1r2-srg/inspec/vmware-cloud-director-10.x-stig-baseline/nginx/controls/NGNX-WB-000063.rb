@@ -44,11 +44,11 @@ control 'NGNX-WB-000063' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000159'
   tag satisfies: ['SRG-APP-000266-WSR-000160']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000063'
+  tag rid: 'SV-NGNX-WB-000063'
   tag stig_id: 'NGNX-WB-000063'
-  tag cci: ['CCI-001312', 'CCI-001312']
-  tag nist: ['SI-11 a', 'SI-11 a']
+  tag cci: ['CCI-001312']
+  tag nist: ['SI-11 a']
 
   # Check for setting in HTTP block
   describe nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['server_tokens'] do

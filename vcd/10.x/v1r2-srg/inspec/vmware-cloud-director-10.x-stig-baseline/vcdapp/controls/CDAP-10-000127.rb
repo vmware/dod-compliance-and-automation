@@ -32,11 +32,11 @@ control 'CDAP-10-000127' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000514-AS-000137'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CDAP-10-000127'
+  tag rid: 'SV-CDAP-10-000127'
   tag stig_id: 'CDAP-10-000127'
   tag cci: ['CCI-002450']
-  tag nist: ['SC-13']
+  tag nist: ['SC-13 b']
 
   describe ssl_certificate(host: "#{input('vcdURL')}", port: 5480) do
     its('issuer_organization') { should cmp 'U.S. Government' }

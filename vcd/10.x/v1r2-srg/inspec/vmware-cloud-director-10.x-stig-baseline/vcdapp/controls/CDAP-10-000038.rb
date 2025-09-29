@@ -33,12 +33,12 @@ control 'CDAP-10-000038' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000148-AS-000101'
-  tag satisfies: ['SRG-APP-000149-AS-000102', 'SRG-APP-000177-AS-000126', 'SRG-APP-000080-AS-000045']
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000080-AS-000045', 'SRG-APP-000149-AS-000102', 'SRG-APP-000177-AS-000126', 'SRG-APP-000705-AS-000110', 'SRG-APP-000820-AS-000170', 'SRG-APP-000825-AS-000180']
+  tag gid: 'V-CDAP-10-000038'
+  tag rid: 'SV-CDAP-10-000038'
   tag stig_id: 'CDAP-10-000038'
-  tag cci: ['CCI-000764', 'CCI-000765', 'CCI-000187', 'CCI-000166']
-  tag nist: ['IA-2', 'IA-2 (1)', 'IA-5 (2) (c)', 'AU-10']
+  tag cci: ['CCI-000166', 'CCI-000187', 'CCI-000764', 'CCI-000765', 'CCI-003628', 'CCI-004046', 'CCI-004047']
+  tag nist: ['AC-2 (3) (b)', 'AU-10', 'IA-2', 'IA-2 (1)', 'IA-2 (6) (a)', 'IA-2 (6) (b)', 'IA-5 (2) (a) (2)']
 
   result = http("https://#{input('vcdURL')}/api/org",
                 method: 'GET',

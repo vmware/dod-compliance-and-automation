@@ -18,11 +18,11 @@ control 'CDAP-10-000132' do
 
     # /opt/vmware/appliance/bin/disable_root_login.sh
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CDAP-10-000132'
+  tag rid: 'SV-CDAP-10-000132'
   tag stig_id: 'CDAP-10-000132'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

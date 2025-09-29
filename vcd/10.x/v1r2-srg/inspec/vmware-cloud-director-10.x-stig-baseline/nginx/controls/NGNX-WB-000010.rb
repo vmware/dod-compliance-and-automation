@@ -39,12 +39,12 @@ control 'NGNX-WB-000010' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000095-WSR-000056'
-  tag satisfies: ['SRG-APP-000096-WSR-000057', 'SRG-APP-000097-WSR-000058', 'SRG-APP-000098-WSR-000059', 'SRG-APP-000098-WSR-000060', 'SRG-APP-000100-WSR-000064', 'SRG-APP-000099-WSR-000061', 'SRG-APP-000375-WSR-000171']
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000096-WSR-000057', 'SRG-APP-000097-WSR-000058', 'SRG-APP-000098-WSR-000059', 'SRG-APP-000098-WSR-000060', 'SRG-APP-000099-WSR-000061', 'SRG-APP-000100-WSR-000064', 'SRG-APP-000375-WSR-000171']
+  tag gid: 'V-NGNX-WB-000010'
+  tag rid: 'SV-NGNX-WB-000010'
   tag stig_id: 'NGNX-WB-000010'
-  tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000133', 'CCI-001487', 'CCI-000134', 'CCI-001889']
-  tag nist: ['AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-3', 'AU-8 b']
+  tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-001487', 'CCI-001889']
+  tag nist: ['AU-3 a', 'AU-3 b', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 f', 'AU-8 b']
 
   log_format = nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['log_format']
   nginx_access_log_format_name = input('nginx_access_log_format_name')

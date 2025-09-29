@@ -32,11 +32,11 @@ control 'NGNX-WB-000099' do
 
     # nginx -s reload
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-WSR-000174'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000099'
+  tag rid: 'SV-NGNX-WB-000099'
   tag stig_id: 'NGNX-WB-000099'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

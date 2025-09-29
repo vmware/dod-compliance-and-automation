@@ -27,15 +27,15 @@ control 'CDAP-10-000003' do
 
     # /opt/vmware/vcloud-director/bin/cell-management-tool ssl-protocols -d \"TLSv1,TLSv1.1\"
   "
-  impact 0.3
-  tag severity: 'low'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000015-AS-000010'
-  tag satisfies: ['SRG-APP-000439-AS-000155', 'SRG-APP-000441-AS-000258', 'SRG-APP-000442-AS-000259', 'SRG-APP-000440-AS-000167']
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000439-AS-000155', 'SRG-APP-000440-AS-000167', 'SRG-APP-000441-AS-000258', 'SRG-APP-000442-AS-000259']
+  tag gid: 'V-CDAP-10-000003'
+  tag rid: 'SV-CDAP-10-000003'
   tag stig_id: 'CDAP-10-000003'
-  tag cci: ['CCI-001453', 'CCI-002418', 'CCI-002420', 'CCI-002422', 'CCI-002421']
-  tag nist: ['AC-17 (2)', 'SC-8', 'SC-8 (2)', 'SC-8 (2)', 'SC-8 (1)']
+  tag cci: ['CCI-001453', 'CCI-002418', 'CCI-002420', 'CCI-002421', 'CCI-002422']
+  tag nist: ['AC-17 (2)', 'SC-8', 'SC-8 (1)', 'SC-8 (2)']
 
   result = http("https://#{input('vcdURL')}/cloudapi/1.0.0/ssl/settings",
                 method: 'GET',

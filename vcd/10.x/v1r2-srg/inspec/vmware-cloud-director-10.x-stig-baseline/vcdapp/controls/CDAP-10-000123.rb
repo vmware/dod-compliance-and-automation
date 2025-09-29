@@ -18,11 +18,11 @@ control 'CDAP-10-000123' do
 
     # /opt/vmware/vcloud-director/bin/cell-management-tool configure-ceip --disable
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CDAP-10-000123'
+  tag rid: 'SV-CDAP-10-000123'
   tag stig_id: 'CDAP-10-000123'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

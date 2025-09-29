@@ -42,11 +42,11 @@ control 'NGNX-WB-000047' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000220-WSR-000201'
   tag satisfies: ['SRG-APP-000295-WSR-000012', 'SRG-APP-000295-WSR-000134']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000047'
+  tag rid: 'SV-NGNX-WB-000047'
   tag stig_id: 'NGNX-WB-000047'
-  tag cci: ['CCI-001185', 'CCI-002361', 'CCI-002361']
-  tag nist: ['SC-23 (1)', 'AC-12', 'AC-12']
+  tag cci: ['CCI-001185', 'CCI-002361']
+  tag nist: ['AC-12', 'SC-23 (1)']
 
   nginx_ssl_session_timeout = input('nginx_ssl_session_timeout')
 

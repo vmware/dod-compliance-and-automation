@@ -43,8 +43,8 @@ control 'NGNX-WB-000004' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000015-WSR-000014'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000004'
+  tag rid: 'SV-NGNX-WB-000004'
   tag stig_id: 'NGNX-WB-000004'
   tag cci: ['CCI-001453']
   tag nist: ['AC-17 (2)']

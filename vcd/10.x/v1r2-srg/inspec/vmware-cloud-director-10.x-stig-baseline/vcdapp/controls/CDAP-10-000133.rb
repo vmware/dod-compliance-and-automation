@@ -14,11 +14,11 @@ control 'CDAP-10-000133' do
 
     Select the target feature flag and click Disable.
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CDAP-10-000133'
+  tag rid: 'SV-CDAP-10-000133'
   tag stig_id: 'CDAP-10-000133'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

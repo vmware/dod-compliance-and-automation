@@ -34,8 +34,8 @@ control 'NGNX-WB-000007' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000089-WSR-000047'
   tag satisfies: ['SRG-APP-000092-WSR-000055']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000007'
+  tag rid: 'SV-NGNX-WB-000007'
   tag stig_id: 'NGNX-WB-000007'
   tag cci: ['CCI-000169', 'CCI-001464']
   tag nist: ['AU-12 a', 'AU-14 (1)']

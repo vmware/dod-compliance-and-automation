@@ -30,11 +30,11 @@ control 'NGNX-WB-000062' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000142'
   tag satisfies: ['SRG-APP-000251-WSR-000157']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000062'
+  tag rid: 'SV-NGNX-WB-000062'
   tag stig_id: 'NGNX-WB-000062'
-  tag cci: ['CCI-001312', 'CCI-001310']
-  tag nist: ['SI-11 a', 'SI-10']
+  tag cci: ['CCI-001310', 'CCI-001312']
+  tag nist: ['SI-10', 'SI-11 a']
 
   autos = command('nginx -T 2>&1 | grep "autoindex"').stdout
 

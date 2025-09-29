@@ -20,15 +20,15 @@ control 'NGNX-WB-000041' do
     If the output does not display an OpenSSL module that is FIPS 140-2 validated, this is a finding.
   "
   desc 'fix', 'NGINX does not support altering this configuration after installation and must be re-built with a valid OpenSSL module in order to be fixed.'
-  impact 0.3
-  tag severity: 'low'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000179-WSR-000110'
   tag satisfies: ['SRG-APP-000179-WSR-000111', 'SRG-APP-000224-WSR-000135', 'SRG-APP-000224-WSR-000136', 'SRG-APP-000224-WSR-000137', 'SRG-APP-000224-WSR-000139', 'SRG-APP-000416-WSR-000118']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000041'
+  tag rid: 'SV-NGNX-WB-000041'
   tag stig_id: 'NGNX-WB-000041'
-  tag cci: ['CCI-000803', 'CCI-000803', 'CCI-001188', 'CCI-001188', 'CCI-001188', 'CCI-001188', 'CCI-002450']
-  tag nist: ['IA-7', 'IA-7', 'SC-23 (3)', 'SC-23 (3)', 'SC-23 (3)', 'SC-23 (3)', 'SC-13']
+  tag cci: ['CCI-000803', 'CCI-001188', 'CCI-002450']
+  tag nist: ['IA-7', 'SC-13 b', 'SC-23 (3)']
 
   describe.one do
     describe command('nginx -V') do

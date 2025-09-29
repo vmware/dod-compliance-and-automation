@@ -45,11 +45,11 @@ control 'CDAP-10-000048' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000176-AS-000125'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CDAP-10-000048'
+  tag rid: 'SV-CDAP-10-000048'
   tag stig_id: 'CDAP-10-000048'
   tag cci: ['CCI-000186']
-  tag nist: ['IA-5 (2) (b)']
+  tag nist: ['IA-5 (2) (a) (1)']
 
   command("find /opt/vmware/vcloud-director/etc/ -type f -maxdepth 1 -name '*key'").stdout.split.each do |fname|
     describe file(fname) do

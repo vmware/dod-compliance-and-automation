@@ -42,11 +42,11 @@ control 'NGNX-WB-000048' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000223-WSR-000011'
   tag satisfies: ['SRG-APP-000439-WSR-000154', 'SRG-APP-000439-WSR-000155']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000048'
+  tag rid: 'SV-NGNX-WB-000048'
   tag stig_id: 'NGNX-WB-000048'
-  tag cci: ['CCI-001664', 'CCI-002418', 'CCI-002418']
-  tag nist: ['SC-23 (3)', 'SC-8', 'SC-8']
+  tag cci: ['CCI-001664', 'CCI-002418']
+  tag nist: ['SC-23 (3)', 'SC-8']
 
   http_block_headers = nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['add_header']
   servers = nginx_conf_custom(input('nginx_conf_path')).servers

@@ -25,11 +25,11 @@ control 'NGNX-WB-000078' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000380-WSR-000072'
   tag satisfies: ['SRG-APP-000211-WSR-000030', 'SRG-APP-000340-WSR-000029']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000078'
+  tag rid: 'SV-NGNX-WB-000078'
   tag stig_id: 'NGNX-WB-000078'
-  tag cci: ['CCI-001813', 'CCI-001082', 'CCI-002235']
-  tag nist: ['CM-5 (1)', 'SC-2', 'AC-6 (10)']
+  tag cci: ['CCI-001082', 'CCI-001813', 'CCI-002235']
+  tag nist: ['AC-6 (10)', 'CM-5 (1) (a)', 'SC-2']
 
   command('find /etc/nginx -xdev -type f').stdout.split.each do |fname|
     describe file(fname) do

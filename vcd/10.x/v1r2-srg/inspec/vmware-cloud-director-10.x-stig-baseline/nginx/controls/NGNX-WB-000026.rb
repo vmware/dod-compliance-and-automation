@@ -30,11 +30,11 @@ control 'NGNX-WB-000026' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000075'
   tag satisfies: ['SRG-APP-000141-WSR-000080']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000026'
+  tag rid: 'SV-NGNX-WB-000026'
   tag stig_id: 'NGNX-WB-000026'
-  tag cci: ['CCI-000381', 'CCI-000381']
-  tag nist: ['CM-7 a', 'CM-7 a']
+  tag cci: ['CCI-000381']
+  tag nist: ['CM-7 a']
 
   approved_modules = input('approved_modules')
 

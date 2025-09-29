@@ -42,12 +42,12 @@ control 'CDAP-10-000084' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000371-AS-000077'
-  tag satisfies: ['SRG-APP-000372-AS-000212']
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000372-AS-000212', 'SRG-APP-000920-AS-000320']
+  tag gid: 'V-CDAP-10-000084'
+  tag rid: 'SV-CDAP-10-000084'
   tag stig_id: 'CDAP-10-000084'
-  tag cci: ['CCI-001891', 'CCI-002046']
-  tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)']
+  tag cci: ['CCI-004922', 'CCI-004923', 'CCI-004926']
+  tag nist: ['SC-45', 'SC-45 (1) (a)', 'SC-45 (1) (b)']
 
   describe file('/etc/systemd/timesyncd.conf') do
     its('content') { should match /^NTP=#{input('ntpServers')}/ }

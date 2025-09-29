@@ -27,8 +27,8 @@ control 'CDAP-10-000130' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-AS-000237'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-CDAP-10-000130'
+  tag rid: 'SV-CDAP-10-000130'
   tag stig_id: 'CDAP-10-000130'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

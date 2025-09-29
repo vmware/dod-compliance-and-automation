@@ -29,15 +29,15 @@ control 'CDAP-10-000124' do
     Note: Appliance FIPS mode is the mode of the underlying appliance OS, embedded database, and various system libraries.
     Note: Cell FIPS mode is the mode of the VMware Cloud Director cell running on each appliance.
   "
-  impact 0.3
-  tag severity: 'low'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000416-AS-000140'
-  tag satisfies: ['SRG-APP-000439-AS-000274', 'SRG-APP-000224-AS-000152', 'SRG-APP-000179-AS-000129']
-  tag gid: nil
-  tag rid: nil
+  tag satisfies: ['SRG-APP-000179-AS-000129', 'SRG-APP-000224-AS-000152', 'SRG-APP-000439-AS-000274']
+  tag gid: 'V-CDAP-10-000124'
+  tag rid: 'SV-CDAP-10-000124'
   tag stig_id: 'CDAP-10-000124'
-  tag cci: ['CCI-002450', 'CCI-002418', 'CCI-001188', 'CCI-000803']
-  tag nist: ['SC-13', 'SC-8', 'SC-23 (3)', 'IA-7']
+  tag cci: ['CCI-000803', 'CCI-001188', 'CCI-002418', 'CCI-002450']
+  tag nist: ['IA-7', 'SC-13 b', 'SC-23 (3)', 'SC-8']
 
   result = http("https://#{input('vcdURL')}:5480/api/1.0.0/fips",
                 method: 'GET',

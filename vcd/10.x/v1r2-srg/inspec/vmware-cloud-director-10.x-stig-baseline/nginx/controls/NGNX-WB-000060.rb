@@ -42,11 +42,11 @@ control 'NGNX-WB-000060' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000246-WSR-000149'
   tag satisfies: ['SRG-APP-000435-WSR-000148']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000060'
+  tag rid: 'SV-NGNX-WB-000060'
   tag stig_id: 'NGNX-WB-000060'
   tag cci: ['CCI-001094', 'CCI-002385']
-  tag nist: ['SC-5 (1)', 'SC-5']
+  tag nist: ['SC-5 (1)', 'SC-5 a']
 
   nginx_limit_req_rate = input('nginx_limit_req_rate')
   nginx_limit_req_burst = input('nginx_limit_req_burst')

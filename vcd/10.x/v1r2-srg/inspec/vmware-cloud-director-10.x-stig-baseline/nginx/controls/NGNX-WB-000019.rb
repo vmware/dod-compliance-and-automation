@@ -27,11 +27,11 @@ control 'NGNX-WB-000019' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000118-WSR-000068'
   tag satisfies: ['SRG-APP-000119-WSR-000069', 'SRG-APP-000120-WSR-000070']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000019'
+  tag rid: 'SV-NGNX-WB-000019'
   tag stig_id: 'NGNX-WB-000019'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9', 'AU-9', 'AU-9']
+  tag nist: ['AU-9 a']
 
   nginx_log_dir = input('nginx_log_dir')
 
