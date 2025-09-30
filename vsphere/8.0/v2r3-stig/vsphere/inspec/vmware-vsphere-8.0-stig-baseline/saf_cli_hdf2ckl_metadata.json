@@ -1,0 +1,36 @@
+{
+  "profiles": [
+    {
+      "name": "VMware vSphere 8.0 ESXi STIG",
+      "title": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+      "version": 2,
+      "releasenumber": 3,
+      "releasedate": "02 Apr 2025",
+      "showCalendar": true
+    },
+    {
+      "name": "VMware vSphere 8.0 vCenter STIG",
+      "title": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
+      "version": 2,
+      "releasenumber": 3,
+      "releasedate": "02 Jul 2025",
+      "showCalendar": true
+    },
+    {
+      "name": "VMware vSphere 8.0 Virtual Machine STIG",
+      "title": "VMware vSphere 8.0 Virtual Machine Security Technical Implementation Guide",
+      "version": 2,
+      "releasenumber": 1,
+      "releasedate": "01 Aug 2024",
+      "showCalendar": true
+    }
+  ],
+  "hostname": "vcenter.rainpole.local",
+  "hostip": "10.1.1.3",
+  "hostmac": "00:00:00:00:00:00",
+  "hostfqdn": "vcenter.rainpole.local",
+  "targetcomment": "",
+  "marking": "Unclass",
+  "webordatabase": "false",
+  "vulidmapping": "gid"
+}

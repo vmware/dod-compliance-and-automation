@@ -43,7 +43,7 @@ Select "NTP" for "Mode" and enter a list of authorized time servers separated by
         subject { server }
         it { should be_in input('ntpServers') }
       end
-      ntpstatuscommand = "Initialize-NtpTestRequestBody -Servers #{server} | Invoke-TestNtp | Select-Object -ExpandProperty status"
+      ntpstatuscommand = "Initialize-NtpTestRequestBody -Servers #{server} | Invoke-TestNtp -Confirm:$false | Select-Object -ExpandProperty status"
       ntpstatus = powercli_command(ntpstatuscommand).stdout.strip
       describe ntpstatus do
         subject { ntpstatus }
