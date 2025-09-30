@@ -11,7 +11,7 @@ control 'PSQL-00-000006' do
   desc  'check', "
     At the command prompt, perform the following command:
 
-    # find /data/pgdata/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group postgres ')' -exec ls -ld {} \\;
+    # find /var/vmware/vpostgres/current/pgdata/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group users ')' -exec ls -ld {} \\;
 
     Note: Substitute the path for the location of your PostgreSQL configuration files.
 
@@ -21,7 +21,7 @@ control 'PSQL-00-000006' do
     At the command prompt, enter the following command(s):
 
     # chmod 600 <file>
-    # chown postgres:postgres <file>
+    # chown postgres:users <file>
 
     Note: Replace <file> with the file with incorrect permissions.
   "

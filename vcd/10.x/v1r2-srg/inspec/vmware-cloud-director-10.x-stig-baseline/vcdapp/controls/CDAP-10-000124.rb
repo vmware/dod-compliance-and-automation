@@ -39,10 +39,11 @@ control 'CDAP-10-000124' do
   tag cci: ['CCI-000803', 'CCI-001188', 'CCI-002418', 'CCI-002450']
   tag nist: ['IA-7', 'SC-13 b', 'SC-23 (3)', 'SC-8']
 
-  result = http("https://#{input('vcdURL')}:5480/api/1.0.0/fips",
+  result = http("https://#{input('vcdURL')}/cloudapi/1.0.0/ssl/settings",
                 method: 'GET',
                 headers: {
-                  'Authorization' => "#{input('applianceBearerToken')}"
+                  'Accept' => "#{input('apiVersion')}",
+                  'Authorization' => "#{input('bearerToken')}"
                 },
                 ssl_verify: false)
 
@@ -50,12 +51,10 @@ control 'CDAP-10-000124' do
     its('status') { should cmp 200 }
   end
   unless result.status != 200
-    cells = JSON.parse(result.body)
-    cells.each do |cell|
-      describe cell do
-        its(['applianceFips']) { should cmp 'ON' }
-        its(['cellFips']) { should cmp 'ON' }
+    response = JSON.parse(result.body)
+      describe 'FIPS should be configured' do
+        subject { response }
+        its(['fipsMode']) { should cmp 'ON' }
       end
-    end
   end
 end

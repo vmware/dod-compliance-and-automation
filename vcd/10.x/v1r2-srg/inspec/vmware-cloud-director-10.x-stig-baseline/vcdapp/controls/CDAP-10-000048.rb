@@ -70,7 +70,7 @@ control 'CDAP-10-000048' do
     its('owner') { should cmp 'vcloud' }
     its('group') { should cmp 'vcloud' }
   end
-  describe file('/opt/vmware/vcloud-director/etc/response.properties') do
+  describe file('/opt/vmware/vcloud-director/etc/responses.properties') do
     its('mode') { should cmp '0600' }
     its('owner') { should cmp 'vcloud' }
     its('group') { should cmp 'vcloud' }

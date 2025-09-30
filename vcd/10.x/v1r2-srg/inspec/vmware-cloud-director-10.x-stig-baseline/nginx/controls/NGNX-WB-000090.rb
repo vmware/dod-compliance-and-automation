@@ -38,43 +38,53 @@ control 'NGNX-WB-000090' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000439-WSR-000156'
   tag satisfies: ['SRG-APP-000439-WSR-000151', 'SRG-APP-000441-WSR-000181', 'SRG-APP-000442-WSR-000182']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000090'
+  tag rid: 'SV-NGNX-WB-000090'
   tag stig_id: 'NGNX-WB-000090'
-  tag cci: ['CCI-002418', 'CCI-002418', 'CCI-002420', 'CCI-002422']
-  tag nist: ['SC-8', 'SC-8', 'SC-8 (2)', 'SC-8 (2)']
+  tag cci: ['CCI-002418', 'CCI-002420', 'CCI-002422']
+  tag nist: ['SC-8', 'SC-8 (2)']
 
-  protocols = [['TLSv1.2'], ['TLSv1.3']]
+  protocols = [['TLSv1.2', 'TLSv1.3']]
   http_protocols = nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['ssl_protocols']
   servers = nginx_conf_custom(input('nginx_conf_path')).servers
 
   # Check server blocks
-  if http_protocols
+  if !http_protocols.nil?
     # Check setting in HTTP block
     describe http_protocols do
       it { should be_in protocols }
     end
-    servers.each do |server|
-      describe.one do
-        describe "Checking server block: #{server.params['server_name']}" do
-          it 'its ssl_protocols should be TLS1.2 or 1.3' do
-            expect(server.params['ssl_protocols']).to be_in protocols
+    if !servers.empty?
+      servers.each do |server|
+        describe.one do
+          describe "Checking server block: #{server.params['server_name']}" do
+            it 'its ssl_protocols should be TLS1.2 or 1.3' do
+              expect(server.params['ssl_protocols']).to be_in protocols
+            end
           end
-        end
-        describe "Checking server block: #{server.params['server_name']}" do
-          it 'its ssl_protocols should not exist' do
-            expect(server.params['ssl_protocols']).to be nil
+          describe "Checking server block: #{server.params['server_name']}" do
+            it 'its ssl_protocols should not exist' do
+              expect(server.params['ssl_protocols']).to be nil
+            end
           end
         end
       end
+    else
+      describe 'No server directives defined...' do
+        skip 'No server directives defined...skipping...'
+      end
     end
-  else
+  elsif !servers.empty?
     servers.each do |server|
       describe "Checking server block: #{server.params['server_name']}" do
         it 'its ssl_protocols should be TLS1.2 or 1.3' do
           expect(server.params['ssl_protocols']).to be_in protocols
         end
       end
+    end
+  else
+    describe 'No server directives defined...' do
+      skip 'No server directives defined...skipping...'
     end
   end
 end

@@ -36,7 +36,7 @@ control 'CDAP-10-000130' do
   result = http("https://#{input('vcdURL')}/api/admin/extension/settings/passwordPolicy",
                 method: 'GET',
                 headers: {
-                  'Accept' => "#{input('legacyapiVersion')}",
+                  'Accept' => "#{input('legacyApiVersion')}",
                   'Authorization' => "#{input('bearerToken')}"
                 },
                 ssl_verify: false)

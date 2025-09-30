@@ -27,7 +27,7 @@ inputs:
 - name: apiVersion
   type: string
   description: 'API version to use in Cloud/OpenAPI calls'
-  value: 'application/*;version=37.0'
+  value: 'application/*;version=39.1'
 - name: legacyapiVersion
   type: string
   description: 'API version to use in Legacy API calls'
@@ -75,3 +75,9 @@ inputs:
   value:
     - 'star_eng_vmware_com_3rd_0'
     - 'star_eng_vmware_com_3rd_1'
+- name: allowedTLSProtocols
+  type: array
+  description: List of approved TLS Protocol versions
+  value:
+    - 'TLSv1.2'
+    - 'TLSv1.3'

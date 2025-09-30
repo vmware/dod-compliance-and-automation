@@ -38,9 +38,9 @@ control 'CDAP-10-000133' do
   unless result.status != 200
     features = JSON.parse(result.body)
     features['values'].each do |feature|
-      next unless !approvedFlags.include?(feature['displayName'])
-      describe feature do
-        its(['enabled']) { should cmp 'false' }
+      describe "Feature #{ feature['displayName'] }" do
+        subject { feature['displayName'] }
+        it { should be_in approvedFlags }
       end
     end
   end

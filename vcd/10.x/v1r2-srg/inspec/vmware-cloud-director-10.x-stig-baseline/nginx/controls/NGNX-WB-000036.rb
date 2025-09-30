@@ -32,12 +32,12 @@ control 'NGNX-WB-000036' do
 
     Repeat the command for each file that was returned.
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000087'
   tag satisfies: ['SRG-APP-000233-WSR-000146']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000036'
+  tag rid: 'SV-NGNX-WB-000036'
   tag stig_id: 'NGNX-WB-000036'
   tag cci: ['CCI-000381', 'CCI-001084']
   tag nist: ['CM-7 a', 'SC-3']
@@ -47,7 +47,7 @@ control 'NGNX-WB-000036' do
   locations = nginx_conf_custom(input('nginx_conf_path')).locations
 
   # Check http block for root directives
-  if http_block_root
+  if !http_block_root.nil?
     http_block_root = http_block_root.flatten[0]
     if File.directory?(http_block_root)
       describe command("find #{http_block_root}/ -type l") do
@@ -58,37 +58,53 @@ control 'NGNX-WB-000036' do
         its('stdout') { should cmp '' }
       end
     end
+  else
+    describe 'No http root block directive' do
+      skip 'No http root block directive...skipping...'
+    end
   end
 
   # Check server blocks for root directives
-  servers.each do |server|
-    server_root = server.params['root']
-    next unless server_root
-    server_root = server_root.flatten[0]
-    if File.directory?(server_root)
-      describe command("find #{server_root}/ -type l") do
-        its('stdout') { should cmp '' }
+  if !servers.nil?
+    servers.each do |server|
+      server_root = server.params['root']
+      next unless server_root
+      server_root = server_root.flatten[0]
+      if File.directory?(server_root)
+        describe command("find #{server_root}/ -type l") do
+          its('stdout') { should cmp '' }
+        end
+      else
+        describe command("find /usr/share/nginx/#{server_root}/ -type l") do
+          its('stdout') { should cmp '' }
+        end
       end
-    else
-      describe command("find /usr/share/nginx/#{server_root}/ -type l") do
-        its('stdout') { should cmp '' }
-      end
+    end
+  else
+    describe 'No server root block directive' do
+      skip 'No server root block directive...skipping...'
     end
   end
 
   # Check location blocks for root directives
-  locations.each do |location|
-    location_root = location.params['root']
-    next unless location_root
-    location_root = location_root.flatten[0]
-    if File.directory?(location_root)
-      describe command("find #{location_root}/ -type l") do
-        its('stdout') { should cmp '' }
+  if !locations.nil?
+    locations.each do |location|
+      location_root = location.params['root']
+      next unless location_root
+      location_root = location_root.flatten[0]
+      if File.directory?(location_root)
+        describe command("find #{location_root}/ -type l") do
+          its('stdout') { should cmp '' }
+        end
+      else
+        describe command("find /usr/share/nginx/#{location_root}/ -type l") do
+          its('stdout') { should cmp '' }
+        end
       end
-    else
-      describe command("find /usr/share/nginx/#{location_root}/ -type l") do
-        its('stdout') { should cmp '' }
-      end
+    end
+  else
+    describe 'No location root block directive' do
+      skip 'No location root block directive...skipping...'
     end
   end
 end

@@ -32,8 +32,8 @@ control 'NGNX-WB-000101' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-WSR-000174'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000101'
+  tag rid: 'SV-NGNX-WB-000101'
   tag stig_id: 'NGNX-WB-000101'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
@@ -41,17 +41,23 @@ control 'NGNX-WB-000101' do
   nginx_cert_issuer = input('nginx_cert_issuer')
   servers = nginx_conf_custom(input('nginx_conf_path')).servers
 
-  servers.each do |server|
-    cert = server.params['ssl_certificate']
-    if cert
-      cert = cert.flatten
-      describe x509_certificate(cert[0]) do
-        its('issuer.CN') { should match(/#{nginx_cert_issuer}/) }
+  if !servers.empty?
+    servers.each do |server|
+      cert = server.params['ssl_certificate']
+      if cert
+        cert = cert.flatten
+        describe x509_certificate(cert[0]) do
+          its('issuer.CN') { should match(/#{nginx_cert_issuer}/) }
+        end
+      else
+        describe cert do
+          it { should_not be nil }
+        end
       end
-    else
-      describe cert do
-        it { should_not be nil }
-      end
+    end
+  else
+    describe 'No server directives configured...' do
+      skip 'No server directives configured...skipping...'
     end
   end
 end

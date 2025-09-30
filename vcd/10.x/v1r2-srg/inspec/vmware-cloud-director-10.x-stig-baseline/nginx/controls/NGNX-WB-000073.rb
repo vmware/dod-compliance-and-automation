@@ -46,21 +46,22 @@ control 'NGNX-WB-000073' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000063'
   tag satisfies: ['SRG-APP-000358-WSR-000163']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000073'
+  tag rid: 'SV-NGNX-WB-000073'
   tag stig_id: 'NGNX-WB-000073'
-  tag cci: ['CCI-001851', 'CCI-001851']
-  tag nist: ['AU-4 (1)', 'AU-4 (1)']
+  tag cci: ['CCI-001851']
+  tag nist: ['AU-4 (1)']
 
   nginx_syslog_enabled = input('nginx_syslog_enabled')
   nginx_syslog_server_error = input('nginx_syslog_server_error')
+  nginx_error_log_level = input('nginx_error_log_level')
   nginx_syslog_server_access = input('nginx_syslog_server_access')
   nginx_access_log_format_name = input('nginx_access_log_format_name')
 
   if nginx_syslog_enabled == true
     # Check error log
     describe nginx_conf_custom(input('nginx_conf_path')).params['error_log'] do
-      it { should include [nginx_syslog_server_error] }
+      it { should include [nginx_syslog_server_error, nginx_error_log_level] }
     end
     describe nginx_conf_custom(input('nginx_conf_path')).params['http'][0]['access_log'] do
       it { should include [nginx_syslog_server_access, nginx_access_log_format_name] }

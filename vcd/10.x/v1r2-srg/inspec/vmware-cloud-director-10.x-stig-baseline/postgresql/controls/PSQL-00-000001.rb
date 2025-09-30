@@ -19,14 +19,14 @@ control 'PSQL-00-000001' do
 
     Example result:
 
-    100
+    500
 
     If \"max_connections\" is set to -1 or more connections are configured than documented, this is a finding.
   "
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET max_connections = '100';\"
+    $ psql -c \"ALTER SYSTEM SET max_connections = '500';\"
 
     Reload the PostgreSQL service by running the following command:
 

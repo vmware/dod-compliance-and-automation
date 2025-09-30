@@ -25,7 +25,7 @@ control 'PSQL-00-000020' do
 
     After finding the log destination, execute the following command:
 
-    $ find <log dir>/* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group postgres ')' -exec ls -ld {} \\;
+    $ find <log dir>/* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group users ')' -exec ls -ld {} \\;
 
     If any files are returned, this is a finding.
   "
@@ -45,7 +45,7 @@ control 'PSQL-00-000020' do
     At the command prompt, enter the following command(s):
 
     # chmod 600 <file>
-    # chown postgres:postgres <file>
+    # chown postgres:users <file>
 
     Note: Replace <file> with the file with incorrect permissions.
   "

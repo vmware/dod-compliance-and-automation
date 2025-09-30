@@ -38,22 +38,30 @@ control 'NGNX-WB-000040' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000176-WSR-000096'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000040'
+  tag rid: 'SV-NGNX-WB-000040'
   tag stig_id: 'NGNX-WB-000040'
   tag cci: ['CCI-000186']
-  tag nist: ['IA-5 (2) (b)']
+  tag nist: ['IA-5 (2) (a) (1)']
 
   nginx_user = input('nginx_user')
   nginx_group = input('nginx_group')
 
-  command('nginx -T 2>&1 | grep ssl_certificate_key').stdout.lines.each do |key|
-    # extract key file path out of stdout
-    key = key.scan(/key\s(.*);/).flatten
-    describe file(key[0]) do
-      it { should_not be_more_permissive_than('0400') }
-      its('owner') { should cmp nginx_user }
-      its('group') { should cmp nginx_group }
+  keys = command('nginx -T 2>&1 | grep ssl_certificate_key').stdout
+
+  if !keys.empty?
+    keys.lines.each do |key|
+      # extract key file path out of stdout
+      key = key.scan(/key\s(.*);/).flatten
+      describe file(key[0]) do
+        it { should_not be_more_permissive_than('0400') }
+        its('owner') { should cmp nginx_user }
+        its('group') { should cmp nginx_group }
+      end
+    end
+  else
+    describe 'No ssl keys found...' do
+      skip 'No ssl keys found...skipping...'
     end
   end
 end

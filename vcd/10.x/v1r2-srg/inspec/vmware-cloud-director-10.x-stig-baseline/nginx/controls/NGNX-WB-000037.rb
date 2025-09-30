@@ -38,23 +38,29 @@ control 'NGNX-WB-000037' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000142-WSR-000089'
   tag satisfies: ['SRG-APP-000383-WSR-000175']
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000037'
+  tag rid: 'SV-NGNX-WB-000037'
   tag stig_id: 'NGNX-WB-000037'
   tag cci: ['CCI-000382', 'CCI-001762']
-  tag nist: ['CM-7 b', 'CM-7 (1) (b)']
+  tag nist: ['CM-7 (1) (b)', 'CM-7 b']
 
   servers = nginx_conf_custom(input('nginx_conf_path')).servers
   listen_addresses_ports = input('listen_addresses_ports')
 
   # Check each server block and each listen directive for the SSL option
-  servers.each do |server|
-    server.params['listen'].each do |listen|
-      describe "Checking listen directive: #{listen}" do
-        it 'should have a known IP:Port defined' do
-          expect(listen[0]).to be_in listen_addresses_ports
+  if !servers.empty?
+    servers.each do |server|
+      server.params['listen'].each do |listen|
+        describe "Checking listen directive: #{listen}" do
+          it 'should have a known IP:Port defined' do
+            expect(listen[0]).to be_in listen_addresses_ports
+          end
         end
       end
+    end
+  else
+    describe 'No server directives defined' do
+      skip 'No server directives defined...skipping...'
     end
   end
 end

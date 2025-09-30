@@ -27,17 +27,24 @@ control 'NGNX-WB-000096' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000516-WSR-000174'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000096'
+  tag rid: 'SV-NGNX-WB-000096'
   tag stig_id: 'NGNX-WB-000096'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
   approved_sites = input('approved_sites')
 
-  command('ls /etc/nginx/sites-enabled/').stdout.split.each do |site|
-    describe site do
-      it { should be_in approved_sites }
+  results = command('ls /etc/nginx/sites-enabled/').stdout
+  if !results.empty?
+    results.split.each do |site|
+      describe site do
+        it { should be_in approved_sites }
+      end
+    end
+  else
+    describe 'No sites enabled...' do
+      skip 'No sites enabled...skipping...'
     end
   end
 end

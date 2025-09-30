@@ -84,6 +84,10 @@ inputs:
     description: NGNX-WB-000073 If syslog is set in NGINX specify the syslog server and port for access logs
     type: string
     value: "syslog:server=10.10.10.10:514,severity=info"
+  - name: nginx_error_log_level
+    description: NGNX-WB-000073 If syslog is set in NGINX specify the syslog error log level
+    type: string
+    value: "info"
   - name: nginx_ssl_ciphers
     description: NGNX-WB-000091 NGINX FIPS validated cipher list
     type: string

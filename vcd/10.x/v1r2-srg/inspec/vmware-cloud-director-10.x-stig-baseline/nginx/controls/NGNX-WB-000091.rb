@@ -41,8 +41,8 @@ control 'NGNX-WB-000091' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000439-WSR-000188'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000091'
+  tag rid: 'SV-NGNX-WB-000091'
   tag stig_id: 'NGNX-WB-000091'
   tag cci: ['CCI-002418']
   tag nist: ['SC-8']
@@ -52,32 +52,42 @@ control 'NGNX-WB-000091' do
   servers = nginx_conf_custom(input('nginx_conf_path')).servers
 
   # Check server blocks
-  if http_ciphers
+  if !http_ciphers.nil?
     # Check setting in HTTP block
     describe http_ciphers do
       it { should be_in ciphers }
     end
-    servers.each do |server|
-      describe.one do
-        describe "Checking server block: #{server.params['server_name']}" do
-          it 'its ssl_ciphers should be TLS1.2 or 1.3' do
-            expect(server.params['ssl_ciphers']).to be_in ciphers
+    if !servers.empty?
+      servers.each do |server|
+        describe.one do
+          describe "Checking server block: #{server.params['server_name']}" do
+            it 'its ssl_ciphers should be TLS1.2 or 1.3' do
+              expect(server.params['ssl_ciphers']).to be_in ciphers
+            end
           end
-        end
-        describe "Checking server block: #{server.params['server_name']}" do
-          it 'its ssl_ciphers should not exist' do
-            expect(server.params['ssl_ciphers']).to be nil
+          describe "Checking server block: #{server.params['server_name']}" do
+            it 'its ssl_ciphers should not exist' do
+              expect(server.params['ssl_ciphers']).to be nil
+            end
           end
         end
       end
+    else
+      describe 'No server directives defined...' do
+        skip 'No server directives defined...skipping...'
+      end
     end
-  else
+  elsif !servers.empty?
     servers.each do |server|
       describe "Checking server block: #{server.params['server_name']}" do
         it "its ssl_ciphers should be in #{ciphers}" do
           expect(server.params['ssl_ciphers']).to be_in ciphers
         end
       end
+    end
+  else
+    describe 'No server directives defined...' do
+      skip 'No server directives defined...skipping...'
     end
   end
 end

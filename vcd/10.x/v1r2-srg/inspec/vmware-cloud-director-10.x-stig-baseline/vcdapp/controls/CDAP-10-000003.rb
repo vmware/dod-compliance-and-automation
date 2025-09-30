@@ -11,16 +11,17 @@ control 'CDAP-10-000003' do
   "
   desc  'rationale', ''
   desc  'check', "
-    Verify TLS 1.2 is the only protocol in use by running the following command on each appliance:
+    Verify TLS 1.2 or TLS 1.3 are the only protocols in use by running the following command on each appliance:
 
     # /opt/vmware/vcloud-director/bin/cell-management-tool ssl-protocols -l
 
     Example output:
 
     Allowed SSL protocols:
+    * TLSv1.3
     * TLSv1.2
 
-    If any protocol is enabled other than TLSv1.2, this is a finding.
+    If any protocol is enabled other than TLSv1.2 or TLSv1.3, this is a finding.
   "
   desc 'fix', "
     At the command prompt, execute the following command:
@@ -37,6 +38,8 @@ control 'CDAP-10-000003' do
   tag cci: ['CCI-001453', 'CCI-002418', 'CCI-002420', 'CCI-002421', 'CCI-002422']
   tag nist: ['AC-17 (2)', 'SC-8', 'SC-8 (1)', 'SC-8 (2)']
 
+  allowedProtocols = input('allowedTLSProtocols')
+
   result = http("https://#{input('vcdURL')}/cloudapi/1.0.0/ssl/settings",
                 method: 'GET',
                 headers: {
@@ -44,13 +47,18 @@ control 'CDAP-10-000003' do
                   'Authorization' => "#{input('bearerToken')}"
                 },
                 ssl_verify: false)
-
+  
   describe result do
     its('status') { should cmp 200 }
   end
+
   unless result.status != 200
-    describe json(content: result.body) do
-      its(['enabledSslProtocols']) { should cmp 'TLSv1.2' }
+    enabledProtocols = json(content: result.body)['enabledSslProtocols']
+
+    enabledProtocols.each do |protocol|
+      describe protocol do
+        it { should be_in allowedProtocols }
+      end
     end
   end
 end

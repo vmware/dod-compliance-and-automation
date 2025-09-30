@@ -1,25 +1,41 @@
 # Application
 snmpEnabled: false
-vcdURL: '10.158.112.102'
-bearerToken: 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhOTNjOWRiOS03NDcxLTMxOTItOGQwOS1hOGY3ZWVkYTg1ZjlAMWYyNDFkODItODhmOC00NjQxLThjZmYtYjc5ODM0NTkxMjk3Iiwic3ViIjoiYWRtaW5pc3RyYXRvciIsImV4cCI6MTc1ODEzODg2NSwidmVyc2lvbiI6InZjbG91ZF8xLjAiLCJqdGkiOiI5N2Y1ODg5NTc5MWQ0NTk5YWQzODZkMWVlYjgxOTg2YiJ9.VURSntnIh9L_h5REZrKgA5zl4eFFz5ARAfE-2jJiLY4Ax_lQe2VqR4jRwvW5njKaKWiRb7a8DjCjKK_g0nuPTDXfw9hOsr7AJ95tt7Sige_8M14g3d2niLnoxpIO0eGo8EPm__-CYpeRey-8irrFxlUwZiNu-X4JbihGLmtTS4xBdz5jfmg30K3kc4hl7sB7L-Oo5Ma2C17Nx95xWmXc0evgcPLITACz1f_jLo-5T2Kh5awLhIl6UzUA1_MZOP24w-v2M2DVFRGEuyY5aNRl8FSFRI9F1moVKSQs1IBWCL53kE8DyPdK-0bYPnzxnA10ioWEFziZ0qOsAYDAPhtlkA'
-applianceBearerToken: 'Bearer N_8JZquN4yCMR2LpWuyOdlNdeCoky3tLtxYQMiV4Kzg'
-apiVersion: 'application/*;version=37.0'
-legacyapiVersion: 'application/*+json;version=37.0'
+vcdURL: 'vcfa-vcd-static-112-124.lvn.broadcom.net'
+bearerToken: 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhOTNjOWRiOS03NDcxLTMxOTItOGQwOS1hOGY3ZWVkYTg1ZjlAODUyYjhlYzYtY2Y5NS00MWFlLWEwMGItYTY2MjBjOWNiMDdhIiwic3ViIjoiYWRtaW5pc3RyYXRvciIsImV4cCI6MTc1OTI2NzIwOSwidmVyc2lvbiI6InZjbG91ZF8xLjAiLCJqdGkiOiIzYzNmNmJiNzQ0NGQ0YTk3YjZmMGFhMTBkMGRkNmRhOSJ9.N-nVNnPgNX-sZJh0Cu7T7qfqQihWD1bt-2liNcv8BjPdtnUPAR_zweqaFrkfAZ9dIacJbEvjIey4ufhAVPVrBR5v5g_2Py2_aoQmA53TaCdex1G8o9wx_SMHEw4n-ydDUV0bNvG52B7YOiXEnYT3V51PxH_8yVhi6lS3QwWAN1BNTmdqMpg086wZIZpG1dqDCKtbh5cl7o300Od4rPhc3oDcFyyycAhK8AAZP66wCg06Y_AAKqmahBFn8W1raY8o9gDtTKuoXoBMYWpaJ8KyHWDDHk7s4YtuMlxKRUOZtaiIUcBuhkofA8J7RtGoI-LwOv_44KX-n8tQTpeIJfrMPQ'
+applianceBearerToken: 'Bearer ni8IAdksi2JWbJtVtFcW5tKlUA-CA1DBEWJHuCMH8Ng'
+apiVersion: 'application/json;version=39.1'
+legacyApiVersion: 'application/*+json;version=37.0'
 useNsxv: false
 approvedPlugins:
+  - 'Autoscale plugin'
+  - 'Container UI Plugin'
+  - 'CPOM extension'
   - 'Customize Portal'
   - 'Guided Tours plugin'
+  - 'NgHyperPlugin'
+  - 'NgHyperPlugin 2.0'
+  - 'NgHyperPlugin 3.0'
+  - 'Organization Contact Plugin'
+  - 'Solution Add-On Management UI Plugin'
+  - 'VMware Cloud Director Availability'
+  - 'vRO Workflow Execution UI'
 approvedDenyLists:
   - '10.0.0.0/8'
   - 'internal.com'
+  - '192.168.1.2'
 syslogHost: '10.150.175.12'
 syslogPort: '514'
-#ntpServers: 'time.nist.gov'
+# ntpServers: 'ntp.broadcom.net'
 approvedFeatureFlags:
   - 'Branding API'
+  - 'Fast Cross VC Instantiation Utilizing Shared Storage'
+  - 'Rights Classification'
+  - 'Transfer Session APIs'
+  - 'Unified Kubernetes API'
 trustedCertificates:
   - 'star_eng_vmware_com_3rd_0'
   - 'star_eng_vmware_com_3rd_1'
+
 # NGINX
 nginx_conf_path: /etc/nginx/nginx.conf
 limit_conn_server_limit: "1000"
@@ -33,10 +49,12 @@ approved_modules:
   - http_auth_request
   - http_sub
   - http_stub_status
+  - http_realip
+  - stream_ssl_preread
 nginx_user: nginx
 nginx_group: nginx
 listen_addresses_ports:
-  - 10.89.130.224:5480
+  - 10.158.112.102:5480
 nginx_limit_req_rate: "100r/s"
 nginx_limit_req_zone: "req_per_ip:10m"
 nginx_limit_req_burst: "100"

@@ -43,7 +43,7 @@ control 'CDAP-10-000038' do
   result = http("https://#{input('vcdURL')}/api/org",
                 method: 'GET',
                 headers: {
-                  'Accept' => "#{input('legacyapiVersion')}",
+                  'accept' => "#{input('legacyApiVersion')}",
                   'Authorization' => "#{input('bearerToken')}"
                 },
                 ssl_verify: false)
@@ -58,7 +58,7 @@ control 'CDAP-10-000038' do
       orgsettings = http("https://#{input('vcdURL')}/api/admin/org/#{orgid}/settings",
                          method: 'GET',
                          headers: {
-                           'Accept' => "#{input('legacyapiVersion')}",
+                           'accept' => "#{input('legacyApiVersion')}",
                            'Authorization' => "#{input('bearerToken')}"
                          },
                          ssl_verify: false)
@@ -66,7 +66,7 @@ control 'CDAP-10-000038' do
         providerLdapSettings = http("https://#{input('vcdURL')}/api/admin/extension/settings/ldapSettings",
                                     method: 'GET',
                                     headers: {
-                                      'Accept' => "#{input('legacyapiVersion')}",
+                                      'accept' => "#{input('legacyApiVersion')}",
                                       'Authorization' => "#{input('bearerToken')}"
                                     },
                                     ssl_verify: false)
@@ -80,13 +80,16 @@ control 'CDAP-10-000038' do
           orgsettings = JSON.parse(orgsettings.body)
           providerLdapSettings = JSON.parse(providerLdapSettings.body)
           describe.one do
-            describe providerLdapSettings do
+            describe 'Checking provider LDAP settings' do
+              subject { providerLdapSettings }
               its(['hostname']) { should_not be_empty }
             end
-            describe orgsettings['orgFederationSettings'] do
+            describe 'Checking org Federation Settings' do
+              subject { orgsettings['orgFederationSettings'] }
               its(['enabled']) { should cmp 'true' }
             end
-            describe orgsettings['orgOAuthSettings'] do
+            describe 'Checking org OAuth Settings' do
+              subject { orgsettings['orgOAuthSettings'] }
               its(['enabled']) { should_not cmp nil }
             end
           end

@@ -7,21 +7,21 @@ control 'NGNX-WB-000027' do
 
     View the running configuration by running the following command:
 
-    # nginx -T 2>&1 | grep -i proxy_
+    # nginx -T 2>&1 | grep -i proxy_pass
 
     If any proxy statements are in the output of the command, this is a finding.
   "
   desc 'fix', 'Remove and migrate any load balancer and/or reverse proxy configuration to a separate NGINX instance.'
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-WSR-000076'
-  tag gid: nil
-  tag rid: nil
+  tag gid: 'V-NGNX-WB-000027'
+  tag rid: 'SV-NGNX-WB-000027'
   tag stig_id: 'NGNX-WB-000027'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']
 
-  describe command('nginx -T 2>&1 | grep -i proxy_') do
+  describe command('nginx -T 2>&1 | grep -i proxy_pass') do
     its('stdout') { should cmp '' }
   end
 end

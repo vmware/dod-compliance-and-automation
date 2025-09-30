@@ -50,7 +50,7 @@ control 'CDAP-10-000046' do
   result = http("https://#{input('vcdURL')}/api/org",
                 method: 'GET',
                 headers: {
-                  'Accept' => "#{input('legacyapiVersion')}",
+                  'Accept' => "#{input('legacyApiVersion')}",
                   'Authorization' => "#{input('bearerToken')}"
                 },
                 ssl_verify: false)
@@ -66,7 +66,7 @@ control 'CDAP-10-000046' do
         providerLdapSettings = http("https://#{input('vcdURL')}/api/admin/extension/settings/ldapSettings",
                                     method: 'GET',
                                     headers: {
-                                      'Accept' => "#{input('legacyapiVersion')}",
+                                      'Accept' => "#{input('legacyApiVersion')}",
                                       'Authorization' => "#{input('bearerToken')}"
                                     },
                                     ssl_verify: false)
@@ -92,7 +92,7 @@ control 'CDAP-10-000046' do
         orgLdapSettings = http("https://#{input('vcdURL')}/api/admin/org/#{orgid}/settings/ldap",
                                method: 'GET',
                                headers: {
-                                 'Accept' => "#{input('legacyapiVersion')}",
+                                 'Accept' => "#{input('legacyApiVersion')}",
                                  'Authorization' => "#{input('bearerToken')}"
                                },
                                ssl_verify: false)

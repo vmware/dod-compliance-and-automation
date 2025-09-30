@@ -40,8 +40,8 @@ control 'CDAP-10-000134' do
   unless result.status != 200
     certs = JSON.parse(result.body)
     certs['values'].each do |cert|
-      describe cert do
-        its(['alias']) { should be_in trustedCerts }
+      describe cert['alias'] do
+        it { should be_in trustedCerts }
       end
     end
   end
