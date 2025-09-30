@@ -38,7 +38,7 @@ control 'CDAP-10-000131' do
   result = http("https://#{input('vcdURL')}/api/admin/extension/settings/amqp",
                 method: 'GET',
                 headers: {
-                  'Accept' => "#{input('legacyApiVersion')}",
+                  'accept' => "#{input('legacyApiVersion')}",
                   'Authorization' => "#{input('bearerToken')}"
                 },
                 ssl_verify: false)

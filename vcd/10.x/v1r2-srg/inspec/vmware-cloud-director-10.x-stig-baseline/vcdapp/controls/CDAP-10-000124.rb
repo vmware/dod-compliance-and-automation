@@ -52,9 +52,9 @@ control 'CDAP-10-000124' do
   end
   unless result.status != 200
     response = JSON.parse(result.body)
-      describe 'FIPS should be configured' do
-        subject { response }
-        its(['fipsMode']) { should cmp 'ON' }
-      end
+    describe 'FIPS should be configured' do
+      subject { response }
+      its(['fipsMode']) { should cmp 'ON' }
+    end
   end
 end

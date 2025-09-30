@@ -47,7 +47,7 @@ control 'CDAP-10-000003' do
                   'Authorization' => "#{input('bearerToken')}"
                 },
                 ssl_verify: false)
-  
+
   describe result do
     its('status') { should cmp 200 }
   end
