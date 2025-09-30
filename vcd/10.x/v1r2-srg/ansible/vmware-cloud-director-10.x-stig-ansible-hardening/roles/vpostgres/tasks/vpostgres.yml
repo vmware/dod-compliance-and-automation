@@ -241,28 +241,6 @@
         - result.stdout != var_log_file_mode
 
 ###################################################################################################################################
-# PSQL-00-000029 - PostgreSQL objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers) must be owned by principals authorized for ownership.
-- name: PSQL-00-000029 - PostgreSQL objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers) must be owned by principals authorized for ownership.
-  tags: [PSQL-00-000029]
-  when: run_obj_owners | bool
-  block:
-    - name: PSQL-00-000029 - PostgreSQL objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers) must be owned by principals authorized for ownership.
-      ansible.builtin.debug:
-        msg: "PSQL-00-000029 - This control must be manually remediated."
-      changed_when: false
-
-###################################################################################################################################
-# PSQL-00-000030 - The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, etc.) must be restricted to authorized users.
-- name: PSQL-00-000030 - The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, etc.) must be restricted to authorized users.
-  tags: [PSQL-00-000030]
-  when: run_obj_mod | bool
-  block:
-    - name: PSQL-00-000030 - The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, etc.) must be restricted to authorized users.
-      ansible.builtin.debug:
-        msg: "PSQL-00-000030 - This control must be manually remediated."
-      changed_when: false
-
-###################################################################################################################################
 # PSQL-00-000032 - PostgreSQL must not load unused database components, software, and database objects.
 - name: PSQL-00-000032 - PostgreSQL must not load unused database components, software, and database objects.
   tags: [PSQL-00-000032]
@@ -307,33 +285,6 @@
         - result.stdout != var_port
 
 ###################################################################################################################################
-# PSQL-00-000036 - PostgreSQL must require authentication on all connections.
-- name: PSQL-00-000036 - PostgreSQL must require authentication on all connections.
-  tags: [PSQL-00-000036]
-  when: run_hba_auth | bool
-  block:
-    - name: PSQL-00-000036 - Check for trust or password configurations in pg_hba
-      ansible.builtin.shell: |
-        set -o pipefail
-        grep -v "^#" {{ var_pgdata_path }}/pg_hba.conf |grep '\S'|grep 'trust\|password'
-      register: result
-      changed_when: false
-      failed_when:
-        - result.stderr != ''
-        - result.rc != 0
-
-    - name: PSQL-00-000036 - Correcting pg_hba.conf auth is a manual task
-      ansible.builtin.debug:
-        msg:
-          - "PSQL-00-000036 - Trust or Password entries detected in pg_hba.conf and must be manually remediated."
-          - "{{ item }}"
-      with_items:
-        - "{{ result.stdout_lines }}"
-      changed_when: true
-      when:
-        - result.stdout != ''
-
-###################################################################################################################################
 # PSQL-00-000038 - The PostgreSQL database must encrypt passwords for user authentication.
 - name: PSQL-00-000038 - The PostgreSQL database must encrypt passwords for user authentication.
   tags: [PSQL-00-000038]
@@ -355,24 +306,6 @@
         - reload vpostgres
       when:
         - result.stdout != var_password_encryption
-
-###################################################################################################################################
-# PSQL-00-000044 -  PostgreSQL must use NIST FIPS 140-2 validated cryptographic modules for cryptographic operations.
-- name: PSQL-00-000044 -  PostgreSQL must use NIST FIPS 140-2 validated cryptographic modules for cryptographic operations.
-  tags: [PSQL-00-000044]
-  when: run_fips | bool
-  block:
-    - name: PSQL-00-000044 -  PostgreSQL must use NIST FIPS 140-2 validated cryptographic modules for cryptographic operations.
-      ansible.builtin.debug:
-        msg: "PSQL-00-000044 - This control must be manually remediated."
-      changed_when: false
-
-###################################################################################################################################
-# PSQL-00-000049 - The DBMS must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values.
-# - name: PSQL-00-000049 - The DBMS must maintain the authenticity of communications sessions by guarding against man-in-the-middle attacks that guess at Session ID values.
-#   tags: [ PSQL-00-000049 ]
-#   when: run_ssl_on | bool
-# To Do
 
 ###################################################################################################################################
 # PSQL-00-000051 - PostgreSQL must write log entries to disk prior to returning operation success or failure.
