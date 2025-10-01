@@ -18,11 +18,6 @@ depends:
     path: vcdapp
 
 inputs:
-- name: postgres_pass
-  type: string
-  value: ""
-  description: "Postgres user password.  Blank is sufficient when ran as root most of the time"
-  sensitive: true
 # A token is required to authenticate with the VCD API...See https://kb.vmware.com/s/article/56948 for more information on how to generate a token.
 - name: bearerToken
   type: string
