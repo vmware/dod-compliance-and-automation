@@ -1,5 +1,3 @@
-# Photon PHTN-40-000182
-run_fips_boot_enable: false
 # Photon PHTN-40-000066
 run_enable_selinux: false
 run_selinux_install: false
