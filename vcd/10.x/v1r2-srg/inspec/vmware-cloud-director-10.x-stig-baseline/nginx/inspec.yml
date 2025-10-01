@@ -96,8 +96,8 @@ inputs:
     description: NGNX-WB-000096 List of approved sites that are enabled
     type: array
     value:
-      - changeme
-      - deleteme
+      - vcd_ova_ui.conf
+      - 99-stig.conf
   - name: nginx_keepalive_timeout
     description: NGNX-WB-000100 NGINX keepalive_timeout setting if specified in seconds. Example 60s
     type: string

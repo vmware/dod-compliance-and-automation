@@ -15,16 +15,6 @@ var_auditd_conf_space_left_action: 'SYSLOG'
 var_auditd_conf_flush: 'INCREMENTAL_ASYNC'
 var_auditd_conf_freq: 50
 
-# ntpd, chrony, timesyncd
-var_ntpd_conf_file: '/etc/ntp.conf'
-var_chrony_conf_file: '/etc/chrony.conf'
-var_timesyncd_conf_file: '/etc/systemd/timesyncd.conf'
-var_time_servers:
-  - ""
-  - ""
-## ntpd, chrony, or timesyncd
-var_time_type: ntpd
-
 # PAM
 var_pam_faillock_conf_file: '/etc/security/faillock.conf'
 var_pam_faillock_deny: 3
@@ -71,10 +61,6 @@ var_rsyslog_server_name: ''
 var_rsyslog_server_port: ''
 ## udp, tcp, or tls
 var_rsyslog_server_protocol: 'tcp'
-
-# SELinux
-## 1 for enforcing and 0 for permissive
-var_selinux_enforcing: 0
 
 # sshd
 var_sshd_config_file: '/etc/ssh/sshd_config'

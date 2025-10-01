@@ -720,99 +720,99 @@
         state: args_present
 
 ###################################################################################################################################
-- name: PHTN-40-000066 - Enable SELinux
-  tags: [PHTN-40-000066]
-  when: run_enable_selinux | bool
-  block:
-    - name: PHTN-40-000066 - Check to see if SELinux Policy is installed
-      ansible.builtin.shell: |
-        set -o pipefail
-        rpm -qa | grep selinux-policy
-      register: selinuxinstalled
-      failed_when: selinuxinstalled.rc == 2
-      changed_when: false
-      when:
-        - run_selinux_install | bool
+# - name: PHTN-40-000066 - Enable SELinux
+#   tags: [PHTN-40-000066]
+#   when: run_enable_selinux | bool
+#   block:
+#     - name: PHTN-40-000066 - Check to see if SELinux Policy is installed
+#       ansible.builtin.shell: |
+#         set -o pipefail
+#         rpm -qa | grep selinux-policy
+#       register: selinuxinstalled
+#       failed_when: selinuxinstalled.rc == 2
+#       changed_when: false
+#       when:
+#         - run_selinux_install | bool
 
-    - name: PHTN-40-000066 - Install SELinux Policy
-      ansible.builtin.command: tdnf -y install selinux-policy
-      register: output
-      changed_when: output.rc == 0
-      when:
-        - run_selinux_install | bool
-        - selinuxinstalled.stdout == ""
+#     - name: PHTN-40-000066 - Install SELinux Policy
+#       ansible.builtin.command: tdnf -y install selinux-policy
+#       register: output
+#       changed_when: output.rc == 0
+#       when:
+#         - run_selinux_install | bool
+#         - selinuxinstalled.stdout == ""
 
-    - name: PHTN-40-000066 - Check to see if SELinux utils is installed
-      ansible.builtin.shell: |
-        set -o pipefail
-        rpm -qa | grep libselinux-utils
-      register: selinuxutilsinstalled
-      failed_when: selinuxutilsinstalled.rc == 2
-      changed_when: false
+#     - name: PHTN-40-000066 - Check to see if SELinux utils is installed
+#       ansible.builtin.shell: |
+#         set -o pipefail
+#         rpm -qa | grep libselinux-utils
+#       register: selinuxutilsinstalled
+#       failed_when: selinuxutilsinstalled.rc == 2
+#       changed_when: false
 
-    - name: PHTN-40-000066 - Install SELinux utils
-      ansible.builtin.command: tdnf -y install libselinux-utils
-      register: output
-      changed_when: output.rc == 0
-      when:
-        - run_selinux_install | bool
-        - selinuxutilsinstalled.stdout == ""
+#     - name: PHTN-40-000066 - Install SELinux utils
+#       ansible.builtin.command: tdnf -y install libselinux-utils
+#       register: output
+#       changed_when: output.rc == 0
+#       when:
+#         - run_selinux_install | bool
+#         - selinuxutilsinstalled.stdout == ""
 
-    - name: PHTN-40-000066 - Recheck to see if SELinux Policy is installed
-      ansible.builtin.shell: |
-        set -o pipefail
-        rpm -qa | grep selinux-policy
-      register: selinuxinstalled
-      failed_when: selinuxinstalled.rc == 2
-      changed_when: false
+#     - name: PHTN-40-000066 - Recheck to see if SELinux Policy is installed
+#       ansible.builtin.shell: |
+#         set -o pipefail
+#         rpm -qa | grep selinux-policy
+#       register: selinuxinstalled
+#       failed_when: selinuxinstalled.rc == 2
+#       changed_when: false
 
-    - name: PHTN-40-000066 - Add security=selinux in /boot/grub2/grub.cfg
-      ansible.builtin.replace:
-        path: '{{ var_grub_conf_file }}'
-        regexp: '^(\s*linux(?!.* security=).*)'
-        replace: '\1 security=selinux'
-      when:
-        - selinuxinstalled.stdout != ""
+#     - name: PHTN-40-000066 - Add security=selinux in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux(?!.* security=).*)'
+#         replace: '\1 security=selinux'
+#       when:
+#         - selinuxinstalled.stdout != ""
 
-    - name: PHTN-40-000066 - Replace security=selinux in /boot/grub2/grub.cfg
-      ansible.builtin.replace:
-        path: '{{ var_grub_conf_file }}'
-        regexp: '^(\s*linux.*? security=)(?!selinux)(\S*)(.*)'
-        replace: '\g<1>selinux\3'
-      when:
-        - selinuxinstalled.stdout != ""
+#     - name: PHTN-40-000066 - Replace security=selinux in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux.*? security=)(?!selinux)(\S*)(.*)'
+#         replace: '\g<1>selinux\3'
+#       when:
+#         - selinuxinstalled.stdout != ""
 
-    - name: PHTN-40-000066 - Add selinux=1 in /boot/grub2/grub.cfg
-      ansible.builtin.replace:
-        path: '{{ var_grub_conf_file }}'
-        regexp: '^(\s*linux(?!.* selinux=).*)'
-        replace: '\1 selinux=1'
-      when:
-        - selinuxinstalled.stdout != ""
+#     - name: PHTN-40-000066 - Add selinux=1 in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux(?!.* selinux=).*)'
+#         replace: '\1 selinux=1'
+#       when:
+#         - selinuxinstalled.stdout != ""
 
-    - name: PHTN-40-000066 - Replace selinux=1 in /boot/grub2/grub.cfg
-      ansible.builtin.replace:
-        path: '{{ var_grub_conf_file }}'
-        regexp: '^(\s*linux.*? selinux=)(?!1)(\S*)(.*)'
-        replace: '\g<1>1\3'
-      when:
-        - selinuxinstalled.stdout != ""
+#     - name: PHTN-40-000066 - Replace selinux=1 in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux.*? selinux=)(?!1)(\S*)(.*)'
+#         replace: '\g<1>1\3'
+#       when:
+#         - selinuxinstalled.stdout != ""
 
-    - name: PHTN-40-000066 - Add enforcing={{ var_selinux_enforcing }} in /boot/grub2/grub.cfg
-      ansible.builtin.replace:
-        path: '{{ var_grub_conf_file }}'
-        regexp: '^(\s*linux(?!.* enforcing=).*)'
-        replace: '\1 enforcing={{ var_selinux_enforcing }}'
-      when:
-        - selinuxinstalled.stdout != ""
+#     - name: PHTN-40-000066 - Add enforcing={{ var_selinux_enforcing }} in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux(?!.* enforcing=).*)'
+#         replace: '\1 enforcing={{ var_selinux_enforcing }}'
+#       when:
+#         - selinuxinstalled.stdout != ""
 
-    - name: PHTN-40-000066 - Replace enforcing={{ var_selinux_enforcing }} in /boot/grub2/grub.cfg
-      ansible.builtin.replace:
-        path: '{{ var_grub_conf_file }}'
-        regexp: '^(\s*linux.*? enforcing=)(?!{{ var_selinux_enforcing }})(\S*)(.*)'
-        replace: '\g<1>{{ var_selinux_enforcing }}\3'
-      when:
-        - selinuxinstalled.stdout != ""
+#     - name: PHTN-40-000066 - Replace enforcing={{ var_selinux_enforcing }} in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux.*? enforcing=)(?!{{ var_selinux_enforcing }})(\S*)(.*)'
+#         replace: '\g<1>{{ var_selinux_enforcing }}\3'
+#       when:
+#         - selinuxinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-40-000067 - Configure kernel parameter kernel.dmesg_restrict

@@ -1,11 +1,11 @@
 # Application
-snmpEnabled: false
-vcdURL: 'vcfa-vcd-static-112-124.lvn.broadcom.net'
-bearerToken: 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJhOTNjOWRiOS03NDcxLTMxOTItOGQwOS1hOGY3ZWVkYTg1ZjlAODUyYjhlYzYtY2Y5NS00MWFlLWEwMGItYTY2MjBjOWNiMDdhIiwic3ViIjoiYWRtaW5pc3RyYXRvciIsImV4cCI6MTc1OTI2NzIwOSwidmVyc2lvbiI6InZjbG91ZF8xLjAiLCJqdGkiOiIzYzNmNmJiNzQ0NGQ0YTk3YjZmMGFhMTBkMGRkNmRhOSJ9.N-nVNnPgNX-sZJh0Cu7T7qfqQihWD1bt-2liNcv8BjPdtnUPAR_zweqaFrkfAZ9dIacJbEvjIey4ufhAVPVrBR5v5g_2Py2_aoQmA53TaCdex1G8o9wx_SMHEw4n-ydDUV0bNvG52B7YOiXEnYT3V51PxH_8yVhi6lS3QwWAN1BNTmdqMpg086wZIZpG1dqDCKtbh5cl7o300Od4rPhc3oDcFyyycAhK8AAZP66wCg06Y_AAKqmahBFn8W1raY8o9gDtTKuoXoBMYWpaJ8KyHWDDHk7s4YtuMlxKRUOZtaiIUcBuhkofA8J7RtGoI-LwOv_44KX-n8tQTpeIJfrMPQ'
-applianceBearerToken: 'Bearer ni8IAdksi2JWbJtVtFcW5tKlUA-CA1DBEWJHuCMH8Ng'
+vcdURL: 'vcd.domain.com'
+bearerToken: 'Bearer eyJhbGciOiJSUzI1NiJ...'
+applianceBearerToken: 'Bearer ni8IAdksi...'
 apiVersion: 'application/json;version=39.1'
 legacyApiVersion: 'application/*+json;version=37.0'
 useNsxv: false
+snmpEnabled: false
 approvedPlugins:
   - 'Autoscale plugin'
   - 'Container UI Plugin'
@@ -23,9 +23,8 @@ approvedDenyLists:
   - '10.0.0.0/8'
   - 'internal.com'
   - '192.168.1.2'
-syslogHost: '10.150.175.12'
+syslogHost: '10.10.10.10'
 syslogPort: '514'
-# ntpServers: 'ntp.broadcom.net'
 approvedFeatureFlags:
   - 'Branding API'
   - 'Fast Cross VC Instantiation Utilizing Shared Storage'
@@ -60,18 +59,8 @@ nginx_limit_req_zone: "req_per_ip:10m"
 nginx_limit_req_burst: "100"
 nginx_syslog_enabled: false
 nginx_ssl_ciphers: "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256"
-approved_sites:
-  - vcd_ova_ui.conf
-  - 99-stig.conf
 nginx_keepalive_timeout: '65'
 nginx_content_security_policy: ["Content-Security-Policy", "default-src 'self'; font-src 'self' data:; img-src 'self' data:; style-src 'self' 'unsafe-inline';"]
 
 # Photon
 authprivlog: /var/log/messages
-
-# PostgreSQL
-syslog_enabled: false
-pg_data_dir: /var/vmware/vpostgres/current/pgdata/
-pg_log_dir: /var/vmware/vpostgres/current/pgdata/log
-pg_owner: postgres
-pg_group: users
