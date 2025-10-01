@@ -1,5 +1,5 @@
 control 'PSQL-00-000001' do
-  title 'PostgreSQL must limit the number of concurrent sessions.'
+  title 'The Cloud Director PostgreSQL database must limit the number of concurrent sessions.'
   desc  "
     Database management includes the ability to control the number of users and user sessions utilizing a DBMS. Unlimited concurrent connections to the DBMS could allow a successful Denial of Service (DoS) attack by exhausting connection resources; and a system can also fail or be degraded by an overload of legitimate users. Limiting the number of concurrent sessions per user is helpful in reducing these risks.
 
@@ -15,7 +15,7 @@ control 'PSQL-00-000001' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW max_connections\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW max_connections;'\"
 
     Example result:
 
@@ -26,7 +26,7 @@ control 'PSQL-00-000001' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET max_connections = '500';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET max_connections = '500';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 

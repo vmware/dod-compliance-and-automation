@@ -1,5 +1,5 @@
 control 'PSQL-00-000060' do
-  title 'PostgreSQL must provide non-privileged users with minimal error information.'
+  title 'The Cloud Director PostgreSQL database must provide non-privileged users with minimal error information.'
   desc  "
     Any DBMS or associated application providing too much information in error messages on the screen or printout risks compromising the data and security of the system. The structure and content of error messages need to contain the minimal amount of information.
 
@@ -9,7 +9,7 @@ control 'PSQL-00-000060' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW client_min_messages\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW client_min_messages;'\"
 
     Expected result:
 
@@ -20,7 +20,7 @@ control 'PSQL-00-000060' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET client_min_messages TO 'error';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET client_min_messages TO 'error';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 

@@ -1,5 +1,5 @@
 control 'PSQL-00-000032' do
-  title 'PostgreSQL must not load unused database components, software, and database objects.'
+  title 'The Cloud Director PostgreSQL database must not load unused database components, software, and database objects.'
   desc  "
     Information systems are capable of providing a wide variety of functions and services. Some of the functions and services, provided by default, may not be necessary to support essential organizational operations (e.g., key missions, functions).
 
@@ -11,14 +11,14 @@ control 'PSQL-00-000032' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"select * from pg_extension where extname != 'plpgsql'\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"select * from pg_extension where extname != 'plpgsql';\\\"\"
 
     If any extensions exist that are not approved, this is a finding.
   "
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"DROP EXTENSION <extension name>\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"DROP EXTENSION <extension name>;\\\"\"
 
     Note: It is recommended that plpgsql not be removed.
   "

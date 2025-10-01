@@ -1,5 +1,5 @@
 control 'PSQL-00-000075' do
-  title 'PostgreSQL must use UTC for log timestamps.'
+  title 'The Cloud Director PostgreSQL database must use UTC for log timestamps.'
   desc  "
     If time stamps are not consistently applied and there is no common time reference, it is difficult to perform forensic analysis.
 
@@ -9,7 +9,7 @@ control 'PSQL-00-000075' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW log_timezone\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW log_timezone;'\"
 
     Expected result:
 
@@ -20,7 +20,7 @@ control 'PSQL-00-000075' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET log_timezone TO 'UTC';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET log_timezone TO 'UTC';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 

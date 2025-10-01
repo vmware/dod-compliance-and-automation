@@ -1,5 +1,5 @@
 control 'PSQL-00-000114' do
-  title 'PostgreSQL must log all client disconnections.'
+  title 'The Cloud Director PostgreSQL database must log all client disconnections.'
   desc  "
     Disconnection may be initiated by the user or forced by the system (as in a timeout) or result from a system or network failure. To the greatest extent possible, all disconnections must be logged.
 
@@ -9,7 +9,7 @@ control 'PSQL-00-000114' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW log_disconnections\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW log_disconnections;'\"
 
     Expected result:
 
@@ -20,7 +20,7 @@ control 'PSQL-00-000114' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET log_disconnections TO 'on';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET log_disconnections TO 'on';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 

@@ -1,5 +1,5 @@
 control 'PSQL-00-000020' do
-  title 'PostgreSQL must be configured to protect log files from unauthorized access.'
+  title 'The Cloud Director PostgreSQL database must be configured to protect log files from unauthorized access.'
   desc  "
     If audit data were to become compromised, then competent forensic analysis and discovery of the true source of potentially malicious system activity is difficult, if not impossible, to achieve. In addition, access to audit records provides information an attacker could potentially use to his or her advantage.
 
@@ -11,7 +11,7 @@ control 'PSQL-00-000020' do
 
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW log_file_mode\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW log_file_mode;'\"
 
     Expected result:
 
@@ -21,18 +21,22 @@ control 'PSQL-00-000020' do
 
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW log_directory\"
+    # su - postgres -c \\\"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW log_directory;'\\\"
+
+    The log directory may be a relative path to the 'data_directory' setting, which can be found by running the following command:
+
+    # su - postgres -c \\\"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW data_directory;'\\\"
 
     After finding the log destination, execute the following command:
 
-    $ find <log dir>/* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group users ')' -exec ls -ld {} \\;
+    $ find <log dir>/* -xdev -type f -a '(' -not -perm 600 -o -not -user postgres -o -not -group users ')' -exec ls -ld {} \\\\;
 
     If any files are returned, this is a finding.
   "
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET log_file_mode = '0600';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET log_file_mode = '0600';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 
@@ -64,13 +68,6 @@ control 'PSQL-00-000020' do
   describe "Log File Mode - '#{sql_lfm.stdout.strip}'" do
     subject { sql_lfm.stdout.strip }
     it { should cmp '0600' }
-  end
-
-  sql_ld = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SHOW log_directory;\"'")
-
-  describe "Log Directory - '#{sql_ld.stdout.strip}'" do
-    subject { sql_ld.stdout.strip }
-    it { should cmp input('pg_log_dir') }
   end
 
   logfiles = command("find #{input('pg_log_dir')}/* -xdev -type f -a '(' -not -perm 600 -o -not -user #{input('pg_owner')} -o -not -group #{input('pg_group')} ')'")

@@ -1,5 +1,5 @@
 control 'PSQL-00-000010' do
-  title 'PostgreSQL must produce logs containing sufficient information to establish what type of events occurred.'
+  title 'The Cloud Director PostgreSQL database must produce logs containing sufficient information to establish what type of events occurred.'
   desc  "
     Information system auditing capability is critical for accurate forensic analysis. Without establishing what type of event occurred, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
 
@@ -13,7 +13,7 @@ control 'PSQL-00-000010' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW log_line_prefix\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW log_line_prefix;'\"
 
     Expected result:
 
@@ -24,7 +24,7 @@ control 'PSQL-00-000010' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET log_line_prefix = '%m %c %x %d %u %r %p %l';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET log_line_prefix = '%m %c %x %d %u %r %p %l';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 

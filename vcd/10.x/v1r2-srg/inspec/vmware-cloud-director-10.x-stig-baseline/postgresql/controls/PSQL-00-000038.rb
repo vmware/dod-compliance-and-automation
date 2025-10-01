@@ -1,5 +1,5 @@
 control 'PSQL-00-000038' do
-  title 'The PostgreSQL database must encrypt passwords for user authentication.'
+  title 'The Cloud Director PostgreSQL database must encrypt passwords for user authentication.'
   desc  "
     The DoD standard for authentication is DoD-approved PKI certificates.
 
@@ -11,7 +11,7 @@ control 'PSQL-00-000038' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW password_encryption\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW password_encryption;'\"
 
     Expected result:
 
@@ -22,7 +22,7 @@ control 'PSQL-00-000038' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET password_encryption TO 'scram-sha-256';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET password_encryption TO 'scram-sha-256';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 

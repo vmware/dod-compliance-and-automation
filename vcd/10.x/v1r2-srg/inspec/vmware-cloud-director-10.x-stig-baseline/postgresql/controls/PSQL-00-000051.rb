@@ -1,5 +1,5 @@
 control 'PSQL-00-000051' do
-  title 'PostgreSQL must write log entries to disk prior to returning operation success or failure.'
+  title 'The Cloud Director PostgreSQL database must write log entries to disk prior to returning operation success or failure.'
   desc  "
     Failure to a known secure state helps prevent a loss of confidentiality, integrity, or availability in the event of a failure of the information system or a component of the system. Preserving  system state information helps to facilitate system restart and return to the operational mode of the organization with less disruption of mission/business processes.
 
@@ -9,7 +9,7 @@ control 'PSQL-00-000051' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c \\\"SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');\\\"\"
 
     Expected result:
 
@@ -22,7 +22,7 @@ control 'PSQL-00-000051' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET <name> TO 'on';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET <name> TO 'on';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 
@@ -43,7 +43,7 @@ control 'PSQL-00-000051' do
   tag cci: ['CCI-001665']
   tag nist: ['SC-24']
 
-  sql_result = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');\"'")
+  sql_result = command("su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c \\\"SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');\\\"\"")
 
   describe "PG Settings - '#{sql_result.stdout.strip}'" do
     subject { sql_result.stdout.strip }

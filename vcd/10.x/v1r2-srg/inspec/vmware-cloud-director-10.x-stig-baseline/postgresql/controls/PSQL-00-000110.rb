@@ -1,11 +1,11 @@
 control 'PSQL-00-000110' do
-  title 'PostgreSQL must log all connection attempts.'
+  title 'The Cloud Director PostgreSQL database must log all connection attempts.'
   desc  "For completeness of forensic analysis, it is necessary to track successful and failed attempts to log on to PostgreSQL. Setting 'log_connections' to 'on' will cause each attempted connection to the server to be logged, as well as successful completion of client authentication."
   desc  'rationale', ''
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW log_connections\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW log_connections;'\"
 
     Expected result:
 
@@ -16,7 +16,7 @@ control 'PSQL-00-000110' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET log_connections TO 'on';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET log_connections TO 'on';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 

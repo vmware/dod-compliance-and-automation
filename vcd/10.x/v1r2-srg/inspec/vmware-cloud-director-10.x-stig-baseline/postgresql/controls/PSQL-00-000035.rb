@@ -1,5 +1,5 @@
 control 'PSQL-00-000035' do
-  title 'PostgreSQL must be configured to use an authorized port.'
+  title 'The Cloud Director PostgreSQL database must be configured to use an authorized port.'
   desc  "
     In order to prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable or restrict unused or unnecessary physical and logical ports/protocols/services on information systems.
 
@@ -13,7 +13,7 @@ control 'PSQL-00-000035' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -A -t -c \"SHOW port\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -A -t -c 'SHOW port;'\"
 
     Expected result:
 
@@ -24,7 +24,7 @@ control 'PSQL-00-000035' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET port = '5432';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET port = '5432';\\\"\"
 
     Reload the PostgreSQL service by running the following command:
 

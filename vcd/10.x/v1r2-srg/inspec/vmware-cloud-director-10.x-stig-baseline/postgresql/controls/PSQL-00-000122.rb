@@ -1,5 +1,5 @@
 control 'PSQL-00-000122' do
-  title 'PostgreSQL must off-load audit data to a separate log management facility.'
+  title 'The Cloud Director PostgreSQL database must off-load audit data to a separate log management facility.'
   desc  "
     Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
 
@@ -9,35 +9,42 @@ control 'PSQL-00-000122' do
   "
   desc  'rationale', ''
   desc  'check', "
-    If logs are shipped to a syslog server via another method such as rsyslog, this is Not Applicable.
+    At the command line, run the following command:
 
-    As a database administrator, perform the following at the command prompt:
+    # grep -v \"^\" /etc/rsyslog.d/stig-services-postgres.conf
 
-    $ psql -c \"SHOW log_destination\"
+    Expected result:
 
-    Example result:
+    module(load=\"imfile\" mode=\"inotify\")
+    input(type=\"imfile\"
+    File=\"/var/vmware/vpostgres/current/pgdata/log/*.log\"
+    Tag=\"postgres-runtime\"
+    Severity=\"info\"
+    Facility=\"local0\")
 
-    syslog
+    If the file does not exist, this is a finding.
 
-    If \"log_destination\" does not include syslog, this is a finding.
+    If the output of the command does not match the expected result above, this is a finding.
   "
   desc 'fix', "
-    As a database administrator, perform the following at the command prompt:
+    Navigate to and open:
 
-    $ psql -c \"ALTER SYSTEM SET log_destination = 'syslog';\"
-    $ psql -c \"ALTER SYSTEM SET syslog_facility = 'LOCAL0';\"
-    $ psql -c \"ALTER SYSTEM SET syslog_ident = 'postgres';\"
+    /etc/rsyslog.d/stig-services-postgres.conf
 
-    Note: There can be more than one option set for log_destination and values should be comma separated.
-    Note: Configure the syslog_facility as appropriate for your environment.
+    Create the file if it does not exist.
 
-    Reload the PostgreSQL service by running the following command:
+    Set the contents of the file as follows:
 
-    # systemctl reload postgresql
+    module(load=\"imfile\" mode=\"inotify\")
+    input(type=\"imfile\"
+    File=\"/var/vmware/vpostgres/current/pgdata/log/*.log\"
+    Tag=\"postgres-runtime\"
+    Severity=\"info\"
+    Facility=\"local0\")
 
-    or
+    At the command prompt, run the following command:
 
-    # service postgresql reload
+    # systemctl restart rsyslog.service
   "
   impact 0.5
   tag severity: 'medium'
@@ -49,18 +56,8 @@ control 'PSQL-00-000122' do
   tag cci: ['CCI-001851', 'CCI-003821', 'CCI-003831']
   tag nist: ['AU-4 (1)', 'AU-6 (4)', 'AU-9 b']
 
-  syslog_enabled = input('syslog_enabled')
-
-  if syslog_enabled
-    sql_result = command("su - postgres -c '/opt/vmware/vpostgres/current/bin/psql -A -t -c \"SHOW log_destination;\"'")
-
-    describe "Log destination - '#{sql_result.stdout.strip}'" do
-      subject { sql_result.stdout.strip }
-      it { should match /syslog/ }
-    end
-  else
-    describe 'For PostgreSQL installations that ship logs via another method such as rsyslog, this is Not Applicable.' do
-      skip 'For PostgreSQL installations that ship logs via another method such as rsyslog, this is Not Applicable.'
-    end
+  goodcontent = inspec.profile.file('stig-services-postgres.conf')
+  describe file('/etc/rsyslog.d/stig-services-postgres.conf') do
+    its('content') { should eq goodcontent }
   end
 end

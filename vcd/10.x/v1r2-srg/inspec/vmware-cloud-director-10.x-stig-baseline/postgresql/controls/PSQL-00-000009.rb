@@ -1,11 +1,11 @@
 control 'PSQL-00-000009' do
-  title 'PostgreSQL must initiate session auditing upon startup.'
+  title 'The Cloud Director PostgreSQL database must initiate session auditing upon startup.'
   desc  "Session auditing is for use when a user's activities are under investigation. To be sure of capturing all activity during those periods when session auditing is in use, it needs to be in operation for the whole time the DBMS is running."
   desc  'rationale', ''
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"SHOW log_destination\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c 'SHOW log_destination;'\"
 
     Example result:
 
@@ -16,7 +16,7 @@ control 'PSQL-00-000009' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ psql -c \"ALTER SYSTEM SET log_destination = 'stderr';\"
+    $ su - postgres -c \"/opt/vmware/vpostgres/current/bin/psql -c \\\"ALTER SYSTEM SET log_destination = 'stderr';\\\"\"
 
     Note: There can be more than one option set for log_destination and values should be comma separated.
 

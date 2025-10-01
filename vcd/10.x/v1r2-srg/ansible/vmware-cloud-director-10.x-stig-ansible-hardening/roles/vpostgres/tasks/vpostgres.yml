@@ -46,25 +46,25 @@
 
 ###################################################################################################################################
 # PSQL-00-000006 - PostgreSQL configuration files must not be accessible by unauthorized users.
-- name: PSQL-00-000006 - PostgreSQL configuration files must not be accessible by unauthorized users.
-  tags: [PSQL-00-000006]
-  when: run_conf_perms | bool
-  block:
-    - name: PSQL-00-000006 - Find PostgeSQL configuration files.
-      ansible.builtin.find:
-        paths: "{{ var_pgdata_path }}"
-        file_type: file
-        patterns: '*conf*'
-      register: pgconffiles
+# - name: PSQL-00-000006 - PostgreSQL configuration files must not be accessible by unauthorized users.
+#   tags: [PSQL-00-000006]
+#   when: run_conf_perms | bool
+#   block:
+#     - name: PSQL-00-000006 - Find PostgeSQL configuration files.
+#       ansible.builtin.find:
+#         paths: "{{ var_pgdata_path }}"
+#         file_type: file
+#         patterns: '*conf*'
+#       register: pgconffiles
 
-    - name: PSQL-00-000006 - Updating permissions on configuration files
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        state: file
-        mode: "0600"
-        owner: postgres
-        group: users
-      with_items: "{{ pgconffiles.files }}"
+#     - name: PSQL-00-000006 - Updating permissions on configuration files
+#       ansible.builtin.file:
+#         path: "{{ item.path }}"
+#         state: file
+#         mode: "0600"
+#         owner: postgres
+#         group: users
+#       with_items: "{{ pgconffiles.files }}"
 
 ###################################################################################################################################
 # PSQL-00-000007 - PostgreSQL must generate audit records.
