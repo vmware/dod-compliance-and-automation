@@ -44,7 +44,7 @@ ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v -b --tags log
 - If vars need to be updated we recommend either creating a vars file to specify at the command line or adding them to the main playbook.yml or your own playbook.yml so that it is easy to track what is being altered from the original state.  
 - Requirements can be installed by running
 ```
-ansible-galaxy roles install -r requirements.yml
+ansible-galaxy role install -r requirements.yml
 ```
 
 ## Control Coverage

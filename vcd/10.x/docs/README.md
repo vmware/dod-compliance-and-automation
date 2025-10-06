@@ -9,9 +9,7 @@ In the United States Department of Defense (DOD), Security Technical Implementat
 The only official reference for DISA STIGs, once approved and published, is the US Department of Defense web site at https://public.cyber.mil/stigs/
 
 ## Intended Audience
-The audience for the VMware Cloud Director 10.x STIG and/or STIG Readiness Guides is VMware Cloud Director 10.x customers in the DOD needing to harden and accredit their vSphere environments. Other entities can use this guidance, however there are items that are specific to the DOD that will not be applicable to a non-DOD environment.  
-
-There are many engineered data center & hybrid cloud infrastructure products that also work with and host vSphere deployments, such as Dell VxRail and HPE SimpliVity. If this is how you consume vSphere, you should check with your product’s support for guidance first before implementing any hardening.
+The audience for the VMware Cloud Director 10.x STIG and/or STIG Readiness Guides is VMware Cloud Director 10.x customers in the DOD needing to harden and accredit their VMware Cloud Director environments. Other entities can use this guidance, however there are items that are specific to the DOD that will not be applicable to a non-DOD environment.  
 
 ## Contents
 - Overview document
@@ -27,12 +25,11 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 > [!NOTE]
 > - The latest release always takes precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version. 
 
-
 ## Content
 |      Version      |        Type        |     Release Date   |      Download      |
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |     `V1R1`        |STIG Readiness Guide|     2022/07/14     |[U_VMware_Cloud_Director_10.x_STIG_Readiness_Guide_v1r1.zip](U_VMware_Cloud_Director_10.x_STIG_Readiness_Guide_v1r1.zip)|
- 
+|     `V1R2`        |STIG Readiness Guide|     2025/10/01     |[U_VMware_Cloud_Director_10.x_STIG_Readiness_Guide_v1r2.zip](U_VMware_Cloud_Director_10.x_STIG_Readiness_Guide_v1r2.zip)|
 
 ## Viewing
 The XML files provided can be loaded into and viewed in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  

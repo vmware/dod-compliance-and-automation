@@ -1,11 +1,11 @@
-name: postgresql-stig-baseline
-title: InSpec Profile PostgreSQL
-maintainer: The Authors
-copyright: The Authors
-copyright_email: 
+name: vmware-cloud-director-postgresql-10.6-stig-baseline
+title: InSpec Profile for VMware Cloud Director PostgreSQL 10.6 STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
 license: Apache-2.0
-summary: InSpec Profile PostgreSQL
-version: 1.2.0
+summary: An InSpec Compliance Profile for the VMware Cloud Director PostgreSQL 10.6 STIG Readiness Guide
+version: 1.0.2
 
 inputs:
 - name: syslog_enabled

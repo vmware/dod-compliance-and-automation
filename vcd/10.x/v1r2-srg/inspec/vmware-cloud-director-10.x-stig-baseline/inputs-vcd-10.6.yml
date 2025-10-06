@@ -1,7 +1,6 @@
 # Application
 vcdURL: 'vcd.domain.com'
 bearerToken: 'Bearer eyJhbGciOiJSUzI1NiJ...'
-applianceBearerToken: 'Bearer ni8IAdksi...'
 apiVersion: 'application/json;version=39.1'
 legacyApiVersion: 'application/*+json;version=37.0'
 useNsxv: false

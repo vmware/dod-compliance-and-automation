@@ -1,35 +1,45 @@
-# vmware-cloud-director-10.4-stig-baseline
-VMware Cloud Director 10.4 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 2 Date: 22 September 2025  
+# vmware-cloud-director-10.6-stig-baseline
+VMware Cloud Director 10.6 STIG Readiness Guide Chef InSpec Profile  
+Version: Release 1 Version 2 Date: 01 October 2025  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
-This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the Cloud Director 10.4 STIG Readiness Guide.  
+This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the Cloud Director 10.6 STIG Readiness Guide.  
 
 ## Requirements
 
-- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH to the target. Tested with version 4.41.20. Chef/CINC Workstation can also be installed and used.
+- The dependent Photon 4.0 profile has been downloaded and staged relative to this profile. The path can be edited in the main `inspec.yml` file.
+- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH to the target. Tested with version 6.8.11. Chef/CINC Workstation can also be installed and used.
 - Administrative access to the target via root or sudo
-- Update the inputs in inputs file example as appropriate for your environment
-- The root user cannot execute psql statements in the out of the box configuration and the postgres user does not have a password one will need to be set in order to audit psql through InSpec. # su - postgres $ /opt/vmware/vpostgres/10/bin/psql -c "alter user postgres with password 'your-password'"
-- Two API bearer tokens are needed for the VCD Application controls to make API calls to both the VCD API and the Appliance API. Specify them on the command line or in the inputs file. See https://kb.vmware.com/s/article/56948 for generating a token for the application API
-- The appliance API does not allow issued tokens to be used from different IPs it must be generated on the appliance you are running the profile against by running "curl -k -X POST -su root "https://<insert ip or name or localhost>:5480/api/1.0.0/sessions""
+- Update the inputs in the inputs file examples as appropriate for your environment
+- The root user cannot execute psql statements in the out of the box configuration and the postgres user does not have a password one will need to be set in order to audit psql through InSpec. # su - postgres $ /opt/vmware/vpostgres/current/bin/psql -c "alter user postgres with password 'your-password'"
+- An API bearer token is needed for the VCD Application controls to make API calls. It can be specified on the command line or in the inputs file. See https://kb.vmware.com/s/article/56948 for generating a token for the application API.
 
 ## Running the profile
+
+#### Run all STIG Controls against a target appliance
+```
+inspec exec <Profile> -t ssh://root@<IP or FQDN> --password 'password' --enhanced-outcomes --show-progress
+```
+
+#### Run all controls in the profile against a target appliance and specify a waiver file, using an ssh key 
+```
+inspec exec <Profile> -t ssh://root@IPorFQDN -i <ssh key> --show-progress --waiver-file <waiverfile.yml>
+```
+
+#### Run all controls in the profile against a target appliance and specify inputs with an inputs file
+```
+inspec exec <Profile> -t ssh://root@IPorFQDN -i <ssh key> --show-progress --input-file=inputs-vcd-10.6.yml
+```
 
 #### Run all controls against a target appliance with example inputs and output results to CLI
 ```
 inspec exec <Profile> -t ssh://root@IP or FQDN --password 'password' --input syslogServer=test.local:514 photonIp=10.10.10.10 ntpServer1=time.test.local ntpServer2=time2.test.local
 ```
 
-#### Run all controls in the profile against a target appliance and specify inputs with an inputs file
-```
-inspec exec <Profile> -t ssh://root@IPorFQDN -i <ssh key> --show-progress --input-file=inputs-vcd-10.4.yml
-```
-
 #### Run all profiles against a target appliance with example inputs, show progress, and output results to CLI and JSON
 ```
-inspec exec . -t ssh://root@IP or FQDN --password 'password' --input-file=inputs-vcd-10.4.yml --show-progress --reporter=cli json:path\to\report\report.json
+inspec exec . -t ssh://root@IP or FQDN --password 'password' --input-file=inputs-vcd-10.6.yml --show-progress --reporter=cli json:/path/to/report/report.json
 ```
 
 #### Run a single STIG Control against a target appliance
@@ -37,14 +47,9 @@ inspec exec . -t ssh://root@IP or FQDN --password 'password' --input-file=inputs
 inspec exec <Profile> -t ssh://root@IP or FQDN --password 'password' --controls=PHTN-30-000001
 ```
 
-#### Run all controls in the profile against a target appliance and specify a waiver file 
-```
-inspec exec <Profile> -t ssh://root@IPorFQDN -i <ssh key> --show-progress --waiver-file <waiverfile.yml>
-```
-
 ## Misc
 
-Please review the inspec.yml for input variables and specify at runtime or via an inputs.yml file
+Please review the inspec.yml for input variables and specify at runtime or via an inputs-vcd-10.6.yml (or other named) file
 
 ## InSpec Profile Overlays
 
