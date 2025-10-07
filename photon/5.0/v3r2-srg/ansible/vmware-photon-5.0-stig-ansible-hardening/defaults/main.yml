@@ -112,9 +112,18 @@ photon_5_defaults_run_phtn_50_000239: true
 photon_5_defaults_run_phtn_50_000241: true
 photon_5_defaults_run_phtn_50_000242: true
 photon_5_defaults_run_phtn_50_000244: true
-photon_5_defaults_run_phtn_50_000245: true
+photon_5_defaults_run_phtn_50_000245: false
 photon_5_defaults_run_phtn_50_000246: true
 photon_5_defaults_run_phtn_50_000247: true
+photon_5_defaults_run_phtn_50_000261: true
+photon_5_defaults_run_phtn_50_000262: true
+photon_5_defaults_run_phtn_50_000263: true
+photon_5_defaults_run_phtn_50_000264: true
+photon_5_defaults_run_phtn_50_000265: true
+photon_5_defaults_run_phtn_50_000266: true
+photon_5_defaults_run_phtn_50_000267: true
+photon_5_defaults_run_phtn_50_000268: true
+photon_5_defaults_run_phtn_50_000269: true
 
 # Auditd Configuration
 photon_5_defaults_auditd_conf_disk_full_action: 'SYSLOG'
@@ -130,12 +139,15 @@ photon_5_defaults_auditd_conf_freq: 50
 # PAM Configuration
 ## Set to false to configure pam_pwquality settings in system-password directly
 photon_5_defaults_pam_use_pwquality_conf: true
+## Set to false to configure pam_pwhistory settings in system-password directly
+photon_5_defaults_pam_use_pwhistory_conf: true
 photon_5_defaults_pam_faillock_deny: 3
 photon_5_defaults_pam_faillock_fail_interval: 900
 photon_5_defaults_pam_faillock_unlock_time: 0
 photon_5_defaults_pam_faillock_dir: '/var/log/faillock'
 ## requisite or required
 photon_5_defaults_pam_pwquality_control: 'requisite'
+photon_5_defaults_pam_pwhistory_control: 'requisite'
 photon_5_defaults_pam_pwquality_ucredit: '-1'
 photon_5_defaults_pam_pwquality_lcredit: '-1'
 photon_5_defaults_pam_pwquality_dcredit: '-1'
@@ -143,6 +155,10 @@ photon_5_defaults_pam_pwquality_ocredit: '-1'
 photon_5_defaults_pam_pwquality_difok: 8
 photon_5_defaults_pam_pwquality_minlen: 15
 photon_5_defaults_pam_pwquality_dictcheck: 1
+photon_5_defaults_pam_pwquality_maxclassrepeat: 4
+photon_5_defaults_pam_pwquality_maxrepeat: 3
+photon_5_defaults_pam_pwquality_minclass: 4
+photon_5_defaults_pam_pwquality_retry: 3
 
 # SSH Configuration
 photon_5_defaults_sshd_ciphers: 'aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
@@ -150,7 +166,7 @@ photon_5_defaults_sshd_clientaliveinterval: 900
 photon_5_defaults_sshd_hostbasedauthentication: 'no'
 photon_5_defaults_sshd_syslogfacility: AUTHPRIV
 photon_5_defaults_sshd_loglevel: INFO
-photon_5_defaults_sshd_clientalivecountmax: 0
+photon_5_defaults_sshd_clientalivecountmax: 1
 photon_5_defaults_sshd_permitemptypasswords: 'no'
 photon_5_defaults_sshd_permituserenvironment: 'no'
 photon_5_defaults_sshd_gssapiauthentication: 'no'
@@ -161,10 +177,11 @@ photon_5_defaults_sshd_compression: 'no'
 photon_5_defaults_sshd_printlastlog: 'yes'
 photon_5_defaults_sshd_ignorerhosts: 'yes'
 photon_5_defaults_sshd_ignoreuserknownhosts: 'yes'
-photon_5_defaults_sshd_maxauthtries: 6
+photon_5_defaults_sshd_maxauthtries: 4
 photon_5_defaults_sshd_allowtcpforwarding: 'no'
 photon_5_defaults_sshd_logingracetime: 30
 photon_5_defaults_sshd_macs: 'hmac-sha2-512,hmac-sha2-256'
+photon_5_defaults_sshd_kexalgorithms: 'ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,diffie-hellman-group14-sha256'
 
 # Rsyslog Configuration
 photon_5_defaults_rsyslog_authpriv_log: '/var/log/messages'

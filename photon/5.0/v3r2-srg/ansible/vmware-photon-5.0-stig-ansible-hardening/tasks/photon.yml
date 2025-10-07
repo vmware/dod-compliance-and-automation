@@ -41,6 +41,7 @@
         - '{{ photon_5_vars_systemd_resolved_conf_file }}'
         - '{{ photon_5_vars_aide_conf_file }}'
         - '{{ photon_5_vars_systemd_tmp_mount_file }}'
+        - '{{ photon_5_vars_pam_pwhistory_conf_file }}'
 
 ###################################################################################################################################
 # This task is at the top so ensure auditd is installed for all other dependent tasks that configure auditd
@@ -130,7 +131,7 @@
 
 ###################################################################################################################################
 - name: PHTN-50-000003
-  tags: [PHTN-50-000003, PHTN-50-000019, PHTN-50-000031, PHTN-50-000076, PHTN-50-000078, PHTN-50-000107, PHTN-50-000173, PHTN-50-000175, PHTN-50-000204, auditd]
+  tags: [PHTN-50-000003, PHTN-50-000019, PHTN-50-000031, PHTN-50-000076, PHTN-50-000078, PHTN-50-000107, PHTN-50-000173, PHTN-50-000175, PHTN-50-000204, PHTN-50-000266, auditd]
   when:
     - photon_5_defaults_run_phtn_50_000003 | bool
     - photon_5_defaults_run_phtn_50_000019 | bool
@@ -141,6 +142,7 @@
     - photon_5_defaults_run_phtn_50_000173 | bool
     - photon_5_defaults_run_phtn_50_000175 | bool
     - photon_5_defaults_run_phtn_50_000204 | bool
+    - photon_5_defaults_run_phtn_50_000266 | bool
   block:
     - name: PHTN-50-000003 - Check to see if auditd is installed.
       ansible.builtin.shell: |
@@ -173,7 +175,7 @@
         path: '{{ photon_5_vars_pam_faillock_conf_file }}'
         state: present
         regexp: '^#?\s*deny.*$'
-        line: deny = {{ photon_5_defaults_pam_faillock_deny }}v
+        line: deny = {{ photon_5_defaults_pam_faillock_deny }}
 
     - name: 'PHTN-50-000004 - Configure pam_faillock fail_interval in {{ photon_5_vars_pam_faillock_conf_file }}.'
       ansible.builtin.lineinfile:
@@ -257,6 +259,21 @@
         state: present
         regexp: '^#?\s*Ciphers\s'
         line: Ciphers {{ photon_5_defaults_sshd_ciphers }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+# This must be before we install the OpenSSL FIPS Provider or the default OpenSSH KexAlgorithms will cause issues with connecting over SSH
+- name: PHTN-50-000269
+  tags: [PHTN-50-000269, sshd]
+  when: photon_5_defaults_run_phtn_50_000269 | bool
+  block:
+    - name: 'PHTN-50-000269 - Configure KexAlgorithms in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*KexAlgorithms\s'
+        line: KexAlgorithms {{ photon_5_defaults_sshd_kexalgorithms }}
       notify:
         - '{{ role_name }} : restart sshd'
 
@@ -1212,6 +1229,7 @@
         - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
+# Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-50-000192
   tags: [PHTN-50-000192]
   when: photon_5_defaults_run_phtn_50_000192 | bool
@@ -1227,11 +1245,11 @@
 
     - name: 'PHTN-50-000192 - Check to see if pam_faillock.so preauth rule exists in {{ photon_5_vars_pam_system_auth_file }} and is before the pam_unix.so rule.'
       ansible.builtin.set_fact:
-        preauthsearch: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_faillock\\.so\\spreauth$\\nauth\\s+(required|requisite)\\s+pam_unix\\.so.*$', multiline=True) }}"
+        preauthsearch: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_faillock\\.so\\spreauth$\\nauth\\s+(sufficient)\\s+pam_unix\\.so.*$', multiline=True) }}"
 
     - name: 'PHTN-50-000192 - Check to see if pam_faillock.so authfail rule exists in {{ photon_5_vars_pam_system_auth_file }} and is after the pam_unix.so rule.'
       ansible.builtin.set_fact:
-        authfailsearch: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_unix\\.so.*$\\nauth\\s+(required|requisite|\\[default=die\\])\\s+pam_faillock\\.so\\sauthfail$', multiline=True) }}"
+        authfailsearch: "{{ systemauthcontent | regex_search('^auth\\s+(sufficient)\\s+pam_unix\\.so.*$\\nauth\\s+(required|requisite|\\[default=die\\])\\s+pam_faillock\\.so\\sauthfail$', multiline=True) }}"
 
     - name: 'PHTN-50-000192 - Remove existing pam_faillock.so rules in {{ photon_5_vars_pam_system_auth_file }} if one not found or incorrect.'
       ansible.builtin.lineinfile:
@@ -1241,11 +1259,19 @@
       when:
         - preauthsearch == "" or authfailsearch == ""
 
+    - name: Ensure pam_unix.so auth control is 'sufficient' in system-auth if it is 'required'
+      ansible.builtin.replace:
+        path: "{{ photon_5_vars_pam_system_auth_file }}"
+        regexp: '^(auth\s+)\brequired\b(\s+pam_unix\.so\b.*)$'
+        replace: '\1sufficient\2'
+      register: replaced_system_auth
+      changed_when: replaced_system_auth.changed
+
     - name: PHTN-50-000192 - Add pam_faillock.so preauth to system-auth if it doesn't exist.
       community.general.pamd:
         name: system-auth
         type: auth
-        control: required
+        control: sufficient
         module_path: pam_unix.so
         new_type: auth
         new_control: required
@@ -1257,7 +1283,7 @@
       community.general.pamd:
         name: system-auth
         type: auth
-        control: required
+        control: sufficient
         module_path: pam_unix.so
         new_type: auth
         new_control: required
@@ -1298,6 +1324,73 @@
         new_control: required
         new_module_path: pam_faillock.so
         state: before
+
+###################################################################################################################################
+# Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
+- name: PHTN-50-000206
+  tags: [PHTN-50-000206]
+  when: photon_5_defaults_run_phtn_50_000206 | bool
+  block:
+    - name: PHTN-50-000206 - Check to see if pam_faildelay.so rule exists.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -E '^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$' /etc/pam.d/system-auth
+      register: sysauthfaildelay
+      failed_when: sysauthfaildelay.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000206 - Remove existing pam_faildelay.so rule in system-auth if it is incorrect.
+      community.general.pamd:
+        name: system-auth
+        type: auth
+        control: optional
+        module_path: pam_faildelay.so
+        state: absent
+      when:
+        - sysauthfaildelay.stdout == ""
+
+    # Need to use lininfile instead of pam because of the placement this needs to go can't be dealt with by the ansible pam module
+    - name: PHTN-50-000206 - Add pam_faildelay.so to system-auth if it doesn't exist.
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_system_auth_file }}'
+        state: present
+        regexp: '^#?auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$'
+        line: auth       optional pam_faildelay.so delay=4000000
+        insertafter: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+authfail$'
+
+###################################################################################################################################
+# Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
+- name: PHTN-50-000267
+  tags: [PHTN-50-000267]
+  when: photon_5_defaults_run_phtn_50_000267 | bool
+  block:
+    - name: PHTN-50-000267 - Check to see if pam_deny.so rule exists.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -E '^auth\s+(required|requisite)\s+pam_deny\.so\s.*$' /etc/pam.d/system-auth
+      register: sysauthpamdeny
+      failed_when: sysauthpamdeny.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000267 - Remove existing pam_deny.so rule in system-auth if it is incorrect.
+      community.general.pamd:
+        name: system-auth
+        type: auth
+        control: required
+        module_path: pam_deny.so
+        state: absent
+      when:
+        - sysauthpamdeny.stdout == ""
+
+    # Need to use lininfile instead of pam because of the placement this needs to go can't be dealt with by the ansible pam module
+    # This needs to be the last line
+    - name: PHTN-50-000267 - Add pam_deny.so to system-auth if it doesn't exist.
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_system_auth_file }}'
+        state: present
+        regexp: '^#?\s*auth\s+(required|requisite|optional)\s+pam_deny\.so\b.*$'
+        line: auth       required pam_deny.so
+        insertafter: '^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\b.*$'
 
 ###################################################################################################################################
 - name: PHTN-50-000193
@@ -1453,38 +1546,6 @@
         line: ClientAliveCountMax {{ photon_5_defaults_sshd_clientalivecountmax }}
       notify:
         - '{{ role_name }} : restart sshd'
-
-###################################################################################################################################
-- name: PHTN-50-000206
-  tags: [PHTN-50-000206]
-  when: photon_5_defaults_run_phtn_50_000206 | bool
-  block:
-    - name: PHTN-50-000206 - Check to see if pam_faildelay.so rule exists.
-      ansible.builtin.shell: |
-        set -o pipefail
-        grep -E '^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$' /etc/pam.d/system-auth
-      register: sysauthfaildelay
-      failed_when: sysauthfaildelay.rc == 2
-      changed_when: false
-
-    - name: PHTN-50-000206 - Remove existing pam_faildelay.so rule in system-auth if it is incorrect.
-      community.general.pamd:
-        name: system-auth
-        type: auth
-        control: optional
-        module_path: pam_faildelay.so
-        state: absent
-      when:
-        - sysauthfaildelay.stdout == ""
-
-    # Need to use lininfile instead of pam because of the placement this needs to go can't be dealt with by the ansible pam module
-    - name: PHTN-50-000206 - Add pam_faildelay.so to system-auth if it doesn't exist.
-      ansible.builtin.lineinfile:
-        path: '{{ photon_5_vars_pam_system_auth_file }}'
-        state: present
-        regexp: '^#?auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$'
-        line: auth       optional pam_faildelay.so delay=4000000
-        insertafter: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+authfail$'
 
 ###################################################################################################################################
 - name: PHTN-50-000207
@@ -2161,27 +2222,33 @@
       when: fs_protected_hardlinks.stdout != "fs.protected_hardlinks = 1"
 
 ###################################################################################################################################
+# Changing to a manual fix
+
 - name: PHTN-50-000245
   tags: [PHTN-50-000245]
   when: photon_5_defaults_run_phtn_50_000245 | bool
   block:
-    - name: 'PHTN-50-000245 - Add nodev to {{ photon_5_vars_systemd_tmp_mount_file }}.'
-      ansible.builtin.replace:
-        path: '{{ photon_5_vars_systemd_tmp_mount_file }}'
-        regexp: '^(Options=(?!.*nodev).*)'
-        replace: '\1,nodev'
+    - name: PHTN-50-000245 - The Photon operating system must mount tmp securely
+      ansible.builtin.debug:
+        msg: "PHTN-50-000245 - This control must be manually remediated."
 
-    - name: 'PHTN-50-000245 - Add noexec to {{ photon_5_vars_systemd_tmp_mount_file }}.'
-      ansible.builtin.replace:
-        path: '{{ photon_5_vars_systemd_tmp_mount_file }}'
-        regexp: '^(Options=(?!.*noexec).*)'
-        replace: '\1,noexec'
+#     - name: 'PHTN-50-000245 - Add nodev to {{ photon_5_vars_systemd_tmp_mount_file }}.'
+#       ansible.builtin.replace:
+#         path: '{{ photon_5_vars_systemd_tmp_mount_file }}'
+#         regexp: '^(Options=(?!.*nodev).*)'
+#         replace: '\1,nodev'
 
-    - name: 'PHTN-50-000245 - Add nosuid to {{ photon_5_vars_systemd_tmp_mount_file }}.'
-      ansible.builtin.replace:
-        path: '{{ photon_5_vars_systemd_tmp_mount_file }}'
-        regexp: '^(Options=(?!.*nosuid).*)'
-        replace: '\1,nosuid'
+#     - name: 'PHTN-50-000245 - Add noexec to {{ photon_5_vars_systemd_tmp_mount_file }}.'
+#       ansible.builtin.replace:
+#         path: '{{ photon_5_vars_systemd_tmp_mount_file }}'
+#         regexp: '^(Options=(?!.*noexec).*)'
+#         replace: '\1,noexec'
+
+#     - name: 'PHTN-50-000245 - Add nosuid to {{ photon_5_vars_systemd_tmp_mount_file }}.'
+#       ansible.builtin.replace:
+#         path: '{{ photon_5_vars_systemd_tmp_mount_file }}'
+#         regexp: '^(Options=(?!.*nosuid).*)'
+#         replace: '\1,nosuid'
 
 ###################################################################################################################################
 - name: PHTN-50-000246
@@ -2220,6 +2287,188 @@
         path: '{{ photon_5_vars_pam_system_auth_file }}'
         regexp: '^(auth.*pam_unix\.so.*)(\snullok)(.*)'
         replace: '\1\3'
+
+###################################################################################################################################
+- name: PHTN-50-000261
+  tags: [PHTN-50-000261, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000261 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000261 - Configure pam_pwquality maxclassrepeat in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*maxclassrepeat\s'
+        line: maxclassrepeat = {{ photon_5_defaults_pam_pwquality_maxclassrepeat }}
+
+- name: PHTN-50-000261 - Configure pam_pwquality maxclassrepeat in system-password.
+  tags: [PHTN-50-000261, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000261 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: PHTN-50-000261 - Configure pwquality maxclassrepeat in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'maxclassrepeat={{ photon_5_defaults_pam_pwquality_maxclassrepeat }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000262
+  tags: [PHTN-50-000262, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000262 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000262 - Configure pam_pwquality maxrepeat in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*maxrepeat\s'
+        line: maxrepeat = {{ photon_5_defaults_pam_pwquality_maxrepeat }}
+
+- name: PHTN-50-000262 - Configure pam_pwquality maxrepeat in system-password.
+  tags: [PHTN-50-000262, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000262 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: PHTN-50-000262 - Configure pwquality maxrepeat in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'maxrepeat={{ photon_5_defaults_pam_pwquality_maxrepeat }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000263
+  tags: [PHTN-50-000263, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000263 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000263 - Configure pam_pwquality minclass in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*minclass\s'
+        line: minclass = {{ photon_5_defaults_pam_pwquality_minclass }}
+
+- name: PHTN-50-000263 - Configure pam_pwquality minclass in system-password.
+  tags: [PHTN-50-000263, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000263 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: PHTN-50-000263 - Configure pwquality minclass in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'minclass={{ photon_5_defaults_pam_pwquality_minclass }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000264
+  tags: [PHTN-50-000264, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000264 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000264 - Configure pam_pwquality retry in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*retry\s'
+        line: retry = {{ photon_5_defaults_pam_pwquality_retry }}
+
+- name: PHTN-50-000264 - Configure pam_pwquality retry in system-password.
+  tags: [PHTN-50-000264, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000264 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: PHTN-50-000264 - Configure pwquality retry in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'retry={{ photon_5_defaults_pam_pwquality_retry }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000265
+  tags: [PHTN-50-000265, pam_pwhistory]
+  when:
+    - photon_5_defaults_run_phtn_50_000265 | bool
+    - photon_5_defaults_pam_use_pwhistory_conf | bool
+  block:
+    - name: 'PHTN-50-000265 - Configure pam_pwquality enforce_for_root in {{ photon_5_vars_pam_pwhistory_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwhistory_conf_file }}'
+        state: present
+        regexp: '^#?\s*enforce_for_root\s'
+        line: enforce_for_root
+
+- name: PHTN-50-000265
+  tags: [PHTN-50-000265, pam_pwhistory]
+  when:
+    - photon_5_defaults_run_phtn_50_000265 | bool
+    - not photon_5_defaults_pam_use_pwhistory_conf
+  block:
+    - name: PHTN-50-000265 - Configure pam_pwhistory enforce_for_root in system-password.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwhistory_control }}'
+        module_path: pam_pwhistory.so
+        module_arguments: 'enforce_for_root'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000268
+  tags: [PHTN-50-000268]
+  when: photon_5_defaults_run_phtn_50_000268 | bool
+  block:
+    - name: PHTN-50-000268 - Check to see if pam_pwhistory.so rule exists.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -E '^password\s*(requisite|required)\s*pam_pwhistory.so\s.*$' /etc/pam.d/system-password
+      register: syspasspwh
+      failed_when: syspasspwh.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000268 - Remove existing pam_pwhistory.so rules in system-password if it is incorrect.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_pwhistory.so
+        state: absent
+      when:
+        - syspasspwh.stdout == ""
+
+    - name: PHTN-50-000268 - Add pam_pwhistory.so to system-password if it doesn't exist.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_unix.so
+        new_type: password
+        new_control: required
+        new_module_path: pam_pwhistory.so
+        module_arguments: 'use_authtok'
+        state: before
+      when:
+        - syspasspwh.stdout == ""
 
 ###################################################################################################################################
 # !!! AIDE configuration should be the last task here so the configuration database includes all changes !!!

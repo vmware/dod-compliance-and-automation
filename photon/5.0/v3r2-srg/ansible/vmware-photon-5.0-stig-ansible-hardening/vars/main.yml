@@ -13,6 +13,7 @@ photon_5_vars_auditd_conf_file: '/etc/audit/auditd.conf'
 # PAM
 photon_5_vars_pam_faillock_conf_file: '/etc/security/faillock.conf'
 photon_5_vars_pam_pwquality_conf_file: '/etc/security/pwquality.conf'
+photon_5_vars_pam_pwhistory_conf_file: '/etc/security/pwhistory.conf'
 photon_5_vars_pam_system_password_file: '/etc/pam.d/system-password'
 photon_5_vars_pam_system_auth_file: '/etc/pam.d/system-auth'
 photon_5_vars_pam_system_account_file: '/etc/pam.d/system-account'

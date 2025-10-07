@@ -114,6 +114,16 @@
     - PHTN-50-000245
     - PHTN-50-000246
     - PHTN-50-000247
+    - PHTN-50-000261
+    - PHTN-50-000262
+    - PHTN-50-000263
+    - PHTN-50-000264
+    - PHTN-50-000265
+    - PHTN-50-000266
+    - PHTN-50-000267
+    - PHTN-50-000268
+    - PHTN-50-000269
+
 
 - name: Include Photon Installer Tasks
   ansible.builtin.include_tasks:
