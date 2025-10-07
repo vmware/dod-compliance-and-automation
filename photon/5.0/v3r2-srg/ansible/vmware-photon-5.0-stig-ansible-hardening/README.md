@@ -1,8 +1,6 @@
-[![Lint Ansible on Pushes](https://github-vcf.devops.broadcom.net/vcf/vmware-photon-5.0-stig-ansible-hardening/actions/workflows/lint-ansible-on-push.yml/badge.svg?branch=main)](https://github-vcf.devops.broadcom.net/vcf/vmware-photon-5.0-stig-ansible-hardening/actions/workflows/lint-ansible-on-push.yml) Branch: Main  
-[![Lint Ansible on Pushes](https://github-vcf.devops.broadcom.net/vcf/vmware-photon-5.0-stig-ansible-hardening/actions/workflows/lint-ansible-on-push.yml/badge.svg?branch=development)](https://github-vcf.devops.broadcom.net/vcf/vmware-photon-5.0-stig-ansible-hardening/actions/workflows/lint-ansible-on-push.yml) Branch: Development
 # vmware-photon-5.0-stig-ansible-hardening
 VMware Photon OS 5.0 STIG Readiness Guide Ansible Playbook  
-Version: Version 3 Release 1: 17 June 2025  
+Version: Version 3 Release 2: 01 October 2025  
 STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
 
@@ -48,5 +46,5 @@ ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v --tags photon
 - For PAM configuration the playbook utilizes conf files for modules instead of adding properties directly to the `system-password`, `system-account`, and `system-auth` files.
 
 ## License
-Copyright 2019-2025 VMware, Inc.  
+Copyright 2019-2021 VMware, Inc.  
 SPDX-License-Identifier: Apache-2.0  

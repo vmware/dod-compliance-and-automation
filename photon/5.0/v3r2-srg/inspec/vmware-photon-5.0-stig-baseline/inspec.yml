@@ -5,7 +5,7 @@ copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 3.0.1
+version: 3.0.2
 
 inputs:
 - name: useFaillockConf
@@ -15,6 +15,10 @@ inputs:
 - name: usePwqualityConf
   type: boolean
   description: If /etc/security/pwquality.conf is used to configure pam_pwquality.so set this to true
+  value: true
+- name: usePwhistoryConf
+  type: boolean
+  description: If /etc/security/pwhistory.conf is used to configure pam_pwhistory.so set this to true
   value: true
 - name: containerHost
   type: boolean
@@ -66,3 +70,14 @@ inputs:
   value:
     - hmac-sha2-512
     - hmac-sha2-256
+- name: sshdKexAlgorithms
+  type: array
+  description: List of FIPS validated SSH KexAlgorithms
+  value:
+    - ecdh-sha2-nistp256
+    - ecdh-sha2-nistp384
+    - ecdh-sha2-nistp521
+    - diffie-hellman-group-exchange-sha256
+    - diffie-hellman-group16-sha512
+    - diffie-hellman-group18-sha512
+    - diffie-hellman-group14-sha256

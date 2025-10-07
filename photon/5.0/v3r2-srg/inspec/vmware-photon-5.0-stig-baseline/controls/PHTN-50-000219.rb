@@ -9,9 +9,9 @@ control 'PHTN-50-000219' do
 
     Example result:
 
-    maxauthtries 6
+    maxauthtries 4
 
-    If \"MaxAuthTries\" is not set to \"6\", this is a finding.
+    If \"MaxAuthTries\" is not set to \"4\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -20,7 +20,7 @@ control 'PHTN-50-000219' do
 
     Ensure the \"MaxAuthTries\" line is uncommented and set to the following:
 
-    MaxAuthTries 6
+    MaxAuthTries 4
 
     At the command line, run the following command:
 
@@ -37,6 +37,6 @@ control 'PHTN-50-000219' do
 
   sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i MaxAuthTries") do
-    its('stdout.strip') { should cmp 'MaxAuthTries 6' }
+    its('stdout.strip') { should cmp 'MaxAuthTries 4' }
   end
 end

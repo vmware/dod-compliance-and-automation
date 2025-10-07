@@ -3,7 +3,7 @@ control 'PHTN-50-000231' do
   desc  'Routing protocol daemons are typically used on routers to exchange network topology information with other routers. If this software is used when not required, system network information may be unnecessarily transmitted across the network.'
   desc  'rationale', ''
   desc  'check', "
-    This is not applicable to the following VCF components: Automation, Identity Broker, and Operations Cloud Proxy.
+    This is not applicable to the following VCF components: Automation, Identity Broker, Operations Fleet Management, and Operations Cloud Proxy.
 
     If IP forwarding is required, for example if Kubernetes is installed, this is Not Applicable.
 

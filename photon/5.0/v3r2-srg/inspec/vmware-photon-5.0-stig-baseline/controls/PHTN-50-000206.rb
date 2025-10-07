@@ -10,9 +10,10 @@ control 'PHTN-50-000206' do
     Example result:
 
     auth required pam_faillock.so preauth
-    auth required pam_unix.so
+    auth sufficient pam_unix.so
     auth required pam_faillock.so authfail
     auth optional pam_faildelay.so delay=4000000
+    auth required pam_deny.so
 
     If the pam_faildelay.so module is not present with the delay set to at least four seconds, this is a finding.
 
@@ -37,6 +38,6 @@ control 'PHTN-50-000206' do
   tag nist: ['CM-6 b']
 
   describe file('/etc/pam.d/system-auth') do
-    its('content') { should match /^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\s+(?=.*\bdelay=4000000\b).*$/ }
+    its('content') { should match(/^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\s+(?=.*\bdelay=4000000\b).*$/) }
   end
 end

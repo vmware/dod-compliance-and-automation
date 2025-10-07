@@ -1,5 +1,24 @@
 # Change Log
 
+## [5.0 Version 3 Release 2] (2025-10-01)
+
+#### Release Notes
+- PHTN-50-000192 updated check and fix text as well as the test.
+- PHTN-50-000203 updated check and fix text as well as the test.
+- PHTN-50-000206 updated check text and test.
+- PHTN-50-000219 updated check and fix text as well as the test.
+- PHTN-50-000231 updated check text.
+- PHTN-50-000245 updated control
+- PHTN-50-000261 new control
+- PHTN-50-000262 new control
+- PHTN-50-000263 new control
+- PHTN-50-000264 new control
+- PHTN-50-000265 new control
+- PHTN-50-000266 new control
+- PHTN-50-000267 new control
+- PHTN-50-000268 new control
+- PHTN-50-000269 new control
+
 ## [5.0 Version 3 Release 1] (2025-06-17)
 
 #### Release Notes

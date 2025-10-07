@@ -13,22 +13,41 @@ control 'PHTN-50-000245' do
 
     At the command line, run the following command to verify the /tmp directory is mounted securely:
 
-    # grep '^Options' /lib/systemd/system/tmp.mount
+    # grep -w tmp /proc/mounts | awk '{print $(NF-2)}'
 
     Example result:
 
-    Options=mode=1777,strictatime,nosuid,nodev,noexec,size=50%%,nr_inodes=1m
+    rw,nosuid,nodev,noexec,size=8185412k,nr_inodes=1048576
 
-    If \"noexec\",\"nodev\", and \"nosuid\" are not present, this is a finding.
+    If no results are displayed, this is not a finding.
+
+    If \"noexec\",\"nodev\", and \"nosuid\" are not all present, this is a finding.
   "
   desc 'fix', "
-    Navigate to and open:
+    Perform the steps below to override the tmp.mount settings.
 
-    /lib/systemd/system/tmp.mount
+    At the command line, run:
 
-    Add or update the required settings on the \"Options\" line, for example:
+    # systemctl cat tmp.mount
 
-    Options=mode=1777,strictatime,nosuid,nodev,noexec,size=50%%,nr_inodes=1m
+    In the output, under the \"[Mount]\" heading, copy the \"Options\" line, for example:
+
+    [Mount]
+    ...
+    Options=mode=1777,strictatime,nosuid,nodev,size=50%,nr_inodes=1m
+
+    Run the following command to create or edit an override file:
+
+    # systemctl edit tmp.mount
+
+    Copy the \"Options\" line from before, as well as the \"[Mount]\" header and paste them in the space between the two relevant comment lines. For example:
+
+    ### Anything between here and the comment below will become the new contents of the file
+    [Mount]
+    Options=mode=1777,strictatime,nosuid,nodev,noexec,size=50%,nr_inodes=1m
+    ### Lines below this comment will be discarded
+
+    Make sure to append any of the missing 'nosuid', 'nodev', or 'noexec' options delimited by commas.
 
     Restart the system for the changes to take effect.
   "
@@ -42,7 +61,17 @@ control 'PHTN-50-000245' do
   tag nist: ['CM-6 b']
 
   tmpoptions = ['nosuid', 'noexec', 'nodev']
-  describe parse_config_file('/lib/systemd/system/tmp.mount').params['Mount'].Options.split(',') do
-    it { should include(*tmpoptions) }
+
+  result = command("grep -w tmp /proc/mounts | awk '{print $(NF-2)}'")
+
+  if !result.stdout.empty?
+    describe "Checking /tmp mount options - #{result.stdout.strip}" do
+      subject { result.stdout.strip.split(',') }
+      it { should include(*tmpoptions) }
+    end
+  else
+    describe 'No tmp drive mounted...skipping' do
+      skip 'No tmp drive mounted...skipping'
+    end
   end
 end

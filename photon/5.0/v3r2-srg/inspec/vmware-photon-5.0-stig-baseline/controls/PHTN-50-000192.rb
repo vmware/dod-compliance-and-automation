@@ -14,8 +14,10 @@ control 'PHTN-50-000192' do
     Example result:
 
     auth required pam_faillock.so preauth
-    auth required pam_unix.so
+    auth sufficient pam_unix.so
     auth required pam_faillock.so authfail
+    auth optional pam_faildelay.so delay=4000000
+    auth required pam_deny.so
 
     If the pam_faillock.so module is not present with the \"preauth\" line listed before pam_unix.so, this is a finding.
     If the pam_faillock.so module is not present with the \"authfail\" line listed after pam_unix.so, this is a finding.
@@ -59,10 +61,10 @@ control 'PHTN-50-000192' do
   tag nist: ['AC-7 a']
 
   describe file('/etc/pam.d/system-auth') do
-    its('content') { should match /^auth\s+(required|requisite)\s+pam_faillock\.so\s+(?=.*\bpreauth\b).*\n(^auth\s+(required|requisite)\s+pam_unix\.so.*)/ }
-    its('content') { should match /^auth\s+(required|requisite)\s+pam_unix\.so.*\n(^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+(?=.*\bauthfail\b).*)/ }
+    its('content') { should match(/^auth\s+(required|requisite)\s+pam_faillock\.so\s+(?=.*\bpreauth\b).*\n(^auth\s+(sufficient)\s+pam_unix\.so.*)/) }
+    its('content') { should match(/^auth\s+(sufficient)\s+pam_unix\.so.*\n(^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+(?=.*\bauthfail\b).*)/) }
   end
   describe file('/etc/pam.d/system-account') do
-    its('content') { should match /^account\s+(required|requisite)\s+pam_faillock\.so.*\n(^account\s+(required|requisite)\s+pam_unix\.so.*)/ }
+    its('content') { should match(/^account\s+(required|requisite)\s+pam_faillock\.so.*\n(^account\s+(required|requisite)\s+pam_unix\.so.*)/) }
   end
 end

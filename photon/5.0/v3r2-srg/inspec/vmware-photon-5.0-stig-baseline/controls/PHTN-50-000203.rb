@@ -11,11 +11,11 @@ control 'PHTN-50-000203' do
 
     # sshd -T|&grep -i ClientAliveCountMax
 
-    Expected result:
+    Example result:
 
-    clientalivecountmax 0
+    clientalivecountmax 1
 
-    If \"ClientAliveCountMax\" is not set to \"0\", this is a finding.
+    If \"ClientAliveCountMax\" is not set to \"1\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -24,7 +24,7 @@ control 'PHTN-50-000203' do
 
     Ensure the \"ClientAliveCountMax\" line is uncommented and set to the following:
 
-    ClientAliveCountMax 0
+    ClientAliveCountMax 1
 
     At the command line, run the following command:
 
@@ -41,6 +41,6 @@ control 'PHTN-50-000203' do
 
   sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i ClientAliveCountMax") do
-    its('stdout.strip') { should cmp 'ClientAliveCountMax 0' }
+    its('stdout.strip') { should cmp 'ClientAliveCountMax 1' }
   end
 end

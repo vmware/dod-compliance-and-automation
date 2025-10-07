@@ -1,6 +1,6 @@
 # vmware-photon-5.0-stig-baseline
 Photon OS 5.0 STIG Readiness Guide Chef InSpec Profile  
-Version: Release 3 Version 1 Date: 17 June 2025  
+Version: Version 3 Release 2 Date: 01 October 2025  
 STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
 
@@ -26,8 +26,8 @@ Below is a list of inputs available for this profile that can be provided.
 |authprivlog        |/var/log/messages          |The expected log path for the authpriv log in the rsyslog config.|String|PHTN-50-000012|
 |containerHost      |false                      |Used to indicate if system is a container host and running Kubernetes/Docker/etc for controls where this would make them N/A.|Boolean|PHTN-50-000231|
 |useFaillockConf    |true                       |Used to indicate that `/etc/security/faillock.conf` is used to configure `pam_faillock.so`.|Boolean|PHTN-50-000004,PHTN-50-000108,PHTN-50-000193,,PHTN-50-000194,PHTN-50-000195,PHTN-50-000196|
-|usePwqualityConf   |true                       |Used to indicate that `/etc/security/pwquality.conf` is used to configure `pam_pwquality.so`.|Boolean|PHTN-50-000035,PHTN-50-000036,PHTN-50-000037,,PHTN-50-000038,PHTN-50-000044,PHTN-50-000086,PHTN-50-000184,PHTN-50-000235|
-|useHistoryConf     |true                       |Used to indicate that `/etc/security/pwhistory.conf` is used to configure `pam_pwhistory.so`.|Boolean|PHTN-50-000043|
+|usePwqualityConf   |true                       |Used to indicate that `/etc/security/pwquality.conf` is used to configure `pam_pwquality.so`.|Boolean|PHTN-50-000035,PHTN-50-000036,PHTN-50-000037,,PHTN-50-000038,PHTN-50-000044,PHTN-50-000086,PHTN-50-000184,PHTN-50-000235,PHTN-50-000261,PHTN-50-000262,PHTN-50-000263,PHTN-50-000264|
+|usePwhistoryConf   |true                       |Used to indicate that `/etc/security/pwhistory.conf` is used to configure `pam_pwhistory.so`.|Boolean|PHTN-50-000265|
 
 ## Running InSpec/CINC-auditor
 
