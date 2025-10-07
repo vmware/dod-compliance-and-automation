@@ -7,7 +7,7 @@
 ## Overview
 This project contains content for compliance auditing and remediation of the VMware Photon OS 5.0 DOD STIG Baseline.
 
-The VMware Photon OS 5.0 Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of Photon OS 5.0 in the Department of Defense (DOD). The Photon OS 5.0 STIG is based on the General Purpose Operating System (GPOS) SRG V3R1.
+The VMware Photon OS 5.0 Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of Photon OS 5.0 in the Department of Defense (DOD). The Photon OS 5.0 STIG is based on the General Purpose Operating System (GPOS) SRG V3R2.
 
 The VMware Photon OS 5.0 STIGs presume operation in an environment compliant with all applicable DoD guidance.
 
