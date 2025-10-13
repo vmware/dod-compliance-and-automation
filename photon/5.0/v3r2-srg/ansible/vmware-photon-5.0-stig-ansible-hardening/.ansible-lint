@@ -5,3 +5,4 @@ skip_list:
 warn_list:
   - command-instead-of-module
   - no-changed-when
+  - metadata
