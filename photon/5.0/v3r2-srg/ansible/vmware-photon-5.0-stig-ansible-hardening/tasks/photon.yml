@@ -170,19 +170,37 @@
   tags: [PHTN-50-000004]
   when: photon_5_defaults_run_phtn_50_000004 | bool
   block:
-    - name: 'PHTN-50-000004 - Configure pam_faillock deny in {{ photon_5_vars_pam_faillock_conf_file }}.'
-      ansible.builtin.lineinfile:
-        path: '{{ photon_5_vars_pam_faillock_conf_file }}'
-        state: present
-        regexp: '^#?\s*deny.*$'
-        line: deny = {{ photon_5_defaults_pam_faillock_deny }}
+    - name: PHTN-50-000004 - Check current value of deny in {{ photon_5_vars_pam_faillock_conf_file }}.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^deny\s*=\s*\K.*' {{ photon_5_vars_pam_faillock_conf_file }}
+      register: denyvalue
+      failed_when: false
+      changed_when: false
 
-    - name: 'PHTN-50-000004 - Configure pam_faillock fail_interval in {{ photon_5_vars_pam_faillock_conf_file }}.'
+    - name: 'PHTN-50-000004 - Configure deny setting in {{ photon_5_vars_pam_faillock_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*fail_interval.*$'
+        regexp: '^\s*#?\s*deny\s*=\s*.*$'
+        line: deny = {{ photon_5_defaults_pam_faillock_deny }}
+      when: denyvalue.stdout | int < 1 or denyvalue.stdout | int > 3
+
+    - name: PHTN-50-000004 - Check current value of fail_interval in {{ photon_5_vars_pam_faillock_conf_file }}.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^fail_interval\s*=\s*\K.*' {{ photon_5_vars_pam_faillock_conf_file }}
+      register: failintervalvalue
+      failed_when: false
+      changed_when: false
+
+    - name: 'PHTN-50-000004 - Configure fail_interval in {{ photon_5_vars_pam_faillock_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*fail_interval\s*=\s*.*$'
         line: fail_interval = {{ photon_5_defaults_pam_faillock_fail_interval }}
+      when: failintervalvalue.stdout | int < 900
 
 ###################################################################################################################################
 - name: PHTN-50-000005
@@ -314,7 +332,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*write_logs\s'
+        regexp: '^\s*#?\s*write_log\s*=\s*.*$'
         line: write_logs = yes
         backrefs: true
       when:
@@ -337,7 +355,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*disk_full_action\s'
+        regexp: '^\s*#?\s*disk_full_action\s*=\s*.*$'
         line: disk_full_action = {{ photon_5_defaults_auditd_conf_disk_full_action }}
         backrefs: true
       when:
@@ -347,7 +365,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*disk_error_action\s'
+        regexp: '^\s*#?\s*disk_error_action\s*=\s*.*$'
         line: disk_error_action = {{ photon_5_defaults_auditd_conf_disk_error_action }}
         backrefs: true
       when:
@@ -357,7 +375,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*admin_space_left_action\s'
+        regexp: '^\s*#?\s*admin_space_left_action\s*=\s*.*$'
         line: admin_space_left_action = {{ photon_5_defaults_auditd_conf_admin_space_left_action }}
         backrefs: true
       when:
@@ -407,7 +425,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*log_group\s'
+        regexp: '^\s*#?\s*log_group\s*=\s*.*$'
         line: log_group = root
         backrefs: true
       when:
@@ -454,12 +472,21 @@
     - photon_5_defaults_run_phtn_50_000035 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000035 - Check current value of ucredit in pam_pwquality module.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^ucredit\s*=\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: ucreditvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000035 - Configure pam_pwquality ucredit in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*ucredit\s'
+        regexp: '^\s*#?\s*ucredit\s*=\s*.*$'
         line: ucredit = {{ photon_5_defaults_pam_pwquality_ucredit }}
+      when: ucreditvalue.stdout | int >= 0
 
 - name: PHTN-50-000035
   tags: [PHTN-50-000035, pam_pwquality]
@@ -483,12 +510,21 @@
     - photon_5_defaults_run_phtn_50_000036 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000036 - Check current value of lcredit in pam_pwquality module.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^lcredit\s*=\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: lcreditvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000036 - Configure pam_pwquality lcredit in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*lcredit\s'
-        line: lcredit = {{ photon_5_defaults_pam_pwquality_lcredit }}
+        regexp: '^\s*#?\s*lcredit\s*=\s*.*$'
+        line: lcredit = {{ photon_5_defaults_pam_pwquality_ucredit }}
+      when: lcreditvalue.stdout | int >= 0
 
 - name: PHTN-50-000036
   tags: [PHTN-50-000036, pam_pwquality]
@@ -512,12 +548,21 @@
     - photon_5_defaults_run_phtn_50_000037 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000037 - Check current value of dcredit in pam_pwquality module.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^dcredit\s*=\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: dcreditvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000037 - Configure pam_pwquality dcredit in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*dcredit\s'
-        line: dcredit = {{ photon_5_defaults_pam_pwquality_dcredit }}
+        regexp: '^\s*#?\s*dcredit\s*=\s*.*$'
+        line: dcredit = {{ photon_5_defaults_pam_pwquality_ucredit }}
+      when: dcreditvalue.stdout | int >= 0
 
 - name: PHTN-50-000037
   tags: [PHTN-50-000037, pam_pwquality]
@@ -541,12 +586,21 @@
     - photon_5_defaults_run_phtn_50_000038 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000038 - Check current value of difok in {{ photon_5_vars_pam_pwquality_conf_file }}.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^difok\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: difokvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000038 - Configure pam_pwquality difok in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*difok\s'
+        regexp: '^\s*#?\s*difok\s*=\s*.*$'
         line: difok = {{ photon_5_defaults_pam_pwquality_difok }}
+      when: difokvalue.stdout | int < 8
 
 - name: PHTN-50-000038
   tags: [PHTN-50-000038, pam_pwquality]
@@ -611,7 +665,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_login_defs_file }}'
         state: present
-        regexp: '^#?\s*PASS_MIN_DAYS\s'
+        regexp: '^\s*#?\s*PASS_MIN_DAYS\s*.*$'
         line: PASS_MIN_DAYS {{ photon_5_defaults_login_defs_pass_min_days }}
 
 ###################################################################################################################################
@@ -619,26 +673,45 @@
   tags: [PHTN-50-000042]
   when: photon_5_defaults_run_phtn_50_000042 | bool
   block:
+    - name: PHTN-50-000042 - Check current value of PASS_MAX_DAYS in {{ photon_5_vars_login_defs_file }}.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^PASS_MAX_DAYS\s*\K.*' {{ photon_5_vars_login_defs_file }}
+      register: passmaxvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000042 - Configure PASS_MAX_DAYS in {{ photon_5_vars_login_defs_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_login_defs_file }}'
         state: present
-        regexp: '^#?\s*PASS_MAX_DAYS\s'
+        regexp: '^\s*#?\s*PASS_MAX_DAYS\s*.*$'
         line: PASS_MAX_DAYS {{ photon_5_defaults_login_defs_pass_max_days }}
+      when: passmaxvalue.stdout | int <1 or passmaxvalue.stdout | int > 90
 
 ###################################################################################################################################
+
 - name: PHTN-50-000044
   tags: [PHTN-50-000044, pam_pwquality]
   when:
     - photon_5_defaults_run_phtn_50_000044 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000044 - Check current value of minlen in pam_pwquality module.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^minlen\s*=\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: minlenvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000044 - Configure pam_pwquality minlen in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*minlen\s'
+        regexp: '^\s*#?\s*minlen\s*=\s*.*$'
         line: minlen = {{ photon_5_defaults_pam_pwquality_minlen }}
+      when: minlenvalue.stdout | int < photon_5_defaults_pam_pwquality_minlen
 
 - name: PHTN-50-000044 - Configure minlen in system-password
   tags: [PHTN-50-000044, pam_pwquality]
@@ -892,12 +965,21 @@
     - photon_5_defaults_run_phtn_50_000086 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000086 - Check current value of ocredit in pam_pwquality module.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^ocredit\s*=\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: ocreditvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000086 - Configure pam_pwquality ocredit in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*ocredit\s'
-        line: ocredit = {{ photon_5_defaults_pam_pwquality_ocredit }}
+        regexp: '^\s*#?\s*ocredit\s*=\s*.*$'
+        line: ocredit = {{ photon_5_defaults_pam_pwquality_ucredit }}
+      when: ocreditvalue.stdout | int >= 0
 
 - name: PHTN-50-000086 - Configure pam_pwquality ocredit in system-password.
   tags: [PHTN-50-000086, pam_pwquality]
@@ -967,7 +1049,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*unlock_time.*$'
+        regexp: '^\s*#?\s*unlock_time\s*=\s*.*$'
         line: unlock_time = {{ photon_5_defaults_pam_faillock_unlock_time }}
 
 ###################################################################################################################################
@@ -983,21 +1065,30 @@
       failed_when: auditdinstalled.rc == 2
       changed_when: false
 
+    - name: PHTN-50-000110 - Check current value of num_logs in auditd.conf file.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^num_logs\s*=\s*\K.*' {{ photon_5_vars_auditd_conf_file }}
+      register: numlogsvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000110 - Configure num_logs in {{ photon_5_vars_auditd_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*num_logs\s'
+        regexp: '^\s*#?\s*num_logs\s*=\s*.*$'
         line: num_logs = {{ photon_5_defaults_auditd_conf_num_logs }}
         backrefs: true
       when:
         - auditdinstalled.stdout != ""
+        - numlogsvalue.stdout | int < 5
 
     - name: 'PHTN-50-000110 - Configure max_log_file_action in {{ photon_5_vars_auditd_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*max_log_file_action\s'
+        regexp: '^\s*#?\s*max_log_file_action\s*=\s*.*$'
         line: max_log_file_action = {{ photon_5_defaults_auditd_conf_max_log_file_action }}
         backrefs: true
       when:
@@ -1020,7 +1111,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*space_left\s'
+        regexp: '^\s*#?\s*space_left\s*=\s*.*$'
         line: space_left = {{ photon_5_defaults_auditd_conf_space_left }}
         backrefs: true
       when:
@@ -1030,7 +1121,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*space_left_action\s'
+        regexp: '^\s*#?\s*space_left_action\s*=\s*.*$'
         line: space_left_action = {{ photon_5_defaults_auditd_conf_space_left_action }}
         backrefs: true
       when:
@@ -1066,7 +1157,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_tdnf_conf_file }}'
         state: present
-        regexp: '^#?\s*gpgcheck\s'
+        regexp: '^\s*#?\s*gpgcheck\s*=\s*.*$'
         line: gpgcheck=1
 
 ###################################################################################################################################
@@ -1108,7 +1199,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_tdnf_conf_file }}'
         state: present
-        regexp: '^#?\s*clean_requirements_on_remove'
+        regexp: '^\s*#?\s*clean_requirements_on_remove\s*=\s*.*$'
         line: clean_requirements_on_remove=1
 
 ###################################################################################################################################
@@ -1139,7 +1230,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*dictcheck\s'
+        regexp: '^\s*#?\s*dictcheck\s*=\s*.*$'
         line: dictcheck = {{ photon_5_defaults_pam_pwquality_dictcheck }}
 
 - name: PHTN-50-000184
@@ -1162,12 +1253,21 @@
   tags: [PHTN-50-000185]
   when: photon_5_defaults_run_phtn_50_000185 | bool
   block:
+    - name: PHTN-50-000185 - Check current value of FAIL_DELAY in {{ photon_5_vars_login_defs_file }}.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^FAIL_DELAY\s*\K.*' {{ photon_5_vars_login_defs_file }}
+      register: faildelayvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000185 - Configure FAIL_DELAY in {{ photon_5_vars_login_defs_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_login_defs_file }}'
         state: present
-        regexp: '^#?\s*FAIL_DELAY\s'
+        regexp: '^\s*#?\s*FAIL_DELAY\s*.*$'
         line: FAIL_DELAY {{ photon_5_defaults_login_defs_fail_delay }}
+      when: faildelayvalue.stdout | int < 4
 
 ###################################################################################################################################
 - name: PHTN-50-000186
@@ -1186,7 +1286,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*flush\s'
+        regexp: '^\s*#?\s*flush\s*=\s*.*$'
         line: flush = {{ photon_5_defaults_auditd_conf_flush }}
         backrefs: true
       when:
@@ -1196,7 +1296,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_auditd_conf_file }}'
         state: present
-        regexp: '^#?\s*freq\s'
+        regexp: '^\s*#?\s*freq\s*=\s*.*$'
         line: freq = {{ photon_5_defaults_auditd_conf_freq }}
         backrefs: true
       when:
@@ -1437,7 +1537,7 @@
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_faillock_conf_file }}'
         state: present
-        regexp: '^#?\s*dir.*$'
+        regexp: '^\s*#?\s*dir\s*=\s*.*$'
         line: dir = {{ photon_5_defaults_pam_faillock_dir }}
 
     - name: 'PHTN-50-000196 - Create faillock dir {{ photon_5_defaults_pam_faillock_dir }}.'
@@ -1501,7 +1601,7 @@
       ansible.builtin.lineinfile:
         path: '{{ item.path }}'
         state: present
-        regexp: '^#?\s*gpgcheck\s'
+        regexp: '^\s*#?\s*gpgcheck\s*=\s*.*$'
         line: gpgcheck=1
       with_items: "{{ yumrepos.files }}"
 
@@ -2295,12 +2395,21 @@
     - photon_5_defaults_run_phtn_50_000261 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000261 - Check current value of maxclassrepeat in pam_pwquality module.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^maxclassrepeat\s*=\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: maxclassrepeatvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000261 - Configure pam_pwquality maxclassrepeat in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*maxclassrepeat\s'
+        regexp: '^\s*#?\s*maxclassrepeat\s*=\s*.*$'
         line: maxclassrepeat = {{ photon_5_defaults_pam_pwquality_maxclassrepeat }}
+      when: maxclassrepeatvalue.stdout | int <= 0 or maxclassrepeatvalue.stdout | int > 4
 
 - name: PHTN-50-000261 - Configure pam_pwquality maxclassrepeat in system-password.
   tags: [PHTN-50-000261, pam_pwquality]
@@ -2324,12 +2433,21 @@
     - photon_5_defaults_run_phtn_50_000262 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000262 - Check current value of maxrepeat in pam_pwquality module.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^maxrepeat\s*=\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: maxrepeatvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000262 - Configure pam_pwquality maxrepeat in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*maxrepeat\s'
+        regexp: '^\s*#?\s*maxrepeat\s*=\s*.*$'
         line: maxrepeat = {{ photon_5_defaults_pam_pwquality_maxrepeat }}
+      when: maxrepeatvalue.stdout | int <= 0 or maxrepeatvalue.stdout | int > 3
 
 - name: PHTN-50-000262 - Configure pam_pwquality maxrepeat in system-password.
   tags: [PHTN-50-000262, pam_pwquality]
@@ -2353,12 +2471,21 @@
     - photon_5_defaults_run_phtn_50_000263 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000263 - Check current value of minclass in pam_pwquality module.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^minclass\s*=\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: minclassvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000263 - Configure pam_pwquality minclass in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*minclass\s'
+        regexp: '^\s*#?\s*minclass\s*=\s*.*$'
         line: minclass = {{ photon_5_defaults_pam_pwquality_minclass }}
+      when: minclassvalue.stdout | int < 4
 
 - name: PHTN-50-000263 - Configure pam_pwquality minclass in system-password.
   tags: [PHTN-50-000263, pam_pwquality]
@@ -2382,12 +2509,21 @@
     - photon_5_defaults_run_phtn_50_000264 | bool
     - photon_5_defaults_pam_use_pwquality_conf | bool
   block:
+    - name: PHTN-50-000264 - Check current value of retry in pam_pwquality module.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^retry\s*=\s*\K.*' {{ photon_5_vars_pam_pwquality_conf_file }}
+      register: retryvalue
+      failed_when: false
+      changed_when: false
+
     - name: 'PHTN-50-000264 - Configure pam_pwquality retry in {{ photon_5_vars_pam_pwquality_conf_file }}.'
       ansible.builtin.lineinfile:
         path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
         state: present
-        regexp: '^#?\s*retry\s'
+        regexp: '^\s*#?\s*retry\s*=\s*.*$'
         line: retry = {{ photon_5_defaults_pam_pwquality_retry }}
+      when: retryvalue.stdout | int <= 0 or retryvalue.stdout | int > 3
 
 - name: PHTN-50-000264 - Configure pam_pwquality retry in system-password.
   tags: [PHTN-50-000264, pam_pwquality]
