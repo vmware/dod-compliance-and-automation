@@ -3,7 +3,29 @@
 ## [5.0 Version 3 Release 2] (2025-10-01)
 
 #### Release Notes
+- PHTN-50-000004 updated control
+- PHTN-50-000014 updated control
+- PHTN-50-000021 updated control
+- PHTN-50-000026 updated control
+- PHTN-50-000035 updated control
+- PHTN-50-000036 updated control
+- PHTN-50-000037 updated control
+- PHTN-50-000038 updated control
+- PHTN-50-000041 updated control
+- PHTN-50-000042 updated control
+- PHTN-50-000044 updated control
+- PHTN-50-000086 updated control
+- PHTN-50-000108 updated control
+- PHTN-50-000110 updated control
+- PHTN-50-000112 updated control
+- PHTN-50-000130 updated control
+- PHTN-50-000161 updated control
+- PHTN-50-000184 updated control
+- PHTN-50-000185 updated control
+- PHTN-50-000186 updated control
 - PHTN-50-000192 updated control
+- PHTN-50-000196 updated control
+- PHTN-50-000199 updated control
 - PHTN-50-000203 updated control
 - PHTN-50-000206 updated control
 - PHTN-50-000219 updated control
