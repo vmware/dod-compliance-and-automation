@@ -17,7 +17,11 @@ jobs:
             git curl build-essential libffi-dev libssl-dev zlib1g-dev libreadline-dev libyaml-dev
       - name: Install Inspec and cookstyle
         run: |
-          gem install inspec cookstyle
+          sudo gem install inspec cookstyle
+      - name: Verify Cookstyle and Rubocop
+        run: |
+          cookstyle --version
+          rubocop --version
       - name: Run Rubocop with Custom Config
         run: |
           echo "Running rubocop with custom config"
