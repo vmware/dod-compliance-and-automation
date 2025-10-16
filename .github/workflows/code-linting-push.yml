@@ -37,19 +37,19 @@ jobs:
   list-ansible-repos:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      repolist: ${{ steps.set-repolist.outputs.repolist }}
     steps:
       - uses: actions/checkout@v4
       - name: Get Ansible Repo List
-        id: set-matrix
+        id: set-repolist
         run: |
-          echo "::set-output name=matrix::$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')"
-  check:
+          echo "repolist=$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
+  run-ansible-lint:
     needs: list-ansible-repos
     runs-on: ubuntu-latest
     strategy:
-        matrix:
-            ansible-repo: ${{ fromJson(needs.list-ansible-repos.outputs.matrix) }}
+        repolist:
+            ansible-repo: ${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
@@ -58,7 +58,7 @@ jobs:
           pip3 install ansible ansible-lint
       - name: Run ansible-lint
         run: |
-          ansible-lint ${{ matrix.ansible-repo }}
+          ansible-lint ${{ repolist.ansible-repo }}
        
   # ansiblelint-aria-lcm-v1r2-srg:
   #   runs-on: ubuntu-latest
