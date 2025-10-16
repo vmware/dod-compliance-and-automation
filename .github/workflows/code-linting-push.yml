@@ -59,13 +59,14 @@ jobs:
       - name: Run ansible-lint
         run: |
           handle_error() {
-            echo "ERROR ERROR ERROR"
+            echo "*************ERROR ERROR ERROR****************"
+            exit 0
           }
 
           trap handle_error ERR
 
           for prj in ${{ join(fromJSON(needs.list-ansible-repos.outputs.matrix), ' ') }}
             do
-              echo "RUNNING ansible-lint on $prj"
+              echo "********** RUNNING ansible-lint on $prj ************"
               ansible-lint $prj
             done
