@@ -42,7 +42,8 @@ jobs:
       - name: Get Ansible Repo List
       - uses: actions/checkout@v4
       - id: set-matrix
-        run: echo "::set-output name=matrix::$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')"
+        run: |
+          echo "::set-output name=matrix::$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')"
   check:
     needs: list-ansible-repos
     runs-on: ubuntu-latest
