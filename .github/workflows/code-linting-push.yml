@@ -29,9 +29,9 @@ jobs:
   run-ansible-lint:
     needs: list-ansible-repos
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        value: ${{ fromJson(needs.list-ansible-repos.outputs.matrix) }}
+    # strategy:
+    #   matrix:
+    #     value: ${{ fromJson(needs.list-ansible-repos.outputs.matrix) }}
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
@@ -40,7 +40,13 @@ jobs:
           pip3 install ansible ansible-lint
       - name: Run ansible-lint
         run: |
-          echo "Processing project: ${{ matrix.value }}"
+          for prj in ${{ join(fromJSON(needs.list-ansible-repos.outputs.matrix), ' ') }}
+            do
+              echo "Running ansible-lint on $prj"
+              ansible-lint $prj
+            done
+          
+        #  echo "Processing project: ${{ matrix.value }}"
         #  ansible-lint ${{ repolist.ansible-repo }}
 
 
