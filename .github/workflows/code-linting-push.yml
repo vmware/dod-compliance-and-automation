@@ -27,6 +27,7 @@ jobs:
           echo "value=$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
 
 # # OPTION ONE: run each as its own job - better option as each individual job can fail
+# # Problems include: repo gets cloned for each job, ansible-lint (and deps) install for each job
 #   run-ansible-lint:
 #     needs: list-ansible-repos
 #     runs-on: ubuntu-latest
@@ -45,6 +46,7 @@ jobs:
 
 
 # OPTION TWO: run all within one job - worse option as entire job will fail without completing if one fails
+# need to see if/how we can continue if one fails
   run-ansible-lint:
     needs: list-ansible-repos
     runs-on: ubuntu-latest
@@ -56,8 +58,14 @@ jobs:
           pip3 install ansible ansible-lint
       - name: Run ansible-lint
         run: |
+          handle_error() {
+            echo "ERROR ERROR ERROR"
+          }
+
+          trap handle_error ERR
+
           for prj in ${{ join(fromJSON(needs.list-ansible-repos.outputs.matrix), ' ') }}
             do
-              echo "Running ansible-lint on $prj"
-              ansible-lint $prj || true
+              echo "RUNNING ansible-lint on $prj"
+              ansible-lint $prj
             done
