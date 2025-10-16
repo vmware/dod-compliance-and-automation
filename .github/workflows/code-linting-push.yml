@@ -55,7 +55,10 @@ jobs:
           pip3 install ansible ansible-lint
       - name: Run ansible-lint
         run: |
-          echo "LIST: ${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}"
+          for prj in ${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}
+          do
+            echo "Processing project: $prj"
+          done
         #  ansible-lint ${{ repolist.ansible-repo }}
        
   # ansiblelint-aria-lcm-v1r2-srg:
