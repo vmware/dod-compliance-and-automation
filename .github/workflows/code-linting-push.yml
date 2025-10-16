@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - env:
-          repolist: ${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}
+          repolist: "${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}"
       - name: Clone Repo
         uses: actions/checkout@v4
       - name: Install Ansible and ansible-lint
