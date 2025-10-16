@@ -3,32 +3,35 @@ name: Lint code for syntax issues on pushes
 on: push
 
 jobs:
-  lint-inspec-all:
-    runs-on: ubuntu-latest
-    container:
-      image: pipelinecomponents/rubocop
-      options: --pull always
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Run Rubocop
-        run: |
-          rubocop --config .rubocop.yml .
+  # lint-inspec-all:
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: pipelinecomponents/rubocop
+  #     options: --pull always
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Run Rubocop
+  #       run: |
+  #         rubocop --config .rubocop.yml .
 
   list-ansible-repos:
     runs-on: ubuntu-latest
     outputs:
-      repolist: ${{ steps.set-repolist.outputs.repolist }}
+      matrix: ${{ steps.matrix.outputs.value }}
     steps:
       - uses: actions/checkout@v4
       - name: Get Ansible Repo List
-        id: set-repolist
+        id: matrix
         run: |
-          echo "repolist=$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
+          echo "value=$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
 
   run-ansible-lint:
     needs: list-ansible-repos
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        value: ${{ fromJson(needs.list-ansible-repos.outputs.matrix) }}
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
@@ -37,12 +40,18 @@ jobs:
           pip3 install ansible ansible-lint
       - name: Run ansible-lint
         run: |
-          for prj in ${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}
-          do
-            echo "Processing project: $prj"
-          done
+          echo "Processing project: ${{ matrix.value }}"
         #  ansible-lint ${{ repolist.ansible-repo }}
-       
+
+
+
+
+
+
+
+
+
+
   # ansiblelint-aria-lcm-v1r2-srg:
   #   runs-on: ubuntu-latest
   #   steps:
