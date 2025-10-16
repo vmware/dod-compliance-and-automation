@@ -58,15 +58,17 @@ jobs:
           pip3 install ansible ansible-lint
       - name: Run ansible-lint
         run: |
-          handle_error() {
-            echo "*************ERROR ERROR ERROR****************"
-            exit 0
-          }
-
-          trap handle_error ERR
-
           for prj in ${{ join(fromJSON(needs.list-ansible-repos.outputs.matrix), ' ') }}
             do
               echo "********** RUNNING ansible-lint on $prj ************"
-              ansible-lint $prj
+              ansible-lint $prj || command_failed=1
             done
+
+          if [ ${command_failed:-0} -eq 1 ]
+          then
+            echo "************ ERROR ERROR ERROR ***********"
+            exit 1
+          fi
+
+          echo "************ SUCCESS *****************"
+          exit 0
