@@ -39,8 +39,8 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
+      - uses: actions/checkout@v4
       - name: Get Ansible Repo List
-        uses: actions/checkout@v4
         id: set-matrix
         run: |
           echo "::set-output name=matrix::$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')"
