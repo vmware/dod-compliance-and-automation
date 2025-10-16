@@ -3,25 +3,6 @@ name: Lint code for syntax issues on pushes
 on: push
 
 jobs:
-  # lint-inspec-all:
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #     - name: Clone Repo
-  #       uses: actions/checkout@v4
-  #     - name: Install System Dependencies
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get install -y \
-  #           ruby ruby-dev \
-  #           git curl build-essential libffi-dev libssl-dev zlib1g-dev libreadline-dev libyaml-dev
-  #     - name: Install Inspec and cookstyle
-  #       run: |
-  #         gem install inspec cookstyle
-  #     - name: Run Rubocop with Custom Config
-  #       run: |
-  #         echo "Running rubocop with custom config"
-  #         rubocop --config .rubocop.yml .
-
   lint-inspec-all:
     runs-on: ubuntu-latest
     container:
@@ -44,6 +25,7 @@ jobs:
         id: set-repolist
         run: |
           echo "repolist=$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
+
   run-ansible-lint:
     needs: list-ansible-repos
     runs-on: ubuntu-latest
