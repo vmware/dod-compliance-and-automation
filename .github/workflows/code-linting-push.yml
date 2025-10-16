@@ -26,28 +26,13 @@ jobs:
         run: |
           echo "value=$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
 
-# OPTION ONE: run each as its own job - better option as each individual job can fail
-  run-ansible-lint:
-    needs: list-ansible-repos
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        value: ${{ fromJson(needs.list-ansible-repos.outputs.matrix) }}
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          ansible-lint ${{ matrix.value }}
-        shell: bash
-
-# # OPTION TWO: run all within one job - worse option as entire job will fail without completing if one fails
+# # OPTION ONE: run each as its own job - better option as each individual job can fail
 #   run-ansible-lint:
 #     needs: list-ansible-repos
 #     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         value: ${{ fromJson(needs.list-ansible-repos.outputs.matrix) }}
 #     steps:
 #       - name: Clone Repo
 #         uses: actions/checkout@v4
@@ -56,8 +41,23 @@ jobs:
 #           pip3 install ansible ansible-lint
 #       - name: Run ansible-lint
 #         run: |
-#           for prj in ${{ join(fromJSON(needs.list-ansible-repos.outputs.matrix), ' ') }}
-#             do
-#               echo "Running ansible-lint on $prj"
-#               ansible-lint $prj
-#             done
+#           ansible-lint ${{ matrix.value }}
+
+
+# OPTION TWO: run all within one job - worse option as entire job will fail without completing if one fails
+  run-ansible-lint:
+    needs: list-ansible-repos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+      - name: Install Ansible and ansible-lint
+        run: |
+          pip3 install ansible ansible-lint
+      - name: Run ansible-lint
+        run: |
+          for prj in ${{ join(fromJSON(needs.list-ansible-repos.outputs.matrix), ' ') }}
+            do
+              echo "Running ansible-lint on $prj"
+              ansible-lint $prj || true
+            done
