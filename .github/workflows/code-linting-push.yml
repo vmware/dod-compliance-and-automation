@@ -48,8 +48,6 @@ jobs:
     needs: list-ansible-repos
     runs-on: ubuntu-latest
     steps:
-      - env:
-          repolist: "${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}"
       - name: Clone Repo
         uses: actions/checkout@v4
       - name: Install Ansible and ansible-lint
@@ -57,7 +55,8 @@ jobs:
           pip3 install ansible ansible-lint
       - name: Run ansible-lint
         run: |
-          ansible-lint ${{ repolist.ansible-repo }}
+          echo "LIST: ${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}"
+        #  ansible-lint ${{ repolist.ansible-repo }}
        
   # ansiblelint-aria-lcm-v1r2-srg:
   #   runs-on: ubuntu-latest
