@@ -47,10 +47,9 @@ jobs:
   run-ansible-lint:
     needs: list-ansible-repos
     runs-on: ubuntu-latest
-    strategy:
-        repolist:
-            ansible-repo: ${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}
     steps:
+      - env:
+          repolist: ${{ fromJson(needs.list-ansible-repos.outputs.repolist) }}
       - name: Clone Repo
         uses: actions/checkout@v4
       - name: Install Ansible and ansible-lint
