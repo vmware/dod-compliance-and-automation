@@ -1,7 +1,6 @@
 name: Lint code for syntax issues on pushes
 
-on:
-  push:
+on: push
 
 jobs:
   # lint-inspec-all:
