@@ -35,8 +35,21 @@ jobs:
         run: |
           rubocop --config .rubocop.yml .
 
-  ansiblelint-aria-lcm-v1r2-srg:
+  list-ansible-repos:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Get Ansible Repo List
+      - uses: actions/checkout@v4
+      - id: set-matrix
+        run: echo "::set-output name=matrix::$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')"
+  check:
+    needs: list-ansible-repos
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            ansible-repo: ${{ fromJson(needs.list-ansible-repos.outputs.matrix) }}
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
@@ -45,239 +58,251 @@ jobs:
           pip3 install ansible ansible-lint
       - name: Run ansible-lint
         run: |
-          cd aria/lifecycle/8.x/v1r2-srg/ansible/vmware-vrslcm-8.x-stig-ansible-hardening/
-          ansible-lint .
+          ansible-lint ${{ matrix.ansible-repo }}
+       
+  # ansiblelint-aria-lcm-v1r2-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd aria/lifecycle/8.x/v1r2-srg/ansible/vmware-vrslcm-8.x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-aria-logs-v1r4-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd aria/operations-for-logs/8.x/v1r4-srg/ansible/vmware-vrli-8.x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-aria-logs-v1r4-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd aria/operations-for-logs/8.x/v1r4-srg/ansible/vmware-vrli-8.x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-aria-ops-v1r2-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd aria/operations/8.x/v1r2-srg/ansible/vmware-aria-operations-8x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-aria-ops-v1r2-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd aria/operations/8.x/v1r2-srg/ansible/vmware-aria-operations-8x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-nsx3-v1r3-stig:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd nsx/3.x/v1r3-stig/ansible/vmware-nsxt-3.x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-nsx3-v1r3-stig:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd nsx/3.x/v1r3-stig/ansible/vmware-nsxt-3.x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-nsx4-v1r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd nsx/4.x/v1r1-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-nsx4-v1r1-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd nsx/4.x/v1r1-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-nsx4-v1r2-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd nsx/4.x/v1r2-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-nsx4-v1r2-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd nsx/4.x/v1r2-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-nsx4-v1r1-stig:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd nsx/4.x/v1r1-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-nsx4-v1r1-stig:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd nsx/4.x/v1r1-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-photon3-v1r9-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd photon/3.0/v1r9-srg/ansible/vmware-photon-3.0-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-photon3-v1r9-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd photon/3.0/v1r9-srg/ansible/vmware-photon-3.0-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-photon4-v1r5-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd photon/4.0/v1r5-srg/ansible/vmware-photon-4.0-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-photon4-v1r5-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd photon/4.0/v1r5-srg/ansible/vmware-photon-4.0-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-photon5-v1r3-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd photon/5.0/v1r3-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-photon5-v1r3-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd photon/5.0/v1r3-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-photon5-v2r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd photon/5.0/v2r1-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-photon5-v2r1-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd photon/5.0/v2r1-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-vcd10x-v1r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd vcd/10.x/v1r1-srg/ansible/vmware-cloud-director-10.x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-vcd10x-v1r1-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd vcd/10.x/v1r1-srg/ansible/vmware-cloud-director-10.x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-vcf5x-v1r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-vcf5x-v1r1-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-vcf5x-v1r2-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-vcf5x-v1r2-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-vcf5x-v1r3-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-vcf5x-v1r3-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-vsphere70:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd vsphere/7.0/v1r3-stig/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-vsphere70:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd vsphere/7.0/v1r3-stig/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-vsphere80-v1r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd vsphere/8.0/v2r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-vsphere80-v1r1-srg:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd vsphere/8.0/v2r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-vsphere80-v1r1-stig:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd vsphere/8.0/v1r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-vsphere80-v1r1-stig:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd vsphere/8.0/v1r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/
+  #         ansible-lint .
 
-  ansiblelint-vsphere80-v2r1-stig:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - name: Install Ansible and ansible-lint
-        run: |
-          pip3 install ansible ansible-lint
-      - name: Run ansible-lint
-        run: |
-          cd vsphere/8.0/v2r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/
-          ansible-lint .
+  # ansiblelint-vsphere80-v2r1-stig:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Clone Repo
+  #       uses: actions/checkout@v4
+  #     - name: Install Ansible and ansible-lint
+  #       run: |
+  #         pip3 install ansible ansible-lint
+  #     - name: Run ansible-lint
+  #       run: |
+  #         cd vsphere/8.0/v2r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/
+  #         ansible-lint .
