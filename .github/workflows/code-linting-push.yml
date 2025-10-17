@@ -66,7 +66,7 @@ jobs:
               echo " RUNNING ansible-lint on $prj"
               echo "**********************************************************************************************************************"
               cd "/home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/$prj"
-              ansible-lint . || command_failed=1
+              ansible-lint . --offline || command_failed=1
               echo "**********************************************************************************************************************"
             done
 
