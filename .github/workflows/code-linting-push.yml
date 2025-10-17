@@ -24,7 +24,7 @@ jobs:
       - name: Get Ansible Repo List
         id: matrix
         run: |
-          echo "value=$(find . -name '*-stig-ansible-*' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
+          echo "value=$(find . -name '*-stig-ansible-*' -printf '%P\n' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
 
 # # OPTION ONE: run each as its own job - better option as each individual job can fail
 # # Problems include: repo gets cloned for each job, ansible-lint (and deps) install for each job
@@ -65,9 +65,7 @@ jobs:
               echo "**********************************************************************************************************************"
               echo " RUNNING ansible-lint on $prj"
               echo "**********************************************************************************************************************"
-              echo "directory: "
-              echo "$(pwd)"
-              cd "$rootdir/$prj"
+              cd "/home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/$prj"
               ansible-lint . || command_failed=1
               echo "**********************************************************************************************************************"
             done
