@@ -1378,19 +1378,19 @@
       when:
         - syspasspwq.stdout == ""
 
-###    - name: PHTN-50-000197 - Add pam_pwquality.so to system-password if it doesn't exist
-###      community.general.pamd:
-###        name: system-password
-###        type: password
-###        control: required
-###        module_path: pam_unix.so
-###        new_type: password
-###        new_control: required
-###        new_module_path: pam_pwquality.so
-###        module_arguments: 'use_authtok'
-###        state: before
-###      when:
-###        - syspasspwq.stdout == ""
+    - name: PHTN-50-000197 - Add pam_pwquality.so to system-password if it doesn't exist
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_unix.so
+        new_type: password
+        new_control: required
+        new_module_path: pam_pwquality.so
+        module_arguments: 'use_authtok'
+        state: before
+      when:
+        - syspasspwq.stdout == ""
 
 ###################################################################################################################################
 - name: PHTN-50-000199 - Configure gpgcheck in yum repos
