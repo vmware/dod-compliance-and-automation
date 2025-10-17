@@ -63,9 +63,12 @@ jobs:
             do
               echo " "
               echo "**********************************************************************************************************************"
-              echo " RUNNING ansible-lint on $prj"
+              echo " RUNNING ansible-lint on"
+              echo "/home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/$prj"
               echo "**********************************************************************************************************************"
               cd "/home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/$prj"
+              echo "Current dir:"
+              echo "$(pwd)"
               ansible-lint . --offline || command_failed=1
               echo "**********************************************************************************************************************"
             done
