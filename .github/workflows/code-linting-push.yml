@@ -58,6 +58,7 @@ jobs:
           pip3 install ansible ansible-lint
       - name: Run ansible-lint
         run: |
+          rootdir = $(pwd)
           for prj in ${{ join(fromJSON(needs.list-ansible-repos.outputs.matrix), ' ') }}
             do
               echo " "
@@ -65,8 +66,8 @@ jobs:
               echo " RUNNING ansible-lint on $prj"
               echo "**********************************************************************************************************************"
               echo "directory: "
-              echo pwd
-              cd $prj
+              echo $(pwd)
+              cd $rootdir/$prj
               ansible-lint . || command_failed=1
               echo "**********************************************************************************************************************"
             done
