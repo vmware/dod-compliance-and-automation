@@ -1,0 +1,73 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - '**/libraries/**/*'
+    - 'vendor/**/*'
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/EndOfLine:
+  Enabled: true
+
+Layout/LineLength:
+  Max: 1500
+  AllowURI: true
+  IgnoreCopDirectives: true
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 1000
+
+Metrics/BlockNesting:
+  CountBlocks: false
+  Max: 5
+
+Naming/FileName:
+  Enabled: false
+
+Naming/VariableName:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/NegatedIfElseCondition:
+  Enabled: false
+
+Style/NegatedUnless:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/RedundantArgument:
+  Enabled: false
+
+Style/RedundantInterpolation:
+  Enabled: false
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: false
+
+Style/RedundantStringEscape:
+  Enabled: true
+  Severity: info
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: true
+  EnforcedStyleForMultiline: no_comma
+
+Style/WordArray:
+  Enabled: false

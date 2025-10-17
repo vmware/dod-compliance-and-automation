@@ -1,0 +1,16 @@
+---
+
+- name: restart vpostgres
+  ansible.builtin.systemd:
+    name: vpostgres
+    state: restarted
+
+- name: reload vpostgres
+  ansible.builtin.systemd:
+    name: vpostgres
+    state: reloaded
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted
