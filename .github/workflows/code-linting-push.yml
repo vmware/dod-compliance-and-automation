@@ -60,8 +60,10 @@ jobs:
         run: |
           for prj in ${{ join(fromJSON(needs.list-ansible-repos.outputs.matrix), ' ') }}
             do
+              echo "****************************************************"
               echo "********** RUNNING ansible-lint on $prj ************"
               ansible-lint $prj || command_failed=1
+              echo "****************************************************\n\n"
             done
 
           if [ ${command_failed:-0} -eq 1 ]
