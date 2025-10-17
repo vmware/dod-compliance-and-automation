@@ -9,3 +9,4 @@ warn_list:
   - command-instead-of-module
 exclude_paths:
   - ~/.ansible/roles
+  - .ansible/
