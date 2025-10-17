@@ -2,6 +2,7 @@ offline: true
 skip_list:
   - name
   - var-naming[no-role-prefix]
+  - ArgsRule.matchtasks
 warn_list:
   - ignore-errors
   - meta-no-info
