@@ -1,10 +1,10 @@
 # vmware-cloud-director-10.4-stig-ansible-hardening
 VMware Cloud Director 10.4 STIG Readiness Guide Ansible Playbook  
-Version: Version 1 Release 1: July 14, 2022    
+Version: Version 1 Release 2: October 1, 2025    
 STIG Type: STIG Readiness Guide  
 
 ## Overview
-This is a hardening playbook that utilizes Ansible to perform automated remediation for STIG compliance of the VMware Cloud Director 10.4 STIG Readiness Guide.  
+This is a hardening playbook that utilizes Ansible to perform automated remediation for STIG compliance of the VMware Cloud Director 10.6 STIG Readiness Guide.  
 
 ## Requirements
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html) installed on a machine that can SSH to the target node(s).  Tested with Ansible 2.12.4.
@@ -27,13 +27,13 @@ Run all controls on a single host. Prompts for user password and displays verbos
 ```
 ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v -b
 ```
-Run all controls on a single host and only for a specific control DKER-CE-000001. Prompts for user password and displays verbose output  
+Run all controls on a single host and only for a specific control. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v -b --tags DKER-CE-000001  
+ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v -b --tags PSQL-00-000035  
 ```
-Run all controls on a single host and only for a specific group of controls for containerd. Prompts for user password and displays verbose output  
+Run all controls on a single host and only for a specific group of controls. Prompts for user password and displays verbose output  
 ```
-ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v -b --tags containerd  
+ansible-playbook -i 'IP or FQDN', -u 'username' playbook.yml -k -v -b --tags vpostgres  
 ```
 Run all controls on a single host and only for controls tagged 'log_opts' and also supplies variables at the command line. Prompts for user password and displays verbose output
 ```
