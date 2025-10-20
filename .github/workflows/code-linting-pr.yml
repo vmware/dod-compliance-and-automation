@@ -1,4 +1,6 @@
 name: Lint code for syntax issues on pull requests
+permissions:
+  contents: read
 
 on: pull_request
 
