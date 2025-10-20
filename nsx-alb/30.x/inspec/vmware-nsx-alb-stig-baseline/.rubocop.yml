@@ -66,8 +66,11 @@ Style/RedundantStringEscape:
   Severity: info
 
 Style/TrailingCommaInHashLiteral:
-  Enabled: true
+  Enabled: false
   EnforcedStyleForMultiline: no_comma
 
 Style/WordArray:
   Enabled: false
+
+Layout/ArgumentAlignment:
+  Enabled: false 

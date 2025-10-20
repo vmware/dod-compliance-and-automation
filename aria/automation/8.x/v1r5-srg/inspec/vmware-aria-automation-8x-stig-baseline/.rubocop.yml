@@ -61,11 +61,8 @@ Style/RedundantInterpolation:
 Style/RedundantRegexpCharacterClass:
   Enabled: false
 
-Style/RedundantRegexpEscape:
-  Enabled: false
-
 Style/RedundantStringEscape:
-  Enabled: true
+  Enabled: false
   Severity: info
 
 Style/TrailingCommaInHashLiteral:
@@ -74,3 +71,12 @@ Style/TrailingCommaInHashLiteral:
 
 Style/WordArray:
   Enabled: false
+
+Style/CollectionQuerying:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: false 

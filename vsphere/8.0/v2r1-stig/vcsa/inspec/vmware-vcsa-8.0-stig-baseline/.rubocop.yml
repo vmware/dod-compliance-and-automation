@@ -71,3 +71,6 @@ Style/TrailingCommaInHashLiteral:
 
 Style/WordArray:
   Enabled: false
+
+Style/CollectionQuerying:
+  Enabled: false

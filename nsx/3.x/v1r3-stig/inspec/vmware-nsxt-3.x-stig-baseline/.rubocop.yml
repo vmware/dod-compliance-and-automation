@@ -61,16 +61,19 @@ Style/RedundantInterpolation:
 Style/RedundantRegexpCharacterClass:
   Enabled: false
 
-Style/RedundantRegexpEscape:
-  Enabled: false
-
 Style/RedundantStringEscape:
   Enabled: true
   Severity: info
 
 Style/TrailingCommaInHashLiteral:
-  Enabled: true
+  Enabled: false
   EnforcedStyleForMultiline: no_comma
 
 Style/WordArray:
+  Enabled: false
+
+Layout/ArgumentAlignment:
+  Enabled: false 
+
+Style/MultipleComparison:
   Enabled: false
