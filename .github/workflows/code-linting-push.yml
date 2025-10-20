@@ -1,4 +1,6 @@
 name: Lint code for syntax issues on pushes
+permissions:
+  contents: read
 
 on: push
 
