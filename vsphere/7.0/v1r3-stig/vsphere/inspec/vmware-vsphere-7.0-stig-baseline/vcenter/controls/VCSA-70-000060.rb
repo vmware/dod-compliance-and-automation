@@ -17,7 +17,7 @@ If the embedded identity provider is used, click on "Smart Card Authentication".
 If the embedded identity provider is used and "Smart Card Authentication" is not enabled, this is a finding.
 
 If a third-party identity provider is used, such as Microsoft ADFS, and it does not require multifactor authentication to log on to vCenter, this is a finding.'
-  desc 'fix', "To configure smart card authentication for vCenter when using the embedded identity provider, refer to the supplemental document. 
+  desc 'fix', "To configure smart card authentication for vCenter when using the embedded identity provider, refer to the supplemental document.
 
 For vCenter Servers using a third-party identity provider, consult the product's documentation for enabling multifactor authentication."
   impact 0.5

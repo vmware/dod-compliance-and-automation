@@ -81,8 +81,32 @@ Style/RedundantRegexpCharacterClass:
 #   Severity: info
 
 Style/TrailingCommaInHashLiteral:
-  Enabled: true
+  Enabled: false
   EnforcedStyleForMultiline: no_comma
 
 Style/WordArray:
+  Enabled: false
+
+Style/RedundantParentheses:
+  Enabled: false
+
+Style/RedundantStringEscape:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: false
+
+Style/RedundantRegexpArgument:
+  Enabled: false
+
+Style/RedundantRegexpEscape:
+  Enabled: false
+
+Style/CollectionQuerying:
+  Enabled: false
+
+Layout/ArgumentAlignment:
+  Enabled: false
+
+Style/MultipleComparison:
   Enabled: false
