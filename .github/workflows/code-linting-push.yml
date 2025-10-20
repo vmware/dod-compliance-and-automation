@@ -45,8 +45,7 @@ jobs:
 #           ansible-lint ${{ matrix.value }}
 
 
-# OPTION TWO: run all within one job - worse option as entire job will fail without completing if one fails
-# need to see if/how we can continue if one fails
+# OPTION TWO: run all within one job - better option as repo isn't cloned over and over, deps installed one time
   run-ansible-lint:
     needs: list-ansible-repos
     runs-on: ubuntu-latest
