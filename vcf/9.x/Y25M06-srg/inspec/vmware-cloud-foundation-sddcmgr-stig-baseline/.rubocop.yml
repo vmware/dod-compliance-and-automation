@@ -61,6 +61,9 @@ Style/RedundantInterpolation:
 Style/RedundantRegexpCharacterClass:
   Enabled: false
 
+Style/RedundantRegexpEscape:
+  Enabled: false
+
 Style/RedundantStringEscape:
   Enabled: true
   Severity: info

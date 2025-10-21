@@ -1,177 +1,82 @@
 name: Lint code for syntax issues on pushes
+permissions:
+  contents: read
 
-on:
-  push:
+on: push
 
 jobs:
   lint-inspec-all:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container:
+      image: pipelinecomponents/rubocop
+      options: --pull always
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.1
-          bundler-cache: true
       - name: Run Rubocop
-        uses: reviewdog/action-rubocop@v2
-        with:
-          reporter: github-check
-          skip_install: true
-          use_bundler: true
-          fail_on_error: true
-          rubocop_flags: --config /home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/.rubocop.yml
-          workdir: .
-  ansiblelint-aria-lcm-v1r2-srg:
+        run: |
+          rubocop --config .rubocop.yml .
+
+  list-ansible-repos:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get Ansible Repo List
+        id: matrix
+        run: |
+          echo "value=$(find . -name '*-stig-ansible-*' -printf '%P\n' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
+
+# # OPTION ONE: run each as its own job - better option as each individual job can fail
+# # Problems include: repo gets cloned for each job, ansible-lint (and deps) install for each job
+#   run-ansible-lint:
+#     needs: list-ansible-repos
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         value: ${{ fromJson(needs.list-ansible-repos.outputs.matrix) }}
+#     steps:
+#       - name: Clone Repo
+#         uses: actions/checkout@v4
+#       - name: Install Ansible and ansible-lint
+#         run: |
+#           pip3 install ansible ansible-lint
+#       - name: Run ansible-lint
+#         run: |
+#           ansible-lint ${{ matrix.value }}
+
+
+# OPTION TWO: run all within one job - better option as repo isn't cloned over and over, deps installed one time
+  run-ansible-lint:
+    needs: list-ansible-repos
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
         uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "aria/lifecycle/8.x/v1r2-srg/ansible/vmware-vrslcm-8.x-stig-ansible-hardening/"
-  ansiblelint-aria-logs-v1r4-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "aria/operations-for-logs/8.x/v1r4-srg/ansible/vmware-vrli-8.x-stig-ansible-hardening/"
-  ansiblelint-aria-ops-v1r2-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "aria/operations/8.x/v1r2-srg/ansible/vmware-aria-operations-8x-stig-ansible-hardening/"
-  ansiblelint-nsx3-v1r3-stig:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "nsx/3.x/v1r3-stig/ansible/vmware-nsxt-3.x-stig-ansible-hardening/"
-  ansiblelint-nsx4-v1r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "nsx/4.x/v1r1-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
-  ansiblelint-nsx4-v1r2-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "nsx/4.x/v1r2-srg/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
-  ansiblelint-nsx4-v1r1-stig:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "nsx/4.x/v1r1-stig/ansible/vmware-nsx-4.x-stig-ansible-hardening/"
-  ansiblelint-photon3-v1r9-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "photon/3.0/v1r9-srg/ansible/vmware-photon-3.0-stig-ansible-hardening/"
-  ansiblelint-photon4-v1r5-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "photon/4.0/v1r5-srg/ansible/vmware-photon-4.0-stig-ansible-hardening/"
-  ansiblelint-photon5-v1r3-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "photon/5.0/v1r3-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/"
-  ansiblelint-photon5-v2r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "photon/5.0/v2r1-srg/ansible/vmware-photon-5.0-stig-ansible-hardening/"
-  ansiblelint-vcd10x-v1r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "vcd/10.x/v1r1-srg/ansible/vmware-cloud-director-10.x-stig-ansible-hardening/"
-  ansiblelint-vcf5x-v1r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "vcf/5.x/v1r1-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
-  ansiblelint-vcf5x-v1r2-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "vcf/5.x/v1r2-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
-  ansiblelint-vcf5x-v1r3-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "vcf/5.x/v1r3-srg/ansible/vmware-cloud-foundation-sddcmgr-5x-stig-ansible-hardening/"
-  ansiblelint-vsphere70:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "vsphere/7.0/v1r3-stig/vcsa/ansible/vmware-vcsa-7.0-stig-ansible-hardening/"
-  ansiblelint-vsphere80-v1r1-srg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "vsphere/8.0/v1r1-srg/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"
-  ansiblelint-vsphere80-v1r1-stig:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "vsphere/8.0/v1r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"
-  ansiblelint-vsphere80-v2r1-stig:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repo
-        uses: actions/checkout@v4
-      - uses: ansible-community/ansible-lint-action@main
-        with:
-          path: "vsphere/8.0/v2r1-stig/vcsa/ansible/vmware-vcsa-8.0-stig-ansible-hardening/"
+      - name: Install Ansible and ansible-lint
+        run: |
+          pip3 install ansible ansible-lint
+      - name: Run ansible-lint
+        run: |
+          echo "rootdir = $(pwd)"
+          for prj in ${{ join(fromJSON(needs.list-ansible-repos.outputs.matrix), ' ') }}
+            do
+              echo " "
+              echo "**********************************************************************************************************************"
+              echo " RUNNING ansible-lint on"
+              echo "/home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/$prj"
+              echo "----------------------------------------------------------------------------------------------------------------------"
+              cd "/home/runner/work/dod-compliance-and-automation/dod-compliance-and-automation/$prj"
+              ansible-lint . --offline || command_failed=1
+              echo "**********************************************************************************************************************"
+            done
+
+          if [ ${command_failed:-0} -eq 1 ]
+          then
+            echo "************ LINTING ERROR(S) OCCURRED ***********"
+            exit 1
+          fi
+
+          echo "************ SUCCESS *****************"
+          exit 0

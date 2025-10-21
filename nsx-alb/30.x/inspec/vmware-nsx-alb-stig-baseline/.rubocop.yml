@@ -1,25 +1,76 @@
-# The behavior of RuboCop can be controlled via the .rubocop.yml
-# configuration file. It makes it possible to enable/disable
-# certain cops (checks) and to alter their behavior if they accept
-# any parameters. The file can be placed either in your home
-# directory or in some project directory.
-#
-# RuboCop will start looking for the configuration file in the directory
-# where the inspected file is and continue its way up to the root directory.
-#
-# See https://docs.rubocop.org/rubocop/configuration
+AllCops:
+  NewCops: enable
+  Exclude:
+    - '**/libraries/**/*'
+    - 'vendor/**/*'
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/EndOfLine:
+  Enabled: true
+
+Layout/LineLength:
+  Max: 1500
+  AllowURI: true
+  IgnoreCopDirectives: true
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 1000
+
+Metrics/BlockNesting:
+  CountBlocks: false
+  Max: 5
+
+Naming/FileName:
+  Enabled: false
+
+Naming/VariableName:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/NegatedIfElseCondition:
+  Enabled: false
+
+Style/NegatedUnless:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/RedundantArgument:
+  Enabled: false
+
+Style/RedundantInterpolation:
+  Enabled: false
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: false
+
+Style/RedundantStringEscape:
+  Enabled: true
+  Severity: info
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+  EnforcedStyleForMultiline: no_comma
 
 Style/WordArray:
   Enabled: false
-Layout/EndOfLine:
-  Enabled: true
-Style/Encoding:
-  Enabled: true
-Layout/TrailingWhitespace:
-  Enabled: true
-Layout/ExtraSpacing:
-  Enabled: true
-Layout/EmptyLinesAroundBlockBody:
-  Enabled: true
-Style/StringLiterals:
-  Enabled: true
+
+Layout/ArgumentAlignment:
+  Enabled: false 
