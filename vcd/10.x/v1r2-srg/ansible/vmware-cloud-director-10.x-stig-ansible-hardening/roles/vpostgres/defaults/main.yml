@@ -1,0 +1,31 @@
+---
+# Turn specific controls on/off by setting the value to true or false
+
+# PSQL-00-000001
+run_max_connections: true
+# PSQL-00-000009
+run_log_destination: true
+# PSQL-00-000010
+run_log_prefix: true
+# PSQL-00-000020
+run_log_permissions: true
+# PSQL-00-000032
+run_remove_ext: true
+# PSQL-00-000035
+run_conf_port: true
+# PSQL-00-000038
+run_password_encryption: true
+# PSQL-00-000051
+run_write_logs: true
+# PSQL-00-000060
+run_client_min_messages: true
+# PSQL-00-000070
+run_logging_collector: true
+# PSQL-00-000075
+run_log_timezone: true
+# PSQL-00-000110
+run_log_connections: true
+# PSQL-00-000114
+run_log_disconnections: true
+# PSQL-00-000122
+run_pg_syslog_config: true

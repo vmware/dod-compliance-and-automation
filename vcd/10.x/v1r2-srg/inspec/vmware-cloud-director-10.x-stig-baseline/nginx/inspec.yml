@@ -1,0 +1,112 @@
+name: vmware-cloud-director-nginx-10.6-stig-baseline
+title: InSpec Profile for VMware Cloud Director NGINX 10.6 STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile for the VMware Cloud Director NGINX 10.6 STIG Readiness Guide
+version: 1.0.2
+
+inputs:
+  - name: nginx_conf_path
+    description: Path to NGINX conf file
+    type: string
+    value: '/etc/nginx/nginx.conf'
+  - name: limit_conn_server_limit
+    description: NGNX-WB-000001 Connection limit for per server connections
+    type: string
+    value: '1000'
+  - name: hsts_header
+    description: NGNX-WB-000004 HSTS header settings
+    type: array
+    value: ["Strict-Transport-Security", "max-age=31536000", "always"]
+  - name: nginx_error_log_file
+    description: NGNX-WB-000007 NGINX error log file path
+    type: string
+    value: '/var/log/nginx/error.log'
+  - name: nginx_access_log_file
+    description: NGNX-WB-000009 NGINX access log file path
+    type: string
+    value: '/var/log/nginx/access.log'
+  - name: nginx_access_log_format_name
+    description: NGNX-WB-000009 NGINX access log format name
+    type: string
+    value: 'custom'
+  - name: nginx_log_dir
+    description: NGNX-WB-000019 NGINX log directory path
+    type: string
+    value: '/var/log/nginx/'
+  - name: approved_modules
+    description: NGNX-WB-000026 List of approved modules listed without _module
+    type: array
+    value:
+      - http_v2
+      - http_ssl
+  - name: nginx_user
+    description: NGNX-WB-000035 NGINX worker process user account
+    type: string
+    value: 'www-data'
+  - name: nginx_group
+    description: NGNX-WB-000035 NGINX worker process group
+    type: string
+    value: 'www-data'
+  - name: listen_addresses_ports
+    description: NGNX-WB-000037 List of approved IP address:Port listen addresses
+    type: array
+    value:
+      - 127.0.0.1:80
+      - 10.1.1.1:443
+  - name: nginx_ssl_session_timeout
+    description: NGNX-WB-000047 NGINX ssl_session_timeout in minutes
+    type: string
+    value: '5m'
+  - name: nginx_limit_req_rate
+    description: NGNX-WB-000060 NGINX limit_req_zone limit rate
+    type: string
+    value: '1000r/s'
+  - name: nginx_limit_req_zone
+    description: NGNX-WB-000060 NGINX limit_req_zone name
+    type: string
+    value: 'ui_traffic:10m'
+  - name: nginx_limit_req_burst
+    description: NGNX-WB-000060 NGINX limit_req burst rate
+    type: string
+    value: '100'
+  - name: nginx_syslog_enabled
+    description: NGNX-WB-000073 Is syslog configured in NGINX? Set to true.  If something else is shipping logs set to false.
+    type: boolean
+    value: true
+  - name: nginx_syslog_server_error
+    description: NGNX-WB-000073 If syslog is set in NGINX specify the syslog server and port for error logs
+    type: string
+    value: "syslog:server=10.10.10.10:514,severity=info"
+  - name: nginx_syslog_server_access
+    description: NGNX-WB-000073 If syslog is set in NGINX specify the syslog server and port for access logs
+    type: string
+    value: "syslog:server=10.10.10.10:514,severity=info"
+  - name: nginx_error_log_level
+    description: NGNX-WB-000073 If syslog is set in NGINX specify the syslog error log level
+    type: string
+    value: "info"
+  - name: nginx_ssl_ciphers
+    description: NGNX-WB-000091 NGINX FIPS validated cipher list
+    type: string
+    value: "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256"
+  - name: approved_sites
+    description: NGNX-WB-000096 List of approved sites that are enabled
+    type: array
+    value:
+      - vcd_ova_ui.conf
+      - 99-stig.conf
+  - name: nginx_keepalive_timeout
+    description: NGNX-WB-000100 NGINX keepalive_timeout setting if specified in seconds. Example 60s
+    type: string
+    value: "60s"
+  - name: nginx_cert_issuer
+    description: NGNX-WB-000101 NGINX approved certificate issuer CN
+    type: string
+    value: "U.S. Government"
+  - name: nginx_content_security_policy
+    description: NGNX-WB-000105 Content Security Policy
+    type: array
+    value: ["Content-Security-Policy", "default-src 'self'"]

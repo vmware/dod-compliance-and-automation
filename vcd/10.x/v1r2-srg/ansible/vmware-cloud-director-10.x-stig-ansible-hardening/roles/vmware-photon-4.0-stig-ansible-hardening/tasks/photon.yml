@@ -1,0 +1,2803 @@
+---
+# Ansible Playbook for Photon OS 4.0 STIG Readiness
+
+# Backup files that may be modified in case restoration is needed
+- name: Create time stamp
+  ansible.builtin.set_fact:
+    backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+  tags:
+    - always
+  when:
+    - create_backups | bool
+
+- name: Backup files...if restoring be sure to restore permissions that original file had!!
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ item }}"
+    dest: "/tmp/ansible-backups-{{ backup_timestamp }}/"
+    mode: preserve
+  changed_when: false
+  register: backupresult
+  failed_when:
+    - backupresult.msg is defined
+    - "'not found' not in backupresult.msg"
+  with_items:
+    - '{{ var_auditd_rule_file }}'
+    - '{{ var_pam_faillock_conf_file }}'
+    - '{{ var_sshd_config_file }}'
+    - '{{ var_etc_issue_file }}'
+    - '{{ var_limits_conf_file }}'
+    - '{{ var_rsyslog_conf_file }}'
+    - '{{ var_auditd_conf_file }}'
+    - '{{ var_pam_pwquality_conf_file }}'
+    - '{{ var_pam_pwhistory_conf_file }}'
+    - '{{ var_login_defs_file }}'
+    - '{{ var_pam_system_password_file }}'
+    - '{{ var_pam_system_auth_file }}'
+    - '{{ var_pam_system_account_file }}'
+    - '{{ var_modprobe_conf_file }}'
+    - '{{ var_sysctl_conf_file }}'
+    - '{{ var_grub_conf_file }}'
+    - '{{ var_profile_tmout_sh }}'
+    - '{{ var_ntpd_conf_file }}'
+    - '{{ var_chrony_conf_file }}'
+    - '{{ var_timesyncd_conf_file }}'
+    - '{{ var_tdnf_conf_file }}'
+    - '{{ var_systemd_resolved_conf_file }}'
+    - '{{ var_aide_conf_file }}'
+    - '{{ var_systemd_tmp_mount_file }}'
+  tags:
+    - always
+  when:
+    - create_backups | bool
+
+###################################################################################################################################
+# This task is at the top so ensure auditd is installed for all other dependent tasks that configure auditd
+- name: PHTN-40-000016 - Install auditd if needed and enable
+  tags: [PHTN-40-000016, auditd]
+  when: run_auditd_service_enable | bool
+  block:
+    - name: PHTN-40-000016 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000016 - Install auditd
+      ansible.builtin.command: tdnf -y install audit
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - run_auditd_install | bool
+        - auditdinstalled.stdout == ""
+
+    - name: PHTN-40-000016 - Recheck to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000016 - Enable and start the auditd service
+      ansible.builtin.systemd:
+        name: auditd
+        state: started
+        enabled: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+# This task is at the top so ensure rsyslog is installed for all other dependent tasks that configure rsyslog
+- name: PHTN-40-000241 - Install rsyslog if needed
+  tags: [PHTN-40-000241, rsyslog]
+  when: run_rsyslog_install | bool
+  block:
+    - name: PHTN-40-000241 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when:
+        - rsysloginstalled.rc == 2
+
+    - name: PHTN-40-000241 - Install rsyslog
+      ansible.builtin.command: tdnf -y install rsyslog
+      register: output
+      changed_when:
+        - output.rc == 0 or output.rc == 245 # A 245 rc is returned sometimes due to another issue but rsyslog is still installed
+      failed_when:
+        - output.rc >= 2
+        - output.rc != 245
+      when:
+        - rsysloginstalled.stdout == ""
+
+###################################################################################################################################
+# This task is at the top so ensure rsyslog is installed for all other dependent tasks that configure rsyslog
+- name: PHTN-40-000242 - Enable rsyslog if needed
+  tags: [PHTN-40-000242, rsyslog]
+  when: run_rsyslog_enable | bool
+  block:
+    - name: PHTN-40-000242 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
+    - name: PHTN-40-000242 - Enable and start the rsyslog service
+      ansible.builtin.systemd:
+        name: rsyslog
+        state: started
+        enabled: true
+      when:
+        - rsysloginstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000003 - Update audit.STIG.rules file
+  tags: [PHTN-40-000003, PHTN-40-000019, PHTN-40-000031, PHTN-40-000076, PHTN-40-000078, PHTN-40-000107, PHTN-40-000173, PHTN-40-000175, PHTN-40-000204, PHTN-40-000238, auditd]
+  when: run_auditd_rules | bool
+  block:
+    - name: PHTN-40-000003 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000003 - Copy auditd rules template
+      ansible.builtin.template:
+        src: audit.STIG.rules
+        dest: '{{ var_auditd_rule_file }}'
+        owner: root
+        group: root
+        mode: '0640'
+        force: true
+      notify:
+        - '{{ role_name }} : reload auditd'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000004 - Configure faillock.conf deny and fail_interval
+  tags: [PHTN-40-000004, pam_faillock]
+  when: run_pam_faillock_deny_interval | bool
+  block:
+    - name: PHTN-40-000004 - Configure faillock.conf deny
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*deny.*$'
+        line: deny = {{ var_pam_faillock_deny }}
+
+    - name: PHTN-40-000004 - Configure faillock.conf fail_interval
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*fail_interval.*$'
+        line: fail_interval = {{ var_pam_faillock_fail_interval }}
+
+###################################################################################################################################
+- name: PHTN-40-000005 - Configure sshd banner and /etc/issue
+  tags: [PHTN-40-000005, sshd]
+  when: run_sshd_banner | bool
+  block:
+    - name: PHTN-40-000005 - Configure DoD Banner in /etc/issue file
+      ansible.builtin.template:
+        src: issue
+        dest: '{{ var_etc_issue_file }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      when:
+        - run_etc_issue_dod | bool
+
+    - name: PHTN-40-000005 - Configure Banner in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*Banner\s'
+        line: Banner {{ var_sshd_banner }}
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000007 - Configure maxlogins in limits.conf
+  tags: [PHTN-40-000007]
+  when: run_limits_maxlogins | bool
+  block:
+    - name: PHTN-40-000007 - Configure maxlogins in limits.conf
+      community.general.pam_limits:
+        limit_item: maxlogins
+        domain: "*"
+        limit_type: hard
+        value: "{{ var_limits_maxlogins }}"
+
+###################################################################################################################################
+- name: PHTN-40-000012 - Configure logging in rsyslog for system and remote access logging
+  tags: [PHTN-40-000012]
+  when: run_rsyslog_authpriv | bool
+  block:
+    - name: PHTN-40-000012 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
+    - name: PHTN-40-000012 - Configure auth/authpriv/daemon logging in rsyslog.conf
+      ansible.builtin.lineinfile:
+        path: '{{ var_rsyslog_conf_file }}'
+        state: present
+        regexp: '^#?\s*(^auth.*|^authpriv.*|^daemon.*)'
+        line: auth.*;authpriv.*;daemon.* {{ var_rsyslog_authpriv_log }}
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - rsysloginstalled.stdout != ""
+
+###################################################################################################################################
+# This must be before we install the OpenSSL FIPS Provider or the default OpenSSH Ciphers will cause issues with connecting over SSH
+- name: PHTN-40-000079 - Configure sshd ciphers
+  tags: [PHTN-40-000079, sshd]
+  when: run_sshd_ciphers | bool
+  block:
+    - name: PHTN-40-000079 - Configure Ciphers in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*Ciphers\s'
+        line: Ciphers {{ var_sshd_ciphers }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000013 - Install OpenSSL FIPS Provider
+  tags: [PHTN-40-000013]
+  when: run_openssl_fips | bool
+  block:
+    - name: PHTN-40-000013 - Check to see if OpenSSL FIPS Provider is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^openssl-fips-provider
+      register: opensslfipsinstalled
+      changed_when: false
+      failed_when: opensslfipsinstalled.rc == 2
+      when:
+        - run_openssl_fips_install | bool
+
+    - name: PHTN-40-000013 - Install OpenSSL FIPS Provider
+      ansible.builtin.command: tdnf -y install openssl-fips-provider
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - run_openssl_fips_install | bool
+        - opensslfipsinstalled.stdout == ""
+
+###################################################################################################################################
+- name: PHTN-40-000014 - Configure auditd.conf write_logs
+  tags: [PHTN-40-000014, auditd]
+  when: run_auditd_conf_write_logs | bool
+  block:
+    - name: PHTN-40-000014 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000014 - Configure auditd.conf write_logs
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*write_logs\s'
+        line: write_logs = yes
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000021 - Configure auditd.conf actions
+  tags: [PHTN-40-000021, auditd]
+  when: run_auditd_conf_actions | bool
+  block:
+    - name: PHTN-40-000021 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000021 - Configure auditd.conf disk_full_action
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*disk_full_action\s'
+        line: disk_full_action = {{ var_auditd_conf_disk_full_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000021 - Configure auditd.conf disk_error_action
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*disk_error_action\s'
+        line: disk_error_action = {{ var_auditd_conf_disk_error_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000021 - Configure auditd.conf admin_space_left_action
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*admin_space_left_action\s'
+        line: admin_space_left_action = {{ var_auditd_conf_admin_space_left_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000026 - Configure auditd log permissions
+  tags: [PHTN-40-000026, auditd]
+  when: run_auditd_log_perms | bool
+  block:
+    - name: PHTN-40-000026 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000026 - Find auditd log file in auditd.conf
+      ansible.builtin.command: grep -iw log_file {{ var_auditd_conf_file }}
+      register: auditlogoutput
+      changed_when: false
+      failed_when: auditlogoutput.rc == 2
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000026 - Set audit log file fact
+      ansible.builtin.set_fact:
+        auditlog: "{{ auditlogoutput.stdout | regex_search('log_file\\s=\\s(.+$)', '\\1') | first }}"
+      when:
+        - auditlogoutput is defined
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000026 - Configure permissions on the auditd log file
+      ansible.builtin.file:
+        path: "{{ auditlog }}"
+        state: file
+        mode: "0600"
+        owner: root
+        group: root
+      when:
+        - auditlog is defined
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000026 - Configure auditd.conf log_group
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*log_group\s'
+        line: log_group = root
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000030 - Configure auditd file permissions
+  tags: [PHTN-40-000030, auditd]
+  when: run_auditd_file_perms | bool
+  block:
+    - name: PHTN-40-000030 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000030 - Find auditd files
+      ansible.builtin.find:
+        paths: /etc/audit/
+        file_type: file
+        recurse: true
+      register: auditdfiles
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000030 - Configure permissions on auditd files
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: file
+        mode: "0640"
+        owner: root
+        group: root
+      with_items: "{{ auditdfiles.files }}"
+      when:
+        - auditdfiles.matched != 0
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000035 - Configure pwquality.conf ucredit
+  tags: [PHTN-40-000035, pam_pwquality]
+  when:
+    - run_pam_pwquality_ucredit | bool
+    - var_pam_use_pwquality_conf | bool
+  block:
+    - name: PHTN-40-000035 - Configure pwquality.conf ucredit
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*ucredit\s'
+        line: ucredit = {{ var_pam_pwquality_ucredit }}
+
+- name: PHTN-40-000035 - Configure ucredit in system-password
+  tags: [PHTN-40-000035, pam_pwquality]
+  when:
+    - run_pam_pwquality_ucredit | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000035 - Configure pwquality ucredit in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'ucredit={{ var_pam_pwquality_ucredit }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-40-000036 - Configure pwquality.conf lcredit
+  tags: [PHTN-40-000036, pam_pwquality]
+  when:
+    - run_pam_pwquality_lcredit | bool
+    - var_pam_use_pwquality_conf | bool
+  block:
+    - name: PHTN-40-000036 - Configure pwquality.conf lcredit
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*lcredit\s'
+        line: lcredit = {{ var_pam_pwquality_lcredit }}
+
+- name: PHTN-40-000036 - Configure lcredit in system-password
+  tags: [PHTN-40-000036, pam_pwquality]
+  when:
+    - run_pam_pwquality_lcredit | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000036 - Configure pwquality lcredit in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'lcredit={{ var_pam_pwquality_lcredit }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-40-000037 - Configure pwquality.conf dcredit
+  tags: [PHTN-40-000037, pam_pwquality]
+  when:
+    - run_pam_pwquality_dcredit | bool
+    - var_pam_use_pwquality_conf | bool
+  block:
+    - name: PHTN-40-000037 - Configure pwquality.conf dcredit
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*dcredit\s'
+        line: dcredit = {{ var_pam_pwquality_dcredit }}
+
+- name: PHTN-40-000037 - Configure dcredit in system-password
+  tags: [PHTN-40-000037, pam_pwquality]
+  when:
+    - run_pam_pwquality_dcredit | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000037 - Configure pwquality dcredit in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'dcredit={{ var_pam_pwquality_dcredit }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-40-000038 - Configure pwquality.conf difok
+  tags: [PHTN-40-000038, pam_pwquality]
+  when:
+    - run_pam_pwquality_difok | bool
+    - var_pam_use_pwquality_conf | bool
+  block:
+    - name: PHTN-40-000038 - Configure pwquality.conf difok
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*difok\s'
+        line: difok = {{ var_pam_pwquality_difok }}
+
+- name: PHTN-40-000038 - Configure difok in system-password
+  tags: [PHTN-40-000038, pam_pwquality]
+  when:
+    - run_pam_pwquality_difok | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000038 - Configure pwquality difok in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'difok={{ var_pam_pwquality_difok }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-40-000039 - Configure login.defs ENCRYPT_METHOD
+  tags: [PHTN-40-000039]
+  when: run_login_defs_encrypt_method | bool
+  block:
+    - name: PHTN-40-000039 - Configure login.defs ENCRYPT_METHOD
+      ansible.builtin.lineinfile:
+        path: '{{ var_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*ENCRYPT_METHOD\s'
+        line: ENCRYPT_METHOD SHA512
+
+###################################################################################################################################
+- name: PHTN-40-000040 - Remove telnet
+  tags: [PHTN-40-000040]
+  when: run_remove_telnet | bool
+  block:
+    - name: PHTN-40-000040 - Check to see if telnet is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep telnet
+      register: telnetinstalled
+      changed_when: false
+      failed_when: telnetinstalled.rc == 2
+
+    - name: PHTN-40-000040 - Remove telnet client
+      ansible.builtin.command: tdnf -y remove netkit-telnet
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - telnetinstalled.stdout | regex_search("netkit-telnet-0")
+
+    - name: PHTN-40-000040 - Remove telnet server
+      ansible.builtin.command: tdnf -y remove netkit-telnet-server
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - telnetinstalled.stdout | regex_search("netkit-telnet-server")
+
+###################################################################################################################################
+- name: PHTN-40-000041 - Configure login.defs PASS_MIN_DAYS
+  tags: [PHTN-40-000041]
+  when: run_login_defs_pass_min_days | bool
+  block:
+    - name: PHTN-40-000041 - Configure login.defs PASS_MIN_DAYS
+      ansible.builtin.lineinfile:
+        path: '{{ var_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*PASS_MIN_DAYS\s'
+        line: PASS_MIN_DAYS {{ var_login_defs_pass_min_days }}
+
+###################################################################################################################################
+- name: PHTN-40-000042 - Configure login.defs PASS_MAX_DAYS
+  tags: [PHTN-40-000042]
+  when: run_login_defs_pass_max_days | bool
+  block:
+    - name: PHTN-40-000042 - Configure login.defs PASS_MAX_DAYS
+      ansible.builtin.lineinfile:
+        path: '{{ var_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*PASS_MAX_DAYS\s'
+        line: PASS_MAX_DAYS {{ var_login_defs_pass_max_days }}
+
+###################################################################################################################################
+- name: PHTN-40-000043 - Configure pam_pwhistory.so remember setting
+  tags: [PHTN-40-000043, pam_pwhistory]
+  when:
+    - run_pam_pwhistory_remember | bool
+    - var_pam_use_pwhistory_conf | bool
+  block:
+    - name: PHTN-40-000043 - Configure pwhistory.conf remember
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_pwhistory_conf_file }}'
+        state: present
+        regexp: '^#?\s*remember\s'
+        line: remember = {{ var_pam_pwhistory_remember }}
+        create: true
+        group: root
+        owner: root
+        mode: '644'
+
+- name: PHTN-40-000043 - Configure pam_pwhistory.so remember setting in system-password
+  tags: [PHTN-40-000043, pam_pwhistory]
+  when:
+    - run_pam_pwhistory_remember | bool
+    - not var_pam_use_pwhistory_conf
+  block:
+    - name: PHTN-40-000043 - Configure pwhistory remember in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwhistory_control }}'
+        module_path: pam_pwhistory.so
+        module_arguments: 'remember={{ var_pam_pwhistory_remember }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-40-000044 - Configure pwquality.conf minlen
+  tags: [PHTN-40-000044, pam_pwquality]
+  when:
+    - run_pam_pwquality_minlen | bool
+    - var_pam_use_pwquality_conf | bool
+  block:
+    - name: PHTN-40-000044 - Configure pwquality.conf minlen
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*minlen\s'
+        line: minlen = {{ var_pam_pwquality_minlen }}
+
+- name: PHTN-40-000044 - Configure minlen in system-password
+  tags: [PHTN-40-000044, pam_pwquality]
+  when:
+    - run_pam_pwquality_minlen | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000044 - Configure pwquality minlen in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'minlen={{ var_pam_pwquality_minlen }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-40-000046 - Configure grub boot password
+  tags: [PHTN-40-000046]
+  when: run_grub_boot_password | bool
+  block:
+    - name: PHTN-40-000046 - Configure grub boot password
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation.'
+
+###################################################################################################################################
+- name: PHTN-40-000047 - Update modprobe.conf file
+  tags: [PHTN-40-000047]
+  when: run_modprobe_conf | bool
+  block:
+    - name: PHTN-40-000047 - Copy modprobe.conf template
+      ansible.builtin.template:
+        src: modprobe.conf
+        dest: '{{ var_modprobe_conf_file }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+
+###################################################################################################################################
+- name: PHTN-40-000049 - Fix users with duplicate UIDs
+  tags: [PHTN-40-000049]
+  when: run_users_duplicate_uids | bool
+  block:
+    - name: PHTN-40-000049 - Fix users with duplicate UIDs
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: PHTN-40-000059 - Configure system-password pam_unix.so sha512 setting
+  tags: [PHTN-40-000059]
+  when: run_pam_unix_sha512 | bool
+  block:
+    - name: PHTN-40-000059 - Configure system-password pam_unix.so sha512 setting
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_unix.so
+        module_arguments:
+          - sha512
+        state: args_present
+
+###################################################################################################################################
+# - name: PHTN-40-000066 - Enable SELinux
+#   tags: [PHTN-40-000066]
+#   when: run_enable_selinux | bool
+#   block:
+#     - name: PHTN-40-000066 - Check to see if SELinux Policy is installed
+#       ansible.builtin.shell: |
+#         set -o pipefail
+#         rpm -qa | grep selinux-policy
+#       register: selinuxinstalled
+#       failed_when: selinuxinstalled.rc == 2
+#       changed_when: false
+#       when:
+#         - run_selinux_install | bool
+
+#     - name: PHTN-40-000066 - Install SELinux Policy
+#       ansible.builtin.command: tdnf -y install selinux-policy
+#       register: output
+#       changed_when: output.rc == 0
+#       when:
+#         - run_selinux_install | bool
+#         - selinuxinstalled.stdout == ""
+
+#     - name: PHTN-40-000066 - Check to see if SELinux utils is installed
+#       ansible.builtin.shell: |
+#         set -o pipefail
+#         rpm -qa | grep libselinux-utils
+#       register: selinuxutilsinstalled
+#       failed_when: selinuxutilsinstalled.rc == 2
+#       changed_when: false
+
+#     - name: PHTN-40-000066 - Install SELinux utils
+#       ansible.builtin.command: tdnf -y install libselinux-utils
+#       register: output
+#       changed_when: output.rc == 0
+#       when:
+#         - run_selinux_install | bool
+#         - selinuxutilsinstalled.stdout == ""
+
+#     - name: PHTN-40-000066 - Recheck to see if SELinux Policy is installed
+#       ansible.builtin.shell: |
+#         set -o pipefail
+#         rpm -qa | grep selinux-policy
+#       register: selinuxinstalled
+#       failed_when: selinuxinstalled.rc == 2
+#       changed_when: false
+
+#     - name: PHTN-40-000066 - Add security=selinux in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux(?!.* security=).*)'
+#         replace: '\1 security=selinux'
+#       when:
+#         - selinuxinstalled.stdout != ""
+
+#     - name: PHTN-40-000066 - Replace security=selinux in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux.*? security=)(?!selinux)(\S*)(.*)'
+#         replace: '\g<1>selinux\3'
+#       when:
+#         - selinuxinstalled.stdout != ""
+
+#     - name: PHTN-40-000066 - Add selinux=1 in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux(?!.* selinux=).*)'
+#         replace: '\1 selinux=1'
+#       when:
+#         - selinuxinstalled.stdout != ""
+
+#     - name: PHTN-40-000066 - Replace selinux=1 in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux.*? selinux=)(?!1)(\S*)(.*)'
+#         replace: '\g<1>1\3'
+#       when:
+#         - selinuxinstalled.stdout != ""
+
+#     - name: PHTN-40-000066 - Add enforcing={{ var_selinux_enforcing }} in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux(?!.* enforcing=).*)'
+#         replace: '\1 enforcing={{ var_selinux_enforcing }}'
+#       when:
+#         - selinuxinstalled.stdout != ""
+
+#     - name: PHTN-40-000066 - Replace enforcing={{ var_selinux_enforcing }} in /boot/grub2/grub.cfg
+#       ansible.builtin.replace:
+#         path: '{{ var_grub_conf_file }}'
+#         regexp: '^(\s*linux.*? enforcing=)(?!{{ var_selinux_enforcing }})(\S*)(.*)'
+#         replace: '\g<1>{{ var_selinux_enforcing }}\3'
+#       when:
+#         - selinuxinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000067 - Configure kernel parameter kernel.dmesg_restrict
+  tags: [PHTN-40-000067]
+  when: run_kernel_dmesg_restrict | bool
+  block:
+    - name: PHTN-40-000067 - Check to see if kernel.dmesg_restrict is set to 1
+      ansible.builtin.command: /sbin/sysctl kernel.dmesg_restrict
+      register: dmesg_restrict
+      failed_when: dmesg_restrict.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000067 - Configure kernel parameter kernel.dmesg_restrict
+      ansible.posix.sysctl:
+        name: kernel.dmesg_restrict
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: dmesg_restrict.stdout != "kernel.dmesg_restrict = 1"
+
+###################################################################################################################################
+- name: PHTN-40-000068 - Configure kernel parameter net.ipv4.tcp_syncookies
+  tags: [PHTN-40-000068]
+  when: run_kernel_net_ipv4_tcp_syncookies | bool
+  block:
+    - name: PHTN-40-000068 - Check to see if net.ipv4.tcp_syncookies is set to 1
+      ansible.builtin.command: /sbin/sysctl net.ipv4.tcp_syncookies
+      register: tcpsyncookies
+      failed_when: tcpsyncookies.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000068 - Configure kernel parameter net.ipv4.tcp_syncookies
+      ansible.posix.sysctl:
+        name: net.ipv4.tcp_syncookies
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: tcpsyncookies.stdout != "net.ipv4.tcp_syncookies = 1"
+
+###################################################################################################################################
+- name: PHTN-40-000069 - Configure sshd clientaliveinterval
+  tags: [PHTN-40-000069, sshd]
+  when: run_sshd_clientaliveinterval | bool
+  block:
+    - name: PHTN-40-000069 - Configure clientaliveinterval in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*ClientAliveInterval\s'
+        line: ClientAliveInterval {{ var_sshd_clientaliveinterval }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000073 - Configure /var/log permissions
+  tags: [PHTN-40-000073]
+  when: run_var_log_perms | bool
+  block:
+    - name: PHTN-40-000073 - Configure /var/log permissions
+      ansible.builtin.file:
+        path: /var/log
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+
+###################################################################################################################################
+- name: PHTN-40-000074 - Configure umask in rsyslog
+  tags: [PHTN-40-000074]
+  when: run_rsyslog_umask | bool
+  block:
+    - name: PHTN-40-000074 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
+    - name: PHTN-40-000074 - Configure umask in rsyslog.conf
+      ansible.builtin.lineinfile:
+        path: '{{ var_rsyslog_conf_file }}'
+        state: present
+        regexp: '^\$umask'
+        line: $umask {{ var_rsyslog_umask }}
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - rsysloginstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000080 - Enable auditing on startup
+  tags: [PHTN-40-000080]
+  when: run_auditd_boot_enable | bool
+  block:
+    - name: PHTN-40-000080 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000080 - Add audit=1 in /boot/grub2/grub.cfg
+      ansible.builtin.replace:
+        path: '{{ var_grub_conf_file }}'
+        regexp: '^(\s*linux(?!.* audit=).*)'
+        replace: '\1 audit=1'
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000080 - Replace audit=1 in /boot/grub2/grub.cfg
+      ansible.builtin.replace:
+        path: '{{ var_grub_conf_file }}'
+        regexp: '^(\s*linux.*? audit=)(?!1)(\S*)(.*)'
+        replace: '\g<1>1\3'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000082 - Update permissions on auditing tools
+  tags: [PHTN-40-000082]
+  when: run_auditd_tools_perms | bool
+  block:
+    - name: PHTN-40-000082 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000082 - Update permissions on auditing tools 750
+      ansible.builtin.file:
+        path: "{{ item.file }}"
+        state: file
+        owner: root
+        group: root
+        mode: "0750"
+      with_items:
+        - {file: '/usr/sbin/audispd'}
+        - {file: '/usr/sbin/augenrules'}
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000082 - Update permissions on auditing tools 755
+      ansible.builtin.file:
+        path: "{{ item.file }}"
+        state: file
+        owner: root
+        group: root
+        mode: "0755"
+      with_items:
+        - {file: '/usr/sbin/auditctl'}
+        - {file: '/usr/sbin/auditd'}
+        - {file: '/usr/sbin/aureport'}
+        - {file: '/usr/sbin/ausearch'}
+        - {file: '/usr/sbin/autrace'}
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000085 - Update permissions on files under /usr/lib
+  tags: [PHTN-40-000085]
+  when: run_usr_lib_perms | bool
+  block:
+    - name: PHTN-40-000085 - Find files under /usr/lib with incorrect permissions
+      ansible.builtin.command: find /usr/lib/ -type f "(" ! -user root -o ! -group root -o -perm /022 ")"
+      register: badfiles
+      changed_when: false
+      failed_when: false
+
+    - name: Set ownership of system libraries to root
+      ansible.builtin.file:
+        path: '{{ item }}'
+        owner: root
+        group: root
+        mode: "0755"
+      with_items: '{{ badfiles.stdout_lines }}'
+      when:
+        - badfiles.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000086 - Configure pwquality.conf ocredit
+  tags: [PHTN-40-000086, pam_pwquality]
+  when:
+    - run_pam_pwquality_ocredit | bool
+    - var_pam_use_pwquality_conf | bool
+  block:
+    - name: PHTN-40-000086 - Configure pwquality.conf ocredit
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*ocredit\s'
+        line: ocredit = {{ var_pam_pwquality_ocredit }}
+
+- name: PHTN-40-000086 - Configure ocredit in system-password
+  tags: [PHTN-40-000086, pam_pwquality]
+  when:
+    - run_pam_pwquality_ocredit | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000086 - Configure pwquality ocredit in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'ocredit={{ var_pam_pwquality_ocredit }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-40-000092 - Verify integrity of audit tools
+  tags: [PHTN-40-000092]
+  when: run_auditd_rpm_verify | bool
+  block:
+    - name: PHTN-40-000092 - Verify integrity of audit tools
+      ansible.builtin.debug:
+        msg: "If there are issues with installed auditd files they must be fixed manually."
+
+###################################################################################################################################
+- name: PHTN-40-000093 - Copy tmout.sh profile script
+  tags: [PHTN-40-000093]
+  when: run_profile_tmout_script | bool
+  block:
+    - name: PHTN-40-000093 - Copy tmout.sh profile script
+      ansible.builtin.template:
+        src: tmout.sh
+        dest: '{{ var_profile_tmout_sh }}'
+        force: true
+        group: root
+        owner: root
+        mode: "0644"
+
+###################################################################################################################################
+- name: PHTN-40-000105 - Configure kernel parameter fs.protected_symlinks
+  tags: [PHTN-40-000105]
+  when: run_kernel_fs_protected_symlinks | bool
+  block:
+    - name: PHTN-40-000105 - Check to see if fs.protected_symlinks is set to 1
+      ansible.builtin.command: /sbin/sysctl fs.protected_symlinks
+      register: fs_protected_symlinks
+      failed_when: fs_protected_symlinks.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000105 - Configure kernel parameter fs.protected_symlinks
+      ansible.posix.sysctl:
+        name: fs.protected_symlinks
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: fs_protected_symlinks.stdout != "fs.protected_symlinks = 1"
+
+###################################################################################################################################
+- name: PHTN-40-000108 - Configure faillock.conf unlock_time
+  tags: [PHTN-40-000108, pam_faillock]
+  when: run_pam_faillock_unlock_time | bool
+  block:
+    - name: PHTN-40-000108 - Configure faillock.conf unlock_time
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*unlock_time.*$'
+        line: unlock_time = {{ var_pam_faillock_unlock_time }}
+
+###################################################################################################################################
+- name: PHTN-40-000110 - Configure auditd.conf num_logs
+  tags: [PHTN-40-000110, auditd]
+  when: run_auditd_conf_num_logs | bool
+  block:
+    - name: PHTN-40-000110 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000110 - Configure auditd.conf num_logs
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*num_logs\s'
+        line: num_logs = {{ var_auditd_conf_num_logs }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000110 - Configure auditd.conf max_log_file_action
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*max_log_file_action\s'
+        line: max_log_file_action = {{ var_auditd_conf_max_log_file_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000111 - Configure syslog server
+  tags: [PHTN-40-000111]
+  when: run_rsyslog_server | bool
+  block:
+    - name: PHTN-40-000111 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
+    - name: PHTN-40-000111 - Set syslog server when UDP is specified
+      ansible.builtin.lineinfile:
+        path: '{{ var_rsyslog_conf_file }}'
+        state: present
+        regexp: '^.*{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+        line: '*.* @{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - var_rsyslog_server_name != ''
+        - var_rsyslog_server_port != ''
+        - var_rsyslog_server_protocol == 'udp'
+        - rsysloginstalled.stdout != ""
+
+    - name: PHTN-40-000111 - Set syslog server when TCP is specified
+      ansible.builtin.lineinfile:
+        path: '{{ var_rsyslog_conf_file }}'
+        state: present
+        regexp: '^.*{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+        line: '*.* @@{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - var_rsyslog_server_name != ''
+        - var_rsyslog_server_port != ''
+        - var_rsyslog_server_protocol == 'tcp'
+        - rsysloginstalled.stdout != ""
+
+    - name: PHTN-40-000111 - Set syslog server when TLS is specified
+      ansible.builtin.lineinfile:
+        path: '{{ var_rsyslog_conf_file }}'
+        state: present
+        regexp: '^.*{{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+        line: '*.* @@(o){{ var_rsyslog_server_name }}:{{ var_rsyslog_server_port }};RSYSLOG_SyslogProtocol23Format'
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - var_rsyslog_server_name != ''
+        - var_rsyslog_server_port != ''
+        - var_rsyslog_server_protocol == 'tls'
+        - rsysloginstalled.stdout != ""
+
+    - name: PHTN-40-000111 - Set syslog server when TLS is specified other options 1
+      ansible.builtin.lineinfile:
+        path: '{{ var_rsyslog_conf_file }}'
+        state: present
+        line: $ActionSendStreamDriverAuthMode anon
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - var_rsyslog_server_name != ''
+        - var_rsyslog_server_port != ''
+        - var_rsyslog_server_protocol == 'tls'
+        - rsysloginstalled.stdout != ""
+
+    - name: PHTN-40-000111 - Set syslog server when TLS is specified other options 2
+      ansible.builtin.lineinfile:
+        path: '{{ var_rsyslog_conf_file }}'
+        state: present
+        line: $ActionSendStreamDriverMode 1
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - var_rsyslog_server_name != ''
+        - var_rsyslog_server_port != ''
+        - var_rsyslog_server_protocol == 'tls'
+        - rsysloginstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000112 - Configure auditd.conf space_left
+  tags: [PHTN-40-000112, auditd]
+  when: run_auditd_conf_space_left | bool
+  block:
+    - name: PHTN-40-000112 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000112 - Configure auditd.conf space_left
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*space_left\s'
+        line: space_left = {{ var_auditd_conf_space_left }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000112 - Configure auditd.conf space_left_action
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*space_left_action\s'
+        line: space_left_action = {{ var_auditd_conf_space_left_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000121 - Configure time sync
+  tags: [PHTN-40-000121]
+  when: run_time_sync | bool
+  block:
+    - name: PHTN-40-000121 - NTPD - Check to see if ntpd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^ntp-
+      register: ntpdinstalled
+      failed_when: ntpdinstalled.rc == 2
+      changed_when: false
+      when:
+        - var_time_type == 'ntpd'
+        - run_time_install | bool
+
+    - name: PHTN-40-000121 - NTPD - Install
+      ansible.builtin.command: tdnf -y install ntp
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - run_time_install | bool
+        - var_time_type == 'ntpd'
+        - ntpdinstalled.stdout == ""
+
+    - name: PHTN-40-000121 - NTPD - Recheck to see if ntpd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^ntp-
+      register: ntpdinstalled
+      failed_when: ntpdinstalled.rc == 2
+      changed_when: false
+      when:
+        - var_time_type == 'ntpd'
+
+    - name: PHTN-40-000121 - NTPD - Remove execute permissions on ntp.conf
+      ansible.builtin.file:
+        path: '{{ var_ntpd_conf_file }}'
+        state: file
+        mode: "0640"
+        owner: root
+        group: root
+      when:
+        - var_time_type == 'ntpd'
+        - ntpdinstalled.stdout != ""
+
+    - name: PHTN-40-000121 - NTPD - Remove unknown time servers
+      ansible.builtin.lineinfile:
+        path: '{{ var_ntpd_conf_file }}'
+        state: absent
+        regexp: '^server ((?!({{ var_time_servers[0] }}|{{ var_time_servers[1] }})).)*$'
+      notify:
+        - '{{ role_name }} : restart ntpd'
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'ntpd'
+        - ntpdinstalled.stdout != ""
+
+    - name: PHTN-40-000121 - NTPD - Configure time Servers
+      ansible.builtin.lineinfile:
+        path: '{{ var_ntpd_conf_file }}'
+        state: present
+        regexp: '^server {{ item }}'
+        line: 'server {{ item }}'
+      with_items:
+        - "{{ var_time_servers }}"
+      notify:
+        - '{{ role_name }} : restart ntpd'
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'ntpd'
+        - ntpdinstalled.stdout != ""
+
+    - name: PHTN-40-000121 - NTPD - Enable service
+      ansible.builtin.systemd:
+        name: ntpd
+        state: started
+        enabled: true
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'ntpd'
+        - ntpdinstalled.stdout != ""
+
+    - name: PHTN-40-000121 - Chrony - Check to see if Chrony is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^chrony-
+      register: chronyinstalled
+      failed_when: chronyinstalled.rc == 2
+      changed_when: false
+      when:
+        - var_time_type == 'chrony'
+        - run_time_install | bool
+
+    - name: PHTN-40-000121 - Chrony - Install
+      ansible.builtin.command: tdnf -y install chrony
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - run_time_install | bool
+        - var_time_type == 'chrony'
+        - chronyinstalled.stdout == ""
+
+    - name: PHTN-40-000121 - Chrony - Recheck to see if Chrony is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^chrony-
+      register: chronyinstalled
+      failed_when: chronyinstalled.rc == 2
+      changed_when: false
+      when:
+        - var_time_type == 'chrony'
+
+    - name: PHTN-40-000121 - Chrony - Enable service
+      ansible.builtin.systemd:
+        name: chronyd
+        state: started
+        enabled: true
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'chrony'
+        - chronyinstalled.stdout != ""
+
+    - name: PHTN-40-000121 - Chrony - Remove any pool configurations
+      ansible.builtin.lineinfile:
+        path: '{{ var_chrony_conf_file }}'
+        state: absent
+        regexp: '^pool.*$'
+      notify:
+        - '{{ role_name }} : restart chrony'
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'chrony'
+        - chronyinstalled.stdout != ""
+
+    - name: PHTN-40-000121 - Chrony - Remove Unknown time Servers
+      ansible.builtin.lineinfile:
+        path: '{{ var_chrony_conf_file }}'
+        state: absent
+        regexp: '^server ((?!({{ var_time_servers[0] }}|{{ var_time_servers[1] }})).)*$'
+      notify:
+        - '{{ role_name }} : restart chrony'
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'chrony'
+        - chronyinstalled.stdout != ""
+
+    - name: PHTN-40-000121 - Chrony - Configure time Servers
+      ansible.builtin.lineinfile:
+        path: '{{ var_chrony_conf_file }}'
+        state: present
+        regexp: '^server {{ item }}'
+        line: 'server {{ item }} iburst maxpoll 16'
+      with_items:
+        - "{{ var_time_servers }}"
+      notify:
+        - '{{ role_name }} : restart chrony'
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'chrony'
+        - chronyinstalled.stdout != ""
+
+    - name: PHTN-40-000121 - Timesyncd - Configure time Servers
+      ansible.builtin.lineinfile:
+        path: '{{ var_timesyncd_conf_file }}'
+        state: present
+        regexp: '^#?\s*NTP='
+        line: 'NTP={{ var_time_servers[0] }} {{ var_time_servers[1] }}'
+      with_items:
+        - "{{ var_time_servers }}"
+      notify:
+        - '{{ role_name }} : restart timesyncd'
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'timesyncd'
+
+    - name: PHTN-40-000121 - Timesyncd - Remove fallback time Servers
+      ansible.builtin.lineinfile:
+        path: '{{ var_timesyncd_conf_file }}'
+        state: present
+        regexp: '^#?\s*FallbackNTP='
+        line: 'FallbackNTP='
+      with_items:
+        - "{{ var_time_servers }}"
+      notify:
+        - '{{ role_name }} : restart timesyncd'
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'timesyncd'
+
+    - name: PHTN-40-000121 - Timesyncd - Enable service
+      ansible.builtin.systemd:
+        name: systemd-timesyncd
+        state: started
+        enabled: true
+      when:
+        - var_time_servers[0] != ''
+        - var_time_servers[1] != ''
+        - var_time_type == 'timesyncd'
+
+###################################################################################################################################
+- name: PHTN-40-000127 - Install AIDE
+  tags: [PHTN-40-000127]
+  when: run_install_aide | bool
+  block:
+    - name: PHTN-40-000127 - Check to see if AIDE is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^aide-
+      register: aideinstalled
+      failed_when: aideinstalled.rc == 2
+      changed_when: false
+
+    # Added libgcrypt. Currently a bug in the aide package that does not upgrade libgcrypt to the needed version.
+    - name: PHTN-40-000127 - Install AIDE
+      ansible.builtin.command: tdnf -y install aide libgcrypt
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - aideinstalled.stdout == ""
+
+###################################################################################################################################
+- name: PHTN-40-000130 - Configure gpgcheck in tdnf.conf
+  tags: [PHTN-40-000130]
+  when: run_tdnf_conf_gpgcheck | bool
+  block:
+    - name: PHTN-40-000130 - Configure gpgcheck in tdnf.conf
+      ansible.builtin.lineinfile:
+        path: '{{ var_tdnf_conf_file }}'
+        state: present
+        regexp: '^#?\s*gpgcheck\s'
+        line: gpgcheck=1
+
+###################################################################################################################################
+- name: PHTN-40-000133 - Configure users to reauthenticate for privilege escalation
+  tags: [PHTN-40-000133]
+  when: run_sudo_no_password | bool
+  block:
+    - name: PHTN-40-000133 - Configure users to reauthenticate for privilege escalation
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: PHTN-40-000160 - Configure kernel parameter kernel.randomize_va_space
+  tags: [PHTN-40-000160]
+  when: run_kernel_randomize_va_space | bool
+  block:
+    - name: PHTN-40-000160 - Check to see if kernel.randomize_va_space is set to 2
+      ansible.builtin.command: /sbin/sysctl kernel.randomize_va_space
+      register: kernelrandomizevaspace
+      failed_when: kernelrandomizevaspace.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000160 - Configure kernel parameter kernel.randomize_va_space
+      ansible.posix.sysctl:
+        name: kernel.randomize_va_space
+        value: 2
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: kernelrandomizevaspace.stdout != "kernel.randomize_va_space = 2"
+
+###################################################################################################################################
+- name: PHTN-40-000161 - Configure clean_requirements_on_remove in tdnf.conf
+  tags: [PHTN-40-000161]
+  when: run_tdnf_conf_clean_requirements_on_remove | bool
+  block:
+    - name: PHTN-40-000161 - Configure clean_requirements_on_remove in tdnf.conf
+      ansible.builtin.lineinfile:
+        path: '{{ var_tdnf_conf_file }}'
+        state: present
+        regexp: '^#?\s*clean_requirements_on_remove'
+        line: clean_requirements_on_remove=true
+
+###################################################################################################################################
+- name: PHTN-40-000182 - Enable FIPS
+  tags: [PHTN-40-000182]
+  when: run_fips_boot_enable | bool
+  block:
+    - name: PHTN-40-000182 - Add fips=1 in /boot/grub2/grub.cfg
+      ansible.builtin.replace:
+        path: '{{ var_grub_conf_file }}'
+        regexp: '^(\s*linux(?!.* fips=).*)'
+        replace: '\1 fips=1'
+
+    - name: PHTN-40-000080 - Replace fips=1 in /boot/grub2/grub.cfg
+      ansible.builtin.replace:
+        path: '{{ var_grub_conf_file }}'
+        regexp: '^(\s*linux.*? fips=)(?!1)(\S*)(.*)'
+        replace: '\g<1>1\3'
+
+###################################################################################################################################
+- name: PHTN-40-000184 - Configure pwquality.conf dictcheck
+  tags: [PHTN-40-000184, pam_pwquality]
+  when:
+    - run_pam_pwquality_dictcheck | bool
+    - var_pam_use_pwquality_conf | bool
+  block:
+    - name: PHTN-40-000184 - Configure pwquality.conf dictcheck
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*dictcheck\s'
+        line: dictcheck = {{ var_pam_pwquality_dictcheck }}
+
+- name: PHTN-40-000184 - Configure dictcheck in system-password
+  tags: [PHTN-40-000184, pam_pwquality]
+  when:
+    - run_pam_pwquality_dictcheck | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000184 - Configure pwquality dictcheck in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'dictcheck={{ var_pam_pwquality_dictcheck }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-40-000185 - Configure login.defs FAIL_DELAY
+  tags: [PHTN-40-000185]
+  when: run_login_defs_fail_delay | bool
+  block:
+    - name: PHTN-40-000185 - Configure login.defs FAIL_DELAY
+      ansible.builtin.lineinfile:
+        path: '{{ var_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*FAIL_DELAY\s'
+        line: FAIL_DELAY {{ var_login_defs_fail_delay }}
+
+###################################################################################################################################
+- name: PHTN-40-000186 - Configure auditd.conf flush
+  tags: [PHTN-40-000186, auditd]
+  when: run_auditd_conf_flush | bool
+  block:
+    - name: PHTN-40-000186 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000186 - Configure auditd.conf flush
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*flush\s'
+        line: flush = {{ var_auditd_conf_flush }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-40-000186 - Configure auditd.conf freq
+      ansible.builtin.lineinfile:
+        path: '{{ var_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*freq\s'
+        line: freq = {{ var_auditd_conf_freq }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000187 - Configure login.defs UMASK
+  tags: [PHTN-40-000187]
+  when: run_login_defs_umask | bool
+  block:
+    - name: PHTN-40-000187 - Configure login.defs UMASK
+      ansible.builtin.lineinfile:
+        path: '{{ var_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*UMASK\s'
+        line: UMASK 077
+
+###################################################################################################################################
+- name: PHTN-40-000188 - Configure sshd HostbasedAuthentication
+  tags: [PHTN-40-000188, sshd]
+  when: run_sshd_hostbasedauthentication | bool
+  block:
+    - name: PHTN-40-000188 - Configure HostbasedAuthentication in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*HostbasedAuthentication\s'
+        line: HostbasedAuthentication {{ var_sshd_hostbasedauthentication }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000192 - Configure system-auth pam_faillock.so module
+  tags: [PHTN-40-000192]
+  when: run_pam_add_faillock_so | bool
+  block:
+    - name: 'PHTN-40-000192 - Get current contents of {{ var_pam_system_auth_file }}'
+      ansible.builtin.slurp:
+        src: '{{ var_pam_system_auth_file }}'
+      register: systemauthslurp
+
+    - name: 'PHTN-40-000192 - Decode current contents of {{ var_pam_system_auth_file }} and set fact'
+      ansible.builtin.set_fact:
+        systemauthcontent: "{{ systemauthslurp['content'] | b64decode }}"
+
+    - name: 'PHTN-40-000192 - Check to see if pam_faillock.so preauth rule exists in {{ var_pam_system_auth_file }} and is before the pam_unix.so rule'
+      ansible.builtin.set_fact:
+        preauthsearch: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_faillock\\.so\\spreauth$\\nauth\\s+(required|requisite)\\s+pam_unix\\.so.*$', multiline=True) }}"
+
+    - name: 'PHTN-40-000192 - Check to see if pam_faillock.so authfail rule exists in {{ var_pam_system_auth_file }} and is after the pam_unix.so rule'
+      ansible.builtin.set_fact:
+        authfailsearch: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_unix\\.so.*$\\nauth\\s+(required|requisite|\\[default=die\\])\\s+pam_faillock\\.so\\sauthfail$', multiline=True) }}"
+
+    - name: 'PHTN-40-000192 - Remove existing pam_faillock.so rules in {{ var_pam_system_auth_file }} if one not found or incorrect'
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_system_auth_file }}'
+        state: absent
+        regexp: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so.*$'
+      when:
+        - preauthsearch == "" or authfailsearch == ""
+
+    - name: PHTN-40-000192 - Add pam_faillock.so preauth to system-auth if it doesn't exist
+      community.general.pamd:
+        name: system-auth
+        type: auth
+        control: required
+        module_path: pam_unix.so
+        new_type: auth
+        new_control: required
+        new_module_path: pam_faillock.so
+        module_arguments: 'preauth'
+        state: before
+
+    - name: PHTN-40-000192 - Add pam_faillock.so authfail to system-auth if it doesn't exist
+      community.general.pamd:
+        name: system-auth
+        type: auth
+        control: required
+        module_path: pam_unix.so
+        new_type: auth
+        new_control: required
+        new_module_path: pam_faillock.so
+        module_arguments: 'authfail'
+        state: after
+
+    - name: 'PHTN-40-000192 - Get current contents of {{ var_pam_system_account_file }}'
+      ansible.builtin.slurp:
+        src: '{{ var_pam_system_account_file }}'
+      register: systemaccountslurp
+
+    - name: 'PHTN-40-000192 - Decode current contents of {{ var_pam_system_account_file }} and set fact'
+      ansible.builtin.set_fact:
+        systemaccounthcontent: "{{ systemaccountslurp['content'] | b64decode }}"
+
+    - name: 'PHTN-40-000192 - Check to see if pam_faillock.so rule exists in {{ var_pam_system_account_file }} and is before the pam_unix.so rule'
+      ansible.builtin.set_fact:
+        sysaccountsearch: "{{ systemaccounthcontent | regex_search('^account\\s+(required|requisite)\\s+pam_faillock\\.so$\\naccount\\s+(required|requisite)\\s+pam_unix\\.so.*$', multiline=True) }}"
+
+    - name: 'PHTN-40-000192 - Remove existing pam_faillock.so rules in {{ var_pam_system_account_file }} if incorrect'
+      community.general.pamd:
+        name: system-account
+        type: account
+        control: required
+        module_path: pam_faillock.so
+        state: absent
+      when:
+        - sysaccountsearch == ""
+
+    - name: PHTN-40-000192 - Add pam_faillock.so to system-account if it doesn't exist
+      community.general.pamd:
+        name: system-account
+        type: account
+        control: required
+        module_path: pam_unix.so
+        new_type: account
+        new_control: required
+        new_module_path: pam_faillock.so
+        state: before
+
+###################################################################################################################################
+- name: PHTN-40-000193 - Configure faillock.conf silent
+  tags: [PHTN-40-000193, pam_faillock]
+  when: run_pam_faillock_silent | bool
+  block:
+    - name: PHTN-40-000193 - Configure faillock.conf silent
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*silent.*$'
+        line: silent
+
+###################################################################################################################################
+- name: PHTN-40-000194 - Configure faillock.conf audit
+  tags: [PHTN-40-000194, pam_faillock]
+  when: run_pam_faillock_audit | bool
+  block:
+    - name: PHTN-40-000194 - Configure faillock.conf audit
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*audit.*$'
+        line: audit
+
+###################################################################################################################################
+- name: PHTN-40-000195 - Configure faillock.conf even_deny_root
+  tags: [PHTN-40-000195, pam_faillock]
+  when: run_pam_faillock_even_deny_root | bool
+  block:
+    - name: PHTN-40-000195 - Configure faillock.conf even_deny_root
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*even_deny_root.*$'
+        line: even_deny_root
+
+###################################################################################################################################
+- name: PHTN-40-000196 - Configure faillock.conf dir
+  tags: [PHTN-40-000196, pam_faillock]
+  when: run_pam_faillock_dir | bool
+  block:
+    - name: PHTN-40-000196 - Configure faillock.conf dir
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*dir.*$'
+        line: dir = {{ var_pam_faillock_dir }}
+
+    - name: PHTN-40-000196 - Create faillock dir
+      ansible.builtin.file:
+        path: '{{ var_pam_faillock_dir }}'
+        state: directory
+        owner: root
+        group: root
+        mode: "0750"
+
+###################################################################################################################################
+- name: PHTN-40-000197 - Configure system-password pam_pwquality.so module
+  tags: [PHTN-40-000197]
+  when:
+    - run_pam_add_pwquality_so | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000197 - Check to see if pam_pwquality.so rule exists
+      ansible.builtin.shell: grep -E '^password\s*required\s*pam_pwquality.so\suse_authtok$' /etc/pam.d/system-password
+      register: syspasspwq
+      failed_when: syspasspwq.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000197 - Remove existing pam_pwquality.so rules in system-password if it is incorrect
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_pwquality.so
+        state: absent
+      when:
+        - syspasspwq.stdout == ""
+
+    - name: PHTN-40-000197 - Add pam_pwquality.so to system-password if it doesn't exist
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_unix.so
+        new_type: password
+        new_control: required
+        new_module_path: pam_pwquality.so
+        module_arguments: 'use_authtok'
+        state: before
+
+###################################################################################################################################
+- name: PHTN-40-000199 - Configure gpgcheck in yum repos
+  tags: [PHTN-40-000199]
+  when: run_yum_repos_gpgcheck | bool
+  block:
+    - name: PHTN-30-000061 - Find yum repos
+      ansible.builtin.find:
+        paths: /etc/yum.repos.d/
+        file_type: file
+        patterns: "*.repo"
+      register: yumrepos
+
+    - name: PHTN-40-000199 - Configure gpgcheck in tdnf.conf
+      ansible.builtin.lineinfile:
+        path: '{{ item.path }}'
+        state: present
+        regexp: '^#?\s*gpgcheck\s'
+        line: gpgcheck=1
+      with_items: "{{ yumrepos.files }}"
+
+###################################################################################################################################
+- name: PHTN-40-000200 - Configure sshd SyslogFacility
+  tags: [PHTN-40-000200, sshd]
+  when: run_sshd_syslogfacility | bool
+  block:
+    - name: PHTN-40-000200 - Configure SyslogFacility in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*SyslogFacility\s'
+        line: SyslogFacility {{ var_sshd_syslogfacility }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000201 - Configure sshd LogLevel
+  tags: [PHTN-40-000201, sshd]
+  when: run_sshd_loglevel | bool
+  block:
+    - name: PHTN-40-000201 - Configure LogLevel in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*LogLevel\s'
+        line: LogLevel {{ var_sshd_loglevel }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000203 - Configure sshd ClientAliveCountMax
+  tags: [PHTN-40-000203, sshd]
+  when: run_sshd_clientalivecountmax | bool
+  block:
+    - name: PHTN-40-000203 - Configure ClientAliveCountMax in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*ClientAliveCountMax\s'
+        line: ClientAliveCountMax {{ var_sshd_clientalivecountmax }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000206 - Configure system-auth pam_faildelay.so module
+  tags: [PHTN-40-000206]
+  when: run_pam_add_faildelay_so | bool
+  block:
+    - name: PHTN-40-000206 - Check to see if pam_faildelay.so rule exists
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -E '^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$' /etc/pam.d/system-auth
+      register: sysauthfaildelay
+      failed_when: sysauthfaildelay.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000206 - Remove existing pam_faildelay.so rule in system-auth if it is incorrect
+      community.general.pamd:
+        name: system-auth
+        type: auth
+        control: optional
+        module_path: pam_faildelay.so
+        state: absent
+      when:
+        - sysauthfaildelay.stdout == ""
+
+    # Need to use lininfile instead of pam because of the placement this needs to go can't be dealt with by the ansible pam module
+    - name: PHTN-40-000206 - Add pam_faildelay.so to system-auth if it doesn't exist
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_system_auth_file }}'
+        state: present
+        regexp: '^#?auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$'
+        line: auth       optional pam_faildelay.so delay=4000000
+        insertafter: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+authfail$'
+
+###################################################################################################################################
+- name: PHTN-40-000207 - Configure sshd PermitEmptyPasswords
+  tags: [PHTN-40-000207, sshd]
+  when: run_sshd_permitemptypasswords | bool
+  block:
+    - name: PHTN-40-000207 - Configure PermitEmptyPasswords in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*PermitEmptyPasswords\s'
+        line: PermitEmptyPasswords {{ var_sshd_permitemptypasswords }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000208 - Configure sshd PermitUserEnvironment
+  tags: [PHTN-40-000208, sshd]
+  when: run_sshd_permituserenvironment | bool
+  block:
+    - name: PHTN-40-000208 - Configure PermitUserEnvironment in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*PermitUserEnvironment\s'
+        line: PermitUserEnvironment {{ var_sshd_permituserenvironment }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000209 - Configure login.defs CREATE_HOME
+  tags: [PHTN-40-000209]
+  when: run_login_defs_create_home | bool
+  block:
+    - name: PHTN-40-000209 - Configure login.defs CREATE_HOME
+      ansible.builtin.lineinfile:
+        path: '{{ var_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*CREATE_HOME\s'
+        line: CREATE_HOME yes
+
+###################################################################################################################################
+- name: PHTN-40-000210 - Disable debug-shell service
+  tags: [PHTN-40-000210]
+  when: run_disable_debug_shell_service | bool
+  block:
+    - name: PHTN-40-000210 - Disable debug-shell service
+      ansible.builtin.systemd:
+        name: debug-shell
+        state: stopped
+        enabled: false
+
+###################################################################################################################################
+- name: PHTN-40-000211 - Configure sshd GSSAPIAuthentication
+  tags: [PHTN-40-000211, sshd]
+  when: run_sshd_gssapiauthentication | bool
+  block:
+    - name: PHTN-40-000211 - Configure GSSAPIAuthentication in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*GSSAPIAuthentication\s'
+        line: GSSAPIAuthentication {{ var_sshd_gssapiauthentication }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000212 - Configure sshd X11Forwarding
+  tags: [PHTN-40-000212, sshd]
+  when: run_sshd_x11forwarding | bool
+  block:
+    - name: PHTN-40-000212 - Configure X11Forwarding in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*X11Forwarding\s'
+        line: X11Forwarding {{ var_sshd_x11forwarding }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000213 - Configure sshd StrictModes
+  tags: [PHTN-40-000213, sshd]
+  when: run_sshd_strictmodes | bool
+  block:
+    - name: PHTN-40-000213 - Configure StrictModes in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*StrictModes\s'
+        line: StrictModes {{ var_sshd_strictmodes }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000214 - Configure sshd KerberosAuthentication
+  tags: [PHTN-40-000214, sshd]
+  when: run_sshd_kerberosauthentication | bool
+  block:
+    - name: PHTN-40-000214 - Configure KerberosAuthentication in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*KerberosAuthentication\s'
+        line: KerberosAuthentication {{ var_sshd_kerberosauthentication }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000215 - Configure sshd Compression
+  tags: [PHTN-40-000215, sshd]
+  when: run_sshd_compression | bool
+  block:
+    - name: PHTN-40-000215 - Configure Compression in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*Compression\s'
+        line: Compression {{ var_sshd_compression }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000216 - Configure sshd PrintLastLog
+  tags: [PHTN-40-000216, sshd]
+  when: run_sshd_printlastlog | bool
+  block:
+    - name: PHTN-40-000216 - Configure PrintLastLog in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*PrintLastLog\s'
+        line: PrintLastLog {{ var_sshd_printlastlog }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000217 - Configure sshd IgnoreRhosts
+  tags: [PHTN-40-000217, sshd]
+  when: run_sshd_ignorerhosts | bool
+  block:
+    - name: PHTN-40-000217 - Configure IgnoreRhosts in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*IgnoreRhosts\s'
+        line: IgnoreRhosts {{ var_sshd_ignorerhosts }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000218 - Configure sshd IgnoreUserKnownHosts
+  tags: [PHTN-40-000218, sshd]
+  when: run_sshd_ignoreuserknownhosts | bool
+  block:
+    - name: PHTN-40-000218 - Configure IgnoreUserKnownHosts in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*IgnoreUserKnownHosts\s'
+        line: IgnoreUserKnownHosts {{ var_sshd_ignoreuserknownhosts }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000219 - Configure sshd MaxAuthTries
+  tags: [PHTN-40-000219, sshd]
+  when: run_sshd_maxauthtries | bool
+  block:
+    - name: PHTN-40-000219 - Configure MaxAuthTries in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*MaxAuthTries\s'
+        line: MaxAuthTries {{ var_sshd_maxauthtries }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000220 - Configure sshd AllowTcpForwarding
+  tags: [PHTN-40-000220, sshd]
+  when: run_sshd_allowtcpforwarding | bool
+  block:
+    - name: PHTN-40-000220 - Configure AllowTcpForwarding in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*AllowTcpForwarding\s'
+        line: AllowTcpForwarding {{ var_sshd_allowtcpforwarding }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000221 - Configure sshd LoginGraceTime
+  tags: [PHTN-40-000221, sshd]
+  when: run_sshd_logingracetime | bool
+  block:
+    - name: PHTN-40-000221 - Configure LoginGraceTime in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*LoginGraceTime\s'
+        line: LoginGraceTime {{ var_sshd_logingracetime }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000222 - Disable ctrl-alt-del.target
+  tags: [PHTN-40-000222]
+  when: run_disable_ctrl_alt_del_service | bool
+  block:
+    - name: PHTN-40-000222 - Disable ctrl-alt-del.target
+      ansible.builtin.systemd:
+        name: ctrl-alt-del.target
+        enabled: false
+        daemon_reload: true
+
+    # This seems to need to be run separately
+    - name: PHTN-40-000222 - Mask ctrl-alt-del.target
+      ansible.builtin.systemd:
+        name: ctrl-alt-del.target
+        masked: true
+        daemon_reload: true
+
+###################################################################################################################################
+- name: PHTN-40-000223 - Configure kernel parameter net_accept_source_route
+  tags: [PHTN-40-000223]
+  when: run_kernel_net_accept_source_route | bool
+  block:
+    - name: PHTN-40-000223 - Check to see if net.ipv4.conf.all.accept_source_route is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.accept_source_route
+      register: allaccept_source_route
+      failed_when: allaccept_source_route.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000223 - Configure kernel parameter net.ipv4.conf.all.accept_source_route
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.accept_source_route
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: allaccept_source_route.stdout != "net.ipv4.conf.all.accept_source_route = 0"
+
+    - name: PHTN-40-000223 - Check to see if net.ipv4.conf.default.accept_source_route is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.accept_source_route
+      register: defaultaccept_source_route
+      failed_when: defaultaccept_source_route.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000223 - Configure kernel parameter net.ipv4.conf.default.accept_source_route
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.accept_source_route
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: defaultaccept_source_route.stdout != "net.ipv4.conf.default.accept_source_route = 0"
+
+    - name: PHTN-40-000223 - Check to see if net.ipv6.conf.all.accept_source_route is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv6.conf.all.accept_source_route
+      register: ipv6allaccept_source_route
+      failed_when: ipv6allaccept_source_route.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000223 - Configure kernel parameter net.ipv6.conf.all.accept_source_route
+      ansible.posix.sysctl:
+        name: net.ipv6.conf.all.accept_source_route
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: ipv6allaccept_source_route.stdout != "net.ipv6.conf.all.accept_source_route = 0"
+
+    - name: PHTN-40-000223 - Check to see if net.ipv6.conf.default.accept_source_route is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv6.conf.default.accept_source_route
+      register: ipv6defaultaccept_source_route
+      failed_when: ipv6defaultaccept_source_route.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000223 - Configure kernel parameter net.ipv6.conf.default.accept_source_route
+      ansible.posix.sysctl:
+        name: net.ipv6.conf.default.accept_source_route
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: ipv6defaultaccept_source_route.stdout != "net.ipv6.conf.default.accept_source_route = 0"
+
+###################################################################################################################################
+- name: PHTN-40-000224 - Configure kernel parameter net.ipv4.icmp_echo_ignore_broadcasts
+  tags: [PHTN-40-000224]
+  when: run_kernel_net_ipv4_icmp_echo_ignore_broadcasts | bool
+  block:
+    - name: PHTN-40-000224 - Check to see if net.ipv4.icmp_echo_ignore_broadcasts is set to 1
+      ansible.builtin.command: /sbin/sysctl net.ipv4.icmp_echo_ignore_broadcasts
+      register: icmp_echo_ignore_broadcasts
+      failed_when: icmp_echo_ignore_broadcasts.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000224 - Configure kernel parameter net.ipv4.icmp_echo_ignore_broadcasts
+      ansible.posix.sysctl:
+        name: net.ipv4.icmp_echo_ignore_broadcasts
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: icmp_echo_ignore_broadcasts.stdout != "net.ipv4.icmp_echo_ignore_broadcasts = 1"
+
+###################################################################################################################################
+- name: PHTN-40-000225 - Configure kernel parameter net_accept_redirects
+  tags: [PHTN-40-000225]
+  when: run_kernel_net_accept_redirects | bool
+  block:
+    - name: PHTN-40-000225 - Check to see if net.ipv4.conf.all.accept_redirects is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.accept_redirects
+      register: all_accept_redirects
+      failed_when: all_accept_redirects.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000225 - Configure kernel parameter net.ipv4.conf.all.accept_redirects
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.accept_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_accept_redirects.stdout != "net.ipv4.conf.all.accept_redirects = 0"
+
+    - name: PHTN-40-000225 - Check to see if net.ipv4.conf.default.accept_redirects is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.accept_redirects
+      register: default_accept_redirects
+      failed_when: default_accept_redirects.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000225 - Configure kernel parameter net.ipv4.conf.default.accept_redirects
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.accept_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_accept_redirects.stdout != "net.ipv4.conf.default.accept_redirects = 0"
+
+###################################################################################################################################
+- name: PHTN-40-000226 - Configure kernel parameter net_secure_redirects
+  tags: [PHTN-40-000226]
+  when: run_kernel_net_secure_redirects | bool
+  block:
+    - name: PHTN-40-000226 - Check to see if net.ipv4.conf.all.secure_redirects is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.secure_redirects
+      register: all_secure_redirects
+      failed_when: all_secure_redirects.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000226 - Configure kernel parameter net.ipv4.conf.all.secure_redirects
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.secure_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_secure_redirects.stdout != "net.ipv4.conf.all.secure_redirects = 0"
+
+    - name: PHTN-40-000226 - Check to see if net.ipv4.conf.default.secure_redirects is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.secure_redirects
+      register: default_secure_redirects
+      failed_when: default_secure_redirects.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000226 - Configure kernel parameter net.ipv4.conf.default.secure_redirects
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.secure_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_secure_redirects.stdout != "net.ipv4.conf.default.secure_redirects = 0"
+
+###################################################################################################################################
+- name: PHTN-40-000227 - Configure kernel parameter net_send_redirects
+  tags: [PHTN-40-000227]
+  when: run_kernel_net_send_redirects | bool
+  block:
+    - name: PHTN-40-000227 - Check to see if net.ipv4.conf.all.send_redirects is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.send_redirects
+      register: all_send_redirects
+      failed_when: all_send_redirects.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000227 - Configure kernel parameter net.ipv4.conf.all.send_redirects
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.send_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_send_redirects.stdout != "net.ipv4.conf.all.send_redirects = 0"
+
+    - name: PHTN-40-000227 - Check to see if net.ipv4.conf.default.send_redirects is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.send_redirects
+      register: default_send_redirects
+      failed_when: default_send_redirects.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000227 - Configure kernel parameter net.ipv4.conf.default.send_redirects
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.send_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_send_redirects.stdout != "net.ipv4.conf.default.send_redirects = 0"
+
+###################################################################################################################################
+- name: PHTN-40-000228 - Configure kernel parameter net_log_martians
+  tags: [PHTN-40-000228]
+  when: run_kernel_net_log_martians | bool
+  block:
+    - name: PHTN-40-000228 - Check to see if net.ipv4.conf.all.log_martians is set to 1
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.log_martians
+      register: all_log_martians
+      failed_when: all_log_martians.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000228 - Configure kernel parameter net.ipv4.conf.all.log_martians
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.log_martians
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_log_martians.stdout != "net.ipv4.conf.all.log_martians = 1"
+
+    - name: PHTN-40-000228 - Check to see if net.ipv4.conf.default.log_martians is set to 1
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.log_martians
+      register: default_log_martians
+      failed_when: default_log_martians.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000228 - Configure kernel parameter net.ipv4.conf.default.log_martians
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.log_martians
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_log_martians.stdout != "net.ipv4.conf.default.log_martians = 1"
+
+###################################################################################################################################
+- name: PHTN-40-000229 - Configure kernel parameter net_rp_filter
+  tags: [PHTN-40-000229]
+  when: run_kernel_net_rp_filter | bool
+  block:
+    - name: PHTN-40-000229 - Check to see if net.ipv4.conf.all.rp_filter is set to 1
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.rp_filter
+      register: all_rp_filter
+      failed_when: all_rp_filter.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000229 - Configure kernel parameter net.ipv4.conf.all.rp_filter
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.rp_filter
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_rp_filter.stdout != "net.ipv4.conf.all.rp_filter = 1"
+
+    - name: PHTN-40-000229 - Check to see if net.ipv4.conf.default.rp_filter is set to 1
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.rp_filter
+      register: default_rp_filter
+      failed_when: default_rp_filter.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000229 - Configure kernel parameter net.ipv4.conf.default.rp_filter
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.rp_filter
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_rp_filter.stdout != "net.ipv4.conf.default.rp_filter = 1"
+
+###################################################################################################################################
+- name: PHTN-40-000231 - Configure kernel parameter net_ip_forward
+  tags: [PHTN-40-000231]
+  when: run_kernel_net_ip_forward | bool
+  block:
+    - name: PHTN-40-000231 - Check to see if container host packages are installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep -E '(^docker-|^containerd|^kubernetes)'
+      register: cntrpkgsinstalled
+      changed_when: false
+      failed_when:
+        - cntrpkgsinstalled.rc == 2
+
+    - name: PHTN-40-000231 - Check to see if net.ipv4.ip_forward is set to 0
+      ansible.builtin.command: /sbin/sysctl net.ipv4.ip_forward
+      register: ipv4_ip_forward
+      failed_when: ipv4_ip_forward.rc == 2
+      changed_when: false
+      when:
+        - cntrpkgsinstalled.stdout == ""
+
+    - name: PHTN-40-000231 - Configure kernel parameter net.ipv4.ip_forward
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when:
+        - ipv4_ip_forward.stdout is defined
+        - ipv4_ip_forward.stdout != "net.ipv4.ip_forward = 0"
+        - cntrpkgsinstalled.stdout == ""
+
+###################################################################################################################################
+- name: PHTN-40-000232 - Configure kernel parameter net_tcp_timestamps
+  tags: [PHTN-40-000232]
+  when: run_kernel_net_tcp_timestamps | bool
+  block:
+    - name: PHTN-40-000232 - Check to see if net.ipv4.tcp_timestamps is set to 1
+      ansible.builtin.command: /sbin/sysctl net.ipv4.tcp_timestamps
+      register: tcp_timestamps
+      failed_when: tcp_timestamps.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000232 - Configure kernel parameter net.ipv4.tcp_timestamps
+      ansible.posix.sysctl:
+        name: net.ipv4.tcp_timestamps
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: tcp_timestamps.stdout != "net.ipv4.tcp_timestamps = 1"
+
+###################################################################################################################################
+- name: PHTN-40-000233 - Configure permissions on sshd public key files
+  tags: [PHTN-40-000233]
+  when: run_sshd_pub_key_permissions | bool
+  block:
+    - name: PHTN-40-000233 - Find sshd public key files
+      ansible.builtin.find:
+        paths: /etc/ssh/
+        file_type: file
+        patterns: "*key.pub"
+      register: sshpubkeys
+
+    - name: PHTN-40-000233 - Configure permissions on sshd public key files
+      ansible.builtin.file:
+        path: '{{ item.path }}'
+        state: file
+        mode: "0644"
+        owner: root
+        group: root
+      with_items: '{{ sshpubkeys.files }}'
+
+###################################################################################################################################
+- name: PHTN-40-000234 - Configure permissions on sshd private key files
+  tags: [PHTN-40-000234]
+  when: run_sshd_pri_key_permissions | bool
+  block:
+    - name: PHTN-40-000234 - Find sshd private key files
+      ansible.builtin.find:
+        paths: /etc/ssh/
+        file_type: file
+        patterns: "*key"
+      register: sshprikeys
+
+    - name: PHTN-40-000234 - Configure permissions on sshd private key files
+      ansible.builtin.file:
+        path: '{{ item.path }}'
+        state: file
+        mode: "0600"
+        owner: root
+        group: root
+      with_items: '{{ sshprikeys.files }}'
+
+###################################################################################################################################
+- name: PHTN-40-000235 - Configure pwquality.conf enforce_for_root
+  tags: [PHTN-40-000235, pam_pwquality]
+  when:
+    - run_pam_pwquality_enforce_for_root | bool
+    - var_pam_use_pwquality_conf | bool
+  block:
+    - name: PHTN-40-000235 - Configure pwquality.conf enforce_for_root
+      ansible.builtin.lineinfile:
+        path: '{{ var_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*enforce_for_root\s'
+        line: enforce_for_root
+
+- name: PHTN-40-000235 - Configure enforce_for_root in system-password
+  tags: [PHTN-40-000235, pam_pwquality]
+  when:
+    - run_pam_pwquality_enforce_for_root | bool
+    - not var_pam_use_pwquality_conf
+  block:
+    - name: PHTN-40-000235 - Configure pwquality enforce_for_root in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'enforce_for_root'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-40-000236 - Configure systemd resolved fallback DNS
+  tags: [PHTN-40-000236]
+  when: run_systemd_fallback_dns | bool
+  block:
+    - name: PHTN-40-000236 - Configure systemd resolved fallback DNS
+      ansible.builtin.lineinfile:
+        path: '{{ var_systemd_resolved_conf_file }}'
+        state: present
+        regexp: '^#?\s*FallbackDNS='
+        line: FallbackDNS=
+      notify:
+        - '{{ role_name }} : restart resolved'
+
+###################################################################################################################################
+- name: PHTN-40-000239 - Configure sshd MACs
+  tags: [PHTN-40-000239, sshd]
+  when: run_sshd_macs | bool
+  block:
+    - name: PHTN-40-000239 - Configure MACs in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ var_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*MACs\s'
+        line: MACs {{ var_sshd_macs }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-40-000243 - Configure pam_pwhistory.so module
+  tags: [PHTN-40-000243, pam]
+  when:
+    - run_pam_pwhistory_module | bool
+    - var_pam_use_pwhistory_conf | bool
+  block:
+    - name: PHTN-40-000243 - Add pam_pwhistory to system-password if it doesn't exist
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_pwquality.so
+        new_type: password
+        new_control: required
+        new_module_path: pam_pwhistory.so
+        state: after
+
+    - name: PHTN-40-000243 - Configure system-password pam_pwhistory.so use_authtok setting
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_pwhistory.so
+        module_arguments:
+          - use_authtok
+        state: args_present
+
+    - name: PHTN-40-000243 - Configure system-password pam_pwhistory.so to remove file and conf directives
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_pwhistory.so
+        module_arguments:
+          - conf
+          - file
+        state: args_absent
+
+- name: PHTN-40-000243 - Configure pam_pwhistory.so module
+  tags: [PHTN-40-000243, pam]
+  when:
+    - run_pam_pwhistory_module | bool
+    - not var_pam_use_pwhistory_conf
+  block:
+    - name: PHTN-40-000243 - Add pam_pwhistory.so to system-password if it doesn't exist.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        new_type: password
+        new_control: required
+        new_module_path: pam_pwhistory.so
+        module_arguments:
+          - remember=5
+          - retry=3
+          - enforce_for_root
+          - use_authtok
+        state: after
+
+    - name: PHTN-40-000243 - Configure system-password pam_pwhistory.so settings if already existing
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwhistory_control }}'
+        module_path: pam_pwhistory.so
+        module_arguments:
+          - remember=5
+          - retry=3
+          - enforce_for_root
+          - use_authtok
+        state: args_present
+
+    - name: PHTN-40-000243 - Configure system-password pam_pwhistory.so to remove file and conf directives
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ var_pam_pwhistory_control }}'
+        module_path: pam_pwhistory.so
+        module_arguments:
+          - conf
+          - file
+        state: args_absent
+
+###################################################################################################################################
+- name: PHTN-40-000244 - Configure kernel parameter fs.protected_hardlinks
+  tags: [PHTN-40-000244]
+  when: run_kernel_fs_protected_hardlinks | bool
+  block:
+    - name: PHTN-40-000244 - Check to see if fs.protected_hardlinks is set to 1
+      ansible.builtin.command: /sbin/sysctl fs.protected_hardlinks
+      register: fs_protected_hardlinks
+      failed_when: fs_protected_hardlinks.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000244 - Configure kernel parameter fs.protected_hardlinks
+      ansible.posix.sysctl:
+        name: fs.protected_hardlinks
+        value: 1
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: fs_protected_hardlinks.stdout != "fs.protected_hardlinks = 1"
+
+###################################################################################################################################
+- name: PHTN-40-000245 - Configure /tmp mount
+  tags: [PHTN-40-000245]
+  when: run_systemd_tmp_mount | bool
+  block:
+    - name: PHTN-40-000245 - Add nodev to /lib/systemd/system/tmp.mount
+      ansible.builtin.replace:
+        path: '{{ var_systemd_tmp_mount_file }}'
+        regexp: '^(Options=(?!.*nodev).*)'
+        replace: '\1,nodev'
+
+    - name: PHTN-40-000245 - Add noexec to /lib/systemd/system/tmp.mount
+      ansible.builtin.replace:
+        path: '{{ var_systemd_tmp_mount_file }}'
+        regexp: '^(Options=(?!.*noexec).*)'
+        replace: '\1,noexec'
+
+    - name: PHTN-40-000245 - Add nosuid to /lib/systemd/system/tmp.mount
+      ansible.builtin.replace:
+        path: '{{ var_systemd_tmp_mount_file }}'
+        regexp: '^(Options=(?!.*nosuid).*)'
+        replace: '\1,nosuid'
+
+###################################################################################################################################
+- name: PHTN-40-000246 - Configure kernel parameter fs.suid_dumpable
+  tags: [PHTN-40-000246]
+  when: run_kernel_fs_suid_dumpable | bool
+  block:
+    - name: PHTN-40-000246 - Check to see if fs.suid_dumpable is set to 0
+      ansible.builtin.command: /sbin/sysctl fs.suid_dumpable
+      register: fs_suid_dumpable
+      failed_when: fs_suid_dumpable.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000246 - Configure kernel parameter fs.suid_dumpable
+      ansible.posix.sysctl:
+        name: fs.suid_dumpable
+        value: 0
+        state: present
+        sysctl_file: '{{ var_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: fs_suid_dumpable.stdout != "fs.suid_dumpable = 0"
+
+###################################################################################################################################
+- name: PHTN-40-000247 - Remove nullok from pam_unix.so module
+  tags: [PHTN-40-000247]
+  when: run_pam_remove_nullok | bool
+  block:
+    - name: PHTN-40-000247 - Remove nullok from /etc/pam.d/system-password
+      ansible.builtin.replace:
+        path: '{{ var_pam_system_password_file }}'
+        regexp: '^(password.*pam_unix\.so.*)(\snullok)(.*)'
+        replace: '\1\3'
+
+    - name: PHTN-40-000247 - Remove nullok from /etc/pam.d/system-auth
+      ansible.builtin.replace:
+        path: '{{ var_pam_system_auth_file }}'
+        regexp: '^(auth.*pam_unix\.so.*)(\snullok)(.*)'
+        replace: '\1\3'
+
+###################################################################################################################################
+# !!! AIDE configuration should be the last task here so the configuration database includes all changes !!!
+- name: PHTN-40-000237 - Configure AIDE
+  tags: [PHTN-40-000237]
+  when: run_aide_config | bool
+  block:
+    - name: PHTN-40-000237 - Check to see if AIDE is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^aide-
+      register: aideinstalled
+      failed_when: aideinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000237 - Copy aide.conf template
+      ansible.builtin.template:
+        src: aide.conf
+        dest: '{{ var_aide_conf_file }}'
+        owner: root
+        group: root
+        mode: "0600"
+        force: true
+      when:
+        - aideinstalled.stdout != ""
+
+    - name: PHTN-40-000237 - Check to see if AIDE is initialized
+      ansible.builtin.command: aide --check
+      register: aidecheckoutput
+      changed_when: false
+      failed_when: aidecheckoutput.rc == 2
+      when:
+        - aideinstalled.stdout != ""
+
+    - name: PHTN-40-000237 - Initialize AIDE database
+      ansible.builtin.command: aide --init
+      register: aideinitoutput
+      changed_when: aideinitoutput.rc == 0
+      when:
+        - aidecheckoutput.rc is defined
+        - aidecheckoutput.rc != 0
+        - aideinstalled.stdout != ""
+
+    - name: PHTN-40-000237 - Copy AIDE database
+      ansible.builtin.copy:
+        src: /var/lib/aide/aide.db.new.gz
+        dest: /var/lib/aide/aide.db.gz
+        owner: root
+        group: root
+        mode: "0600"
+        remote_src: true
+      when:
+        - aideinitoutput is defined
+        - aidecheckoutput.rc is defined
+        - aidecheckoutput.rc != 0
+        - aideinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-40-000066 - Relabel files for SELinux
+  tags: [PHTN-40-000066]
+  when: run_enable_selinux | bool
+  block:
+    - name: PHTN-40-000066 - Check to see if setfiles is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep policycoreutils
+      register: selinuxinstalled
+      failed_when: selinuxinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-40-000066 - Label files after hardening
+      ansible.builtin.command: setfiles /etc/selinux/default/contexts/files/file_contexts /
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - selinuxinstalled.stdout != ""

@@ -1,0 +1,77 @@
+name: vmware-cloud-director-application-10.6-stig-baseline
+title: InSpec Profile for VMware Cloud Director Application 10.6 STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile for the VMware Cloud Director Application 10.6 STIG Readiness Guide
+version: 1.0.2
+
+inputs:
+- name: vcdURL
+  type: string
+  value: '10.150.183.181'
+  description: 'IP or FQDN of VCD'
+# A token is required to authenticate with the VCD API...See https://kb.vmware.com/s/article/56948 for more information on how to generate a token.
+- name: bearerToken
+  type: string
+  value: 'Bearer eyJhbGciOiJIUzI1NiJ9.ey...'
+  description: 'Bearer token for authentication'
+  sensitive: true
+- name: apiVersion
+  type: string
+  description: 'API version to use in Cloud/OpenAPI calls'
+  value: 'application/*;version=39.1'
+- name: legacyapiVersion
+  type: string
+  description: 'API version to use in Legacy API calls'
+  value: 'application/*+json;version=37.0'
+- name: snmpEnabled
+  type: boolean
+  description: Is SNMP in use and configured on the VCD appliances?
+  value: false
+- name: useNsxv
+  type: boolean
+  description: Is NSX-v used for the network provider?
+  value: false
+- name: approvedPlugins
+  type: array
+  description: Array of plugins that should be enabled.
+  value:
+    - 'Customize Portal'
+    - 'Guided Tours plugin'
+- name: approvedDenyLists
+  type: array
+  description: List of deny lists that should be configured.
+  value:
+    - '10.0.0.0/8'
+    - 'internal.com'
+- name: syslogHost
+  type: string
+  description: 'Syslog server IP or FQDN'
+  value: '10.150.175.12'
+- name: syslogPort
+  type: string
+  description: 'Syslog port'
+  value: '514'
+- name: ntpServers
+  type: string
+  description: 'Enter NTP servers as listed in the timesyncd config'
+  value: 'time.nist.gov time2.nist.gov'
+- name: approvedFeatureFlags
+  type: array
+  description: Array of Feature Flags that should be enabled.
+  value:
+    - 'Branding API'
+- name: trustedCertificates
+  type: array
+  description: List of approved certificate aliases that should be listed under Adminstration >> Trusted Certificates for the provider
+  value:
+    - 'star_eng_vmware_com_3rd_0'
+    - 'star_eng_vmware_com_3rd_1'
+- name: allowedTLSProtocols
+  type: array
+  description: List of approved TLS Protocol versions
+  value:
+    - 'TLSv1.2'
+    - 'TLSv1.3'

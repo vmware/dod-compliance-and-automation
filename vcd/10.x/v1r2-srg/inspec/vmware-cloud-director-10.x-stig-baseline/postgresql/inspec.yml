@@ -1,0 +1,35 @@
+name: vmware-cloud-director-postgresql-10.6-stig-baseline
+title: InSpec Profile for VMware Cloud Director PostgreSQL 10.6 STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile for the VMware Cloud Director PostgreSQL 10.6 STIG Readiness Guide
+version: 1.0.2
+
+inputs:
+- name: syslog_enabled
+  type: boolean
+  value: false
+  description: "Set to true or false depending on whether PostgreSQL should ship logs directly to a syslog server or if an alternative solution is used such as rsyslog."
+- name: pg_data_dir
+  description: "Enter location of the postgres installation - must be path to actual folder, and not the 'current' symlink path"
+  type: string
+  value: "/var/vmware/vpostgres/14/pgdata/"
+- name: pg_owner
+  type: string
+  value: "postgres"
+  description: "Enter expected owner for pg files"
+- name: pg_group
+  type: string
+  value: "users"
+  description: "Enter expected group for pg files"
+- name: pg_log_dir
+  description: "PSQL-00-000020 Enter location of the postgres logs - must be path to actual folder, and not the 'current' symlink path"
+  type: string
+  value: "/var/vmware/vpostgres/14/pgdata/log"
+- name: pg_approved_extensions
+  type: array
+  value:
+    - plpgsql
+  description: "PSQL-00-000032 Enter a list of approved extensions. Leave plpgsql"

@@ -1,0 +1,101 @@
+---
+# AIDE
+var_aide_conf_file: '/etc/aide.conf'
+
+# auditd
+var_auditd_rule_file: '/etc/audit/rules.d/audit.STIG.rules'
+var_auditd_conf_file: '/etc/audit/auditd.conf'
+var_auditd_conf_disk_full_action: 'SYSLOG'
+var_auditd_conf_disk_error_action: 'SYSLOG'
+var_auditd_conf_admin_space_left_action: 'SYSLOG'
+var_auditd_conf_max_log_file_action: 'ROTATE'
+var_auditd_conf_num_logs: 5
+var_auditd_conf_space_left: 25%
+var_auditd_conf_space_left_action: 'SYSLOG'
+var_auditd_conf_flush: 'INCREMENTAL_ASYNC'
+var_auditd_conf_freq: 50
+
+# PAM
+var_pam_faillock_conf_file: '/etc/security/faillock.conf'
+var_pam_faillock_deny: 3
+var_pam_faillock_fail_interval: 900
+var_pam_faillock_unlock_time: 0
+var_pam_faillock_dir: '/var/log/faillock'
+var_pam_pwquality_conf_file: '/etc/security/pwquality.conf'
+# Set to false to configure pam_pwquality settings in system-password directly
+var_pam_use_pwquality_conf: true
+# requisite or required
+var_pam_pwquality_control: 'requisite'
+var_pam_pwquality_ucredit: '-1'
+var_pam_pwquality_lcredit: '-1'
+var_pam_pwquality_dcredit: '-1'
+var_pam_pwquality_ocredit: '-1'
+var_pam_pwquality_difok: 8
+var_pam_pwquality_minlen: 15
+var_pam_pwquality_dictcheck: 1
+var_pam_system_password_file: '/etc/pam.d/system-password'
+var_pam_system_auth_file: '/etc/pam.d/system-auth'
+var_pam_system_account_file: '/etc/pam.d/system-account'
+var_pam_pwhistory_conf_file: '/etc/security/pwhistory.conf'
+# Set to false to configure pam_pwhistory settings in system-password directly
+var_pam_use_pwhistory_conf: true
+# requisite or required
+var_pam_pwhistory_control: 'required'
+var_pam_pwhistory_remember: 5
+
+# limits.conf
+var_limits_conf_file: '/etc/security/limits.conf'
+var_limits_maxlogins: 10
+
+# login.defs
+var_login_defs_file: '/etc/login.defs'
+var_login_defs_pass_min_days: 1
+var_login_defs_pass_max_days: 90
+var_login_defs_fail_delay: 4
+
+# rsyslog
+var_rsyslog_conf_file: '/etc/rsyslog.conf'
+var_rsyslog_authpriv_log: '/var/log/messages'
+var_rsyslog_umask: '0037'
+var_rsyslog_server_name: ''
+var_rsyslog_server_port: ''
+## udp, tcp, or tls
+var_rsyslog_server_protocol: 'tcp'
+
+# sshd
+var_sshd_config_file: '/etc/ssh/sshd_config'
+var_sshd_banner: /etc/issue
+var_sshd_ciphers: 'aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
+var_sshd_clientaliveinterval: 900
+var_sshd_hostbasedauthentication: 'no'
+var_sshd_syslogfacility: AUTHPRIV
+var_sshd_loglevel: INFO
+var_sshd_clientalivecountmax: 0
+var_sshd_permitemptypasswords: 'no'
+var_sshd_permituserenvironment: 'no'
+var_sshd_gssapiauthentication: 'no'
+var_sshd_x11forwarding: 'no'
+var_sshd_strictmodes: 'yes'
+var_sshd_kerberosauthentication: 'no'
+var_sshd_compression: 'no'
+var_sshd_printlastlog: 'yes'
+var_sshd_ignorerhosts: 'yes'
+var_sshd_ignoreuserknownhosts: 'yes'
+var_sshd_maxauthtries: 6
+var_sshd_allowtcpforwarding: 'no'
+var_sshd_logingracetime: 30
+var_sshd_macs: 'hmac-sha2-512,hmac-sha2-256'
+
+# sysctl kernel parameters
+var_sysctl_conf_file: '/etc/sysctl.d/zz-stig-hardening.conf'
+
+# systemd
+var_systemd_tmp_mount_file: '/lib/systemd/system/tmp.mount'
+
+# misc
+var_etc_issue_file: '/etc/issue'
+var_modprobe_conf_file: '/etc/modprobe.d/modprobe.conf'
+var_grub_conf_file: '/boot/grub2/grub.cfg'
+var_profile_tmout_sh: '/etc/profile.d/tmout.sh'
+var_tdnf_conf_file: '/etc/tdnf/tdnf.conf'
+var_systemd_resolved_conf_file: '/etc/systemd/resolved.conf'

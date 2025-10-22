@@ -1,0 +1,18 @@
+---
+
+var_max_connections: "500"
+var_pgdata_path: "/var/vmware/vpostgres/current/pgdata"
+var_log_destination: "stderr"
+var_log_line_prefix: "%m %c %x %d %u %r %p %l"
+var_log_file_mode: "0600"
+var_port: "5432"
+var_password_encryption: "scram-sha-256"
+var_fsync: "on"
+var_full_page_writes: "on"
+var_synchronous_commit: "on"
+var_client_min_messages: "error"
+var_logging_collector: "on"
+var_log_timezone: "UTC"
+var_log_connections: "on"
+var_log_disconnections: "on"
+var_pg_syslog_conf: '/etc/rsyslog.d/stig-services-postgres.conf'
