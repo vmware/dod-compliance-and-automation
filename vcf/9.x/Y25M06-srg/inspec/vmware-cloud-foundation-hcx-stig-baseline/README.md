@@ -45,39 +45,39 @@ The example commands below can be adapted to different environments and differen
 
 Run the profile against a VCF HCX Manager target, show progress, enable enhanced outcomes, and output results to the CLI.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline --show-progress --enhanced-outcomes
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline -t ssh://root@opshcxmgr.vcf.local --password 'password' --show-progress --enhanced-outcomes
 ```
 
 Run the profile against a VCF HCX Manager target, show progress, enable enhanced outcomes, and output results to the CLI and JSON.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline --show-progress --enhanced-outcomes --reporter=cli json:<path to report>.json
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline -t ssh://root@opshcxmgr.vcf.local --password 'password' --show-progress --enhanced-outcomes --reporter=cli json:<path to report>.json
 ```
 
 Run the profile against a VCF HCX Manager target, show progress, enable enhanced outcomes, and output results to the CLI but only audit a specific control.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline --show-progress --enhanced-outcomes --controls PHTN-50-000005
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline -t ssh://root@opshcxmgr.vcf.local --password 'password' --show-progress --enhanced-outcomes --controls PHTN-50-000005
 ```
 
 Run the profile against a VCF HCX Manager target, show progress, enable enhanced outcomes, specify a waiver file, and output results to the CLI.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline --show-progress --enhanced-outcomes --waiver-file <path to>/waiver-example.yml
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline -t ssh://root@opshcxmgr.vcf.local --password 'password' --show-progress --enhanced-outcomes --waiver-file <path to>/waiver-example.yml
 ```
 
 ### Running the audit on HCX Interconnect appliances (Photon only)
 
 Run the profile against a VCF HCX Interconnect target, show progress, enable enhanced outcomes, and output results to the CLI.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline --show-progress --enhanced-outcomes --controls=/PHTN-50/
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline -t ssh://root@opshcxconn.vcf.local --password 'password' --show-progress --enhanced-outcomes --controls=/PHTN-50/
 ```
 
-Run the profile against a VCF HCX Manager target, show progress, enable enhanced outcomes, and output results to the CLI and JSON.
+Run the profile against a VCF HCX Interconnect target, show progress, enable enhanced outcomes, and output results to the CLI and JSON.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline --show-progress --enhanced-outcomes --controls=/PHTN-50/ --reporter=cli json:<path to report>.json
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline -t ssh://root@opshcxconn.vcf.local --password 'password' --show-progress --enhanced-outcomes --controls=/PHTN-50/ --reporter=cli json:<path to report>.json
 ```
 
-Run the profile against a VCF HCX Manager target, show progress, enable enhanced outcomes, specify a waiver file, and output results to the CLI.
+Run the profile against a VCF HCX Interconnect target, show progress, enable enhanced outcomes, specify a waiver file, and output results to the CLI.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline --show-progress --enhanced-outcomes --controls=/PHTN-50/ --waiver-file <path to>/waiver-example.yml
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-hcx-stig-baseline -t ssh://root@opshcxconn.vcf.local --password 'password' --show-progress --enhanced-outcomes --controls=/PHTN-50/ --waiver-file <path to>/waiver-example.yml
 ```
 
 ## Waivers

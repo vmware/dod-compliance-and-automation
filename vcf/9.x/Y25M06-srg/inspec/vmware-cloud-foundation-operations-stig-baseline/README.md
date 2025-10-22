@@ -59,34 +59,34 @@ The example commands below can be adapted to different environments and differen
 
 Run the profile against a VCF Operations target, show progress, enable enhanced outcomes.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@<Target IP/FQDN> --password '<password>' --show-progress --enhanced-outcomes
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@ops-master.vcf.local --password 'password' --show-progress --enhanced-outcomes
 ```
 
 Run the profile against a VCF Operations target, show progress, enable enhanced outcomes, and output results to the CLI and JSON.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@<Target IP/FQDN> --password '<password>' --show-progress --enhanced-outcomes --reporter=cli json:<path to report>.json
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@ops-replica.vcf.local --password 'password' --show-progress --enhanced-outcomes --reporter=cli json:<path to report>.json
 ```
 
 Run the profile against a VCF Operations target, show progress, enable enhanced outcomes, and output results to the CLI but only audit a specific control.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@<Target IP/FQDN> --password '<password>' --show-progress --enhanced-outcomes --controls PHTN-50-000005
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@ops-master.vcf.local --password 'password' --show-progress --enhanced-outcomes --controls PHTN-50-000005
 ```
 
 Run the profile against a VCF Operations target, show progress, enable enhanced outcomes, specify a waiver file, and output results to the CLI.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@<Target IP/FQDN> --password '<password>' --show-progress --enhanced-outcomes --waiver-file <path to>/waiver-example.yml
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@ops-replica.vcf.local --password 'password' --show-progress --enhanced-outcomes --waiver-file <path to>/waiver-example.yml
 ```
 
 ### Running the audit on data nodes
 Run the profile against a VCF Operations target, show progress, enable enhanced outcomes, run only data node rules, and output results to the CLI and JSON.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@<Target IP/FQDN> --password '<password>' --show-progress --enhanced-outcomes --controls /PHTN-50/ /VCFH-9X/ --reporter=cli json:<path to report>.json
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@ops-data.vcf.local --password 'password' --show-progress --enhanced-outcomes --controls /PHTN-50/ /VCFH-9X/ --reporter=cli json:<path to report>.json
 ```
 
 ### Running the audit on cloud proxy/collector nodes
 Run the profile against a VCF Operations target, show progress, enable enhanced outcomes, run only cloud proxy rules, and output results to the CLI and JSON.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@<Target IP/FQDN> --password '<password>' --show-progress --enhanced-outcomes --input-file <path to>/vmware-cloud-foundation-operations-stig-baseline/inputs-vcf-operations-cp.yml --controls /PHTN-50/ --reporter=cli json:<path to report>.json
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://root@ops-data.vcf.local --password 'password' --show-progress --enhanced-outcomes --input-file <path to>/vmware-cloud-foundation-operations-stig-baseline/inputs-vcf-operations-cp.yml --controls /PHTN-50/ --reporter=cli json:<path to report>.json
 ```
 
 ## Waivers

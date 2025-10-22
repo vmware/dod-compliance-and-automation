@@ -40,24 +40,24 @@ The example commands below can be adapted to different environments and differen
 
 **NOTE** If using CINC instead of InSpec, replace the `inspec` command with `cinc-auditor` for the best experience.  
 
-Run the profile against a VCF Operations Fleet Management target, show progress, enable enhanced outcomes.
+Run the profile against a VCF Operations for Logs target, show progress, enable enhanced outcomes.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-logs-stig-baseline --show-progress --enhanced-outcomes
-```
-
-Run the profile against a VCF Operations Fleet Management target, show progress, enable enhanced outcomes, and output results to the CLI and JSON.
-```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-logs-stig-baseline --show-progress --enhanced-outcomes --reporter=cli json:<path to report>.json
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-logs-stig-baseline -t ssh://root@opslogs.vcf.local --password 'password' --show-progress --enhanced-outcomes
 ```
 
-Run the profile against a VCF Operations Fleet Management target, show progress, enable enhanced outcomes, and output results to the CLI but only audit a specific control.
+Run the profile against a VCF Operations for Logs target, show progress, enable enhanced outcomes, and output results to the CLI and JSON.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-logs-stig-baseline --show-progress --enhanced-outcomes --controls PHTN-50-000005
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-logs-stig-baseline -t ssh://root@opslogs.vcf.local --password 'password' --show-progress --enhanced-outcomes --reporter=cli json:<path to report>.json
 ```
 
-Run the profile against a VCF Operations Fleet Management target, show progress, enable enhanced outcomes, specify a waiver file, and output results to the CLI.
+Run the profile against a VCF Operations for Logs target, show progress, enable enhanced outcomes, and output results to the CLI but only audit a specific control.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-logs-stig-baseline --show-progress --enhanced-outcomes --waiver-file <path to>/waiver-example.yml
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-logs-stig-baseline -t ssh://root@opslogs.vcf.local --password 'password' --show-progress --enhanced-outcomes --controls PHTN-50-000005
+```
+
+Run the profile against a VCF Operations for Logs target, show progress, enable enhanced outcomes, specify a waiver file, and output results to the CLI.
+```
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-logs-stig-baseline -t ssh://root@opslogs.vcf.local --password 'password' --show-progress --enhanced-outcomes --waiver-file <path to>/waiver-example.yml
 ```
 
 ## Waivers
