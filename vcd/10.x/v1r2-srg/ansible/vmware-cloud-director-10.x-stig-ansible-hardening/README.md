@@ -52,10 +52,4 @@ The following table lists the controls that must be manually checked and are not
 
 |  STIG ID  |        Title       |
 |:---------:|------------------|
-| PSQL-00-000005 | PostgreSQL must enable pgaudit to provide audit record generation capabilities. | 
-| PSQL-00-000028 | Database software, including PostgreSQL configuration files, must be stored in dedicated directories separate from the host OS and other applications. | 
-| PSQL-00-000029 | PostgreSQL objects (including but not limited to tables, indexes, storage, stored procedures, functions, triggers) must be owned by principals authorized for ownership. | 
-| PSQL-00-000030 | The role(s)/group(s) used to modify database structure (including but not necessarily limited to tables, indexes, storage, etc.) and logic modules (stored procedures, functions, triggers, etc.) must be restricted to authorized users. | 
 | PSQL-00-000032 | PostgreSQL must not load unused database components, software, and database objects. | 
-| PSQL-00-000044 | PostgreSQL must use NIST FIPS 140-2 validated cryptographic modules for cryptographic operations. | 
-| PSQL-00-000124 | PostgreSQL must be a version supported by the vendor. | 
