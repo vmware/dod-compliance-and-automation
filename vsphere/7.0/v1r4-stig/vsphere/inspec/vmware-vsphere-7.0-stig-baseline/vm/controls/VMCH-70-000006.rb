@@ -54,7 +54,7 @@ Get-VM "VM Name" | Get-HardDisk | Set-HardDisk -Persistence Persistent'
       command = "Get-VM -Name '#{vm}' | Get-HardDisk | Select-Object -ExpandProperty Persistence"
       results = powercli_command(command)
       results.stdout.split.each do |disk|
-        describe 'Checking the VM for Non-Persistent Hard Disks' do
+        describe "Checking the VM: #{vm} for Non-Persistent Hard Disks" do
           subject { disk }
           it { should_not cmp 'IndependentNonPersistent' }
         end

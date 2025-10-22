@@ -48,11 +48,11 @@ Get-VM "VM Name" | Get-CDDrive | Set-CDDrive -NoMedia'
       command = "(Get-VM -Name '#{vm}' | Get-CDDrive).ExtensionData.connectable.connected"
       results = powercli_command(command).stdout.strip
       describe.one do
-        describe 'Checking the VM for connected CD/DVD drives' do
+        describe "Checking the VM: #{vm} for connected CD/DVD drives" do
           subject { results }
           it { should cmp 'False' }
         end
-        describe 'Checking the VM for connected CD/DVD drives' do
+        describe "Checking the VM: #{vm} for connected CD/DVD drives" do
           subject { results }
           it { should be_empty }
         end
