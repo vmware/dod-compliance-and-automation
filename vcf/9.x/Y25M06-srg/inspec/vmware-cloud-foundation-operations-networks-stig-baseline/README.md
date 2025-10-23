@@ -44,28 +44,28 @@ The example commands below can be adapted to different environments and differen
 
 Run the profile against a VCF Operations for Networks target, show progress, enable enhanced outcomes.
 ```
-cinc-auditor exec <path to>\vmware-cloud-foundation-operations-networks-stig-baseline -t ssh://support@<Target IP/FQDN> --password '<password>' --sudo --show-progress --enhanced-outcomes
+cinc-auditor exec <path to>\vmware-cloud-foundation-operations-networks-stig-baseline -t ssh://support@opsnet1.vcf.local --password 'password' --sudo --show-progress --enhanced-outcomes
 ```
 
 Run the profile against a VCF Operations for Networks target, show progress, enable enhanced outcomes, and output results to the CLI and JSON.
 ```
-cinc-auditor exec <path to>\vmware-cloud-foundation-operations-networks-stig-baseline -t ssh://support@<Target IP/FQDN> --password '<password>' --sudo --show-progress --enhanced-outcomes --reporter=cli json:<path to report>.json
+cinc-auditor exec <path to>\vmware-cloud-foundation-operations-networks-stig-baseline -t ssh://support@opsnet1.vcf.local --password 'password' --sudo --show-progress --enhanced-outcomes --reporter=cli json:<path to report>.json
 ```
 
 Run the profile against a VCF Operations for Networks target, show progress, enable enhanced outcomes, and output results to the CLI but only audit a specific control.
 ```
-cinc-auditor exec <path to>\vmware-cloud-foundation-operations-networks-stig-baseline -t ssh://support@<Target IP/FQDN> --password '<password>' --sudo --show-progress --enhanced-outcomes --controls VCFO-9X-000001
+cinc-auditor exec <path to>\vmware-cloud-foundation-operations-networks-stig-baseline -t ssh://support@opsnet1.vcf.local --password 'password' --sudo --show-progress --enhanced-outcomes --controls VCFO-9X-000001
 ```
 
 Run the profile against a VCF Operations for Networks target, show progress, enable enhanced outcomes, specify a waiver file, and output results to the CLI.
 ```
-cinc-auditor exec <path to>\vmware-cloud-foundation-operations-networks-stig-baseline -t ssh://support@<Target IP/FQDN> --password '<password>' --sudo --show-progress --enhanced-outcomes --waiver-file <path to>/waiver-example.yml
+cinc-auditor exec <path to>\vmware-cloud-foundation-operations-networks-stig-baseline -t ssh://support@opsnet1.vcf.local --password 'password' --sudo --show-progress --enhanced-outcomes --waiver-file <path to>/waiver-example.yml
 ```
 
 ### Running the audit on proxy nodes
 Run the profile against a VCF Operations for Networks target, show progress, enable enhanced outcomes, run only data node rules, and output results to the CLI and JSON.
 ```
-cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://support@<Target IP/FQDN> --password '<password>' --sudo --show-progress --enhanced-outcomes --controls /UBTU/ --reporter=cli json:<path to report>.json
+cinc-auditor exec <path to>/vmware-cloud-foundation-operations-stig-baseline -t ssh://support@opsnetproxy.vcf.local --password 'password' --sudo --show-progress --enhanced-outcomes --controls /UBTU/ --reporter=cli json:<path to report>.json
 ```
 
 ## Waivers
