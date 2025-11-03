@@ -1467,7 +1467,7 @@
     - name: PHTN-50-000267 - Check to see if pam_deny.so rule exists.
       ansible.builtin.shell: |
         set -o pipefail
-        grep -E '^auth\s+(required|requisite)\s+pam_deny\.so\s.*$' /etc/pam.d/system-auth
+        grep -E '^auth\s+(required|requisite)\s+pam_deny\.so\b.*$' /etc/pam.d/system-auth
       register: sysauthpamdeny
       failed_when: sysauthpamdeny.rc == 2
       changed_when: false
