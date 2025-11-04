@@ -130,6 +130,9 @@
         - rsysloginstalled.stdout != ""
 
 ###################################################################################################################################
+# Latest photon contains an updated audit package that includes a dafault.rules file that contains all required audit rules.
+# Copying the template over produces duplicates, preventing the audit service from loading the rules.
+# Controls should now be manually corrected individually if any rules are missing.
 - name: PHTN-50-000003
   tags: [PHTN-50-000003, PHTN-50-000019, PHTN-50-000031, PHTN-50-000076, PHTN-50-000078, PHTN-50-000107, PHTN-50-000173, PHTN-50-000175, PHTN-50-000204, PHTN-50-000266, auditd]
   when:
@@ -144,26 +147,30 @@
     - photon_5_defaults_run_phtn_50_000204 | bool
     - photon_5_defaults_run_phtn_50_000266 | bool
   block:
-    - name: PHTN-50-000003 - Check to see if auditd is installed.
-      ansible.builtin.shell: |
-        set -o pipefail
-        rpm -qa | grep ^audit-
-      register: auditdinstalled
-      failed_when: auditdinstalled.rc == 2
-      changed_when: false
+    - name: PHTN-50-000003 and others - check audit rules
+      ansible.builtin.debug:
+        msg: "PHTN-50-000003 and others - These controls must be manually remediated."
 
-    - name: 'PHTN-50-000003 - Copy auditd rules template to {{ photon_5_vars_auditd_stig_rule_file }}.'
-      ansible.builtin.template:
-        src: audit.STIG.rules
-        dest: '{{ photon_5_vars_auditd_stig_rule_file }}'
-        owner: root
-        group: root
-        mode: '0640'
-        force: true
-      notify:
-        - '{{ role_name }} : reload auditd'
-      when:
-        - auditdinstalled.stdout != ""
+    # - name: PHTN-50-000003 - Check to see if auditd is installed.
+    #   ansible.builtin.shell: |
+    #     set -o pipefail
+    #     rpm -qa | grep ^audit-
+    #   register: auditdinstalled
+    #   failed_when: auditdinstalled.rc == 2
+    #   changed_when: false
+
+    # - name: 'PHTN-50-000003 - Copy auditd rules template to {{ photon_5_vars_auditd_stig_rule_file }}.'
+    #   ansible.builtin.template:
+    #     src: audit.STIG.rules
+    #     dest: '{{ photon_5_vars_auditd_stig_rule_file }}'
+    #     owner: root
+    #     group: root
+    #     mode: '0640'
+    #     force: true
+    #   notify:
+    #     - '{{ role_name }} : reload auditd'
+    #   when:
+    #     - auditdinstalled.stdout != ""
 
 ###################################################################################################################################
 - name: PHTN-50-000004
@@ -1331,8 +1338,11 @@
 ###################################################################################################################################
 # Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-50-000192
-  tags: [PHTN-50-000192]
-  when: photon_5_defaults_run_phtn_50_000192 | bool
+  tags: [PHTN-50-000192, systemauth]
+  when: 
+    - photon_5_defaults_run_phtn_50_000192 | bool
+    - photon_5_defaults_run_phtn_50_000206 | bool
+    - photon_5_defaults_run_phtn_50_000267 | bool
   block:
     - name: 'PHTN-50-000192 - Get current contents of {{ photon_5_vars_pam_system_auth_file }}.'
       ansible.builtin.slurp:
@@ -1428,8 +1438,11 @@
 ###################################################################################################################################
 # Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-50-000206
-  tags: [PHTN-50-000206]
-  when: photon_5_defaults_run_phtn_50_000206 | bool
+  tags: [PHTN-50-000206, systemauth]
+  when: 
+    - photon_5_defaults_run_phtn_50_000192 | bool
+    - photon_5_defaults_run_phtn_50_000206 | bool
+    - photon_5_defaults_run_phtn_50_000267 | bool
   block:
     - name: PHTN-50-000206 - Check to see if pam_faildelay.so rule exists.
       ansible.builtin.shell: |
@@ -1461,8 +1474,11 @@
 ###################################################################################################################################
 # Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-50-000267
-  tags: [PHTN-50-000267]
-  when: photon_5_defaults_run_phtn_50_000267 | bool
+  tags: [PHTN-50-000267, systemauth]
+  when: 
+    - photon_5_defaults_run_phtn_50_000192 | bool
+    - photon_5_defaults_run_phtn_50_000206 | bool
+    - photon_5_defaults_run_phtn_50_000267 | bool
   block:
     - name: PHTN-50-000267 - Check to see if pam_deny.so rule exists.
       ansible.builtin.shell: |
@@ -1590,7 +1606,7 @@
   tags: [PHTN-50-000199]
   when: photon_5_defaults_run_phtn_50_000199 | bool
   block:
-    - name: PHTN-30-000061 - Find yum repos.
+    - name: PHTN-50-000199 - Find yum repos.
       ansible.builtin.find:
         paths: /etc/yum.repos.d/
         file_type: file
@@ -2323,7 +2339,6 @@
 
 ###################################################################################################################################
 # Changing to a manual fix
-
 - name: PHTN-50-000245
   tags: [PHTN-50-000245]
   when: photon_5_defaults_run_phtn_50_000245 | bool
