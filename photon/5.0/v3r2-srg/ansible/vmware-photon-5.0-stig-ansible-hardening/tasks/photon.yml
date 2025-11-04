@@ -1339,7 +1339,7 @@
 # Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-50-000192
   tags: [PHTN-50-000192, systemauth]
-  when: 
+  when:
     - photon_5_defaults_run_phtn_50_000192 | bool
     - photon_5_defaults_run_phtn_50_000206 | bool
     - photon_5_defaults_run_phtn_50_000267 | bool
@@ -1439,7 +1439,7 @@
 # Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-50-000206
   tags: [PHTN-50-000206, systemauth]
-  when: 
+  when:
     - photon_5_defaults_run_phtn_50_000192 | bool
     - photon_5_defaults_run_phtn_50_000206 | bool
     - photon_5_defaults_run_phtn_50_000267 | bool
@@ -1475,7 +1475,7 @@
 # Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-50-000267
   tags: [PHTN-50-000267, systemauth]
-  when: 
+  when:
     - photon_5_defaults_run_phtn_50_000192 | bool
     - photon_5_defaults_run_phtn_50_000206 | bool
     - photon_5_defaults_run_phtn_50_000267 | bool
