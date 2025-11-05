@@ -1,5 +1,5 @@
 control 'PHTN-50-000264' do
-  title 'The Photon operating system must ensure the password complexity module in the system-auth file is configured for three retries or less.'
+  title 'The Photon operating system must ensure the password complexity module is configured for three retries or less.'
   desc  "
     Use of a complex password helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. \"pwquality\" enforces complex password construction configuration and has the ability to limit brute-force attacks on the system.
 

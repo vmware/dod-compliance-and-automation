@@ -61,10 +61,10 @@ control 'PHTN-50-000192' do
   tag nist: ['AC-7 a']
 
   describe file('/etc/pam.d/system-auth') do
-    its('content') { should match(/^auth\s+(required|requisite)\s+pam_faillock\.so\s+(?=.*\bpreauth\b).*\n(^auth\s+(sufficient)\s+pam_unix\.so.*)/) }
-    its('content') { should match(/^auth\s+(sufficient)\s+pam_unix\.so.*\n(^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+(?=.*\bauthfail\b).*)/) }
+    its('content') { should match /^auth\s+(required|requisite)\s+pam_faillock\.so\s+(?=.*\bpreauth\b).*\n(^auth\s+(sufficient)\s+pam_unix\.so.*)/ }
+    its('content') { should match /^auth\s+(sufficient)\s+pam_unix\.so.*\n(^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+(?=.*\bauthfail\b).*)/ }
   end
   describe file('/etc/pam.d/system-account') do
-    its('content') { should match(/^account\s+(required|requisite)\s+pam_faillock\.so.*\n(^account\s+(required|requisite)\s+pam_unix\.so.*)/) }
+    its('content') { should match /^account\s+(required|requisite)\s+pam_faillock\.so.*\n(^account\s+(required|requisite)\s+pam_unix\.so.*)/ }
   end
 end

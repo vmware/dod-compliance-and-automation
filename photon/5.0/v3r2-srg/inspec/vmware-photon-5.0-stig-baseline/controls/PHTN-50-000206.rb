@@ -38,6 +38,6 @@ control 'PHTN-50-000206' do
   tag nist: ['CM-6 b']
 
   describe file('/etc/pam.d/system-auth') do
-    its('content') { should match(/^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\s+(?=.*\bdelay=4000000\b).*$/) }
+    its('content') { should match /^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\s+(?=.*\bdelay=4000000\b).*$/ }
   end
 end
