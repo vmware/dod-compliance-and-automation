@@ -1,8 +1,0 @@
-offline: true
-skip_list:
-  - name
-  - meta-no-info
-warn_list:
-  - command-instead-of-module
-  - no-changed-when
-  - metadata
