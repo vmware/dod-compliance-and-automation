@@ -57,8 +57,8 @@ control 'VCFA-9X-000333' do
     unless applmgmtuser.blank?
       vcenter_bashShellAdminUsers.push(applmgmtuser[0])
     end
-    # Find svc-sddc-manager-vcenter- user and add to approved user array
-    svcsddcuser = currentUsers.grep(/svc-sddc-manager-*/)
+    # Find SDDC Manager service account user and add to approved user array. Service account name is in the format svc-<SDDC Manager Name>-<vCenter Name>-<random string>. As of 9.0.1 this this be the only svc-* user in this group.
+    svcsddcuser = currentUsers.grep(/svc-{1}.*-{1}.*-{1}.*/)
     unless svcsddcuser.blank?
       vcenter_bashShellAdminUsers.push(svcsddcuser[0])
     end

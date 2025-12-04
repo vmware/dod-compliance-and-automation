@@ -1456,7 +1456,7 @@ Try{
       # Add appliance management service account to list of approved users so it doesn't get removed
       $envstigsettings.allowedBashAdminUsers += $currentusers | Where-Object {$_.Name -match "vmware-applmgmtservice-"} | Select-Object -ExpandProperty Name
       # Add sddc manager service account to list of approved users so it doesn't get removed
-      $envstigsettings.allowedBashAdminUsers += $currentusers | Where-Object {$_.Name -match "svc-sddc-manager-vcenter-"} | Select-Object -ExpandProperty Name
+      $envstigsettings.allowedBashAdminUsers += $currentusers | Where-Object {$_.Name -match "svc-{1}.*-{1}.*-{1}.*"} | Select-Object -ExpandProperty Name
       If($currentusers.count -eq 0){
         Write-Message -Level "PASS" -Message "No users found in group: $groupname on vCenter: $vcenter."
         $unchangedcount++
@@ -2206,7 +2206,7 @@ Try{
       $currentTlsProfile = Invoke-GetTlsProfilesGlobal -Confirm:$false
       If($currentTlsProfile.profile -ne $stigsettings.tlsProfile){
         Write-Message -Level "CHANGED" -Message "TLS Profile incorrectly set to $($currentTlsProfile.profile) on vCenter: $vcenter"
-        Invoke-ApplianceTlsProfilesGlobalSetTask -applianceTlsProfilesGlobalSetSpec (Initialize-ApplianceTlsProfilesGlobalSetSpec -VarProfile $stigsettings.tlsProfile) -Confirm:$false
+        Invoke-SetProfilesGlobalAsync -applianceTlsProfilesGlobalSetSpec (Initialize-TlsProfilesGlobalSetSpec -VarProfile $stigsettings.tlsProfile) -Confirm:$false
         Write-Message -Level "CHANGED" -Message "TLS Profile updated to $($stigsettings.tlsProfile) on vCenter: $vcenter. Note that this will take several minutes to complete."
         $changedcount++
       }Else{
@@ -2218,7 +2218,7 @@ Try{
       $currentTlsProfile = Invoke-GetTlsProfilesGlobal
       If($currentTlsProfile.profile -ne $defaultsettings.tlsProfile){
         Write-Message -Level "CHANGED" -Message "TLS Profile incorrectly set to $($currentTlsProfile.profile) on vCenter: $vcenter"
-        Invoke-ApplianceTlsProfilesGlobalSetTask -applianceTlsProfilesGlobalSetSpec (Initialize-ApplianceTlsProfilesGlobalSetSpec -VarProfile $defaultsettings.tlsProfile) -Confirm:$false
+        Invoke-SetProfilesGlobalAsync -applianceTlsProfilesGlobalSetSpec (Initialize-TlsProfilesGlobalSetSpec -VarProfile $defaultsettings.tlsProfile) -Confirm:$false
         Write-Message -Level "CHANGED" -Message "TLS Profile updated to $($defaultsettings.tlsProfile) on vCenter: $vcenter. Note that this will take several minutes to complete."
         $changedcount++
       }Else{
