@@ -1,0 +1,10 @@
+---
+
+- name: Include Rhttpproxy
+  ansible.builtin.include_tasks:
+    file: rhttpproxy.yml
+    apply:
+      tags:
+        - rhttpproxy
+  tags:
+    - always

@@ -1,0 +1,8 @@
+# Variables defined here and intended to be used throughout the playbook and by multiple roles.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the vars_playbook_overrides.yml file as needed.
+
+# Use to control whether the file level ansible backup tasks are run for each role. See README for more information.
+create_backups: true
+
+# Use to control whether certificate validation is performed for tasks that use the ansible.builtin.uri for API calls.
+validate_certificate_uri: false

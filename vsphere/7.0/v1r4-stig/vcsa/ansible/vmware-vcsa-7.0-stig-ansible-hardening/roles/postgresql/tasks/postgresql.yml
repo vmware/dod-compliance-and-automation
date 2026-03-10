@@ -1,0 +1,449 @@
+# vCenter 7.0 Appliance STIG vPostgres Ansible Role
+
+---
+############################################
+# Backup files that may be modified in case restoration is needed
+
+- name: Backup files that may be modified in case restoration is needed
+  tags: [postgresql]
+  when: create_backups | bool
+  block:
+    - name: Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files...if restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-vcsa-postgresql-backups-{{ backup_timestamp }}/"
+        mode: preserve
+      with_items:
+        - '{{ var_postgres_conf_file }}'
+        - '{{ var_postgres_hba_conf_file }}'
+        - '{{ var_syslog_conf_path }}'
+        - '{{ var_syslog_conf_path2 }}'
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+
+############################################
+
+# Title: VMware Postgres must limit the number of connections.
+# VCPG-70-000001 requires manual remediation
+
+###################################################################################################################################
+- name: VCPG-70-000002 - VMware Postgres log files must contain required fields.
+  tags: [VCPG-70-000002]
+  when: run_postgres_conf_log_line_prefix | bool
+  block:
+    - name: VCPG-70-000002 - Check log_line_prefix value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW log_line_prefix;"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000002 - Set log_line_prefix value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET log_line_prefix = '{{ var_postgres_conf_log_line_prefix }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_log_line_prefix
+
+###################################################################################################################################
+- name: VCPG-70-000003 - VMware Postgres configuration files must not be accessible by unauthorized users.
+  tags: [VCPG-70-000003]
+  when: run_postgres_conf_file_permissions | bool
+  block:
+    - name: VCPG-70-000003 - Find PostgeSQL configuration files.
+      ansible.builtin.find:
+        paths: /storage/db/vpostgres
+        file_type: file
+        patterns: '*conf*'
+      register: pgconffiles
+
+    - name: VCPG-70-000003 - Updating permissions on configuration files.
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: file
+        mode: "0600"
+        owner: vpostgres
+        group: vpgmongrp
+      with_items: "{{ pgconffiles.files }}"
+
+###################################################################################################################################
+- name: VCPG-70-000004 - VMware Postgres must be configured to overwrite older logs when necessary.
+  tags: [VCPG-70-000004]
+  when: run_postgres_conf_log_truncate_on_rotation | bool
+  block:
+    - name: VCPG-70-000004 - Check log_truncate_on_rotation value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW log_truncate_on_rotation;"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000004 - Set log_truncate_on_rotation value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET log_truncate_on_rotation = '{{ var_postgres_conf_log_truncate_on_rotation }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_log_truncate_on_rotation
+
+############################################
+
+# Title: VMware Postgres database must protect log files from unauthorized access and modification.
+
+- name: VCPG-70-000005 - VMware Postgres database must protect log files from unauthorized access and modification.
+  ansible.builtin.find:
+    paths: '{{ var_postgres_log_path }}'
+    file_type: file
+    patterns: '*'
+  register: pglogfiles
+  tags:
+    - VCPG-70-000005
+  when:
+    - run_postgres_log_file_permissions | bool
+
+- name: VCPG-70-000005 - VMware Postgres database must protect log files from unauthorized access and modification.
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: file
+    mode: "0600"
+    owner: vpostgres
+    group: vpgmongrp
+  with_items: "{{ pglogfiles.files }}"
+  tags:
+    - VCPG-70-000005
+  when:
+    - run_postgres_log_file_permissions | bool
+
+############################################
+
+# Title: All VCDB tables must be owned by the 'vc' user account.
+# VCPG-70-000006 requires manual remediation
+
+############################################
+
+# Title: VMware Postgres must limit modify privileges to authorized accounts.
+# VCPG-70-000007 requires manual remediation
+
+###################################################################################################################################
+- name: VCPG-70-000008 - VMware Postgres must be configured to use the correct port.
+  tags: [VCPG-70-000008]
+  when: run_postgres_conf_port | bool
+  block:
+    - name: VCPG-70-000008 - Check port value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW port;"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000008 - Set port value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET port = '{{ var_postgres_conf_port }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_port
+
+###################################################################################################################################
+- name: VCPG-70-000009 - VMware Postgres must require authentication on all connections.
+  tags: [VCPG-70-000009]
+  when: run_postgres_hba_conf_local_trust | bool
+  block:
+    - name: VCPG-70-000009 - Check for trust or password configurations in pg_hba
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -v "^#" {{ var_postgres_hba_conf_file }} |grep '\S'|grep 'trust\|password'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000009 - Correcting pg_hba.conf auth is a manual task
+      ansible.builtin.debug:
+        msg:
+          - "VCPG-70-000009 - Trust or Password entries detected in pg_hba.conf and must be manually remediated."
+          - "{{ item }}"
+      with_items:
+        - "{{ result.stdout_lines }}"
+      changed_when: true
+      when:
+        - result.stdout != ''
+
+###################################################################################################################################
+- name: VCPG-70-000010 - The vPostgres database must use md5 for authentication.
+  tags: [VCPG-70-000010]
+  when: run_postgres_conf_ps_encryption | bool
+  block:
+    - name: VCPG-70-000010 - Check password_encryption value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW password_encryption"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000010 - Set password_encryption value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET password_encryption = '{{ var_postgres_conf_pw_encryption }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_pw_encryption
+
+###################################################################################################################################
+- name: VCPG-70-000011 - VMware Postgres must be configured to use TLS.
+  tags: [VCPG-70-000011]
+  when: run_postgres_conf_ssl | bool
+  block:
+    - name: VCPG-70-000011 - Check ssl value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW ssl"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000011 - Set ssl value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET ssl = '{{ var_postgres_conf_ssl }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_ssl
+
+
+###################################################################################################################################
+- name: VCPG-70-000012 - VMware Postgres must enforce authorized access to all PKI private keys.
+  ansible.builtin.file:
+    path: /storage/db/vpostgres_ssl/server.key
+    state: file
+    mode: "0600"
+    owner: vpostgres
+    group: vpgmongrp
+  tags:
+    - VCPG-70-000012
+  when:
+    - run_postgres_key_file_permissions | bool
+
+###################################################################################################################################
+- name: VCPG-70-000013 - VMware Postgres must use FIPS 140-2 approved TLS ciphers.
+  tags: [VCPG-70-000013]
+  when: run_postgres_conf_ssl_ciphers | bool
+  block:
+    - name: VCPG-70-000013 - Check ssl_ciphers value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW ssl_ciphers"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000014 - Set ssl_ciphers value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET ssl_ciphers = '{{ var_postgres_conf_ssl_ciphers }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_ssl_ciphers
+
+###################################################################################################################################
+- name: VCPG-70-000014 - VMware Postgres must write log entries to disk prior to returning operation success or failure.
+  tags: [VCPG-70-000014]
+  when: run_postgres_conf_write_log_entries | bool
+  block:
+    - name: VCPG-70-000014 - Check fsync value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW fsync"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000014 - Set fsync value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET fsync = '{{ var_postgres_conf_fsync }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_fsync
+
+    - name: VCPG-70-000014 - Check full_page_writes value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW full_page_writes"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000014 - Set full_page_writes value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET full_page_writes = '{{ var_postgres_conf_full_page_writes }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_full_page_writes
+
+    - name: VCPG-70-000014 - Check synchronous_commit value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW synchronous_commit"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000014 - Set synchronous_commit value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET synchronous_commit = '{{ var_postgres_conf_synchronous_commit }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_synchronous_commit
+
+############################################
+
+# Title: VMware Postgres must not allow schema access to unauthorized accounts.
+# VCPG-70-000015 requires manual remediation
+
+###################################################################################################################################
+- name: VCPG-70-000016 - VMware Postgres must provide non-privileged users with minimal error information.
+  tags: [VCPG-70-000016]
+  when: run_postgres_conf_client_min_messages | bool
+  block:
+    - name: VCPG-70-000016 - Check client_min_messages value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW client_min_messages"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000016 - Set client_min_messages value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET client_min_messages = '{{ var_postgres_conf_client_min_messages }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_client_min_messages
+
+###################################################################################################################################
+- name: VCPG-70-000017 - VMware Postgres must have log collection enabled.
+  tags: [VCPG-70-000017]
+  when: run_postgres_conf_logging_collector | bool
+  block:
+    - name: VCPG-70-000017 - Check logging_collector value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW logging_collector"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000017 - Set logging_collector value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET logging_collector = '{{ var_postgres_conf_logging_collector }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_logging_collector
+
+###################################################################################################################################
+- name: VCPG-70-000018 - VMware Postgres must be configured to log to stderr.
+  tags: [VCPG-70-000018]
+  when: run_postgres_conf_log_destination | bool
+  block:
+    - name: VCPG-70-000018 - Check log_destination value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW log_destination"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000018 - Set log_destination value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET log_destination = '{{ var_postgres_conf_log_destination }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_log_destination
+
+############################################
+
+# Title: Rsyslog must be configured to monitor VMware Postgres logs.
+
+- name: VCPG-70-000019 - Rsyslog must be configured to monitor VMware Postgres logs.
+  ansible.builtin.template:
+    src: vmware-services-vmware-postgres-archiver.conf
+    dest: /etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  notify:
+    - restart syslog
+  tags:
+    - VCPG-70-000019
+  when:
+    - run_postgres_syslog_config | bool
+
+- name: VCPG-70-000019 - Rsyslog must be configured to monitor VMware Postgres logs.
+  ansible.builtin.template:
+    src: vmware-services-vmware-vpostgres.conf
+    dest: /etc/vmware-syslog/vmware-services-vmware-vpostgres.conf
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  notify:
+    - restart syslog
+  tags:
+    - VCPG-70-000019
+  when:
+    - run_postgres_syslog_config | bool
+
+###################################################################################################################################
+- name: VCPG-70-000020 - VMware Postgres must use UTC for log timestamps.
+  tags: [VCPG-70-000020]
+  when: run_postgres_conf_log_timezone | bool
+  block:
+    - name: VCPG-70-000020 - Check log_timezone value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW log_timezone"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCPG-70-000020 - Set log_timezone value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -c "ALTER SYSTEM SET log_timezone = '{{ var_postgres_conf_log_timezone }}';"
+      register: fixresult
+      changed_when: fixresult.rc == 0
+      notify:
+        - reload vpostgres config
+      when:
+        - result.stdout != var_postgres_conf_log_timezone

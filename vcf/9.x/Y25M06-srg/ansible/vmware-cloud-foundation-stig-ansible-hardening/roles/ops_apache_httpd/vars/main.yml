@@ -1,0 +1,25 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+## apache tomcat service variables
+ops_apache_httpd_vars_http_conf_file: '/etc/httpd/conf/httpd.conf'
+ops_apache_httpd_vars_ssl_conf_file: '/etc/httpd/conf/extra/httpd-ssl.conf'
+ops_apache_httpd_vars_virtualhosts_conf_file: '/usr/lib/vmware-vcopssuite/utilities/conf/vcops-photon-apache.conf'
+ops_apache_httpd_vars_log_folder: '/var/log/httpd'
+ops_apache_httpd_vars_ssl_key_file: '/storage/vcops/user/conf/ssl/web_key.pem'
+ops_apache_httpd_vars_web_folder: '/storage/db/apache/proxy/web/'
+ops_apache_httpd_vars_conf_folder: '/etc/httpd/'
+ops_apache_httpd_vars_notify_service_name: 'httpd'
+
+## configuration values
+ops_apache_httpd_vars_log_owner: 'root'
+ops_apache_httpd_vars_log_group: 'root'
+ops_apache_httpd_vars_web_files_owner: 'root'
+ops_apache_httpd_vars_web_files_group: 'root'
+ops_apache_httpd_vars_conf_files_owner: 'root'
+ops_apache_httpd_vars_conf_files_group: 'root'

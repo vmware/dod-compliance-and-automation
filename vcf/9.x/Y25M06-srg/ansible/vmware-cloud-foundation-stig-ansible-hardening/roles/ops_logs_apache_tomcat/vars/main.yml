@@ -1,0 +1,30 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+## apache tomecat service variables
+ops_logs_apache_tomcat_vars_server_xml_file: '/usr/lib/loginsight/application/etc/3rd_config/server.xml'
+ops_logs_apache_tomcat_vars_web_xml_file: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/conf/web.xml'
+ops_logs_apache_tomcat_vars_catalina_properties_file: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/conf/catalina.properties'
+ops_logs_apache_tomcat_vars_catalina_sh_file: '/usr/lib/loginsight/application/etc/3rd_config/catalina.sh'
+ops_logs_apache_tomcat_vars_tomcat_default_namespace: 'http://java.sun.com/xml/ns/javaee'
+ops_logs_apache_tomcat_vars_log_folder: '/var/log/loginsight/apache-tomcat/logs/'
+ops_logs_apache_tomcat_vars_log_folder2: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/logs/'
+ops_logs_apache_tomcat_vars_keystore_file: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/conf/keystore.bcfks'
+ops_logs_apache_tomcat_vars_service_folder: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/'
+ops_logs_apache_tomcat_vars_examples_folder: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/webapps/examples'
+ops_logs_apache_tomcat_vars_docs_folder: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/webapps/docs'
+ops_logs_apache_tomcat_vars_manager_folder: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/webapps/manager'
+ops_logs_apache_tomcat_vars_host_manager_folder: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/webapps/host-manager'
+ops_logs_apache_tomcat_vars_notify_service_name: 'loginsight'
+
+## configuration values
+ops_logs_apache_tomcat_vars_log_owner: 'root'
+ops_logs_apache_tomcat_vars_log_group: 'root'
+ops_logs_apache_tomcat_vars_log_file_mode: '0644'
+ops_logs_apache_tomcat_vars_files_owner: 'root'
+ops_logs_apache_tomcat_vars_files_group: 'root'

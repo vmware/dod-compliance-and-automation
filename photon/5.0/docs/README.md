@@ -28,7 +28,8 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |     `V1R3`        |STIG Readiness Guide|     2024/01/02     |[U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v1r3.zip](U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v1r3.zip)|
 |     `V2R1`        |STIG Readiness Guide|     2024/07/22     |[U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v2r1.zip](U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v2r1.zip)|
- 
+|     `V3R1`        |STIG Readiness Guide|     2025/06/17     |[U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r1.zip](U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r1.zip)|
+
 
 ## Viewing
 The XML files provided can be loaded into and viewed in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  

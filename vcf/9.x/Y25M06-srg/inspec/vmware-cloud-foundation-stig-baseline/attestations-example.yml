@@ -1,0 +1,224 @@
+# SDDC Manager attestations after manual remediation
+- control_id: VCFA-9X-000364
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000372
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+# vCenter attestations after manual remediation
+- control_id: VCFA-9X-000018
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000051
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000082
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000090
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000257
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000312
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000332
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000335
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+# NSX attestations after manual remediation
+- control_id: VCFR-9X-000016
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFR-9X-000055
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFR-9X-000091
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFR-9X-000112
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+# Operations attestations after manual remediation
+- control_id: VCFA-9X-000054
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: failed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000141
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000292
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000346
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000347
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000348
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000351
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000352
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000353
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000361
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000365
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000366
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000368
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000369
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000370
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+# Automation attestations after manual remediation
+- control_id: VCFA-9X-000104
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000381
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+# Operations FM attestations after manual remediation
+- control_id: VCFA-9X-000190
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: failed
+  updated_by: Chris Kringle
+# Operations for Logs attestations after manual remediation
+- control_id: VCFA-9X-000196
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000357
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000360
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+# Operations for Networks attestations after manual remediation
+- control_id: VCFA-9X-000024
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000376
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000377
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000378
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000380
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+# Operations HCX attestations after manual remediation
+- control_id: VCFA-9X-000382
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000384
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: failed
+  updated_by: Chris Kringle
+- control_id: VCFA-9X-000385
+  explanation: 'Add explanation here and update status to passed or failed.'
+  frequency: 3y
+  status: passed
+  updated_by: Chris Kringle

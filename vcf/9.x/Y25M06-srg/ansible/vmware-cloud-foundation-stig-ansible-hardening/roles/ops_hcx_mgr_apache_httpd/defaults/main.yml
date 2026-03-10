@@ -1,0 +1,90 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000001: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000003: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000007: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000008: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000009: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000018: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000023: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000024: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000030: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000033: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000034: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000035: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000039: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000040: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000043: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000061: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000066: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000067: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000080: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000081: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000101: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000125: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000126: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000127: true
+ops_hcx_mgr_apache_httpd_defaults_run_vcfj_9x_000128: true
+
+# Apache HTTPD Configuration
+ops_hcx_mgr_apache_httpd_defaults_keepalive: 'On'
+ops_hcx_mgr_apache_httpd_defaults_max_keepalive_requests: '100'
+ops_hcx_mgr_apache_httpd_defaults_ssl_module_file: '/usr/lib/httpd/modules/mod_ssl.so'
+ops_hcx_mgr_apache_httpd_defaults_ssl_protocol: '+TLSv1.2 +TLSv1.3'
+ops_hcx_mgr_apache_httpd_defaults_log_format_common: '{% raw %}"%h %l %u %t \"%r\" %>s %b %{ms}T" {% endraw %}' # Added trailing space to this line
+ops_hcx_mgr_apache_httpd_defaults_log_format_combined: '{% raw %}"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" {% endraw %}' # Added trailing space to this line
+ops_hcx_mgr_apache_httpd_defaults_log_config_module_file: '/usr/lib/httpd/modules/mod_log_config.so'
+ops_hcx_mgr_apache_httpd_defaults_custom_log_file: '"/common/logs/httpd/access.log" ' # Added trailing space to this line
+ops_hcx_mgr_apache_httpd_defaults_custom_log_format_name: 'common'
+ops_hcx_mgr_apache_httpd_defaults_error_log_file: '"/common/logs/httpd/error.log"'
+ops_hcx_mgr_apache_httpd_defaults_log_level: 'info'
+ops_hcx_mgr_apache_httpd_defaults_approved_modules:
+  - 'core_module'
+  - 'so_module'
+  - 'http_module'
+  - 'mpm_event_module'
+  - 'authn_file_module'
+  - 'authn_core_module'
+  - 'authz_host_module'
+  - 'authz_groupfile_module'
+  - 'authz_user_module'
+  - 'authz_core_module'
+  - 'access_compat_module'
+  - 'reqtimeout_module'
+  - 'filter_module'
+  - 'mime_module'
+  - 'log_config_module'
+  - 'env_module'
+  - 'headers_module'
+  - 'usertrack_module'
+  - 'setenvif_module'
+  - 'version_module'
+  - 'proxy_module'
+  - 'proxy_connect_module'
+  - 'proxy_http_module'
+  - 'proxy_wstunnel_module'
+  - 'proxy_balancer_module'
+  - 'proxy_express_module'
+  - 'slotmem_shm_module'
+  - 'ssl_module'
+  - 'unixd_module'
+  - 'status_module'
+  - 'autoindex_module'
+  - 'dir_module'
+  - 'alias_module'
+  - 'rewrite_module'
+ops_hcx_mgr_apache_httpd_defaults_service_user: 'admin'
+ops_hcx_mgr_apache_httpd_defaults_service_group: 'secureall'
+ops_hcx_mgr_apache_httpd_defaults_ssl_fips: 'ON'
+ops_hcx_mgr_apache_httpd_defaults_timeout: '60'
+ops_hcx_mgr_apache_httpd_defaults_server_signature: 'Off'
+ops_hcx_mgr_apache_httpd_defaults_server_tokens: 'Prod'
+ops_hcx_mgr_apache_httpd_defaults_trace_enable: 'Off'
+ops_hcx_mgr_apache_httpd_defaults_header_hsts: "max-age=31536000; includeSubDomains"
+ops_hcx_mgr_apache_httpd_defaults_header_xframe_options: 'SAMEORIGIN'
+ops_hcx_mgr_apache_httpd_defaults_header_xcontent_type_options: 'nosniff'
+ops_hcx_mgr_apache_httpd_defaults_header_csp: "style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:"
+ops_hcx_mgr_apache_httpd_defaults_header_referrer_policy: 'no-referrer'

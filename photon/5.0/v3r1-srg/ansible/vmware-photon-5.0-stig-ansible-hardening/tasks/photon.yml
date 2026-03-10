@@ -1,0 +1,2280 @@
+---
+###################################################################################################################################
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: create_backups | bool
+  block:
+    - name: Backup files - Create time stamp.
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-photon-stig-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ photon_5_vars_auditd_stig_rule_file }}'
+        - '{{ photon_5_vars_pam_faillock_conf_file }}'
+        - '{{ photon_5_vars_sshd_config_file }}'
+        - '{{ photon_5_vars_etc_issue_file }}'
+        - '{{ photon_5_vars_limits_conf_file }}'
+        - '{{ photon_5_vars_rsyslog_conf_file }}'
+        - '{{ photon_5_vars_auditd_conf_file }}'
+        - '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        - '{{ photon_5_vars_login_defs_file }}'
+        - '{{ photon_5_vars_pam_system_password_file }}'
+        - '{{ photon_5_vars_pam_system_auth_file }}'
+        - '{{ photon_5_vars_pam_system_account_file }}'
+        - '{{ photon_5_vars_modprobe_conf_file }}'
+        - '{{ photon_5_vars_sysctl_conf_file }}'
+        - '{{ photon_5_vars_grub_conf_file }}'
+        - '{{ photon_5_vars_profile_tmout_sh }}'
+        - '{{ photon_5_vars_tdnf_conf_file }}'
+        - '{{ photon_5_vars_systemd_resolved_conf_file }}'
+        - '{{ photon_5_vars_aide_conf_file }}'
+        - '{{ photon_5_vars_systemd_tmp_mount_file }}'
+
+###################################################################################################################################
+# This task is at the top so ensure auditd is installed for all other dependent tasks that configure auditd
+- name: PHTN-50-000016
+  tags: [PHTN-50-000016, auditd]
+  when: photon_5_defaults_run_phtn_50_000016 | bool
+  block:
+    - name: PHTN-50-000016 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000016 - Install auditd.
+      ansible.builtin.command: tdnf -y install audit
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - photon_5_defaults_run_phtn_50_000016_auditd_install | bool
+        - auditdinstalled.stdout == ""
+
+    - name: PHTN-50-000016 - Recheck to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000016 - Enable and start the auditd service.
+      ansible.builtin.systemd:
+        name: auditd
+        state: started
+        enabled: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+# This task is at the top so ensure rsyslog is installed for all other dependent tasks that configure rsyslog
+- name: PHTN-50-000241
+  tags: [PHTN-50-000241, rsyslog]
+  when: photon_5_defaults_run_phtn_50_000241 | bool
+  block:
+    - name: PHTN-50-000241 - Check to see if rsyslog is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
+    - name: PHTN-50-000241 - Install rsyslog.
+      ansible.builtin.command: tdnf -y install rsyslog
+      register: output
+      changed_when:
+        - output.rc == 0 or output.rc == 245 # A 245 rc is returned sometimes due to another issue but rsyslog is still installed
+      failed_when:
+        - output.rc >= 2
+        - output.rc != 245
+      when:
+        - rsysloginstalled.stdout == ""
+
+###################################################################################################################################
+# This task is at the top so ensure rsyslog is installed for all other dependent tasks that configure rsyslog
+- name: PHTN-50-000242
+  tags: [PHTN-50-000242, rsyslog]
+  when: photon_5_defaults_run_phtn_50_000242 | bool
+  block:
+    - name: PHTN-50-000242 - Check to see if rsyslog is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when:
+        - rsysloginstalled.rc == 2
+
+    - name: PHTN-50-000242 - Enable and start the rsyslog service.
+      ansible.builtin.systemd:
+        name: rsyslog
+        state: started
+        enabled: true
+      when:
+        - rsysloginstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000003
+  tags: [PHTN-50-000003, PHTN-50-000019, PHTN-50-000031, PHTN-50-000076, PHTN-50-000078, PHTN-50-000107, PHTN-50-000173, PHTN-50-000175, PHTN-50-000204, auditd]
+  when:
+    - photon_5_defaults_run_phtn_50_000003 | bool
+    - photon_5_defaults_run_phtn_50_000019 | bool
+    - photon_5_defaults_run_phtn_50_000031 | bool
+    - photon_5_defaults_run_phtn_50_000076 | bool
+    - photon_5_defaults_run_phtn_50_000078 | bool
+    - photon_5_defaults_run_phtn_50_000107 | bool
+    - photon_5_defaults_run_phtn_50_000173 | bool
+    - photon_5_defaults_run_phtn_50_000175 | bool
+    - photon_5_defaults_run_phtn_50_000204 | bool
+  block:
+    - name: PHTN-50-000003 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000003 - Copy auditd rules template to {{ photon_5_vars_auditd_stig_rule_file }}.'
+      ansible.builtin.template:
+        src: audit.STIG.rules
+        dest: '{{ photon_5_vars_auditd_stig_rule_file }}'
+        owner: root
+        group: root
+        mode: '0640'
+        force: true
+      notify:
+        - '{{ role_name }} : reload auditd'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000004
+  tags: [PHTN-50-000004]
+  when: photon_5_defaults_run_phtn_50_000004 | bool
+  block:
+    - name: 'PHTN-50-000004 - Configure pam_faillock deny in {{ photon_5_vars_pam_faillock_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*deny.*$'
+        line: deny = {{ photon_5_defaults_pam_faillock_deny }}v
+
+    - name: 'PHTN-50-000004 - Configure pam_faillock fail_interval in {{ photon_5_vars_pam_faillock_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*fail_interval.*$'
+        line: fail_interval = {{ photon_5_defaults_pam_faillock_fail_interval }}
+
+###################################################################################################################################
+- name: PHTN-50-000005
+  tags: [PHTN-50-000005, sshd]
+  when: photon_5_defaults_run_phtn_50_000005 | bool
+  block:
+    - name: 'PHTN-50-000005 - Configure DoD Banner in {{ photon_5_vars_etc_issue_file }}.'
+      ansible.builtin.template:
+        src: issue
+        dest: '{{ photon_5_vars_etc_issue_file }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      when:
+        - photon_5_defaults_run_phtn_50_000005_dod_banner | bool
+
+    - name: 'PHTN-50-000005 - Configure Banner in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*Banner\s'
+        line: Banner {{ photon_5_vars_sshd_banner }}
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000007
+  tags: [PHTN-50-000007]
+  when: photon_5_defaults_run_phtn_50_000007 | bool
+  block:
+    - name: PHTN-50-000007 - Configure maxlogins in limits.conf.
+      community.general.pam_limits:
+        limit_item: maxlogins
+        domain: "*"
+        limit_type: hard
+        value: "{{ photon_5_defaults_limits_maxlogins }}"
+
+###################################################################################################################################
+- name: PHTN-50-000012
+  tags: [PHTN-50-000012]
+  when: photon_5_defaults_run_phtn_50_000012 | bool
+  block:
+    - name: PHTN-50-000012 - Check to see if rsyslog is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when:
+        - rsysloginstalled.rc == 2
+
+    - name: 'PHTN-50-000012 - Configure auth/authpriv/daemon logging in {{ photon_5_vars_rsyslog_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_rsyslog_conf_file }}'
+        state: present
+        regexp: '^#?\s*(^auth.*|^authpriv.*|^daemon.*)'
+        line: auth.*;authpriv.*;daemon.* {{ photon_5_defaults_rsyslog_authpriv_log }}
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - rsysloginstalled.stdout != ""
+
+###################################################################################################################################
+# This must be before we install the OpenSSL FIPS Provider or the default OpenSSH Ciphers will cause issues with connecting over SSH
+- name: PHTN-50-000079
+  tags: [PHTN-50-000079, sshd]
+  when: photon_5_defaults_run_phtn_50_000079 | bool
+  block:
+    - name: 'PHTN-50-000079 - Configure Ciphers in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*Ciphers\s'
+        line: Ciphers {{ photon_5_defaults_sshd_ciphers }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000013
+  tags: [PHTN-50-000013]
+  when: photon_5_defaults_run_phtn_50_000013 | bool
+  block:
+    - name: PHTN-50-000013 - Check to see if OpenSSL FIPS Provider is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^openssl-fips-provider
+      register: opensslfipsinstalled
+      changed_when: false
+      failed_when: opensslfipsinstalled.rc == 2
+
+    - name: PHTN-50-000013 - Install OpenSSL FIPS Provider.
+      ansible.builtin.command: tdnf -y install openssl-fips-provider
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - opensslfipsinstalled.stdout == ""
+
+###################################################################################################################################
+- name: PHTN-50-000014
+  tags: [PHTN-50-000014, auditd]
+  when: photon_5_defaults_run_phtn_50_000014 | bool
+  block:
+    - name: PHTN-50-000014 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000014 - Configure write_logs in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*write_logs\s'
+        line: write_logs = yes
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000021
+  tags: [PHTN-50-000021, auditd]
+  when: photon_5_defaults_run_phtn_50_000021 | bool
+  block:
+    - name: PHTN-50-000021 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000021 - Configure disk_full_action in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*disk_full_action\s'
+        line: disk_full_action = {{ photon_5_defaults_auditd_conf_disk_full_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: 'PHTN-50-000021 - Configure disk_error_action in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*disk_error_action\s'
+        line: disk_error_action = {{ photon_5_defaults_auditd_conf_disk_error_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: 'PHTN-50-000021 - Configure admin_space_left_action in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*admin_space_left_action\s'
+        line: admin_space_left_action = {{ photon_5_defaults_auditd_conf_admin_space_left_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000026
+  tags: [PHTN-50-000026, auditd]
+  when: photon_5_defaults_run_phtn_50_000026 | bool
+  block:
+    - name: PHTN-50-000021 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000026 - Find auditd log file in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.command: grep -iw log_file {{ photon_5_vars_auditd_conf_file }}
+      register: auditlogoutput
+      changed_when: false
+      failed_when: auditlogoutput.rc == 2
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-50-000026 - Set audit log file fact.
+      ansible.builtin.set_fact:
+        auditlog: "{{ auditlogoutput.stdout | regex_search('log_file\\s=\\s(.+$)', '\\1') | first }}"
+      when:
+        - auditlogoutput is defined
+        - auditdinstalled.stdout != ""
+
+    - name: 'PHTN-50-000026 - Configure permissions on the auditd log file {{ auditlog }}.'
+      ansible.builtin.file:
+        path: "{{ auditlog }}"
+        state: file
+        mode: "0600"
+        owner: root
+        group: root
+      when:
+        - auditlog is defined
+        - auditdinstalled.stdout != ""
+        - not ansible_is_chroot
+
+    - name: 'PHTN-50-000026 - Configure log_group in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*log_group\s'
+        line: log_group = root
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000030
+  tags: [PHTN-50-000030, auditd]
+  when: photon_5_defaults_run_phtn_50_000030 | bool
+  block:
+    - name: PHTN-50-000030 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000030 - Find auditd files.
+      ansible.builtin.find:
+        paths: /etc/audit/
+        file_type: file
+        recurse: true
+      register: auditdfiles
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-50-000030 - Configure permissions on auditd files.
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: file
+        mode: "0640"
+        owner: root
+        group: root
+      with_items: "{{ auditdfiles.files }}"
+      when:
+        - auditdfiles.matched != 0
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000035
+  tags: [PHTN-50-000035, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000035 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000035 - Configure pam_pwquality ucredit in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*ucredit\s'
+        line: ucredit = {{ photon_5_defaults_pam_pwquality_ucredit }}
+
+- name: PHTN-50-000035
+  tags: [PHTN-50-000035, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000035 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: .PHTN-50-000035 - Configure pam_pwquality ucredit in system-password.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'ucredit={{ photon_5_defaults_pam_pwquality_ucredit }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000036
+  tags: [PHTN-50-000036, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000036 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000036 - Configure pam_pwquality lcredit in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*lcredit\s'
+        line: lcredit = {{ photon_5_defaults_pam_pwquality_lcredit }}
+
+- name: PHTN-50-000036
+  tags: [PHTN-50-000036, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000036 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: 'PHTN-50-000036 - Configure pam_pwquality lcredit in system-password.'
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'lcredit={{ photon_5_defaults_pam_pwquality_lcredit }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000037
+  tags: [PHTN-50-000037, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000037 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000037 - Configure pam_pwquality dcredit in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*dcredit\s'
+        line: dcredit = {{ photon_5_defaults_pam_pwquality_dcredit }}
+
+- name: PHTN-50-000037
+  tags: [PHTN-50-000037, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000037 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: 'PHTN-50-000037 - Configure pam_pwquality dcredit in system-password.'
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'dcredit={{ photon_5_defaults_pam_pwquality_dcredit }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000038
+  tags: [PHTN-50-000038, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000038 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000038 - Configure pam_pwquality difok in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*difok\s'
+        line: difok = {{ photon_5_defaults_pam_pwquality_difok }}
+
+- name: PHTN-50-000038
+  tags: [PHTN-50-000038, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000038 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: 'PHTN-50-000038 - Configure pam_pwquality difok in system-password.'
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'difok={{ photon_5_defaults_pam_pwquality_difok }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000039
+  tags: [PHTN-50-000039]
+  when: photon_5_defaults_run_phtn_50_000039 | bool
+  block:
+    - name: 'PHTN-50-000039 - Configure ENCRYPT_METHOD in {{ photon_5_vars_login_defs_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*ENCRYPT_METHOD\s'
+        line: ENCRYPT_METHOD SHA512
+
+###################################################################################################################################
+- name: PHTN-50-000040
+  tags: [PHTN-50-000040]
+  when: photon_5_defaults_run_phtn_50_000040 | bool
+  block:
+    - name: PHTN-50-000040 - Check to see if telnet is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep telnet
+      register: telnetinstalled
+      changed_when: false
+      failed_when: telnetinstalled.rc == 2
+
+    - name: PHTN-50-000040 - Remove telnet client.
+      ansible.builtin.command: tdnf -y remove netkit-telnet
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - telnetinstalled.stdout | regex_search("netkit-telnet-0")
+
+    - name: PHTN-50-000040 - Remove telnet server.
+      ansible.builtin.command: tdnf -y remove netkit-telnet-server
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - telnetinstalled.stdout | regex_search("netkit-telnet-server")
+
+###################################################################################################################################
+- name: PHTN-50-000041
+  tags: [PHTN-50-000041]
+  when: photon_5_defaults_run_phtn_50_000041 | bool
+  block:
+    - name: 'PHTN-50-000041 - Configure PASS_MIN_DAYS in {{ photon_5_vars_login_defs_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*PASS_MIN_DAYS\s'
+        line: PASS_MIN_DAYS {{ photon_5_defaults_login_defs_pass_min_days }}
+
+###################################################################################################################################
+- name: PHTN-50-000042
+  tags: [PHTN-50-000042]
+  when: photon_5_defaults_run_phtn_50_000042 | bool
+  block:
+    - name: 'PHTN-50-000042 - Configure PASS_MAX_DAYS in {{ photon_5_vars_login_defs_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*PASS_MAX_DAYS\s'
+        line: PASS_MAX_DAYS {{ photon_5_defaults_login_defs_pass_max_days }}
+
+###################################################################################################################################
+- name: PHTN-50-000044
+  tags: [PHTN-50-000044, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000044 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000044 - Configure pam_pwquality minlen in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*minlen\s'
+        line: minlen = {{ photon_5_defaults_pam_pwquality_minlen }}
+
+- name: PHTN-50-000044 - Configure minlen in system-password
+  tags: [PHTN-50-000044, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000044 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: PHTN-50-000044 - Configure pam_pwquality minlen in system-password.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'minlen={{ photon_5_defaults_pam_pwquality_minlen }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000046
+  tags: [PHTN-50-000046]
+  when: photon_5_defaults_run_phtn_50_000046 | bool
+  block:
+    - name: PHTN-50-000046 - The Photon operating system must require authentication upon booting into single-user and maintenance modes.
+      ansible.builtin.debug:
+        msg: "PHTN-50-000046 - This control must be manually remediated."
+
+###################################################################################################################################
+- name: PHTN-50-000047
+  tags: [PHTN-50-000047]
+  when: photon_5_defaults_run_phtn_50_000047 | bool
+  block:
+    - name: 'PHTN-50-000047 - Copy modprobe.conf template to {{ photon_5_vars_modprobe_conf_file }}.'
+      ansible.builtin.template:
+        src: modprobe.conf
+        dest: '{{ photon_5_vars_modprobe_conf_file }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+
+###################################################################################################################################
+- name: PHTN-50-000049
+  tags: [PHTN-50-000049]
+  when: photon_5_defaults_run_phtn_50_000049 | bool
+  block:
+    - name: PHTN-50-000049 - The Photon operating system must not have duplicate User IDs (UIDs).
+      ansible.builtin.debug:
+        msg: "PHTN-50-000049 - This control must be manually remediated."
+
+###################################################################################################################################
+- name: PHTN-50-000059
+  tags: [PHTN-50-000059]
+  when: photon_5_defaults_run_phtn_50_000059 | bool
+  block:
+    - name: PHTN-50-000059 - Configure system-password pam_unix.so sha512 setting.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_unix.so
+        module_arguments:
+          - sha512
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000067
+  tags: [PHTN-50-000067]
+  when: photon_5_defaults_run_phtn_50_000067 | bool
+  block:
+    - name: PHTN-50-000067 - Check to see if kernel.dmesg_restrict is set to 1.
+      ansible.builtin.command: /sbin/sysctl kernel.dmesg_restrict
+      register: dmesg_restrict
+      failed_when: dmesg_restrict.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000067 - Configure kernel parameter kernel.dmesg_restrict in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: kernel.dmesg_restrict
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: dmesg_restrict.stdout != "kernel.dmesg_restrict = 1"
+
+###################################################################################################################################
+- name: PHTN-50-000068
+  tags: [PHTN-50-000068]
+  when: photon_5_defaults_run_phtn_50_000068 | bool
+  block:
+    - name: PHTN-50-000068 - Check to see if net.ipv4.tcp_syncookies is set to 1.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.tcp_syncookies
+      register: tcpsyncookies
+      failed_when: tcpsyncookies.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000068 - Configure kernel parameter net.ipv4.tcp_syncookies in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.tcp_syncookies
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: tcpsyncookies.stdout != "net.ipv4.tcp_syncookies = 1"
+
+###################################################################################################################################
+- name: PHTN-50-000069
+  tags: [PHTN-50-000069, sshd]
+  when: photon_5_defaults_run_phtn_50_000069 | bool
+  block:
+    - name: 'PHTN-50-000069 - Configure clientaliveinterval in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*ClientAliveInterval\s'
+        line: ClientAliveInterval {{ photon_5_defaults_sshd_clientaliveinterval }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000073
+  tags: [PHTN-50-000073]
+  when: photon_5_defaults_run_phtn_50_000073 | bool
+  block:
+    - name: PHTN-50-000073 - Configure /var/log permissions.
+      ansible.builtin.file:
+        path: /var/log
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+
+###################################################################################################################################
+- name: PHTN-50-000074
+  tags: [PHTN-50-000074]
+  when: photon_5_defaults_run_phtn_50_000074 | bool
+  block:
+    - name: PHTN-50-000074 - Check to see if rsyslog is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^rsyslog-
+      register: rsysloginstalled
+      changed_when: false
+      failed_when: rsysloginstalled.rc == 2
+
+    - name: 'PHTN-50-000074 - Configure umask in {{ photon_5_vars_rsyslog_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_rsyslog_conf_file }}'
+        state: present
+        regexp: '^\$umask'
+        line: $umask {{ photon_5_defaults_rsyslog_umask }}
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - rsysloginstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000080
+  tags: [PHTN-50-000080]
+  when: photon_5_defaults_run_phtn_50_000080 | bool
+  block:
+    - name: PHTN-50-000080 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000080 - Add audit=1 in {{ photon_5_vars_grub_conf_file }}.'
+      ansible.builtin.replace:
+        path: '{{ photon_5_vars_grub_conf_file }}'
+        regexp: '^(\s*linux(?!.* audit=).*)'
+        replace: '\1 audit=1'
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: 'PHTN-50-000080 - Replace audit=1 in {{ photon_5_vars_grub_conf_file }}.'
+      ansible.builtin.replace:
+        path: '{{ photon_5_vars_grub_conf_file }}'
+        regexp: '^(\s*linux.*? audit=)(?!1)(\S*)(.*)'
+        replace: '\g<1>1\3'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000082
+  tags: [PHTN-50-000082]
+  when: photon_5_defaults_run_phtn_50_000082 | bool
+  block:
+    - name: PHTN-50-000082 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000082 - Update permissions on auditing tools 750.
+      ansible.builtin.file:
+        path: "{{ item.file }}"
+        state: file
+        owner: root
+        group: root
+        mode: "0750"
+      with_items:
+        - {file: '/usr/sbin/augenrules'}
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: PHTN-50-000082 - Update permissions on auditing tools 755.
+      ansible.builtin.file:
+        path: "{{ item.file }}"
+        state: file
+        owner: root
+        group: root
+        mode: "0755"
+      with_items:
+        - {file: '/usr/sbin/auditctl'}
+        - {file: '/usr/sbin/auditd'}
+        - {file: '/usr/sbin/aureport'}
+        - {file: '/usr/sbin/ausearch'}
+        - {file: '/usr/sbin/autrace'}
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000085
+  tags: [PHTN-50-000085]
+  when: photon_5_defaults_run_phtn_50_000085 | bool
+  block:
+    - name: PHTN-50-000085 - Find files under /usr/lib with incorrect permissions.
+      ansible.builtin.command: find /usr/lib/ -type f -perm -o+w
+      register: badfiles
+      changed_when: false
+      failed_when: false
+
+    - name: PHTN-50-000085 - Removing world write from files under /usr/lib.
+      ansible.builtin.file:
+        path: '{{ item }}'
+        mode: o-w
+      with_items: '{{ badfiles.stdout_lines }}'
+      when:
+        - badfiles.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000086
+  tags: [PHTN-50-000086, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000086 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000086 - Configure pam_pwquality ocredit in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*ocredit\s'
+        line: ocredit = {{ photon_5_defaults_pam_pwquality_ocredit }}
+
+- name: PHTN-50-000086 - Configure pam_pwquality ocredit in system-password.
+  tags: [PHTN-50-000086, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000086 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: PHTN-50-000086 - Configure pwquality ocredit in system-password
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'ocredit={{ photon_5_defaults_pam_pwquality_ocredit }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000092
+  tags: [PHTN-50-000092]
+  when: photon_5_defaults_run_phtn_50_000092 | bool
+  block:
+    - name: PHTN-50-000092 - The Photon operating system must use cryptographic mechanisms to protect the integrity of audit tools..
+      ansible.builtin.debug:
+        msg: "PHTN-50-000092 - This control must be manually remediated."
+
+###################################################################################################################################
+- name: PHTN-50-000093
+  tags: [PHTN-50-000093]
+  when: photon_5_defaults_run_phtn_50_000093 | bool
+  block:
+    - name: 'PHTN-50-000093 - Copy tmout.sh profile template to {{ photon_5_vars_profile_tmout_sh }}.'
+      ansible.builtin.template:
+        src: tmout.sh
+        dest: '{{ photon_5_vars_profile_tmout_sh }}'
+        force: true
+        group: root
+        owner: root
+        mode: "0644"
+
+###################################################################################################################################
+- name: PHTN-50-000105
+  tags: [PHTN-50-000105]
+  when: photon_5_defaults_run_phtn_50_000105 | bool
+  block:
+    - name: PHTN-50-000105 - Check to see if fs.protected_symlinks is set to 1.
+      ansible.builtin.command: /sbin/sysctl fs.protected_symlinks
+      register: fs_protected_symlinks
+      failed_when: fs_protected_symlinks.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000105 - Configure kernel parameter fs.protected_symlinks in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: fs.protected_symlinks
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: fs_protected_symlinks.stdout != "fs.protected_symlinks = 1"
+
+###################################################################################################################################
+- name: PHTN-50-000108
+  tags: [PHTN-50-000108, pam_faillock]
+  when: photon_5_defaults_run_phtn_50_000108 | bool
+  block:
+    - name: 'PHTN-50-000108 - Configure pam_faillock unlock_time in {{ photon_5_vars_pam_faillock_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*unlock_time.*$'
+        line: unlock_time = {{ photon_5_defaults_pam_faillock_unlock_time }}
+
+###################################################################################################################################
+- name: PHTN-50-000110
+  tags: [PHTN-50-000110, auditd]
+  when: photon_5_defaults_run_phtn_50_000110 | bool
+  block:
+    - name: PHTN-50-000110 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000110 - Configure num_logs in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*num_logs\s'
+        line: num_logs = {{ photon_5_defaults_auditd_conf_num_logs }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: 'PHTN-50-000110 - Configure max_log_file_action in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*max_log_file_action\s'
+        line: max_log_file_action = {{ photon_5_defaults_auditd_conf_max_log_file_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000112
+  tags: [PHTN-50-000112, auditd]
+  when: photon_5_defaults_run_phtn_50_000112 | bool
+  block:
+    - name: PHTN-50-000112 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000112 - Configure space_left in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*space_left\s'
+        line: space_left = {{ photon_5_defaults_auditd_conf_space_left }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: 'PHTN-50-000112 - Configure space_left_action in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*space_left_action\s'
+        line: space_left_action = {{ photon_5_defaults_auditd_conf_space_left_action }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000127
+  tags: [PHTN-50-000127]
+  when: photon_5_defaults_run_phtn_50_000127 | bool
+  block:
+    - name: PHTN-50-000127 - Check to see if AIDE is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^aide-
+      register: aideinstalled
+      failed_when: aideinstalled.rc == 2
+      changed_when: false
+
+      # Added libgcrypt. Currently a bug in the aide package that does not upgrade libgcrypt to the needed version.
+    - name: PHTN-50-000127 - Install AIDE.
+      ansible.builtin.command: tdnf -y install aide libgcrypt
+      register: output
+      changed_when: output.rc == 0
+      when:
+        - aideinstalled.stdout == ""
+
+###################################################################################################################################
+- name: PHTN-50-000130
+  tags: [PHTN-50-000130]
+  when: photon_5_defaults_run_phtn_50_000130 | bool
+  block:
+    - name: 'PHTN-50-000130 - Configure gpgcheck in {{ photon_5_vars_tdnf_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_tdnf_conf_file }}'
+        state: present
+        regexp: '^#?\s*gpgcheck\s'
+        line: gpgcheck=1
+
+###################################################################################################################################
+- name: PHTN-50-000133
+  tags: [PHTN-50-000133]
+  when: photon_5_defaults_run_phtn_50_000133 | bool
+  block:
+    - name: PHTN-50-000133 - The Photon operating system must require users to reauthenticate for privilege escalation.
+      ansible.builtin.debug:
+        msg: "PHTN-50-000133 - This control must be manually remediated."
+
+###################################################################################################################################
+- name: PHTN-50-000160
+  tags: [PHTN-50-000160]
+  when: photon_5_defaults_run_phtn_50_000160 | bool
+  block:
+    - name: PHTN-50-000160 - Check to see if kernel.randomize_va_space is set to 2.
+      ansible.builtin.command: /sbin/sysctl kernel.randomize_va_space
+      register: kernelrandomizevaspace
+      failed_when: kernelrandomizevaspace.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000160 - Configure kernel parameter kernel.randomize_va_space in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: kernel.randomize_va_space
+        value: 2
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: kernelrandomizevaspace.stdout != "kernel.randomize_va_space = 2"
+
+###################################################################################################################################
+- name: PHTN-50-000161
+  tags: [PHTN-50-000161]
+  when: photon_5_defaults_run_phtn_50_000161 | bool
+  block:
+    - name: 'PHTN-50-000161 - Configure clean_requirements_on_remove in {{ photon_5_vars_tdnf_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_tdnf_conf_file }}'
+        state: present
+        regexp: '^#?\s*clean_requirements_on_remove'
+        line: clean_requirements_on_remove=1
+
+###################################################################################################################################
+- name: PHTN-50-000182
+  tags: [PHTN-50-000182]
+  when: photon_5_defaults_run_phtn_50_000182 | bool
+  block:
+    - name: 'PHTN-50-000182 - Add fips=1 in {{ photon_5_vars_grub_conf_file }}.'
+      ansible.builtin.replace:
+        path: '{{ photon_5_vars_grub_conf_file }}'
+        regexp: '^(\s*linux(?!.* fips=).*)'
+        replace: '\1 fips=1'
+
+    - name: 'PHTN-50-000080 - Replace fips=1 in {{ photon_5_vars_grub_conf_file }}.'
+      ansible.builtin.replace:
+        path: '{{ photon_5_vars_grub_conf_file }}'
+        regexp: '^(\s*linux.*? fips=)(?!1)(\S*)(.*)'
+        replace: '\g<1>1\3'
+
+###################################################################################################################################
+- name: PHTN-50-000184
+  tags: [PHTN-50-000184, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000184 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000184 - Configure pam_pwquality dictcheck in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*dictcheck\s'
+        line: dictcheck = {{ photon_5_defaults_pam_pwquality_dictcheck }}
+
+- name: PHTN-50-000184
+  tags: [PHTN-50-000184, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000184 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: PHTN-50-000184 - Configure pam_pwquality dictcheck in system-password.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'dictcheck={{ photon_5_defaults_pam_pwquality_dictcheck }}'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000185
+  tags: [PHTN-50-000185]
+  when: photon_5_defaults_run_phtn_50_000185 | bool
+  block:
+    - name: 'PHTN-50-000185 - Configure FAIL_DELAY in {{ photon_5_vars_login_defs_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*FAIL_DELAY\s'
+        line: FAIL_DELAY {{ photon_5_defaults_login_defs_fail_delay }}
+
+###################################################################################################################################
+- name: PHTN-50-000186
+  tags: [PHTN-50-000186, auditd]
+  when: photon_5_defaults_run_phtn_50_000186 | bool
+  block:
+    - name: PHTN-50-000186 - Check to see if auditd is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^audit-
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000186 - Configure flush in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*flush\s'
+        line: flush = {{ photon_5_defaults_auditd_conf_flush }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: 'PHTN-50-000186 - Configure freq in {{ photon_5_vars_auditd_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*freq\s'
+        line: freq = {{ photon_5_defaults_auditd_conf_freq }}
+        backrefs: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: PHTN-50-000187
+  tags: [PHTN-50-000187]
+  when: photon_5_defaults_run_phtn_50_000187 | bool
+  block:
+    - name: 'PHTN-50-000187 - Configure UMASK in {{ photon_5_vars_login_defs_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*UMASK\s'
+        line: UMASK 077
+
+###################################################################################################################################
+- name: PHTN-50-000188
+  tags: [PHTN-50-000188, sshd]
+  when: photon_5_defaults_run_phtn_50_000188 | bool
+  block:
+    - name: 'PHTN-50-000188 - Configure HostbasedAuthentication in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*HostbasedAuthentication\s'
+        line: HostbasedAuthentication {{ photon_5_defaults_sshd_hostbasedauthentication }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000192
+  tags: [PHTN-50-000192]
+  when: photon_5_defaults_run_phtn_50_000192 | bool
+  block:
+    - name: 'PHTN-50-000192 - Get current contents of {{ photon_5_vars_pam_system_auth_file }}.'
+      ansible.builtin.slurp:
+        src: '{{ photon_5_vars_pam_system_auth_file }}'
+      register: systemauthslurp
+
+    - name: 'PHTN-50-000192 - Decode current contents of {{ photon_5_vars_pam_system_auth_file }} and set fact.'
+      ansible.builtin.set_fact:
+        systemauthcontent: "{{ systemauthslurp['content'] | b64decode }}"
+
+    - name: 'PHTN-50-000192 - Check to see if pam_faillock.so preauth rule exists in {{ photon_5_vars_pam_system_auth_file }} and is before the pam_unix.so rule.'
+      ansible.builtin.set_fact:
+        preauthsearch: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_faillock\\.so\\spreauth$\\nauth\\s+(required|requisite)\\s+pam_unix\\.so.*$', multiline=True) }}"
+
+    - name: 'PHTN-50-000192 - Check to see if pam_faillock.so authfail rule exists in {{ photon_5_vars_pam_system_auth_file }} and is after the pam_unix.so rule.'
+      ansible.builtin.set_fact:
+        authfailsearch: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_unix\\.so.*$\\nauth\\s+(required|requisite|\\[default=die\\])\\s+pam_faillock\\.so\\sauthfail$', multiline=True) }}"
+
+    - name: 'PHTN-50-000192 - Remove existing pam_faillock.so rules in {{ photon_5_vars_pam_system_auth_file }} if one not found or incorrect.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_system_auth_file }}'
+        state: absent
+        regexp: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so.*$'
+      when:
+        - preauthsearch == "" or authfailsearch == ""
+
+    - name: PHTN-50-000192 - Add pam_faillock.so preauth to system-auth if it doesn't exist.
+      community.general.pamd:
+        name: system-auth
+        type: auth
+        control: required
+        module_path: pam_unix.so
+        new_type: auth
+        new_control: required
+        new_module_path: pam_faillock.so
+        module_arguments: 'preauth'
+        state: before
+
+    - name: PHTN-50-000192 - Add pam_faillock.so authfail to system-auth if it doesn't exist.
+      community.general.pamd:
+        name: system-auth
+        type: auth
+        control: required
+        module_path: pam_unix.so
+        new_type: auth
+        new_control: required
+        new_module_path: pam_faillock.so
+        module_arguments: 'authfail'
+        state: after
+
+    - name: 'PHTN-50-000192 - Get current contents of {{ photon_5_vars_pam_system_account_file }}.'
+      ansible.builtin.slurp:
+        src: '{{ photon_5_vars_pam_system_account_file }}'
+      register: systemaccountslurp
+
+    - name: 'PHTN-50-000192 - Decode current contents of {{ photon_5_vars_pam_system_account_file }} and set fact.'
+      ansible.builtin.set_fact:
+        systemaccounthcontent: "{{ systemaccountslurp['content'] | b64decode }}"
+
+    - name: 'PHTN-50-000192 - Check to see if pam_faillock.so rule exists in {{ photon_5_vars_pam_system_account_file }} and is before the pam_unix.so rule.'
+      ansible.builtin.set_fact:
+        sysaccountsearch: "{{ systemaccounthcontent | regex_search('^account\\s+(required|requisite)\\s+pam_faillock\\.so$\\naccount\\s+(required|requisite)\\s+pam_unix\\.so.*$', multiline=True) }}"
+
+    - name: 'PHTN-50-000192 - Remove existing pam_faillock.so rules in {{ photon_5_vars_pam_system_account_file }} if incorrect.'
+      community.general.pamd:
+        name: system-account
+        type: account
+        control: required
+        module_path: pam_faillock.so
+        state: absent
+      when:
+        - sysaccountsearch == ""
+
+    - name: PHTN-50-000192 - Add pam_faillock.so to system-account if it doesn't exist.
+      community.general.pamd:
+        name: system-account
+        type: account
+        control: required
+        module_path: pam_unix.so
+        new_type: account
+        new_control: required
+        new_module_path: pam_faillock.so
+        state: before
+
+###################################################################################################################################
+- name: PHTN-50-000193
+  tags: [PHTN-50-000193, pam_faillock]
+  when: photon_5_defaults_run_phtn_50_000193 | bool
+  block:
+    - name: 'PHTN-50-000193 - Configure silent in {{ photon_5_vars_pam_faillock_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*silent.*$'
+        line: silent
+
+###################################################################################################################################
+- name: PHTN-50-000194
+  tags: [PHTN-50-000194, pam_faillock]
+  when: photon_5_defaults_run_phtn_50_000194 | bool
+  block:
+    - name: 'PHTN-50-000194 - Configure audit in {{ photon_5_vars_pam_faillock_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*audit.*$'
+        line: audit
+
+###################################################################################################################################
+- name: PHTN-50-000195
+  tags: [PHTN-50-000195, pam_faillock]
+  when: photon_5_defaults_run_phtn_50_000195 | bool
+  block:
+    - name: 'PHTN-50-000195 - Configure even_deny_root in {{ photon_5_vars_pam_faillock_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*even_deny_root.*$'
+        line: even_deny_root
+
+###################################################################################################################################
+- name: PHTN-50-000196
+  tags: [PHTN-50-000196, pam_faillock]
+  when: photon_5_defaults_run_phtn_50_000196 | bool
+  block:
+    - name: 'PHTN-50-000196 - Configure dir in {{ photon_5_vars_pam_faillock_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_faillock_conf_file }}'
+        state: present
+        regexp: '^#?\s*dir.*$'
+        line: dir = {{ photon_5_defaults_pam_faillock_dir }}
+
+    - name: 'PHTN-50-000196 - Create faillock dir {{ photon_5_defaults_pam_faillock_dir }}.'
+      ansible.builtin.file:
+        path: '{{ photon_5_defaults_pam_faillock_dir }}'
+        state: directory
+        owner: root
+        group: root
+        mode: "0750"
+
+###################################################################################################################################
+- name: PHTN-50-000197
+  tags: [PHTN-50-000197]
+  when: photon_5_defaults_run_phtn_50_000197 | bool
+  block:
+    - name: PHTN-50-000197 - Check to see if pam_pwquality.so rule exists.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -E '^password\s*(requisite|required)\s*pam_pwquality.so\s.*$' /etc/pam.d/system-password
+      register: syspasspwq
+      failed_when: syspasspwq.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000197 - Remove existing pam_pwquality.so rules in system-password if it is incorrect.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_pwquality.so
+        state: absent
+      when:
+        - syspasspwq.stdout == ""
+
+    - name: PHTN-50-000197 - Add pam_pwquality.so to system-password if it doesn't exist.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: required
+        module_path: pam_unix.so
+        new_type: password
+        new_control: required
+        new_module_path: pam_pwquality.so
+        module_arguments: 'use_authtok'
+        state: before
+      when:
+        - syspasspwq.stdout == ""
+
+###################################################################################################################################
+- name: PHTN-50-000199
+  tags: [PHTN-50-000199]
+  when: photon_5_defaults_run_phtn_50_000199 | bool
+  block:
+    - name: PHTN-30-000061 - Find yum repos.
+      ansible.builtin.find:
+        paths: /etc/yum.repos.d/
+        file_type: file
+        patterns: "*.repo"
+      register: yumrepos
+
+    - name: 'PHTN-50-000199 - Configure gpgcheck in {{ item.path }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ item.path }}'
+        state: present
+        regexp: '^#?\s*gpgcheck\s'
+        line: gpgcheck=1
+      with_items: "{{ yumrepos.files }}"
+
+###################################################################################################################################
+- name: PHTN-50-000200
+  tags: [PHTN-50-000200, sshd]
+  when: photon_5_defaults_run_phtn_50_000200 | bool
+  block:
+    - name: 'PHTN-50-000200 - Configure SyslogFacility in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*SyslogFacility\s'
+        line: SyslogFacility {{ photon_5_defaults_sshd_syslogfacility }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000201
+  tags: [PHTN-50-000201, sshd]
+  when: photon_5_defaults_run_phtn_50_000201 | bool
+  block:
+    - name: 'PHTN-50-000201 - Configure LogLevel in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*LogLevel\s'
+        line: LogLevel {{ photon_5_defaults_sshd_loglevel }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000203
+  tags: [PHTN-50-000203, sshd]
+  when: photon_5_defaults_run_phtn_50_000203 | bool
+  block:
+    - name: 'PHTN-50-000203 - Configure ClientAliveCountMax in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*ClientAliveCountMax\s'
+        line: ClientAliveCountMax {{ photon_5_defaults_sshd_clientalivecountmax }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000206
+  tags: [PHTN-50-000206]
+  when: photon_5_defaults_run_phtn_50_000206 | bool
+  block:
+    - name: PHTN-50-000206 - Check to see if pam_faildelay.so rule exists.
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -E '^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$' /etc/pam.d/system-auth
+      register: sysauthfaildelay
+      failed_when: sysauthfaildelay.rc == 2
+      changed_when: false
+
+    - name: PHTN-50-000206 - Remove existing pam_faildelay.so rule in system-auth if it is incorrect.
+      community.general.pamd:
+        name: system-auth
+        type: auth
+        control: optional
+        module_path: pam_faildelay.so
+        state: absent
+      when:
+        - sysauthfaildelay.stdout == ""
+
+    # Need to use lininfile instead of pam because of the placement this needs to go can't be dealt with by the ansible pam module
+    - name: PHTN-50-000206 - Add pam_faildelay.so to system-auth if it doesn't exist.
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_system_auth_file }}'
+        state: present
+        regexp: '^#?auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$'
+        line: auth       optional pam_faildelay.so delay=4000000
+        insertafter: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+authfail$'
+
+###################################################################################################################################
+- name: PHTN-50-000207
+  tags: [PHTN-50-000207, sshd]
+  when: photon_5_defaults_run_phtn_50_000207 | bool
+  block:
+    - name: 'PHTN-50-000207 - Configure PermitEmptyPasswords in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*PermitEmptyPasswords\s'
+        line: PermitEmptyPasswords {{ photon_5_defaults_sshd_permitemptypasswords }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000208
+  tags: [PHTN-50-000208, sshd]
+  when: photon_5_defaults_run_phtn_50_000208 | bool
+  block:
+    - name: 'PHTN-50-000208 - Configure PermitUserEnvironment in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*PermitUserEnvironment\s'
+        line: PermitUserEnvironment {{ photon_5_defaults_sshd_permituserenvironment }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000209
+  tags: [PHTN-50-000209]
+  when: photon_5_defaults_run_phtn_50_000209 | bool
+  block:
+    - name: 'PHTN-50-000209 - Configure CREATE_HOME in {{ photon_5_vars_login_defs_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*CREATE_HOME\s'
+        line: CREATE_HOME yes
+
+###################################################################################################################################
+- name: PHTN-50-000210
+  tags: [PHTN-50-000210]
+  when: photon_5_defaults_run_phtn_50_000210 | bool
+  block:
+    - name: PHTN-50-000210 - Disable debug-shell service.
+      ansible.builtin.systemd:
+        name: debug-shell
+        state: stopped
+        enabled: false
+
+###################################################################################################################################
+- name: PHTN-50-000211
+  tags: [PHTN-50-000211, sshd]
+  when: photon_5_defaults_run_phtn_50_000211 | bool
+  block:
+    - name: 'PHTN-50-000211 - Configure GSSAPIAuthentication in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*GSSAPIAuthentication\s'
+        line: GSSAPIAuthentication {{ photon_5_defaults_sshd_gssapiauthentication }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000212
+  tags: [PHTN-50-000212, sshd]
+  when: photon_5_defaults_run_phtn_50_000212 | bool
+  block:
+    - name: 'PHTN-50-000212 - Configure X11Forwarding in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*X11Forwarding\s'
+        line: X11Forwarding {{ photon_5_defaults_sshd_x11forwarding }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000213
+  tags: [PHTN-50-000213, sshd]
+  when: photon_5_defaults_run_phtn_50_000213 | bool
+  block:
+    - name: 'PHTN-50-000213 - Configure StrictModes in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*StrictModes\s'
+        line: StrictModes {{ photon_5_defaults_sshd_strictmodes }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000214
+  tags: [PHTN-50-000214, sshd]
+  when: photon_5_defaults_run_phtn_50_000214 | bool
+  block:
+    - name: 'PHTN-50-000214 - Configure KerberosAuthentication in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*KerberosAuthentication\s'
+        line: KerberosAuthentication {{ photon_5_defaults_sshd_kerberosauthentication }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000215
+  tags: [PHTN-50-000215, sshd]
+  when: photon_5_defaults_run_phtn_50_000215 | bool
+  block:
+    - name: 'PHTN-50-000215 - Configure Compression in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*Compression\s'
+        line: Compression {{ photon_5_defaults_sshd_compression }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000216
+  tags: [PHTN-50-000216, sshd]
+  when: photon_5_defaults_run_phtn_50_000216 | bool
+  block:
+    - name: 'PHTN-50-000216 - Configure PrintLastLog in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*PrintLastLog\s'
+        line: PrintLastLog {{ photon_5_defaults_sshd_printlastlog }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000217
+  tags: [PHTN-50-000217, sshd]
+  when: photon_5_defaults_run_phtn_50_000217 | bool
+  block:
+    - name: 'PHTN-50-000217 - Configure IgnoreRhosts in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*IgnoreRhosts\s'
+        line: IgnoreRhosts {{ photon_5_defaults_sshd_ignorerhosts }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000218
+  tags: [PHTN-50-000218, sshd]
+  when: photon_5_defaults_run_phtn_50_000218 | bool
+  block:
+    - name: 'PHTN-50-000218 - Configure IgnoreUserKnownHosts in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*IgnoreUserKnownHosts\s'
+        line: IgnoreUserKnownHosts {{ photon_5_defaults_sshd_ignoreuserknownhosts }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000219
+  tags: [PHTN-50-000219, sshd]
+  when: photon_5_defaults_run_phtn_50_000219 | bool
+  block:
+    - name: 'PHTN-50-000219 - Configure MaxAuthTries in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*MaxAuthTries\s'
+        line: MaxAuthTries {{ photon_5_defaults_sshd_maxauthtries }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000220
+  tags: [PHTN-50-000220, sshd]
+  when: photon_5_defaults_run_phtn_50_000220 | bool
+  block:
+    - name: 'PHTN-50-000220 - Configure AllowTcpForwarding in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*AllowTcpForwarding\s'
+        line: AllowTcpForwarding {{ photon_5_defaults_sshd_allowtcpforwarding }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000221
+  tags: [PHTN-50-000221, sshd]
+  when: photon_5_defaults_run_phtn_50_000221 | bool
+  block:
+    - name: 'PHTN-50-000221 - Configure LoginGraceTime in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*LoginGraceTime\s'
+        line: LoginGraceTime {{ photon_5_defaults_sshd_logingracetime }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000222
+  tags: [PHTN-50-000222]
+  when: photon_5_defaults_run_phtn_50_000222 | bool
+  block:
+    - name: PHTN-50-000222 - Disable ctrl-alt-del.target.
+      ansible.builtin.systemd:
+        name: ctrl-alt-del.target
+        enabled: false
+        daemon_reload: true
+
+    # This seems to need to be run separately
+    - name: PHTN-50-000222 - Mask ctrl-alt-del.target.
+      ansible.builtin.systemd:
+        name: ctrl-alt-del.target
+        masked: true
+        daemon_reload: true
+
+###################################################################################################################################
+- name: PHTN-50-000223
+  tags: [PHTN-50-000223]
+  when: photon_5_defaults_run_phtn_50_000223 | bool
+  block:
+    - name: PHTN-50-000223 - Check to see if net.ipv4.conf.all.accept_source_route is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.accept_source_route
+      register: allaccept_source_route
+      failed_when: allaccept_source_route.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000223 - Configure kernel parameter net.ipv4.conf.all.accept_source_route in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.accept_source_route
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: allaccept_source_route.stdout != "net.ipv4.conf.all.accept_source_route = 0"
+
+    - name: PHTN-50-000223 - Check to see if net.ipv4.conf.default.accept_source_route is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.accept_source_route
+      register: defaultaccept_source_route
+      failed_when: defaultaccept_source_route.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000223 - Configure kernel parameter net.ipv4.conf.default.accept_source_route in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.accept_source_route
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: defaultaccept_source_route.stdout != "net.ipv4.conf.default.accept_source_route = 0"
+
+    - name: PHTN-50-000223 - Check to see if net.ipv6.conf.all.accept_source_route is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv6.conf.all.accept_source_route
+      register: ipv6allaccept_source_route
+      failed_when: ipv6allaccept_source_route.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000223 - Configure kernel parameter net.ipv6.conf.all.accept_source_route in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv6.conf.all.accept_source_route
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: ipv6allaccept_source_route.stdout != "net.ipv6.conf.all.accept_source_route = 0"
+
+    - name: PHTN-50-000223 - Check to see if net.ipv6.conf.default.accept_source_route is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv6.conf.default.accept_source_route
+      register: ipv6defaultaccept_source_route
+      failed_when: ipv6defaultaccept_source_route.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000223 - Configure kernel parameter net.ipv6.conf.default.accept_source_route in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv6.conf.default.accept_source_route
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: ipv6defaultaccept_source_route.stdout != "net.ipv6.conf.default.accept_source_route = 0"
+
+###################################################################################################################################
+- name: PHTN-50-000224
+  tags: [PHTN-50-000224]
+  when: photon_5_defaults_run_phtn_50_000224 | bool
+  block:
+    - name: PHTN-50-000224 - Check to see if net.ipv4.icmp_echo_ignore_broadcasts is set to 1.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.icmp_echo_ignore_broadcasts
+      register: icmp_echo_ignore_broadcasts
+      failed_when: icmp_echo_ignore_broadcasts.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000224 - Configure kernel parameter net.ipv4.icmp_echo_ignore_broadcasts in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.icmp_echo_ignore_broadcasts
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: icmp_echo_ignore_broadcasts.stdout != "net.ipv4.icmp_echo_ignore_broadcasts = 1"
+
+###################################################################################################################################
+- name: PHTN-50-000225
+  tags: [PHTN-50-000225]
+  when: photon_5_defaults_run_phtn_50_000225 | bool
+  block:
+    - name: PHTN-50-000225 - Check to see if net.ipv4.conf.all.accept_redirects is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.accept_redirects
+      register: all_accept_redirects
+      failed_when: all_accept_redirects.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000225 - Configure kernel parameter net.ipv4.conf.all.accept_redirects in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.accept_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_accept_redirects.stdout != "net.ipv4.conf.all.accept_redirects = 0"
+
+    - name: PHTN-50-000225 - Check to see if net.ipv4.conf.default.accept_redirects is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.accept_redirects
+      register: default_accept_redirects
+      failed_when: default_accept_redirects.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000225 - Configure kernel parameter net.ipv4.conf.default.accept_redirects in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.accept_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_accept_redirects.stdout != "net.ipv4.conf.default.accept_redirects = 0"
+
+###################################################################################################################################
+- name: PHTN-50-000226
+  tags: [PHTN-50-000226]
+  when: photon_5_defaults_run_phtn_50_000226 | bool
+  block:
+    - name: PHTN-50-000226 - Check to see if net.ipv4.conf.all.secure_redirects is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.secure_redirects
+      register: all_secure_redirects
+      failed_when: all_secure_redirects.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000226 - Configure kernel parameter net.ipv4.conf.all.secure_redirects in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.secure_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_secure_redirects.stdout != "net.ipv4.conf.all.secure_redirects = 0"
+
+    - name: PHTN-50-000226 - Check to see if net.ipv4.conf.default.secure_redirects is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.secure_redirects
+      register: default_secure_redirects
+      failed_when: default_secure_redirects.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000226 - Configure kernel parameter net.ipv4.conf.default.secure_redirects in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.secure_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_secure_redirects.stdout != "net.ipv4.conf.default.secure_redirects = 0"
+
+###################################################################################################################################
+- name: PHTN-50-000227
+  tags: [PHTN-50-000227]
+  when: photon_5_defaults_run_phtn_50_000227 | bool
+  block:
+    - name: PHTN-50-000227 - Check to see if net.ipv4.conf.all.send_redirects is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.send_redirects
+      register: all_send_redirects
+      failed_when: all_send_redirects.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000227 - Configure kernel parameter net.ipv4.conf.all.send_redirects in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.send_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_send_redirects.stdout != "net.ipv4.conf.all.send_redirects = 0"
+
+    - name: PHTN-50-000227 - Check to see if net.ipv4.conf.default.send_redirects is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.send_redirects
+      register: default_send_redirects
+      failed_when: default_send_redirects.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000227 - Configure kernel parameter net.ipv4.conf.default.send_redirects in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.send_redirects
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_send_redirects.stdout != "net.ipv4.conf.default.send_redirects = 0"
+
+###################################################################################################################################
+- name: PHTN-50-000228
+  tags: [PHTN-50-000228]
+  when: photon_5_defaults_run_phtn_50_000228 | bool
+  block:
+    - name: PHTN-50-000228 - Check to see if net.ipv4.conf.all.log_martians is set to 1.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.log_martians
+      register: all_log_martians
+      failed_when: all_log_martians.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000228 - Configure kernel parameter net.ipv4.conf.all.log_martians in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.log_martians
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_log_martians.stdout != "net.ipv4.conf.all.log_martians = 1"
+
+    - name: PHTN-50-000228 - Check to see if net.ipv4.conf.default.log_martians is set to 1.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.log_martians
+      register: default_log_martians
+      failed_when: default_log_martians.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000228 - Configure kernel parameter net.ipv4.conf.default.log_martians in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.log_martians
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_log_martians.stdout != "net.ipv4.conf.default.log_martians = 1"
+
+###################################################################################################################################
+- name: PHTN-50-000229
+  tags: [PHTN-50-000229]
+  when: photon_5_defaults_run_phtn_50_000229 | bool
+  block:
+    - name: PHTN-50-000229 - Check to see if net.ipv4.conf.all.rp_filter is set to 1.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.all.rp_filter
+      register: all_rp_filter
+      failed_when: all_rp_filter.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000229 - Configure kernel parameter net.ipv4.conf.all.rp_filter in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.all.rp_filter
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: all_rp_filter.stdout != "net.ipv4.conf.all.rp_filter = 1"
+
+    - name: PHTN-50-000229 - Check to see if net.ipv4.conf.default.rp_filter is set to 1.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.conf.default.rp_filter
+      register: default_rp_filter
+      failed_when: default_rp_filter.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000229 - Configure kernel parameter net.ipv4.conf.default.rp_filter in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.conf.default.rp_filter
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: default_rp_filter.stdout != "net.ipv4.conf.default.rp_filter = 1"
+
+###################################################################################################################################
+- name: PHTN-50-000231
+  tags: [PHTN-50-000231]
+  when: photon_5_defaults_run_phtn_50_000231 | bool
+  block:
+    - name: PHTN-50-000231 - Check to see if container host packages are installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep -E '(^docker-|^containerd|^kubernetes)'
+      register: cntrpkgsinstalled
+      changed_when: false
+      failed_when:
+        - cntrpkgsinstalled.rc == 2
+
+    - name: PHTN-50-000231 - Check to see if net.ipv4.ip_forward is set to 0.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.ip_forward
+      register: ipv4_ip_forward
+      failed_when: ipv4_ip_forward.rc == 2
+      changed_when: false
+      when:
+        - cntrpkgsinstalled.stdout == ""
+
+    - name: 'PHTN-50-000231 - Configure kernel parameter net.ipv4.ip_forward in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: 0
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when:
+        - ipv4_ip_forward.stdout is defined
+        - ipv4_ip_forward.stdout != "net.ipv4.ip_forward = 0"
+        - cntrpkgsinstalled.stdout == ""
+
+###################################################################################################################################
+- name: PHTN-50-000232
+  tags: [PHTN-50-000232]
+  when: photon_5_defaults_run_phtn_50_000232 | bool
+  block:
+    - name: PHTN-50-000232 - Check to see if net.ipv4.tcp_timestamps is set to 1.
+      ansible.builtin.command: /sbin/sysctl net.ipv4.tcp_timestamps
+      register: tcp_timestamps
+      failed_when: tcp_timestamps.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000232 - Configure kernel parameter net.ipv4.tcp_timestamps in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: net.ipv4.tcp_timestamps
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: tcp_timestamps.stdout != "net.ipv4.tcp_timestamps = 1"
+
+###################################################################################################################################
+- name: PHTN-50-000233
+  tags: [PHTN-50-000233]
+  when: photon_5_defaults_run_phtn_50_000233 | bool
+  block:
+    - name: PHTN-50-000233 - Find sshd public key files.
+      ansible.builtin.find:
+        paths: /etc/ssh/
+        file_type: file
+        patterns: "*key.pub"
+      register: sshpubkeys
+
+    - name: PHTN-50-000233 - Configure permissions on sshd public key files.
+      ansible.builtin.file:
+        path: '{{ item.path }}'
+        state: file
+        mode: "0644"
+        owner: root
+        group: root
+      with_items: '{{ sshpubkeys.files }}'
+
+###################################################################################################################################
+- name: PHTN-50-000234
+  tags: [PHTN-50-000234]
+  when: photon_5_defaults_run_phtn_50_000234 | bool
+  block:
+    - name: PHTN-50-000234 - Find sshd private key files.
+      ansible.builtin.find:
+        paths: /etc/ssh/
+        file_type: file
+        patterns: "*key"
+      register: sshprikeys
+
+    - name: PHTN-50-000234 - Configure permissions on sshd private key files.
+      ansible.builtin.file:
+        path: '{{ item.path }}'
+        state: file
+        mode: "0600"
+        owner: root
+        group: root
+      with_items: '{{ sshprikeys.files }}'
+
+###################################################################################################################################
+- name: PHTN-50-000235
+  tags: [PHTN-50-000235, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000235 | bool
+    - photon_5_defaults_pam_use_pwquality_conf | bool
+  block:
+    - name: 'PHTN-50-000235 - Configure pam_pwquality enforce_for_root in {{ photon_5_vars_pam_pwquality_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^#?\s*enforce_for_root\s'
+        line: enforce_for_root
+
+- name: PHTN-50-000235
+  tags: [PHTN-50-000235, pam_pwquality]
+  when:
+    - photon_5_defaults_run_phtn_50_000235 | bool
+    - not photon_5_defaults_pam_use_pwquality_conf
+  block:
+    - name: PHTN-50-000235 - Configure pam_pwquality enforce_for_root in system-password.
+      community.general.pamd:
+        name: system-password
+        type: password
+        control: '{{ photon_5_defaults_pam_pwquality_control }}'
+        module_path: pam_pwquality.so
+        module_arguments: 'enforce_for_root'
+        state: args_present
+
+###################################################################################################################################
+- name: PHTN-50-000236
+  tags: [PHTN-50-000236]
+  when: photon_5_defaults_run_phtn_50_000236 | bool
+  block:
+    - name: 'PHTN-50-000236 - Configure systemd resolved fallback DNS in {{ photon_5_vars_systemd_resolved_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_systemd_resolved_conf_file }}'
+        state: present
+        regexp: '^#?\s*FallbackDNS='
+        line: FallbackDNS=
+      notify:
+        - '{{ role_name }} : restart resolved'
+
+###################################################################################################################################
+- name: PHTN-50-000239
+  tags: [PHTN-50-000239, sshd]
+  when: photon_5_defaults_run_phtn_50_000239 | bool
+  block:
+    - name: 'PHTN-50-000239 - Configure MACs in {{ photon_5_vars_sshd_config_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ photon_5_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*MACs\s'
+        line: MACs {{ photon_5_defaults_sshd_macs }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: PHTN-50-000244
+  tags: [PHTN-50-000244]
+  when: photon_5_defaults_run_phtn_50_000244 | bool
+  block:
+    - name: PHTN-50-000244 - Check to see if fs.protected_hardlinks is set to 1.
+      ansible.builtin.command: /sbin/sysctl fs.protected_hardlinks
+      register: fs_protected_hardlinks
+      failed_when: fs_protected_hardlinks.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000244 - Configure kernel parameter fs.protected_hardlinks in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: fs.protected_hardlinks
+        value: 1
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: fs_protected_hardlinks.stdout != "fs.protected_hardlinks = 1"
+
+###################################################################################################################################
+- name: PHTN-50-000245
+  tags: [PHTN-50-000245]
+  when: photon_5_defaults_run_phtn_50_000245 | bool
+  block:
+    - name: 'PHTN-50-000245 - Add nodev to {{ photon_5_vars_systemd_tmp_mount_file }}.'
+      ansible.builtin.replace:
+        path: '{{ photon_5_vars_systemd_tmp_mount_file }}'
+        regexp: '^(Options=(?!.*nodev).*)'
+        replace: '\1,nodev'
+
+    - name: 'PHTN-50-000245 - Add noexec to {{ photon_5_vars_systemd_tmp_mount_file }}.'
+      ansible.builtin.replace:
+        path: '{{ photon_5_vars_systemd_tmp_mount_file }}'
+        regexp: '^(Options=(?!.*noexec).*)'
+        replace: '\1,noexec'
+
+    - name: 'PHTN-50-000245 - Add nosuid to {{ photon_5_vars_systemd_tmp_mount_file }}.'
+      ansible.builtin.replace:
+        path: '{{ photon_5_vars_systemd_tmp_mount_file }}'
+        regexp: '^(Options=(?!.*nosuid).*)'
+        replace: '\1,nosuid'
+
+###################################################################################################################################
+- name: PHTN-50-000246
+  tags: [PHTN-50-000246]
+  when: photon_5_defaults_run_phtn_50_000246 | bool
+  block:
+    - name: PHTN-50-000246 - Check to see if fs.suid_dumpable is set to 1.
+      ansible.builtin.command: /sbin/sysctl fs.suid_dumpable
+      register: fs_suid_dumpable
+      failed_when: fs_suid_dumpable.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000246 - Configure kernel parameter fs.suid_dumpable in {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.posix.sysctl:
+        name: fs.suid_dumpable
+        value: '{{ photon_5_defaults_sysctl_fs_suid_dumpable }}'
+        state: present
+        sysctl_file: '{{ photon_5_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: fs_suid_dumpable.stdout == "fs.suid_dumpable = 1"
+
+###################################################################################################################################
+- name: PHTN-50-000247
+  tags: [PHTN-50-000247]
+  when: photon_5_defaults_run_phtn_50_000247 | bool
+  block:
+    - name: 'PHTN-50-000247 - Remove nullok from {{ photon_5_vars_pam_system_password_file }}.'
+      ansible.builtin.replace:
+        path: '{{ photon_5_vars_pam_system_password_file }}'
+        regexp: '^(password.*pam_unix\.so.*)(\snullok)(.*)'
+        replace: '\1\3'
+
+    - name: 'PHTN-50-000247 - Remove nullok from {{ photon_5_vars_pam_system_auth_file }}.'
+      ansible.builtin.replace:
+        path: '{{ photon_5_vars_pam_system_auth_file }}'
+        regexp: '^(auth.*pam_unix\.so.*)(\snullok)(.*)'
+        replace: '\1\3'
+
+###################################################################################################################################
+# !!! AIDE configuration should be the last task here so the configuration database includes all changes !!!
+- name: PHTN-50-000237
+  tags: [PHTN-50-000237]
+  when: photon_5_defaults_run_phtn_50_000237 | bool
+  block:
+    - name: PHTN-50-000237 - Check to see if AIDE is installed.
+      ansible.builtin.shell: |
+        set -o pipefail
+        rpm -qa | grep ^aide-
+      register: aideinstalled
+      failed_when: aideinstalled.rc == 2
+      changed_when: false
+
+    - name: 'PHTN-50-000237 - Copy aide.conf template to {{ photon_5_vars_aide_conf_file }}.'
+      ansible.builtin.template:
+        src: aide.conf
+        dest: '{{ photon_5_vars_aide_conf_file }}'
+        owner: root
+        group: root
+        mode: "0600"
+        force: true
+      when:
+        - aideinstalled.stdout != ""
+
+    - name: PHTN-50-000237 - Check to see if AIDE is initialized.
+      ansible.builtin.command: aide --check
+      register: aidecheckoutput
+      changed_when: false
+      failed_when: aidecheckoutput.rc == 2
+      no_log: true
+      when:
+        - aideinstalled.stdout != ""
+
+    - name: PHTN-50-000237 - Initialize AIDE database.
+      ansible.builtin.command: aide --init
+      register: aideinitoutput
+      changed_when: aideinitoutput.rc == 0
+      no_log: true
+      when:
+        - aidecheckoutput.rc is defined
+        - aidecheckoutput.rc != 0
+        - aideinstalled.stdout != ""
+
+    - name: PHTN-50-000237 - Copy AIDE database.
+      ansible.builtin.copy:
+        src: /var/lib/aide/aide.db.new.gz
+        dest: /var/lib/aide/aide.db.gz
+        owner: root
+        group: root
+        mode: "0600"
+        remote_src: true
+      when:
+        - aideinitoutput is defined
+        - aidecheckoutput.rc is defined
+        - aidecheckoutput.rc != 0
+        - aideinstalled.stdout != ""

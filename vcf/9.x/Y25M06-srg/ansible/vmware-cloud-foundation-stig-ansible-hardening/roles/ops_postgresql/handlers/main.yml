@@ -1,0 +1,15 @@
+---
+- name: restart vpostgres-repl
+  ansible.builtin.service:
+    name: vpostgres-repl.service
+    state: restarted
+
+- name: Reload system settings
+  ansible.builtin.command: sysctl --system
+  register: sysctl_out
+  changed_when: sysctl_out.rc != 0
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted

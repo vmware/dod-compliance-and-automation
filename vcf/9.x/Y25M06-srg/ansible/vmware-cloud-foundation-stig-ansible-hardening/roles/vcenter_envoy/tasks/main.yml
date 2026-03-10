@@ -1,0 +1,13 @@
+---
+
+- name: Include vCenter Envoy tasks
+  ansible.builtin.include_tasks:
+    file: envoy.yml
+    apply:
+      tags:
+        - vcenter-envoy
+  tags:
+    - vcenter-envoy
+    - VCFK-9X-000018
+    - VCFK-9X-000039
+    - VCFK-9X-000043

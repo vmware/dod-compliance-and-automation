@@ -1,0 +1,19 @@
+name: vmware-cloud-foundation-operations-fleet-management-stig-baseline
+title: InSpec Profile for the VMware Cloud Foundation Operations Fleet Management Appliance 9.0 STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.1
+
+depends:
+  - name: nginx
+    path: nginx
+  - name: photon
+    path: ../vmware-photon-5.0-stig-baseline
+
+inputs:
+  - name: containerHost
+    value: true
+    profile: photon

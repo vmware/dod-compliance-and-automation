@@ -1,0 +1,11 @@
+{
+     "route_filtering": [
+        {
+            "enabled": "{{ item.route_filtering[0].enabled}}",
+            "address_family": "{{ item.route_filtering[0].address_family}}",
+            "maximum_routes": {{ nsx_routing_defaults_t0_bgp_max_prefixes }}
+        }
+    ],
+    "neighbor_address": "{{ item.neighbor_address }}",
+    "remote_as_num": "{{ item.remote_as_num }}"
+}

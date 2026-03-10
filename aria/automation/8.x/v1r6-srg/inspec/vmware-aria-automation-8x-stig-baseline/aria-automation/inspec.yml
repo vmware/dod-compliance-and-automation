@@ -34,7 +34,7 @@ inputs:
   type: string
   value: "false"
 
-- name: ntpServers
+- name: automationNtpServers
   description: VRAA-8X-000009 - List NTP servers comma separated.
   type: string
   value: "['time.google.com']"

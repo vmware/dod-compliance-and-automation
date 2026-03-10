@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "syslog_source": "{{ item.syslog_source }}",
+      {% if item.collector_id is defined %}
+      "collector_id": "{{ item.collector_id }}",
+      {% endif %}
+      "syslog_ip": ""
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+- name: "VCFR-9X-000109 - Check to see if BGP neighbors exist for: {{ var_outer_bgp.path }}"
+  ansible.builtin.uri:
+    url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ var_outer_bgp.path }}/neighbors"
+    validate_certs: "{{ validate_certificate_uri }}"
+    headers:
+      Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+      X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+    method: GET
+    status_code: 200
+  register: bgpneighbors
+  changed_when: false
+
+- name: "VCFR-9X-000109 - Disable BGP on the target tier-0 gateway."
+  ansible.builtin.uri:
+    url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ var_outer_bgp.path }}"
+    validate_certs: "{{ validate_certificate_uri }}"
+    headers:
+      Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+      X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+    method: PATCH
+    body: "{{ lookup('template', './nsx_routing_t0_disable_bgp.json.j2') }}"
+    body_format: json
+    status_code: 200
+  when:
+    - bgpneighbors.json.result_count == 0
+  register: response
+  changed_when:
+    - response.status == 200

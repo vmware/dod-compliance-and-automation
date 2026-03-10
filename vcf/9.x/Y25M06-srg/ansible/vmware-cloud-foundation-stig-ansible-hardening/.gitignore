@@ -1,0 +1,7 @@
+_internal/
+*.lock
+vendor/
+.vscode/
+*testing.yml
+zzz_*.yml
+zzz_*.sh

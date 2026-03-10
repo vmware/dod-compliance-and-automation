@@ -1,0 +1,6 @@
+---
+
+- name: restart loginsight
+  ansible.builtin.systemd:
+    name: loginsight.service
+    state: restarted

@@ -1,0 +1,208 @@
+---
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible_backups_ops_fm_nginx_{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ ops_fm_nginx_vars_nginx_conf_file }}'
+        - '{{ ops_fm_nginx_vars_ssl_conf_file }}'
+
+###################################################################################################################################
+# To update the NGINX configuration a template is used that contains all settings for the SDDC Manager NGINX configuration.
+# Targeted individual setting updates to the NGINX configuration are not feasible with the typical Ansible modules due to the non-standard format of the NGINX configuration.
+- name: 'NGINX - Copy configuration template to overwrite {{ ops_fm_nginx_vars_nginx_conf_file }}'
+  tags:
+    - VCFQ-9X-000001
+    - VCFQ-9X-000004
+    - VCFQ-9X-000007
+    - VCFQ-9X-000009
+    - VCFQ-9X-000010
+    - VCFQ-9X-000025
+    - VCFQ-9X-000037
+    - VCFQ-9X-000047
+    - VCFQ-9X-000048
+    - VCFQ-9X-000060
+    - VCFQ-9X-000062
+    - VCFQ-9X-000063
+    - VCFQ-9X-000099
+    - VCFQ-9X-000100
+    - VCFQ-9X-000102
+    - VCFQ-9X-000103
+    - VCFQ-9X-000104
+    - VCFQ-9X-000105
+    - VCFQ-9X-000106
+    - VCFQ-9X-000111
+    - VCFQ-9X-000137
+  when:
+    - ops_fm_nginx_defaults_run_vcfq_9x_000001 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000004 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000007 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000009 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000010 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000025 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000037 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000047 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000048 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000060 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000062 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000063 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000099 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000100 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000102 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000103 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000104 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000105 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000106 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000111 | bool
+    - ops_fm_nginx_defaults_run_vcfq_9x_000137 | bool
+  block:
+    - name: 'NGINX - Copy configuration template to overwrite {{ ops_fm_nginx_vars_nginx_conf_file }}.'
+      ansible.builtin.template:
+        src: 'nginx.conf'
+        dest: '{{ ops_fm_nginx_vars_nginx_conf_file }}'
+        owner: root
+        group: root
+        mode: '0600'
+        force: true
+      notify:
+        - '{{ role_name }} : restart nginx'
+
+###################################################################################################################################
+- name: VCFQ-9X-000003
+  tags: [VCFQ-9X-000003]
+  when:
+    - ops_fm_nginx_defaults_run_vcfq_9x_000003 | bool
+  block:
+    - name: VCFQ-9X-000003 - Enable SSL on external server contexts
+      ansible.builtin.lineinfile:
+        path: "{{ ops_fm_nginx_vars_ssl_conf_file }}"
+        regexp: "^listen\\s*443\\s*ssl*"
+        line: "listen       443 ssl default_server;"
+        insertbefore: BOF
+        state: present
+      notify:
+        - '{{ role_name }} : reload nginx'
+
+###################################################################################################################################
+- name: VCFQ-9X-000019
+  tags: [VCFQ-9X-000019]
+  when:
+    - ops_fm_nginx_defaults_run_vcfq_9x_000019 | bool
+  block:
+    - name: 'VCFQ-9X-000019 - Find logs with incorrect permissions in {{ ops_fm_nginx_vars_log_folder }}.'
+      ansible.builtin.shell: find {{ ops_fm_nginx_vars_log_folder }} -xdev -type f -a '(' -not -perm 640 -o -not -user {{ ops_fm_nginx_vars_log_owner }} -o -not -group {{ ops_fm_nginx_vars_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFQ-9X-000019 - Update permissions on log files found to be incorrect in {{ ops_fm_nginx_vars_log_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ ops_fm_nginx_vars_log_owner }}'
+        group: '{{ ops_fm_nginx_vars_log_group }}'
+        mode: '{{ ops_fm_nginx_vars_log_file_mode }}'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+# Placeholder for 26, 34, 35
+
+###################################################################################################################################
+- name: VCFQ-9X-000040
+  tags: [VCFQ-9X-000040]
+  when:
+    - ops_fm_nginx_defaults_run_vcfq_9x_000040 | bool
+  block:
+    - name: 'VCFQ-9X-000040 - Update permissions on SSL key file: {{ ops_fm_nginx_vars_ssl_key_file }}'
+      ansible.builtin.file:
+        path: '{{ ops_fm_nginx_vars_ssl_key_file }}'
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '0600'
+
+###################################################################################################################################
+- name: VCFQ-9X-000078
+  tags: [VCFQ-9X-000078]
+  when:
+    - ops_fm_nginx_defaults_run_vcfq_9x_000078 | bool
+  block:
+    - name: 'VCFQ-9X-000078 - Find configuration files with incorrect permissions in {{ ops_fm_nginx_vars_conf_folder }}.'
+      ansible.builtin.shell: find {{ ops_fm_nginx_vars_conf_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ ops_fm_nginx_vars_conf_owner }} -o -not -group {{ ops_fm_nginx_vars_conf_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFQ-9X-000078 - Update permissions on configuration files found to be incorrect in {{ ops_fmS_nginx_vars_conf_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ ops_fm_nginx_vars_conf_owner }}'
+        group: '{{ ops_fm_nginx_vars_conf_group }}'
+        mode: '{{ ops_fm_nginx_vars_conf_file_mode }}'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFQ-9X-000090
+  tags: [VCFQ-9X-000090]
+  when:
+    - ops_fm_nginx_defaults_run_vcfq_9x_000090 | bool
+  block:
+    - name: VCFQ-9X-000090 - Approved TLS versions
+      ansible.builtin.lineinfile:
+        path: "{{ ops_fm_nginx_vars_ssl_conf_file }}"
+        regexp: "^ssl_protocols\\s*TLSv1.2\\s*TLSv1.3;"
+        line: "ssl_protocols  TLSv1.2 TLSv1.3;"
+        insertbefore: BOF
+        state: present
+      notify:
+        - '{{ role_name }} : reload nginx'
+
+###################################################################################################################################
+- name: VCFQ-9X-000096
+  tags: [VCFQ-9X-000096]
+  when:
+    - ops_fm_nginx_defaults_run_vcfq_9x_000096 | bool
+  block:
+    - name: VCFQ-9X-000096 - Remove /etc/nginx/sites-enabled/default file if it exists.
+      ansible.builtin.file:
+        path: '/etc/nginx/sites-enabled/default'
+        state: absent
+      notify:
+        - '{{ role_name }} : reload nginx'
+
+###################################################################################################################################
+- name: VCFQ-9X-000098
+  tags: [VCFQ-9X-000098]
+  when:
+    - ops_fm_nginx_defaults_run_vcfq_9x_000098 | bool
+  block:
+    - name: VCFQ-9X-000098 - Prefer server ciphers
+      ansible.builtin.lineinfile:
+        path: "{{ ops_fm_nginx_vars_ssl_conf_file }}"
+        regexp: "^ssl_prefer_server_ciphers\\s*on;"
+        line: "ssl_prefer_server_ciphers on;"
+        insertbefore: BOF
+        state: present
+      notify:
+        - '{{ role_name }} : reload nginx'
+
+###################################################################################################################################

@@ -1,0 +1,38 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+# auditd
+photon_5_vars_auditd_stig_rule_file: '/etc/audit/rules.d/audit.STIG.rules'
+photon_5_vars_auditd_conf_file: '/etc/audit/auditd.conf'
+
+# PAM
+photon_5_vars_pam_faillock_conf_file: '/etc/security/faillock.conf'
+photon_5_vars_pam_pwquality_conf_file: '/etc/security/pwquality.conf'
+photon_5_vars_pam_system_password_file: '/etc/pam.d/system-password'
+photon_5_vars_pam_system_auth_file: '/etc/pam.d/system-auth'
+photon_5_vars_pam_system_account_file: '/etc/pam.d/system-account'
+
+# sshd
+photon_5_vars_sshd_config_file: '/etc/ssh/sshd_config'
+photon_5_vars_sshd_banner: /etc/issue
+
+# limits.conf
+photon_5_vars_limits_conf_file: '/etc/security/limits.conf'
+
+# misc
+photon_5_vars_etc_issue_file: '/etc/issue'
+photon_5_vars_rsyslog_conf_file: '/etc/rsyslog.conf'
+photon_5_vars_login_defs_file: '/etc/login.defs'
+photon_5_vars_modprobe_conf_file: '/etc/modprobe.d/modprobe.conf'
+photon_5_vars_sysctl_conf_file: '/etc/sysctl.d/zz-stig-hardening.conf'
+photon_5_vars_grub_conf_file: '/boot/grub2/grub.cfg'
+photon_5_vars_profile_tmout_sh: '/etc/profile.d/tmout.sh'
+photon_5_vars_tdnf_conf_file: '/etc/tdnf/tdnf.conf'
+photon_5_vars_aide_conf_file: '/etc/aide.conf'
+photon_5_vars_systemd_resolved_conf_file: '/etc/systemd/resolved.conf'
+photon_5_vars_systemd_tmp_mount_file: '/lib/systemd/system/tmp.mount'

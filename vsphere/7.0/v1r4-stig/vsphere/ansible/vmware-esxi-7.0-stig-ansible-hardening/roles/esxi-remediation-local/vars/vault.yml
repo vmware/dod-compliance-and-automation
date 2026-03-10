@@ -1,0 +1,6 @@
+---
+vault_vcenter_password: changeme
+vault_domain_password: changeme
+vault_chap_password: changeme
+vault_mutual_chap_password: changeme
+vault_esxi_password: changeme

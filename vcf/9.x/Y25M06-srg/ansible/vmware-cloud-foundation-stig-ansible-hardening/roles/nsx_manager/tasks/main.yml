@@ -1,0 +1,33 @@
+---
+
+- name: Include NSX Manager tasks
+  ansible.builtin.include_tasks:
+    file: manager.yml
+    apply:
+      tags:
+        - nsx-manager
+  tags:
+    - nsx-manager
+    - VCFN-9X-000007
+    - VCFN-9X-000010
+    - VCFN-9X-000012
+    - VCFN-9X-000013
+    - VCFN-9X-000034
+    - VCFN-9X-000037
+    - VCFN-9X-000038
+    - VCFN-9X-000039
+    - VCFN-9X-000040
+    - VCFN-9X-000041
+    - VCFN-9X-000042
+    - VCFN-9X-000043
+    - VCFN-9X-000050
+    - VCFN-9X-000065
+    - VCFN-9X-000075
+    - VCFN-9X-000076
+    - VCFN-9X-000085
+    - VCFN-9X-000086
+    - VCFN-9X-000091
+    - VCFN-9X-000111
+    - VCFN-9X-000113
+    - VCFN-9X-000114
+    - VCFN-9X-000115

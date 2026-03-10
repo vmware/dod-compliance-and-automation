@@ -1,0 +1,51 @@
+# ESXi
+# Choose whether to scan a single host, all hosts in a cluster, or all hosts in vCenter.
+vmhostName: ""
+cluster: ""
+allesxi: true
+# Enter an array of users that should be in the lockdown mode exceptions list.
+exceptionUsers: []
+# Enter the environment specific syslog server ESXi should be forwarding logs to.
+syslogServer: "tcp://log.test.local:514"
+# If ESXi is joined to AD, enter the AD group that has administrative access to ESXi.
+adAdminGroup: "MyAdAdminGroup"
+# Enter the environment specific time servers.
+esxiNtpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Enter the environment specific vMotion VLAN Id.
+vMotionVlanId: "100"
+# Enter the environment specific Management VLAN Id.
+mgtVlanId: "101"
+# If snmp is used in the environment change to true.
+snmpEnabled: "false"
+# Enter the latest build number for ESXi.
+esxiBuildNumber: "24585291"
+# Enter the approved certificate issuer organization name (issuer_organization field in the cert).
+certificateIssuerOrg: 'U.S. Government'
+# vCenter
+# Enter the environment specific syslog server vCenter should be forwarding logs to.
+syslogServers:
+  - "loginsight.test.com"
+  - "syslog.server2.com"
+# Enter the environment specific time servers.
+ntpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# If an IPfix collector is used enter the IP.
+ipfixCollectorAddress: ""
+# Enter any approved users in the bash shell administrators users group
+bashShellAdminUsers:
+  - 'Administrator'
+# Enter any approved group in the bash shell administrators group
+bashShellAdminGroups: []
+# Enter any approved users in the trusted admin users group
+trustedAdminUsers: []
+# Enter any approved users in the trusted admin group
+trustedAdminGroups: []
+# Set to false if file based backups are used via the VAMI
+backup3rdParty: false
+# VM
+# Choose whether to scan a single VM or all VMs in vCenter.
+vmName: ""
+allvms: true

@@ -1,0 +1,14 @@
+# Variables defined here are to override role variables in /default/main.yml and apply to all nodes in the ansible inventory group with the same name as this file.
+# For example, if you want to disable a specific STIG ID, the variable that controls that rule can be placed in here and disabled.
+
+## ---- DO NOT EDIT THIS SECTION ----
+# Disable N/A Photon Controls
+## Disable rsyslog related rules since the HCX appliances currently utilize syslog-ng
+photon_5_defaults_run_phtn_50_000012: false
+photon_5_defaults_run_phtn_50_000074: false
+photon_5_defaults_run_phtn_50_000241: false
+photon_5_defaults_run_phtn_50_000242: false
+## Disable fixing kernel parameters required for networking capabilities of HCX connectors
+photon_5_defaults_run_phtn_50_000229: false
+photon_5_defaults_run_phtn_50_000231: false
+## ---- DO NOT EDIT THIS SECTION ----

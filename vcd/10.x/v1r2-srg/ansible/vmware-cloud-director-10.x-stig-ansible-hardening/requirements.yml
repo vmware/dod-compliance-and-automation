@@ -1,0 +1,6 @@
+---
+# Pull Photon role from Github
+roles:
+  - src: https://github.com/vmware/dod-compliance-and-automation/tree/master/photon/4.0/v1r5-srg/ansible/vmware-photon-4.0-stig-ansible-hardening
+    scm: git
+    version: master

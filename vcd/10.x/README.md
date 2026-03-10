@@ -3,18 +3,19 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|      Version      |        V1R1*       |
-|:-----------------:|:------------------:|
-|      `10.4`       | :heavy_check_mark: |
-|      `10.4.1`     | :heavy_check_mark: |
-|      `10.4.1.1`   | :heavy_check_mark: |
-|      `10.4.2`     | :heavy_check_mark: |
-|      `10.4.2.1`   | :heavy_check_mark: |
-|      `10.4.2.2`   | :heavy_check_mark: |
-|      `10.4.3  `   | :heavy_check_mark: |
-|      `10.5  `     | :heavy_check_mark: |
-|      `10.5.1  `   | :heavy_check_mark: |
-|      `10.5.1.1  ` | :heavy_check_mark: |
+|      Version      |        V1R1*       |        V1R2*       |
+|:-----------------:|:------------------:|:------------------:|
+|      `10.4`       | :heavy_check_mark: |         :x:        |
+|      `10.4.1`     | :heavy_check_mark: |         :x:        |
+|      `10.4.1.1`   | :heavy_check_mark: |         :x:        |
+|      `10.4.2`     | :heavy_check_mark: |         :x:        |
+|      `10.4.2.1`   | :heavy_check_mark: |         :x:        |
+|      `10.4.2.2`   | :heavy_check_mark: |         :x:        |
+|      `10.4.3  `   | :heavy_check_mark: |         :x:        |
+|      `10.5`       | :heavy_check_mark: |         :x:        |
+|      `10.5.1`     | :heavy_check_mark: |         :x:        |
+|      `10.5.1.1`   | :heavy_check_mark: |         :x:        |
+|      `10.6.1`     |        :x:         | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide  
@@ -22,13 +23,13 @@ The table below provides supported interoperability between product and STIG ver
 ## Overview
 This project folder contains content for compliance auditing and remediation of the VMware Cloud Director 10.x STIG Readiness Guide.
 
-The VMware Identity Manager 3.3.x Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of VMware Cloud Director 10.x in the Department of Defense (DOD). The VMware Cloud Director 10.x STIG is comprised of the following:
+The VMware Cloud Director Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of VMware Cloud Director 10.x in the Department of Defense (DOD). The VMware Cloud Director 10.x STIG is comprised of the following:
 
 - VMware Cloud Director 10.x STIG 
   - VCD Application
   - VCD Appliance
     - NGINX
-    - Photon OS 3.0
+    - Photon OS 4.0
     - PostgreSQL
 
 The VVMware Cloud Director 10.x STIGs presume operation in an environment compliant with all applicable DOD guidance.

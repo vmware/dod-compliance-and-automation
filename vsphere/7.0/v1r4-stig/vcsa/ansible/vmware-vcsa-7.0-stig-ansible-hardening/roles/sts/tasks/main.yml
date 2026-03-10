@@ -1,0 +1,10 @@
+---
+
+- name: Include STS
+  ansible.builtin.include_tasks:
+    file: sts.yml
+    apply:
+      tags:
+        - sts
+  tags:
+    - always

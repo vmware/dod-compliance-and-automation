@@ -3,37 +3,38 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|      Version      |        V1R1*       |         V1R2*      |         V1R3*      |         V1R4*      |         V1R1       |         V1R2       |         V1R3       |
-|:-----------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
-|     `7.0 U2`      | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U2a`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U2b`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U2c`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U2d`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3`      |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3a`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U2c`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U2d`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3`      |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3a`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3c`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3d`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3e`     |        :x:         |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3f`     |        :x:         |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3g`     |        :x:         |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3h`     |        :x:         |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `7.0 U3i`     |        :x:         |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3j`     |        :x:         |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | 
-|     `7.0 U3k`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3l`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3m`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3n`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3o`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3p`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3q`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3r`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3s`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|     `7.0 U3t`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|      Version      |        V1R1*       |         V1R2*      |         V1R3*      |         V1R4*      |         V1R1       |         V1R2       |         V1R3       |         V1R4       |
+|:-----------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
+|     `7.0 U2`      | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U2a`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U2b`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U2c`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U2d`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3`      |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3a`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U2c`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U2d`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3`      |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3a`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3c`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3d`     |        :x:         | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3e`     |        :x:         |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3f`     |        :x:         |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3g`     |        :x:         |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3h`     |        :x:         |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `7.0 U3i`     |        :x:         |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3j`     |        :x:         |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3k`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3l`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3m`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3n`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3o`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3p`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3q`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3r`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3s`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3t`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `7.0 U3u`     |        :x:         |         :x:        |         :x:        |         :x:        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide  

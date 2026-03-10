@@ -3,25 +3,26 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|      Version      |        V1R1*       |         V1R2*      |         V1R1       |         V2R1       |         V2R2       |
-|:-----------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
-|     `8.0 GA`      |        :x:         |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `8.0 U1`      | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `8.0 U1a`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `8.0 U1b`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `8.0 U1c`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `8.0 U1d`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `8.0 U1e`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |
-|     `8.0 U2`      |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |
-|     `8.0 U2a`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |
-|     `8.0 U2b`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |
-|     `8.0 U2c`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |
-|     `8.0 U2d`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |
-|     `8.0 U3`      |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
-|     `8.0 U3a`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
-|     `8.0 U3b`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
-|     `8.0 U3c`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
-|     `8.0 U3d`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: |
+|      Version      |        V1R1*       |         V1R2*      |         V1R1       |         V2R1       |         V2R2       |         V2R3       |
+|:-----------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
+|     `8.0 GA`      |        :x:         |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `8.0 U1`      | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `8.0 U1a`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `8.0 U1b`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `8.0 U1c`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `8.0 U1d`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `8.0 U1e`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
+|     `8.0 U2`      |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |
+|     `8.0 U2a`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |
+|     `8.0 U2b`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |
+|     `8.0 U2c`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |
+|     `8.0 U2d`     |        :x:         | :heavy_check_mark: | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |
+|     `8.0 U3`      |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `8.0 U3a`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `8.0 U3b`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `8.0 U3c`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `8.0 U3d`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|     `8.0 U3e`     |        :x:         |        :x:         |        :x:         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide  

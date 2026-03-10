@@ -1,0 +1,811 @@
+---
+- name: ESXI-70-000002 - The ESXi host must verify the DCUI.Access list
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      DCUI.Access: "{{ dcui_access }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000002 | bool
+  tags:
+    - ESXI-70-000002
+
+- name: ESXI-70-000003 - The ESXi host must verify the exception users list for lockdown mode
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_hostname }} -User {{ vcenter_username }} -Password {{ vcenter_password }};
+      $vmhost = Get-VMHost -Name {{ item.value.hostname }} | Get-View;
+      $lockdown = Get-View $vmhost.ConfigManager.HostAccessManager;
+      $exceptions = $lockdown.QueryLockdownExceptions();
+      $exceptions | Out-File /{{ role_path }}/stig_findings/ESXI-70-000003_{{ item.value.hostname }}_Findings.txt
+  args:
+    executable: /usr/bin/pwsh
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000003 | bool
+  tags:
+    - ESXI-70-000003
+
+- name: ESXI-70-000004 - Remote logging for ESXi hosts must be configured
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Syslog.global.logHost: "{{ syslog_server_hostname }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000004 | bool
+  tags:
+    - ESXI-70-000004
+
+- name: ESXI-70-000005 - The ESXi host must enforce the limit of three consecutive invalid logon attempts by a user
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Security.AccountLockFailures: "{{ account_lock_failures }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000005 | bool
+  tags:
+    - ESXI-70-000005
+
+- name: ESXI-70-000006 - The ESXi host must enforce the unlock timeout of 15 minutes after a user account is locked out
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Security.AccountUnlockTime: "{{ account_unlock_time }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000006 | bool
+  tags:
+    - ESXI-70-000006
+
+- name: ESXI-70-000007 - The ESXi host must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Annotations.WelcomeMessage: '{{ dod_welcome_banner | regex_replace("\n", "") }}'
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000007 | bool
+  tags:
+    - ESXI-70-000007
+
+- name: ESXI-70-000030 - The ESXi host must produce audit records containing information to establish what type of events occurred
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Config.HostAgent.log.level: "{{ log_level }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000030 | bool
+  tags:
+    - ESXI-70-000030
+
+- name: ESXI-70-000031 - The ESXi host must enforce password complexity by requiring that at least one upper-case character be used
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Security.PasswordQualityControl: "{{ password_complexity }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000031 | bool
+  tags:
+    - ESXI-70-000031
+
+- name: ESXI-70-000032 - The ESXi host must prohibit the reuse of passwords within five iterations
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Security.PasswordHistory: "{{ password_history }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000032 | bool
+  tags:
+    - ESXI-70-000032
+
+- name: ESXI-70-000034 - The ESXi host must disable the Managed Object Browser (MOB)
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Config.HostAgent.plugins.solo.enableMob: "{{ set_managed_object_browser }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000034 | bool
+  tags:
+    - ESXI-70-000034
+
+- name: ESXI-70-000054 - The ESXi host must enable bidirectional CHAP authentication for iSCSI traffic
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_hostname }} -User {{ vcenter_username }} -Password {{ vcenter_password }};
+      Get-VMHost -Name {{ item.value.hostname }} | Get-VMHostHba | Where {$_.Type -eq "iscsi"} | Set-VMHostHba -ChapType Required -ChapName "{{ chap_name }}"
+      -ChapPassword "{{ chap_password }}" -MutualChapEnabled $true -MutualChapName "{{ mutual_chap_name }}" -MutualChapPassword "{{ mutual_chap_password }}"
+  args:
+    executable: /usr/bin/pwsh
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000054 | bool
+  tags:
+    - ESXI-70-000054
+
+- name: ESXI-70-000035 - The ESXi host must be configured to disable non-essential capabilities by disabling SSH
+  community.vmware.vmware_host_service_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    service_name: TSM-SSH
+    service_policy: false
+    state: stop
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000035 | bool
+  tags:
+    - ESXI-70-000035
+
+- name: ESXI-70-000036 - The ESXi host must disable ESXi Shell unless needed for diagnostics or troubleshooting
+  community.vmware.vmware_host_service_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    service_name: TSM
+    service_policy: false
+    state: stop
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000036 | bool
+  tags:
+    - ESXI-70-000036
+
+- name: ESXI-70-000037 - The ESXi host must use Active Directory for local user authentication
+  community.vmware.vmware_host_active_directory:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    ad_domain: "{{ domain_name }}"
+    ad_user: "{{ domain_username }}"
+    ad_password: "{{ domain_password }}"
+    ad_state: present
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000037 | bool
+  tags:
+    - ESXI-70-000037
+
+############################################
+
+# Title: The ESXi host must use the vSphere Authentication Proxy to protect passwords when adding ESXi hosts to Active Directory
+# ESXI-70-000038 requires manual remediation
+
+############################################
+
+- name: ESXI-70-000039 - The ESXi host must use Active Directory for local user authentication
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Config.HostAgent.plugins.hostsvc.esxAdminsGroup: "{{ esx_admins_group }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000039 | bool
+  tags:
+    - ESXI-70-000039
+
+- name: ESXI-70-000041 - The ESXi host must set a timeout to automatically disable idle shell sessions after two minutes
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      UserVars.ESXiShellInteractiveTimeOut: "{{ shell_int_timeout }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000041 | bool
+  tags:
+    - ESXI-70-000041
+
+- name: ESXI-70-000042 - The ESXi host must terminate shell services after 10 minutes
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      UserVars.ESXiShellTimeOut: "{{ shell_timeout }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000042 | bool
+  tags:
+    - ESXI-70-000042
+
+- name: ESXI-70-000043 - The ESXi host must log out of the console UI after two minutes
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      UserVars.DcuiTimeOut: "{{ dcui_timeout }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000043 | bool
+  tags:
+    - ESXI-70-000043
+
+- name: ESXI-70-000045 - The ESXi host must enable a persistent log location for all locally stored logs
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Syslog.global.logDir: "{{ syslog_scratch }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000045 | bool
+  tags:
+    - ESXI-70-000045
+
+- name: ESXI-70-000046 - The ESXi host must configure NTP time synchronization. Part 1 of 2
+  community.vmware.vmware_host_ntp:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    state: present
+    ntp_servers:
+      - "{{ ntpserver1 }}"
+      - "{{ ntpserver2 }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000046 | bool
+  tags:
+    - ESXI-70-000046
+
+- name: ESXI-70-000046 - The ESXi host must configure NTP time synchronization. Part 2 of 2
+  community.vmware.vmware_host_service_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    service_name: ntpd
+    service_policy: true
+    state: start
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000046 | bool
+  tags:
+    - ESXI-70-000046
+
+- name: ESXI-70-000047 - The ESXi Image Profile and vSphere Installation Bundle (VIB) Acceptance Levels must be verified.
+  community.vmware.vmware_host_acceptance:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    acceptance_level: "{{ vib_accept_level }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000047 | bool
+  tags:
+    - ESXI-70-000047
+
+############################################
+
+# Title: The ESXi host must protect the confidentiality and integrity of transmitted information by isolating vMotion traffic
+# ESXI-70-000048 requires manual remediation
+
+############################################
+
+############################################
+
+# Title: The ESXi host must protect the confidentiality and integrity of transmitted information by protecting ESXi management traffic
+# ESXI-70-000049 requires manual remediation
+
+############################################
+
+############################################
+
+# Title: The ESXi host must protect the confidentiality and integrity of transmitted information by protecting IP based management traffic
+# ESXI-70-000050 requires manual remediation
+
+############################################
+
+- name: ESXI-70-000053 - SNMP must be configured properly on the ESXi host
+  community.vmware.vmware_host_snmp:
+    hostname: "{{ item.value.hostname }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
+    validate_certs: "{{ validate_certs }}"
+    state: disabled
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000053 | bool
+  tags:
+    - ESXI-70-000053
+
+- name: ESXI-70-000055 - The ESXi host must disable Inter-VM transparent page sharing
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Mem.ShareForceSalting: "{{ share_force_salting }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000055 | bool
+  tags:
+    - ESXI-70-000055
+
+- name: ESXI-70-000056 - The ESXi host must configure the firewall to restrict access to services running on the host
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_hostname }} -User {{ vcenter_username }} -Password {{ vcenter_password }};
+      $allowedips = {{ item.value.allowed_ip }};
+      $fwservices = Get-VMHost -Name {{ item.value.hostname }} | Get-VMHostFirewallException | Where-Object {($_.Enabled -eq $True) -and ($_.extensiondata.allowedhosts.allip -eq 'enabled') -and ($_.Name -ne 'vSphere Web Client') `
+      -and ($_.Name -ne 'dellptagenttcp') -and ($_.Name -ne 'dellsshServer') -and ($_.Name -ne 'VMware vCenter Agent')};
+      $esxcli = Get-EsxCli -VMHost {{ item.value.hostname }} -V2;
+      ForEach($fwservice in $fwservices){
+        $fwsvcname = $fwservice.extensiondata.key;
+        $fwargs = $esxcli.network.firewall.ruleset.set.CreateArgs();
+        $fwargs.allowedall = $false;
+        $fwargs.rulesetid = $fwsvcname;
+        $esxcli.network.firewall.ruleset.set.Invoke($fwargs) | Out-Null;
+        ForEach($allowedip in $allowedips){
+          $fwallowedargs = $esxcli.network.firewall.ruleset.allowedip.add.CreateArgs();
+          $fwallowedargs.ipaddress = $allowedip;
+          $fwallowedargs.rulesetid = $fwsvcname;
+          $esxcli.network.firewall.ruleset.allowedip.add.Invoke($fwallowedargs) | Out-Null;
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000056 | bool
+  tags:
+    - ESXI-70-000056
+
+- name: ESXI-70-000058 - The ESXi host must enable BPDU filter on the host to prevent being locked out of physical switch ports with Portfast and BPDU Guard enabled
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Net.BlockGuestBPDU: "{{ block_guest_bpdu }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000058 | bool
+  tags:
+    - ESXI-70-000058
+
+- name: ESXI-70-000059 - The virtual switch Forged Transmits policy must be set to reject on the ESXi host Part 1 of 2
+  community.vmware.vmware_vswitch:
+    hostname: "{{ item.value.hostname }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
+    validate_certs: "{{ validate_certs }}"
+    switch: "{{ item.value.vswitch }}"
+    nics: "{{ item.value.nics }}"
+    number_of_ports: "{{ item.value.number_of_ports }}"
+    mtu: "{{ item.value.mtu }}"
+    security:
+      forged_transmits: false
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000059 | bool
+  tags:
+    - ESXI-70-000059
+
+- name: ESXI-70-000059 - The virtual switch Forged Transmits policy must be set to reject on the ESXi host Part 2 of 2
+  community.vmware.vmware_portgroup:
+    hostname: "{{ item.value.hostname }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    switch: "{{ item.value.vswitch }}"
+    portgroup: "{{ item.value.portgroup }}"
+    vlan_id: "{{ item.value.vlan_id }}"
+    security:
+      forged_transmits: false
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000059 | bool
+  tags:
+    - ESXI-70-000059
+
+- name: ESXI-70-000060 - The virtual switch MAC Address Change policy must be set to reject on the ESXi host Part 1 of 2
+  community.vmware.vmware_vswitch:
+    hostname: "{{ item.value.hostname }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
+    validate_certs: "{{ validate_certs }}"
+    switch: "{{ item.value.vswitch }}"
+    nics: "{{ item.value.nics }}"
+    number_of_ports: "{{ item.value.number_of_ports }}"
+    mtu: "{{ item.value.mtu }}"
+    security:
+      mac_changes: false
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000060 | bool
+  tags:
+    - ESXI-70-000060
+
+- name: ESXI-70-000060 - The virtual switch MAC Address Change policy must be set to reject on the ESXi host Part 2 of 2
+  community.vmware.vmware_portgroup:
+    hostname: "{{ item.value.hostname }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    switch: "{{ item.value.vswitch }}"
+    portgroup: "{{ item.value.portgroup }}"
+    vlan_id: "{{ item.value.vlan_id }}"
+    security:
+      mac_changes: false
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000060 | bool
+  tags:
+    - ESXI-70-000060
+
+- name: ESXI-70-000061 - The virtual switch Promiscuous Mode policy must be set to reject on the ESXi host Part 1 of 2
+  community.vmware.vmware_vswitch:
+    hostname: "{{ item.value.hostname }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
+    validate_certs: "{{ validate_certs }}"
+    switch: "{{ item.value.vswitch }}"
+    nics: "{{ item.value.nics }}"
+    number_of_ports: "{{ item.value.number_of_ports }}"
+    mtu: "{{ item.value.mtu }}"
+    security:
+      promiscuous_mode: false
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000061 | bool
+  tags:
+    - ESXI-70-000061
+
+- name: ESXI-70-000061 - The virtual switch Promiscuous Mode policy must be set to reject on the ESXi host Part 2 of 2
+  community.vmware.vmware_portgroup:
+    hostname: "{{ item.value.hostname }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    switch: "{{ item.value.vswitch }}"
+    portgroup: "{{ item.value.portgroup }}"
+    vlan_id: "{{ item.value.vlan_id }}"
+    security:
+      promiscuous_mode: false
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000061 | bool
+  tags:
+    - ESXI-70-000061
+
+- name: ESXI-70-000062 - Use of the dvFilter network APIs must be restricted.
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Net.DVFilterBindIpAddress: "{{ dvfilter_bind_ip_address }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000062 | bool
+  tags:
+    - ESXI-70-000062
+
+############################################
+
+# Title: For the ESXi host all port groups must be configured to a value other than that of the native VLAN
+# ESXI-70-000063 requires manual remediation
+
+############################################
+
+############################################
+
+# Title: For the ESXi host all port groups must not be configured to VLAN 4095 unless Virtual Guest Tagging (VGT) is required
+# ESXI-70-000064 requires manual remediation
+
+############################################
+
+############################################
+
+# Title: For the ESXi host all port groups must not be configured to VLAN values reserved by upstream physical switches
+# ESXI-70-000065 requires manual remediation
+
+############################################
+
+############################################
+
+# Title: The ESXi host must not provide root/administrator level access to CIM-based hardware monitoring tools or other third-party applications
+# ESXI-70-000070 requires manual remediation
+
+############################################
+
+############################################
+
+# Title: The ESXi host must have all security patches and updates installed
+# ESXI-70-000072 requires manual remediation
+
+############################################
+- name: ESXI-70-000074 - The ESXi host must exclusively enable TLS 1.2 for all endpoints.
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      UserVars.ESXiVPsDisabledProtocols: "{{ depracted_ssl_protocols }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000074 | bool
+  tags:
+    - ESXI-70-000074
+
+############################################
+
+# Title: The ESXi host must use DoD-approved certificates
+# ESXI-70-000078 requires manual remediation
+
+############################################
+- name: ESXI-70-000079 - The ESXi host must not suppress warnings that the local or remote shell sessions are enabled
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      UserVars.SuppressShellWarning: "{{ suppress_shell_warning }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000079 | bool
+  tags:
+    - ESXI-70-000079
+
+- name: ESXI-70-000081 - The ESXi host must not suppress warnings about unmitigated hyperthreading vulnerabilities
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      UserVars.SuppressHyperthreadWarning: "{{ suppress_hyper_warning }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000081 | bool
+  tags:
+    - ESXI-70-000081
+
+- name: ESXI-70-000083 - The ESXi host OpenSLP service must be disabled
+  community.vmware.vmware_host_service_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    service_name: slpd
+    service_policy: false
+    state: stop
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000083 | bool
+  tags:
+    - ESXI-70-000083
+
+- name: ESXI-70-000086 - The ESXi host must verify certificates for SSL syslog endpoints
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Syslog.global.logCheckSSLCerts: "{{ syslog_cert_check }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000086 | bool
+  tags:
+    - ESXI-70-000086
+
+- name: ESXI-70-000087 - The ESXi host must enable volatile key destruction.
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Mem.MemEagerZero: "{{ mem_eager_zero }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000087 | bool
+  tags:
+    - ESXI-70-000087
+
+- name: ESXI-70-000088 - The ESXi host must configure a session timeout for the vSphere API
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Config.HostAgent.vmacore.soap.sessionTimeout: "{{ api_timeout }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000088 | bool
+  tags:
+    - ESXI-70-000088
+
+- name: ESXI-70-000089 - The ESXi Host Client must be configured with a session timeout
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      UserVars.HostClientSessionTimeout: "{{ host_client_timeout }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000089 | bool
+  tags:
+    - ESXI-70-000089
+
+- name: ESXI-70-000091 - The ESXi host must be configured with an appropriate maximum password age.
+  community.vmware.vmware_host_config_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    options:
+      Security.PasswordMaxDays: "{{ password_max_days }}"
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000091 | bool
+  tags:
+    - ESXI-70-000091
+
+- name: ESXI-70-000097 - The ESXi CIM service must be disabled.
+  community.vmware.vmware_host_service_manager:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ item.value.hostname }}"
+    validate_certs: "{{ validate_certs }}"
+    service_name: sfcbd-watchdog
+    service_policy: false
+    state: stop
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000097 | bool
+  tags:
+    - ESXI-70-000097
+
+- name: ESXI-70-000001 - Access to the ESXi host must be limited by enabling Lockdown Mode
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_hostname }} -User {{ vcenter_username }} -Password {{ vcenter_password }};
+      $vmhost = Get-VMHost -Name {{ item.value.hostname }} | Get-View;
+      $level = "{{ esxi_lockdown_level }}"
+      $lockdown = Get-View $vmhost.ConfigManager.HostAccessManager;
+      $lockdown.ChangeLockdownMode($level)
+  args:
+    executable: /usr/bin/pwsh
+  with_dict:
+    - "{{ esxi_hosts }}"
+  when:
+    - esxi_70_000001 | bool
+  tags:
+    - ESXI-70-000001

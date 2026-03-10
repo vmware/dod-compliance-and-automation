@@ -1,0 +1,992 @@
+# VMware vSphere 7.0 vCenter Server Appliance Perfcharts Ansible Role
+
+---
+############################################
+
+# Backup files that may be modified in case restoration is needed
+
+- name: Create time stamp
+  ansible.builtin.set_fact:
+    backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+  when:
+    - create_backups | bool
+
+- name: Backup files...if restoring be sure to restore permissions that original file had!!
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ item }}"
+    dest: "/tmp/ansible-vcsa-perfcharts-backups-{{ backup_timestamp }}/"
+    mode: preserve
+  with_items:
+    - '{{ var_server_xml_path }}'
+    - '{{ var_web_xml_path }}'
+    - '{{ var_web_stats_xml_path }}'
+    - '{{ var_json_path }}'
+    - '{{ var_catalina_props_path }}'
+    - '{{ var_perf_log4j_path }}'
+    - '{{ var_syslog_conf_path }}'
+  changed_when: false
+  register: backupresult
+  failed_when:
+    - backupresult.msg is defined
+    - "'not found' not in backupresult.msg"
+  when:
+    - create_backups | bool
+
+############################################
+
+# Title: Performance Charts must limit the amount of time that each TCP connection is kept alive.
+
+- name: VCPF-70-000001 - Performance Charts must limit the amount of time that each TCP connection is kept alive.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector'
+    attribute: 'connectionTimeout'
+    value: '{{ var_server_xml_connectiontimeout }}'
+  tags:
+    - VCPF-70-000001
+  notify:
+    - restart perfcharts
+  when:
+    - run_connection_timeout | bool
+
+############################################
+
+# Title: Performance Charts must limit the number of concurrent connections permitted.
+
+- name: VCPF-70-000002 - Performance Charts must limit the number of concurrent connections permitted.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Executor'
+    attribute: 'maxThreads'
+    value: '{{ var_server_xml_maxthreads }}'
+  tags:
+    - VCPF-70-000002
+  notify:
+    - restart perfcharts
+  when:
+    - run_max_threads | bool
+
+############################################
+
+# Title: Performance Charts must limit the maximum size of a POST request.
+
+- name: VCPF-70-000003 - Performance Charts must limit the maximum size of a POST request.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector/@maxPostSize'
+    state: absent
+  tags:
+    - VCPF-70-000003
+  notify:
+    - restart perfcharts
+  when:
+    - run_max_post_size | bool
+
+############################################
+
+# Title: Performance Charts must protect cookies from XSS.
+
+- name: VCPF-70-000004 - Performance Charts must protect cookies from XSS.
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:session-config/x:cookie-config/x:http-only'
+    value: '{{ var_web_xml_http_only }}'
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000004
+  notify:
+    - restart perfcharts
+  when:
+    - run_http_only | bool
+
+############################################
+
+# Title: Performance Charts must record user access in a format that enables monitoring of remote access.
+
+- name: VCPF-70-000005 - Performance Charts must record user access in a format that enables monitoring of remote access.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
+    attribute: 'pattern'
+    value: '{{ var_server_xml_access_log_valve_pattern }}'
+  tags:
+    - VCPF-70-000005
+  notify:
+    - restart perfcharts
+  when:
+    - run_access_valve_pattern | bool
+
+############################################
+
+# Title: Performance Charts must generate log records for system startup and shutdown.
+
+- name: VCPF-70-000006 - Performance Charts must generate log records for system startup and shutdown.
+  ansible.builtin.lineinfile:
+    path: '{{ var_json_path }}'
+    state: present
+    regexp: '^.*"StreamRedirectFile".*$'
+    line: '    "StreamRedirectFile" : "{{ var_stream_redirect_file }}",'
+    insertbefore: ^.*WorkingDir.*$
+    firstmatch: true
+  tags:
+    - VCPF-70-000006
+  notify:
+    - restart perfcharts
+  when:
+    - run_json_stream_redirect_file | bool
+
+############################################
+
+# Title: Performance Charts log files must only be modifiable by privileged users.
+
+- name: VCPF-70-000007 - Find perfcharts log files
+  ansible.builtin.find:
+    paths: '{{ var_perf_logs_path }}'
+    file_type: file
+    recurse: true
+  register: perfchartslogs
+  tags:
+    - VCPF-70-000007
+  when:
+    - run_logs_permissions | bool
+
+- name: VCPF-70-000007 - Set perfcharts log permissions
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: file
+    mode: o-w
+    owner: "perfcharts"
+    group: "users"
+  with_items: "{{ perfchartslogs.files }}"
+  tags:
+    - VCPF-70-000007
+  when:
+    - run_logs_permissions | bool
+
+############################################
+
+# Title: Performance Charts application files must be verified for their integrity.
+# VCPF-70-000008 requires manual remediation
+
+############################################
+
+# Title: Performance Charts must only run one webapp.
+# VCPF-70-000009 requires manual remediation
+
+############################################
+
+# Title: Performance Charts must not be configured with unsupported realms.
+
+# - name: VCPF-70-000010 - Remove GlobalNamingResources
+#   community.general.xml:
+#     path: '{{ var_server_xml_path }}'
+#     xpath: '/Server/GlobalNamingResources'
+#     state: absent
+#   tags:
+#     - VCPF-70-000010
+# #   notify:
+#     - restart perfcharts
+#   when:
+#     - run_user_database_realm | bool
+
+- name: VCPF-70-000010 - Remove Realm
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Realm'
+    state: absent
+  tags:
+    - VCPF-70-000010
+  notify:
+    - restart perfcharts
+  when:
+    - run_user_database_realm | bool
+
+############################################
+
+# Title: Performance Charts must be configured to limit access to internal packages.
+
+- name: VCPF-70-000011 - Performance Charts must be configured to limit access to internal packages.
+  ansible.builtin.template:
+    src: catalina.properties
+    dest: '{{ var_catalina_props_path }}'
+    owner: perfcharts
+    group: cis
+    mode: '0644'
+    force: true
+  tags:
+    - VCPF-70-000011
+  notify:
+    - restart perfcharts
+  when:
+    - run_catalina_properties_packages | bool
+
+############################################
+
+# Title: Performance Charts must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled.
+
+- name: VCPF-70-000012 - Performance Charts must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled. CSH
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="csh"]/..'
+    state: absent
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000012
+  notify:
+    - restart perfcharts
+  when:
+    - run_removed_mime_mappings | bool
+
+- name: VCPF-70-000012 - Performance Charts must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled. SH
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="sh"]/..'
+    state: absent
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000012
+  notify:
+    - restart perfcharts
+  when:
+    - run_removed_mime_mappings | bool
+
+- name: VCPF-70-000012 - Performance Charts must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled. SHAR
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="shar"]/..'
+    state: absent
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000012
+  notify:
+    - restart perfcharts
+  when:
+    - run_removed_mime_mappings | bool
+
+- name: VCPF-70-000012 - Performance Charts must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled. KSH
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:mime-mapping/x:extension[text()="ksh"]/..'
+    state: absent
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000012
+  notify:
+    - restart perfcharts
+  when:
+    - run_removed_mime_mappings | bool
+
+############################################
+
+# Title: Performance Charts must have mappings set for Java servlet pages.
+
+- name: VCPF-70-000013 - Performance Charts must have mappings set for Java servlet pages. jsp
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="jsp"]/x:url-pattern[1]'
+    value: '{{ var_web_xml_servlet_jsp_url_pattern1 }}'
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000013
+  notify:
+    - restart perfcharts
+  when:
+    - run_java_servlet | bool
+
+- name: VCPF-70-000013 - Performance Charts must have mappings set for Java servlet pages. jspx
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="jsp"]/x:url-pattern[2]'
+    value: '{{ var_web_xml_servlet_jsp_url_pattern2 }}'
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000013
+  notify:
+    - restart perfcharts
+  when:
+    - run_java_servlet | bool
+
+############################################
+
+# Title: Performance Charts must not have the Web Distributed Authoring (WebDAV) servlet installed.
+
+- name: VCPF-70-000014 - Performance Charts must not have the Web Distributed Authoring (WebDAV) servlet installed.
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet-mapping[x:servlet-name="webdav"]/..'
+    state: absent
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000014
+  notify:
+    - restart perfcharts
+  when:
+    - run_remove_webdav | bool
+
+############################################
+
+# Title: Performance Charts must be configured with memory leak protection.
+
+- name: VCPF-70-000015 - Performance Charts must be configured with memory leak protection.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Listener[@className="org.apache.catalina.core.JreMemoryLeakPreventionListener"]'
+    state: present
+  tags:
+    - VCPF-70-000015
+  notify:
+    - restart perfcharts
+  when:
+    - run_mem_leak_prevention | bool
+
+############################################
+
+# Title: Performance Charts must not have any symbolic links in the web content directory tree.
+# VCPF-70-000016 requires manual remediation
+
+############################################
+
+# Title: Performance Charts directory tree must have permissions in an "out of the box" state.
+
+- name: VCPF-70-000017 - Find perfchart web files
+  ansible.builtin.shell: find {{ var_perfcharts_web_path }} -xdev -type f -a '(' -not -user root -a -not -user perfcharts -o -not -group root ')';
+  register: files
+  tags:
+    - VCPF-70-000017
+  changed_when: files.stdout != ""
+  when:
+    - run_web_files_permissions | bool
+
+- name: VCPF-70-000017 - Set perfcharts web files owner and group
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: file
+    owner: "root"
+    group: "root"
+  with_items: "{{ files.stdout_lines }}"
+  tags:
+    - VCPF-70-000017
+  when:
+    - run_web_files_permissions | bool
+    - files.stdout != ""
+
+############################################
+
+# Title: Performance Charts must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+
+- name: VCPF-70-000018 - Performance Charts must fail to a known safe state if system initialization fails, shutdown fails, or aborts fail.
+  ansible.builtin.template:
+    src: catalina.properties
+    dest: '{{ var_catalina_props_path }}'
+    owner: perfcharts
+    group: cis
+    mode: '0644'
+    force: true
+  tags:
+    - VCPF-70-000018
+  notify:
+    - restart perfcharts
+  when:
+    - run_catalina_properties_shutdown | bool
+
+############################################
+
+# Title: Performance Charts must to limit the number of allowed connections.
+
+- name: VCPF-70-000019 - Performance Charts must to limit the number of allowed connections.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector'
+    attribute: 'acceptCount'
+    value: '{{ var_server_xml_acceptcount }}'
+  tags:
+    - VCPF-70-000019
+  notify:
+    - restart perfcharts
+  when:
+    - run_accept_count | bool
+
+############################################
+
+# Title: Performance Charts must set URIEncoding to UTF-8.
+
+- name: VCPF-70-000020 - Performance Charts must set URIEncoding to UTF-8.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector'
+    attribute: 'URIEncoding'
+    value: '{{ var_server_xml_uriencoding }}'
+  tags:
+    - VCPF-70-000020
+  notify:
+    - restart perfcharts
+  when:
+    - run_uri_encoding | bool
+
+############################################
+
+# Title: Performance Charts must use the setCharacterEncodingFilter filter.
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Check if filter-mapping exists
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]'
+    count: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  register: filtermaphits
+  tags:
+    - VCPF-70-000021
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Create new filter-mapping element if needed
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app'
+    add_children:
+      - filter-mapping:
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+    - filtermaphits.count == 0
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Create filter-mapping name if needed
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter-mapping[last()]/x:filter-name'
+    value: 'setCharacterEncodingFilter'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+    - filtermaphits.count == 0
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Configure filter mapping url-pattern
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]/x:url-pattern'
+    value: '/*'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Check for bad filter configuration inits
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param'
+    count: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  register: countbadinits
+  tags:
+    - VCPF-70-000021
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Check for bad filter configuration duplicate filters
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+    count: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  register: countbadfilters
+  tags:
+    - VCPF-70-000021
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Delete bad filter configuration
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+    state: absent
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  when:
+    - run_web_filter | bool
+    - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup new filter if needed
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app'
+    add_children:
+      - filter:
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+    - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter filter-name if needed
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[last()]/x:filter-name'
+    value: 'setCharacterEncodingFilter'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+    - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter filter-class if needed
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:filter-class'
+    value: 'org.apache.catalina.filters.SetCharacterEncodingFilter'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter async
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:async-supported'
+    value: 'true'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param 1
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param/x:param-name'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param encoding
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-name'
+    value: 'encoding'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param encoding value
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-value'
+    value: 'UTF-8'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Check for init-param 2 existance
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]'
+    count: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  register: init2counts
+  tags:
+    - VCPF-70-000021
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param 2
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+    state: present
+    pretty_print: true
+    add_children:
+      - init-param:
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+    - init2counts.count == 0
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-name'
+    value: 'ignore'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+
+- name: VCPF-70-000021 - Performance Charts must use the setCharacterEncodingFilter filter. Setup filter init-param ignore
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-value'
+    value: 'true'
+    state: present
+    pretty_print: true
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000021
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_filter | bool
+
+############################################
+
+# Title: Performance Charts must set the welcome-file node to a default web page.
+
+- name: VCPF-70-000022 - Performance Charts must set the welcome-file node to a default web page. html
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[1]'
+    value: '{{ var_web_xml_welcome_file_list1 }}'
+    state: present
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000022
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_welcome_file | bool
+
+- name: VCPF-70-000022 - Performance Charts must set the welcome-file node to a default web page. htm
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[2]'
+    value: '{{ var_web_xml_welcome_file_list2 }}'
+    state: present
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000022
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_welcome_file | bool
+
+- name: VCPF-70-000022 - Performance Charts must set the welcome-file node to a default web page. jsp
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:welcome-file-list/x:welcome-file[3]'
+    value: '{{ var_web_xml_welcome_file_list3 }}'
+    state: present
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000022
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_welcome_file | bool
+
+############################################
+
+# Title: Performance Charts must not show directory listings.
+
+- name: VCPF-70-000023 - Performance Charts must not show directory listings.
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet[x:servlet-name="default"]/x:init-param[x:param-name="listings"]/x:param-value'
+    value: 'false'
+    state: present
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000023
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_remove_listings | bool
+
+############################################
+
+# Title: Performance Charts must configured to show error pages with minimal information.
+
+- name: VCPF-70-000024 - Performance Charts must configured to show error pages with minimal information.
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:error-page[x:exception-type="java.lang.Throwable"]/x:location'
+    value: '{{ var_web_xml_error_page }}'
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000024
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_error_page | bool
+
+############################################
+
+# Title: Performance Charts must be configured to not show error reports.
+
+- name: VCPF-70-000025 - Performance Charts must be configured to not show error reports.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+    attribute: 'showServerInfo'
+    value: '{{ var_server_xml_show_server_info }}'
+  tags:
+    - VCPF-70-000025
+  notify:
+    - restart perfcharts
+  when:
+    - run_hide_error_reports | bool
+
+- name: VCPF-70-000025 - Performance Charts must be configured to not show error reports.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+    attribute: 'showReport'
+    value: '{{ var_server_xml_show_server_report }}'
+  tags:
+    - VCPF-70-000025
+  notify:
+    - restart perfcharts
+  when:
+    - run_hide_error_reports | bool
+
+############################################
+
+# Title: Performance Charts must hide the server version.
+
+- name: VCPF-70-000026 - Performance Charts must hide the server version.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector'
+    attribute: 'server'
+    value: '{{ var_server_xml_server }}'
+  tags:
+    - VCPF-70-000026
+  notify:
+    - restart perfcharts
+  when:
+    - run_server_anonymous | bool
+
+############################################
+
+# Title: Performance Charts must not enable support for TRACE requests.
+
+- name: VCPF-70-000027 - Performance Charts must not enable support for TRACE requests.
+  community.general.xml:
+    path: '{{ var_server_xml_path }}'
+    xpath: '/Server/Service/Connector/@allowTrace'
+    state: absent
+  tags:
+    - VCPF-70-000027
+  notify:
+    - restart perfcharts
+  when:
+    - run_allow_trace | bool
+
+############################################
+
+# Title: Performance Charts must have the debug option turned off.
+
+- name: VCPF-70-000028 - Performance Charts must have the debug option turned off.
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="debug"]/..'
+    state: absent
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000028
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_remove_debug | bool
+
+############################################
+
+# Title: Performance Charts must properly configure log sizes and rotation.
+
+- name: VCPF-70-000029 - Performance Charts must properly configure log sizes and rotation.
+  ansible.builtin.template:
+    src: log4j.properties
+    dest: '{{ var_perf_log4j_path }}'
+    owner: root
+    group: root
+    mode: '0655'
+    force: true
+  tags:
+    - VCPF-70-000029
+  when:
+    - run_perfcharts_log_rotation | bool
+
+############################################
+
+# Title: Rsyslog must be configured to monitor and ship Performance Charts log files.
+
+- name: VCPF-70-000030 - Rsyslog must be configured to monitor and ship Performance Charts log files.
+  ansible.builtin.template:
+    src: vmware-services-perfcharts.conf
+    dest: '{{ var_perf_syslog_conf }}'
+    owner: root
+    group: root
+    mode: '0644'
+    force: true
+  tags:
+    - VCPF-70-000030
+  notify:
+    - restart perfcharts
+  when:
+    - run_perfcharts_syslog_config | bool
+
+############################################
+
+# Title: Performance Charts must be configured with the appropriate ports.
+
+- name: VCPF-70-000031 - Performance Charts must be configured with the appropriate ports.
+  ansible.builtin.template:
+    src: catalina.properties
+    dest: '{{ var_catalina_props_path }}'
+    owner: perfcharts
+    group: cis
+    mode: '0644'
+    force: true
+  tags:
+    - VCPF-70-000031
+  notify:
+    - restart perfcharts
+  when:
+    - run_catalina_properties_bioport | bool
+
+############################################
+
+# Title: Performance Charts must disable the shutdown port.
+
+- name: VCPF-70-000032 - Performance Charts must disable the shutdown port.
+  ansible.builtin.template:
+    src: catalina.properties
+    dest: '{{ var_catalina_props_path }}'
+    owner: perfcharts
+    group: cis
+    mode: '0644'
+    force: true
+  tags:
+    - VCPF-70-000032
+  notify:
+    - restart perfcharts
+  when:
+    - run_catalina_properties_shutdownport | bool
+
+############################################
+
+# Title: Performance Charts must set the secure flag for cookies.
+
+- name: VCPF-70-000033 - Performance Charts must set the secure flag for cookies.
+  community.general.xml:
+    path: '{{ var_web_stats_xml_path }}'
+    xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
+    value: '{{ var_web_xml_cookie_secure }}'
+    namespaces:
+      x: http://java.sun.com/xml/ns/javaee
+  tags:
+    - VCPF-70-000033
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_cookie_secure | bool
+
+############################################
+
+# Title: Performance Charts default servlet must be set to readonly.
+
+- name: VCPF-70-000034 - Performance Charts default servlet must be set to readonly.
+  community.general.xml:
+    path: '{{ var_web_xml_path }}'
+    xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/param-name[text()="readonly"]'
+    state: absent
+    namespaces:
+      x: http://xmlns.jcp.org/xml/ns/javaee
+  tags:
+    - VCPF-70-000034
+  notify:
+    - restart perfcharts
+  when:
+    - run_web_remove_readonly | bool

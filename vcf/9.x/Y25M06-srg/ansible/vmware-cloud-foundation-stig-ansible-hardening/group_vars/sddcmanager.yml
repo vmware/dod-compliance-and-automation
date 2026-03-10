@@ -1,0 +1,6 @@
+# Variables defined here are to override role variables in /default/main.yml and apply to all nodes in the ansible inventory group with the same name as this file.
+# For example, if you want to disable a specific STIG ID, the variable that controls that rule can be placed in here and disabled.
+
+# SDDC Manager Configuration
+# ENABLED or DISABLED
+sddcmgr_defaults_basic_auth: 'DISABLED'

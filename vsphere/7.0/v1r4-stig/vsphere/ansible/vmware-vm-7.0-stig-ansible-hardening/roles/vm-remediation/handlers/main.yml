@@ -1,0 +1,30 @@
+---
+- name: init pwsh
+  ansible.builtin.command:
+    cmd: /usr/bin/pwsh -c echo init
+
+- name: self signed certs
+  ansible.builtin.shell:
+    cmd: |
+      Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
+  args:
+    executable: /usr/bin/pwsh
+
+- name: start_vms
+  ansible.builtin.shell:
+    cmd: |
+      Connect-VIServer -Server {{ vcenter_hostname }} -User '{{ vcenter_username }}' -Password '{{ vcenter_password }}';
+      $vms = Get-VM | where {$_.name -notMatch $exclusion_list} | Select-Object -ExpandProperty Name;
+      ForEach($vm in $vms){
+        $powered_state = Get-VM $vm | Select-Object PowerState;
+        if($powered_state.PowerState -eq "PoweredOff"){
+          Start-VM -VM $vm -Confirm:$False;
+        }
+      }
+  args:
+    executable: /usr/bin/pwsh
+
+- name: delete exclusion list
+  ansible.builtin.file:
+    path: "{{ vm_list }}"
+    state: absent

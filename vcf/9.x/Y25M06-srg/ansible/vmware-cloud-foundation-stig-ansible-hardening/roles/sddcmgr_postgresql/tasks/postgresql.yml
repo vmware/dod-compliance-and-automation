@@ -1,0 +1,531 @@
+---
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-sddcmgr-postgresql-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ sddcmgr_postgresql_vars_postgresql_conf_file }}'
+        - '{{ sddcmgr_postgresql_vars_rsyslog_conf_file }}'
+
+###################################################################################################################################
+- name: VCFC-9X-000001
+  tags: [VCFC-9X-000001]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000001 | bool
+  block:
+    - name: VCFC-9X-000001 - Get current max_connections value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW max_connections"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000001 - Set max_connections value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET max_connections = {{ sddcmgr_postgresql_defaults_max_connections }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_max_connections
+
+###################################################################################################################################
+- name: VCFC-9X-000005
+  tags: [VCFC-9X-000005]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000005 | bool
+  block:
+    - name: VCFC-9X-000005 - Get current shared_preload_libraries value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW shared_preload_libraries"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: 'VCFC-9X-000005 - Configure shared_preload_libraries in {{ sddcmgr_postgresql_vars_postgresql_conf_file }} when libraries are present.'
+      ansible.builtin.replace:
+        path: '{{ sddcmgr_postgresql_vars_postgresql_conf_file }}'
+        regexp: ^(shared_preload_libraries\s?=\s?)'((?!.*pgaudit).*)'$
+        replace: \g<1>'\g<2>,pgaudit'
+      when:
+        - not "pgaudit" in result.stdout
+        - result.stdout != ''
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFC-9X-000005 - Configure shared_preload_libraries in {{ sddcmgr_postgresql_vars_postgresql_conf_file }} when libraries are not present.'
+      ansible.builtin.lineinfile:
+        path: '{{ sddcmgr_postgresql_vars_postgresql_conf_file }}'
+        state: present
+        regexp: '^shared_preload_libraries ='
+        line: "shared_preload_libraries = 'pgaudit'"
+        backrefs: true
+      when:
+        - result.stdout == ''
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFC-9X-000006
+  tags: [VCFC-9X-000006]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000006 | bool
+  block:
+    - name: 'VCFC-9X-000006 - Find configuration files with incorrect permissions in {{ sddcmgr_postgresql_vars_data_folder }}.'
+      ansible.builtin.shell: find {{ sddcmgr_postgresql_vars_data_folder }}/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user {{ sddcmgr_postgresql_vars_conf_owner }} -o -not -group {{ sddcmgr_postgresql_vars_conf_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+      failed_when:
+        - files.stderr != ''
+        - files.rc != 0
+
+    - name: 'VCFC-9X-000006 - Update permissions on files found to be incorrect in {{ sddcmgr_postgresql_vars_data_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ sddcmgr_postgresql_vars_conf_owner }}'
+        group: '{{ sddcmgr_postgresql_vars_conf_group }}'
+        mode: '0600'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFC-9X-000007
+  tags: [VCFC-9X-000007]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000007 | bool
+  block:
+    - name: 'VCFC-9X-000007 - Configure pgaudit.log in {{ sddcmgr_postgresql_vars_postgresql_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ sddcmgr_postgresql_vars_postgresql_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log ='
+        line: "pgaudit.log = '{{ sddcmgr_postgresql_defaults_pgaudit_log }}'"
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFC-9X-000007 - Configure pgaudit.log_catalog in {{ sddcmgr_postgresql_vars_postgresql_conf_file }}. **OPTIONAL** for log tuning.'
+      ansible.builtin.lineinfile:
+        path: '{{ sddcmgr_postgresql_vars_postgresql_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log_catalog ='
+        line: 'pgaudit.log_catalog = {{ sddcmgr_postgresql_defaults_pgaudit_log_catalog }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFC-9X-000007 - Configure pgaudit.log_parameter in {{ sddcmgr_postgresql_vars_postgresql_conf_file }}. **OPTIONAL** for log tuning.'
+      ansible.builtin.lineinfile:
+        path: '{{ sddcmgr_postgresql_vars_postgresql_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log_parameter ='
+        line: 'pgaudit.log_parameter = {{ sddcmgr_postgresql_defaults_pgaudit_log_parameter }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFC-9X-000007 - Configure pgaudit.log_statement in {{ sddcmgr_postgresql_vars_postgresql_conf_file }}. **OPTIONAL** for log tuning.'
+      ansible.builtin.lineinfile:
+        path: '{{ sddcmgr_postgresql_vars_postgresql_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log_statement ='
+        line: 'pgaudit.log_statement = {{ sddcmgr_postgresql_defaults_pgaudit_log_statement }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFC-9X-000007 - Configure pgaudit.log_relation in {{ sddcmgr_postgresql_vars_postgresql_conf_file }}. **OPTIONAL** for log tuning.'
+      ansible.builtin.lineinfile:
+        path: '{{ sddcmgr_postgresql_vars_postgresql_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log_relation ='
+        line: 'pgaudit.log_relation = {{ sddcmgr_postgresql_defaults_pgaudit_log_relation }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFC-9X-000009
+  tags: [VCFC-9X-000009]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000009 | bool
+  block:
+    - name: VCFC-9X-000009 - Get current log_destination value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW log_destination"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000009 - Set log_destination value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET log_destination = {{ sddcmgr_postgresql_defaults_log_destination }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_log_destination
+
+###################################################################################################################################
+- name: VCFC-9X-000010
+  tags: [VCFC-9X-000010]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000010 | bool
+  block:
+    - name: VCFC-9X-000010 - Get current log_line_prefix value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW log_line_prefix"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000010 - Set log_line_prefix value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET log_line_prefix = {{ sddcmgr_postgresql_defaults_log_line_prefix }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_log_line_prefix
+
+###################################################################################################################################
+- name: VCFC-9X-000020
+  tags: [VCFC-9X-000020]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000020 | bool
+  block:
+    - name: VCFC-9X-000020 - Get current log_file_mode value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW log_file_mode"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000020 - Set log_file_mode value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET log_file_mode = {{ sddcmgr_postgresql_defaults_log_file_mode }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_log_file_mode
+
+    - name: 'VCFC-9X-000020 - Find logs with incorrect permissions in {{ sddcmgr_postgresql_vars_log_folder }}'
+      ansible.builtin.shell: find {{ sddcmgr_postgresql_vars_log_folder }} -xdev -type f -a '(' -not -perm 600 -o -not -user {{ sddcmgr_postgresql_vars_log_owner }} -o -not -group {{ sddcmgr_postgresql_vars_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFC-9X-000020 - Update permissions on log files found to be incorrect in {{ sddcmgr_postgresql_vars_log_folder }}'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ sddcmgr_postgresql_vars_log_owner }}'
+        group: '{{ sddcmgr_postgresql_vars_log_group }}'
+        mode: '{{ sddcmgr_postgresql_defaults_log_file_mode }}'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFC-9X-000032
+  tags: [VCFC-9X-000032]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000032 | bool
+  block:
+    - name: VCFC-9X-000032 - Check for unauthorized extensions
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "select extname from pg_extension where extname != {{ sddcmgr_postgresql_vars_pg_extension_plpgsql }}"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000032 - Removing extensions is a manual task
+      ansible.builtin.debug:
+        msg: "VCFC-9X-000032 - Possible unauthorized extensions detected...review for manual remediation: {{ result.stdout }}"
+      changed_when: true
+      when:
+        - result.stdout != ''
+
+###################################################################################################################################
+- name: VCFC-9X-000035
+  tags: [VCFC-9X-000035]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000035 | bool
+  block:
+    - name: VCFC-9X-000035 - Get current port value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW port"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000035 - Set port value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET port = {{ sddcmgr_postgresql_defaults_port }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_port
+
+###################################################################################################################################
+- name: VCFC-9X-000038
+  tags: [VCFC-9X-000038]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000038 | bool
+  block:
+    - name: VCFC-9X-000038 - Get current password_encryption value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW password_encryption"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000038 - Set password_encryption value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET password_encryption = {{ sddcmgr_postgresql_defaults_password_encryption }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_password_encryption
+
+###################################################################################################################################
+- name: VCFC-9X-000051
+  tags: [VCFC-9X-000051]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000051 | bool
+  block:
+    - name: VCFC-9X-000051 - Get current fsync value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW fsync"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000051 - Set fsync value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET fsync = {{ sddcmgr_postgresql_defaults_fsync }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_fsync
+
+    - name: VCFC-9X-000051 - Get current full_page_writes value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW full_page_writes"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000051 - Set full_page_writes value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET full_page_writes = {{ sddcmgr_postgresql_defaults_full_page_writes }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_full_page_writes
+
+    - name: VCFC-9X-000051 - Get current synchronous_commit value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW synchronous_commit"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000051 - Set synchronous_commit value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET synchronous_commit = {{ sddcmgr_postgresql_defaults_synchronous_commit }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_synchronous_commit
+
+###################################################################################################################################
+- name: VCFC-9X-000060
+  tags: [VCFC-9X-000060]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000060 | bool
+  block:
+    - name: VCFC-9X-000060 - Get current client_min_messages value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW client_min_messages"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000060 - Set client_min_messages value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET client_min_messages = {{ sddcmgr_postgresql_defaults_client_min_messages }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_client_min_messages
+
+###################################################################################################################################
+- name: VCFC-9X-000073
+  tags: [VCFC-9X-000073]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000073 | bool
+  block:
+    - name: VCFC-9X-000073 - Get current log_timezone value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW log_timezone"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000073 - Set log_timezone value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET log_timezone = {{ sddcmgr_postgresql_defaults_log_timezone }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_log_timezone
+
+###################################################################################################################################
+- name: VCFC-9X-000109
+  tags: [VCFC-9X-000109]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000109 | bool
+  block:
+    - name: VCFC-9X-000109 - Get current log_connections value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW log_connections"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000109 - Set log_connections value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET log_connections = {{ sddcmgr_postgresql_defaults_log_connections }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_log_connections
+
+###################################################################################################################################
+- name: VCFC-9X-000113
+  tags: [VCFC-9X-000113]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000113 | bool
+  block:
+    - name: VCFC-9X-000113 - Get current log_disconnections value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW log_disconnections"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000113 - Set log_disconnections value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET log_disconnections = {{ sddcmgr_postgresql_defaults_log_disconnections }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_log_disconnections
+
+###################################################################################################################################
+- name: VCFC-9X-000121
+  tags: [VCFC-9X-000121]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000121 | bool
+  block:
+    - name: 'VCFC-9X-000121 - Configure log forwarding in {{ sddcmgr_postgresql_vars_rsyslog_conf_file }}'
+      ansible.builtin.template:
+        src: '{{ sddcmgr_postgresql_vars_rsyslog_conf_file_name }}'
+        dest: '{{ sddcmgr_postgresql_vars_rsyslog_conf_file }}'
+        owner: root
+        group: root
+        mode: '0640'
+        force: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+
+###################################################################################################################################
+- name: VCFC-9X-000144
+  tags: [VCFC-9X-000144]
+  when: sddcmgr_postgresql_defaults_run_vcfc_9x_000144 | bool
+  block:
+    - name: VCFC-9X-000144 - Get current logging_collector value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -A -t -c "SHOW logging_collector"'
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFC-9X-000144 - Set logging_collector value
+      ansible.builtin.command: '{{ sddcmgr_postgresql_vars_psql_file }} -h {{ sddcmgr_postgresql_vars_psql_host }} -U {{ sddcmgr_postgresql_vars_psql_user }} -c "ALTER SYSTEM SET logging_collector = {{ sddcmgr_postgresql_defaults_logging_collector }};"'
+      register: psqlresult
+      changed_when: psqlresult.rc == 0
+      failed_when:
+        - psqlresult.stderr != ''
+        - psqlresult.rc != 0
+      notify:
+        - '{{ role_name }} : restart {{ sddcmgr_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout != sddcmgr_postgresql_defaults_logging_collector

@@ -1,0 +1,19 @@
+---
+name: VMware vSphere 8.0 Virtual Machine STIG
+title: VMware vSphere 8.0 Virtual Machine STIG
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 2.0.1
+
+inputs:
+  - name: vmName
+    value: ""
+    type: string
+    description: "The virtual machine name to audit"
+  - name: allvms
+    value: false
+    type: boolean
+    description: "Set to true to audit all virtual machines"

@@ -1,0 +1,149 @@
+# SDDC Manager Inputs
+# Enter target SDDC Manager URL IP or FQDN.
+sddcmgr_url: ''
+# Enter session token for API authentication.
+sddcmgr_sessionToken: ''
+# Enter a list of users and their authorized roles to validate.
+sddcmgr_authorizedPermissions:
+  - user: 'administrator@vsphere.local'
+    role: 'Administrator'
+  - user: 'vsphere.local\sddcadmins'
+    role: 'Administrator'
+
+# vSphere Inputs
+# ESX
+# Choose whether to scan a single host, all hosts in a cluster, or all hosts in vCenter. Precedence is allHosts > cluster > single host if multiple values are provided.
+esx_vmhostName: ''
+esx_cluster: ''
+esx_allHosts: false
+# Enter the environment specific time servers.
+esx_ntpServers: []
+# Enter the environment specific vMotion VLAN Id.
+esx_vmotionVlanId: ''
+# Enter an array of users that should be in the lockdown mode exceptions list.
+esx_lockdownExceptionUsers:
+  - 'mux_user'
+  - 'nsx-user'
+  - 'da-user'
+  - 'lldpVim-user'
+# If snmp is used in the environment change to true.
+esx_snmpEnabled: 'false'
+
+# vCenter inputs
+## Enter an array of authorized NTP servers
+vcenter_ntpServers: []
+## If IpFix is used enter an array of collector addresses that are authorized.
+vcenter_ipfixCollectorAddresses: []
+## If any portgroups are authorized to be configuring for trunking provide an array of portgroup names.
+vcenter_allowedTrunkingPortgroups: []
+## Array of authorized users that should be in the SystemConfiguration.BashShellAdministrators SSO group.
+vcenter_bashShellAdminUsers:
+  - 'Administrator'
+## Array of authorized groups that should be in the SystemConfiguration.BashShellAdministrators SSO group.
+vcenter_bashShellAdminGroups: []
+## Array of authorized port mirroring sessions by session name.
+vcenter_portMirrorSessions: []
+
+# VM inputs
+# Choose whether to scan a single vm, all vms in a cluster, or all vm in vCenter. Precedence is allvms > cluster > single vm if multiple values are provided.
+vm_Name: ''
+vm_cluster: ''
+vm_allvms: false
+
+# NSX Manager IP or FQDN
+nsx_managerAddress: ''
+# Session token generated for access to NSX. Example ead781b8-0e0c-456f-a04a-584e9ae2e45a
+nsx_sessionToken: ''
+# Session cookie id generated for access to NSX. Example 'JSESSIONID=2A165FCF851CA50FCD038DFC8E770038'
+nsx_sessionCookieId: ''
+# Manager
+# Provide a list of authorized users and their roles to validate assigned permissions in NSX. The default local users and their roles are provided as an example. This currently only validates roles assigned to all of NSX and not to Projects or other scopes.
+nsx_authorizedPermissions:
+  admin:
+    role: 'Enterprise Admin'
+  audit:
+    role: 'Auditor'
+  guestuser1:
+    role: 'Auditor'
+  guestuser2:
+    role: 'Auditor'
+# Enter the environment specific syslog server vCenter should be forwarding logs to.
+nsx_syslogServers: []
+# Enter the environment specific time servers.
+nsx_ntpServers: []
+# Enter an array of T0 Gateways that are approved to have multicast enabled.
+nsx_t0multicastlist: []
+# Enter an array of T0 Gateways interfaces that are approved to have multicast enabled.
+nsx_t0mcinterfacelist: []
+# Enter an array of T0 Gateways that are approved to have DHCP enabled.
+nsx_t0dhcplist: []
+# Enter an array of T1 Gateways that are approved to have DHCP enabled.
+nsx_t1dhcplist: []
+# Enter an array of T1 Gateways that are approved to have multicast enabled.
+nsx_t1multicastlist: []
+
+# Operations
+# Enter target VCF Operations URL IP or FQDN.
+operations_apihostname: ''
+# Enter token for API authentication.
+operations_apitoken: ''
+
+# Automation
+# Is Automation deployed in the environment? Set to false to mark Automation related rules N/A.
+automation_deployed: true
+# Enter target VCF Automation URL IP or FQDN.
+automation_url: ''
+# Enter bearer token for API authentication.
+automation_sessionToken: ''
+# Enter an array of trusted certificate common names that are validated and trusted. The internal Automation CAs are provided here by default.
+automation_trustedCertificateCNs:
+  - 'tenant-manager-0.tenant-manager.prelude.svc.cluster.local'
+  - 'tenant-manager-1.tenant-manager.prelude.svc.cluster.local'
+  - 'tenant-manager-2.tenant-manager.prelude.svc.cluster.local'
+  - 'vcf-cluster-ca'
+  - 'CA'
+  - 'VCF Operations Fleet Management Locker CA'
+# Enter an array of feature flags that are approved to be enabled
+automation_approvedFeatureFlags: []
+
+# Fleet Management
+# Enter target Fleet Management URL IP or FQDN.
+fm_apihostname: ''
+# Enter bearer token for API authentication.
+fm_apitoken: ''
+# Enter an array of trusted certificate common names that are validated and trusted. The internal Automation CAs are provided here by default.
+fm_ntpServers: []
+
+# Operations for Logs
+# Is VCF Operations for Logs deployed in the environment? Set to false to mark VCF Operations for Logs related rules N/A.
+opslogs_deployed: true
+# Enter target VCF Operations for Logs URL IP or FQDN.
+opslogs_apihostname: ''
+# Enter api token for API authentication.
+opslogs_apitoken: ''
+# 'Enter an array of NTP servers.'
+opslogs_ntpServers: []
+
+# Operations for Networks
+# Is VCF Operations for Networks deployed in the environment? Set to false to mark VCF Operations for Networks related rules N/A.
+opsnet_deployed: true
+# Enter target VCF Operations for Networks URL IP or FQDN.
+opsnet_apihostname: ''
+# Enter api token for API authentication.
+opsnet_apitoken: ''
+# Enter the environment specific syslog server Operations for Networks should be forwarding logs to.
+opsnet_syslogServers: []
+
+# Operations HCX
+# Is Operations HCX deployed in the environment? Set to false to mark Operations HCX related rules N/A.
+opshcx_deployed: true
+# Enter target VCF Operations HCX Manager URL IP or FQDN.
+opshcx_url: ''
+# Enter api token for API authentication.
+opshcx_apiToken: ''
+# Enter an array of NTP servers.
+opshcx_ntpServers: []
+
+# Identity Broker
+# Is an external VCF Identity Broker appliance deployed in the environment? Set to false to mark VCF Identity Broker related rules N/A.
+vidb_deployed: true

@@ -1,0 +1,175 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+ubuntu_2204_defaults_run_ubtu_22_211015: true
+ubuntu_2204_defaults_run_ubtu_22_212010: true
+ubuntu_2204_defaults_run_ubtu_22_212015: true
+ubuntu_2204_defaults_run_ubtu_22_213010: true
+ubuntu_2204_defaults_run_ubtu_22_213015: true
+ubuntu_2204_defaults_run_ubtu_22_213020: true
+ubuntu_2204_defaults_run_ubtu_22_213025: true
+ubuntu_2204_defaults_run_ubtu_22_214010: true
+ubuntu_2204_defaults_run_ubtu_22_214015: true
+ubuntu_2204_defaults_run_ubtu_22_215010: true
+ubuntu_2204_defaults_run_ubtu_22_215010_install: true
+ubuntu_2204_defaults_run_ubtu_22_215015: true
+ubuntu_2204_defaults_run_ubtu_22_215020: true
+ubuntu_2204_defaults_run_ubtu_22_215025: true
+ubuntu_2204_defaults_run_ubtu_22_215030: true
+ubuntu_2204_defaults_run_ubtu_22_215035: true
+ubuntu_2204_defaults_run_ubtu_22_231010: true
+ubuntu_2204_defaults_run_ubtu_22_232010: true
+ubuntu_2204_defaults_run_ubtu_22_232015: true
+ubuntu_2204_defaults_run_ubtu_22_232020: true
+ubuntu_2204_defaults_run_ubtu_22_232025: true
+ubuntu_2204_defaults_run_ubtu_22_232026: false
+ubuntu_2204_defaults_run_ubtu_22_232027: true
+ubuntu_2204_defaults_run_ubtu_22_232030: true
+ubuntu_2204_defaults_run_ubtu_22_232035: true
+ubuntu_2204_defaults_run_ubtu_22_232040: true
+ubuntu_2204_defaults_run_ubtu_22_232045: true
+ubuntu_2204_defaults_run_ubtu_22_232050: false
+ubuntu_2204_defaults_run_ubtu_22_232055: false
+ubuntu_2204_defaults_run_ubtu_22_232060: false
+ubuntu_2204_defaults_run_ubtu_22_232065: false
+ubuntu_2204_defaults_run_ubtu_22_232070: false
+ubuntu_2204_defaults_run_ubtu_22_232075: false
+ubuntu_2204_defaults_run_ubtu_22_232080: true
+ubuntu_2204_defaults_run_ubtu_22_232100: true
+ubuntu_2204_defaults_run_ubtu_22_232105: true
+ubuntu_2204_defaults_run_ubtu_22_232110: true
+ubuntu_2204_defaults_run_ubtu_22_232120: true
+ubuntu_2204_defaults_run_ubtu_22_232125: true
+ubuntu_2204_defaults_run_ubtu_22_232130: true
+ubuntu_2204_defaults_run_ubtu_22_232135: true
+ubuntu_2204_defaults_run_ubtu_22_232140: true
+ubuntu_2204_defaults_run_ubtu_22_232145: true
+ubuntu_2204_defaults_run_ubtu_22_251010: true
+ubuntu_2204_defaults_run_ubtu_22_251015: true
+ubuntu_2204_defaults_run_ubtu_22_251020: true
+ubuntu_2204_defaults_run_ubtu_22_251025: true
+ubuntu_2204_defaults_run_ubtu_22_251030: true
+ubuntu_2204_defaults_run_ubtu_22_252010: true
+ubuntu_2204_defaults_run_ubtu_22_252015: true
+ubuntu_2204_defaults_run_ubtu_22_252020: true
+ubuntu_2204_defaults_run_ubtu_22_253010: true
+ubuntu_2204_defaults_run_ubtu_22_255010: true
+ubuntu_2204_defaults_run_ubtu_22_255010_install: true
+ubuntu_2204_defaults_run_ubtu_22_255015: true
+ubuntu_2204_defaults_run_ubtu_22_255020: false
+ubuntu_2204_defaults_run_ubtu_22_255020_dod_banner: false
+ubuntu_2204_defaults_run_ubtu_22_255025: true
+ubuntu_2204_defaults_run_ubtu_22_255030: true
+ubuntu_2204_defaults_run_ubtu_22_255035: true
+ubuntu_2204_defaults_run_ubtu_22_255040: true
+ubuntu_2204_defaults_run_ubtu_22_255045: true
+ubuntu_2204_defaults_run_ubtu_22_255050: true
+ubuntu_2204_defaults_run_ubtu_22_255055: true
+ubuntu_2204_defaults_run_ubtu_22_255060: true
+ubuntu_2204_defaults_run_ubtu_22_255065: true
+ubuntu_2204_defaults_run_ubtu_22_271010: true
+ubuntu_2204_defaults_run_ubtu_22_271015: true
+ubuntu_2204_defaults_run_ubtu_22_271020: true
+ubuntu_2204_defaults_run_ubtu_22_271025: true
+ubuntu_2204_defaults_run_ubtu_22_271030: true
+ubuntu_2204_defaults_run_ubtu_22_291010: true
+ubuntu_2204_defaults_run_ubtu_22_291015: true
+ubuntu_2204_defaults_run_ubtu_22_411010: false
+ubuntu_2204_defaults_run_ubtu_22_411015: true
+ubuntu_2204_defaults_run_ubtu_22_411025: true
+ubuntu_2204_defaults_run_ubtu_22_411030: true
+ubuntu_2204_defaults_run_ubtu_22_411035: true
+ubuntu_2204_defaults_run_ubtu_22_411040: true
+ubuntu_2204_defaults_run_ubtu_22_411045: true
+ubuntu_2204_defaults_run_ubtu_22_412010: true
+ubuntu_2204_defaults_run_ubtu_22_412020: true
+ubuntu_2204_defaults_run_ubtu_22_412025: true
+ubuntu_2204_defaults_run_ubtu_22_412030: true
+ubuntu_2204_defaults_run_ubtu_22_412035: true
+ubuntu_2204_defaults_run_ubtu_22_432010: true
+ubuntu_2204_defaults_run_ubtu_22_432015: true
+ubuntu_2204_defaults_run_ubtu_22_431010: true
+ubuntu_2204_defaults_run_ubtu_22_431010_install: true
+ubuntu_2204_defaults_run_ubtu_22_431015: true
+ubuntu_2204_defaults_run_ubtu_22_611010: true
+ubuntu_2204_defaults_run_ubtu_22_611015: true
+ubuntu_2204_defaults_run_ubtu_22_611020: true
+ubuntu_2204_defaults_run_ubtu_22_611025: true
+ubuntu_2204_defaults_run_ubtu_22_611030: true
+ubuntu_2204_defaults_run_ubtu_22_611035: true
+ubuntu_2204_defaults_run_ubtu_22_611040: true
+ubuntu_2204_defaults_run_ubtu_22_611045: true
+ubuntu_2204_defaults_run_ubtu_22_611055: true
+ubuntu_2204_defaults_run_ubtu_22_611060: true
+ubuntu_2204_defaults_run_ubtu_22_611065: true
+ubuntu_2204_defaults_run_ubtu_22_611070: true
+ubuntu_2204_defaults_run_ubtu_22_612010: true
+ubuntu_2204_defaults_run_ubtu_22_612015: true
+ubuntu_2204_defaults_run_ubtu_22_612020: true
+ubuntu_2204_defaults_run_ubtu_22_612025: true
+ubuntu_2204_defaults_run_ubtu_22_612030: true
+ubuntu_2204_defaults_run_ubtu_22_612035: true
+ubuntu_2204_defaults_run_ubtu_22_612040: true
+ubuntu_2204_defaults_run_ubtu_22_631010: true
+ubuntu_2204_defaults_run_ubtu_22_631015: true
+ubuntu_2204_defaults_run_ubtu_22_651010: true
+ubuntu_2204_defaults_run_ubtu_22_651015: true
+ubuntu_2204_defaults_run_ubtu_22_651020: true
+ubuntu_2204_defaults_run_ubtu_22_651025: true
+ubuntu_2204_defaults_run_ubtu_22_651030: true
+ubuntu_2204_defaults_run_ubtu_22_651035: true
+ubuntu_2204_defaults_run_ubtu_22_652015: true
+ubuntu_2204_defaults_run_ubtu_22_652010: true
+ubuntu_2204_defaults_run_ubtu_22_652010_install: true
+ubuntu_2204_defaults_run_ubtu_22_653010: true
+ubuntu_2204_defaults_run_ubtu_22_653010_install: true
+ubuntu_2204_defaults_run_ubtu_22_653015: true
+ubuntu_2204_defaults_run_ubtu_22_653020: true
+ubuntu_2204_defaults_run_ubtu_22_653025: true
+ubuntu_2204_defaults_run_ubtu_22_653030: true
+ubuntu_2204_defaults_run_ubtu_22_653035: true
+ubuntu_2204_defaults_run_ubtu_22_653040: true
+ubuntu_2204_defaults_run_ubtu_22_653045: true
+ubuntu_2204_defaults_run_ubtu_22_653050: true
+ubuntu_2204_defaults_run_ubtu_22_653055: true
+ubuntu_2204_defaults_run_ubtu_22_653060: true
+ubuntu_2204_defaults_run_ubtu_22_653065: true
+ubuntu_2204_defaults_run_ubtu_22_653070: true
+ubuntu_2204_defaults_run_ubtu_22_653075: true
+ubuntu_2204_defaults_run_ubtu_22_654010: true
+ubuntu_2204_defaults_run_ubtu_22_671010: true
+
+# Ubuntu Configurations
+ubuntu_2204_defaults_unattended_upgrades_file_path: '/etc/apt/apt.conf.d/50unattended-upgrades'
+ubuntu_2204_defaults_auditd_rule_template_file: 'audit.STIG.rules'
+ubuntu_2204_defaults_sysctl_files:
+  - /run/sysctl.d/*
+  - /etc/sysctl.d/*
+  - /usr/local/lib/sysctl.d/*
+  - /usr/lib/sysctl.d/*
+  - /lib/sysctl.d/*
+ubuntu_2204_defaults_audit_tools:
+  - /sbin/auditctl
+  - /sbin/aureport
+  - /sbin/ausearch
+  - /sbin/autrace
+  - /sbin/auditd
+  - /sbin/augenrules
+ubuntu_2204_defaults_journalctl_command_path: '/bin/journalctl'
+ubuntu_2204_defaults_systemd_journal: '/usr/lib/tmpfiles.d/systemd.conf'
+ubuntu_2204_defaults_etc_issue_file: '/etc/issue.net'
+ubuntu_2204_defaults_timeout_script_file: '99-terminal_tmout.sh'
+
+ubuntu_2204_defaults_auditd_action_mail_acct: 'root'
+ubuntu_2204_defaults_auditd_disk_full_action: 'HALT'
+ubuntu_2204_defaults_auditd_space_left: '25%'
+ubuntu_2204_defaults_auditd_space_left_action: 'email'
+ubuntu_2204_defaults_auditd_log_group: 'root'
+
+ubuntu_2204_defaults_pamd_pam_unix_module_argument: 'yescrypt'
+
+ubuntu_2204_defaults_rsyslog_conf_file: '/etc/rsyslog.d/50-default.conf'
+ubuntu_2204_defaults_rsyslog_authpriv_log: '/var/log/secure'
+ubuntu_2204_defaults_rsyslog_deamon_log: '/var/log/messages'

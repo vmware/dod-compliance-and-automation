@@ -33,7 +33,8 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |     `V1R1`        |    Official STIG   |     2023/03/15     |[U_VMW_vSphere_7-0_Y23M03_STIG.zip](U_VMW_vSphere_7-0_Y23M03_STIG.zip)|
 |     `V1R2`        |    Official STIG   |     2023/07/26     |[U_VMW_vSphere_7-0_Y23M07_STIG.zip](U_VMW_vSphere_7-0_Y23M07_STIG.zip)|
-|     `V1R3`        |    Official STIG   |     2024/01/22     |[U_VMW_vSphere_7-0_Y24M01_STIG.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_7-0_Y24M01_STIG.zip)|
+|     `V1R3`        |    Official STIG   |     2024/01/22     |[U_VMW_vSphere_7-0_Y24M01_STIG.zip](U_VMW_vSphere_7-0_Y25M01_STIG.zip)|
+|     `V1R4`        |    Official STIG   |     2024/01/22     |[U_VMW_vSphere_7-0_Y25M04_STIG.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_7-0_Y25M04_STIG.zip)|
 
 
 ## Viewing

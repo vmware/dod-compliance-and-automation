@@ -1,0 +1,36 @@
+control 'VCEM-70-000007' do
+  title 'ESX Agent Manager log files must only be modifiable by privileged users.'
+  desc 'Log data is essential in the investigation of events. The accuracy of the information is always pertinent. One of the first steps an attacker will take is the modification or deletion of log records to cover tracks and prolong discovery. The web server must protect the log data from unauthorized modification. ESX Agent Manager restricts all modification of log files by default, but this configuration must be verified.
+
+'
+  desc 'check', "At the command prompt, run the following command:
+
+# find /var/log/vmware/eam/web/ -xdev -type f -a '(' -perm -o+w -o -not -user eam -o -not -group users ')' -exec ls -ld {} \\;
+
+If any files are returned, this is a finding."
+  desc 'fix', 'At the command prompt, run the following commands:
+
+# chmod o-w <file>
+# chown eam:users <file>
+
+Note: Substitute <file> with the listed file.'
+  impact 0.5
+  tag check_id: 'C-60354r888591_chk'
+  tag severity: 'medium'
+  tag gid: 'V-256679'
+  tag rid: 'SV-256679r888593_rule'
+  tag stig_id: 'VCEM-70-000007'
+  tag gtitle: 'SRG-APP-000119-WSR-000069'
+  tag fix_id: 'F-60297r888592_fix'
+  tag satisfies: ['SRG-APP-000119-WSR-000069', 'SRG-APP-000120-WSR-000070']
+  tag cci: ['CCI-000163', 'CCI-000164']
+  tag nist: ['AU-9 a', 'AU-9 a']
+
+  command("find '#{input('logPath')}' -type f -xdev").stdout.split.each do |fname|
+    describe file(fname) do
+      it { should_not be_more_permissive_than('0644') }
+      its('owner') { should eq 'eam' }
+      its('group') { should eq 'users' }
+    end
+  end
+end

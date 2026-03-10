@@ -1,0 +1,176 @@
+---
+
+###################################################################################################################################
+- name: VCFA-9X-000024
+  tags: [VCFA-9X-000024]
+  when: ops_net_defaults_run_vcfa_9x_000024 | bool
+  block:
+    - name: VCFA-9X-000024 - Enable auditing
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000024 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000376
+  tags: [VCFA-9X-000376]
+  when: ops_net_defaults_run_vcfa_9x_000376 | bool
+  block:
+    - name: VCFA-9X-000376 - Session timeout
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000376 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000377
+  tags: [VCFA-9X-000377]
+  when: ops_net_defaults_run_vcfa_9x_000377 | bool
+  block:
+    - name: VCFA-9X-000377 - Disable automatic certificate validation
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000377 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000378
+  tags: [VCFA-9X-000378]
+  when: ops_net_defaults_run_vcfa_9x_000378 | bool
+  block:
+    - name: VCFA-9X-000378 - Enable FIPS-validated cryptography
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000378 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000379
+  tags: [VCFA-9X-000379]
+  when: ops_net_defaults_run_vcfa_9x_000379 | bool
+  block:
+    - name: VCFA-9X-000379 - Get login banner settings
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/ni/settings/loginBanner"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "NetworkInsight {{ lookup('vars', 'var_vault_operations_networks_api_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: bannersettings
+      changed_when: false
+
+    - name: VCFA-9X-000379 - Update login banner settings
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/ni/settings/loginBanner"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "NetworkInsight {{ lookup('vars', 'var_vault_operations_networks_api_token') }}"
+          Accept: "application/json"
+        method: POST
+        body: "{{ lookup('template', './ops_net_update_banner_settings.json.j2') }}"
+        body_format: json
+        status_code:
+          - 201
+      register: bannerresponse
+      when:
+        - bannersettings.status == 200
+        - not bannersettings.json is defined or
+          (bannersettings.json is defined and
+          (
+            bannersettings.json['is_enabled'] | bool != ops_net_defaults_login_banner_enabled or
+            bannersettings.json['user_consent_title'].replace('\\n', '\n') != ops_net_defaults_login_banner_title.replace('\\n', '\n') or
+            bannersettings.json['user_consent_description'].replace('\\n', '\n') != ops_net_defaults_login_banner_description.replace('\\n', '\n') or
+            bannersettings.json['login_message_banner'].replace('\\n', '\n') != ops_net_defaults_login_banner_message.replace('\\n', '\n')
+          ))
+      changed_when:
+        - bannerresponse.status == 201
+
+###################################################################################################################################
+- name: VCFA-9X-000380
+  tags: [VCFA-9X-000380]
+  when: ops_net_defaults_run_vcfa_9x_000380 | bool
+  block:
+    - name: VCFA-9X-000380 - Verify roles and permissions
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000380 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000386
+  tags: [VCFA-9X-000386]
+  when: ops_net_defaults_run_vcfa_9x_000386 | bool
+  block:
+    - name: VCFA-9X-000386 - Configure syslog
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000386 - This control must be manually remediated."
+      changed_when: false
+    # Commented out until mapping API issues are resolved
+    #
+    # - name: VCFA-9X-000386 - Get syslog enable status
+    #   ansible.builtin.uri:
+    #     url: "https://{{ lookup('vars', 'ansible_host') }}/api/ni/settings/syslog/status"
+    #     validate_certs: "{{ validate_certificate_uri }}"
+    #     headers:
+    #       Authorization: "NetworkInsight {{ lookup('vars', 'var_vault_operations_networks_api_token') }}"
+    #       Accept: "application/json"
+    #     method: GET
+    #   register: syslogenable
+    #   changed_when: false
+    # - name: VCFA-9X-000386 - Get syslog servers
+    #   ansible.builtin.uri:
+    #     url: "https://{{ lookup('vars', 'ansible_host') }}/api/ni/settings/syslog"
+    #     validate_certs: "{{ validate_certificate_uri }}"
+    #     headers:
+    #       Authorization: "NetworkInsight {{ lookup('vars', 'var_vault_operations_networks_api_token') }}"
+    #       Accept: "application/json"
+    #     method: GET
+    #   register: syslogservers
+    #   changed_when: false
+    # - name: VCFA-9X-000386 - Get syslog mappings
+    #   ansible.builtin.uri:
+    #     url: "https://{{ lookup('vars', 'ansible_host') }}/api/ni/settings/syslog/mapping"
+    #     validate_certs: "{{ validate_certificate_uri }}"
+    #     headers:
+    #       Authorization: "NetworkInsight {{ lookup('vars', 'var_vault_operations_networks_api_token') }}"
+    #       Accept: "application/json"
+    #     method: GET
+    #   register: syslogmappings
+    #   changed_when: false
+    # - name: VCFA-9X-000386 - Remove unknown syslog server mappings
+    #   ansible.builtin.uri:
+    #     url: "https://{{ lookup('vars', 'ansible_host') }}/api/ni/settings/syslog/mapping"
+    #     validate_certs: "{{ validate_certificate_uri }}"
+    #     headers:
+    #       Authorization: "NetworkInsight {{ lookup('vars', 'var_vault_operations_networks_api_token') }}"
+    #       Accept: "application/json"
+    #     method: POST
+    #     body: "{{ lookup('template', './ops_net_remove_syslog_mapping.json.j2') }}"
+    #     body_format: json
+    #     status_code:
+    #       - 201
+    #   register: response
+    #   with_items:
+    #     - "{{ syslogmappings.json.data }}"
+    #   when:
+    #     - item.syslog_ip not in ops_net_defaults_syslog_server | map(attribute='server') | list
+    #     - syslogmappings.json.data is iterable
+    #     - ops_net_defaults_syslog_server | map(attribute='server') | list != [""]
+    #     - item.syslog_ip != ""
+    #   changed_when:
+    #     - response.status == 201
+    # - name: VCFA-9X-000386 - Remove unknown syslog servers
+    #   ansible.builtin.uri:
+    #     url: "https://{{ lookup('vars', 'ansible_host') }}/api/ni/settings/syslog/{{ item.ip_or_fqdn }}"
+    #     validate_certs: "{{ validate_certificate_uri }}"
+    #     headers:
+    #       Authorization: "NetworkInsight {{ lookup('vars', 'var_vault_operations_networks_api_token') }}"
+    #       Accept: "application/json"
+    #     method: DELETE
+    #     status_code:
+    #       - 200
+    #   register: response
+    #   with_items:
+    #     - "{{ syslogservers.json.data }}"
+    #   when:
+    #     - item.ip_or_fqdn not in ops_net_defaults_syslog_server | map(attribute='server') | list
+    #     - syslogservers.json.data is iterable
+    #     - ops_net_defaults_syslog_server | map(attribute='server') | list != [""]
+    #   changed_when:
+    #     - response.status == 200

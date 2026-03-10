@@ -1,0 +1,497 @@
+---
+
+###################################################################################################################################
+# PSQL-00-000001 - PostgreSQL must limit the number of concurrent sessions.
+- name: PSQL-00-000001 - PostgreSQL must limit the number of concurrent sessions.
+  tags: [PSQL-00-000001]
+  when: run_max_connections | bool
+  block:
+    - name: PSQL-00-000001 - Check max_connections value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW max_connections"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000001 - Set max_connections value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET max_connections = '{{ var_max_connections }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - restart vpostgres
+      when:
+        - result.stdout != var_max_connections
+
+###################################################################################################################################
+# PSQL-00-000005 - PostgreSQL must enable pgaudit to provide audit record generation capabilities.
+# - name: PSQL-00-000005 - PostgreSQL must enable pgaudit to provide audit record generation capabilities.
+#   tags: [PSQL-00-000005]
+#   when: run_enable_pgaudit | bool
+#   block:
+#     - name: PSQL-00-000005 - Check for pgaudit library
+#       ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW shared_preload_libraries"
+#       register: result
+#       changed_when: false
+#       failed_when:
+#         - result.stderr != ''
+#         - result.rc != 0
+
+#     - name: PSQL-00-000005 - Enabling pgaudit is a manual task
+#       ansible.builtin.debug:
+#         msg: "PSQL-00-000005 - pgaudit library not loaded and must be manually remediated."
+#       changed_when: true
+#       when:
+#         - '"pgaudit" not in result.stdout'
+
+###################################################################################################################################
+# PSQL-00-000006 - PostgreSQL configuration files must not be accessible by unauthorized users.
+# - name: PSQL-00-000006 - PostgreSQL configuration files must not be accessible by unauthorized users.
+#   tags: [PSQL-00-000006]
+#   when: run_conf_perms | bool
+#   block:
+#     - name: PSQL-00-000006 - Find PostgeSQL configuration files.
+#       ansible.builtin.find:
+#         paths: "{{ var_pgdata_path }}"
+#         file_type: file
+#         patterns: '*conf*'
+#       register: pgconffiles
+
+#     - name: PSQL-00-000006 - Updating permissions on configuration files
+#       ansible.builtin.file:
+#         path: "{{ item.path }}"
+#         state: file
+#         mode: "0600"
+#         owner: postgres
+#         group: users
+#       with_items: "{{ pgconffiles.files }}"
+
+###################################################################################################################################
+# PSQL-00-000007 - PostgreSQL must generate audit records.
+# - name: PSQL-00-000007 - PostgreSQL must generate audit records.
+#   tags: [PSQL-00-000007]
+#   when: run_configure_pgaudit | bool
+#   block:
+#     - name: PSQL-00-000007 - Check for pgaudit library
+#       ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW shared_preload_libraries"
+#       register: pgloaded
+#       changed_when: false
+#       failed_when:
+#         - pgloaded.stderr != ''
+#         - pgloaded.rc != 0
+
+#     - name: PSQL-00-000007 - Check pgaudit.log_catalog value
+#       ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW pgaudit.log_catalog"
+#       register: result
+#       changed_when: false
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#       failed_when:
+#         - result.stderr != ''
+#         - result.rc != 0
+
+#     - name: PSQL-00-000007 - Set pgaudit.log_catalog value
+#       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET pgaudit.log_catalog = 'on';"
+#       notify:
+#         - reload vpostgres
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#         - result.stdout != "on"
+
+#     - name: PSQL-00-000007 - Check pgaudit.log value
+#       ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW pgaudit.log"
+#       register: result
+#       changed_when: false
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#       failed_when:
+#         - result.stderr != ''
+#         - result.rc != 0
+
+#     - name: PSQL-00-000007 - Set pgaudit.log value
+#       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET pgaudit.log = 'all, -misc';"
+#       notify:
+#         - reload vpostgres
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#         - result.stdout != "all, -misc"
+
+#     - name: PSQL-00-000007 - Check pgaudit.log_parameter value
+#       ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW pgaudit.log_parameter"
+#       register: result
+#       changed_when: false
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#       failed_when:
+#         - result.stderr != ''
+#         - result.rc != 0
+
+#     - name: PSQL-00-000007 - Set pgaudit.log_parameter value
+#       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET pgaudit.log_parameter = 'on';"
+#       notify:
+#         - reload vpostgres
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#         - result.stdout != "on"
+
+#     - name: PSQL-00-000007 - Check pgaudit.log_statement_once value
+#       ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW pgaudit.log_statement_once"
+#       register: result
+#       changed_when: false
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#       failed_when:
+#         - result.stderr != ''
+#         - result.rc != 0
+
+#     - name: PSQL-00-000007 - Set pgaudit.log_statement_once value
+#       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET pgaudit.log_statement_once = 'off';"
+#       notify:
+#         - reload vpostgres
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#         - result.stdout != "off"
+
+#     - name: PSQL-00-000007 - Check pgaudit.log_level value
+#       ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW pgaudit.log_level"
+#       register: result
+#       changed_when: false
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#       failed_when:
+#         - result.stderr != ''
+#         - result.rc != 0
+
+#     - name: PSQL-00-000007 - Set pgaudit.log_level_once value
+#       ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET pgaudit.log_level = 'log';"
+#       notify:
+#         - reload vpostgres
+#       when:
+#         - '"pgaudit" in pgloaded.stdout'
+#         - result.stdout != "log"
+
+###################################################################################################################################
+# PSQL-00-000009 - PostgreSQL must initiate session auditing upon startup.
+- name: PSQL-00-000009 - PostgreSQL must initiate session auditing upon startup.
+  tags: [PSQL-00-000009]
+  when: run_log_destination | bool
+  block:
+    - name: PSQL-00-000009 - Check log_destination value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW log_destination"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000009 - Set log_destination value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_destination = '{{ var_log_destination }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_log_destination
+
+
+###################################################################################################################################
+# PSQL-00-000010 - PostgreSQL must produce logs containing sufficient information to establish what type of events occurred.
+- name: PSQL-00-000010 - PostgreSQL must produce logs containing sufficient information to establish what type of events occurred.
+  tags: [PSQL-00-000010]
+  when: run_log_prefix | bool
+  block:
+    - name: PSQL-00-000010 - Check log_line_prefix value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW log_line_prefix"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000010 - Set log_line_prefix value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_line_prefix = '{{ var_log_line_prefix }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_log_line_prefix
+
+###################################################################################################################################
+# PSQL-00-000020 - PostgreSQL must be configured to protect log files from unauthorized access.
+- name: PSQL-00-000020 - PostgreSQL must be configured to protect log files from unauthorized access.
+  tags: [PSQL-00-000020]
+  when: run_log_permissions | bool
+  block:
+    - name: PSQL-00-000020 - Check log_file_mode value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW log_file_mode"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000020 - Set log_file_mode value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_file_mode = '{{ var_log_file_mode }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_log_file_mode
+
+###################################################################################################################################
+# PSQL-00-000032 - PostgreSQL must not load unused database components, software, and database objects.
+- name: PSQL-00-000032 - PostgreSQL must not load unused database components, software, and database objects.
+  tags: [PSQL-00-000032]
+  when: run_remove_ext | bool
+  block:
+    - name: PSQL-00-000032 - Check for unauthorized extensions
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "select extname from pg_extension where extname != 'plpgsql'"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000032 - Removing extensions is a manual task
+      ansible.builtin.debug:
+        msg: "PSQL-00-000032 - Possible unauthorized extensions detected...review for manual remediation: {{ result.stdout }}"
+      changed_when: true
+      when:
+        - result.stdout != ''
+
+###################################################################################################################################
+# PSQL-00-000035 - PostgreSQL must be configured to use an authorized port.
+- name: PSQL-00-000035 - PostgreSQL must be configured to use an authorized port.
+  tags: [PSQL-00-000035]
+  when: run_conf_port | bool
+  block:
+    - name: PSQL-00-000035 - Check port value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW port"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000035 - Set port value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET port = '{{ var_port }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - restart vpostgres
+      when:
+        - result.stdout != var_port
+
+###################################################################################################################################
+# PSQL-00-000038 - The PostgreSQL database must encrypt passwords for user authentication.
+- name: PSQL-00-000038 - The PostgreSQL database must encrypt passwords for user authentication.
+  tags: [PSQL-00-000038]
+  when: run_password_encryption | bool
+  block:
+    - name: PSQL-00-000038 - Check password_encryption value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW password_encryption"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000038 - Set password_encryption value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET password_encryption = '{{ var_password_encryption }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_password_encryption
+
+###################################################################################################################################
+# PSQL-00-000051 - PostgreSQL must write log entries to disk prior to returning operation success or failure.
+- name: PSQL-00-000051 - PostgreSQL must write log entries to disk prior to returning operation success or failure.
+  tags: [PSQL-00-000051]
+  when: run_write_logs | bool
+  block:
+    - name: PSQL-00-000051 - Check fsync value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW fsync"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000051 - Set fsync value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET fsync = '{{ var_fsync }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_fsync
+
+    - name: PSQL-00-000051 - Check full_page_writes value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW full_page_writes"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000051 - Set full_page_writes value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET full_page_writes = '{{ var_full_page_writes }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_full_page_writes
+
+    - name: PSQL-00-000051 - Check synchronous_commit value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW synchronous_commit"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000051 - Set synchronous_commit value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET synchronous_commit = '{{ var_synchronous_commit }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_synchronous_commit
+
+###################################################################################################################################
+# PSQL-00-000060 - PostgreSQL must provide non-privileged users with minimal error information.
+- name: PSQL-00-000060 - PostgreSQL must provide non-privileged users with minimal error information.
+  tags: [PSQL-00-000060]
+  when: run_client_min_messages | bool
+  block:
+    - name: PSQL-00-000060 - Check client_min_messages value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW client_min_messages"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000060 - Set client_min_messages value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET client_min_messages = '{{ var_client_min_messages }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_client_min_messages
+
+###################################################################################################################################
+# PSQL-00-000070 - PostgreSQL must have log collection enabled.
+- name: PSQL-00-000070 - PostgreSQL must have log collection enabled.
+  tags: [PSQL-00-000070]
+  when: run_logging_collector | bool
+  block:
+    - name: PSQL-00-000070 - Check logging_collector value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW logging_collector"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000070 - Set logging_collector value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET logging_collector = '{{ var_logging_collector }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_logging_collector
+
+###################################################################################################################################
+# PSQL-00-000075 - PostgreSQL must use UTC for log timestamps.
+- name: PSQL-00-000075 - PostgreSQL must use UTC for log timestamps.
+  tags: [PSQL-00-000075]
+  when: run_log_timezone | bool
+  block:
+    - name: PSQL-00-000075 - Check log_timezone value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW log_timezone"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000075 - Set log_timezone value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_timezone = '{{ var_log_timezone }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_log_timezone
+
+###################################################################################################################################
+# PSQL-00-000110 - PostgreSQL must log all connection attempts.
+- name: PSQL-00-000110 - PostgreSQL must log all connection attempts.
+  tags: [PSQL-00-000110]
+  when: run_log_connections | bool
+  block:
+    - name: PSQL-00-000110 - Check log_connections value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW log_connections"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000110 - Set log_connections value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_connections = '{{ var_log_connections }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_log_connections
+
+###################################################################################################################################
+# PSQL-00-000114 - PostgreSQL must log all client disconnections.
+- name: PSQL-00-000114 - PostgreSQL must log all client disconnections.
+  tags: [PSQL-00-000114]
+  when: run_log_disconnections | bool
+  block:
+    - name: PSQL-00-000114 - Check log_disconnections value
+      ansible.builtin.command: sudo -i -u postgres psql -A -t -c "SHOW log_disconnections"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: PSQL-00-000114 - Set log_disconnections value
+      ansible.builtin.command: sudo -i -u postgres psql -c "ALTER SYSTEM SET log_disconnections = '{{ var_log_disconnections }}';"
+      register: result_fix
+      changed_when: result_fix.rc == 0
+      notify:
+        - reload vpostgres
+      when:
+        - result.stdout != var_log_disconnections
+
+###################################################################################################################################
+# PSQL-00-000122 - PostgreSQL must off-load audit data to a separate log management facility.
+- name: PSQL-00-000122 - PostgreSQL must off-load audit data to a separate log management facility.
+  tags: [PSQL-00-000122]
+  when: run_pg_syslog_config | bool
+  block:
+    - name: PSQL-00-000122 - Copy stig-services.postgres.conf template
+      ansible.builtin.template:
+        src: stig-services-postgres.conf
+        dest: '{{ var_pg_syslog_conf }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - restart rsyslog

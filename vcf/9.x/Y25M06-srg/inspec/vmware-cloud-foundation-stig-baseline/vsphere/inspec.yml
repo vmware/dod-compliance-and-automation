@@ -1,0 +1,16 @@
+name: vmware-cloud-foundation-vsphere-stig-baseline
+title: InSpec Profile for VMware Cloud Foundation 9.0 vSphere STIG Readiness Guide Version 1 Release 1
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile that runs PowerCLI audit tests on ESX, VMs, and vCenter
+version: 1.0.1
+
+depends:
+  - name: esx
+    path: esx
+  - name: vcenter
+    path: vcenter
+  - name: vm
+    path: vm

@@ -1,0 +1,755 @@
+---
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible_backups_ops_logs_apache_tomcat_{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        - '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        - '{{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+        - '{{ ops_logs_apache_tomcat_vars_catalina_sh_file }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000001
+  tags: [VCFT-9X-000001]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000001 | bool
+  block:
+    - name: VCFT-9X-000001 - Add or configure maximum concurrent connections permitted on the connector for port 443
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: '//Connector[not(@redirectPort)]'
+        attribute: maxThreads
+        value: '{{ ops_logs_apache_tomcat_defaults_max_threads }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000003
+  tags: [VCFT-9X-000003]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000003 | bool
+  block:
+    - name: VCFT-9X-000003 - Add or configure sslEnabledProtocols on the connector for port 443
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: '//Connector[not(@redirectPort)]'
+        attribute: sslEnabledProtocols
+        value: '{{ ops_logs_apache_tomcat_defaults_ssl_enabled_protocols }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000005
+  tags: [VCFT-9X-000005]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000005 | bool
+  block:
+    - name: VCFT-9X-000005 - Configure secure cookies
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:session-config/x:cookie-config/x:secure'
+        value: '{{ ops_logs_apache_tomcat_defaults_secure_cookies }}'
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000013
+  tags: [VCFT-9X-000013]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000013 | bool
+  block:
+    - name: VCFT-9X-000013 - The VMware Cloud Foundation Operations for Logs Loginsight service must initiate session logging upon startup.
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: VCFT-9X-000014
+  tags: [VCFT-9X-000014]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000014 | bool
+  block:
+    - name: VCFT-9X-000014 - Configure AccessLogValve for Host container
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: '//Host/Valve[@className="org.apache.catalina.valves.AccessLogValve"]'
+        attribute: 'pattern'
+        value: '{{ ops_logs_apache_tomcat_defaults_access_log_pattern }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000025
+  tags: [VCFT-9X-000025]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000025 | bool
+  block:
+    - name: 'VCFT-9X-000025 - Find logs with incorrect permissions in {{ ops_logs_apache_tomcat_vars_log_folder }} and {{ ops_logs_apache_tomcat_vars_log_folder2 }}'
+      ansible.builtin.shell: find {{ ops_logs_apache_tomcat_vars_log_folder }} {{ ops_logs_apache_tomcat_vars_log_folder2 }} -xdev -type f -a '(' -not -perm 644 -o -not -user {{ ops_logs_apache_tomcat_vars_log_owner }} -o -not -group {{ ops_logs_apache_tomcat_vars_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFT-9X-000025 - Update permissions on log files found to be incorrect in {{ ops_logs_apache_tomcat_vars_log_folder }} and {{ ops_logs_apache_tomcat_vars_log_folder2 }}'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ ops_logs_apache_tomcat_vars_log_owner }}'
+        group: '{{ ops_logs_apache_tomcat_vars_log_group }}'
+        mode: '{{ ops_logs_apache_tomcat_vars_log_file_mode }}'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFT-9X-000036
+  tags: [VCFT-9X-000036]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000036 | bool
+  block:
+    - name: VCFT-9X-000036 - Remove allowTrace attribute on connectors
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: '/Server/Service/Connector/@allowTrace'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000048
+  tags: [VCFT-9X-000048]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000048 | bool
+  block:
+    - name: 'VCFT-9X-000048 - Update permissions on keystore file {{ ops_logs_apache_tomcat_vars_keystore_file }}.'
+      ansible.builtin.file:
+        path: '{{ ops_logs_apache_tomcat_vars_keystore_file }}'
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '0600'
+  rescue:
+    - name: 'VCFT-9X-000048 - Update permissions on keystore file {{ ops_logs_apache_tomcat_vars_keystore_file }} failed.'
+      ansible.builtin.debug:
+        msg: 'VCFT-9X-000048 failed most like because FIPS is not enabled and {{ ops_logs_apache_tomcat_vars_keystore_file }} does not exist.'
+
+###################################################################################################################################
+- name: VCFT-9X-000057
+  tags: [VCFT-9X-000057]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000057 | bool
+  block:
+    - name: 'VCFT-9X-000057 - Find org.apache.catalina.connector.RECYCLE_FACADES in {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+      ansible.builtin.command: grep -c RECYCLE_FACADES {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}
+      register: rfcount
+      changed_when: false
+      failed_when: (rfcount.rc != 0 and rfcount.rc != 1)
+
+    - name: 'VCFT-9X-000057 - Update org.apache.catalina.connector.RECYCLE_FACADES if found in {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+        state: present
+        regexp: '^org\.apache\.catalina\.connector\.RECYCLE_FACADES.*$'
+        line: 'org.apache.catalina.connector.RECYCLE_FACADES={{ ops_logs_apache_tomcat_defaults_recycle_facades }}'
+        firstmatch: true
+      when: rfcount.stdout != "0"
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000062
+  tags: [VCFT-9X-000062]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000062 | bool
+  block:
+    - name: 'VCFT-9X-000062 - Configure org.apache.catalina.startup.EXIT_ON_INIT_FAILURE in {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+        state: present
+        regexp: '^org\.apache\.catalina\.startup\.EXIT_ON_INIT_FAILURE.*$'
+        line: 'org.apache.catalina.startup.EXIT_ON_INIT_FAILURE={{ ops_logs_apache_tomcat_defaults_exit_on_init_failure }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000065
+  tags: [VCFT-9X-000065]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000065 | bool
+  block:
+    - name: VCFT-9X-000065 - Find incorrect URIEncoding attributes on connectors
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: "//Connector[@URIEncoding != 'UTF-8'] | //Connector[not[@URIEncoding]]"
+        count: true
+        pretty_print: true
+      register: uriecount
+
+    - name: VCFT-9X-000065 - Update incorrect URIEncoding attributes on connectors
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: '/Server/Service/Connector'
+        attribute: 'URIEncoding'
+        value: '{{ ops_logs_apache_tomcat_defaults_uri_encoding }}'
+        state: present
+        pretty_print: true
+      when:
+        - uriecount.count != 0
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000067
+  tags: [VCFT-9X-000067]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000067 | bool
+  block:
+    - name: VCFT-9X-000067 - Configure showServerInfo on ErrorReportValve
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: '/Server/Service/Engine/Host/Valve[@className="org.apache.catalina.valves.ErrorReportValve"]'
+        attribute: 'showServerInfo'
+        value: '{{ ops_logs_apache_tomcat_defaults_show_server_info }}'
+        state: present
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000070
+  tags: [VCFT-9X-000070]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000070 | bool
+  block:
+    - name: VCFT-9X-000070 - Configure session timeout
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:session-config/x:session-timeout'
+        value: '{{ ops_logs_apache_tomcat_defaults_session_timeout }}'
+        state: present
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000087
+  tags: [VCFT-9X-000087]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000087 | bool
+  block:
+    - name: 'VCFT-9X-000087 - Find tomcat files with incorrect permissions in {{ ops_logs_apache_tomcat_vars_service_folder }}'
+      ansible.builtin.shell: find {{ ops_logs_apache_tomcat_vars_service_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ ops_logs_apache_tomcat_vars_files_owner }} -o -not -group {{ ops_logs_apache_tomcat_vars_files_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFT-9X-000087 - Update permissions on log files found to be incorrect in {{ ops_logs_apache_tomcat_vars_service_folder }}'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ ops_logs_apache_tomcat_vars_files_owner }}'
+        group: '{{ ops_logs_apache_tomcat_vars_files_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFT-9X-000122
+  tags: [VCFT-9X-000122]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000122 | bool
+  block:
+    - name: VCFT-9X-000122 - Remove readonly parameter if it exists
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:servlet/x:servlet-name[text()="default"]/../x:init-param/x:param-name[text()="readonly"]/..'
+        state: absent
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000131
+  tags: [VCFT-9X-000131]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000131 | bool
+  block:
+    - name: VCFT-9X-000131 - Find incorrect connectionTimeout attributes on connectors
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: "//Connector[@connectionTimeout = '-1']"
+        count: true
+      register: ctcount
+
+    - name: VCFT-9X-000131 - Update incorrect connectionTimeout attributes on connectors
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: '/Server/Service/Connector'
+        attribute: 'connectionTimeout'
+        value: '{{ ops_logs_apache_tomcat_defaults_connection_timeout }}'
+        state: present
+        pretty_print: true
+      when:
+        - ctcount.count != 0
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000132
+  tags: [VCFT-9X-000132]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000132 | bool
+  block:
+    - name: VCFT-9X-000132 - Find incorrect maxKeepAliveRequests attributes on connectors
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: "//Connector[@maxKeepAliveRequests = '-1']"
+        count: true
+      register: mkacount
+
+    - name: VCFT-9X-000132 - Update incorrect maxKeepAliveRequests attributes on connectors
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: '/Server/Service/Connector'
+        attribute: 'maxKeepAliveRequests'
+        value: '{{ ops_logs_apache_tomcat_defaults_max_keepalive_requests }}'
+        state: present
+        pretty_print: true
+      when:
+        - mkacount.count != 0
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000133
+  tags: [VCFT-9X-000133]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000133 | bool
+  block:
+    - name: VCFT-9X-000133 - Check for filter-mapping
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]'
+        count: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      register: filtermaphits
+
+    - name: VCFT-9X-000133 - Create filter-mapping element
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app'
+        add_children:
+          - filter-mapping:
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+      when:
+        - filtermaphits.count == 0
+
+    - name: VCFT-9X-000133 - Create filter-mapping name
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter-mapping[last()]/x:filter-name'
+        value: 'setCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+      when:
+        - filtermaphits.count == 0
+
+    - name: VCFT-9X-000133 - Configure filter-mapping url-pattern
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter-mapping[x:filter-name="setCharacterEncodingFilter"]/x:url-pattern'
+        value: '/*'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+    - name: VCFT-9X-000133 - Check for bad filter configuration init-params
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param'
+        count: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      register: countbadinits
+
+    - name: VCFT-9X-000133 - Check for bad filter configuration duplicate filters
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        count: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      register: countbadfilters
+
+    - name: VCFT-9X-000133 - Delete bad filter configurations
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        state: absent
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VCFT-9X-000133 - Create new filter
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app'
+        add_children:
+          - filter:
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VCFT-9X-000133 - Configure new filter-name
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[last()]/x:filter-name'
+        value: 'setCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+      when:
+        - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
+
+    - name: VCFT-9X-000133 - Configure filter-class
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:filter-class'
+        value: 'org.apache.catalina.filters.SetCharacterEncodingFilter'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+    - name: VCFT-9X-000133 - Configure filter async
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:async-supported'
+        value: 'true'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+    - name: VCFT-9X-000133 - Create filter init-param
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param/x:param-name'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+    - name: VCFT-9X-000133 - Configure filter init-param encoding
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-name'
+        value: 'encoding'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+    - name: VCFT-9X-000133 - Configure filter init-param encoding value
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[1]/x:param-value'
+        value: 'UTF-8'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+    - name: VCFT-9X-000133 - Check for second init-param existance
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]'
+        count: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      register: init2counts
+
+    - name: VCFT-9X-000133 - Create filter init-param
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]'
+        state: present
+        pretty_print: true
+        add_children:
+          - init-param:
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+      when:
+        - init2counts.count == 0
+
+    - name: VCFT-9X-000133 - Configure filter init-param ignore
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-name'
+        value: 'ignore'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+    - name: VCFT-9X-000133 - Configure filter init-param ignore value
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:init-param[2]/x:param-value'
+        value: 'true'
+        state: present
+        pretty_print: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000134
+  tags: [VCFT-9X-000134]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000134 | bool
+  block:
+    - name: VCFT-9X-000134 - Configure http-only cookies
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:session-config/x:cookie-config/x:http-only'
+        value: '{{ ops_logs_apache_tomcat_defaults_cookies_http_only }}'
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000135
+  tags: [VCFT-9X-000135]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000135 | bool
+  block:
+    - name: VCFT-9X-000135 - Find existing incorrect debug parameters in web.xml
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="debug"]/../x:param-value[text()="1"]'
+        count: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      register: debugcount
+
+    - name: VCFT-9X-000135 - Remove debug parameter in web.xml
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="debug"]/..'
+        state: absent
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+      when:
+        - debugcount.count != 0
+
+###################################################################################################################################
+- name: VCFT-9X-000136
+  tags: [VCFT-9X-000136]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000136 | bool
+  block:
+    - name: VCFT-9X-000136 - Find existing incorrect listing parameters in web.xml
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="listings"]/../x:param-value[text()="true"]'
+        count: true
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+      register: listingcount
+
+    - name: VCFT-9X-000136 - Remove listings parameter in web.xml
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_web_xml_file }}'
+        xpath: '/x:web-app/x:servlet/x:init-param/x:param-name[text()="listings"]/..'
+        state: absent
+        namespaces:
+          x: '{{ ops_logs_apache_tomcat_vars_tomcat_default_namespace }}'
+        pretty_print: true
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+      when:
+        - listingcount.count != 0
+
+###################################################################################################################################
+- name: VCFT-9X-000139
+  tags: [VCFT-9X-000139]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000139 | bool
+  block:
+    - name: VCFT-9X-000139 - Find incorrect xpoweredBy attributes on connectors
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: "//Connector[@xpoweredBy != 'false'] | //Connector[not[@xpoweredBy]]"
+        count: true
+      register: xpcount
+
+    - name: VCFT-9X-000139 - Update incorrect xpoweredBy attributes on connectors
+      community.general.xml:
+        path: '{{ ops_logs_apache_tomcat_vars_server_xml_file }}'
+        xpath: '/Server/Service/Connector'
+        attribute: 'xpoweredBy'
+        value: '{{ ops_logs_apache_tomcat_defaults_xpoweredby }}'
+        state: present
+        pretty_print: true
+      when:
+        - xpcount.count != 0
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000140
+  tags: [VCFT-9X-000140]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000140 | bool
+  block:
+    - name: 'VCFT-9X-000140 - Remove tomcat examples directory {{ ops_logs_apache_tomcat_vars_examples_folder }}'
+      ansible.builtin.file:
+        path: '{{ ops_logs_apache_tomcat_vars_examples_folder }}'
+        state: absent
+
+###################################################################################################################################
+- name: VCFT-9X-000141
+  tags: [VCFT-9X-000141]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000141 | bool
+  block:
+    - name: 'VCFT-9X-000141 - Remove tomcat docs directory {{ ops_logs_apache_tomcat_vars_docs_folder }}'
+      ansible.builtin.file:
+        path: '{{ ops_logs_apache_tomcat_vars_docs_folder }}'
+        state: absent
+
+###################################################################################################################################
+- name: VCFT-9X-000142
+  tags: [VCFT-9X-000142]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000142 | bool
+  block:
+    - name: 'VCFT-9X-000142 - Find org.apache.catalina.connector.ALLOW_BACKSLASH in {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+      ansible.builtin.command: grep -c ALLOW_BACKSLASH {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}
+      register: abcount
+      changed_when: false
+      failed_when: (abcount.rc != 0 and abcount.rc != 1)
+
+    - name: 'VCFT-9X-000142 - Update org.apache.catalina.connector.ALLOW_BACKSLASH if found in {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+        state: present
+        regexp: '^org\.apache\.catalina\.connector\.ALLOW_BACKSLASH.*$'
+        line: 'org.apache.catalina.connector.ALLOW_BACKSLASH={{ ops_logs_apache_tomcat_defaults_allow_backslash }}'
+        firstmatch: true
+      when: abcount.stdout != "0"
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000143
+  tags: [VCFT-9X-000143]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000143 | bool
+  block:
+    - name: 'VCFT-9X-000143 - Find org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER in {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+      ansible.builtin.command: grep -c ENFORCE_ENCODING_IN_GET_WRITER {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}
+      register: ewcount
+      changed_when: false
+      failed_when: (ewcount.rc != 0 and ewcount.rc != 1)
+
+    - name: 'VCFT-9X-000143 - Update org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER if found in {{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+      ansible.builtin.lineinfile:
+        path: '{{ ops_logs_apache_tomcat_vars_catalina_properties_file }}'
+        state: present
+        regexp: '^org\.apache\.catalina\.connector\.response\.ENFORCE_ENCODING_IN_GET_WRITER*$'
+        line: 'org.apache.catalina.connector.response.ENFORCE_ENCODING_IN_GET_WRITER={{ ops_logs_apache_tomcat_defaults_enforce_encoding_in_get_writer }}'
+        firstmatch: true
+      when: ewcount.stdout != "0"
+      notify:
+        - '{{ role_name }} : restart {{ ops_logs_apache_tomcat_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFT-9X-000144
+  tags: [VCFT-9X-000144]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000144 | bool
+  block:
+    - name: 'VCFT-9X-000144 - Remove tomcat manager webapp directory {{ ops_logs_apache_tomcat_vars_manager_folder }}'
+      ansible.builtin.file:
+        path: '{{ ops_logs_apache_tomcat_vars_manager_folder }}'
+        state: absent
+
+###################################################################################################################################
+- name: VCFT-9X-000145
+  tags: [VCFT-9X-000145]
+  when:
+    - ops_logs_apache_tomcat_defaults_run_vcft_9x_000141 | bool
+  block:
+    - name: 'VCFT-9X-000145 - Remove tomcat host-manager webapp directory {{ ops_logs_apache_tomcat_vars_host_manager_folder }}'
+      ansible.builtin.file:
+        path: '{{ ops_logs_apache_tomcat_vars_host_manager_folder }}'
+        state: absent

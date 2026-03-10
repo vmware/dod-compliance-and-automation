@@ -1,0 +1,11 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+ops_fm_defaults_run_vcfa_9x_000371: true
+
+# Operations Fleet Management Configuration
+
+# NTP Servers - provide a comma separated list with no spaces (i.e., '10.0.0.1,10.0.0.2')
+ops_fm_defaults_time_servers: ''

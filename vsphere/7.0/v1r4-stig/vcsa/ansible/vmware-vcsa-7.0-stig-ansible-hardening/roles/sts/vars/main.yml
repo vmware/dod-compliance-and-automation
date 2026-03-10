@@ -1,0 +1,42 @@
+# sts variables
+
+# server.xml variables
+var_server_xml_path: '/usr/lib/vmware-sso/vmware-sts/conf/server.xml'
+var_server_xml_connectiontimeout: '60000'
+var_server_xml_maxthreads: '150'
+# This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+# Also & needs to just be a " which turns into &quot
+var_server_xml_access_log_valve_pattern: '{% raw %}%t %I [RemoteIP] %{X-Forwarded-For}i %u [Request] %h:%{remote}p to local %{local}p - %H %m %U%q    [Response] %s - %b bytes    [Perf] process %Dms / commit %Fms / conn [%X]{% endraw %}'
+var_server_xml_acceptcount: '100'
+var_server_xml_uriencoding: 'UTF-8'
+
+# web.xml variables
+var_web_xml_path: '/usr/lib/vmware-sso/vmware-sts/conf/web.xml'
+var_web_xml_http_only: 'true'
+var_web_xml_servlet_jsp_url_pattern1: '*.jsp'
+var_web_xml_servlet_jsp_url_pattern2: '*.jspx'
+var_web_xml_welcome_file_list1: 'index.html'
+var_web_xml_welcome_file_list2: 'index.htm'
+var_web_xml_welcome_file_list3: 'index.jsp'
+var_web_xml_error_page: 'false'
+var_web_xml_cookie_secure: 'true'
+
+# sts log variables
+var_sts_logs_path: '/storage/log/vmware/sso'
+var_logging_props_path: '/usr/lib/vmware-sso/vmware-sts/conf/logging.properties'
+var_logging_props_handlers: '1catalina.org.apache.juli.FileHandler, 2localhost.org.apache.juli.FileHandler, 3manager.org.apache.juli.FileHandler, 4host-manager.org.apache.juli.FileHandler'
+var_logging_props_dothandlers: '1catalina.org.apache.juli.FileHandler'
+var_logging_props_level: 'FINE'
+var_logging_props_directory: '${catalina.base}/logs/tomcat'
+var_logging_props_prefix: 'catalina.'
+var_logging_props_buffersize: '-1'
+var_logging_props_formatter: 'java.util.logging.SimpleFormatter'
+var_logging_props_maxdays: '10'
+var_logging_props_handlers2: '1catalina.org.apache.juli.FileHandler'
+
+# catalina properties variables
+var_catalina_props_path: '/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties'
+
+# misc variables
+var_sts_web_path: '/usr/lib/vmware-sso/vmware-sts'
+var_syslog_conf_path: '/etc/vmware-syslog/vmware-services-sso-services.conf'

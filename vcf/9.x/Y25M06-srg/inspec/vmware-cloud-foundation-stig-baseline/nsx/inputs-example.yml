@@ -1,0 +1,35 @@
+# General
+# NSX Manager IP or FQDN
+nsx_managerAddress: ''
+# Session token generated for access to NSX. Example ead781b8-0e0c-456f-a04a-584e9ae2e45a
+nsx_sessionToken: ''
+# Session cookie id generated for access to NSX. Example 'JSESSIONID=2A165FCF851CA50FCD038DFC8E770038'
+nsx_sessionCookieId: ''
+# Manager
+# Provide a list of authorized users and their roles to validate assigned permissions in NSX. The default local users and their roles are provided as an example. This currently only validates roles assigned to all of NSX and not to Projects or other scopes.
+nsx_authorizedPermissions:
+  admin:
+    role: 'Enterprise Admin'
+  audit:
+    role: 'Auditor'
+  guestuser1:
+    role: 'Auditor'
+  guestuser2:
+    role: 'Auditor'
+# Enter the environment specific syslog server NSX should be forwarding logs to.
+nsx_syslogServers:
+  - 'loginsight.test.com'
+# Enter the environment specific time servers.
+nsx_ntpServers:
+  - 'time-a-g.nist.gov'
+  - 'time-b-g.nist.gov'
+# Enter an array of T0 Gateways that are approved to have multicast enabled.
+nsx_t0multicastlist: []
+# Enter an array of T0 Gateways interfaces that are approved to have multicast enabled.
+nsx_t0mcinterfacelist: []
+# Enter an array of T0 Gateways that are approved to have DHCP enabled.
+nsx_t0dhcplist: []
+# Enter an array of T1 Gateways that are approved to have DHCP enabled.
+nsx_t1dhcplist: []
+# Enter an array of T1 Gateways that are approved to have multicast enabled.
+nsx_t1multicastlist: []

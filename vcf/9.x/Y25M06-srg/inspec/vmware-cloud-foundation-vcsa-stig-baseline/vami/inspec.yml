@@ -1,0 +1,18 @@
+name: VMware Cloud Foundation 9.x vCenter Server Appliance VAMI Service STIG Readiness Guide
+title: VMware Cloud Foundation 9.x vCenter Server Appliance VAMI Service STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: InSpec compliance profile for the VMware Cloud Foundation 9.x vCenter Server Appliance VAMI Service STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+- name: lighttpdConf
+  description: Lighttpd Conf File
+  type: string
+  value: "/etc/lighttpd/lighttpd.conf"
+- name: lighttpdBin
+  description: Lighttpd Executable File
+  type: string
+  value: "/usr/sbin/lighttpd"

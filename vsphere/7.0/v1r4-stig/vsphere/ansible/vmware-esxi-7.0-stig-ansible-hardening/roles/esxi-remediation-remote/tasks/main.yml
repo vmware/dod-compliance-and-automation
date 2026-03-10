@@ -1,0 +1,3 @@
+---
+- ansible.builtin.import_tasks: esxi-2.yml
+  tags: stig

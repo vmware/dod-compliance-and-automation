@@ -1,0 +1,32 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+## envoy services variables
+vcenter_envoy_vars_envoy_log_folder: '/var/log/vmware/envoy/'
+vcenter_envoy_vars_envoy_hgw_log_folder: '/var/log/vmware/envoy-hgw/'
+vcenter_envoy_vars_envoy_sidecar_log_folder: '/var/log/vmware/envoy-sidecar/'
+vcenter_envoy_vars_envoy_system_proxy_log_folder: '/var/log/vmware/envoy-system-proxy/'
+vcenter_envoy_vars_ssl_key_file: '/etc/vmware-rhttpproxy/ssl/rui.key'
+vcenter_envoy_vars_envoy_conf_folder: '/etc/vmware-envoy/'
+vcenter_envoy_vars_envoy_hgw_conf_folder: '/etc/vmware-envoy-hgw/'
+vcenter_envoy_vars_envoy_sidecar_conf_folder: '/etc/vmware-envoy-sidecar/'
+vcenter_envoy_vars_envoy_system_proxy_conf_folder: '/etc/vmware-envoy-system-proxy/'
+
+## configuration values
+vcenter_envoy_vars_envoy_log_owner: 'envoy'
+vcenter_envoy_vars_envoy_log_group: 'envoy'
+vcenter_envoy_vars_envoy_hgw_log_owner: 'envoy-hgw'
+vcenter_envoy_vars_envoy_hgw_log_group: 'envoy-hgw'
+vcenter_envoy_vars_envoy_sidecar_log_owner: 'envoy-sidecar'
+vcenter_envoy_vars_envoy_sidecar_log_group: 'envoy-sidecar'
+vcenter_envoy_vars_envoy_system_proxy_log_owner: 'envoy-system-proxy'
+vcenter_envoy_vars_envoy_system_proxy_log_group: 'envoy-system-proxy'
+vcenter_envoy_vars_envoy_ssl_key_log_owner: 'rhttpproxy'
+vcenter_envoy_vars_envoy_ssl_key_log_group: 'rhttpproxy'
+vcenter_envoy_vars_conf_owner: 'root'
+vcenter_envoy_vars_conf_group: 'root'

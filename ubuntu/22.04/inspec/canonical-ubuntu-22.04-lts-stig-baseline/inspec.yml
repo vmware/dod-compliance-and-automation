@@ -1,0 +1,91 @@
+name: canonical-ubuntu-22.04-lts-stig-baseline
+title: Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
+version: 2.0.4
+supports:
+  - platform-name: ubuntu
+    release: 22.04
+inputs:
+  - name: temporary_accounts
+    description: Temporary user accounts
+    type: Array
+    value: []
+  - name: sudo_accounts
+    description: Array of users who need access to security functions are part of the sudo group.
+    type: Array
+    value: []
+  - name: tmout
+    desciption:  Inactivity timeouts, in seconds, after which operating system automatically terminates a user session.
+    type: numeric
+    value: 900
+  - name: action_mail_acct
+    description: Email to be notified when allocated audit record storage volume reaches capacity.
+    type: string
+    value: root
+  - name: is_kdump_required
+    description: Is kdump service required? (check with SA and documented with ISSO)
+    type: Boolean
+    value: false
+  - name: audit_tools
+    description: Array of audit tools to check ownership and permissions.
+    type: Array
+    value: [
+      '/sbin/auditctl',
+      '/sbin/aureport',
+      '/sbin/ausearch',
+      '/sbin/autrace',
+      '/sbin/auditd',
+      '/sbin/augenrules'
+    ]
+  - name: minimum_accepted_partition_size
+    description: Set audit log size in bytes (default:1073741824 per control specification)
+    type: Numeric
+    value: 8894028
+  - name: aide_conf_path
+    description: Path to aide.conf
+    type: String
+    value: '/etc/aide/aide.conf'
+  - name: maxlogins
+    description: Maximum number of concurrent sessions
+    type: Numeric
+    value: 10
+  - name: is_system_networked
+    description: Set to true if the system is networked for NTP check
+    type: Boolean
+    value: true
+  - name: sssd_conf_path
+    description: Path to sssd.conf
+    type: String
+    value: '/etc/sssd/sssd.conf'
+  - name: approved_wireless_network_interfaces
+    description: Array of approved network interfaces (wired & wireless)
+    type: Array
+    value: []
+  - name: chrony_conf_file_path
+    description: Path to chrony conf file
+    type: String
+    value: /etc/chrony/chrony.conf
+  - name: audit_sp_remote_server
+    description: Address of the remote server receiving the audit log
+    type: String
+    value: ''
+  - name: audit_offload_script_name
+    description: Script file name for audit offload in cron.weekly
+    type: String
+    value: ''
+  - name: sshdcommand
+    description: If a different sshd command is needed then supply a different input value such as if there are user matching rules.
+    type: String
+    value: 'sshd -T'
+  - name: ao_approved_certificates
+    description: Array list of root certificates present on the system and have been approved by the AO
+    type: Array
+    value: []
+  - name: smartcards_used
+    description: If smartcards are used for local logins. For VMware appliance this is false by default.
+    type: boolean
+    value: false

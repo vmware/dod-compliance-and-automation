@@ -1,0 +1,15 @@
+---
+# When available ESXi Host will be STIG'd directly
+- hosts: esxi
+  remote_user: root
+  roles:
+    - esxi-remediation-remote
+  tags: remote
+
+# Localhost will run all Powershell Core commands
+- hosts: 127.0.0.1
+  connection: local
+  become: true
+  roles:
+    - esxi-remediation-local
+  tags: local

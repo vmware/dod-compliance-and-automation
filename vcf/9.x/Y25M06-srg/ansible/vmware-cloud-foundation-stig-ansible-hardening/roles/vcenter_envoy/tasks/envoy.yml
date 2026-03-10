@@ -1,0 +1,174 @@
+---
+# Backup files that may be modified in case restoration is needed
+# Commenting out backup block since we are not editing at files for envoy at this time
+# - name: Backup files that may be modified in case restoration is needed
+#   tags: [always, backup]
+#   when: create_backups | bool
+#   block:
+#     - name: Backup files - Create time stamp
+#       ansible.builtin.set_fact:
+#         backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+#     - name: Backup files - If restoring be sure to restore permissions that original file had!!
+#       ansible.builtin.copy:
+#         remote_src: true
+#         src: "{{ item }}"
+#         dest: "/tmp/ansible-backups-vcsa-envoy-{{ backup_timestamp }}/"
+#         mode: preserve
+#       changed_when: false
+#       register: backupresult
+#       failed_when:
+#         - backupresult.msg is defined
+#         - "'not found' not in backupresult.msg"
+#       with_items:
+
+###################################################################################################################################
+- name: VCFK-9X-000018
+  tags: [VCFK-9X-000018]
+  when: vcenter_envoy_defaults_run_vcfk_9x_000018 | bool
+  block:
+    - name: 'VCFK-9X-000018 - Find logs with incorrect permissions in {{ vcenter_envoy_vars_envoy_log_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_envoy_vars_envoy_log_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_envoy_vars_envoy_log_owner }} -o -not -group {{ vcenter_envoy_vars_envoy_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFK-9X-000018 - Update permissions on log files found to be incorrect in {{ vcenter_envoy_vars_envoy_log_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_envoy_vars_envoy_log_owner }}'
+        group: '{{ vcenter_envoy_vars_envoy_log_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+    - name: 'VCFK-9X-000018 - Find logs with incorrect permissions in {{ vcenter_envoy_vars_envoy_hgw_log_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_envoy_vars_envoy_hgw_log_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_envoy_vars_envoy_hgw_log_owner }} -o -not -group {{ vcenter_envoy_vars_envoy_hgw_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFK-9X-000018 - Update permissions on log files found to be incorrect in {{ vcenter_envoy_vars_envoy_hgw_log_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_envoy_vars_envoy_hgw_log_owner }}'
+        group: '{{ vcenter_envoy_vars_envoy_hgw_log_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+    - name: 'VCFK-9X-000018 - Find logs with incorrect permissions in {{ vcenter_envoy_vars_envoy_sidecar_log_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_envoy_vars_envoy_sidecar_log_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_envoy_vars_envoy_sidecar_log_owner }} -o -not -group {{ vcenter_envoy_vars_envoy_sidecar_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFK-9X-000018 - Update permissions on log files found to be incorrect in {{ vcenter_envoy_vars_envoy_sidecar_log_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_envoy_vars_envoy_sidecar_log_owner }}'
+        group: '{{ vcenter_envoy_vars_envoy_sidecar_log_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+    - name: 'VCFK-9X-000018 - Find logs with incorrect permissions in {{ vcenter_envoy_vars_envoy_system_proxy_log_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_envoy_vars_envoy_system_proxy_log_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_envoy_vars_envoy_system_proxy_log_owner }} -o -not -group {{ vcenter_envoy_vars_envoy_system_proxy_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFK-9X-000018 - Update permissions on log files found to be incorrect in {{ vcenter_envoy_vars_envoy_system_proxy_log_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_envoy_vars_envoy_system_proxy_log_owner }}'
+        group: '{{ vcenter_envoy_vars_envoy_system_proxy_log_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFK-9X-000039
+  tags: [VCFK-9X-000039]
+  when: vcenter_envoy_defaults_run_vcfk_9x_000039 | bool
+  block:
+    - name: 'VCFK-9X-000039 - Update permissions on SSL key file in {{ vcenter_envoy_vars_ssl_key_file }}.'
+      ansible.builtin.file:
+        path: '{{ vcenter_envoy_vars_ssl_key_file }}'
+        state: file
+        owner: '{{ vcenter_envoy_vars_envoy_ssl_key_log_owner }}'
+        group: '{{ vcenter_envoy_vars_envoy_ssl_key_log_group }}'
+        mode: '0600'
+
+###################################################################################################################################
+- name: VCFK-9X-000043
+  tags: [VCFK-9X-000043]
+  when: vcenter_envoy_defaults_run_vcfk_9x_000043 | bool
+  block:
+    - name: 'VCFK-9X-000043 - Find configuration files with incorrect permissions in {{ vcenter_envoy_vars_envoy_conf_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_envoy_vars_envoy_conf_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_envoy_vars_conf_owner }} -o -not -group {{ vcenter_envoy_vars_conf_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFK-9X-000043 - Update permissions on configuration files found to be incorrect in {{ vcenter_envoy_vars_envoy_conf_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_envoy_vars_conf_owner }}'
+        group: '{{ vcenter_envoy_vars_conf_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+    - name: 'VCFK-9X-000043 - Find configuration files with incorrect permissions in {{ vcenter_envoy_vars_envoy_hgw_conf_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_envoy_vars_envoy_hgw_conf_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_envoy_vars_conf_owner }} -o -not -group {{ vcenter_envoy_vars_conf_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFK-9X-000043 - Update permissions on configuration files found to be incorrect in {{ vcenter_envoy_vars_envoy_hgw_conf_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_envoy_vars_conf_owner }}'
+        group: '{{ vcenter_envoy_vars_conf_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+    - name: 'VCFK-9X-000043 - Find configuration files with incorrect permissions in {{ vcenter_envoy_vars_envoy_sidecar_conf_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_envoy_vars_envoy_sidecar_conf_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_envoy_vars_conf_owner }} -o -not -group {{ vcenter_envoy_vars_conf_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFK-9X-000043 - Update permissions on configuration files found to be incorrect in {{ vcenter_envoy_vars_envoy_sidecar_conf_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_envoy_vars_conf_owner }}'
+        group: '{{ vcenter_envoy_vars_conf_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+    - name: 'VCFK-9X-000043 - Find configuration files with incorrect permissions in {{ vcenter_envoy_vars_envoy_system_proxy_conf_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_envoy_vars_envoy_system_proxy_conf_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_envoy_vars_conf_owner }} -o -not -group {{ vcenter_envoy_vars_conf_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFK-9X-000043 - Update permissions on configuration files found to be incorrect in {{ vcenter_envoy_vars_envoy_system_proxy_conf_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_envoy_vars_conf_owner }}'
+        group: '{{ vcenter_envoy_vars_conf_group }}'
+        mode: o-w
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""

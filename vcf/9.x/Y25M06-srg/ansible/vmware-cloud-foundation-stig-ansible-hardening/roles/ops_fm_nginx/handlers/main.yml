@@ -1,0 +1,10 @@
+---
+- name: reload nginx
+  ansible.builtin.command: nginx -s reload
+  register: output
+  changed_when: output.rc == 0
+
+- name: restart nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted

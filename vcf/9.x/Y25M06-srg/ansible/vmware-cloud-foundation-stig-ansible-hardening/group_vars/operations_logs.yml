@@ -1,0 +1,9 @@
+# Variables defined here are to override role variables in /default/main.yml and apply to all nodes in the ansible inventory group with the same name as this file.
+# For example, if you want to disable a specific STIG ID, the variable that controls that rule can be placed in here and disabled.
+
+# Session timeout value in minutes
+ops_logs_defaults_session_timeout_minutes: 15
+# Number of days of expected log storage capacity before notification is sent out
+ops_logs_defaults_threshold_retention_days: 30
+# Time servers to use - provide a comma delimited array, with spaces between entries (i.e., ["10.0.0.1", "10.0.0.2"])
+ops_logs_defaults_ntp_servers:

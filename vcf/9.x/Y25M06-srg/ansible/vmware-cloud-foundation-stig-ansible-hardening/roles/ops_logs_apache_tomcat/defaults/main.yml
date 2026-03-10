@@ -1,0 +1,50 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000001: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000003: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000005: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000013: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000014: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000025: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000036: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000048: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000057: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000062: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000065: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000067: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000070: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000087: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000122: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000131: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000132: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000133: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000134: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000135: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000136: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000139: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000140: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000141: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000142: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000143: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000144: true
+ops_logs_apache_tomcat_defaults_run_vcft_9x_000145: true
+
+# Apache Tomcat Configuration
+ops_logs_apache_tomcat_defaults_max_threads: '150'
+ops_logs_apache_tomcat_defaults_ssl_enabled_protocols: 'TLSv1.2,TLSv1.3'
+ops_logs_apache_tomcat_defaults_secure_cookies: 'true'
+ops_logs_apache_tomcat_defaults_access_log_pattern: '{% raw %}%h %{X-Forwarded-For}i %l %u %t "%r" %s %b "%{User-Agent}i"{% endraw %}'
+ops_logs_apache_tomcat_defaults_recycle_facades: 'true'
+ops_logs_apache_tomcat_defaults_exit_on_init_failure: 'true'
+ops_logs_apache_tomcat_defaults_uri_encoding: 'UTF-8'
+ops_logs_apache_tomcat_defaults_show_server_info: 'false'
+ops_logs_apache_tomcat_defaults_session_timeout: '30'
+ops_logs_apache_tomcat_defaults_connection_timeout: '20000'
+ops_logs_apache_tomcat_defaults_max_keepalive_requests: '50'
+ops_logs_apache_tomcat_defaults_cookies_http_only: 'true'
+ops_logs_apache_tomcat_defaults_xpoweredby: 'false'
+ops_logs_apache_tomcat_defaults_allow_backslash: 'false'
+ops_logs_apache_tomcat_defaults_enforce_encoding_in_get_writer: 'true'

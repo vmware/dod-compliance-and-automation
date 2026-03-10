@@ -1,0 +1,120 @@
+name: VMware Cloud Foundation 9.x Operations for Logs Appliance Loginsight Service STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Operations for Logs Appliance Loginsight Service STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Operations for Logs Appliance Loginsight Service STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+- name: catalinaHome
+  description: tc Server core path (path to main binaries) - equates to $CATALINA_HOME
+  type: string
+  value: "/usr/lib/loginsight/application/etc/3rd_config"
+- name: catalinaBase
+  description: Path to tc Server instance - equates to $CATALINA_BASE
+  type: string
+  value: "/usr/lib/loginsight/application/3rd_party/apache-tomcat"
+- name: contextXmlFiles
+  description: List of Context.xml files (if present)
+  type: array
+  value: 
+  - /usr/lib/loginsight/application/3rd_party/apache-tomcat/conf/context.xml
+- name: maxThreads
+  description: maxThreads value
+  type: string
+  value: "150"
+- name: tlsProtocols
+  description: Array of allowed TLS protocols
+  type: array
+  value: 
+  - TLSv1.2
+  - TLSv1.3
+- name: accessLogPattern
+  description: List of values that must be present in the pattern property of the AccessLogValve
+  type: array
+  value:
+  - "%h" 
+  - "%l" 
+  - "%t" 
+  - "%u" 
+  - "&quot;%r&quot;"
+  - "%s" 
+  - "%b"
+- name: logPath
+  description: Path to Tomcat logs
+  type: string
+  value: '/var/log/loginsight/apache-tomcat/logs'
+- name: accesslogPath
+  description: Path to access logs
+  type: string
+  value: '/usr/lib/loginsight/application/3rd_party/apache-tomcat/logs'
+- name: keystoreFile
+  description: path to the keystore file, if in use
+  type: string
+  value: "/usr/lib/loginsight/application/3rd_party/apache-tomcat/conf/keystore"  
+- name: javaHome
+  description: path to java instance on the tc Server
+  type: string
+  value: "/usr/bin/java"
+- name: svcFilePath
+  description: Tomcat service config file
+  type: string
+  value: "/lib/systemd/system/loginsight.service"
+- name: securePorts
+  description: Connectors listening on secure ports that should have the SSLEnabled flag set
+  type: array
+  value:
+  - "443"
+- name: approvedConnectorPorts
+  description: Approved ports for connectors to listen on
+  type: array
+  value:
+  - "443"
+- name: allowedCiphers
+  description:
+  type: array
+  value:
+  - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+  - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+  #USERS and GROUPS
+- name: tcCoreUser
+  description: user owner of the tcCore files and folders
+  value: "root"
+- name: tcCoreGroup
+  description: group owner of the tcCore files and folders
+  value: "root"
+- name: svcAccountName
+  description: name of the user account running the tc Server service
+  type: string
+  value: "root"
+- name: svcGroup
+  description: Name of group running the tc Server service
+  type: string
+  value: "root"
+  #OTHER CONFIG SETTINGS
+- name: tcVersion
+  description: tc Server version that should be running
+  type: string
+  value: "8.5.87" 
+- name: minUmask
+  description: minimum Umask value for the SecurityListener element
+  type: string
+  value: "0007"
+- name: connectionTimeout
+  description: timeout value for connections
+  type: string
+  value: "20000"
+- name: maxKeepAliveRequests
+  description: value for allowed maximum keep-alive requests
+  type: string
+  value: "50"
+- name: shutdownPort
+  description: port used for server shutdown, setting to -1 disables functionality
+  type: string
+  value: "-1"
+- name: sessionTimeout
+  description: session timeout value in minutes
+  type: string
+  value: "30"

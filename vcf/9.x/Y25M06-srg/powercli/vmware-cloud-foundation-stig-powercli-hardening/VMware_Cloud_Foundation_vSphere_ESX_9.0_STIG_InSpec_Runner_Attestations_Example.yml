@@ -1,0 +1,12 @@
+- control_id: VCFE-9X-000232
+  explanation: 'Manual check output "0" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2025-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: VCFE-9X-000233
+  explanation: 'Manual check with no output is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2025-05-30T00:00:00.000Z
+  updated_by: John Doe

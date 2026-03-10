@@ -1,0 +1,36 @@
+---
+- name: Include Operations Apache HTTPD tasks
+  ansible.builtin.include_tasks:
+    file: httpd.yml
+    apply:
+      tags:
+        - ops-apache-httpd
+  tags:
+    - ops-apache-httpd
+    - VCFH-9X-000001
+    - VCFH-9X-000003
+    - VCFH-9X-000007
+    - VCFH-9X-000008
+    - VCFH-9X-000009
+    - VCFH-9X-000018
+    - VCFH-9X-000023
+    - VCFH-9X-000024
+    - VCFH-9X-000030
+    - VCFH-9X-000033
+    - VCFH-9X-000034
+    - VCFH-9X-000035
+    - VCFH-9X-000039
+    - VCFH-9X-000040
+    - VCFH-9X-000043
+    - VCFH-9X-000061
+    - VCFH-9X-000063
+    - VCFH-9X-000066
+    - VCFH-9X-000067
+    - VCFH-9X-000080
+    - VCFH-9X-000081
+    - VCFH-9X-000094
+    - VCFH-9X-000101
+    - VCFH-9X-000125
+    - VCFH-9X-000126
+    - VCFH-9X-000127
+    - VCFH-9X-000128

@@ -1,0 +1,84 @@
+- control_id: ESXI-70-000009
+  explanation: 'Manual check output "banner /etc/issue" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000012
+  explanation: 'Manual check output "ignorerhosts yes" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000013
+  explanation: 'Manual check output "hostbasedauthentication no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000015
+  explanation: 'Manual check output "permitemptypasswords no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000016
+  explanation: 'Manual check output "permituserenvironment no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000020
+  explanation: 'Manual check output "strictmodes yes" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000021
+  explanation: 'Manual check output "compression no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000022
+  explanation: 'Manual check output "gatewayports no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000023
+  explanation: 'Manual check output "x11forwarding no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000025
+  explanation: 'Manual check output "permittunnel no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000026
+  explanation: 'Manual check output "clientalivecountmax 3" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000027
+  explanation: 'Manual check output "clientaliveinterval 200" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000082
+  explanation: 'Manual check output "allowtcpforwarding no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-70-000274
+  explanation: 'Manual check output "ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-03-30T00:00:00.000Z
+  updated_by: John Doe

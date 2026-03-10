@@ -1,0 +1,246 @@
+---
+
+###################################################################################################################################
+- name: VCFA-9X-000142
+  tags: [VCFA-9X-000142]
+  when: ops_logs_defaults_run_vcfa_9x_000142 | bool
+  block:
+    - name: VCFA-9X-000142 - Get retention threshold setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/notification/config/retention-threshold"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: thresholdsettings
+      changed_when: false
+
+    - name: VCFN-9X-000142 - Set fact for possible durations
+      ansible.builtin.set_fact:
+        durations: "{{ {'MINUTES': 0.00069, 'HOURS': 0.0417, 'DAYS': 1, 'WEEKS': 7.5, 'MONTHS': 30} }}"
+
+    - name: VCFA-9X-000142 - Update retention threshold settings
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/notification/config/retention-threshold"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+          Content-Type: "application/json"
+        method: PUT
+        body: "{{ lookup('template', './ops_logs_update_retention_threshold_settings.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+      register: thresholdresponse
+      when:
+        - not thresholdsettings.json['sendNotification'] | bool or
+          (durations[thresholdsettings.json['intervalUnit']] | default(0) * thresholdsettings.json['dataInterval'] | default(0)) < ops_logs_defaults_threshold_retention_days
+      changed_when:
+        - thresholdresponse.status == 200
+
+    - name: VCFA-9X-000142 - Get list of system alerts
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/systemalerts"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: systemalerts
+      changed_when: false
+
+    - name: VCFA-9X-000142 - Find id of 'Repository Retention Time' system alert
+      ansible.builtin.set_fact:
+        alertid: "{{ systemalerts.json | json_query('[?alertName==`Repository Retention Time`].alertId | [0]') }}"
+        alertenabled: "{{ systemalerts.json | json_query('[?alertName==`Repository Retention Time`].enabled | [0]') }}"
+      changed_when: false
+
+    - name: VCFA-9X-000142 - Update retention time system alert setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/systemalerts/{{ alertid }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+          Content-Type: "application/json"
+        method: PUT
+        body: "{{ lookup('template', './ops_logs_update_retention_time_settings.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+      register: alertresponse
+      when:
+        - alertid != ''
+        - not alertenabled | bool
+      changed_when:
+        - alertresponse.status == 200
+
+###################################################################################################################################
+- name: VCFA-9X-000143
+  tags: [VCFA-9X-000143]
+  when: ops_logs_defaults_run_vcfa_9x_000143 | bool
+  block:
+    - name: VCFA-9X-000143 - Get list of system alerts
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/systemalerts"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: systemalerts
+      changed_when: false
+
+    - name: VCFA-9X-000143 - Find id of 'Inactive Host Alert' system alert
+      ansible.builtin.set_fact:
+        inactivealertid: "{{ systemalerts.json | json_query('[?alertName==`Inactive Host Alert`].alertId | [0]') }}"
+        inactivealertenabled: "{{ systemalerts.json | json_query('[?alertName==`Inactive Host Alert`].enabled | [0]') }}"
+      changed_when: false
+
+    - name: VCFA-9X-000143 - Update inactive host system alert setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/systemalerts/{{ inactivealertid }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+          Content-Type: "application/json"
+        method: PUT
+        body: "{{ lookup('template', './ops_logs_update_inactive_host_settings.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+      register: inactivealertresponse
+      when:
+        - inactivealertid != ''
+        - not inactivealertenabled | bool
+      changed_when:
+        - inactivealertresponse.status == 200
+
+    - name: VCFA-9X-000143 - Add email addresses or HTTP endpoints for alert notifications
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000143 - This portion of the control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000196
+  tags: [VCFA-9X-000196]
+  when: ops_logs_defaults_run_vcfa_9x_000196 | bool
+  block:
+    - name: VCFA-9X-000196 - Require SSL connection
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000196 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000253
+  tags: [VCFA-9X-000253]
+  when: ops_logs_defaults_run_vcfa_9x_000253 | bool
+  block:
+    - name: VCFA-9X-000253 - Enable FIPS
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000253 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000357
+  tags: [VCFA-9X-000357]
+  when: ops_logs_defaults_run_vcfa_9x_000357 | bool
+  block:
+    - name: VCFA-9X-000357 - Password complexity requirements
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000357 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000358
+  tags: [VCFA-9X-000358]
+  when: ops_logs_defaults_run_vcfa_9x_000358 | bool
+  block:
+    - name: VCFA-9X-000358 - Get session timeout setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/ui/browser-session"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: sessionsettings
+      changed_when: false
+
+    - name: VCFA-9X-000358 - Update session timeout setting
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/ui/browser-session"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+          Content-Type: "application/json"
+        method: PUT
+        body: "{{ lookup('template', './ops_logs_update_session_timeout_settings.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+      register: sessionresponse
+      when:
+        - sessionsettings.json['timeout'] != ops_logs_defaults_session_timeout_minutes
+      changed_when:
+        - sessionresponse.status == 200
+
+###################################################################################################################################
+- name: VCFA-9X-000359
+  tags: [VCFA-9X-000359]
+  when: ops_logs_defaults_run_vcfa_9x_000359 | bool
+  block:
+    - name: VCFA-9X-000359 - Login Banner settings
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000359 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000360
+  tags: [VCFA-9X-000360]
+  when: ops_logs_defaults_run_vcfa_9x_000360 | bool
+  block:
+    - name: VCFA-9X-000360 - Verify roles and permissions
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000360 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000367
+  tags: [VCFA-9X-000367]
+  when: ops_logs_defaults_run_vcfa_9x_000367 | bool
+  block:
+    - name: VCFA-9X-000367 - Get ntp settings
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/time/config"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+        method: GET
+      register: timesettings
+      changed_when: false
+
+    - name: VCFA-9X-000367 - Update time settings
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9543/api/v2/time/config"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_operations_logs_api_token') }}"
+          Accept: "application/json"
+          Content-Type: "application/json"
+        method: PUT
+        body: "{{ lookup('template', './ops_logs_update_ntp_settings.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+      register: timeresponse
+      when:
+        - timesettings.json['ntpConfig']['timeReference'] != "NTP_SERVER" or
+          timesettings.json['ntpConfig']['ntpServers'] != ops_logs_defaults_ntp_servers
+      changed_when:
+        timeresponse.status == 200

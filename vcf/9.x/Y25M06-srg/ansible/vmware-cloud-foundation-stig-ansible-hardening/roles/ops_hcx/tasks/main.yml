@@ -1,0 +1,14 @@
+---
+
+- name: Include Operations HCX tasks
+  ansible.builtin.include_tasks:
+    file: ops_hcx.yml
+    apply:
+      tags:
+        - ops_hcx
+  tags:
+    - ops_hcx
+    - VCFA-9X-000382
+    - VCFA-9X-000383
+    - VCFA-9X-000384
+    - VCFA-9X-000385

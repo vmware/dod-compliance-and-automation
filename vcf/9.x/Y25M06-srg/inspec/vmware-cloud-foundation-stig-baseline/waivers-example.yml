@@ -1,0 +1,5 @@
+# Example Waiver File
+VCFA-9X-000054:
+  run: true
+  justification: 'The organization does have an identity provider capable of MFA.'
+  expiration_date: 2030-01-01

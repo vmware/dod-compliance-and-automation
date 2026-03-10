@@ -1,0 +1,11 @@
+---
+
+- name: restart vsphere-ui
+  ansible.builtin.command: vmon-cli --restart vsphere-ui
+  register: output
+  changed_when: output.rc == 0
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted

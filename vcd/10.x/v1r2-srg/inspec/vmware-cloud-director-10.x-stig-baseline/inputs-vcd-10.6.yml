@@ -1,0 +1,65 @@
+# Application
+vcdURL: 'vcd.domain.com'
+bearerToken: 'Bearer eyJhbGciOiJSUzI1NiJ...'
+apiVersion: 'application/json;version=39.1'
+legacyApiVersion: 'application/*+json;version=37.0'
+useNsxv: false
+snmpEnabled: false
+approvedPlugins:
+  - 'Autoscale plugin'
+  - 'Container UI Plugin'
+  - 'CPOM extension'
+  - 'Customize Portal'
+  - 'Guided Tours plugin'
+  - 'NgHyperPlugin'
+  - 'NgHyperPlugin 2.0'
+  - 'NgHyperPlugin 3.0'
+  - 'Organization Contact Plugin'
+  - 'Solution Add-On Management UI Plugin'
+  - 'VMware Cloud Director Availability'
+  - 'vRO Workflow Execution UI'
+approvedDenyLists:
+  - '10.0.0.0/8'
+  - 'internal.com'
+  - '192.168.1.2'
+syslogHost: '10.10.10.10'
+syslogPort: '514'
+approvedFeatureFlags:
+  - 'Branding API'
+  - 'Fast Cross VC Instantiation Utilizing Shared Storage'
+  - 'Rights Classification'
+  - 'Transfer Session APIs'
+  - 'Unified Kubernetes API'
+trustedCertificates:
+  - 'star_eng_vmware_com_3rd_0'
+  - 'star_eng_vmware_com_3rd_1'
+
+# NGINX
+nginx_conf_path: /etc/nginx/nginx.conf
+limit_conn_server_limit: "1000"
+nginx_error_log_file: /var/log/nginx/error.log
+nginx_access_log_file: /var/log/nginx/access.log
+nginx_access_log_format_name: custom
+nginx_log_dir: /var/log/nginx/
+approved_modules:
+  - http_v2
+  - http_ssl
+  - http_auth_request
+  - http_sub
+  - http_stub_status
+  - http_realip
+  - stream_ssl_preread
+nginx_user: nginx
+nginx_group: nginx
+listen_addresses_ports:
+  - 10.158.112.102:5480
+nginx_limit_req_rate: "100r/s"
+nginx_limit_req_zone: "req_per_ip:10m"
+nginx_limit_req_burst: "100"
+nginx_syslog_enabled: false
+nginx_ssl_ciphers: "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256"
+nginx_keepalive_timeout: '65'
+nginx_content_security_policy: ["Content-Security-Policy", "default-src 'self'; font-src 'self' data:; img-src 'self' data:; style-src 'self' 'unsafe-inline';"]
+
+# Photon
+authprivlog: /var/log/messages

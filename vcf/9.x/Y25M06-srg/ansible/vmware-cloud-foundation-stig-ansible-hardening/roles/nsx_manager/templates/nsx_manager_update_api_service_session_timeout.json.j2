@@ -1,0 +1,91 @@
+{
+    "session_timeout": {{ nsx_manager_defaults_api_session_timeout }},
+    "connection_timeout": {{ item.connection_timeout }},
+    "protocol_versions": [
+        {
+            "name": "TLSv1.1",
+            "enabled": {{ item.protocol_versions | selectattr("name", "eq", "TLSv1.1") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLSv1.2",
+            "enabled": {{ item.protocol_versions | selectattr("name", "eq", "TLSv1.2") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLSv1.3",
+            "enabled": {{ item.protocol_versions | selectattr("name", "eq", "TLSv1.3") | map(attribute="enabled") | first }}
+        }
+    ],
+    "cipher_suites": [
+        {
+            "name": "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_RSA_WITH_AES_128_CBC_SHA",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_RSA_WITH_AES_128_CBC_SHA") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_RSA_WITH_AES_128_CBC_SHA256",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_RSA_WITH_AES_128_CBC_SHA256") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_RSA_WITH_AES_128_GCM_SHA256",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_RSA_WITH_AES_128_GCM_SHA256") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_RSA_WITH_AES_256_CBC_SHA",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_RSA_WITH_AES_256_CBC_SHA") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_RSA_WITH_AES_256_CBC_SHA256",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_RSA_WITH_AES_256_CBC_SHA256") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_RSA_WITH_AES_256_GCM_SHA384",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_RSA_WITH_AES_256_GCM_SHA384") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_AES_128_GCM_SHA256",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_AES_128_GCM_SHA256") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_AES_256_GCM_SHA384",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_AES_256_GCM_SHA384") | map(attribute="enabled") | first }}
+        },
+        {
+            "name": "TLS_CHACHA20_POLY1305_SHA256",
+            "enabled": {{ item.cipher_suites | selectattr("name", "eq", "TLS_CHACHA20_POLY1305_SHA256") | map(attribute="enabled") | first }}
+        }
+    ],
+    "redirect_host": "{{ item.redirect_host }}",
+    "client_api_rate_limit": {{ item.client_api_rate_limit }},
+    "global_api_concurrency_limit": {{ item.global_api_concurrency_limit }},
+    "client_api_concurrency_limit": {{ item.client_api_concurrency_limit }},
+    "basic_authentication_enabled": {{ item.basic_authentication_enabled }},
+    "cookie_based_authentication_enabled": {{ item.cookie_based_authentication_enabled }},
+    "_revision": "{{ item._revision + 1 }}"
+}

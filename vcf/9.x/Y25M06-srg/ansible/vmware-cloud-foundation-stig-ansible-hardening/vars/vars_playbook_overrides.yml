@@ -1,0 +1,13 @@
+# Variables defined here will override variables defined in roles and inventory(group_vars and host_vars).
+# Role/product/inventory level overrides should generally be placed in group_vars and host_vars instead of here.
+# This file WILL NOT override variables specified at the command line (extra vars).
+
+## General Overrides
+### Use to control whether the file level ansible backup tasks are run for each role. See README for more information. Set to true or false.
+create_backups: true
+### Use to control whether certificate validation is performed for tasks that use the ansible.builtin.uri for API calls. Set to true or false.
+validate_certificate_uri: false
+
+## Photon Overrides
+### Controls setting the login better in Photon to the DOD Standard and Mandatory Notice text. Set to true or false.
+photon_5_defaults_run_phtn_50_000005_dod_banner: true

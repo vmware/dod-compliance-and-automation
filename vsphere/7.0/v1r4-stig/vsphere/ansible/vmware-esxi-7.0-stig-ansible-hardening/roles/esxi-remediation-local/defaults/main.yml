@@ -1,0 +1,41 @@
+---
+esxi_70_000001: true # Lockdown Mode
+esxi_70_000002: true # DCUI.Access List
+esxi_70_000003: true # Lockdown Mode Exceptions
+esxi_70_000004: true # Syslog
+esxi_70_000005: true # Account Lock Failures
+esxi_70_000006: true # Account Unlock Timeout
+esxi_70_000007: true # Consent Banner Welcome
+esxi_70_000030: true # Log Level
+esxi_70_000031: true # Password Complexity
+esxi_70_000032: true # Password Reuse
+esxi_70_000034: true # Mob
+esxi_70_000035: true # SSH Running
+esxi_70_000036: true # Shell Running
+esxi_70_000037: true # Active Directory
+esxi_70_000039: true # AD Admin Group
+esxi_70_000041: true # Shell Interactive Timeout
+esxi_70_000042: true # Shell Timeout
+esxi_70_000043: true # DCUI Timeout
+esxi_70_000045: true # Persistent Logs
+esxi_70_000046: true # NTP
+esxi_70_000047: true # Acceptance Level
+esxi_70_000053: true # SNMP must be configured preoperly on the ESXi host.
+esxi_70_000054: true # iSCSI CHAP
+esxi_70_000055: true # Memory Salting
+esxi_70_000056: true # Firewall Rules - recommend setting to false as it broke vmotion
+esxi_70_000058: true # BPDU
+esxi_70_000059: true # Forged Transmits
+esxi_70_000060: true # MAC Changes
+esxi_70_000061: true # Prom Mode
+esxi_70_000062: true # dvFilter
+esxi_70_000074: true # TLS 1.2
+esxi_70_000079: true # Suppress Shell Warning
+esxi_70_000081: true # Suppress Hyperthreading Warning
+esxi_70_000083: true # Disable SLPD Service
+esxi_70_000086: true # Syslog Cert Verification
+esxi_70_000087: true # The ESXi host must enable volatile key destruction.
+esxi_70_000088: true # API Timeout
+esxi_70_000089: true # Host Client Timeout
+esxi_70_000091: true # The ESXi host must be configured with an appropriate maximum password age.
+esxi_70_000097: true # The ESXi CIM service must be disabled.

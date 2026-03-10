@@ -1,0 +1,34 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+## lighttpd service variables
+vcenter_vami_vars_conf_file: '/etc/lighttpd/lighttpd.conf'
+vcenter_vami_vars_applmgmt_conf_file: '/etc/applmgmt/appliance/applmgmt-lighttpd.conf'
+vcenter_vami_vars_modules_conf_file: '/etc/lighttpd/modules.conf'
+vcenter_vami_vars_access_log_conf_file: '/etc/lighttpd/conf.d/access_log.conf'
+vcenter_vami_vars_mime_conf_file: '/etc/lighttpd/conf.d/mime.conf'
+vcenter_vami_vars_lighttpd_bin_file: '/usr/sbin/lighttpd'
+vcenter_vami_vars_rsyslog_conf_file: '/etc/vmware-syslog/vmware-services-applmgmt.conf'
+vcenter_vami_vars_rsyslog_conf_file_name: 'vmware-services-applmgmt.conf'
+vcenter_vami_vars_applmgmt_log_folder: '/var/log/vmware/applmgmt/'
+vcenter_vami_vars_applmgmt_audit_log_folder: '/var/log/vmware/applmgmt-audit/'
+vcenter_vami_vars_lighttpd_log_folder: '/var/log/lighttpd/'
+vcenter_vami_vars_applmgmt_log_owner: 'root'
+vcenter_vami_vars_applmgmt_log_group: 'root'
+vcenter_vami_vars_lighttpd_log_owner: 'lighttpd'
+vcenter_vami_vars_lighttpd_log_group: 'lighttpd'
+vcenter_vami_vars_ssl_key_file: '/etc/applmgmt/appliance/server.pem'
+vcenter_vami_vars_notify_service_name: 'vami'
+
+## configuration values
+vcenter_vami_vars_max_connections: '1024'
+vcenter_vami_vars_ssl_engine: '"enable"'
+vcenter_vami_vars_mimetype_usexattr: '"disable"'
+vcenter_vami_vars_max_fds: '2048'
+vcenter_vami_vars_debug_log_request_handling: '"disable"'
+vcenter_vami_vars_max_keep_alive_idle: '30'

@@ -1,0 +1,7 @@
+- hosts: all
+  roles:
+    - role: vmware-photon-4.0-stig-ansible-hardening
+      vars:
+        run_sshd_listenaddress: false
+        var_syslog_authpriv_log: '/var/log/messages'
+    - role: vpostgres

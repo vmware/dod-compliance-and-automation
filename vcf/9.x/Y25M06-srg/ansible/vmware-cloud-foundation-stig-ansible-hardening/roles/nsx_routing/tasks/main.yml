@@ -1,0 +1,37 @@
+---
+
+- name: Include NSX T0 Routing Tasks
+  ansible.builtin.include_tasks:
+    file: nsx_routing_t0.yml
+    apply:
+      tags:
+        - nsx-routing
+        - nsx-routing-t0
+  tags:
+    - nsx-routing-t0
+    - VCFR-9X-000013
+    - VCFR-9X-000016
+    - VCFR-9X-000027
+    - VCFR-9X-000029
+    - VCFR-9X-000051
+    - VCFR-9X-000055
+    - VCFR-9X-000067
+    - VCFR-9X-000091
+    - VCFR-9X-000102
+    - VCFR-9X-000109
+    - VCFR-9X-000110
+    - VCFR-9X-000111
+
+- name: Include NSX T1 Routing Tasks
+  ansible.builtin.include_tasks:
+    file: nsx_routing_t1.yml
+    apply:
+      tags:
+        - nsx-routing
+        - nsx-routing-t1
+  tags:
+    - nsx-routing-t1
+    - VCFR-9X-000112
+    - VCFR-9X-000113
+    - VCFR-9X-000114
+    - VCFR-9X-000115

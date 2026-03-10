@@ -1,0 +1,20 @@
+# Lighttpd
+var_conf_path: '/opt/vmware/etc/lighttpd/lighttpd.conf'
+var_conf_path_etc: '/etc/applmgmt/appliance/lighttpd.conf'
+var_conf_server_max_connections: 1024
+var_conf_ssl_ciphers: "!aNULL:kECDH+AESGCM:ECDH+AESGCM:RSA+AESGCM:kECDH+AES:ECDH+AES:RSA+AES"
+var_conf_ssl_engine: '"enable"'
+var_conf_server_error_log: '"/opt/vmware/var/log/lighttpd/error.log"'
+var_conf_mimetype_xattr: "disable"
+var_conf_url_access_deny: '( "~", ".inc" )'
+var_conf_server_max_keep_alive_idle: 30
+var_conf_server_port: 5480
+var_conf_server_max_fds: 2048
+var_conf_dir_listing_activate: "disable"
+var_conf_debug_log_request_handling: "disable"
+var_conf_ssl_disabled_versions: "disable"
+var_conf_ssl_enabled_versions: "enable"
+var_conf_ssl_honor_cipher_order: "enable"
+var_conf_server_tag: "vami"
+var_server_pem_file: '/etc/applmgmt/appliance/server.pem'
+var_syslog_conf_path: '/etc/vmware-syslog/vmware-services-applmgmt.conf'

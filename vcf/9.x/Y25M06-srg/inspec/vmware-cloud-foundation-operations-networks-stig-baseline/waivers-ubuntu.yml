@@ -1,0 +1,58 @@
+# Waiver file to document rules that are not applicable or not supported on Operations for Networks appliances for the Canonical Ubuntu 22.04 LTS STIG.
+UBTU-22-215015:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose a time solution from the available options.'
+UBTU-22-215020:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose a time solution from the available options.'
+UBTU-22-231010:
+  run: false
+  justification: 'Data at rest encryption is not enabled via the OS. For VMware based appliances it is expected that the underlying storage provide DAR encryption such as with vSAN or another storage solution.'
+UBTU-22-232026:
+  run: true
+  justification: 'Not all files under /var/log currently have permissions of 640 or less and cannot be fixed post deployment. Resolution included in product roadmap.'
+UBTU-22-251015:
+  run: false
+  justification: 'Iptables is used instead of UFW for the local firewall solution.'
+UBTU-22-251025:
+  run: false
+  justification: 'Iptables is used instead of UFW for the local firewall solution.'
+UBTU-22-251030:
+  run: false
+  justification: 'Ports and protocols in use can be found on ports.broadcom.com.'
+UBTU-22-252010:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+UBTU-22-252015:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+UBTU-22-4121025:
+  run: false
+  justification: 'The vlock package is not installed. Session locks for the console or SSH sessions are generally unsupported on VCF appliances and instead session timeouts are implemented to mitigate sessions that are left open. Logging out is recommended instead of session locking.'
+UBTU-22-612010:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612015:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612020:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612025:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612030:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612035:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-612040:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-22-631010:
+  run: false
+  justification: 'Adding DOD Root CAs to the trust store by default is not appropriate for all customers and is N/A in this context.'
+UBTU-22-671010:
+  run: false
+  justification: 'Enabling FIPS for the kernel on Ubuntu requires a Ubuntu Pro subscription to obtain the FIPS Kernel cryptographic modules. This is not currently available on Ubuntu based VCF appliances.'

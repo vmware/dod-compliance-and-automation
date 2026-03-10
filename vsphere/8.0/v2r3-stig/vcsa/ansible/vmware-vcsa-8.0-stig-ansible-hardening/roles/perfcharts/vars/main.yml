@@ -1,0 +1,39 @@
+---
+
+# Tomcat files and paths
+var_server_xml_path: '/usr/lib/vmware-perfcharts/tc-instance/conf/server.xml'
+var_web_xml_path: '/usr/lib/vmware-perfcharts/tc-instance/webapps/statsreport/WEB-INF/web.xml'
+var_service_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/perfcharts.json'
+var_catalina_props_path: '/usr/lib/vmware-perfcharts/tc-instance/conf/catalina.properties'
+var_rsyslog_conf_path: '/etc/vmware-syslog/vmware-services-perfcharts.conf'
+var_log_dir: '/var/log/vmware/perfcharts/'
+var_rsyslog_conf_name: 'vmware-services-perfcharts.conf'
+var_examples_dir: '/usr/lib/vmware-perfcharts/tc-instance/webapps/examples'
+var_docs_dir: '/usr/lib/vmware-perfcharts/tc-instance/webapps/docs'
+var_app_dir: '/usr/lib/vmware-perfcharts/'
+var_manager_dir: '/usr/lib/vmware-perfcharts/tc-instance/webapps/manager'
+var_host_manager_dir: '/usr/lib/vmware-perfcharts/tc-instance/webapps/host-manager'
+
+# server.xml variables
+var_server_xml_maxthreads: '300'
+# This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+# Also &quot; needs to just be a " which turns into &quot;
+var_server_xml_access_log_valve_pattern: '{% raw %}%h %{X-Forwarded-For}i %l %u %t "%r" %s %b "%{User-Agent}i"{% endraw %}'
+var_server_xml_security_listener_min_umask: '0007'
+var_server_xml_port: '${bio-custom.http.port}'
+var_server_xml_address: 'localhost'
+var_server_xml_connection_timeout: '20000'
+var_server_xml_max_keepalive_requests: '15'
+
+# web.xml variables
+var_web_xml_session_timeout: '6'
+
+# service json variables
+var_stream_redirect_file: '%VMWARE_LOG_DIR%/vmware/perfcharts/vmware-perfcharts-runtime.log'
+
+# catalina properties variables
+
+# misc variables
+var_notify_service_name: 'perfcharts'
+var_log_owner: 'perfcharts'
+var_log_group: 'users'

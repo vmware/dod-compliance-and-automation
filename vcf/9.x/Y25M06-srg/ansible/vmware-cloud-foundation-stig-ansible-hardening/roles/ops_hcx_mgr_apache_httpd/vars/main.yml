@@ -1,0 +1,26 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+## apache tomecat service variables
+ops_hcx_manager_apache_httpd_vars_http_conf_file: '/etc/httpd/conf/httpd.conf'
+ops_hcx_manager_apache_httpd_vars_hcxssl_conf_file: '/opt/vmware/config/apache-httpd/hcx-ssl.conf'
+ops_hcx_manager_apache_httpd_vars_hcx_virtualhosts_conf_file: '/opt/vmware/config/apache-httpd/hcx-virtual-hosts.conf'
+ops_hcx_manager_apache_httpd_vars_hcx_fips_conf_file: '/etc/httpd/conf/fips.conf'
+ops_hcx_manager_apache_httpd_vars_log_folder: '/common/logs/httpd/'
+ops_hcx_manager_apache_httpd_vars_ssl_key_file: '/common/httpd/.privatekey.pem'
+ops_hcx_manager_apache_httpd_vars_web_folder: '/opt/vmware/web/'
+ops_hcx_manager_apache_httpd_vars_conf_folder: '/etc/httpd/'
+ops_hcx_manager_apache_httpd_vars_notify_service_name: 'httpd'
+
+## configuration values
+ops_hcx_manager_apache_httpd_vars_log_owner: 'root'
+ops_hcx_manager_apache_httpd_vars_log_group: 'root'
+ops_hcx_manager_apache_httpd_vars_web_files_owner: 'root'
+ops_hcx_manager_apache_httpd_vars_web_files_group: 'root'
+ops_hcx_manager_apache_httpd_vars_conf_files_owner: 'root'
+ops_hcx_manager_apache_httpd_vars_conf_files_group: 'root'

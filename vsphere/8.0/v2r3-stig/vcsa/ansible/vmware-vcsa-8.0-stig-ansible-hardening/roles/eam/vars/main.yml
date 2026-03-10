@@ -1,0 +1,40 @@
+---
+
+# Tomcat files and paths
+var_server_xml_path: '/usr/lib/vmware-eam/web/conf/server.xml'
+var_web_xml_path: '/usr/lib/vmware-eam/web/webapps/eam/WEB-INF/web.xml'
+var_service_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/eam.json'
+var_catalina_props_path: '/etc/vmware-eam/catalina.properties'
+var_rsyslog_conf_path: '/etc/vmware-syslog/vmware-services-eam.conf'
+var_log_dir: '/var/log/vmware/eam/'
+var_rsyslog_conf_name: 'vmware-services-eam.conf'
+var_examples_dir: '/var/opt/apache-tomcat/webapps/examples'
+var_root_dir: '/var/opt/apache-tomcat/webapps/ROOT'
+var_docs_dir: '/var/opt/apache-tomcat/webapps/docs'
+var_app_dir: '/usr/lib/vmware-eam/web/'
+var_manager_dir: '/var/opt/apache-tomcat/webapps/manager'
+var_host_manager_dir: '/var/opt/apache-tomcat/webapps/host-manager'
+
+# server.xml variables
+var_server_xml_maxthreads: '300'
+# This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+# Also &quot; needs to just be a " which turns into &quot;
+var_server_xml_access_log_valve_pattern: '{% raw %}%h %{X-Forwarded-For}i %l %u %t [%I] "%r" %s %b [Processing time %D msec] "%{User-Agent}i"{% endraw %}'
+var_server_xml_security_listener_min_umask: '0007'
+var_server_xml_port: '${bio.http.port}'
+var_server_xml_address: '${eam.catalina.address}'
+var_server_xml_connection_timeout: '60000'
+var_server_xml_max_keepalive_requests: '50'
+
+# web.xml variables
+var_web_xml_session_timeout: '30'
+
+# service json variables
+var_stream_redirect_file: '%VMWARE_LOG_DIR%/vmware/eam/jvm.log'
+
+# catalina properties variables
+
+# misc variables
+var_notify_service_name: 'eam'
+var_log_owner: 'eam'
+var_log_group: 'eam'

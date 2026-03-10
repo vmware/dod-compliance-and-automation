@@ -1,0 +1,14 @@
+name: vmware-cloud-foundation-operations-logs-stig-baseline
+title: InSpec Profile for the VMware Cloud Foundation Operations for Logs Appliance 9.0 STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: InSpec Profile for the VMware Cloud Foundation Operations for Logs Appliance 9.0 STIG Readiness Guide
+version: 1.0.1
+
+depends:
+  - name: tomcat
+    path: tomcat
+  - name: photon
+    path: ../vmware-photon-5.0-stig-baseline

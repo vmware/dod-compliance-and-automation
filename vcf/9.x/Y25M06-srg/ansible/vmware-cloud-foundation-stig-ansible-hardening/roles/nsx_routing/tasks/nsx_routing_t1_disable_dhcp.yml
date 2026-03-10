@@ -1,0 +1,16 @@
+---
+
+- name: "VCFR-9X-000113 - Disable DHCP for Tier-1 Gateway: {{ var_outer_t1.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/infra/tier-1s/{{ var_outer_t1.id }}"
+    validate_certs: "{{ validate_certificate_uri }}"
+    headers:
+      Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+      X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+    method: PATCH
+    body: "{{ lookup('template', './nsx_routing_t1_disable_dhcp.json.j2') }}"
+    body_format: json
+    status_code: 200
+  register: response
+  changed_when:
+    - response.status == 200

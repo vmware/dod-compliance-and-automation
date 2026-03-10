@@ -1,0 +1,19 @@
+---
+
+- name: Include Operations for Logs tasks
+  ansible.builtin.include_tasks:
+    file: ops_logs.yml
+    apply:
+      tags:
+        - ops-logs
+  tags:
+    - ops-logs
+    - VCFA-9X-000142
+    - VCFA-9X-000143
+    - VCFA-9X-000196
+    - VCFA-9X-000253
+    - VCFA-9X-000357
+    - VCFA-9X-000358
+    - VCFA-9X-000359
+    - VCFA-9X-000360
+    - VCFA-9X-000367

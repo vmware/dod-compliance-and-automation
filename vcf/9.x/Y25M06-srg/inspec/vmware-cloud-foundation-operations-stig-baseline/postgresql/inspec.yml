@@ -1,0 +1,56 @@
+name: VMware Cloud Foundation 9.x Operations Appliance PostgreSQL Service STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Operations Appliance PostgreSQL Service STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Operations Appliance PostgreSQL Service STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+- name: postgres_user
+  type: string
+  value: "postgres"
+  description: "Enter superuser name to connect to the postgres database.  Default is 'postgres'"
+- name: postgres_pass
+  type: string
+  value: ""
+  description: "Postgres user password.  Blank is sufficient when run as root most of the time. Special characters may need to be substituted for example @ should be %40"
+  sensitive: true
+- name: postgres_host
+  type: string
+  value: ""
+  description: "Posgres host to run queries against. Blank is sufficient when run as root."
+- name: postgres_default_db
+  type: string
+  value: "postgres"
+  description: "Enter the database to run queries against.  Default is 'postgres'"
+- name: postgres_db_port
+  type: string
+  value: "5433"
+  description: "Enter the database port to run queries against.  Default for repl instance is '5433'"
+- name: pg_owner
+  type: string
+  value: "postgres"
+  description: "Enter expected owner for pg files"
+- name: pg_group
+  type: string
+  value: "users"
+  description: "Enter expected group for pg files"
+- name: pg_data_dir
+  type: string
+  value: "/storage/db/vcops/vpostgres/data"
+  description: "Enter location of the primary postgres installation"
+- name: pg_repl_dir
+  type: string
+  value: "/storage/db/vcops/vpostgres/repl"
+  description: "Enter location of the replica postgres installation"  
+- name: pg_log_dir
+  type: string
+  value: "/storage/log/postgres/repl"
+  description: "PSQL-00-000020 Enter location of the postgres logs"
+- name: pg_approved_extensions
+  type: array
+  value:
+    - plpgsql
+  description: "PSQL-00-000032 Enter a list of approved extensions. Leave plpgsql"
