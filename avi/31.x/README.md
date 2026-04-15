@@ -1,26 +1,25 @@
-# VMware NSX Advanced Load Balancer STIG Compliance and Automation
+# VMware Avi Load Balancer STIG Compliance and Automation
 
 ## Overview
 *STIG Status: STIG Readiness Guide*
 
 ### Supported Versions
 The following versions are currently supported by this guidance:  
-- 22.x
-- 30.x
+- 31.x
 
 [Visit public.cyber.mil for the latest official releases](https://public.cyber.mil/stigs/)
 
-This project contains content for compliance auditing and remediation of the VMware NSX Advanced Load Balancer DoD STIG Baseline.
+This project contains content for compliance auditing and remediation of the VMware Avi Load Balancer DoD STIG Baseline.
 
-The VMware NSX Advanced Load Balancer Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of NSX Advanced Load Balancer in the Department of Defense (DoD).
+The VMware Avi Load Balancer Security Technical Implementation Guides (STIGs) provide security policy and configuration requirements for the use of Avi Load Balancer in the Department of Defense (DoD).
 
-The VMware NSX Advanced Load Balancer STIGs presume operation in an environment compliant with all applicable DoD guidance.
+The VMware Avi Load Balancer STIGs presume operation in an environment compliant with all applicable DoD guidance.
 
 All technical NIST SP 800-53 requirements were considered while developing this content. SRG requirements that are applicable and configurable are included in the SRG content while other controls that are "Not Applicable", "Inherently Met" or "Does Not Meet" are not included.
 
 ## Using this Repo
 
-This repo for NSX Advanced Load Balancer is split up between auditing and remediation aspects with playbooks (Ansible) and profiles (InSpec).  
+This repo for Avi Load Balancer is split up between auditing and remediation aspects with playbooks (Ansible) and profiles (InSpec).  
 
 In each of those areas you will find instructions on how to run those components and other relevant notes.  
 
