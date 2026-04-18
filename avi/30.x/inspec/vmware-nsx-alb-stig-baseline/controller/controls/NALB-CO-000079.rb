@@ -1,5 +1,5 @@
 control 'NALB-CO-000079' do
-  title 'The NSX Advanced Load Balancer Controller must be configured to protect against known types of denial-of-service (DoS) attacks by configuring an account lock timeout.'
+  title 'The VMware Avi Load Balancer Controller must be configured to protect against known types of denial-of-service (DoS) attacks by configuring an account lock timeout.'
   desc  "
     DoS is a condition when a resource is not available for legitimate users. When this occurs, the organization either cannot accomplish its mission or must operate at degraded capacity.
 
@@ -11,13 +11,13 @@ control 'NALB-CO-000079' do
   desc  'check', "
     Review the default user account profile to verify account lock timeout is set to 0 and verify it is applied to all local users.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> User Profiles.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> User Profiles.
 
     Select edit on the \"Default-User-Account-Profile\" to view the configuration.
 
     If \"Account Lock Timeout\" is not set to 0, this is a finding.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Verify each user has the \"Default-User-Account-Profile\" applied.
 
@@ -26,7 +26,7 @@ control 'NALB-CO-000079' do
   desc 'fix', "
     To update the \"Default-User-Account-Profile\" profile do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> User Profiles.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> User Profiles.
 
     Click the edit icon next to the \"Default-User-Account-Profile\" profile.
 
@@ -34,7 +34,7 @@ control 'NALB-CO-000079' do
 
     To update a user to use the \"Default-User-Account-Profile\" profile do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Click the edit icon next to the user.
 

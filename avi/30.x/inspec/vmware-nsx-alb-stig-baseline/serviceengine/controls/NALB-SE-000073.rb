@@ -1,5 +1,5 @@
 control 'NALB-SE-000073' do
-  title 'The NSX Advanced Load Balancer must enable a WAF policy in enforcement mode on virtual services to prevent attacks.'
+  title 'The VMware Avi Load Balancer must enable a WAF policy in enforcement mode on virtual services to prevent attacks.'
   desc  "
     Data mining is the analysis of large quantities of data to discover patterns and is used in intelligence gathering. Failure to prevent attacks launched against organizational information from unauthorized data mining may result in the compromise of information.
 
@@ -9,9 +9,9 @@ control 'NALB-SE-000073' do
   "
   desc  'rationale', ''
   desc  'check', "
-    Review the NSX ALB Virtual Services to verify if a WAF policy is enabled.
+    Review virtual services on the Avi Service Engine to verify if a WAF policy is enabled.
 
-    From the NSX ALB Controller web interface go to Applications >> Virtual Services.
+    From the Avi Load Balancer Controller web interface go to Applications >> Virtual Services.
 
     For each virtual service, select edit on the \"Virtual Service\" to view the configuration.
 
@@ -24,7 +24,7 @@ control 'NALB-SE-000073' do
   desc 'fix', "
     To apply a \"WAF Policy\" to a virtual service, do the following:
 
-    From the NSX ALB Controller web interface go to Applications >> Virtual Services.
+    From the Avi Load Balancer Controller web interface go to Applications >> Virtual Services.
 
     Select edit on the target \"Virtual Service\".
 

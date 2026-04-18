@@ -1,7 +1,8 @@
-# General — update for your Avi Load Balancer 31.x environment
+# VMware Avi Load Balancer InSpec inputs (22.x). Renamed from inputs-nsx-alb-22.x.yml.
+# General
 avicontroller: '10.1.1.1'
-sessionCookieId: ''
-aviversion: '31.0.0'
+sessionCookieId: '2ee030eec32f7db9ccc6366d2c0db780'
+aviversion: '22.1.1'
 # Controller
 allowed_ntp_servers:
   - time-a-g.nist.gov
@@ -9,7 +10,7 @@ allowed_ntp_servers:
 portal_cert_issuer_organization: 'U.S. Government'
 # Service Engine
 allowed_virtual_services:
-  - 'vs1'
-  - 'vs2'
+   - 'vs1'
+   - 'vs2'
 # Set to true/false depending on if OCSP is available in the environment
 ocspavailable: true

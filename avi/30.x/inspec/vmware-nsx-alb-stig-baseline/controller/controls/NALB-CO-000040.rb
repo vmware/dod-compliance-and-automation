@@ -1,5 +1,5 @@
 control 'NALB-CO-000040' do
-  title 'The NSX Advanced Load Balancer Controller must enforce password complexity requirements.'
+  title 'The VMware Avi Load Balancer Controller must enforce password complexity requirements.'
   desc  "
     Use of a complex passwords helps to increase the time and resources required to compromise the password. Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks.
 
@@ -9,7 +9,7 @@ control 'NALB-CO-000040' do
   "
   desc  'rationale', ''
   desc  'check', "
-    From the NSX ALB Controller shell, run the following command:
+    From the Avi Load Balancer Controller shell, run the following command:
 
     > show systemconfiguration | grep password_strength_check
 
@@ -19,7 +19,7 @@ control 'NALB-CO-000040' do
     If \"password_strength_check\" is not set to True, this is a finding.
   "
   desc 'fix', "
-    From the NSX ALB Controller shell, run the following commands to enable password_strength_check:
+    From the Avi Load Balancer Controller shell, run the following commands to enable password_strength_check:
 
     > configure systemconfiguration
     > systemconfiguration> portal_configuration

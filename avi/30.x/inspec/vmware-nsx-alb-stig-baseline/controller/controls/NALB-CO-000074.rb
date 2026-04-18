@@ -1,16 +1,16 @@
 control 'NALB-CO-000074' do
-  title 'The NSX Advanced Load Balancer Controller must authenticate Network Time Protocol sources using authentication that is cryptographically based.'
+  title 'The VMware Avi Load Balancer Controller must authenticate Network Time Protocol sources using authentication that is cryptographically based.'
   desc  'If Network Time Protocol is not authenticated, an attacker can introduce a rogue NTP server. This rogue server can then be used to send incorrect time information to network devices, which will make log timestamps inaccurate and affect scheduled actions. NTP authentication is used to prevent this tampering by authenticating the time source.'
   desc  'rationale', ''
   desc  'check', "
     Review the network device configuration to determine if the network device authenticates NTP endpoints before establishing a local, remote, or network connection using authentication that is cryptographically based.
 
-    From the NSX ALB Controller web interface go to Administration >> System Settings >> DNS/NTP.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings >> DNS/NTP.
 
-    If the NSX ALB Controller is not configured to authenticate NTP sources, this is a finding.
+    If the Avi Load Balancer Controller is not configured to authenticate NTP sources, this is a finding.
   "
   desc 'fix', "
-    From the NSX ALB Controller web interface go to Administration >> System Settings >> DNS/NTP.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings >> DNS/NTP.
 
     Click the edit icon next to \"System Settings\".
 

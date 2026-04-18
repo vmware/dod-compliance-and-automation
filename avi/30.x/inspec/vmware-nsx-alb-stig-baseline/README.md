@@ -1,17 +1,17 @@
-# vmware-nsx-alb-stig-baseline
-VMware NSX Advanced Load Balancer STIG Chef InSpec Profile  
+# vmware-avi-load-balancer-stig-baseline
+VMware Avi Load Balancer STIG Chef InSpec Profile  
 Version: Release 1 Version 1 Date: 10th October 2023  
 STIG Type: STIG Readiness Guide  
 
 ## Overview
-This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the NSX ALB STIG Readiness Guide.  
+This is a compliance auditing profile that is based on Chef InSpec or [CINC Auditor (Recommended)](https://cinc.sh/start/auditor/) to perform an automated check for STIG compliance of the VMware Avi Load Balancer STIG Readiness Guide.  
 
 ## Requirements
 
-- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor](https://cinc.sh/start/auditor/) installed on a machine that can SSH to the target. Tested with version 5.22.4. Chef/CINC Workstation can also be installed and used.
+- [Chef InSpec](https://downloads.chef.io/tools/inspec) or [CINC Auditor (Recommended)](https://cinc.sh/start/auditor/) installed on a machine that can SSH to the target. Tested with version 5.22.4. Chef/CINC Workstation can also be installed and used.
 - Administrative access to the target
 - Update the inputs in inputs file example as appropriate for your environment
-- assumes profile is downloaded to C:\Inspec\Profiles\vmware-nsx-alb-stig-baseline**  
+- assumes profile is downloaded to C:\Inspec\Profiles\vmware-avi-load-balancer-stig-baseline**  
 - an API token is needed for the tests to make API calls. Specify it on the command line or in the input file.See https://avinetworks.com/docs/latest/api-guide/ **
 
 ## Run the below command to generate the sessionid token
@@ -20,24 +20,26 @@ curl -d ‘{“username”:“admin”,“password”:“xxxxxx"}’ -H “Conte
 ```
 ## Running the profile
 
+Use **`inputs-avi-load-balancer-30.x.yml`** for 30.x deployments (or **`inputs-avi-load-balancer-22.x.yml`** for 22.x-style inputs where applicable).
+
 #### Run all controls in the profile against a target deployment and specify inputs with an inputs file
 ```
-inspec exec <Profile> --show-progress --input-file=inputs-nsx-alb-22.x.yml
+inspec exec <Profile> --show-progress --input-file=inputs-avi-load-balancer-30.x.yml
 ```
 
 #### Run all profiles against a target deployment with example inputs, show progress, and output results to CLI and JSON
 ```
-inspec exec <Profile> --show-progress --input-file=inputs-nsx-alb-22.x.yml --reporter=cli json:path\to\report\report.json
+inspec exec <Profile> --show-progress --input-file=inputs-avi-load-balancer-30.x.yml --reporter=cli json:path\to\report\report.json
 ```
 
 #### Run a single STIG Control against a target deployment
 ```
-inspec exec <Profile> --input-file=inputs-nsx-alb-22.x.yml --controls=NALB-SE-000077.rb
+inspec exec <Profile> --input-file=inputs-avi-load-balancer-30.x.yml --controls=NALB-SE-000077.rb
 ```
 
 #### Run all controls in the profile against a target appliance and specify a waiver file 
 ```
-inspec exec <Profile> --input-file=inputs-nsx-alb-22.x.yml --show-progress --waiver-file <waiverfile.yml>
+inspec exec <Profile> --input-file=inputs-avi-load-balancer-30.x.yml --show-progress --waiver-file <waiverfile.yml>
 ```
 
 ## Misc

@@ -1,5 +1,5 @@
 control 'NALB-CO-000035' do
-  title 'The NSX Advanced Load Balancer Controller must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.'
+  title 'The VMware Avi Load Balancer Controller must be configured with only one local account to be used as the account of last resort in the event the authentication server is unavailable.'
   desc  "
     Authentication for administrative (privileged level) access to the device is required at all times. An account can be created on the device's local database for use when the authentication server is down or connectivity between the device and the authentication server is not operable. This account is referred to as the account of last resort since it is intended to be used as a last resort and when immediate administrative access is absolutely necessary.
 
@@ -9,14 +9,14 @@ control 'NALB-CO-000035' do
   desc  'check', "
     Review the user accounts to verify if only the default local user \"admin\" account exists.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     If there are any local accounts other than \"admin\", this is a finding.
   "
   desc 'fix', "
     To delete local users other than admin, do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Select the user and click Delete.
   "

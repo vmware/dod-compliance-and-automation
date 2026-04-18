@@ -1,20 +1,24 @@
 # VMware Avi Load Balancer STIG Documentation
 
 ## Overview
-An XCCDF formatted XML is provided for the Avi Load Balancer STIG Readiness Guide content for use to view in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  
+XCCDF XML for the Avi Load Balancer STIG Readiness Guide can be viewed in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  
 
-This can be consumed from the zip file included in this directory.
+Use the **Avi-branded** zip below for checks that match this repository’s **31.x** wording (titles, check text, and fix text aligned with the InSpec profile).
 
-## XCCDF zip bundle
+## XCCDF zip bundle in this directory
 
-The **`U_VMware_NSX_Advanced_Load_Balancer_STIG_Readiness_Guide_v1r1.zip`** file here is the same **STIG Readiness Guide** archive that shipped with the prior NSX Advanced Load Balancer naming; it is **not generated from this repository**.
+### **`U_VMware_AVI_Load_Balancer_STIG_Readiness_Guide_31.x.zip`**
 
-To supply a **31.x–specific** (or Avi–branded) bundle when it exists:
+This archive contains **only** the two XCCDF XML files (no PDFs):
 
-1. Obtain the official release from **DoD Cyber Exchange** ([public.cyber.mil](https://public.cyber.mil/stigs/)) and/or your **VMware by Broadcom** STIG/readiness distribution channel, when a guide that matches Avi Load Balancer 31.x is published.
-2. Replace the zip in this folder and update this README (and `saf-manifest.json` if applicable) with the **new filename** and version/date metadata.
+- **`U_VMware_AVI_Load_Balancer_Controller_STIG_Readiness_Guide_V1R1-xccdf.xml`** — Controller rules, rebranded to **VMware Avi Load Balancer** / **Avi Load Balancer Controller** language (and related wording).
+- **`U_VMware_AVI_Load_Balancer_Service_Engine_STIG_Readiness_Guide_V1R1-xccdf.xml`** — Service Engine rules, rebranded the same way (including **Avi Service Engine** phrasing for virtual-service checks/fixes).
 
-Until an updated archive is published, keep this zip as a **reference** for STIG Viewer import; control text in the InSpec profile under `../inspec/` is what this repo maintains for **31.x** automation.
+It is **not** an official DISA product drop; it is a **readiness**-style bundle maintained here for consistency with automation text.
+
+## Provenance
+
+Teams often obtained similar XCCDF/readiness packages through **vendor distribution**, **compliance tooling** (for example **MITRE SAF** or **Vulcan**), or internal archives. Keep **provenance notes** with your evaluation record.
 
 ## Known Issues
 Any known issues will be documented in the known-issues.md document located here.  

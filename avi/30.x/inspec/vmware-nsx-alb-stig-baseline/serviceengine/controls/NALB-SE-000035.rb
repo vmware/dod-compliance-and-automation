@@ -1,22 +1,22 @@
 control 'NALB-SE-000035' do
-  title 'The NSX Advanced Load Balancer must be configured to remove or disable unrelated or unneeded application proxy services.'
+  title 'The VMware Avi Load Balancer must be configured to remove or disable unrelated or unneeded application proxy services.'
   desc  'Unrelated or unneeded proxy services increase the attack vector and add excessive complexity to the securing of the ALG. Multiple application proxies can be installed on many ALGs. However, proxy types must be limited to related functions. At a minimum, the web and email gateway represent different security domains/trust levels. Organizations should also consider the separation of gateways that service the DMZ and the trusted network.'
   desc  'rationale', ''
   desc  'check', "
-    In NSX ALB, virtual services are the core of the load-balancing and proxy functionality. A virtual service advertises an IP address and ports to the external world and listens for client traffic. When a virtual service receives traffic, it may be configured to:
+    On the Avi Service Engine, virtual services are the core of the load-balancing and proxy functionality. A virtual service advertises an IP address and ports to the external world and listens for client traffic. When a virtual service receives traffic, it may be configured to:
 
     1. Proxy the client's network connection.
     2. Perform security, acceleration, load balancing, gathering traffic statistics, and other tasks.
     3. Forward the client's requested data to the destination pool for load balancing.
 
-    From NSX ALB UI, go to Applications >> Virtual Services.
+    From the Avi Load Balancer Controller web interface, go to Applications >> Virtual Services.
 
     Review the configured virtual services and determine if they are still actively in use or can be disabled/removed.
 
     If any virtual services exist that are not actively in use and are enabled, this is a finding.
   "
   desc 'fix', "
-    To disable an unwanted virtual service, from NSX ALB UI, navigate to Applications >> Virtual Services >> select the Virtual Service.
+    To disable an unwanted virtual service, from the Avi Load Balancer Controller web interface, navigate to Applications >> Virtual Services >> select the Virtual Service.
 
     Click on the pencil icon to edit the configuration.
 

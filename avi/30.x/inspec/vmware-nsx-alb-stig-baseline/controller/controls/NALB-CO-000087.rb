@@ -1,5 +1,5 @@
 control 'NALB-CO-000087' do
-  title 'The NSX Advanced Load Balancer Controller must off-load audit records onto a different system or media than the system being audited.'
+  title 'The VMware Avi Load Balancer Controller must off-load audit records onto a different system or media than the system being audited.'
   desc  "
     Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
 
@@ -7,17 +7,17 @@ control 'NALB-CO-000087' do
   "
   desc  'rationale', ''
   desc  'check', "
-    Verify the NSX ALB controller is configured to send log data to a syslog server.
+    Verify the Avi Load Balancer Controller is configured to send log data to a syslog server.
 
-    From the NSX ALB Controller web interface go to Operations >> Notifications >> Syslog.
+    From the Avi Load Balancer Controller web interface go to Operations >> Notifications >> Syslog.
 
     If no syslog servers are defined or unapproved syslog servers are configured, this is a finding.
 
-    From the NSX ALB Controller web interface go to Operations >> Alerts >> Alert Actions.
+    From the Avi Load Balancer Controller web interface go to Operations >> Alerts >> Alert Actions.
 
     If the \"Syslog-Config\" and \"Syslog-System\" alert actions do not a syslog server profile set, this is a finding.
 
-    From the NSX ALB Controller web interface go to Operations >> Alerts >> Alert Config.
+    From the Avi Load Balancer Controller web interface go to Operations >> Alerts >> Alert Config.
 
     If the \"Syslog-Config-Events\" alert configuration is not configured to use the \"Syslog-Config\" alert action, this is a finding.
 
@@ -26,7 +26,7 @@ control 'NALB-CO-000087' do
   desc 'fix', "
     To configure a new syslog notification configuration, perform the following steps:
 
-    From the NSX ALB Controller web Interface go to Operations >> Notification >> Syslog.
+    From the Avi Load Balancer Controller web interface go to Operations >> Notification >> Syslog.
 
     Click the create button or edit an existing syslog configuration.
 
@@ -34,7 +34,7 @@ control 'NALB-CO-000087' do
 
     To configure the alert actions to use the syslog configuration, perform the following steps:
 
-    From the NSX ALB Controller web Interface go to Operations >> Alerts >> Alert Actions.
+    From the Avi Load Balancer Controller web interface go to Operations >> Alerts >> Alert Actions.
 
     Edit the \"Syslog-Config\" alert action and select the previously configure syslog notification profile and click Save.
 
@@ -42,7 +42,7 @@ control 'NALB-CO-000087' do
 
     To configure the alert config to use the alert action, perform the following steps:
 
-    From the NSX ALB Controller web Interface go to Operations >> Alerts >> Alert Config.
+    From the Avi Load Balancer Controller web interface go to Operations >> Alerts >> Alert Config.
 
     Edit the \"Syslog-Config-Events\" alert configuration and select the \"Syslog-Config\" alert action as the alert action and click Save.
 

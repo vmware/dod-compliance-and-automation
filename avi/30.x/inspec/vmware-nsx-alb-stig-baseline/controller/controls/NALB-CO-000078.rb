@@ -1,26 +1,26 @@
 control 'NALB-CO-000078' do
-  title 'The NSX Advanced Load Balancer Controller must enable FIPS mode to protect the confidentiality of remote sessions.'
+  title 'The VMware Avi Load Balancer Controller must enable FIPS mode to protect the confidentiality of remote sessions.'
   desc  'This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data (including administrator passwords) at risk of compromise and potentially allowing hijacking of maintenance sessions.'
   desc  'rationale', ''
   desc  'check', "
     Review the FIPS mode enablement status.
 
-    From the NSX ALB Controller web interface go to Administration >> Controller >> System Update.
+    From the Avi Load Balancer Controller web interface go to Administration >> Controller >> System Update.
 
     If FIPS is not enabled, this is a finding.
   "
   desc 'fix', "
     In order to enable FIPS an administrator must update the controller.pkg file.
 
-    To download the controller.pkg, navigate to VMware Customer Connect Portal >> VMware NSX Advanced Load Balancer >> click Download Now.
+    To download the controller.pkg, navigate to VMware Customer Connect Portal >> VMware Avi Load Balancer >> click Download Now.
 
-    From the different versions of NSX ALB, click on the version of NSX ALB installed then download the Upgrade(VMware/OpenStack/AWS/KVM/CSP).
+    From the different versions of Avi Load Balancer, click on the version of Avi Load Balancer installed then download the Upgrade(VMware/OpenStack/AWS/KVM/CSP).
 
     Navigate to Administration >> Controller >> Software.
 
-    Click on Upload From Computer and choose the NSX ALB controller.pkg file downloaded then click on Open to upload the upgrade package to the image catalog.
+    Click on Upload From Computer and choose the Avi controller.pkg file downloaded then click on Open to upload the upgrade package to the image catalog.
 
-    From the NSX ALB Controller web interface go to Administration >> Controller >> System Update.
+    From the Avi Load Balancer Controller web interface go to Administration >> Controller >> System Update.
 
     Click \"Compliance Mode\".
 

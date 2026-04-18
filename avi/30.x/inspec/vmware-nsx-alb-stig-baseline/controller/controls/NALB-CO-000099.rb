@@ -1,17 +1,17 @@
 control 'NALB-CO-000099' do
-  title 'The NSX Advanced Load Balancer Controller must expire credentials after 90 days.'
+  title 'The VMware Avi Load Balancer Controller must expire credentials after 90 days.'
   desc  'The admin can choose to expire user credentials after a configurable number of days. Once credentials have expired, all API calls are going to error out. Only API/user account is supported at this point, to enable the user to change the password. If the user has configured an email address, the “Forgot Password” workflow can also be followed at this point to reset the password.'
   desc  'rationale', ''
   desc  'check', "
     Review the default user account profile to verify the credential timeout threshold is set to 90 and verify it is applied to all local users.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> User Profiles.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> User Profiles.
 
     Select edit on the \"Default-User-Account-Profile\" to view the configuration.
 
     If \"Credential Timeout Threshold\" is not set to 90 or less, this is a finding.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Verify each user has the \"Default-User-Account-Profile\" applied.
 
@@ -20,7 +20,7 @@ control 'NALB-CO-000099' do
   desc 'fix', "
     To update the \"Default-User-Account-Profile\" profile do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> User Profiles.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> User Profiles.
 
     Click the edit icon next to the \"Default-User-Account-Profile\" profile.
 
@@ -28,7 +28,7 @@ control 'NALB-CO-000099' do
 
     To update a user to use the \"Default-User-Account-Profile\" profile do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Click the edit icon next to the user.
 

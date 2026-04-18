@@ -1,5 +1,5 @@
 control 'NALB-CO-000039' do
-  title 'The NSX Advanced Load Balancer Controller must enforce a minimum 15-character password length.'
+  title 'The VMware Avi Load Balancer Controller must enforce a minimum 15-character password length.'
   desc  "
     Password complexity, or strength, is a measure of the effectiveness of a password in resisting attempts at guessing and brute-force attacks. Password length is one factor of several that helps to determine strength and how long it takes to crack a password.
 
@@ -7,7 +7,7 @@ control 'NALB-CO-000039' do
   "
   desc  'rationale', ''
   desc  'check', "
-    From the NSX ALB Controller shell, run the following command:
+    From the Avi Load Balancer Controller shell, run the following command:
 
      > show systemconfiguration | grep minimum_password_length
 
@@ -17,7 +17,7 @@ control 'NALB-CO-000039' do
     If the minimum password length is not 15 or greater, this is a finding.
   "
   desc 'fix', "
-    From the NSX ALB Controller shell, run the following commands to modify minimum_password_length value:
+    From the Avi Load Balancer Controller shell, run the following commands to modify minimum_password_length value:
 
     > configure systemconfiguration
     > systemconfiguration> portal_configuration

@@ -1,5 +1,5 @@
 control 'NALB-SE-000018' do
-  title 'The NSX Advanced Load Balancer must use secure versions of TLS.'
+  title 'The VMware Avi Load Balancer must use secure versions of TLS.'
   desc  "
     SP 800-52 provides guidance on using the most secure version and configuration of the TLS/SSL protocol. Using older unauthorized versions or incorrectly configuring protocol negotiation makes the gateway vulnerable to known and unknown attacks which exploit vulnerabilities in this protocol.
 
@@ -11,7 +11,7 @@ control 'NALB-SE-000018' do
   desc  'check', "
     Review virtual services that have SSL profiles applied to determine what TLS versions are enforced.
 
-    From the NSX ALB Controller web interface go to Applications >> Virtual Services.
+    From the Avi Load Balancer Controller web interface go to Applications >> Virtual Services.
 
     For each virtual service, select edit on the \"Virtual Service\" to view the configuration.
 
@@ -24,7 +24,7 @@ control 'NALB-SE-000018' do
   desc 'fix', "
     To update a virtual service SSL Profile, do the following:
 
-    From the NSX ALB Controller web interface go to Applications >> Virtual Services.
+    From the Avi Load Balancer Controller web interface go to Applications >> Virtual Services.
 
     Select edit on the target \"Virtual Service\".
 

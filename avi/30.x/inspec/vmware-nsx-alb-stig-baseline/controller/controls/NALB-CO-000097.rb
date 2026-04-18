@@ -1,11 +1,11 @@
 control 'NALB-CO-000097' do
-  title 'The NSX Advanced Load Balancer Controller must disable insecure SSH ciphers.'
+  title 'The VMware Avi Load Balancer Controller must disable insecure SSH ciphers.'
   desc  'Without cryptographic integrity protections, information can be altered by unauthorized users without detection.'
   desc  'rationale', ''
   desc  'check', "
     Review the access settings to verify insecure SSH ciphers are disabled.
 
-    From the NSX ALB Controller web interface go to Administration >> System Settings >> Access.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings >> Access.
 
     If \"Allowed Ciphers\" is configured to \"aes128-ctr,aes256-ctr\" or a subset thereof, this is not a finding.
 
@@ -14,7 +14,7 @@ control 'NALB-CO-000097' do
   desc 'fix', "
     To configure the \"Allowed Ciphers\", do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> System Settings.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings.
 
     Click the edit icon next to the \"System Settings\".
 

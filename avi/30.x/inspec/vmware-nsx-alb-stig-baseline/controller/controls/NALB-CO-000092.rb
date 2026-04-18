@@ -1,5 +1,5 @@
 control 'NALB-CO-000092' do
-  title 'The NSX Advanced Load Balancer Controller must be configured to to conduct backups.'
+  title 'The VMware Avi Load Balancer Controller must be configured to to conduct backups.'
   desc  "
     System-level information includes default and customized settings and security attributes, including ACLs that relate to the network device configuration, as well as software required for the execution and operation of the device. Information system backup is a critical step in ensuring system integrity and availability. If the system fails and there is no backup of the system-level information, a denial of service condition is possible for all who utilize this critical network component.
 
@@ -7,16 +7,16 @@ control 'NALB-CO-000092' do
   "
   desc  'rationale', ''
   desc  'check', "
-    Review the NSX ALB configuration to determine if the device is configured to conduct backups.
+    Review the Avi Load Balancer configuration to determine if the device is configured to conduct backups.
 
-    From the NSX ALB Controller web interface navigate to Administration >> Controller >> Configuration Backup.
+    From the Avi Load Balancer Controller web interface navigate to Administration >> Controller >> Configuration Backup.
 
     If configuration backups are not enabled, this is a finding.
 
     If a remote backup server is not configured and enabled, this is a finding.
   "
   desc 'fix', "
-    From the NSX ALB Controller web interface navigate to Administration >> Controller >> Configuration Backup.
+    From the Avi Load Balancer Controller web interface navigate to Administration >> Controller >> Configuration Backup.
 
     Click Edit.
 

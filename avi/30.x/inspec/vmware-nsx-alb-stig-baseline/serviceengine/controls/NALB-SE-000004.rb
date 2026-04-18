@@ -1,5 +1,5 @@
 control 'NALB-SE-000004' do
-  title 'The NSX Advanced Load Balancer must immediately use updates made to WAF signatures.'
+  title 'The VMware Avi Load Balancer must immediately use updates made to WAF signatures.'
   desc  "
     Information flow policies regarding dynamic information flow control include, for example, allowing or disallowing information flows based on changes to the PPSM CAL, vulnerability assessments, or mission conditions. Changing conditions include changes in the threat environment and detection of potentially harmful or adverse events.
 
@@ -7,9 +7,9 @@ control 'NALB-SE-000004' do
   "
   desc  'rationale', ''
   desc  'check', "
-    Review the NSX ALB Virtual Services to verify WAF CRS group signature updates are enabled when updates are available.
+    Review virtual services on the Avi Service Engine to verify WAF CRS group signature updates are enabled when updates are available.
 
-    From the NSX ALB Controller web interface go to Applications >> Virtual Services.
+    From the Avi Load Balancer Controller web interface go to Applications >> Virtual Services.
 
     For each virtual service, select edit on the \"Virtual Service\" to view the configuration.
 
@@ -22,7 +22,7 @@ control 'NALB-SE-000004' do
   desc 'fix', "
     To apply a \"WAF Policy\" to a virtual service, do the following:
 
-    From the NSX ALB Controller web interface go to Applications >> Virtual Services.
+    From the Avi Load Balancer Controller web interface go to Applications >> Virtual Services.
 
     Select edit on the target \"Virtual Service\".
 

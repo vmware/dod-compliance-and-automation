@@ -1,5 +1,5 @@
 control 'NALB-CO-000013' do
-  title 'The NSX Advanced Load Balancer Controller must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the device.'
+  title 'The VMware Avi Load Balancer Controller must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the device.'
   desc  "
     Display of the DoD-approved use notification before granting access to the network device ensures privacy and security notification verbiage used is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.
 
@@ -9,14 +9,14 @@ control 'NALB-CO-000013' do
   desc  'check', "
     Review the access settings to verify if the DoD-approved banner has been configured.
 
-    From the NSX ALB Controller web interface go to Administration >> System Settings >> Access >> Banners.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings >> Access >> Banners.
 
     If the \"Login Banner\" is not configured with the Standard Mandatory DoD Notice and Consent Banner, this is a finding.
   "
   desc 'fix', "
     To configure the \"Login Banner\", do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> System Settings.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings.
 
     Click the edit icon next to \"System Settings\".
 

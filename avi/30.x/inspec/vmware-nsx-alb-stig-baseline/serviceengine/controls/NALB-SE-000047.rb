@@ -1,5 +1,5 @@
 control 'NALB-SE-000047' do
-  title 'The NSX Advanced Load Balancer must terminate all network connections associated with a communications session at the end of the session or after 10 minutes of inactivity.'
+  title 'The VMware Avi Load Balancer must terminate all network connections associated with a communications session at the end of the session or after 10 minutes of inactivity.'
   desc  "
     Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element.
 
@@ -9,9 +9,9 @@ control 'NALB-SE-000047' do
   "
   desc  'rationale', ''
   desc  'check', "
-    Review the NSX ALB Virtual Service TCP Proxy \"Idle Duration\" setting.
+    Review the Avi Service Engine virtual service TCP Proxy \"Idle Duration\" setting.
 
-    From the NSX ALB Controller web interface go to Applications >> Virtual Services.
+    From the Avi Load Balancer Controller web interface go to Applications >> Virtual Services.
 
     For each virtual service, select Edit on the \"Virtual Service\" to view the configuration.
 
@@ -24,9 +24,9 @@ control 'NALB-SE-000047' do
     If \"TCP Proxy\" is set to Custom, and \"Idle Duration\" is set to a value greater than 600, or is set to zero, this is a finding.
   "
   desc 'fix', "
-    Configure the NSX ALB Virtual Service TCP Proxy \"Idle Duration\" setting.
+    Configure the Avi Service Engine virtual service TCP Proxy \"Idle Duration\" setting.
 
-    From the NSX ALB Controller web interface go to Applications >> Virtual Services.
+    From the Avi Load Balancer Controller web interface go to Applications >> Virtual Services.
 
     For each virtual service, select Edit on the \"Virtual Service\" to update the configuration.
 

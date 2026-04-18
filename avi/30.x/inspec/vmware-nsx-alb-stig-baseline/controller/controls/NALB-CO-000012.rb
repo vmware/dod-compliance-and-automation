@@ -1,17 +1,17 @@
 control 'NALB-CO-000012' do
-  title 'The NSX Advanced Load Balancer Controller must be configured to enforce the limit of three consecutive invalid logon attempts.'
+  title 'The VMware Avi Load Balancer Controller must be configured to enforce the limit of three consecutive invalid logon attempts.'
   desc  'By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-forcing, is reduced.'
   desc  'rationale', ''
   desc  'check', "
     Review the default user account profile to verify that it enforces the limit of three consecutive invalid login attempts and is applied to all local users.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> User Profiles.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> User Profiles.
 
     Select edit on the \"Default-User-Account-Profile\" to view the configuration.
 
     If \"Max Login Failure Count\" is not set to 3 or less, this is a finding.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Verify each user has the \"Default-User-Account-Profile\" applied.
 
@@ -20,7 +20,7 @@ control 'NALB-CO-000012' do
   desc 'fix', "
     To update the \"Default-User-Account-Profile\" profile do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> User Profiles.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> User Profiles.
 
     Click the edit icon next to the \"Default-User-Account-Profile\" profile.
 
@@ -28,7 +28,7 @@ control 'NALB-CO-000012' do
 
     To update a user to use the \"Default-User-Account-Profile\" profile do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Click the edit icon next to the user.
 

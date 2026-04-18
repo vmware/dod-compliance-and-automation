@@ -1,7 +1,7 @@
 control 'NALB-CO-000067' do
-  title 'The NSX Advanced Load Balancer Controller must be configured to synchronize internal information system clocks using redundant authoritative time sources.'
+  title 'The VMware Avi Load Balancer Controller must be configured to synchronize internal information system clocks using redundant authoritative time sources.'
   desc  "
-    In NSX-ALB Clustered environment, the loss of connectivity to a particular authoritative time source will result in the loss of time synchronization (free-run mode) and increasingly inaccurate time stamps on audit events and other functions.
+    In an Avi Load Balancer clustered environment, the loss of connectivity to a particular authoritative time source will result in the loss of time synchronization (free-run mode) and increasingly inaccurate time stamps on audit events and other functions.
 
     Multiple time sources provide redundancy by including a secondary source. Time synchronization is usually a hierarchy; clients synchronize time to a local source while that source synchronizes its time to a more accurate source. The network device must utilize an authoritative time server and/or be configured to use redundant authoritative time sources. This requirement is related to the comparison done in CCI-001891.
 
@@ -11,14 +11,14 @@ control 'NALB-CO-000067' do
   desc  'check', "
     Verify the configured NTP servers are authoritative time sources.
 
-    From the NSX ALB Controller web interface go to Administration >> System Settings >> DNS/NTP.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings >> DNS/NTP.
 
     If two or more authoritative time sources are not configured, this is a finding.
 
     If nonauthoritative time sources are configured, this is a finding.
   "
   desc 'fix', "
-    From the NSX ALB Controller web interface go to Administration >> System Settings.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings.
 
     Click the edit icon next to \"System Settings\".
 

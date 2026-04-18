@@ -1,9 +1,9 @@
 control 'NALB-CO-000010' do
-  title 'The NSX Advanced Load Balancer Controller must be configured to assign appropriate user roles.'
+  title 'The VMware Avi Load Balancer Controller must be configured to assign appropriate user roles.'
   desc  "
-    In NSX-ALB, each user is associated with a role. The role defines the type of access the user has to each area of the NSX-ALB System.
+    In Avi Load Balancer, each user is associated with a role. The role defines the type of access the user has to each area of the Avi Load Balancer system.
 
-    Roles provide granular Role-Based Access Control (RBAC) within NSX-ALB. Failure to provide logical access restrictions associated with changes to device configuration may have significant effects on the overall security of the system.
+    Roles provide granular Role-Based Access Control (RBAC) within Avi Load Balancer. Failure to provide logical access restrictions associated with changes to device configuration may have significant effects on the overall security of the system.
 
     Successful identification and authentication must not automatically give an entity full access to a network device or security domain. The lack of authorization-based access control could result in the immediate compromise and unauthorized access to sensitive information. All DoD systems must be properly configured to incorporate access control methods that do not rely solely on authentication for authorized access.
 
@@ -18,14 +18,14 @@ control 'NALB-CO-000010' do
   desc  'check', "
     Review the roles and permissions assigned to users.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     If any user is assigned a tenant and/or role that is not authorized, this is a finding.
   "
   desc 'fix', "
     To update local user roles and tenant access do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Select the target user and click edit.
 

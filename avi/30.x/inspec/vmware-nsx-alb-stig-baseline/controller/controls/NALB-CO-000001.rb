@@ -1,5 +1,5 @@
 control 'NALB-CO-000001' do
-  title 'The NSX Advanced Load Balancer Controller must limit the number of concurrent sessions to 5 for each administrator account and/or administrator account type.'
+  title 'The VMware Avi Load Balancer Controller must limit the number of concurrent sessions to 5 for each administrator account and/or administrator account type.'
   desc  "
     Device management includes the ability to control the number of administrators and management sessions that manage a device. Limiting the number of allowed administrators and sessions per administrator based on account type, role, or access type is helpful in limiting risks related to DoS attacks.
 
@@ -9,13 +9,13 @@ control 'NALB-CO-000001' do
   desc  'check', "
     Review the default user account profile to verify max concurrent sessions is set to 5 and verify it is applied to all local users.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> User Profiles.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> User Profiles.
 
     Select edit on the \"Default-User-Account-Profile\" to view the configuration.
 
     If \"Max Concurrent Sessions\" is not set to 5 or less, this is a finding.
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Verify each user has the \"Default-User-Account-Profile\" applied.
 
@@ -24,7 +24,7 @@ control 'NALB-CO-000001' do
   desc 'fix', "
     To update the \"Default-User-Account-Profile\" profile do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> User Profiles.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> User Profiles.
 
     Click the edit icon next to the \"Default-User-Account-Profile\" profile.
 
@@ -32,7 +32,7 @@ control 'NALB-CO-000001' do
 
     To update a user to use the \"Default-User-Account-Profile\" profile do the following:
 
-    From the NSX ALB Controller web interface go to Administration >> Accounts >> Users.
+    From the Avi Load Balancer Controller web interface go to Administration >> Accounts >> Users.
 
     Click the edit icon next to the user.
 

@@ -1,5 +1,5 @@
 control 'NALB-CO-000052' do
-  title 'The NSX Advanced Load Balancer Controller must terminate all network connections associated with a device management session after 10 minutes of inactivity.'
+  title 'The VMware Avi Load Balancer Controller must terminate all network connections associated with a device management session after 10 minutes of inactivity.'
   desc  "
     Terminating an idle session within a short time period reduces the window of opportunity for unauthorized personnel to take control of a management session enabled on the console or console port that has been left unattended. In addition, quickly terminating an idle session will also free up resources committed by the managed network element.
 
@@ -7,16 +7,16 @@ control 'NALB-CO-000052' do
   "
   desc  'rationale', ''
   desc  'check', "
-    Review if the NSX-ALB terminates the connection associated with a device management session after 10 minutes of inactivity.
+    Review if the Avi Load Balancer terminates the connection associated with a device management session after 10 minutes of inactivity.
 
-    From the NSX ALB Controller web interface on top right-hand side, click on the User Icon >> My Account.
+    From the Avi Load Balancer Controller web interface on top right-hand side, click on the User Icon >> My Account.
 
     If \"Session Timeout\" value is not set to 10 or less, this is a finding.
   "
   desc 'fix', "
     To modify the global value \"Session Timeout\" do the following.
 
-    From the NSX ALB Controller web interface on top right-hand side, click on the User Icon >> My Account.
+    From the Avi Load Balancer Controller web interface on top right-hand side, click on the User Icon >> My Account.
 
     Update the \"Session Timeout\" value to 10 and click Save.
   "

@@ -1,5 +1,5 @@
 control 'NALB-CO-000034' do
-  title 'The NSX Advanced Load Balancer Controller must disable HTTP access.'
+  title 'The VMware Avi Load Balancer Controller must disable HTTP access.'
   desc  "
     In order to prevent unauthorized connection of devices, unauthorized transfer of information, or unauthorized tunneling (i.e., embedding of data types within data types), organizations must disable unused or unnecessary physical and logical ports/protocols on information systems.
 
@@ -11,12 +11,12 @@ control 'NALB-CO-000034' do
   desc  'check', "
     Review the system access settings to verify HTTP access is disabled to the controller.
 
-    From the NSX ALB Controller web interface go to Administration >> System Settings >> Access.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings >> Access.
 
     If \"HTTP Access\" is enabled, this is a finding.
   "
   desc 'fix', "
-    From the NSX ALB Controller web interface go to Administration >> System Settings.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings.
 
     Click the edit icon next to \"System Settings\".
 

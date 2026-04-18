@@ -1,5 +1,5 @@
 control 'NALB-SE-000042' do
-  title 'The NSX Advanced Load Balancer that provides intermediary services for TLS must validate certificates used for TLS functions by performing RFC 5280-compliant certification path validation.'
+  title 'The VMware Avi Load Balancer that provides intermediary services for TLS must validate certificates used for TLS functions by performing RFC 5280-compliant certification path validation.'
   desc  "
     A certificate's certification path is the path from the end entity certificate to a trusted root certification authority (CA). Certification path validation is necessary for a relying party to make an informed decision regarding acceptance of an end entity certificate.
 
@@ -11,7 +11,7 @@ control 'NALB-SE-000042' do
 
     Review each \"Root/Intermediate CA\" to ensure OCSP Stapling is enabled.
 
-    From the NSX ALB Controller web interface go to Templates >> Security >> SSL/TLS Certificates.
+    From the Avi Load Balancer Controller web interface go to Templates >> Security >> SSL/TLS Certificates.
 
     Select the edit icon for each certificate listed under \"Root/Intermediate CA\" to view the configuration under the OCSP section.
 
@@ -22,7 +22,7 @@ control 'NALB-SE-000042' do
   desc 'fix', "
     To enable the \"OCSP Stapling\" do the following:
 
-    From the NSX ALB Controller web interface go to Templates >> Security >> SSL/TLS Certificates >> Under Root/Intermediate CA.
+    From the Avi Load Balancer Controller web interface go to Templates >> Security >> SSL/TLS Certificates >> Under Root/Intermediate CA.
 
     Click the edit on the available \"Certificate Authority\".
 

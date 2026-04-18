@@ -22,22 +22,22 @@ curl -d ‘{“username”:“admin”,“password”:“xxxxxx"}’ -H “Conte
 
 #### Run all controls in the profile against a target deployment and specify inputs with an inputs file
 ```
-inspec exec <Profile> --show-progress --input-file=inputs-nsx-alb-31.x.yml
+inspec exec <Profile> --show-progress --input-file=inputs-avi-load-balancer-31.x.yml
 ```
 
 #### Run all profiles against a target deployment with example inputs, show progress, and output results to CLI and JSON
 ```
-inspec exec <Profile> --show-progress --input-file=inputs-nsx-alb-31.x.yml --reporter=cli json:path\to\report\report.json
+inspec exec <Profile> --show-progress --input-file=inputs-avi-load-balancer-31.x.yml --reporter=cli json:path\to\report\report.json
 ```
 
 #### Run a single STIG Control against a target deployment
 ```
-inspec exec <Profile> --input-file=inputs-nsx-alb-31.x.yml --controls=NALB-SE-000077.rb
+inspec exec <Profile> --input-file=inputs-avi-load-balancer-31.x.yml --controls=NALB-SE-000077.rb
 ```
 
 #### Run all controls in the profile against a target appliance and specify a waiver file 
 ```
-inspec exec <Profile> --input-file=inputs-nsx-alb-31.x.yml --show-progress --waiver-file <waiverfile.yml>
+inspec exec <Profile> --input-file=inputs-avi-load-balancer-31.x.yml --show-progress --waiver-file <waiverfile.yml>
 ```
 
 ## Misc

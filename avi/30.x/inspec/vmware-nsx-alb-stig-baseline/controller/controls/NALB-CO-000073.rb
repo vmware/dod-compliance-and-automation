@@ -1,7 +1,7 @@
 control 'NALB-CO-000073' do
-  title 'The NSX Advanced Load Balancer Controller must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).'
+  title 'The VMware Avi Load Balancer Controller must be configured to authenticate SNMP messages using a FIPS-validated Keyed-Hash Message Authentication Code (HMAC).'
   desc  "
-    NSX ALB supports SNMPv2c and SNMPv3. SNMPv3 enables user authentication with the server and payload encryption for the messages exchanged with the Avi Controller.
+    The Avi Load Balancer supports SNMPv2c and SNMPv3. SNMPv3 enables user authentication with the server and payload encryption for the messages exchanged with the Avi Controller.
 
     Without authenticating devices, unidentified or unknown devices may be introduced, thereby facilitating the malicious activity. Bidirectional authentication provides stronger safeguards to validate the identity of other devices for connections that are of greater risk.
 
@@ -13,14 +13,14 @@ control 'NALB-CO-000073' do
   desc  'check', "
     If SNMP is not configured, this is Not Applicable.
 
-    From the NSX ALB Controller web interface go to Administration >> System Settings >> SNMP.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings >> SNMP.
 
     If SNMP_V2 is configured, this is a finding.
 
     If SNMP_V3 is configured and \"Auth Type\" is not configured or set to \"MD5\", this is a finding.
   "
   desc 'fix', "
-    From the NSX ALB Controller web interface go to Administration >> System Settings.
+    From the Avi Load Balancer Controller web interface go to Administration >> System Settings.
 
     Click the pencil icon to open the System Settings editor.
 
