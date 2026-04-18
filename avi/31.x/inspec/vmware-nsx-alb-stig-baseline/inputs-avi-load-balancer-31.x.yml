@@ -1,4 +1,3 @@
-# VMware Avi Load Balancer InSpec inputs (31.x). Renamed from inputs-nsx-alb-31.x.yml.
 # General — update for your Avi Load Balancer 31.x environment
 avicontroller: '10.1.1.1'
 sessionCookieId: ''

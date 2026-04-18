@@ -1,4 +1,3 @@
-# VMware Avi Load Balancer InSpec inputs (22.x). Renamed from inputs-nsx-alb-22.x.yml.
 # General
 avicontroller: '10.1.1.1'
 sessionCookieId: '2ee030eec32f7db9ccc6366d2c0db780'

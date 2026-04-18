@@ -1,4 +1,3 @@
-# VMware Avi Load Balancer InSpec inputs (30.x). Renamed from inputs-nsx-alb-30.x.yml.
 # General
 avicontroller: '10.1.1.1'
 sessionCookieId: '92cd87e2e61e31c90885ec48cff6ff71'
