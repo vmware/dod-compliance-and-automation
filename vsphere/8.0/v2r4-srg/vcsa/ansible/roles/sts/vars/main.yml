@@ -1,0 +1,40 @@
+---
+
+# Tomcat files and paths
+var_server_xml_path: '/usr/lib/vmware-sso/vmware-sts/conf/server.xml'
+var_web_xml_path: '/usr/lib/vmware-sso/vmware-sts/conf/web.xml'
+var_service_json_path: '/etc/vmware/vmware-vmon/svcCfgfiles/sts-lin.json'
+var_catalina_props_path: '/usr/lib/vmware-sso/vmware-sts/conf/catalina.properties'
+var_rsyslog_conf_path: '/etc/vmware-syslog/vmware-services-sso-services.conf'
+var_log_dir: '/var/log/vmware/sso/'
+var_rsyslog_conf_name: 'vmware-services-sso-services.conf'
+var_examples_dir: '/var/opt/apache-tomcat/webapps/examples'
+var_root_dir: '/var/opt/apache-tomcat/webapps/ROOT'
+var_docs_dir: '/var/opt/apache-tomcat/webapps/docs'
+var_app_dir: '/usr/lib/vmware-sso/'
+var_manager_dir: '/var/opt/apache-tomcat/webapps/manager'
+var_host_manager_dir: '/var/opt/apache-tomcat/webapps/host-manager'
+
+# server.xml variables
+var_server_xml_maxthreads: '150'
+# This may need special escaping if special characters are used like & and {# #}  {% raw %} and {% endraw %} at the beginning and end will get most of it
+# Also &quot; needs to just be a " which turns into &quot;
+var_server_xml_access_log_valve_pattern: '{% raw %}%t %I [Request] "%{User-Agent}i" %{X-Forwarded-For}i/%h:%{remote}p %l %u to local %{local}p - "%r" %H %m %U%q [Response] %s - %b bytes [Perf] process %Dms / commit %Fms / conn [%X]{% endraw %}'
+var_server_xml_security_listener_min_umask: '0007'
+var_server_xml_port: '${bio.http.port}'
+var_server_xml_address: 'localhost'
+var_server_xml_connection_timeout: '60000'
+var_server_xml_max_keepalive_requests: '100'
+
+# web.xml variables
+var_web_xml_session_timeout: '30'
+
+# service json variables
+var_stream_redirect_file: '%VMWARE_LOG_DIR%/vmware/sso/sts-runtime.log'
+
+# catalina properties variables
+
+# misc variables
+var_notify_service_name: 'sts'
+var_log_owner: 'sts'
+var_log_group: 'lwis'

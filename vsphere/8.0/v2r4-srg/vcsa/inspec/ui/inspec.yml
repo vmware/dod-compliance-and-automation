@@ -1,0 +1,70 @@
+name: vCenter Virtual Appliance 8.0 UI Service Profile
+title: vCenter Virtual Appliance 8.0 UI Service Profile
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 2.0.1
+
+inputs:
+- name: serverXmlPath
+  description: Tomcat server.xml path
+  type: string
+  value: '/usr/lib/vmware-vsphere-ui/server/conf/server.xml'
+- name: webXmlPath
+  description: Tomcat web.xml path
+  type: string
+  value: '/usr/lib/vmware-vsphere-ui/server/conf/web.xml'
+- name: svcJsonPath
+  description: Tomcat service config file
+  type: string
+  value: '/etc/vmware/vmware-vmon/svcCfgfiles/vsphere-ui.json'
+- name: logPath
+  description: Service Log Directory
+  type: string
+  value: '/var/log/vmware/vsphere-ui/logs/'
+- name: appPath
+  description: Application Directory
+  type: string
+  value: '/usr/lib/vmware-vsphere-ui/server/'
+- name: tcCore
+  description: tc Server core path (path to main binaries) - equates to $CATALINA_HOME
+  type: string
+  value: "/usr/lib/vmware-vsphere-ui/server"
+- name: catalinaPropertiesPath
+  description: Tomcat catalina.properties path
+  type: string
+  value: '/usr/lib/vmware-vsphere-ui/server/conf/catalina.properties'
+- name: syslogConfPath
+  description: Syslog conf
+  type: string
+  value: '/etc/vmware-syslog/vmware-services-vsphere-ui.conf'
+- name: contextXmlFiles
+  description: List of Context.xml files (if present)
+  type: array
+  value: ['/usr/lib/vmware-vsphere-ui/server/conf/context.xml']
+- name: maxThreads
+  description: VCUI-80-000001
+  type: string
+  value: '800'
+- name: streamRedirectFile
+  description: 'VCUI-80-000013'
+  type: string
+  value: '%VMWARE_LOG_DIR%/vmware/vsphere-ui/logs/vsphere-ui-runtime.log'
+- name: accessLogPattern
+  description: VCUI-80-000014 List of values that must be present in the pattern property of the AccessLogValve
+  type: array
+  value:
+  - '%h' 
+  - '%l' 
+  - '%t' 
+  - '%u' 
+  - '&quot;%r&quot;'
+  - '%s' 
+  - '%b'
+  - '%{x-forwarded-for}i'
+- name: sessionTimeout
+  description: VCUI-80-000070 session timeout value in minutes
+  type: string
+  value: '30'

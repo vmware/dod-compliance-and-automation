@@ -1,0 +1,405 @@
+---
+# Ansible Playbook for vCenter Appliance 8.0 PostgreSQL Service STIG Readiness Guide
+
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: run_create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vcsa-postgresql-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ var_postgresql_conf_path }}'
+        - '{{ var_stig_conf_path }}'
+
+###################################################################################################################################
+- name: Run vmw_vpg_config script to enable STIG settings
+  tags: [VCPG-80-000005]
+  when: run_vmw_pg_config | bool
+  block:
+    - name: Determine if stig.conf already exists
+      ansible.builtin.command: 'find {{ var_postgresql_data_dir }} -name stig.conf -type f'
+      register: stigconf
+      changed_when: false
+      failed_when: stigconf.rc != 0
+
+    - name: Update vmw_vpg_config.py to be executable
+      ansible.builtin.file:
+        path: '{{ var_vmw_vpg_config_path }}'
+        state: file
+        mode: '0744'
+      when:
+        - stigconf.stdout == ""
+
+    - name: Run vmw_vpg_config.py --action stig_enable
+      ansible.builtin.command: '{{ var_vmw_vpg_config_path }} --action stig_enable --pg-data-dir {{ var_postgresql_data_dir }}'
+      register: stigenable
+      when:
+        - stigconf.stdout == ""
+      failed_when: stigenable.rc != 0
+      changed_when: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: Update vmw_vpg_config.py to not be executable
+      ansible.builtin.file:
+        path: '{{ var_vmw_vpg_config_path }}'
+        state: file
+        mode: '0644'
+      when:
+        - stigconf.stdout == ""
+
+###################################################################################################################################
+- name: VCPG-80-000001
+  tags: [VCPG-80-000001]
+  when: run_max_connections | bool
+  block:
+    - name: VCPG-80-000001 - The vCenter PostgreSQL service must limit the number of concurrent sessions.
+      ansible.builtin.debug:
+        msg: "VCPG-80-000001 - No remediation needed for this control as it will be configured automatically by vCenter upon a PostgreSQL reboot."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCPG-80-000006
+  tags: [VCPG-80-000006]
+  when: run_pg_conf_perms | bool
+  block:
+    - name: VCPG-80-000006 - Find files with incorrect permissions
+      ansible.builtin.shell: find {{ var_postgresql_data_dir }}/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user vpostgres -o -not -group vpgmongrp ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: VCPG-80-000006 - Update permissions on files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: vpostgres
+        group: vpgmongrp
+        mode: '0600'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCPG-80-000007
+  tags: [VCPG-80-000007]
+  when: run_pgaudit_conf | bool
+  block:
+    - name: VCPG-80-000007 - Configure pgaudit.log_catalog
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^pgaudit.log_catalog ='
+        line: 'pgaudit.log_catalog = off'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCPG-80-000007 - Configure pgaudit.log
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^pgaudit.log ='
+        line: "pgaudit.log = 'all, -misc, -read'"
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCPG-80-000007 - Configure pgaudit.log_parameter
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^pgaudit.log_parameter ='
+        line: 'pgaudit.log_parameter = off'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCPG-80-000007 - Configure pgaudit.log_relation
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^pgaudit.log_relation ='
+        line: 'pgaudit.log_relation = off'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCPG-80-000007 - Configure pgaudit.log_statement
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^pgaudit.log_statement ='
+        line: 'pgaudit.log_statement = off'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCPG-80-000007 - Remove pgaudit.log_level
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: absent
+        regexp: '^pgaudit.log_level ='
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000009
+  tags: [VCPG-80-000009]
+  when: run_log_destination | bool
+  block:
+    - name: VCPG-80-000009 - Configure log_destination
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^log_destination ='
+        line: 'log_destination = stderr'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000010
+  tags: [VCPG-80-000010]
+  when: run_log_line_prefix | bool
+  block:
+    - name: VCPG-80-000010 - Configure log_line_prefix
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^log_line_prefix ='
+        line: "log_line_prefix = '%m %c %x %d %u %r %p %l'"
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000020
+  tags: [VCPG-80-000020]
+  when: run_log_file_mode | bool
+  block:
+    - name: VCPG-80-000020 - Configure log_file_mode
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^log_file_mode ='
+        line: 'log_file_mode = 0600'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCPG-80-000020 - Find logs with incorrect permissions
+      ansible.builtin.shell: find {{ var_log_dir }} -xdev -type f -a '(' -not -perm 600 -o -not -user {{ var_log_owner }} -o -not -group {{ var_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: VCPG-80-000020 - Update permissions on log files found to be incorrect
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ var_log_owner }}'
+        group: '{{ var_log_group }}'
+        mode: '0600'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCPG-80-000032
+  tags: [VCPG-80-000032]
+  when: run_remove_unused_extensions | bool
+  block:
+    - name: VCPG-80-000032 - The vCenter PostgreSQL service must not load unused database components, software, and database objects.
+      ansible.builtin.debug:
+        msg: "VCPG-80-000032 - This control is compliant by default but should be manually remediated if needed."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCPG-80-000035
+  tags: [VCPG-80-000035]
+  when: run_port | bool
+  block:
+    - name: VCPG-80-000035 - Configure port
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^port ='
+        line: 'port = 5432'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000036
+  tags: [VCPG-80-000036]
+  when: run_conn_auth | bool
+  block:
+    - name: VCPG-80-000036 - The vCenter PostgreSQL service must require authentication on all connections.
+      ansible.builtin.debug:
+        msg: "VCPG-80-000036 - This control is compliant by default but should be manually remediated if needed."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCPG-80-000038
+  tags: [VCPG-80-000038]
+  when: run_password_encryption | bool
+  block:
+    - name: VCPG-80-000038 - Configure password_encryption
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^password_encryption ='
+        line: 'password_encryption = scram-sha-256'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000051
+  tags: [VCPG-80-000051]
+  when: run_pg_write_conf | bool
+  block:
+    - name: VCPG-80-000051 - Configure fsync
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^fsync ='
+        line: 'fsync = on'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCPG-80-000051 - Configure full_page_writes
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^full_page_writes ='
+        line: 'full_page_writes = on'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+    - name: VCPG-80-000051 - Configure synchronous_commit
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^synchronous_commit ='
+        line: 'synchronous_commit = on'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000060
+  tags: [VCPG-80-000060]
+  when: run_client_min_messages | bool
+  block:
+    - name: VCPG-80-000060 - Configure client_min_messages
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^client_min_messages ='
+        line: 'client_min_messages = error'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000070
+  tags: [VCPG-80-000070]
+  when: run_logging_collector | bool
+  block:
+    - name: VCPG-80-000070 - Configure logging_collector
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^logging_collector ='
+        line: 'logging_collector = on'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000075
+  tags: [VCPG-80-000075]
+  when: run_log_timezone | bool
+  block:
+    - name: VCPG-80-000075 - Configure log_timezone
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^log_timezone ='
+        line: 'log_timezone = UTC'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000110
+  tags: [VCPG-80-000110]
+  when: run_log_connections | bool
+  block:
+    - name: VCPG-80-000110 - Configure log_connections
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^log_connections ='
+        line: 'log_connections = on'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000114
+  tags: [VCPG-80-000114]
+  when: run_log_disconnections | bool
+  block:
+    - name: VCPG-80-000114 - Configure log_disconnections
+      ansible.builtin.lineinfile:
+        path: '{{ var_stig_conf_path }}'
+        state: present
+        regexp: '^log_disconnections ='
+        line: 'log_disconnections = on'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ var_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCPG-80-000122
+  tags: [VCPG-80-000122]
+  when: run_rsyslog_conf | bool
+  block:
+    - name: VCPG-80-000122 - Configure rsyslog conf
+      ansible.builtin.template:
+        src: '{{ var_rsyslog_conf_name }}'
+        dest: '/etc/vmware-syslog/{{ var_rsyslog_conf_name }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+
+    - name: VCPG-80-000122 - Configure rsyslog conf archiver
+      ansible.builtin.template:
+        src: '{{ var_rsyslog_conf_arch_name }}'
+        dest: '/etc/vmware-syslog/{{ var_rsyslog_conf_arch_name }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'

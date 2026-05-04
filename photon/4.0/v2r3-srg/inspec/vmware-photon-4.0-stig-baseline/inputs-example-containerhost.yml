@@ -1,0 +1,11 @@
+useFaillockConf: true
+usePwqualityConf: true
+useHistoryConf: true
+sshdcommand: 'sshd -T'
+authprivlog: /var/log/messages
+containerHost: true
+syslogServer: loginsight.vmware.com:514
+ntptype: ntpd
+ntpServers:
+  - time-a-g.nist.gov
+  - time-b-g.nist.gov
