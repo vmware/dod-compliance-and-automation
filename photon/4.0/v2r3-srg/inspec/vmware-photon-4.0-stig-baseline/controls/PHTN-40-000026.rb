@@ -45,7 +45,7 @@ control 'PHTN-40-000026' do
   tag rid: 'SV-PHTN-40-000026'
   tag stig_id: 'PHTN-40-000026'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
-  tag nist: ['AU-9']
+  tag nist: ['AU-9 a']
 
   describe file(auditd_conf('/etc/audit/auditd.conf').log_file) do
     its('mode') { should cmp '0600' }

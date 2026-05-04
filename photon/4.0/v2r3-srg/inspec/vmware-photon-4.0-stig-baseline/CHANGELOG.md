@@ -1,5 +1,13 @@
 # Change Log
 
+## [4.0 Version 2 Release 3] (2026-05-12)
+
+#### Release Notes
+- PHTN-40-000192, 206, 267 update system-account and system-auth files to align with latest recommendations
+- PHTN-40-000245 update how /tmp mount is verified
+- PHTN-40-000246 update allowed values
+- PHTN-40-000247 change severity
+
 ## [4.0 Version 1 Release 5] (2024-01-04)
 
 #### Release Notes

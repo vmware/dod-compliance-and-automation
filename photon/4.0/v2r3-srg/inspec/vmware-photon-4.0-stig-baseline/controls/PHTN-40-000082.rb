@@ -41,7 +41,7 @@ control 'PHTN-40-000082' do
   tag rid: 'SV-PHTN-40-000082'
   tag stig_id: 'PHTN-40-000082'
   tag cci: ['CCI-001493', 'CCI-001494', 'CCI-001495']
-  tag nist: ['AU-9']
+  tag nist: ['AU-9', 'AU-9 a']
 
   describe file('/usr/sbin/audispd') do
     its('owner') { should cmp 'root' }

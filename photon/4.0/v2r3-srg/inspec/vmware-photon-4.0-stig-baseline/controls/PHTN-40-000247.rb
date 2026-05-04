@@ -16,8 +16,8 @@ control 'PHTN-40-000247' do
 
     Remove the \"nullok\" argument on the \"pam_unix.so\" module line.
   "
-  impact 0.7
-  tag severity: 'high'
+  impact 0.5
+  tag severity: 'medium'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag gid: 'V-PHTN-40-000247'
   tag rid: 'SV-PHTN-40-000247'

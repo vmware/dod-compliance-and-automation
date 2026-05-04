@@ -55,8 +55,8 @@ control 'PHTN-40-000111' do
   tag gid: 'V-PHTN-40-000111'
   tag rid: 'SV-PHTN-40-000111'
   tag stig_id: 'PHTN-40-000111'
-  tag cci: ['CCI-001683', 'CCI-001684', 'CCI-001685', 'CCI-001686', 'CCI-001851', 'CCI-002132', 'CCI-002702']
-  tag nist: ['AC-2 (4)', 'AU-4 (1)', 'SI-6 d']
+  tag cci: ['CCI-000015', 'CCI-001851', 'CCI-002702']
+  tag nist: ['AC-2 (1)', 'AU-4 (1)', 'SI-6 d']
 
   describe file('/etc/rsyslog.conf') do
     its('content') { should match /^\*\.\*.*#{input('syslogServer')};RSYSLOG_SyslogProtocol23Format$/ }

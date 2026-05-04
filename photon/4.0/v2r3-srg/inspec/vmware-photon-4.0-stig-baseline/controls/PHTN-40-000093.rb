@@ -36,12 +36,11 @@ control 'PHTN-40-000093' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000279-GPOS-00109'
-  tag satisfies: ['SRG-OS-000126-GPOS-00066']
   tag gid: 'V-PHTN-40-000093'
   tag rid: 'SV-PHTN-40-000093'
   tag stig_id: 'PHTN-40-000093'
-  tag cci: ['CCI-000879', 'CCI-002361']
-  tag nist: ['AC-12', 'MA-4 e']
+  tag cci: ['CCI-002361']
+  tag nist: ['AC-12']
 
   tmoutcontent = inspec.profile.file('tmout.sh')
   describe file('/etc/profile.d/tmout.sh') do

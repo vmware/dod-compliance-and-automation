@@ -22,8 +22,8 @@ control 'PHTN-40-000016' do
   tag gid: 'V-PHTN-40-000016'
   tag rid: 'SV-PHTN-40-000016'
   tag stig_id: 'PHTN-40-000016'
-  tag cci: ['CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000135', 'CCI-000169', 'CCI-001487', 'CCI-001814']
-  tag nist: ['AU-12 a', 'AU-3', 'AU-3 (1)', 'CM-5 (1)']
+  tag cci: ['CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-000135', 'CCI-000169', 'CCI-001487', 'CCI-003938']
+  tag nist: ['AU-12 a', 'AU-3 (1)', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 f', 'CM-5 (1) (b)']
 
   describe systemd_service('auditd') do
     it { should be_installed }

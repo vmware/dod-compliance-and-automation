@@ -33,12 +33,12 @@ control 'PHTN-40-000182' do
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000478-GPOS-00223'
-  tag satisfies: ['SRG-OS-000396-GPOS-00176']
+  tag satisfies: ['SRG-OS-000396-GPOS-00176', 'SRG-OS-000550-GPOS-00100']
   tag gid: 'V-PHTN-40-000182'
   tag rid: 'SV-PHTN-40-000182'
   tag stig_id: 'PHTN-40-000182'
   tag cci: ['CCI-002450']
-  tag nist: ['SC-13']
+  tag nist: ['SC-13 b']
 
   describe file('/proc/sys/crypto/fips_enabled') do
     its('content') { should cmp 1 }

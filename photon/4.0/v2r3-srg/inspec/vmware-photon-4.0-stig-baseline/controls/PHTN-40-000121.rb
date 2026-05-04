@@ -87,12 +87,12 @@ control 'PHTN-40-000121' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000355-GPOS-00143'
-  tag satisfies: ['SRG-OS-000356-GPOS-00144']
+  tag satisfies: ['SRG-OS-000356-GPOS-00144', 'SRG-OS-000785-GPOS-00250']
   tag gid: 'V-PHTN-40-000121'
   tag rid: 'SV-PHTN-40-000121'
   tag stig_id: 'PHTN-40-000121'
-  tag cci: ['CCI-001891', 'CCI-002046']
-  tag nist: ['AU-8 (1) (a)', 'AU-8 (1) (b)']
+  tag cci: ['CCI-004922', 'CCI-004923', 'CCI-004926']
+  tag nist: ['SC-45', 'SC-45 (1) (a)', 'SC-45 (1) (b)']
 
   ntptype = input('ntptype')
   ntpservers = input('ntpServers')

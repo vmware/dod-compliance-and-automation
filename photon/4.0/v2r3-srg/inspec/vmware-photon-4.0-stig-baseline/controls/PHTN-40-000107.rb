@@ -43,12 +43,12 @@ control 'PHTN-40-000107' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000327-GPOS-00127'
-  tag satisfies: ['SRG-OS-000240-GPOS-00090', 'SRG-OS-000458-GPOS-00203', 'SRG-OS-000463-GPOS-00207', 'SRG-OS-000471-GPOS-00215']
+  tag satisfies: ['SRG-OS-000240-GPOS-00090', 'SRG-OS-000458-GPOS-00203', 'SRG-OS-000463-GPOS-00207', 'SRG-OS-000471-GPOS-00215', 'SRG-OS-000755-GPOS-00220']
   tag gid: 'V-PHTN-40-000107'
   tag rid: 'SV-PHTN-40-000107'
   tag stig_id: 'PHTN-40-000107'
-  tag cci: ['CCI-000172', 'CCI-001404', 'CCI-002234']
-  tag nist: ['AC-2 (4)', 'AC-6 (9)', 'AU-12 c']
+  tag cci: ['CCI-000172', 'CCI-001404', 'CCI-002234', 'CCI-004188']
+  tag nist: ['AC-2 (4)', 'AC-6 (9)', 'AU-12 c', 'MA-3 (5)']
 
   results = command('find / -xdev -path /var/lib/containerd -prune -o -path /var/lib/docker -prune -o \( -perm -4000 -type f -o -perm -2000 \) -type f -print').stdout.split("\n")
   if !results.empty?

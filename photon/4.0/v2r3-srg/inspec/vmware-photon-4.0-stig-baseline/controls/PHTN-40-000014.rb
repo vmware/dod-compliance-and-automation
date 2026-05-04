@@ -39,7 +39,7 @@ control 'PHTN-40-000014' do
   tag rid: 'SV-PHTN-40-000014'
   tag stig_id: 'PHTN-40-000014'
   tag cci: ['CCI-000130']
-  tag nist: ['AU-3']
+  tag nist: ['AU-3 a']
 
   describe.one do
     describe auditd_conf do

@@ -10,9 +10,10 @@ control 'PHTN-40-000206' do
     Example result:
 
     auth required pam_faillock.so preauth
-    auth required pam_unix.so
+    auth sufficient pam_unix.so
     auth required pam_faillock.so authfail
     auth optional pam_faildelay.so delay=4000000
+    auth required pam_deny.so
 
     If the pam_faildelay.so module is not present with the delay set to at least four seconds, this is a finding.
 

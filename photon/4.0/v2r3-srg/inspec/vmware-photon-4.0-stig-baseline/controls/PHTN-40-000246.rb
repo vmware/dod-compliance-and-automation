@@ -11,7 +11,7 @@ control 'PHTN-40-000246' do
 
     fs.suid_dumpable = 0
 
-    If the \"fs.suid_dumpable\" kernel parameter is not set to \"0\", this is a finding.
+    If the \"fs.suid_dumpable\" kernel parameter is set to \"1\", this is a finding.
   "
   desc 'fix', "
     Navigate to and open:
@@ -21,6 +21,8 @@ control 'PHTN-40-000246' do
     Add or update the following line:
 
     fs.suid_dumpable = 0
+
+    Note: 0 is recommended for normal operation. If core dumps need to be captured for troubleshooting purposes then 2 is also an acceptable value.
 
     At the command line, run the following command to load the new configuration:
 
@@ -38,6 +40,6 @@ control 'PHTN-40-000246' do
   tag nist: ['CM-6 b']
 
   describe kernel_parameter('fs.suid_dumpable') do
-    its('value') { should cmp 0 }
+    its('value') { should eq(0).or eq(2) }
   end
 end

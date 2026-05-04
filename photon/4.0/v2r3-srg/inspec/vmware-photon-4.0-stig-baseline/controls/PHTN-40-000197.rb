@@ -34,8 +34,8 @@ control 'PHTN-40-000197' do
   tag gid: 'V-PHTN-40-000197'
   tag rid: 'SV-PHTN-40-000197'
   tag stig_id: 'PHTN-40-000197'
-  tag cci: ['CCI-000192']
-  tag nist: ['IA-5 (1) (a)']
+  tag cci: ['CCI-004066']
+  tag nist: ['IA-5 (1) (h)']
 
   describe file('/etc/pam.d/system-password') do
     its('content') { should match /^password\s+(required|requisite)\s+pam_pwquality\.so\s+.*$/ }

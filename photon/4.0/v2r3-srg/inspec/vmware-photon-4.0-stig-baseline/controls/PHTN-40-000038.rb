@@ -5,7 +5,7 @@ control 'PHTN-40-000038' do
 
     The number of changed characters refers to the number of changes required with respect to the total number of positions in the current password. In other words, characters may be the same within the two passwords; however, the positions of the like characters must be different.
 
-    If the password length is an odd number then number of changed characters must be rounded up.  For example, a password length of 15 characters must require the change of at least eight characters.
+    If the password length is an odd number then number of changed characters must be rounded up. For example, a password length of 15 characters must require the change of at least eight characters.
   "
   desc  'rationale', ''
   desc  'check', "
@@ -36,8 +36,8 @@ control 'PHTN-40-000038' do
   tag gid: 'V-PHTN-40-000038'
   tag rid: 'SV-PHTN-40-000038'
   tag stig_id: 'PHTN-40-000038'
-  tag cci: ['CCI-000195']
-  tag nist: ['IA-5 (1) (b)']
+  tag cci: ['CCI-004066']
+  tag nist: ['IA-5 (1) (h)']
 
   if input('usePwqualityConf')
     describe parse_config_file('/etc/security/pwquality.conf') do
