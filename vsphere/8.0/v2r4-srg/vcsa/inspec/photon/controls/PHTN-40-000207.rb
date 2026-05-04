@@ -1,34 +1,37 @@
 control 'PHTN-40-000207' do
   title 'The Photon operating system must configure Secure Shell (SSH) to disallow authentication with an empty password.'
-  desc 'Blank passwords are one of the first things an attacker checks for when probing a system. Even if the user somehow has a blank password on the OS, SSH must not allow that user to log in.'
-  desc 'check', 'At the command line, run the following command to verify the running configuration of sshd:
+  desc  'Blank passwords are one of the first things an attacker checks for when probing a system. Even if the user somehow has a blank password on the OS, SSH must not allow that user to log in.'
+  desc  'rationale', ''
+  desc  'check', "
+    At the command line, run the following command to verify the running configuration of sshd:
 
-# sshd -T|&grep -i PermitEmptyPasswords
+    # sshd -T|&grep -i PermitEmptyPasswords
 
-Example result:
+    Example result:
 
-permitemptypasswords no
+    permitemptypasswords no
 
-If "PermitEmptyPasswords" is not set to "no", this is a finding.'
-  desc 'fix', 'Navigate to and open:
+    If \"PermitEmptyPasswords\" is not set to \"no\", this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-/etc/ssh/sshd_config
+    /etc/ssh/sshd_config
 
-Ensure the "PermitEmptyPasswords" line is uncommented and set to the following:
+    Ensure the \"PermitEmptyPasswords\" line is uncommented and set to the following:
 
-PermitEmptyPasswords no
+    PermitEmptyPasswords no
 
-At the command line, run the following command:
+    At the command line, run the following command:
 
-# systemctl restart sshd.service'
+    # systemctl restart sshd.service
+  "
   impact 0.7
-  tag check_id: 'C-62610r933669_chk'
   tag severity: 'high'
-  tag gid: 'V-258870'
-  tag rid: 'SV-258870r991591_rule'
-  tag stig_id: 'PHTN-40-000207'
   tag gtitle: 'SRG-OS-000480-GPOS-00229'
-  tag fix_id: 'F-62519r933670_fix'
+  tag gid: 'V-PHTN-40-000207'
+  tag rid: 'SV-PHTN-40-000207'
+  tag stig_id: 'PHTN-40-000207'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

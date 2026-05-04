@@ -1,5 +1,30 @@
 # Change Log
 
+## [8.0 STIG Readiness Guide Version 2 Release 4] (2026-05-12)
+
+#### Release Notes
+- Updated Photon to the DISA General Purpose Operating System Security Requirements Guide V3R3
+- VCEM-80-000081 updated check, fix, and test
+- VCRM-80-000127 updated check
+- VCRP-80-000073 updated check, fix, and test
+- VCRP-80-000097 updated check, fix, and test
+- VCLU-80-000081 updated check, fix, and test
+- VCLU-80-000127 updated check
+- VCPF-80-000081 updated check, fix, and test
+- VCPF-80-000127 updated check
+- VCPG-80-000036 updated check
+- VCPG-80-000122 updated check, fix, and test
+- VCST-80-000081 updated check, fix, and test
+- VCST-80-000127 updated check
+- VCUI-80-000081 updated check, fix, and test
+- VCUI-80-000127 updated check
+- VCLD-80-000022 updated check, fix, and test
+- PHTN-40-000012 updated check and fix
+- PHTN-40-000192 updated check, fix, and test
+- PHTN-40-000206 updated check
+- PHTN-40-000246 updated check, fix, and test
+- PHTN-40-000267 new control
+
 ## [8.0 Official STIG Version 2 Release 2] (2025-04-02)
 
 #### Release Notes

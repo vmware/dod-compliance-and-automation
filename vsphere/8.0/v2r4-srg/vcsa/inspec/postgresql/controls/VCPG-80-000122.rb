@@ -1,123 +1,167 @@
 control 'VCPG-80-000122' do
   title 'The vCenter PostgreSQL service must off-load audit data to a separate log management facility.'
-  desc 'Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
+  desc  "
+    Information stored in one location is vulnerable to accidental or incidental deletion or alteration.
 
-Off-loading is a common process in information systems with limited audit storage capacity.
+    Off-loading is a common process in information systems with limited audit storage capacity.
 
-The database management system (DBMS) may write audit records to database tables, to files in the file system, to other kinds of local repository, or directly to a centralized log management system. Whatever the method used, it must be compatible with off-loading the records to the centralized system.'
-  desc 'check', 'By default there is a vmware-services-vmware-vpostgres.conf rsyslog and vmware-services-vmware-postgres-archiver.conf configuration file that includes the service logs when syslog is configured on vCenter but it must be verified.
+    The database management system (DBMS) may write audit records to database tables, to files in the file system, to other kinds of local repository, or directly to a centralized log management system. Whatever the method used, it must be compatible with off-loading the records to the centralized system.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    By default there is a vmware-services-vmware-vpostgres.conf rsyslog and vmware-services-vmware-postgres-archiver.conf configuration file that includes the service logs when syslog is configured on vCenter but it must be verified.
 
-At the command prompt, run the following command:
+    At the command prompt, run the following command:
 
-# cat /etc/vmware-syslog/vmware-services-vmware-vpostgres.conf
+    # cat /etc/vmware-syslog/vmware-services-vmware-vpostgres.conf
 
-Expected result:
+    Expected result:
 
-# vmware-vpostgres first logs stdout, before loading configuration
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/serverlog.stdout"
-      Tag="vpostgres-first"
-      Severity="info"
-      Facility="local0")
-# vmware-vpostgres first logs stderr, before loading configuration
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/serverlog.stderr"
-      Tag="vpostgres-first"
-      Severity="info"
-      Facility="local0")
-# vmware-vpostgres logs
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/postgresql-*.log"
-      Tag="vpostgres"
-      Severity="info"
-      Facility="local0")
+    # vmware-vpostgres first logs stdout, before loading configuration
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/serverlog.stdout\"
+          Tag=\"vpostgres-first\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    # vmware-vpostgres first logs stderr, before loading configuration
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/serverlog.stderr\"
+          Tag=\"vpostgres-first\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    # vmware-vpostgres logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/postgresql-*.log\"
+          Tag=\"vpostgres\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
 
-If the output does not match the expected result, this is a finding.
+    Note: If the entries for \"deleteStateOnFileDelete\" and \"reopenOnTruncate\" do not exist, this is not a finding.
 
-At the command prompt, run the following command:
+    If the output does not match the expected result, this is a finding.
 
-# cat /etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf
+    At the command prompt, run the following command:
 
-Expected result:
+    # cat /etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf
 
-# vmware-postgres-archiver stdout log
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/pg_archiver.log.stdout"
-      Tag="postgres-archiver"
-      Severity="info"
-      Facility="local0")
-# vmware-postgres-archiver stderr log
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/pg_archiver.log.stderr"
-      Tag="postgres-archiver"
-      Severity="info"
-      Facility="local0")
+    Expected result:
 
-If the output does not match the expected result, this is a finding.'
-  desc 'fix', 'Navigate to and open:
+    # vmware-postgres-archiver stdout log
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/pg_archiver.log.stdout\"
+          Tag=\"postgres-archiver\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    # vmware-postgres-archiver stderr log
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/pg_archiver.log.stderr\"
+          Tag=\"postgres-archiver\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
 
-/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf
+    Note: If the entries for \"deleteStateOnFileDelete\" and \"reopenOnTruncate\" do not exist, this is not a finding.
 
-Create the file if it does not exist.
+    If the output does not match the expected result, this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-Set the contents of the file as follows:
+    /etc/vmware-syslog/vmware-services-vmware-vpostgres.conf
 
-# vmware-vpostgres first logs stdout, before loading configuration
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/serverlog.stdout"
-      Tag="vpostgres-first"
-      Severity="info"
-      Facility="local0")
-# vmware-vpostgres first logs stderr, before loading configuration
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/serverlog.stderr"
-      Tag="vpostgres-first"
-      Severity="info"
-      Facility="local0")
-# vmware-vpostgres logs
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/postgresql-*.log"
-      Tag="vpostgres"
-      Severity="info"
-      Facility="local0")
+    Create the file if it does not exist.
 
-Navigate to and open:
+    Set the contents of the file as follows:
 
-/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf
+    # vmware-vpostgres first logs stdout, before loading configuration
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/serverlog.stdout\"
+          Tag=\"vpostgres-first\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    # vmware-vpostgres first logs stderr, before loading configuration
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/serverlog.stderr\"
+          Tag=\"vpostgres-first\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    # vmware-vpostgres logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/postgresql-*.log\"
+          Tag=\"vpostgres\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
 
-Create the file if it does not exist.
+    Navigate to and open:
 
-Set the contents of the file as follows:
+    /etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf
 
-# vmware-postgres-archiver stdout log
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/pg_archiver.log.stdout"
-      Tag="postgres-archiver"
-      Severity="info"
-      Facility="local0")
-# vmware-postgres-archiver stderr log
-input(type="imfile"
-      File="/var/log/vmware/vpostgres/pg_archiver.log.stderr"
-      Tag="postgres-archiver"
-      Severity="info"
-      Facility="local0")'
+    Create the file if it does not exist.
+
+    Set the contents of the file as follows:
+
+    # vmware-postgres-archiver stdout log
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/pg_archiver.log.stdout\"
+          Tag=\"postgres-archiver\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    # vmware-postgres-archiver stderr log
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/vpostgres/pg_archiver.log.stderr\"
+          Tag=\"postgres-archiver\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+  "
   impact 0.5
-  tag check_id: 'C-62925r935457_chk'
   tag severity: 'medium'
-  tag gid: 'V-259185'
-  tag rid: 'SV-259185r961860_rule'
-  tag stig_id: 'VCPG-80-000122'
   tag gtitle: 'SRG-APP-000515-DB-000318'
-  tag fix_id: 'F-62834r935458_fix'
+  tag gid: 'V-VCPG-80-000122'
+  tag rid: 'SV-VCPG-80-000122'
+  tag stig_id: 'VCPG-80-000122'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
-  goodcontent = inspec.profile.file('vmware-services-vmware-vpostgres.conf')
-  describe file('/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf') do
-    its('content') { should eq goodcontent }
+  goodcontent_v1 = inspec.profile.file('vmware-services-vmware-vpostgres-v1.conf')
+  goodcontent_v2 = inspec.profile.file('vmware-services-vmware-vpostgres-v2.conf')
+
+  describe.one do
+    describe file('/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf').content.strip do
+      it { should eq goodcontent_v1.strip }
+    end
+    describe file('/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf').content.strip do
+      it { should eq goodcontent_v2.strip }
+    end
   end
-  goodcontentarch = inspec.profile.file('vmware-services-vmware-postgres-archiver.conf')
-  describe file('/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf') do
-    its('content') { should eq goodcontentarch }
+
+  goodcontentarch_v1 = inspec.profile.file('vmware-services-vmware-postgres-archiver-v1.conf')
+  goodcontentarch_v2 = inspec.profile.file('vmware-services-vmware-postgres-archiver-v2.conf')
+
+  describe.one do
+    describe file('/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf').content.strip do
+      it { should eq goodcontentarch_v1.strip }
+    end
+    describe file('/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf').content.strip do
+      it { should eq goodcontentarch_v2.strip }
+    end
   end
 end

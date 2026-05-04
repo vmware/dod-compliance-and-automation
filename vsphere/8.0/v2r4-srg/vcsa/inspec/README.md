@@ -1,8 +1,8 @@
 # vmware-vcsa-8.0-stig-baseline
 VMware vSphere vCenter Appliance 8.0 STIG Chef InSpec Profile  
-Version: Release 2 Version 2  
-Date: 02 April 2025  
-STIG Type: Official STIG  
+Version: Release 2 Version 4  
+Date: 12 May 2026  
+STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
 
 ## VCSA InSpec Profiles
@@ -50,10 +50,11 @@ InSpec supports various reporting formats out of the box including HTML, JSON, a
 
 There are also supplemental tools like [MITRE's SAF CLI](https://github.com/mitre/saf) that can be used to transform results to other formats like a STIG Checklist file.  
 
-Results can also be imported into [MITRE's Heimdall](https://github.com/mitre/heimdall2) server for a more polished visual result.
+Results can also be imported into Heimdall server for a more polished visual result.
+
+An internally hosted Heimdall server is available at [Heimdall](https://heimdall.vdp.lvn.broadcom.net)
 
 ## InSpec Vendoring
-
 When you execute a local profile, the inspec.yml file will be read in order to source any profile dependencies. It will then cache the dependencies locally and generate an inspec.lock file.
 
 If you add or update dependencies in inspec.yml, dependencies may be re-vendored and the lockfile updated with inspec vendor --overwrite

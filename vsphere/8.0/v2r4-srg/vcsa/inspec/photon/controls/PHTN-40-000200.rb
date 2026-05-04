@@ -1,36 +1,41 @@
 control 'PHTN-40-000200' do
   title 'The Photon operating system must configure the Secure Shell (SSH) SyslogFacility.'
-  desc 'Automated monitoring of remote access sessions allows organizations to detect cyber attacks and ensure ongoing compliance with remote access policies by auditing connection activities.
+  desc  "
+    Automated monitoring of remote access sessions allows organizations to detect cyber attacks and ensure ongoing compliance with remote access policies by auditing connection activities.
 
-Shipping SSH authentication events to syslog allows organizations to use their log aggregators to correlate forensic activities among multiple systems.'
-  desc 'check', 'At the command line, run the following command to verify the running configuration of sshd:
+    Shipping SSH authentication events to syslog allows organizations to use their log aggregators to correlate forensic activities among multiple systems.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    At the command line, run the following command to verify the running configuration of sshd:
 
-# sshd -T|&grep -i SyslogFacility
+    # sshd -T|&grep -i SyslogFacility
 
-Example result:
+    Example result:
 
-syslogfacility AUTHPRIV
+    syslogfacility AUTHPRIV
 
-If "syslogfacility" is not set to "AUTH" or "AUTHPRIV", this is a finding.'
-  desc 'fix', 'Navigate to and open:
+    If \"syslogfacility\" is not set to \"AUTH\" or \"AUTHPRIV\", this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-/etc/ssh/sshd_config
+    /etc/ssh/sshd_config
 
-Ensure the "SyslogFacility" line is uncommented and set to the following:
+    Ensure the \"SyslogFacility\" line is uncommented and set to the following:
 
-SyslogFacility AUTHPRIV
+    SyslogFacility AUTHPRIV
 
-At the command line, run the following command:
+    At the command line, run the following command:
 
-# systemctl restart sshd.service'
+    # systemctl restart sshd.service
+  "
   impact 0.5
-  tag check_id: 'C-62605r933654_chk'
   tag severity: 'medium'
-  tag gid: 'V-258865'
-  tag rid: 'SV-258865r1003652_rule'
-  tag stig_id: 'PHTN-40-000200'
   tag gtitle: 'SRG-OS-000032-GPOS-00013'
-  tag fix_id: 'F-62514r933655_fix'
+  tag gid: 'V-PHTN-40-000200'
+  tag rid: 'SV-PHTN-40-000200'
+  tag stig_id: 'PHTN-40-000200'
   tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 

@@ -1,36 +1,39 @@
 control 'PHTN-40-000074' do
   title 'The Photon operating system must reveal error messages only to authorized users.'
-  desc "Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the operating system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives."
-  desc 'check', %q(If another package is used to offload logs, such as syslog-ng, and is properly configured, this is not applicable.
+  desc  "Only authorized personnel should be aware of errors and the details of the errors. Error messages are an indicator of an organization's operational state or can identify the operating system or platform. Additionally, Personally Identifiable Information (PII) and operational information must not be revealed through error messages to unauthorized personnel or their designated representatives."
+  desc  'rationale', ''
+  desc  'check', "
+    If another package is used to offload logs, such as syslog-ng, and is properly configured, this is not applicable.
 
-At the command line, run the following command to verify rsyslog generates log files that are not world readable:
+    At the command line, run the following command to verify rsyslog generates log files that are not world readable:
 
-# grep '^\$umask' /etc/rsyslog.conf
+    # grep '^\\$umask' /etc/rsyslog.conf
 
-Example result:
+    Example result:
 
-$umask 0037
+    $umask 0037
 
-If "$umask" is not set to "0037" or more restrictive, this is a finding.)
-  desc 'fix', 'Navigate to and open:
+    If \"$umask\" is not set to \"0037\" or more restrictive, this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-/etc/rsyslog.conf
+    /etc/rsyslog.conf
 
-Add or update the following line:
+    Add or update the following line:
 
-$umask 0037
+    $umask 0037
 
-At the command line, run the following command:
+    At the command line, run the following command:
 
-# systemctl restart rsyslog.service'
+    # systemctl restart rsyslog.service
+  "
   impact 0.5
-  tag check_id: 'C-62572r933555_chk'
   tag severity: 'medium'
-  tag gid: 'V-258832'
-  tag rid: 'SV-258832r958566_rule'
-  tag stig_id: 'PHTN-40-000074'
   tag gtitle: 'SRG-OS-000206-GPOS-00084'
-  tag fix_id: 'F-62481r933556_fix'
+  tag gid: 'V-PHTN-40-000074'
+  tag rid: 'SV-PHTN-40-000074'
+  tag stig_id: 'PHTN-40-000074'
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
 

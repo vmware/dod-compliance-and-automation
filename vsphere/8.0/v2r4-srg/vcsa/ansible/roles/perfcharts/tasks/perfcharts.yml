@@ -488,6 +488,16 @@
       when:
         - (countbadinits.count == 1 or countbadinits.count > 2) or (countbadfilters.count != 1)
 
+    - name: VCPF-80-000127 - Read current filter-class value
+      community.general.xml:
+        path: '{{ var_web_xml_path }}'
+        xpath: '/x:web-app/x:filter[x:filter-name="setCharacterEncodingFilter"]/x:filter-class'
+        content: text
+        namespaces:
+          x: http://java.sun.com/xml/ns/javaee
+      register: filter_class_current
+      changed_when: false
+
     - name: VCPF-80-000127 - Configure filter-class
       community.general.xml:
         path: '{{ var_web_xml_path }}'
@@ -499,6 +509,7 @@
           x: http://java.sun.com/xml/ns/javaee
       notify:
         - '{{ role_name }} : restart {{ var_notify_service_name }}'
+      when: filter_class_current.matches[0]['filter-class'] | trim != 'org.apache.catalina.filters.SetCharacterEncodingFilter'
 
     - name: VCPF-80-000127 - Configure filter async
       community.general.xml:

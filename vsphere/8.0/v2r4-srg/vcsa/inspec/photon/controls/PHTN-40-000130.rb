@@ -1,30 +1,33 @@
 control 'PHTN-40-000130' do
   title 'The Photon operating system TDNF package management tool must cryptographically verify the authenticity of all software packages during installation.'
-  desc 'Installation of any nontrusted software, patches, service packs, device drivers, or operating system components can significantly affect the overall security of the operating system. This requirement ensures the software has not been tampered with and has been provided by a trusted vendor.'
-  desc 'check', %q(At the command line, run the following command to verify software packages are cryptographically verified during installation:
+  desc  'Installation of any nontrusted software, patches, service packs, device drivers, or operating system components can significantly affect the overall security of the operating system. This requirement ensures the software has not been tampered with and has been provided by a trusted vendor.'
+  desc  'rationale', ''
+  desc  'check', "
+    At the command line, run the following command to verify software packages are cryptographically verified during installation:
 
-# grep '^gpgcheck' /etc/tdnf/tdnf.conf
+    # grep '^gpgcheck' /etc/tdnf/tdnf.conf
 
-Example result:
+    Example result:
 
-gpgcheck=1
+    gpgcheck=1
 
-If "gpgcheck" is not set to "true", "1", or "yes", this is a finding.)
-  desc 'fix', 'Navigate to and open:
+    If \"gpgcheck\" is not set to \"true\", \"1\", or \"yes\", this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-/etc/tdnf/tdnf.conf
+    /etc/tdnf/tdnf.conf
 
-Add or update the following line:
+    Add or update the following line:
 
-gpgcheck=1'
+    gpgcheck=1
+  "
   impact 0.7
-  tag check_id: 'C-62586r933597_chk'
   tag severity: 'high'
-  tag gid: 'V-258846'
-  tag rid: 'SV-258846r1003646_rule'
-  tag stig_id: 'PHTN-40-000130'
   tag gtitle: 'SRG-OS-000366-GPOS-00153'
-  tag fix_id: 'F-62495r933598_fix'
+  tag gid: 'V-PHTN-40-000130'
+  tag rid: 'SV-PHTN-40-000130'
+  tag stig_id: 'PHTN-40-000130'
   tag cci: ['CCI-003992']
   tag nist: ['CM-14']
 

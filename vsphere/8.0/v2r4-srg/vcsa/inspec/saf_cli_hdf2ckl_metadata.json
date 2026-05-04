@@ -4,72 +4,72 @@
       "name": "vCenter Virtual Appliance 8.0 EAM Service Profile",
       "title": "VMware vSphere 8.0 vCenter Appliance ESX Agent Manager (EAM) Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 2,
-      "releasedate": "30 Jan 2025",
+      "releasenumber": 3,
+      "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
       "name": "vCenter Virtual Appliance 8.0 Envoy Service Profile",
       "title": "VMware vSphere 8.0 vCenter Appliance Envoy Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 1,
-      "releasedate": "01 Aug 2024",
+      "releasenumber": 2,
+      "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
       "name": "vCenter Virtual Appliance 8.0 Lookup Service Profile",
       "title": "VMware vSphere 8.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 1,
-      "releasedate": "01 Aug 2024",
+      "releasenumber": 2,
+      "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
       "name": "vCenter Virtual Appliance 8.0 Perfcharts Service Profile",
       "title": "VMware vSphere 8.0 vCenter Appliance Perfcharts Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 1,
-      "releasedate": "01 Aug 2024",
+      "releasenumber": 2,
+      "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
       "name": "vCenter Virtual Appliance 8.0 Photon OS 4.0 Profile",
       "title": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 1,
-      "releasedate": "01 Aug 2024",
+      "releasenumber": 3,
+      "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
       "name": "vCenter Virtual Appliance 8.0 PostgreSQL Service Profile",
       "title": "VMware vSphere 8.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 2,
-      "releasedate": "02 Apr 2025",
+      "releasenumber": 3,
+      "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
       "name": "vCenter Virtual Appliance 8.0 STS Service Profile",
       "title": "VMware vSphere 8.0 vCenter Appliance Secure Token Service (STS) Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 1,
-      "releasedate": "01 Aug 2024",
+      "releasenumber": 2,
+      "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
       "name": "vCenter Virtual Appliance 8.0 UI Service Profile",
       "title": "VMware vSphere 8.0 vCenter Appliance User Interface (UI) Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 1,
-      "releasedate": "01 Aug 2024",
+      "releasenumber": 2,
+      "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
       "name": "vCenter Virtual Appliance 8.0 VAMI Service Profile",
       "title": "VMware vSphere 8.0 vCenter Appliance Management Interface (VAMI) Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 1,
-      "releasedate": "01 Aug 2024",
+      "releasenumber": 2,
+      "releasedate": "12 May 2026",
       "showCalendar": true
     }
   ],

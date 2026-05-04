@@ -1,34 +1,37 @@
 control 'PHTN-40-000214' do
   title 'The Photon operating system must configure Secure Shell (SSH) to disallow Kerberos authentication.'
-  desc "If Kerberos is enabled through SSH, sshd provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementation may then be subject to exploitation. To reduce the attack surface of the system, the Kerberos authentication mechanism within SSH must be disabled."
-  desc 'check', 'At the command line, run the following command to verify the running configuration of sshd:
+  desc  "If Kerberos is enabled through SSH, sshd provides a means of access to the system's Kerberos implementation. Vulnerabilities in the system's Kerberos implementation may then be subject to exploitation. To reduce the attack surface of the system, the Kerberos authentication mechanism within SSH must be disabled."
+  desc  'rationale', ''
+  desc  'check', "
+    At the command line, run the following command to verify the running configuration of sshd:
 
-# sshd -T|&grep -i KerberosAuthentication
+    # sshd -T|&grep -i KerberosAuthentication
 
-Example result:
+    Example result:
 
-kerberosauthentication no
+    kerberosauthentication no
 
-If "KerberosAuthentication" is not set to "no", this is a finding.'
-  desc 'fix', 'Navigate to and open:
+    If \"KerberosAuthentication\" is not set to \"no\", this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-/etc/ssh/sshd_config
+    /etc/ssh/sshd_config
 
-Ensure the "KerberosAuthentication" line is uncommented and set to the following:
+    Ensure the \"KerberosAuthentication\" line is uncommented and set to the following:
 
-KerberosAuthentication no
+    KerberosAuthentication no
 
-At the command line, run the following command:
+    At the command line, run the following command:
 
-# systemctl restart sshd.service'
+    # systemctl restart sshd.service
+  "
   impact 0.5
-  tag check_id: 'C-62617r933690_chk'
   tag severity: 'medium'
-  tag gid: 'V-258877'
-  tag rid: 'SV-258877r991589_rule'
-  tag stig_id: 'PHTN-40-000214'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
-  tag fix_id: 'F-62526r933691_fix'
+  tag gid: 'V-PHTN-40-000214'
+  tag rid: 'SV-PHTN-40-000214'
+  tag stig_id: 'PHTN-40-000214'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

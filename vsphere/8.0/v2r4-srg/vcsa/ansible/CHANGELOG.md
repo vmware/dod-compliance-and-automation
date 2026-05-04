@@ -2,6 +2,11 @@
 
 ## [8.0 Official STIG Version 2 Release 2] (2025-04-02)
 
+## [8.0 STIG Readiness Guide Version 2 Release 4] (2026-05-12)
+
+#### Release Notes
+- Update conf file templates
+
 #### Release Notes
 - VCPG-80-000007 updated task to implement new pgaudit configuration.
 

@@ -1,34 +1,37 @@
 control 'PHTN-40-000208' do
   title 'The Photon operating system must configure Secure Shell (SSH) to disable user environment processing.'
-  desc 'Enabling user environment processing may enable users to bypass access restrictions in some configurations and must therefore be disabled.'
-  desc 'check', 'At the command line, run the following command to verify the running configuration of sshd:
+  desc  'Enabling user environment processing may enable users to bypass access restrictions in some configurations and must therefore be disabled.'
+  desc  'rationale', ''
+  desc  'check', "
+    At the command line, run the following command to verify the running configuration of sshd:
 
-# sshd -T|&grep -i PermitUserEnvironment
+    # sshd -T|&grep -i PermitUserEnvironment
 
-Example result:
+    Example result:
 
-permituserenvironment no
+    permituserenvironment no
 
-If "PermitUserEnvironment" is not set to "no", this is a finding.'
-  desc 'fix', 'Navigate to and open:
+    If \"PermitUserEnvironment\" is not set to \"no\", this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-/etc/ssh/sshd_config
+    /etc/ssh/sshd_config
 
-Ensure the "PermitUserEnvironment" line is uncommented and set to the following:
+    Ensure the \"PermitUserEnvironment\" line is uncommented and set to the following:
 
-PermitUserEnvironment no
+    PermitUserEnvironment no
 
-At the command line, run the following command:
+    At the command line, run the following command:
 
-# systemctl restart sshd.service'
+    # systemctl restart sshd.service
+  "
   impact 0.7
-  tag check_id: 'C-62611r933672_chk'
   tag severity: 'high'
-  tag gid: 'V-258871'
-  tag rid: 'SV-258871r991591_rule'
-  tag stig_id: 'PHTN-40-000208'
   tag gtitle: 'SRG-OS-000480-GPOS-00229'
-  tag fix_id: 'F-62520r933673_fix'
+  tag gid: 'V-PHTN-40-000208'
+  tag rid: 'SV-PHTN-40-000208'
+  tag stig_id: 'PHTN-40-000208'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 

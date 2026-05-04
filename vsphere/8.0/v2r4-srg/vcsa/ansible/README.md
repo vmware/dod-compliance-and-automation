@@ -1,8 +1,8 @@
 # vmware-vcsa-8.0-stig-ansible-hardening
 VMware vCenter 8.0 Appliance STIG Ansible Playbook  
-Version: Version 2 Release 2  
-Date: April 02, 2025  
-STIG Type: Official STIG  
+Version: Version 2 Release 4  
+Date: May 12, 2026  
+STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
 
 ## Overview

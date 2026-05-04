@@ -1,135 +1,181 @@
 control 'VCEM-80-000081' do
   title 'The vCenter ESX Agent Manager service must offload log records onto a different system or media from the system being logged.'
-  desc 'Information system logging capability is critical for accurate forensic analysis. Log record content that may be necessary to satisfy the requirement of this control includes, but is not limited to, time stamps, source and destination IP addresses, user/process identifiers, event descriptions, application-specific events, success/fail indications, filenames involved, and access control or flow control rules invoked.
+  desc  "
+    Information system logging capability is critical for accurate forensic analysis. Log record content that may be necessary to satisfy the requirement of this control includes, but is not limited to, time stamps, source and destination IP addresses, user/process identifiers, event descriptions, application-specific events, success/fail indications, filenames involved, and access control or flow control rules invoked.
 
-Offloading is a common process in information systems with limited log storage capacity.
+    Offloading is a common process in information systems with limited log storage capacity.
 
-Centralized management of log records provides for efficiency in maintenance and management of records, as well as the backup and archiving of those records. Application servers and their related components are required to offload log records onto a different system or media than the system being logged.'
-  desc 'check', 'By default, a vmware-services-eam.conf rsyslog configuration file includes the service logs when syslog is configured on vCenter, but it must be verified.
+    Centralized management of log records provides for efficiency in maintenance and management of records, as well as the backup and archiving of those records. Application servers and their related components are required to offload log records onto a different system or media than the system being logged.
+  "
+  desc  'rationale', ''
+  desc  'check', "
+    By default, a vmware-services-eam.conf rsyslog configuration file includes the service logs when syslog is configured on vCenter, but it must be verified.
 
-At the command prompt, run the following command:
+    At the command prompt, run the following command:
 
-# cat /etc/vmware-syslog/vmware-services-eam.conf
+    # cat /etc/vmware-syslog/vmware-services-eam.conf
 
-Expected result:
+    Expected result:
 
-#eam.log
-input(type="imfile"
-      File="/var/log/vmware/eam/eam.log"
-      Tag="eam-main"
-      Severity="info"
-      Facility="local0")
-#eam_api.log
-input(type="imfile"
-      File="/var/log/vmware/eam/eam_api.log"
-      Tag="eam-api"
-      Severity="info"
-      Facility="local0")
-#eam web access logs
-input(type="imfile"
-      File="/var/log/vmware/eam/web/localhost_access.log"
-      Tag="eam-access"
-      Severity="info"
-      Facility="local0")
-#eam jvm logs
-input(type="imfile"
-      File="/var/log/vmware/eam/jvm.log.stdout"
-      Tag="eam-stdout"
-      Severity="info"
-      Facility="local0")
-input(type="imfile"
-      File="/var/log/vmware/eam/jvm.log.stderr"
-      Tag="eam-stderr"
-      Severity="info"
-      Facility="local0")
-#eam catalina logs
-input(type="imfile"
-      File="/var/log/vmware/eam/web/catalina.log"
-      Tag="eam-catalina"
-      Severity="info"
-      Facility="local0")
-#eam catalina localhost logs
-input(type="imfile"
-      File="/var/log/vmware/eam/web/localhost.log"
-      Tag="eam-catalina"
-      Severity="info"
-      Facility="local0")
-#eam firstboot logs
-input(type="imfile"
-      File="/var/log/vmware/firstboot/eam_firstboot.py*.log"
-      Tag="eam-firstboot"
-      Severity="info"
-      Facility="local0")
+    #eam.log
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/eam.log\"
+          Tag=\"eam-main\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam_api.log
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/eam_api.log\"
+          Tag=\"eam-api\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam web access logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/web/localhost_access.log\"
+          Tag=\"eam-access\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam jvm logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/jvm.log.stdout\"
+          Tag=\"eam-stdout\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/jvm.log.stderr\"
+          Tag=\"eam-stderr\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam catalina logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/web/catalina.log\"
+          Tag=\"eam-catalina\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam catalina localhost logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/web/localhost.log\"
+          Tag=\"eam-catalina\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam firstboot logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/firstboot/eam_firstboot.py*.log\"
+          Tag=\"eam-firstboot\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
 
-If the output does not match the expected result, this is a finding.'
-  desc 'fix', 'Navigate to and open:
+    Note: If the entries for \"deleteStateOnFileDelete\" or \"reopenOnTruncate\" are not present, this is not a finding.
 
-/etc/vmware-syslog/vmware-services-eam.conf
+    If the output does not match the expected result, this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-Create the file if it does not exist.
+    /etc/vmware-syslog/vmware-services-eam.conf
 
-Set the contents of the file as follows:
+    Create the file if it does not exist.
 
-#eam.log
-input(type="imfile"
-      File="/var/log/vmware/eam/eam.log"
-      Tag="eam-main"
-      Severity="info"
-      Facility="local0")
-#eam_api.log
-input(type="imfile"
-      File="/var/log/vmware/eam/eam_api.log"
-      Tag="eam-api"
-      Severity="info"
-      Facility="local0")
-#eam web access logs
-input(type="imfile"
-      File="/var/log/vmware/eam/web/localhost_access.log"
-      Tag="eam-access"
-      Severity="info"
-      Facility="local0")
-#eam jvm logs
-input(type="imfile"
-      File="/var/log/vmware/eam/jvm.log.stdout"
-      Tag="eam-stdout"
-      Severity="info"
-      Facility="local0")
-input(type="imfile"
-      File="/var/log/vmware/eam/jvm.log.stderr"
-      Tag="eam-stderr"
-      Severity="info"
-      Facility="local0")
-#eam catalina logs
-input(type="imfile"
-      File="/var/log/vmware/eam/web/catalina.log"
-      Tag="eam-catalina"
-      Severity="info"
-      Facility="local0")
-#eam catalina localhost logs
-input(type="imfile"
-      File="/var/log/vmware/eam/web/localhost.log"
-      Tag="eam-catalina"
-      Severity="info"
-      Facility="local0")
-#eam firstboot logs
-input(type="imfile"
-      File="/var/log/vmware/firstboot/eam_firstboot.py*.log"
-      Tag="eam-firstboot"
-      Severity="info"
-      Facility="local0")'
+    Set the contents of the file as follows:
+
+    #eam.log
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/eam.log\"
+          Tag=\"eam-main\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam_api.log
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/eam_api.log\"
+          Tag=\"eam-api\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam web access logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/web/localhost_access.log\"
+          Tag=\"eam-access\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam jvm logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/jvm.log.stdout\"
+          Tag=\"eam-stdout\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/jvm.log.stderr\"
+          Tag=\"eam-stderr\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam catalina logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/web/catalina.log\"
+          Tag=\"eam-catalina\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam catalina localhost logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/eam/web/localhost.log\"
+          Tag=\"eam-catalina\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+    #eam firstboot logs
+    input(type=\"imfile\"
+          File=\"/var/log/vmware/firstboot/eam_firstboot.py*.log\"
+          Tag=\"eam-firstboot\"
+          Severity=\"info\"
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
+  "
   impact 0.5
-  tag check_id: 'C-62756r934704_chk'
   tag severity: 'medium'
-  tag gid: 'V-259016'
-  tag rid: 'SV-259016r961395_rule'
-  tag stig_id: 'VCEM-80-000081'
   tag gtitle: 'SRG-APP-000358-AS-000064'
-  tag fix_id: 'F-62665r934705_fix'
+  tag gid: 'V-VCEM-80-000081'
+  tag rid: 'SV-VCEM-80-000081'
+  tag stig_id: 'VCEM-80-000081'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
-  goodcontent = inspec.profile.file('vmware-services-eam.conf')
-  describe file('/etc/vmware-syslog/vmware-services-eam.conf') do
-    its('content') { should eq goodcontent }
+  goodcontent_v1 = inspec.profile.file('vmware-services-eam-v1.conf')
+  goodcontent_v2 = inspec.profile.file('vmware-services-eam-v2.conf')
+
+  describe.one do
+    describe file('/etc/vmware-syslog/vmware-services-eam.conf').content.strip do
+      it { should eq goodcontent_v1.strip }
+    end
+    describe file('/etc/vmware-syslog/vmware-services-eam.conf').content.strip do
+      it { should eq goodcontent_v2.strip }
+    end
   end
 end

@@ -1,34 +1,37 @@
 control 'PHTN-40-000194' do
   title 'The Photon operating system must audit logon attempts for unknown users.'
-  desc 'By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.'
-  desc 'check', %q(At the command line, run the following command to verify that audit logon attempts for unknown users is performed:
+  desc  'By limiting the number of failed logon attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute-force attacks, is reduced. Limits are imposed by locking the account.'
+  desc  'rationale', ''
+  desc  'check', "
+    At the command line, run the following command to verify that audit logon attempts for unknown users is performed:
 
-# grep '^audit' /etc/security/faillock.conf
+    # grep '^audit' /etc/security/faillock.conf
 
-Example result:
+    Example result:
 
-audit
+    audit
 
-If the "audit" option is not set, is missing or commented out, this is a finding.
+    If the \"audit\" option is not set, is missing or commented out, this is a finding.
 
-Note: If faillock.conf is not used to configure pam_faillock.so then these options may be specified on the faillock lines in the system-auth and system-account files.)
-  desc 'fix', 'Navigate to and open:
+    Note: If faillock.conf is not used to configure pam_faillock.so then these options may be specified on the faillock lines in the system-auth and system-account files.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-/etc/security/faillock.conf
+    /etc/security/faillock.conf
 
-Add or update the following lines:
+    Add or update the following lines:
 
-audit
+    audit
 
-Note: On vCenter appliances, the equivalent file must be edited under "/etc/applmgmt/appliance", if one exists, for the changes to persist after a reboot.'
+    Note: On vCenter appliances, the equivalent file must be edited under \"/etc/applmgmt/appliance\", if one exists, for the changes to persist after a reboot.
+  "
   impact 0.5
-  tag check_id: 'C-62600r933639_chk'
   tag severity: 'medium'
-  tag gid: 'V-258860'
-  tag rid: 'SV-258860r958388_rule'
-  tag stig_id: 'PHTN-40-000194'
   tag gtitle: 'SRG-OS-000021-GPOS-00005'
-  tag fix_id: 'F-62509r933640_fix'
+  tag gid: 'V-PHTN-40-000194'
+  tag rid: 'SV-PHTN-40-000194'
+  tag stig_id: 'PHTN-40-000194'
   tag cci: ['CCI-000044']
   tag nist: ['AC-7 a']
 

@@ -1,34 +1,37 @@
 control 'PHTN-40-000213' do
   title 'The Photon operating system must configure Secure Shell (SSH) to perform strict mode checking of home directory configuration files.'
-  desc 'If other users have access to modify user-specific SSH configuration files, they may be able to log on to the system as another user.'
-  desc 'check', 'At the command line, run the following command to verify the running configuration of sshd:
+  desc  'If other users have access to modify user-specific SSH configuration files, they may be able to log on to the system as another user.'
+  desc  'rationale', ''
+  desc  'check', "
+    At the command line, run the following command to verify the running configuration of sshd:
 
-# sshd -T|&grep -i StrictModes
+    # sshd -T|&grep -i StrictModes
 
-Example result:
+    Example result:
 
-strictmodes yes
+    strictmodes yes
 
-If "StrictModes" is not set to "yes", this is a finding.'
-  desc 'fix', 'Navigate to and open:
+    If \"StrictModes\" is not set to \"yes\", this is a finding.
+  "
+  desc 'fix', "
+    Navigate to and open:
 
-/etc/ssh/sshd_config
+    /etc/ssh/sshd_config
 
-Ensure the "StrictModes" line is uncommented and set to the following:
+    Ensure the \"StrictModes\" line is uncommented and set to the following:
 
-StrictModes yes
+    StrictModes yes
 
-At the command line, run the following command:
+    At the command line, run the following command:
 
-# systemctl restart sshd.service'
+    # systemctl restart sshd.service
+  "
   impact 0.5
-  tag check_id: 'C-62616r933687_chk'
   tag severity: 'medium'
-  tag gid: 'V-258876'
-  tag rid: 'SV-258876r991589_rule'
-  tag stig_id: 'PHTN-40-000213'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
-  tag fix_id: 'F-62525r933688_fix'
+  tag gid: 'V-PHTN-40-000213'
+  tag rid: 'SV-PHTN-40-000213'
+  tag stig_id: 'PHTN-40-000213'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
