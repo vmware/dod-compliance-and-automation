@@ -1,0 +1,125 @@
+---
+- name: Include Photon
+  ansible.builtin.include_tasks:
+    file: photon.yml
+    apply:
+      tags:
+        - photon
+  tags:
+    - photon
+    - PHTN-50-000003
+    - PHTN-50-000004
+    - PHTN-50-000005
+    - PHTN-50-000007
+    - PHTN-50-000012
+    - PHTN-50-000013
+    - PHTN-50-000014
+    - PHTN-50-000016
+    - PHTN-50-000019
+    - PHTN-50-000021
+    - PHTN-50-000026
+    - PHTN-50-000030
+    - PHTN-50-000031
+    - PHTN-50-000035
+    - PHTN-50-000036
+    - PHTN-50-000037
+    - PHTN-50-000038
+    - PHTN-50-000039
+    - PHTN-50-000040
+    - PHTN-50-000041
+    - PHTN-50-000042
+    - PHTN-50-000044
+    - PHTN-50-000046
+    - PHTN-50-000047
+    - PHTN-50-000049
+    - PHTN-50-000059
+    - PHTN-50-000067
+    - PHTN-50-000068
+    - PHTN-50-000069
+    - PHTN-50-000073
+    - PHTN-50-000074
+    - PHTN-50-000076
+    - PHTN-50-000078
+    - PHTN-50-000079
+    - PHTN-50-000080
+    - PHTN-50-000082
+    - PHTN-50-000085
+    - PHTN-50-000086
+    - PHTN-50-000092
+    - PHTN-50-000093
+    - PHTN-50-000105
+    - PHTN-50-000107
+    - PHTN-50-000108
+    - PHTN-50-000110
+    - PHTN-50-000112
+    - PHTN-50-000127
+    - PHTN-50-000130
+    - PHTN-50-000133
+    - PHTN-50-000160
+    - PHTN-50-000161
+    - PHTN-50-000173
+    - PHTN-50-000175
+    - PHTN-50-000182
+    - PHTN-50-000184
+    - PHTN-50-000185
+    - PHTN-50-000186
+    - PHTN-50-000187
+    - PHTN-50-000188
+    - PHTN-50-000192
+    - PHTN-50-000193
+    - PHTN-50-000194
+    - PHTN-50-000195
+    - PHTN-50-000196
+    - PHTN-50-000197
+    - PHTN-50-000199
+    - PHTN-50-000200
+    - PHTN-50-000201
+    - PHTN-50-000203
+    - PHTN-50-000204
+    - PHTN-50-000206
+    - PHTN-50-000207
+    - PHTN-50-000208
+    - PHTN-50-000209
+    - PHTN-50-000210
+    - PHTN-50-000211
+    - PHTN-50-000212
+    - PHTN-50-000213
+    - PHTN-50-000214
+    - PHTN-50-000215
+    - PHTN-50-000216
+    - PHTN-50-000217
+    - PHTN-50-000218
+    - PHTN-50-000219
+    - PHTN-50-000220
+    - PHTN-50-000221
+    - PHTN-50-000222
+    - PHTN-50-000223
+    - PHTN-50-000224
+    - PHTN-50-000225
+    - PHTN-50-000226
+    - PHTN-50-000227
+    - PHTN-50-000228
+    - PHTN-50-000229
+    - PHTN-50-000231
+    - PHTN-50-000232
+    - PHTN-50-000233
+    - PHTN-50-000234
+    - PHTN-50-000235
+    - PHTN-50-000236
+    - PHTN-50-000237
+    - PHTN-50-000239
+    - PHTN-50-000241
+    - PHTN-50-000242
+    - PHTN-50-000244
+    - PHTN-50-000245
+    - PHTN-50-000246
+    - PHTN-50-000247
+
+- name: Include Photon Installer Tasks
+  ansible.builtin.include_tasks:
+    file: photon-installer.yml
+    apply:
+      tags:
+        - photon-installer
+  when:
+    - ansible_is_chroot | bool

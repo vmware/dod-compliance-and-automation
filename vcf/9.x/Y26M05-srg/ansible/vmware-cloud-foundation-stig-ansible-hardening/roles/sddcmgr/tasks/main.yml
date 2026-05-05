@@ -1,0 +1,15 @@
+---
+
+- name: Include SDDC Manager tasks
+  ansible.builtin.include_tasks:
+    file: sddcmgr.yml
+    apply:
+      tags:
+        - sddcmgr
+  tags:
+    - sddcmgr
+    - VCFA-9X-000354
+    - VCFA-9X-000355
+    - VCFA-9X-000356
+    - VCFA-9X-000365
+    - VCFA-9X-000372

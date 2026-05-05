@@ -1,0 +1,6 @@
+---
+
+rules:
+  line-length:
+    max: 1500
+    level: warning

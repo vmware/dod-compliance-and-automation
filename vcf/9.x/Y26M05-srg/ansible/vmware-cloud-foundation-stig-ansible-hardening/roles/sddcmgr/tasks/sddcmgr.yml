@@ -1,0 +1,73 @@
+---
+###################################################################################################################################
+- name: VCFA-9X-000354
+  tags: [VCFA-9X-000354]
+  when: sddcmgr_defaults_run_vcfa_9x_000354 | bool
+  block:
+    - name: VCFA-9X-000354 - VMware Cloud Foundation SDDC Manager assigned roles and permissions must be verified.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000354 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000355
+  tags: [VCFA-9X-000355]
+  when: sddcmgr_defaults_run_vcfa_9x_000355 | bool
+  block:
+    - name: VCFA-9X-000355 - Get current basic auth status
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/v1/sddc-manager"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_sddcmgr_bearer_token') }}"
+        method: GET
+      register: basicauth
+      changed_when: false
+
+    - name: VCFA-9X-000355 - Update Basic Auth
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/v1/sddc-manager"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_sddcmgr_bearer_token') }}"
+        method: PATCH
+        body: "{{ lookup('template', './sddcmgr_disable_basic_auth.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - basicauth.json.basicAuthDetails.status != sddcmgr_defaults_basic_auth
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFA-9X-000356
+  tags: [VCFA-9X-000356]
+  when: sddcmgr_defaults_run_vcfa_9x_000356 | bool
+  block:
+    - name: VCFA-9X-000356 - VMware Cloud Foundation SDDC Manager must configure the API admin account.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000356 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000364
+  tags: [VCFA-9X-000364]
+  when: sddcmgr_defaults_run_vcfa_9x_000364 | bool
+  block:
+    - name: VCFA-9X-000364 - VMware Cloud Foundation SDDC Manager must be configured to forward logs to a central log server.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000364 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000372
+  tags: [VCFA-9X-000372]
+  when: sddcmgr_defaults_run_vcfa_9x_000372 | bool
+  block:
+    - name: VCFA-9X-000372 - VMware Cloud Foundation SDDC Manager must compare internal information system clocks with an authoritative time server.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000372 - This control must be manually remediated."
+      changed_when: false

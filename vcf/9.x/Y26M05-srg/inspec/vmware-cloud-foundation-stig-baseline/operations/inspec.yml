@@ -1,0 +1,31 @@
+name: VMware Cloud Foundation 9.x Application Operations STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Application STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Application Operations STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: operations_apihostname
+    description: Hostname for Operations API endpoint
+    type: string
+    value: ''
+  - name: operations_apitoken
+    description: API token for Operations API endpoint
+    type: string
+    value: ''
+    sensitive: true
+  - name: automation_deployed
+    value: true
+    type: boolean
+    description: 'Is Automation deployed in the environment? Set to false to mark Automation related rules N/A.'
+  - name: opsnet_deployed
+    value: true
+    type: boolean
+    description: 'Is VCF Operations for Networks deployed in the environment? Set to false to mark VCF Operations for Networks related rules N/A.'
+  - name: vidb_deployed
+    value: true
+    type: boolean
+    description: 'Is an external VCF Identity Broker appliance deployed in the environment? Set to false to mark VCF Identity Broker related rules N/A.'

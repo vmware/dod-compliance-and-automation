@@ -1,0 +1,28 @@
+{
+  "profiles": [
+    {
+      "name": "VMware Cloud Foundation 9.x Operations for Networks Platform NGINX Service STIG Readiness Guide",
+      "title": "VMware Cloud Foundation 9.x Operations for Networks Platform NGINX Service STIG Readiness Guide",
+      "version": 1,
+      "releasenumber": 1,
+      "releasedate": "17 Jun 2025",
+      "showCalendar": true
+    },
+    {
+      "name": "canonical-ubuntu-22.04-lts-stig-baseline",
+      "title": "Canonical Ubuntu 22.04 LTS Security Technical Implementation Guide",
+      "version": 2,
+      "releasenumber": 4,
+      "releasedate": "01 Apr 2025",
+      "showCalendar": true
+    }
+  ],
+  "hostname": "opsnet1.rainpole.local",
+  "hostip": "10.1.1.8",
+  "hostmac": "00:00:00:00:00:00",
+  "hostfqdn": "opsnet1.rainpole.local",
+  "targetcomment": "",
+  "marking": "Unclass",
+  "webordatabase": "false",
+  "vulidmapping": "gid"
+}

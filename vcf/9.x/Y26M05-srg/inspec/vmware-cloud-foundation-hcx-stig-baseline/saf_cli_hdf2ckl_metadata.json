@@ -1,0 +1,28 @@
+{
+  "profiles": [
+    {
+      "name": "VMware Cloud Foundation 9.x Operations HCX Manager Appliance Apache HTTP Server STIG Readiness Guide",
+      "title": "VMware Cloud Foundation 9.x Operations HCX Manager Appliance Apache HTTP Server STIG Readiness Guide",
+      "version": 1,
+      "releasenumber": 1,
+      "releasedate": "17 Jun 2025",
+      "showCalendar": true
+    },
+    {
+      "name": "vmware-photon-5.0-stig-inspec-baseline",
+      "title": "VMware Cloud Foundation 9.x Photon OS 5.0 STIG Readiness Guide",
+      "version": 3,
+      "releasenumber": 1,
+      "releasedate": "17 Jun 2025",
+      "showCalendar": true
+    }
+  ],
+  "hostname": "opshcxmgr.rainpole.local",
+  "hostip": "10.1.1.10",
+  "hostmac": "00:00:00:00:00:00",
+  "hostfqdn": "opshcxmgr.rainpole.local",
+  "targetcomment": "",
+  "marking": "Unclass",
+  "webordatabase": "false",
+  "vulidmapping": "gid"
+}

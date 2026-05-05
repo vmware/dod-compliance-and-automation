@@ -1,0 +1,178 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+# Create backups of files?
+create_backups: true
+
+photon_5_defaults_run_phtn_50_000003: true
+photon_5_defaults_run_phtn_50_000004: true
+photon_5_defaults_run_phtn_50_000005: true
+photon_5_defaults_run_phtn_50_000005_dod_banner: false
+photon_5_defaults_run_phtn_50_000007: true
+photon_5_defaults_run_phtn_50_000012: true
+photon_5_defaults_run_phtn_50_000013: true
+photon_5_defaults_run_phtn_50_000014: true
+photon_5_defaults_run_phtn_50_000016: true
+photon_5_defaults_run_phtn_50_000016_auditd_install: true
+photon_5_defaults_run_phtn_50_000019: true
+photon_5_defaults_run_phtn_50_000021: true
+photon_5_defaults_run_phtn_50_000026: true
+photon_5_defaults_run_phtn_50_000030: true
+photon_5_defaults_run_phtn_50_000031: true
+photon_5_defaults_run_phtn_50_000035: true
+photon_5_defaults_run_phtn_50_000036: true
+photon_5_defaults_run_phtn_50_000037: true
+photon_5_defaults_run_phtn_50_000038: true
+photon_5_defaults_run_phtn_50_000039: true
+photon_5_defaults_run_phtn_50_000040: true
+photon_5_defaults_run_phtn_50_000041: true
+photon_5_defaults_run_phtn_50_000042: true
+photon_5_defaults_run_phtn_50_000044: true
+photon_5_defaults_run_phtn_50_000046: true
+photon_5_defaults_run_phtn_50_000047: true
+photon_5_defaults_run_phtn_50_000049: true
+photon_5_defaults_run_phtn_50_000059: true
+photon_5_defaults_run_phtn_50_000067: true
+photon_5_defaults_run_phtn_50_000068: true
+photon_5_defaults_run_phtn_50_000069: true
+photon_5_defaults_run_phtn_50_000073: true
+photon_5_defaults_run_phtn_50_000074: true
+photon_5_defaults_run_phtn_50_000076: true
+photon_5_defaults_run_phtn_50_000078: true
+photon_5_defaults_run_phtn_50_000079: true
+photon_5_defaults_run_phtn_50_000080: true
+photon_5_defaults_run_phtn_50_000082: true
+photon_5_defaults_run_phtn_50_000085: true
+photon_5_defaults_run_phtn_50_000086: true
+photon_5_defaults_run_phtn_50_000092: true
+photon_5_defaults_run_phtn_50_000093: true
+photon_5_defaults_run_phtn_50_000105: true
+photon_5_defaults_run_phtn_50_000107: true
+photon_5_defaults_run_phtn_50_000108: true
+photon_5_defaults_run_phtn_50_000110: true
+photon_5_defaults_run_phtn_50_000112: true
+photon_5_defaults_run_phtn_50_000127: true
+photon_5_defaults_run_phtn_50_000130: true
+photon_5_defaults_run_phtn_50_000133: true
+photon_5_defaults_run_phtn_50_000160: true
+photon_5_defaults_run_phtn_50_000161: true
+photon_5_defaults_run_phtn_50_000173: true
+photon_5_defaults_run_phtn_50_000175: true
+photon_5_defaults_run_phtn_50_000182: true
+photon_5_defaults_run_phtn_50_000184: true
+photon_5_defaults_run_phtn_50_000185: true
+photon_5_defaults_run_phtn_50_000186: true
+photon_5_defaults_run_phtn_50_000187: true
+photon_5_defaults_run_phtn_50_000188: true
+photon_5_defaults_run_phtn_50_000192: true
+photon_5_defaults_run_phtn_50_000193: true
+photon_5_defaults_run_phtn_50_000194: true
+photon_5_defaults_run_phtn_50_000195: true
+photon_5_defaults_run_phtn_50_000196: true
+photon_5_defaults_run_phtn_50_000197: true
+photon_5_defaults_run_phtn_50_000199: true
+photon_5_defaults_run_phtn_50_000200: true
+photon_5_defaults_run_phtn_50_000201: true
+photon_5_defaults_run_phtn_50_000203: true
+photon_5_defaults_run_phtn_50_000204: true
+photon_5_defaults_run_phtn_50_000206: true
+photon_5_defaults_run_phtn_50_000207: true
+photon_5_defaults_run_phtn_50_000208: true
+photon_5_defaults_run_phtn_50_000209: true
+photon_5_defaults_run_phtn_50_000210: true
+photon_5_defaults_run_phtn_50_000211: true
+photon_5_defaults_run_phtn_50_000212: true
+photon_5_defaults_run_phtn_50_000213: true
+photon_5_defaults_run_phtn_50_000214: true
+photon_5_defaults_run_phtn_50_000215: true
+photon_5_defaults_run_phtn_50_000216: true
+photon_5_defaults_run_phtn_50_000217: true
+photon_5_defaults_run_phtn_50_000218: true
+photon_5_defaults_run_phtn_50_000219: true
+photon_5_defaults_run_phtn_50_000220: true
+photon_5_defaults_run_phtn_50_000221: true
+photon_5_defaults_run_phtn_50_000222: true
+photon_5_defaults_run_phtn_50_000223: true
+photon_5_defaults_run_phtn_50_000224: true
+photon_5_defaults_run_phtn_50_000225: true
+photon_5_defaults_run_phtn_50_000226: true
+photon_5_defaults_run_phtn_50_000227: true
+photon_5_defaults_run_phtn_50_000228: true
+photon_5_defaults_run_phtn_50_000229: true
+photon_5_defaults_run_phtn_50_000231: true
+photon_5_defaults_run_phtn_50_000232: true
+photon_5_defaults_run_phtn_50_000233: true
+photon_5_defaults_run_phtn_50_000234: true
+photon_5_defaults_run_phtn_50_000235: true
+photon_5_defaults_run_phtn_50_000236: true
+photon_5_defaults_run_phtn_50_000237: true
+photon_5_defaults_run_phtn_50_000239: true
+photon_5_defaults_run_phtn_50_000241: true
+photon_5_defaults_run_phtn_50_000242: true
+photon_5_defaults_run_phtn_50_000244: true
+photon_5_defaults_run_phtn_50_000245: true
+photon_5_defaults_run_phtn_50_000246: true
+photon_5_defaults_run_phtn_50_000247: true
+
+# Auditd Configuration
+photon_5_defaults_auditd_conf_disk_full_action: 'SYSLOG'
+photon_5_defaults_auditd_conf_disk_error_action: 'SYSLOG'
+photon_5_defaults_auditd_conf_admin_space_left_action: 'SYSLOG'
+photon_5_defaults_auditd_conf_max_log_file_action: 'ROTATE'
+photon_5_defaults_auditd_conf_num_logs: 5
+photon_5_defaults_auditd_conf_space_left: 25%
+photon_5_defaults_auditd_conf_space_left_action: 'SYSLOG'
+photon_5_defaults_auditd_conf_flush: 'INCREMENTAL_ASYNC'
+photon_5_defaults_auditd_conf_freq: 50
+
+# PAM Configuration
+## Set to false to configure pam_pwquality settings in system-password directly
+photon_5_defaults_pam_use_pwquality_conf: true
+photon_5_defaults_pam_faillock_deny: 3
+photon_5_defaults_pam_faillock_fail_interval: 900
+photon_5_defaults_pam_faillock_unlock_time: 0
+photon_5_defaults_pam_faillock_dir: '/var/log/faillock'
+## requisite or required
+photon_5_defaults_pam_pwquality_control: 'requisite'
+photon_5_defaults_pam_pwquality_ucredit: '-1'
+photon_5_defaults_pam_pwquality_lcredit: '-1'
+photon_5_defaults_pam_pwquality_dcredit: '-1'
+photon_5_defaults_pam_pwquality_ocredit: '-1'
+photon_5_defaults_pam_pwquality_difok: 8
+photon_5_defaults_pam_pwquality_minlen: 15
+photon_5_defaults_pam_pwquality_dictcheck: 1
+
+# SSH Configuration
+photon_5_defaults_sshd_ciphers: 'aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
+photon_5_defaults_sshd_clientaliveinterval: 900
+photon_5_defaults_sshd_hostbasedauthentication: 'no'
+photon_5_defaults_sshd_syslogfacility: AUTHPRIV
+photon_5_defaults_sshd_loglevel: INFO
+photon_5_defaults_sshd_clientalivecountmax: 0
+photon_5_defaults_sshd_permitemptypasswords: 'no'
+photon_5_defaults_sshd_permituserenvironment: 'no'
+photon_5_defaults_sshd_gssapiauthentication: 'no'
+photon_5_defaults_sshd_x11forwarding: 'no'
+photon_5_defaults_sshd_strictmodes: 'yes'
+photon_5_defaults_sshd_kerberosauthentication: 'no'
+photon_5_defaults_sshd_compression: 'no'
+photon_5_defaults_sshd_printlastlog: 'yes'
+photon_5_defaults_sshd_ignorerhosts: 'yes'
+photon_5_defaults_sshd_ignoreuserknownhosts: 'yes'
+photon_5_defaults_sshd_maxauthtries: 6
+photon_5_defaults_sshd_allowtcpforwarding: 'no'
+photon_5_defaults_sshd_logingracetime: 30
+photon_5_defaults_sshd_macs: 'hmac-sha2-512,hmac-sha2-256'
+
+# Rsyslog Configuration
+photon_5_defaults_rsyslog_authpriv_log: '/var/log/messages'
+photon_5_defaults_rsyslog_umask: '0037'
+
+# Misc Configuration
+photon_5_defaults_limits_maxlogins: 10
+photon_5_defaults_login_defs_pass_min_days: 1
+photon_5_defaults_login_defs_pass_max_days: 90
+photon_5_defaults_login_defs_fail_delay: 4
+photon_5_defaults_sysctl_fs_suid_dumpable: 0

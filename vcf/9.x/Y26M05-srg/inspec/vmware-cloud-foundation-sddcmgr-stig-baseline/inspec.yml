@@ -1,0 +1,21 @@
+name: vmware-cloud-foundation-sddcmgr-stig-baseline
+title: InSpec Profile for the VMware Cloud Foundation SDDC Manager Appliance 9.0 STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Profile for the VMware Cloud Foundation SDDC Manager Appliance 9.0 STIG Readiness Guide
+version: 1.0.1
+
+depends:
+  - name: nginx
+    path: nginx
+  - name: photon
+    path: ../vmware-photon-5.0-stig-baseline
+  - name: postgresql
+    path: postgresql
+
+inputs:
+  - name: sshdcommand
+    value: "sshd -T -C 'user=vcf'"
+    profile: photon

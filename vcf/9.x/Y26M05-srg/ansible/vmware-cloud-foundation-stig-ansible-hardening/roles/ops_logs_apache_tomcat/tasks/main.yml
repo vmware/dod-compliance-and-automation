@@ -1,0 +1,38 @@
+---
+
+- name: Include Operations for Logs Apache Tomcat tasks
+  ansible.builtin.include_tasks:
+    file: tomcat.yml
+    apply:
+      tags:
+        - ops-logs-apache-tomcat
+  tags:
+    - ops-logs-apache-tomcat
+    - VCFT-9X-000001
+    - VCFT-9X-000003
+    - VCFT-9X-000005
+    - VCFT-9X-000013
+    - VCFT-9X-000014
+    - VCFT-9X-000025
+    - VCFT-9X-000036
+    - VCFT-9X-000048
+    - VCFT-9X-000057
+    - VCFT-9X-000062
+    - VCFT-9X-000065
+    - VCFT-9X-000067
+    - VCFT-9X-000070
+    - VCFT-9X-000087
+    - VCFT-9X-000122
+    - VCFT-9X-000131
+    - VCFT-9X-000132
+    - VCFT-9X-000133
+    - VCFT-9X-000134
+    - VCFT-9X-000135
+    - VCFT-9X-000136
+    - VCFT-9X-000139
+    - VCFT-9X-000140
+    - VCFT-9X-000141
+    - VCFT-9X-000142
+    - VCFT-9X-000143
+    - VCFT-9X-000144
+    - VCFT-9X-000145

@@ -1,0 +1,43 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+operations_defaults_run_vcfa_9x_000001: true
+operations_defaults_run_vcfa_9x_000054: true
+operations_defaults_run_vcfa_9x_000141: true
+operations_defaults_run_vcfa_9x_000262: true
+operations_defaults_run_vcfa_9x_000292: true
+operations_defaults_run_vcfa_9x_000346: true
+operations_defaults_run_vcfa_9x_000347: true
+operations_defaults_run_vcfa_9x_000348: true
+operations_defaults_run_vcfa_9x_000349: true
+operations_defaults_run_vcfa_9x_000350: true
+operations_defaults_run_vcfa_9x_000351: true
+operations_defaults_run_vcfa_9x_000352: true
+operations_defaults_run_vcfa_9x_000353: true
+operations_defaults_run_vcfa_9x_000361: true
+operations_defaults_run_vcfa_9x_000363: true
+operations_defaults_run_vcfa_9x_000365: true
+operations_defaults_run_vcfa_9x_000366: true
+operations_defaults_run_vcfa_9x_000368: true
+operations_defaults_run_vcfa_9x_000369: true
+operations_defaults_run_vcfa_9x_000370: true
+
+# Operations Configuration
+
+# Session timeout value in minutes
+operations_defaults_session_timeout_minutes: '15'
+
+# For control VCFA-9X-000363 - API currently not implemented correctly
+## Which logs should be offloaded
+# operations_defaults_logs_to_offload: ['ANALYTICS', 'COLLECTOR', 'TOMCAT_WEBAPP', 'VPOSTGRES', 'WATCHDOG', 'OTHER',
+#                                   'CALL_STACK', 'GEMFIRE', 'WEB', 'VIEW_BRIDGE', 'SUITEAPI', 'UPGRADE', 'ADMIN_UI', 'VCOPS_BRIDGE']
+##  Which protocol to use (CFAPI or SYSLOG)
+# operations_defaults_log_server_protocol: 'SYSLOG'
+# Operations for Logs instance or cluster vip
+# operations_defaults_log_server:
+## Log server cluster name
+# operations_defaults_log_server_cluster_name: 'SINGLE'
+## Use SSL connection for log shipping
+# operations_defaults_log_server_use_ssl: false

@@ -1,0 +1,8 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+vcenter_envoy_defaults_run_vcfk_9x_000018: true
+vcenter_envoy_defaults_run_vcfk_9x_000039: true
+vcenter_envoy_defaults_run_vcfk_9x_000043: true

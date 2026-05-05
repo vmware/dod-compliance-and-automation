@@ -1,0 +1,40 @@
+---
+- name: Include VCF Operations Fleet Management NGINX tasks
+  ansible.builtin.include_tasks:
+    file: nginx.yml
+    apply:
+      tags:
+        - ops-fm-nginx
+  tags:
+    - ops-fm-nginx
+    - VCFQ-9X-000001
+    - VCFQ-9X-000003
+    - VCFQ-9X-000004
+    - VCFQ-9X-000007
+    - VCFQ-9X-000009
+    - VCFQ-9X-000010
+    - VCFQ-9X-000019
+    - VCFQ-9X-000025
+    - VCFQ-9X-000026
+    - VCFQ-9X-000034
+    - VCFQ-9X-000035
+    - VCFQ-9X-000037
+    - VCFQ-9X-000040
+    - VCFQ-9X-000047
+    - VCFQ-9X-000048
+    - VCFQ-9X-000060
+    - VCFQ-9X-000062
+    - VCFQ-9X-000063
+    - VCFQ-9X-000078
+    - VCFQ-9X-000090
+    - VCFQ-9X-000096
+    - VCFQ-9X-000098
+    - VCFQ-9X-000099
+    - VCFQ-9X-000100
+    - VCFQ-9X-000102
+    - VCFQ-9X-000103
+    - VCFQ-9X-000104
+    - VCFQ-9X-000105
+    - VCFQ-9X-000106
+    - VCFQ-9X-000111
+    - VCFQ-9X-000137

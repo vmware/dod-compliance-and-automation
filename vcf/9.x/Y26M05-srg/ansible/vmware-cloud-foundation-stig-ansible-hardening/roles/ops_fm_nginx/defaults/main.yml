@@ -1,0 +1,36 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+ops_fm_nginx_defaults_run_vcfq_9x_000001: true
+ops_fm_nginx_defaults_run_vcfq_9x_000003: true
+ops_fm_nginx_defaults_run_vcfq_9x_000004: true
+ops_fm_nginx_defaults_run_vcfq_9x_000007: true
+ops_fm_nginx_defaults_run_vcfq_9x_000009: true
+ops_fm_nginx_defaults_run_vcfq_9x_000010: true
+ops_fm_nginx_defaults_run_vcfq_9x_000019: true
+ops_fm_nginx_defaults_run_vcfq_9x_000025: true
+ops_fm_nginx_defaults_run_vcfq_9x_000026: true
+ops_fm_nginx_defaults_run_vcfq_9x_000034: true
+ops_fm_nginx_defaults_run_vcfq_9x_000035: true
+ops_fm_nginx_defaults_run_vcfq_9x_000037: true
+ops_fm_nginx_defaults_run_vcfq_9x_000040: true
+ops_fm_nginx_defaults_run_vcfq_9x_000047: true
+ops_fm_nginx_defaults_run_vcfq_9x_000048: true
+ops_fm_nginx_defaults_run_vcfq_9x_000060: true
+ops_fm_nginx_defaults_run_vcfq_9x_000062: true
+ops_fm_nginx_defaults_run_vcfq_9x_000063: true
+ops_fm_nginx_defaults_run_vcfq_9x_000078: true
+ops_fm_nginx_defaults_run_vcfq_9x_000090: true
+ops_fm_nginx_defaults_run_vcfq_9x_000096: true
+ops_fm_nginx_defaults_run_vcfq_9x_000098: true
+ops_fm_nginx_defaults_run_vcfq_9x_000099: true
+ops_fm_nginx_defaults_run_vcfq_9x_000100: true
+ops_fm_nginx_defaults_run_vcfq_9x_000102: true
+ops_fm_nginx_defaults_run_vcfq_9x_000103: true
+ops_fm_nginx_defaults_run_vcfq_9x_000104: true
+ops_fm_nginx_defaults_run_vcfq_9x_000105: true
+ops_fm_nginx_defaults_run_vcfq_9x_000106: true
+ops_fm_nginx_defaults_run_vcfq_9x_000111: true
+ops_fm_nginx_defaults_run_vcfq_9x_000137: true

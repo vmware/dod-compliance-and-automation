@@ -1,0 +1,118 @@
+name: VMware Cloud Foundation 9.x SDDC Manager Appliance NGINX Service STIG Readiness Guide
+title: VMware Cloud Foundation 9.x SDDC Manager Appliance NGINX Service STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x SDDC Manager Appliance NGINX Service STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: nginx_bin_path
+    description: Path to NGINX bin file
+    type: string
+    value: '/usr/sbin/nginx'
+  - name: nginx_conf_path
+    description: Path to NGINX conf file
+    type: string
+    value: '/etc/nginx/nginx.conf'
+  - name: limit_conn_server_limit
+    description: NGNX-RP-000001 Connection limit for per server connections
+    type: string
+    value: '1000'
+  - name: hsts_header
+    description: NGNX-RP-000004 HSTS header settings
+    type: array
+    value: ["Strict-Transport-Security", "max-age=15768000"]
+  - name: nginx_error_log_file
+    description: NGNX-RP-000007 NGINX error log file path
+    type: string
+    value: '/var/log/nginx/error.log'
+  - name: nginx_error_log_level
+    description: NGNX-RP-000007 NGINX error log level. Should be info or debug.
+    type: string
+    value: 'info'
+  - name: nginx_access_log_file
+    description: NGNX-RP-000009 NGINX access log file path
+    type: string
+    value: '/var/log/nginx/access.log'
+  - name: nginx_access_log_format_name
+    description: NGNX-RP-000009 NGINX access log format name
+    type: string
+    value: 'custom'
+  - name: nginx_log_dir
+    description: NGNX-RP-000019 NGINX log directory path
+    type: string
+    value: '/var/log/nginx/'
+  - name: nginx_log_owner
+    description: NGNX-RP-000019 NGINX log owner
+    type: string
+    value: 'vcf'
+  - name: nginx_log_group
+    description: NGNX-RP-000019 NGINX log group
+    type: string
+    value: 'vcf'
+  - name: approved_modules
+    description: NGNX-RP-000026 List of approved modules listed without _module
+    type: array
+    value:
+      - http_v2
+      - http_ssl
+      - http_auth_request
+      - http_sub
+      - http_stub_status
+      - http_realip
+  - name: nginx_user
+    description: NGNX-RP-000035 NGINX worker process user account
+    type: string
+    value: 'nginx'
+  - name: nginx_group
+    description: NGNX-RP-000035 NGINX worker process group
+    type: string
+    value: 'nginx'
+  - name: listen_addresses_ports
+    description: NGNX-RP-000037 List of approved IP address:Port listen addresses
+    type: array
+    value:
+      - '127.0.0.1:80'
+      - '[::1]:80'
+      - '[::]:443'
+      - '443'
+  - name: nginx_ssl_session_timeout
+    description: NGNX-RP-000047 NGINX ssl_session_timeout in minutes
+    type: string
+    value: '5m'
+  - name: nginx_limit_req_zone_name
+    description: NGNX-RP-000060 NGINX limit_req_zone name
+    type: string
+    value: 'api_traffic'
+  - name: nginx_limit_req_rate
+    description: NGNX-RP-000060 NGINX limit_req_zone limit rate
+    type: string
+    value: '5000r/s'
+  - name: nginx_limit_req_zone_size
+    description: NGNX-RP-000060 NGINX limit_req_zone size
+    type: string
+    value: '10m'
+  - name: nginx_limit_req_burst
+    description: NGNX-RP-000060 NGINX limit_req burst rate
+    type: string
+    value: '100'
+  - name: nginx_error_log_level
+    description: NGNX-RP-000073 NGINX error log level
+    type: string
+    value: 'info'
+  - name: approved_sites
+    description: NGNX-RP-000096 List of approved sites that are enabled
+    type: array
+    value:
+      - changeme
+      - deleteme
+  - name: nginx_content_security_policy
+    description: NGNX-RP-000105 Content Security Policy
+    type: array
+    value: ["Content-Security-Policy", "default-src 'self';"]
+  - name: limit_conn_ip_limit
+    description: NGNX-RP-000137 Connection limit for per ip connections
+    type: string
+    value: '100'

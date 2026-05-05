@@ -1,0 +1,47 @@
+name: VMware Cloud Foundation 9.x vCenter Server Appliance PostgreSQL Service STIG Readiness Guide
+title: VMware Cloud Foundation 9.x vCenter Server Appliance PostgreSQL Service STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: InSpec compliance profile for the VMware Cloud Foundation 9.x vCenter Server Appliance PostgreSQL Service STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+- name: postgres_user
+  type: string
+  value: "postgres"
+  description: "Enter superuser name to connect to the postgres database.  Default is 'postgres'"
+- name: postgres_pass
+  type: string
+  value: ""
+  description: "Postgres user password.  Blank is sufficient when ran as root most of the time. Special characters may need to be substituted for example @ should be %40"
+  sensitive: true
+- name: postgres_host
+  type: string
+  value: "localhost"
+- name: postgres_default_db
+  type: string
+  value: "postgres"
+  description: "Enter the database to run queries against.  Default is 'postgres'"
+- name: pg_data_dir
+  type: string
+  value: "/storage/db/vpostgres/"
+  description: "Enter location of the postgres installation"
+- name: pg_owner
+  type: string
+  value: "vpostgres"
+  description: "Enter expected owner for pg files"
+- name: pg_group
+  type: string
+  value: "vpgmongrp"
+  description: "Enter expected group for pg files"
+- name: pg_log_dir
+  type: string
+  value: "/var/log/vmware/vpostgres"
+  description: "VCPG-80-000020 Enter location of the postgres logs"
+- name: pg_approved_extensions
+  type: array
+  value:
+    - plpgsql
+  description: "VCPG-80-000032 Enter a list of approved extensions. Leave plpgsql"
