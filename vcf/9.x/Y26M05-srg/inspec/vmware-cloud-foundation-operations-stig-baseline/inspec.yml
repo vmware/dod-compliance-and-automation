@@ -1,11 +1,11 @@
 name: vmware-cloud-foundation-operations-stig-baseline
-title: InSpec Profile for the VMware Cloud Foundation Operations Appliance 9.0 STIG Readiness Guide
+title: InSpec Profile for the VMware Cloud Foundation Operations Appliance 9.X STIG Readiness Guide
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
-summary: An InSpec Compliance Profile for the VMware Cloud Foundation Operations Appliance 9.0 STIG Readiness Guide
-version: 1.0.1
+summary: An InSpec Compliance Profile
+version: 1.0.2
 
 depends:
   - name: httpd

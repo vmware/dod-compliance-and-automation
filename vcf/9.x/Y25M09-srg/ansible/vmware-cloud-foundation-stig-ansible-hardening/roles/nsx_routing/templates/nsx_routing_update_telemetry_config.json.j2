@@ -1,0 +1,8 @@
+{
+    "ceip_acceptance": {{ nsx_routing_defaults_ceip_acceptance | lower }},
+    "schedule_enabled": {{ nsx_routing_defaults_telemetry_schedule_enabled | lower }},
+    "telemetry_schedule": {{ item.telemetry_schedule | to_json }},
+    "proxy_enabled": {{ item.proxy_enabled | lower }},
+    "telemetry_deployment_id": "{{ item.telemetry_deployment_id }}",
+    "_revision": {{ item._revision }}
+}

@@ -1,9 +1,8 @@
-| [![Lint Ansible on Pushes](https://github-vcf.devops.broadcom.net/vcf/vmware-cloud-foundation-stig-ansible-hardening/actions/workflows/lint-ansible-on-push.yml/badge.svg?branch=main)](https://github-vcf.devops.broadcom.net/vcf/vmware-cloud-foundation-stig-ansible-hardening/actions/workflows/lint-ansible-on-push.yml) | Main | [![Lint Ansible on Pushes](https://github-vcf.devops.broadcom.net/vcf/vmware-cloud-foundation-stig-ansible-hardening/actions/workflows/lint-ansible-on-push.yml/badge.svg?branch=development)](https://github-vcf.devops.broadcom.net/vcf/vmware-cloud-foundation-stig-ansible-hardening/actions/workflows/lint-ansible-on-push.yml) | Development |
-|:-|:-|:-|:-|
 # vmware-cloud-foundation-stig-ansible-hardening
-VMware Cloud Foundation STIG/SRG Ansible Playbook  
-Updated: 2025-06-17
-STIG Release: Y25M06  
+VMware Cloud Foundation 9.X STIG/SRG Ansible Playbook 
+Version: Release 1 Version 2  
+Updated: 2026-05-12
+STIG Release: Y26M05  
 STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
 
@@ -22,7 +21,7 @@ This is an Ansible playbook that can be used to perform automated remediation fo
 All ansible roles needed to remediation STIG compliance for VCF have been consolidated into a single playbook starting in 9.0.0.0.  
 
 ## Supported Versions
-- VCF 9.0.0.0  
+- VCF 9.1.0.0  
 
 ## Support
 - This playbook has not been tested for forward or backward compatibility beyond the version of VCF listed.  
@@ -91,6 +90,9 @@ The following table of variables are either required or optionally needed depend
 |`ops_fm_defaults_time_servers`                     |`''`                       |Comma separated list of NTP servers with no spaces (i.e., '10.0.0.1,10.0.0.2').|String       |VCFA-9X-000371|
 |`ops_hcx_defaults_time_servers`                    |`[]`                       |Array of NTP servers.                                        |Array        |VCFA-9X-000383|
 |`ops_logs_defaults_ntp_servers`                    |`[]`                       |Array of NTP servers.                                        |Array        |VCFA-9X-000367|
+
+## Scripts
+* `scripts/diff_ansible_tags_to_baseline.py` — Compares STIG IDs referenced in each Ansible role (tags and task names) to InSpec control filenames under mapped baseline `controls/` directories. Configuration is in `scripts/baseline_role_mapping.json`. Run from this repo with Python 3; set `VCF_STIG_REPOS_ROOT` to the parent folder that contains the `vmware-cloud-foundation-*-stig-baseline` repositories (or pass `--workspace /path/to/that/folder`). Use `--role <name>` to check one role, or `--json` for machine-readable output.
 
 ## Ansible Concepts
 
@@ -383,7 +385,7 @@ ansible-playbook playbook_api.yml -i inventory_vcf.yml -l sddcmgr -v --ask-vault
 ansible-playbook playbook.yml -i inventory_vcf.yml -l operations_hcx_mgr -v --ask-vault-pass -e @vault_vcf.yml
 
 # Run all applicable appliance-based roles on all Operations HCX Connectors in inventory.
-ansible-playbook playbook.yml -i inventory_vcf.yml -l operations_hcx_conn -v --ask-vault-pass -e @vault_vcf.yml
+ansible-playbook playbook.yml -i inventory_vcf.yml -l operations_hcx_dp -v --ask-vault-pass -e @vault_vcf.yml
 
 # Run all applicable product-based roles on Operations HCX Managers in inventory.
 ansible-playbook playbook_api.yml -i inventory_vcf.yml -l operations_hcx_mgr -v --ask-vault-pass -e @vault_vcf.yml

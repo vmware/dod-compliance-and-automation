@@ -35,20 +35,6 @@
   serial: 1
   roles:
     - role: operations
-- name: vmware-cloud-foundation-operations-for-logs-stig-ansible-hardening
-  hosts: operations_logs
-  connection: local
-  gather_facts: false
-  serial: 1
-  roles:
-    - role: ops_logs
-- name: vmware-cloud-foundation-operations-fleet-management-stig-ansible-hardening
-  hosts: operations_fm
-  connection: local
-  gather_facts: false
-  serial: 1
-  roles:
-    - role: ops_fm
 - name: vmware-cloud-foundation-operations-for-networks-stig-ansible-hardening
   hosts: operations_networks_platform
   connection: local

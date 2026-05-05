@@ -1,11 +1,11 @@
 name: vmware-cloud-foundation-sddcmgr-stig-baseline
-title: InSpec Profile for the VMware Cloud Foundation SDDC Manager Appliance 9.0 STIG Readiness Guide
+title: VMware Cloud Foundation 9.X SDDC Manager Appliance STIG Readiness Guide
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
-summary: An InSpec Profile for the VMware Cloud Foundation SDDC Manager Appliance 9.0 STIG Readiness Guide
-version: 1.0.1
+summary: An InSpec Compliance Profile
+version: 1.0.2
 
 depends:
   - name: nginx

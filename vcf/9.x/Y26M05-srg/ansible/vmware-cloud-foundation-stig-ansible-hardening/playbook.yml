@@ -40,16 +40,6 @@
   hosts: operations_cloud_proxy
   roles:
     - role: photon_5
-- name: vmware-cloud-foundation-operations-for-logs-stig-ansible-hardening
-  hosts: operations_logs
-  roles:
-    - role: photon_5
-    - role: ops_logs_apache_tomcat
-- name: vmware-cloud-foundation-operations-fleet-management-stig-ansible-hardening
-  hosts: operations_fm
-  roles:
-    - role: photon_5
-    - role: ops_fm_nginx
 - name: vmware-cloud-foundation-operations-for-networks-platform-stig-ansible-hardening
   hosts: operations_networks_platform
   roles:
@@ -64,7 +54,7 @@
   roles:
     - role: photon_5
     - role: ops_hcx_mgr_apache_httpd
-- name: vmware-cloud-foundation-operations-hcx-connector-stig-ansible-hardening
-  hosts: operations_hcx_conn
+- name: vmware-cloud-foundation-operations-hcx-data-plane-stig-ansible-hardening
+  hosts: operations_hcx_dp
   roles:
-    - role: photon_5
+    - role: ubuntu_2404

@@ -1,11 +1,11 @@
-name: VMware Cloud Foundation 9.x Application Operations HCX STIG Readiness Guide
-title: VMware Cloud Foundation 9.x Application STIG Readiness Guide
+name: vmware-cloud-foundation-opshcx-app-stig-baseline
+title: VMware Cloud Foundation 9.X Operations HCX Application STIG Readiness Guide
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
-summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Application Operations HCX STIG Readiness Guide
-version: 1.0.1
+summary: An InSpec Compliance Profile
+version: 1.0.2
 
 inputs:
   - name: opshcx_deployed

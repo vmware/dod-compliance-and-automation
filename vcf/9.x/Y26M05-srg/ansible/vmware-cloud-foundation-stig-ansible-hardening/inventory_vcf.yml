@@ -124,24 +124,24 @@ operations_hcx_mgr:
       ansible_become_method: su
       ansible_become_user: root
       ansible_become_password: "{{ var_vault_operations_hcx_mgr_root_password }}"
-operations_hcx_conn:
+operations_hcx_dp:
   hosts:
-    ops_hcx_conn_1:
+    ops_hcx_dp_1:
       ansible_host:
       ansible_user: admin
-      ansible_password: "{{ var_vault_operations_hcx_conn_1_admin_password }}"
+      ansible_password: "{{ var_vault_operations_hcx_dp_1_admin_password }}"
       ansible_become: true
       ansible_become_method: su
       ansible_become_user: root
-      ansible_become_password: "{{ var_vault_operations_hcx_conn_1_root_password }}"
-    ops_hcx_conn2:
+      ansible_become_password: "{{ var_vault_operations_hcx_dp_1_root_password }}"
+    ops_hcx_dp_2:
       ansible_host:
       ansible_user: admin
-      ansible_password: "{{ var_vault_operations_hcx_conn_2_admin_password }}"
+      ansible_password: "{{ var_vault_operations_hcx_dp_2_admin_password }}"
       ansible_become: true
       ansible_become_method: su
       ansible_become_user: root
-      ansible_become_password: "{{ var_vault_operations_hcx_conn_2_root_password }}"
+      ansible_become_password: "{{ var_vault_operations_hcx_dp_2_root_password }}"
 automation:
   hosts:
     automation_vip:

@@ -1,0 +1,27 @@
+---
+
+- name: Include SDDC Manager PostgreSQL tasks
+  ansible.builtin.include_tasks:
+    file: postgresql.yml
+    apply:
+      tags:
+        - sddcmgr-postgresql
+  tags:
+    - sddcmgr-postgresql
+    - VCFC-9X-000001
+    - VCFC-9X-000005
+    - VCFC-9X-000006
+    - VCFC-9X-000007
+    - VCFC-9X-000009
+    - VCFC-9X-000010
+    - VCFC-9X-000020
+    - VCFC-9X-000032
+    - VCFC-9X-000035
+    - VCFC-9X-000038
+    - VCFC-9X-000051
+    - VCFC-9X-000060
+    - VCFC-9X-000073
+    - VCFC-9X-000109
+    - VCFC-9X-000113
+    - VCFC-9X-000121
+    - VCFC-9X-000144

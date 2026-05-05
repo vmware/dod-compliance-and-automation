@@ -22,19 +22,25 @@ control 'VCFL-9X-000121' do
           File=\"/var/log/vmware/vpostgres/serverlog.stdout\"
           Tag=\"vpostgres-first\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
     # vmware-vpostgres first logs stderr, before loading configuration
     input(type=\"imfile\"
           File=\"/var/log/vmware/vpostgres/serverlog.stderr\"
           Tag=\"vpostgres-first\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
     # vmware-vpostgres logs
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vpostgres/postgresql-*.log\"
+          File=\"/var/log/vmware/vpostgres/postgresql.log\"
           Tag=\"vpostgres\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
 
     If the output does not match the expected result, this is a finding.
 
@@ -49,13 +55,17 @@ control 'VCFL-9X-000121' do
           File=\"/var/log/vmware/vpostgres/pg_archiver.log.stdout\"
           Tag=\"postgres-archiver\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
     # vmware-postgres-archiver stderr log
     input(type=\"imfile\"
           File=\"/var/log/vmware/vpostgres/pg_archiver.log.stderr\"
           Tag=\"postgres-archiver\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
 
     If the output does not match the expected result, this is a finding.
   "
@@ -73,19 +83,25 @@ control 'VCFL-9X-000121' do
           File=\"/var/log/vmware/vpostgres/serverlog.stdout\"
           Tag=\"vpostgres-first\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
     # vmware-vpostgres first logs stderr, before loading configuration
     input(type=\"imfile\"
           File=\"/var/log/vmware/vpostgres/serverlog.stderr\"
           Tag=\"vpostgres-first\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
     # vmware-vpostgres logs
     input(type=\"imfile\"
-          File=\"/var/log/vmware/vpostgres/postgresql-*.log\"
+          File=\"/var/log/vmware/vpostgres/postgresql.log\"
           Tag=\"vpostgres\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
 
     Navigate to and open:
 
@@ -100,13 +116,17 @@ control 'VCFL-9X-000121' do
           File=\"/var/log/vmware/vpostgres/pg_archiver.log.stdout\"
           Tag=\"postgres-archiver\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
     # vmware-postgres-archiver stderr log
     input(type=\"imfile\"
           File=\"/var/log/vmware/vpostgres/pg_archiver.log.stderr\"
           Tag=\"postgres-archiver\"
           Severity=\"info\"
-          Facility=\"local0\")
+          Facility=\"local0\"
+          deleteStateOnFileDelete=\"on\"
+          reopenOnTruncate=\"on\")
   "
   impact 0.5
   tag severity: 'medium'
@@ -119,11 +139,14 @@ control 'VCFL-9X-000121' do
   tag nist: ['AU-4 (1)', 'AU-6 (4)', 'AU-9 b']
 
   goodcontent = inspec.profile.file('vmware-services-vmware-vpostgres.conf')
-  describe file('/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf') do
-    its('content') { should eq goodcontent }
+
+  describe file('/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf').content.strip do
+    it { should eq goodcontent.strip }
   end
+
   goodcontentarch = inspec.profile.file('vmware-services-vmware-postgres-archiver.conf')
-  describe file('/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf') do
-    its('content') { should eq goodcontentarch }
+
+  describe file('/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf').content.strip do
+    it { should eq goodcontentarch.strip }
   end
 end
