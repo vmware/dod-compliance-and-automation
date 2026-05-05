@@ -1,0 +1,12 @@
+# General
+run_create_backups: true
+
+# Photon
+photon_version: '4'
+## Photon 4 vars
+create_backups: true
+run_etc_issue_dod: true
+var_rsyslog_authpriv_log: '/var/log/audit/sshinfo.log'
+var_pam_use_pwquality_conf: false
+var_pam_use_pwhistory_conf: false
+var_sshd_ciphers: 'aes256-ctr,aes192-ctr,aes128-ctr,aes256-gcm@openssh.com,aes128-gcm@openssh.com'

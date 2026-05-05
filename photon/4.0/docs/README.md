@@ -22,12 +22,11 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 > [!NOTE]
 > - The latest release always takes precedence over prior releases. Older releases are provided for historical purposes and if support and compatibility are not available for an older product version. 
 
-
 ## Content
 |      Version      |        Type        |     Release Date   |      Download      |
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |     `V1R5`        |STIG Readiness Guide|     2024/01/04     |[U_VMware_Photon_OS_4.0_STIG_Readiness_Guide_v1r5.zip](U_VMware_Photon_OS_4.0_STIG_Readiness_Guide_v1r5.zip)|
-
+|     `V2R3`        |STIG Readiness Guide|     2026/05/12     |[U_VMware_Photon_OS_4.0_STIG_Readiness_Guide_v2r3.zip](U_VMware_Photon_OS_4.0_STIG_Readiness_Guide_v2r3.zip)|
 
 ## Viewing
 The XML files provided can be loaded into and viewed in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  
