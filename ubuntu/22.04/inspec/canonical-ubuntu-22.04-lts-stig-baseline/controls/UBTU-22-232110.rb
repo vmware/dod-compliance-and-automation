@@ -9,7 +9,7 @@ Audit tools include, but are not limited to, vendor-provided and open source aud
 '
   desc 'check', 'Verify Ubuntu 22.04 LTS configures the audit tools to be owned by "root" to prevent any unauthorized access with the following command:
 
-     $ stat -c "%n %U" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audispd* /sbin/augenrules
+     $ stat -c "%n %U" /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/audisp* /sbin/augenrules
      /sbin/auditctl root
      /sbin/aureport root
      /sbin/ausearch root
@@ -25,11 +25,10 @@ If any of the audit tools are not owned by "root", this is a finding.'
 
 Replace "<audit_tool_name>" with each audit tool not owned by "root".'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
-  tag check_id: 'C-64236r953332_chk'
+  tag check_id: 'C-64236r1101724_chk'
   tag severity: 'medium'
   tag gid: 'V-260507'
-  tag rid: 'SV-260507r991557_rule'
+  tag rid: 'SV-260507r1101725_rule'
   tag stig_id: 'UBTU-22-232110'
   tag gtitle: 'SRG-OS-000256-GPOS-00097'
   tag fix_id: 'F-64144r953333_fix'

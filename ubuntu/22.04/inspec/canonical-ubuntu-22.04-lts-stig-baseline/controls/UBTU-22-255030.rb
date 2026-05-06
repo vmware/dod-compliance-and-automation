@@ -21,7 +21,6 @@ Restart the SSH daemon for the changes to take effect:
 
      $ sudo systemctl restart sshd.service'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64256r953392_chk'
   tag severity: 'medium'
   tag gid: 'V-260527'
@@ -30,8 +29,8 @@ Restart the SSH daemon for the changes to take effect:
   tag gtitle: 'SRG-OS-000126-GPOS-00066'
   tag fix_id: 'F-64164r953393_fix'
   tag 'documentable'
-  tag cci: ['CCI-000879', 'CCI-001133']
-  tag nist: ['MA-4 e', 'SC-10']
+  tag cci: ['CCI-001133']
+  tag nist: ['SC-10']
 
   sshdcommand = input('sshdcommand')
 

@@ -31,7 +31,6 @@ If any partitions other than the boot partition or pseudo file systems (such as 
 
 Note: Encrypting a partition in an already-installed system is more difficult because it will need to be resized and existing partitions changed.'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64213r953263_chk'
   tag severity: 'medium'
   tag gid: 'V-260484'

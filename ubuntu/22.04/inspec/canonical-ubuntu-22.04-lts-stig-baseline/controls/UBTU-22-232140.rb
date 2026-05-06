@@ -13,7 +13,6 @@ If "journalctl" is not set to "740", this is a finding.'
 
      $ sudo chmod 740 /usr/bin/journalctl'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64241r953347_chk'
   tag severity: 'medium'
   tag gid: 'V-260512'

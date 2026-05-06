@@ -14,7 +14,6 @@ If any system commands directories are returned that are not Set Group ID up on 
 
      $ sudo find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -group root -type d -exec chgrp root '{}' \\;"
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64223r953293_chk'
   tag severity: 'medium'
   tag gid: 'V-260494'

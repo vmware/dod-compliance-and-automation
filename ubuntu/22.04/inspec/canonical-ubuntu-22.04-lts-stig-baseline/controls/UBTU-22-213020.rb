@@ -26,7 +26,6 @@ Reload the system configuration files for the changes to take effect by using th
 
      $ sudo sysctl --system'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64203r953233_chk'
   tag severity: 'medium'
   tag gid: 'V-260474'

@@ -13,7 +13,6 @@ If the "/var/log" directory is not group-owned by "syslog", this is a finding.'
 
      $ sudo chgrp syslog /var/log'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64238r953338_chk'
   tag severity: 'medium'
   tag gid: 'V-260509'

@@ -12,7 +12,6 @@ If the "ntp" package is installed, this is a finding.'
 
      $ sudo dpkg -P --force-all ntp'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64210r953254_chk'
   tag severity: 'low'
   tag gid: 'V-260481'
@@ -29,6 +28,6 @@ If the "ntp" package is installed, this is a finding.'
   end
 
   describe command('dpkg -l | grep ntp') do
-    its('stdout') { should_not match /rc/ }
+    its('stdout') { should_not match(/rc/) }
   end
 end

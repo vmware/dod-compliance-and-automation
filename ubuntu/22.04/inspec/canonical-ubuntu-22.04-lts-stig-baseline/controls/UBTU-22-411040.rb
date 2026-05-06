@@ -20,7 +20,6 @@ If any temporary accounts have no expiration date set or do not expire within 72
 
      $ sudo chage -E $(date -d +3days +%Y-%m-%d) <temporary_account_name>'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64277r953455_chk'
   tag severity: 'medium'
   tag gid: 'V-260548'
@@ -42,8 +41,8 @@ If any temporary accounts have no expiration date set or do not expire within 72
     end
   else
     temporary_accounts.each do |acct|
-      describe command("chage -l #{acct} | grep 'Account expires'") do
-        its('stdout.strip') { should_not match /:\s*never/ }
+      describe command("chage -l #{acct} | grep -E '(Password|Account) expires'") do
+        its('stdout.strip') { should_not match(/:\s*never/) }
       end
     end
   end

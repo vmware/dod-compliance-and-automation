@@ -16,7 +16,6 @@ Organizational users include organizational employees or individuals the organiz
 If output is produced and the accounts listed are interactive user accounts, this is a finding.)
   desc 'fix', 'Edit the file "/etc/passwd" and provide each interactive user account that has a duplicate UID with a unique UID.'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64272r953440_chk'
   tag severity: 'medium'
   tag gid: 'V-260543'

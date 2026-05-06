@@ -25,7 +25,6 @@ Restart the "auditd" service for the changes take effect:
 
      $ sudo systemctl restart auditd.service'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64322r953590_chk'
   tag severity: 'low'
   tag gid: 'V-260593'

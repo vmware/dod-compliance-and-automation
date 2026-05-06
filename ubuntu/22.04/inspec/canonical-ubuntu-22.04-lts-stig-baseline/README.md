@@ -1,10 +1,11 @@
+| [![Lint InSpec on Pushes.](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-22.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml/badge.svg?branch=main)](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-22.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml) | Main | [![Lint InSpec on Pushes.](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-22.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml/badge.svg?branch=development)](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-22.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml) | Development |
+|:-|:-|:-|:-|
 # canonical_ubuntu_22.04_lts_stig_baseline
 Canonical Ubuntu 22.04 LTS STIG Chef InSpec Profile  
-Version: Release 2 Version 4  
-Date: 02 April 2025  
+Version: Version 2 Release 8
+Date: 01 April 2026
 STIG Type: Official STIG  
 Maintainers: Broadcom   
-
 
 ## Overview
 This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor to perform an automated check for STIG compliance of the Canonical Ubuntu 22.04 LTS STIG.  
@@ -32,8 +33,10 @@ Inputs are used to provide variable information that customize how the profile i
 |maxlogins          |10                         |Maximum number of concurrent sessions in limits.conf|Numeric|UBTU-22-412020|
 |is_system_networked|true                       |Set to true if the system is networked for NTP check|Boolean|UBTU-22-252010,UBTU-22-252015|
 |sssd_conf_path     |/etc/sssd/sssd.conf        |Path to sssd.conf|String|UBTU-22-631015|
+|sssd_conf_d_directory |/etc/sssd/conf.d        |Path to sssd conf.d directory|String|UBTU-22-631015|
 |approved_wireless_network_interfaces|[]                  |Array of approved wireless network interfaces|Array|UBTU-22-291015|
 |chrony_conf_file_path|/etc/chrony/chrony.conf  |Path to chrony.conf|String|UBTU-22-252010,UBTU-22-252015|
+|audisp_remote_config_file|/etc/audit/plugins.d/au-remote.conf                   |Audisp remote Configuration file.|String|UBTU-22-653020|
 |audit_sp_remote_server|Empty                   |Address of the remote syslog server to receive audit logs.|String|UBTU-22-653020|
 |audit_offload_script_name|Empty                |Script file name for audit offload in cron.weekly|String|UBTU-22-651035|
 |sshdcommand        |`sshd -T`                  |If a different sshd command is needed then supply a different input value such as if there are user matching rules.|String|All SSHD Rules|

@@ -27,7 +27,6 @@ Enable and activate the log service by using the following command:
 
      $ sudo systemctl enable rsyslog.service --now'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64317r953575_chk'
   tag severity: 'medium'
   tag gid: 'V-260588'

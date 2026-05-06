@@ -13,17 +13,16 @@ Add or modify the following line in the "/etc/login.defs" file:
 
 PASS_MAX_DAYS    60'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64275r953449_chk'
   tag severity: 'medium'
   tag gid: 'V-260546'
-  tag rid: 'SV-260546r1015008_rule'
+  tag rid: 'SV-260546r1038967_rule'
   tag stig_id: 'UBTU-22-411030'
   tag gtitle: 'SRG-OS-000076-GPOS-00044'
   tag fix_id: 'F-64183r953450_fix'
   tag 'documentable'
-  tag cci: ['CCI-000199', 'CCI-004066']
-  tag nist: ['IA-5 (1) (d)', 'IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000199']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (d)']
 
   describe login_defs do
     its('PASS_MAX_DAYS') { should cmp <= 60 }

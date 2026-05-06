@@ -35,7 +35,6 @@ Restart the chrony service:
 
      $ sudo systemctl restart chrony.service'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64249r1044774_chk'
   tag severity: 'low'
   tag gid: 'V-260520'
@@ -57,8 +56,8 @@ Restart the chrony service:
     end
 
     describe command('timedatectl status') do
-      its('stdout') { should match /System clock synchronized: yes/ }
-      its('stdout') { should match /NTP service: active/ }
+      its('stdout') { should match(/System clock synchronized: yes/) }
+      its('stdout') { should match(/NTP service: active/) }
     end
 
   else

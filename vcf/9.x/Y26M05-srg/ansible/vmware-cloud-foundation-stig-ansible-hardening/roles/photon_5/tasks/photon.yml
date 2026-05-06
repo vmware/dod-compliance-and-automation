@@ -292,7 +292,6 @@
         - '{{ role_name }} : restart sshd'
 
 ###################################################################################################################################
-# This will go with a later delivery
 # # This must be before we install the OpenSSL FIPS Provider or the default OpenSSH KexAlgorithms will cause issues with connecting over SSH
 # - name: PHTN-50-000269
 #   tags: [PHTN-50-000269, sshd]
@@ -2395,7 +2394,7 @@
   tags: [PHTN-50-000246]
   when: photon_5_defaults_run_phtn_50_000246 | bool
   block:
-    - name: PHTN-50-000246 - Check to see if fs.suid_dumpable is set to 0.
+    - name: PHTN-50-000246 - Check to see if fs.suid_dumpable is set to 1.
       ansible.builtin.command: /sbin/sysctl fs.suid_dumpable
       register: fs_suid_dumpable
       failed_when: fs_suid_dumpable.rc == 2

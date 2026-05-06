@@ -25,7 +25,6 @@ Restart the SSH server for the changes to take effect:
 
      $ sudo systemctl reload sshd.service'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64261r953407_chk'
   tag severity: 'medium'
   tag gid: 'V-260532'

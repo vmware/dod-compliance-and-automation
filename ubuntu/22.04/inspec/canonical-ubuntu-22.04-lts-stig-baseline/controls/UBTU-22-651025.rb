@@ -32,7 +32,6 @@ Copy it to the cron.daily directory:
 
      $  sudo cp -f /usr/share/aide/config/cron.daily/aide /etc/cron.daily/aide'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64314r953566_chk'
   tag severity: 'medium'
   tag gid: 'V-260585'

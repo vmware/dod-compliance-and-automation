@@ -17,7 +17,6 @@ cert_policy = ca,signature,ocsp_on, crl_auto;
 
 If the system is missing an "/etc/pam_pkcs11/" directory and an "/etc/pam_pkcs11/pam_pkcs11.conf", find an example to copy into place and modify accordingly at "/usr/share/doc/libpam-pkcs11/examples/pam_pkcs11.conf.example.gz".'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64307r953545_chk'
   tag severity: 'medium'
   tag gid: 'V-260578'
@@ -26,8 +25,8 @@ If the system is missing an "/etc/pam_pkcs11/" directory and an "/etc/pam_pkcs11
   tag gtitle: 'SRG-OS-000384-GPOS-00167'
   tag fix_id: 'F-64215r953546_fix'
   tag 'documentable'
-  tag cci: ['CCI-001991', 'CCI-004068']
-  tag nist: ['IA-5 (2) (d)', 'IA-5 (2) (b) (2)']
+  tag cci: ['CCI-004068', 'CCI-001991']
+  tag nist: ['IA-5 (2) (b) (2)', 'IA-5 (2) (d)']
 
   config_file_exists = file('/etc/pam_pkcs11/pam_pkcs11.conf').exist?
   if config_file_exists

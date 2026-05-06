@@ -19,7 +19,6 @@ To remove a user from the sudo group, run:
 
      $ sudo gpasswd -d <username> sudo'
   impact 0.7
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64288r953488_chk'
   tag severity: 'high'
   tag gid: 'V-260559'
@@ -33,7 +32,7 @@ To remove a user from the sudo group, run:
 
   sudo_accounts = input('sudo_accounts')
 
-  if sudo_accounts.count > 0
+  if sudo_accounts.any?
     sudo_accounts.each do |account|
       describe group('sudo') do
         its('members') { should include account }

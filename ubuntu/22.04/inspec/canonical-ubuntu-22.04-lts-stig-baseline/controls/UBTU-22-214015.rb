@@ -15,7 +15,6 @@ Add or modify the following lines in the "/etc/apt/apt.conf.d/50unattended-upgra
 Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
 Unattended-Upgrade::Remove-Unused-Dependencies "true";'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64206r1044771_chk'
   tag severity: 'medium'
   tag gid: 'V-260477'

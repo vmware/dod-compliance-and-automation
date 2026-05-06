@@ -20,7 +20,6 @@ If "ssh.service" is not enabled and active, this is a finding.'
 
      $ sudo systemctl enable ssh.service --now'
   impact 0.7
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64253r953383_chk'
   tag severity: 'high'
   tag gid: 'V-260524'

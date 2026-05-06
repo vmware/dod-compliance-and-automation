@@ -21,7 +21,6 @@ If the "libpam-pkcs11" package is not installed, this is a finding.'
 
      $ sudo apt-get install libpam-pkcs11'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64302r953530_chk'
   tag severity: 'medium'
   tag gid: 'V-260573'
@@ -31,8 +30,8 @@ If the "libpam-pkcs11" package is not installed, this is a finding.'
   tag fix_id: 'F-64210r953531_fix'
   tag satisfies: ['SRG-OS-000375-GPOS-00160', 'SRG-OS-000105-GPOS-00052', 'SRG-OS-000106-GPOS-00053', 'SRG-OS-000107-GPOS-00054', 'SRG-OS-000108-GPOS-00055']
   tag 'documentable'
-  tag cci: ['CCI-000765', 'CCI-000766', 'CCI-000767', 'CCI-000768', 'CCI-001948', 'CCI-004046', 'CCI-004047']
-  tag nist: ['IA-2 (1)', 'IA-2 (2)', 'IA-2 (3)', 'IA-2 (4)', 'IA-2 (11)', 'IA-2 (6) (a)', 'IA-2 (6) (b)']
+  tag cci: ['CCI-000765', 'CCI-000766', 'CCI-004046', 'CCI-004047', 'CCI-000767', 'CCI-000768', 'CCI-001948']
+  tag nist: ['IA-2 (1)', 'IA-2 (2)', 'IA-2 (6) (a)', 'IA-2 (6) (b)', 'IA-2 (3)', 'IA-2 (4)', 'IA-2 (11)']
 
   describe package('libpam-pkcs11') do
     it { should be_installed }
