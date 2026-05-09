@@ -15,7 +15,7 @@ All Ansible roles needed to remediate STIG compliance for VCF have been consolid
 > **Failure to do so can result in unintended behavior in the environment.**  
 
 ## Supported Versions
-- VCF 9.0.0.0  
+- VCF 9.0.0.0 - 9.1.0.0  
 
 ## Support
 - This playbook has not been tested for forward or backward compatibility beyond the version of VCF listed.  

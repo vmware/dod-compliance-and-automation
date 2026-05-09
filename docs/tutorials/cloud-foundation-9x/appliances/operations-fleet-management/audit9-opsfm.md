@@ -1,18 +1,20 @@
-# Audit VCF Operations Fleet Management 9.0.0.0
-Auditing VCF Operations Fleet Management 9.0.0.0 for STIG Compliance
+# Audit VCF Operations Fleet Management 9.X
+Auditing VCF Operations Fleet Management 9.X for STIG Compliance
 
 ## Overview
 This tutorial covers auditing the Operations Fleet Management appliance in VCF deployments.  
+
+> **Deprecated:** The Operations Fleet Management STIG content was deprecated in VCF 9.1. This tutorial applies to VCF 9.0.x environments only.
 
 The example commands below are specific to the product version and the supported STIG content for the version being run.
 
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* InSpec/Cinc Auditor 6.8.24
-* SAF CLI 1.4.20
+* InSpec/Cinc Auditor 7.0.107
+* SAF CLI 1.6.0
 * STIG Viewer 2.17
-* A VCF 9.0.0.0 or newer environment.
+* A VCF 9.0.x environment.
 * SSH access to the Operations Fleet Management appliance.
 
 ### Assumptions

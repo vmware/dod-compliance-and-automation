@@ -30,11 +30,11 @@ The example commands below are specific to the product version and the supported
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* Ansible 2.14.12
+* Ansible 2.18.6
 * Ansible Inventory, Vault, and any environment specific variables are updated.
 * A VCF 9.0.0.0+ environment
 * PowerShell Core 7.4.7/PowerShell 5.1
-* VCF PowerCLI 9.0.0.0+
+* VCF PowerCLI 9.0.0+
 * VCF STIG Helpers PowerShell module 1.0.1+
 * Ansible has been installed and all playbook dependencies resolved as provided in the `requirements.yml` file in each playbook. Install with `ansible-galaxy role install -r requirements.yml`.
 

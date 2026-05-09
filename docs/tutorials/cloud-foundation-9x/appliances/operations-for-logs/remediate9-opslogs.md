@@ -1,8 +1,10 @@
-# Remediate VCF Operations for Logs 9.0.0.0
-Remediating VCF Operations for Logs 9.0.0.0 for STIG Compliance
+# Remediate VCF Operations for Logs 9.X
+Remediating VCF Operations for Logs 9.X for STIG Compliance
 
 ## Overview
 This tutorial covers remediating the Operations for Logs appliance in VCF deployments.  
+
+> **Deprecated:** The Operations for Logs STIG content was deprecated in VCF 9.1. This tutorial applies to VCF 9.0.x environments only.
 
 > **Important** For the best experience, prior to using the STIG automation provided here please ensure you:  
 
@@ -18,8 +20,8 @@ The example commands below are specific to the product version and the supported
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* Ansible 2.14.12
-* A VCF 9.0.0.0 or newer environment.
+* Ansible 2.18.6
+* A VCF 9.0.x environment.
 * SSH access to the Operations for Logs appliance.
 * Ansible Inventory, Vault, and any environment specific variables are updated.
 

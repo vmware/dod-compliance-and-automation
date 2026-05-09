@@ -1,5 +1,5 @@
-# Remediate VCF vCenter Server 9.0.0.0
-Remediating VCF vCenter Server 9.0.0.0 for STIG Compliance
+# Remediate VCF vCenter Server 9.X
+Remediating VCF vCenter Server 9.X for STIG Compliance
 
 ## Overview
 This tutorial covers remediating the vCenter server appliance in VCF deployments.  
@@ -18,7 +18,7 @@ The example commands below are specific to the product version and the supported
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* Ansible 2.14.12
+* Ansible 2.18.6
 * A VCF 9.0.0.0 or newer environment.
 * SSH access to the vCenter server appliance.
 * Ansible Inventory, Vault, and any environment specific variables are updated.

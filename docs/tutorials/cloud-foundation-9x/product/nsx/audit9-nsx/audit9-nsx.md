@@ -1,4 +1,4 @@
-# Audit NSX 9.0.0.0
+# Audit NSX 9.X
 
 ## Overview
 This tutorial covers auditing NSX product rules in VCF deployments.  
@@ -8,8 +8,8 @@ The example commands below are specific to the product version and the supported
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* InSpec/Cinc Auditor 6.8.24
-* SAF CLI 1.4.20
+* InSpec/Cinc Auditor 7.0.107
+* SAF CLI 1.6.0
 * STIG Viewer 2.17
 * A VCF 9.0.0.0 or newer environment.
 

@@ -1,4 +1,4 @@
-# Remediate VCF Virtual Machines 9.0.0.0
+# Remediate VCF Virtual Machines 9.X
 
 ## Overview
 This tutorial covers remediating Virtual Machines in VCF deployments.  
@@ -17,11 +17,11 @@ The example commands below are specific to the product version and the supported
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* SAF CLI 1.4.20
+* SAF CLI 1.6.0
 * STIG Viewer 2.17
 * A VCF 9.0.0.0+ environment
 * PowerShell Core 7.4.7/PowerShell 5.1
-* VCF PowerCLI 9.0.0.0+
+* VCF PowerCLI 9.0.0+
 * VCF STIG Helpers PowerShell module 1.0.1+
 
 #### VCF STIG Helpers PowerShell Module

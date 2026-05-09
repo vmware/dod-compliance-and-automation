@@ -1,4 +1,4 @@
-# Remediate NSX 9.0.0.0
+# Remediate NSX 9.X
 
 ## Overview
 This tutorial covers remediating NSX in VCF deployments.  
@@ -17,7 +17,7 @@ The example commands below are specific to the product version and the supported
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* Ansible 2.14.12
+* Ansible 2.18.6
 * A VCF 9.0.0.0 or newer environment.
 * Ansible Inventory, Vault, and any environment specific variables have been updated.
 

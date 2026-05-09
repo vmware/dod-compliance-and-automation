@@ -1,4 +1,4 @@
-# Audit VCF Virtual Machines 9.0.0.0
+# Audit VCF Virtual Machines 9.X
 
 ## Overview
 This tutorial covers auditing Virtual Machines in VCF deployments.  
@@ -8,13 +8,13 @@ The example commands below are specific to the product version and the supported
 ### Prerequisites
 Versions listed below were used for this documentation. Other versions of these tools may work as well but if issues are found it is recommended to try the versions listed here.  
 
-* InSpec/Cinc Auditor 6.8.24
+* InSpec/Cinc Auditor 7.0.107
 * InSpec train-vmware 1.0.0
-* SAF CLI 1.4.20
+* SAF CLI 1.6.0
 * STIG Viewer 2.17
 * A VCF 9.0.0.0+ environment 
 * PowerShell 7.4.7
-* VCF PowerCLI 9.0.0.0+
+* VCF PowerCLI 9.0.0+
 * VCF STIG Helpers PowerShell module 1.0.1+
 
 #### VCF STIG Helpers PowerShell Module
@@ -42,18 +42,18 @@ To install the plugin that is included with the `vmware-cloud-foundation-stig-ba
 ┌────────────────────────────────────────┬─────────┬──────────────┬─────────┬────────────────────────────────────────────────────────────────────────┐
 │              Plugin Name               │ Version │     Via      │ ApiVer  │                              Description                               │
 ├────────────────────────────────────────┼─────────┼──────────────┼─────────┼────────────────────────────────────────────────────────────────────────┤
-│ inspec-compliance                      │ 6.8.24  │ core         │ 2       │ Plugin to perform operations with Chef Automate                        │
-│ inspec-habitat                         │ 6.8.24  │ core         │ 2       │ Plugin to create/upload habitat package                                │
-│ inspec-init                            │ 6.8.24  │ core         │ 2       │ Plugin for scaffolding profile, plugin or a resource                   │
-│ inspec-license                         │ 6.8.24  │ core         │ 2       │ Plugin to list user licenses.                                          │
-│ inspec-parallel                        │ 6.8.24  │ core         │ 2       │ Plugin to handle parallel InSpec scan operations over multiple targets │
-│ inspec-plugin-manager-cli              │ 6.8.24  │ core         │ 2       │ CLI plugin for InSpec                                                  │
-│ inspec-reporter-html2                  │ 6.8.24  │ core         │ 2       │ Improved HTML reporter plugin                                          │
-│ inspec-reporter-json-min               │ 6.8.24  │ core         │ 2       │ Json-min json reporter plugin                                          │
-│ inspec-reporter-junit                  │ 6.8.24  │ core         │ 2       │ JUnit XML reporter plugin                                              │
-│ inspec-sign                            │ 6.8.24  │ core         │ 2       │                                                                        │
-│ inspec-streaming-reporter-progress-bar │ 6.8.24  │ core         │ 2       │ Displays a real-time progress bar and control title as output          │
-│ inspec-supermarket                     │ 6.8.24  │ core         │ 0       │                                                                        │
+│ inspec-compliance                      │ 7.0.107  │ core         │ 2       │ Plugin to perform operations with Chef Automate                        │
+│ inspec-habitat                         │ 7.0.107  │ core         │ 2       │ Plugin to create/upload habitat package                                │
+│ inspec-init                            │ 7.0.107  │ core         │ 2       │ Plugin for scaffolding profile, plugin or a resource                   │
+│ inspec-license                         │ 7.0.107  │ core         │ 2       │ Plugin to list user licenses.                                          │
+│ inspec-parallel                        │ 7.0.107  │ core         │ 2       │ Plugin to handle parallel InSpec scan operations over multiple targets │
+│ inspec-plugin-manager-cli              │ 7.0.107  │ core         │ 2       │ CLI plugin for InSpec                                                  │
+│ inspec-reporter-html2                  │ 7.0.107  │ core         │ 2       │ Improved HTML reporter plugin                                          │
+│ inspec-reporter-json-min               │ 7.0.107  │ core         │ 2       │ Json-min json reporter plugin                                          │
+│ inspec-reporter-junit                  │ 7.0.107  │ core         │ 2       │ JUnit XML reporter plugin                                              │
+│ inspec-sign                            │ 7.0.107  │ core         │ 2       │                                                                        │
+│ inspec-streaming-reporter-progress-bar │ 7.0.107  │ core         │ 2       │ Displays a real-time progress bar and control title as output          │
+│ inspec-supermarket                     │ 7.0.107  │ core         │ 0       │                                                                        │
 │ train-aws                              │ 0.2.41  │ gem (system) │ train-1 │ AWS API Transport for Train                                            │
 │ train-habitat                          │ 0.2.22  │ gem (system) │ train-1 │ Habitat API Transport for Train                                        │
 │ train-kubernetes                       │ 0.2.1   │ gem (system) │ train-1 │ Train Kubernetes                                                       │
