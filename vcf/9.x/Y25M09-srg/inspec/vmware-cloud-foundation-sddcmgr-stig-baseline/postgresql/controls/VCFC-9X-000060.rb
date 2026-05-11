@@ -9,7 +9,7 @@ control 'VCFC-9X-000060' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SHOW client_min_messages;\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SHOW client_min_messages;\"
 
     Example result:
 
@@ -20,7 +20,7 @@ control 'VCFC-9X-000060' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET client_min_messages TO 'error';\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET client_min_messages TO 'error';\"
 
     Reload the PostgreSQL service by running the following command:
 

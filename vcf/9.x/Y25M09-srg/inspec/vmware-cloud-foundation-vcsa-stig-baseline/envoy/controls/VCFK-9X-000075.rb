@@ -100,7 +100,7 @@ control 'VCFK-9X-000075' do
 
   goodcontent = inspec.profile.file('vmware-services-envoy.conf')
 
-  describe file('/etc/vmware-syslog/vmware-services-envoy.conf').content.strip do
-    it { should eq goodcontent.strip }
+  describe file('/etc/vmware-syslog/vmware-services-envoy.conf') do
+    its('content') { should eq goodcontent }
   end
 end

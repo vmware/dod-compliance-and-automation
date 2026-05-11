@@ -9,36 +9,36 @@ control 'VCFA-9X-000346' do
   desc  'check', "
     From VCF Operations, go to Administration >> Global Settings >> User Access >> Password Policy.
 
-    Review the Policy Definition section.
+    Review the password strength section.
 
-    If the password policy definition is not configured with a minimum length of 15 or more characters, this is a finding.
+    If the password strength policy is not configured with a minimum length of 15 or more, this is a finding.
 
-    If the password policy definition is not configured to require at least 1 uppercase character, this is a finding.
+    If the password strength policy is not configured to enable \"Passwords must contain numbers\", this is a finding.
 
-    If the password policy definition is not configured to require at least 1 lowercase character, this is a finding.
+    If the password strength policy is not configured to enable \"Passwords must not match user names\", this is a finding.
 
-    If the password policy definition is not configured to require at least 1 numeric character, this is a finding.
+    If the password strength policy is not configured to enable \"Passwords must contain at least one uppercase and one lowercase letter\", this is a finding.
 
-    If the password policy definition is not configured to require at least 1 special character, this is a finding.
+    If the password strength policy is not configured to enable \"Passwords must contain special characters\", this is a finding.
 
-    If the Password Policy is not activated, this is a finding.
+    If the password strength policy is not activated, this is a finding.
   "
   desc 'fix', "
-    From VCF Operations, go to Administration >> Global Settings >> User Access >> Password Policy.
+    From VCF Operations, go to Administration >> Global Settings >> User Access >> Password Policy >> Password Strength.
 
-    If the Password Policy is not activated, click on the \"Deactivated\" radio button to enable it and click \"Save\".
+    If the password strength policy is not activated, click on the \"Deactivated\" radio button to enable it and click \"Save\".
 
-    Once activated configure the following settings for the Policy Definition:
+    Once activated configure the following policies:
 
     Configure the \"Minimum password length\" to 15 or more.
 
-    Configure the \"Character Requirements\" to require at least \"1\" uppercase character.
+    Enable the \"Passwords must contain numbers\" policy.
 
-    Configure the \"Character Requirements\" to require at least \"1\" lowercase character.
+    Enable the \"Passwords must not match user names\" policy.
 
-    Configure the \"Character Requirements\" to require at least \"1\" numeric character.
+    Enable the \"Passwords must contain at least one uppercase and one lowercase letter\" policy.
 
-    Configure the \"Character Requirements\" to require at least \"1\" special character.
+    Enable the \"Passwords must contain special characters\" policy.
 
     Click \"Save\".
   "

@@ -13,7 +13,7 @@ control 'VCFA-9X-000191' do
 
     From the vSphere Client, go to Hosts and Clusters.
 
-    Select the vCenter Server >> Select the cluster >> Configure >> vSAN >> Services >> Data Reduction and Encryption.
+    Select the vCenter Server >> Select the cluster >> Configure >> vSAN >> Services >> Data Services.
 
     Review the \"Data-at-rest encryption\" status.
 
@@ -28,7 +28,7 @@ control 'VCFA-9X-000191' do
   desc 'fix', "
     From the vSphere Client, go to Hosts and Clusters.
 
-    Select the vCenter Server >> Select the target cluster >> Configure >> vSAN >> Services >> Data Reduction and Encryption.
+    Select the vCenter Server >> Select the target cluster >> Configure >> vSAN >> Services >> Data Services.
 
     Click \"Edit\".
 

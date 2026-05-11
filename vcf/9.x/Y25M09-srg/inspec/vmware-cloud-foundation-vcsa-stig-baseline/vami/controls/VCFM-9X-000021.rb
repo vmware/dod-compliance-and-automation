@@ -450,7 +450,7 @@ control 'VCFM-9X-000021' do
 
   goodcontent = inspec.profile.file('vmware-services-applmgmt.conf')
 
-  describe file('/etc/vmware-syslog/vmware-services-applmgmt.conf').content.strip do
-    it { should eq goodcontent.strip }
+  describe file('/etc/vmware-syslog/vmware-services-applmgmt.conf') do
+    its('content') { should eq goodcontent }
   end
 end

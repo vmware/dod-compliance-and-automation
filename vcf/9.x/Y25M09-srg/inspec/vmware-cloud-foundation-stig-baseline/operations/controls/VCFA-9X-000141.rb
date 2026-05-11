@@ -7,22 +7,22 @@ control 'VCFA-9X-000141' do
   "
   desc  'rationale', ''
   desc  'check', "
-    From VCF Operations, go to Operate >> Administration >> Configurations >> Log Collection.
+    From VCF Operations, go to Infrastructure Operations >> Configurations >> Log Collection.
 
     Expand the \"vCenter\" section. For each vCenter instance listed select it and click Edit from the menu on the left to view the current log collection configuration.
 
-    If collection for vCenter Server events and alarms is not activated, this is a finding.
+    If collection for vCenter Server events, tasks, and alarms is not activated, this is a finding.
 
     If log collection is not activated for both vCenter Server and ESX, this is a finding.
 
     If log forwarding is configured to an alternative central log server other than Operations for Logs directly in vCenter and ESX, this is not a finding.
   "
   desc 'fix', "
-    In VCF, log collection and analysis is provided by VCF Log Management. Log collection for vCenter and ESX can be configured centrally from VCF Operations.
+    In VCF, log collection and analysis is provided by VCF Operations for Logs. Log collection for vCenter and ESX can be configured centrally from VCF Operations.
 
     Before log collection can be properly configured, the VCF instances integrated with Operations must be successfully enabled for collection.
 
-    From VCF Operations, go to Operate >> Administration >> Integrations >> Accounts.
+    From VCF Operations, go to Administration >> Integrations >> Accounts.
 
     Expand the \"VMware Cloud Foundation\" section and all VCF instances and workload domains and verify the status for each is green and \"Collecting\".
 
@@ -34,17 +34,15 @@ control 'VCFA-9X-000141' do
 
     Once collection is properly configured on the VCF instance the log collection configuration must be updated to ensure all needed logs are captured.
 
-    From VCF Operations, go to Operate >> Administration >> Configurations >> Log Collection.
+    From VCF Operations, go to Infrastructure Operations >> Configurations >> Log Collection.
 
-    Expand the \"vCenter\" section. Check the box for the instance then click \"Edit\". In the \"vCenter\" section check the box to \"Edit Log collection configuration\".
+    Expand the \"vCenter\" section. For each workload domain, select Edit from the menu on the left.
 
-    Ensure the \"Activate\" checkboxes are selected for \"vCenter Server events and alarms collection\" and \"vCenter Log Collection\", and the Log Level is set to \"info\".
+    Select \"Override configuration\".
 
-    Expand the \"ESX\" section. Check the box to \"Edit Log collection configuration\".
+    Activate \"vCenter Server events, tasks and alarms collection\" and enable both the \"Activate for vCenter Logs\" and \"Activate for ESX Logs\" options.
 
-    Ensure the \"Activate\" checkboxes are selected for \"ESX logs\" and \"ESX Audit Logs\".
-
-    Select a syslog protocol and optionally activate SSL and click \"Save\".
+    Select a syslog protocol and optionally activate SSL and click Save.
   "
   impact 0.5
   tag severity: 'medium'

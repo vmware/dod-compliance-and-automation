@@ -1,0 +1,8 @@
+# Is VCF Operations for Logs deployed in the environment? Set to false to mark VCF Operations for Logs related rules N/A.
+opslogs_deployed: true
+# Enter target VCF Operations for Logs URL IP or FQDN.
+opslogs_apihostname: ''
+# Enter api token for API authentication.
+opslogs_apitoken: ''
+# 'Enter an array of NTP servers.'
+opslogs_ntpServers: []

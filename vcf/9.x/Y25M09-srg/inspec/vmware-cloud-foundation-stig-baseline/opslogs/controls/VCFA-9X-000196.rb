@@ -9,18 +9,18 @@ control 'VCFA-9X-000196' do
   "
   desc  'rationale', ''
   desc  'check', "
-    If VCF Log management is not deployed, this is not applicable.
+    If VCF Operations for Logs is not deployed, this is not applicable.
 
-    From VCF Operations, go to Operate >> Administration >> Global Settings >> System Settings.
+    From VCF Operations for Logs, go to Configuration >> SSL.
 
-    Review the \"SSL API Ingestion\" setting.
+    Review the \"API Server SSL\" configuration.
 
-    If \"SSL API Ingestion\" is not enabled, this is a finding.
+    If \"Require SSL Connection\" is not enabled, this is a finding.
   "
   desc 'fix', "
-    From VCF Operations, go to Operate >> Administration >> Global Settings >> System Settings.
+    From VCF Operations for Logs, go to Configuration >> SSL.
 
-    Ensure the \"SSL API Ingestion\" setting is \"Activated\" and click Save.
+    Under \"API Server SSL\" click the radio button next to \"Require SSL Connection\" to enable it and click Save.
   "
   impact 0.7
   tag severity: 'high'
@@ -31,7 +31,14 @@ control 'VCFA-9X-000196' do
   tag cci: ['CCI-002418']
   tag nist: ['SC-8']
 
-  describe 'This check is either manual due to no available API or is policy based and must be reviewed manually.' do
-    skip 'This check is either manual due to no available API or is policy based and must be reviewed manually.'
+  if input('opslogs_deployed')
+    describe 'This check is either manual due to no available API or is policy based and must be reviewed manually.' do
+      skip 'This check is either manual due to no available API or is policy based and must be reviewed manually.'
+    end
+  else
+    impact 0.0
+    describe 'VCF Operations for Logs is not deployed in the target environment. This control is N/A.' do
+      skip 'VCF Operations for Logs is not deployed in the target environment. This control is N/A.'
+    end
   end
 end

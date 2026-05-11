@@ -5,7 +5,7 @@ control 'VCFC-9X-000001' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SHOW max_connections\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SHOW max_connections\"
 
     Example result:
 
@@ -16,7 +16,7 @@ control 'VCFC-9X-000001' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET max_connections = '100';\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET max_connections = '100';\"
 
     Restart the PostgreSQL service by running the following command:
 

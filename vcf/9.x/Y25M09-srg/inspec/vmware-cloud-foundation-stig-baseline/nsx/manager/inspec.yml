@@ -1,11 +1,11 @@
-name: vmware-cloud-foundation-nsx-manager-app-stig-baseline
-title: VMware Cloud Foundation 9.X NSX Manager STIG Readiness Guide
+name: VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide
+title: VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
-summary: An InSpec Compliance Profile
-version: 1.1.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide
+version: 1.0.1
 
 inputs:
   - name: nsx_managerAddress
@@ -49,6 +49,8 @@ inputs:
     value:
       - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
       - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+      - TLS_RSA_WITH_AES_128_GCM_SHA256
+      - TLS_RSA_WITH_AES_256_GCM_SHA384
       - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
       - TLS_AES_128_GCM_SHA256
       - TLS_AES_256_GCM_SHA384

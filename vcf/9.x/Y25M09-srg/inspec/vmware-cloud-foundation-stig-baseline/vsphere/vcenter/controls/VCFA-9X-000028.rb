@@ -33,12 +33,11 @@ control 'VCFA-9X-000028' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000095'
-  tag satisfies: ['SRG-APP-000097', 'SRG-APP-000098', 'SRG-APP-000099', 'SRG-APP-000100']
   tag gid: 'V-VCFA-9X-000028'
   tag rid: 'SV-VCFA-9X-000028'
   tag stig_id: 'VCFA-9X-000028'
-  tag cci: ['CCI-000130', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-001487']
-  tag nist: ['AU-3 a', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 f']
+  tag cci: ['CCI-000130']
+  tag nist: ['AU-3 a']
 
   command = 'Get-AdvancedSetting -Entity $global:DefaultViServers.Name -Name config.log.level | ConvertTo-Json -Depth 2 -WarningAction SilentlyContinue'
   result = powercli_command(command).stdout.strip

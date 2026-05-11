@@ -1,8 +1,7 @@
 # vmware-cloud-foundation-stig-baseline-automation
-VMware Cloud Foundation 9.1 Application STIG Readiness Guide Chef InSpec Profile  
-Version: Release 1 Version 2  
-Updated: 2026-05-12  
-STIG Release: Y26M05  
+VMware Cloud Foundation 9.0 Application STIG Readiness Guide Chef InSpec Profile  
+Version: Release 1 Version 1  
+Date: 17 June 2025  
 STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
 
@@ -18,7 +17,7 @@ This profile will run all dependent profiles that make up the VCF Application ST
 - The `vmware-cloud-foundation-stig-baseline` profile downloaded to a local folder on either Windows or Linux.
 
 ## Supported Versions
-- VCF 9.1.0.0  
+- VCF 9.0.0.0  
 
 ## Inputs
 Inputs for an InSpec profile are sometimes needed to provide environment specific values in order for tests to run correctly. These can be provided by specifying an inputs file with the target environments values.  

@@ -1,8 +1,7 @@
 # vmware-cloud-foundation-stig-baseline
-VMware Cloud Foundation vSphere 9.1 STIG Readiness Guide Chef InSpec Profile    
-Version: Release 1 Version 2  
-Updated: 2026-05-12  
-STIG Release: Y26M05  
+VMware Cloud Foundation vSphere 9.0 STIG Readiness Guide Chef InSpec Profile    
+Updated: 2025-06-17  
+STIG Release: Y25M06  
 STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
 
@@ -20,7 +19,7 @@ This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor 
 - When running the profile the custom vmware transport also connects to the sso admin server via "Connect-SsoAdminServer" and the credentials used to run the profile must also be an SSO admin.  
 
 ## Supported Versions
-- VCF 9.1.0.0  
+- VCF 9.0.0.0  
 
 ## Inputs
 Inputs for an InSpec profile are sometimes needed to provide environment specific values in order for tests to run correctly. These can be provided by specifying an inputs file with the target environments values.  

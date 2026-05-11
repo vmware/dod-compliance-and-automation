@@ -21,12 +21,12 @@ control 'VCFA-9X-000082' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000190'
-  tag satisfies: ['SRG-APP-000295', 'SRG-APP-000389', 'SRG-APP-000995']
+  tag satisfies: ['SRG-APP-000295']
   tag gid: 'V-VCFA-9X-000082'
   tag rid: 'SV-VCFA-9X-000082'
   tag stig_id: 'VCFA-9X-000082'
-  tag cci: ['CCI-000366', 'CCI-001133', 'CCI-002038', 'CCI-002361', 'CCI-005162']
-  tag nist: ['AC-12', 'CM-6 b', 'IA-11', 'SC-10']
+  tag cci: ['CCI-001133', 'CCI-002361']
+  tag nist: ['AC-12', 'SC-10']
 
   describe 'This check is manual due to no available API or policy based and must be reviewed manually.' do
     skip 'This check is manual due to no available API or policy based and must be reviewed manually.'

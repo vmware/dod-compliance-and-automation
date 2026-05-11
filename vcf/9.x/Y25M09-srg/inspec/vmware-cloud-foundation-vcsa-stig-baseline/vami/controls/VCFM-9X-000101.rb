@@ -22,7 +22,7 @@ control 'VCFM-9X-000101' do
   desc 'fix', "
     Navigate to and open:
 
-    /etc/lighttpd/vhosts.d/applmgmt-lighttpd.conf
+    /etc/applmgmt/appliance/applmgmt-lighttpd.conf
 
     Remove any setting for \"ssl.disable-client-renegotiation\".
 

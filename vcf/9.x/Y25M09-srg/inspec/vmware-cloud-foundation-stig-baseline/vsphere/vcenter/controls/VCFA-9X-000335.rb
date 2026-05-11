@@ -12,7 +12,7 @@ control 'VCFA-9X-000335' do
   desc 'fix', "
     From the vSphere Client, go to Hosts and Clusters.
 
-    Select a vCenter Server >> Configure >> Security >> Key Providers.
+    Select a vCenter Server >> Configure >> Settings >> Key Providers.
 
     Select the Native Key Provider, click \"Back-up\", and check the box \"Protect Native Key Provider data with password\".
 

@@ -31,22 +31,22 @@ control 'VCFA-9X-000379' do
 
     From VCF Operations for Networks, go to Settings >> System Configuration.
 
-    Review the \"Login Banners\" configuration.
+    Review the login banner configuration.
 
-    If the \"Display Banners\" option is disabled, this is a finding.
+    If the login banner is disabled, this is a finding.
 
-    If the standard DOD User Agreement is not present in the \"Consent form description\" field, this is a finding.
+    If the login message description is not configured to the standard DOD User Agreement, this is a finding.
 
     Note: Refer to vulnerability discussion for user agreement language.
   "
   desc 'fix', "
     From VCF Operations for Networks, go to Settings >> System Configuration.
 
-    Click \"Edit\" next to the \"Login Banners\" setting.
+    Click \"Edit\" next to \"Login Banners\" setting.
 
     Click the radio button next to \"Display Banners\".
 
-    Under \"User Consent Form\", enter a title such as \"Standard Mandatory DOD Notice and Consent Banner\" and in the \"Consent form description\" enter the standard DOD User Agreement text.
+    Under \"User Consent Form\", enter a title such as \"Standard Mandatory DOD Notice and Consent Banner\" and in the description enter the standard DOD User Agreement text.
 
     Optionally, enter the standard DOD User Agreement again in the \"Login message description\" and click \"Submit\".
   "

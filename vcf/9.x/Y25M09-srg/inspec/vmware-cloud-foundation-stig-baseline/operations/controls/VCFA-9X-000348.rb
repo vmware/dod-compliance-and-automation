@@ -3,28 +3,26 @@ control 'VCFA-9X-000348' do
   desc  'By limiting the number of failed login attempts, the risk of unauthorized system access via user password guessing, otherwise known as brute forcing, is reduced. Limits are imposed by locking the account. '
   desc  'rationale', ''
   desc  'check', "
-    From VCF Operations, go to Administration >> Global Settings >> User Access >> Password Policy >> Policy Definition >> Account Lockout.
+    From VCF Operations, go to Administration >> Global Settings >> User Access >> Password Policy >> Account Lockout.
 
     Review the configured lockout policies.
 
-    If the account lockout \"Maximum number of consecutive failed login attempts\" is not configured to 3, this is a finding.
+    If the account lockout policy \"Number of failed login attempts before account lock\" is not configured to 3, this is a finding.
 
-    If the account lockout \"Time interval between failures\" is not configured to 900 seconds or more, this is a finding.
+    If the account lockout policy \"Reset failed login attempts after\" is not configured to 900 seconds or more, this is a finding.
 
-    If the account lockout \"Length of lockout period\" is not configured to 900 seconds or more, this is a finding.
+    If the account lockout policy is not activated, this is a finding.
   "
   desc 'fix', "
-    From VCF Operations, go to Administration >> Global Settings >> User Access >> Password Policy >> Policy Definition >> Account Lockout.
+    From VCF Operations, go to Administration >> Global Settings >> User Access >> Password Policy >> Account Lockout.
 
-    Note: The Password Policy Activation is covered by another control.
+    If the account lockout policy is not activated, click on the \"Deactivated\" radio button to enable it and click \"Save\".
 
-    Configure the following settings:
+    Once activated configure the following policies:
 
-    Configure \"Maximum number of consecutive failed login attempts\" to 3.
+    Configure \"Number of failed login attempts before account lock\" to 3.
 
-    Configure \"Time interval between failures\" to 900 seconds.
-
-    Configure \"Length of lockout period\" to 900 seconds.
+    Configure \"Reset failed login attempts after\" to 900 seconds.
 
     Click \"Save\".
   "

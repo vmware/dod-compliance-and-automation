@@ -57,19 +57,15 @@ control 'VCFB-9X-000001' do
       subject { limit_conn_zone }
       it { should include ['$server_name', 'zone=per_server:10m'] }
     end
-  else
-    describe 'The limit_conn_zone directive in the http context' do
-      subject { limit_conn_zone }
-      it { should_not be nil }
-    end
-  end
-
-  if limit_conn
     describe 'The limit_conn directive in the http context' do
       subject { limit_conn }
       it { should include ['per_server', "#{input('limit_conn_server_limit')}"] }
     end
   else
+    describe 'The limit_conn_zone directive in the http context' do
+      subject { limit_conn_zone }
+      it { should_not be nil }
+    end
     describe 'The limit_conn directive in the http context' do
       subject { limit_conn }
       it { should_not be nil }

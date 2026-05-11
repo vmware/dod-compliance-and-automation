@@ -71,12 +71,12 @@ control 'VCFA-9X-000117' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000291'
-  tag satisfies: ['SRG-APP-000292', 'SRG-APP-000293', 'SRG-APP-000294', 'SRG-APP-000320', 'SRG-APP-000379']
+  tag satisfies: ['SRG-APP-000292', 'SRG-APP-000293', 'SRG-APP-000294']
   tag gid: 'V-VCFA-9X-000117'
   tag rid: 'SV-VCFA-9X-000117'
   tag stig_id: 'VCFA-9X-000117'
-  tag cci: ['CCI-000015', 'CCI-001744']
-  tag nist: ['AC-2 (1)', 'CM-3 (5)']
+  tag cci: ['CCI-000015']
+  tag nist: ['AC-2 (1)']
 
   command = 'Get-AlarmDefinition | Where-Object {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq "com.vmware.sso.PrincipalManagement"} | ConvertTo-Json -Depth 0 -WarningAction SilentlyContinue'
   result = powercli_command(command).stdout.strip

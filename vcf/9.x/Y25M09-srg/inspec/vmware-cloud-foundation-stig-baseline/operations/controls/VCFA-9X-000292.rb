@@ -20,7 +20,7 @@ control 'VCFA-9X-000292' do
 
     Go to Administrator Settings >> Security Settings.
 
-    Click the \"Deactivate Unsigned PAK Installation\" button.
+    Click the \"Disable unsigned PAK installation\" button.
   "
   impact 0.5
   tag severity: 'medium'

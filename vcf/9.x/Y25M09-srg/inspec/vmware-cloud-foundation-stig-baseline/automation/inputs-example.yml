@@ -10,3 +10,5 @@ automation_trustedCertificateCNs:
   - 'tenant-manager-1.tenant-manager.prelude.svc.cluster.local'
   - 'tenant-manager-2.tenant-manager.prelude.svc.cluster.local'
   - 'vcf-cluster-ca'
+# Enter an array of feature flags that are approved to be enabled
+automation_approvedFeatureFlags: []

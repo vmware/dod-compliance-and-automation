@@ -1,6 +1,6 @@
 # Change Log
 
-## [9.1 STIG Readiness Guide Version 1 Release 2] (2026-05-12)
+## [9.x STIG Readiness Guide] (Y26M05)
 
 ### Release Notes
 - Updated source DISA SRG to the Application Core Security Requirements Guide V4R2
@@ -49,17 +49,35 @@
 #### vCenter
 - Added Shared Resources folder for vSphere components
 - VCFA-9X-000004 - Updated InSpec
-- VCFA-9X-000028 - Updated CCI/NIST IDs
 - VCFA-9X-000051 - Updated Check
-- VCFA-9X-000117 - Updated CCI/NIST IDs
 - VCFA-9X-000153 - Updated InSpec
 - VCFA-9X-000191 - Updated Check and Fix
-- VCFA-9X-000333 - Updated InSpec
 - VCFA-9X-000335 - Updated Fix
 - VCFA-9X-000343 - Updated Check and Fix
 
+#### NSX Manager
+- VCFN-9X-000075 - Updated Check
+- VCFN-9X-000113 - Updated Fix
+- VCFN-9X-000115 - Updated Severity
 
-## [9.0 STIG Readiness Guide Version 1 Release 1] (2025-06-17)
+#### NSX Router
+- VCFR-9X-000028 - Added
+- VCFR-9X-000029 - Updated Severity
+- VCFR-9X-000111 - Updated Severity
+
+## [9.x STIG Readiness Guide] (Y25M09)
+
+### Release Notes
+- Updates to support VCF 9.0.1 and 9.0.2
+
+#### ESX
+- VCFE-9X-000082 - Updated Check
+- VCFE-9X-000108 - Updated Check
+- VCFE-9X-000130 - Updated Severity
+- VCFE-9X-000203 - Updated Test
+
+
+## [9.x STIG Readiness Guide] (Y25M06)
 
 #### Release Notes
 - Initial release to support VCF 9.0.0.0

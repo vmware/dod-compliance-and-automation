@@ -12,7 +12,7 @@ control 'VCFN-9X-000113' do
   desc 'fix', "
     From the NSX Manager web interface, go to the System >> Configuration >> Fabric >> Profiles >> Node Profiles.
 
-    Click on \"All NSX Nodes\" and delete any v2c Polling or Trap configurations.
+    Click on \"All NSX Nodes\" and delete and v2c Polling or Trap configurations.
   "
   impact 0.5
   tag severity: 'medium'

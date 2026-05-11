@@ -9,7 +9,7 @@ control 'VCFC-9X-000051' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SELECT name,setting FROM pg_settings WHERE name IN ('fsync','full_page_writes','synchronous_commit');\"
 
     Example result:
 
@@ -22,7 +22,7 @@ control 'VCFC-9X-000051' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET <name> TO 'on';\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET <name> TO 'on';\"
 
     Reload the PostgreSQL service by running the following command:
 

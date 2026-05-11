@@ -18,7 +18,7 @@ control 'VCFM-9X-000009' do
   desc  'check', "
     At the command prompt, run the following:
 
-    # /usr/sbin/lighttpd -p -f /etc/lighttpd/lighttpd.conf 2>/dev/null | awk '/^ *if / { exit } /accesslog\\.format/'
+    # /usr/sbin/lighttpd -p -f /etc/lighttpd/lighttpd.conf 2>/dev/null|grep \"accesslog.format\"
 
     The default commented accesslog format is acceptable for this requirement. No output should be returned.
 
@@ -49,7 +49,9 @@ control 'VCFM-9X-000009' do
   tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-001487', 'CCI-001889', 'CCI-001890']
   tag nist: ['AU-3 a', 'AU-3 b', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 f', 'AU-8 b']
 
-  describe command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')} 2>/dev/null | awk '/^ *if / { exit } /accesslog.format/'").stdout.strip do
-    it { should be_empty }
+  runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout
+
+  describe parse_config(runtime).params['accesslog.format'] do
+    it { should eq nil }
   end
 end

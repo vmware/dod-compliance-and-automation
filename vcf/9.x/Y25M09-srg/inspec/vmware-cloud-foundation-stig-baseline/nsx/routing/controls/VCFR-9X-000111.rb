@@ -32,8 +32,8 @@ control 'VCFR-9X-000111' do
 
     Under Timers & Password, enter a password up to 20 characters, and then click \"Save\".
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-NET-000168-RTR-000077'
   tag gid: 'V-VCFR-9X-000111'
   tag rid: 'SV-VCFR-9X-000111'

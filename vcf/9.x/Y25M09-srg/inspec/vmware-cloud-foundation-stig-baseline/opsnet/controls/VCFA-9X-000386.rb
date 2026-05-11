@@ -13,7 +13,7 @@ control 'VCFA-9X-000386' do
 
     Review the syslog configuration.
 
-    If the syslog is not enabled and all sources configured to forward to an authorized central log server, this is a finding.
+    If the syslog is not enabled and all sources configured to forwarded to an authorized central log server, this is a finding.
   "
   desc 'fix', "
     From VCF Operations for Networks, go to Settings >> Logs >> Syslog Configuration.

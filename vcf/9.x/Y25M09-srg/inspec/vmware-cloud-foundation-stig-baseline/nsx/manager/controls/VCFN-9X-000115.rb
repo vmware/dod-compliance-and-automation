@@ -30,8 +30,8 @@ control 'VCFN-9X-000115' do
 
     If the cluster status is not in a healthy state identify the degraded component on the appliance and troubleshoot the issue with the error information provided.
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-APP-000516-NDM-000317'
   tag gid: 'V-VCFN-9X-000115'
   tag rid: 'SV-VCFN-9X-000115'

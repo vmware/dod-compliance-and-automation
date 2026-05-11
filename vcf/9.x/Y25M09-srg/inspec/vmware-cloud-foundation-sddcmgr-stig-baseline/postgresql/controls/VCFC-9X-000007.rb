@@ -9,14 +9,14 @@ control 'VCFC-9X-000007' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SHOW pgaudit.log;\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SHOW pgaudit.log;\"
 
     If the \"pgaudit.log\" setting is not configured to \"all, -misc, -read\", this is a finding.
   "
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET pgaudit.log = 'all, -misc, -read';\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET pgaudit.log = 'all, -misc, -read';\"
 
     Reload the PostgreSQL service by running the following command:
 

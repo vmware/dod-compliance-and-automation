@@ -11,7 +11,7 @@ control 'VCFA-9X-000051' do
   desc  'check', "
     From the vSphere Client, go to Administration >> Solutions >> Client Plugins.
 
-    View the Installed/Available Plugins list and verify they are all identified as authorized Broadcom, VMware, third-party (partner), and/or site-specific approved plugins.
+    View the Installed/Available Plugins list and verify they are all identified as authorized VMware, third-party (partner), and/or site-specific approved plugins.
 
     If any installed/available plugins in the viewable list cannot be verified as allowed vSphere Client plugins from trusted sources or are not in active use, this is a finding.
   "

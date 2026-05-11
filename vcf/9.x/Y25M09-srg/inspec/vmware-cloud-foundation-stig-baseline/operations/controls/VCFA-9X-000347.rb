@@ -31,16 +31,16 @@ control 'VCFA-9X-000347' do
 
     Review the login message configuration.
 
-    If the login message content does not contain the standard DOD user agreement language, this is a finding.
+    If the login message policy content does not contain the standard DOD user agreement language, this is a finding.
 
-    If the login message is not activated, this is a finding.
+    If the login message policy is not activated, this is a finding.
 
     Note: Refer to vulnerability discussion for the user agreement language.
   "
   desc 'fix', "
     From VCF Operations, go to Administration >> Global Settings >> User Access >> Login Message.
 
-    If the login message is not activated, click on the \"Deactivated\" radio button to enable it and click \"Save\".
+    If the login message policy is not activated, click on the \"Deactivated\" radio button to enable it and click \"Save\".
 
     Configure the \"Content\" field to the Standard Mandatory DOD Notice and Consent Banner text.
 

@@ -1,8 +1,10 @@
 # Change Log
 
-## [9.1 STIG Readiness Guide Version 1 Release 2] (2026-05-05)
+## [9.x STIG Readiness Guide] (Y25M09)
 
 ### Release Notes
+- Updates to support VCF 9.0.1 and 9.0.2
+
 #### Apache HTTP
 - Updated source DISA SRG to the Web Server Security Requirements Guide V4R4
 - VCFH-9X-000101 - Updated Check, Fix and InSpec
@@ -18,7 +20,7 @@
 - VCFI-9X-000121 - Updated Check and Fix
 
 
-## [VCF 9.0 STIG Readiness Guide] (2025-06-17)
+## [VCF 9.x STIG Readiness Guide] (Y25M06)
 
 #### Release Notes
 - Initial release to support VCF 9.0.0.0

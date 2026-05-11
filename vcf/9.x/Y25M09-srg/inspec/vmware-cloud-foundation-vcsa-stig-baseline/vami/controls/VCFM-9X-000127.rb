@@ -20,7 +20,7 @@ control 'VCFM-9X-000127' do
   desc 'fix', "
     Navigate to and open:
 
-    /etc/lighttpd/vhosts.d/applmgmt-lighttpd.conf
+    /etc/applmgmt/appliance/applmgmt-lighttpd.conf
 
     If header \"Strict-Transport-Security\" is not present, add the following line to the end of the file:
 

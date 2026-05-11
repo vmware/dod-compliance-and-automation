@@ -9,7 +9,7 @@ control 'VCFM-9X-000005' do
   desc  'check', "
     At the command prompt, run the following:
 
-    # /usr/sbin/lighttpd -p -f /etc/lighttpd/lighttpd.conf 2>/dev/null | awk '/^ *if / { exit } /server\\.modules/,/\\)/' | grep mod_accesslog
+    # /usr/sbin/lighttpd -p -f /etc/lighttpd/lighttpd.conf 2>/dev/null|awk '/server\\.modules/,/\\)/'|grep mod_accesslog
 
     Example result:
 
@@ -24,11 +24,17 @@ control 'VCFM-9X-000005' do
   desc 'fix', "
     Navigate to and open:
 
-    /etc/lighttpd/conf.d/access_log.conf
+    /etc/lighttpd/modules.conf
 
-    Add, edit, or uncomment the following line at the top of the file:
+    Add the following value in the \"server.modules\" section:
 
-    server.modules += ( \"mod_accesslog\" )
+    mod_accesslog
+
+    The result should be similar to the following:
+
+    server.modules = (
+      \"mod_access\",
+    )
 
     Restart the service with the following command:
 
@@ -43,7 +49,7 @@ control 'VCFM-9X-000005' do
   tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
-  describe command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')} 2>/dev/null | awk '/^ *if / { exit } /server.modules/,/)/' | grep mod_accesslog").stdout.strip do
+  describe command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')} 2>/dev/null|awk '/server\\.modules/,/\\)/'|grep mod_accesslog|sed -e 's/^[ ]*//'").stdout.strip do
     it { should cmp '"mod_accesslog",' }
   end
 end

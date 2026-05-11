@@ -18,7 +18,7 @@ control 'VCFA-9X-000054' do
   desc  'check', "
     VMware Cloud Foundation offers Single Sign-On (SSO) capability that allows users to access VCF components, including vCenter, NSX, Operations, Automation, Operations Orchestrator, Operations HCX, Operations for Logs, and Operations for Networks, with one set of credentials through a configured identity provider. If the identity provider supports multifactor authentication this will be inherited by VCF components that are configured to use it.
 
-    From VCF Operations, go to Manage >> Fleet Management >> Identity & Access.
+    From VCF Operations, go to Fleet Management >> Identity & Access.
 
     Review each VCF instance, management component, and others.
 
@@ -29,9 +29,9 @@ control 'VCFA-9X-000054' do
 
     A 3rd party identity provider that supports multifactor authentication must be available prior to configuring VCF SSO. Okta, Ping Identity, Microsoft Entra ID, Microsoft ADFS, or any identity provider that supports SAML 2.0 is supported.
 
-    From VCF Operations, go to Manage >> Fleet Management >> Identity & Access >>  VCF SSO Overview.
+    From VCF Operations, go to Fleet Management >> Identity & Access >> SSO Overview.
 
-    To begin configuring SSO click the \"Configure SSO\" button and accept the Prerequisites.
+    To begin configuring SSO select a VCF instance from the dropdown.
 
     Click Start on \"Choose deployment mode\". Select either embedded or appliance for the identity broker deployment mode and click Next.
 
@@ -53,8 +53,8 @@ control 'VCFA-9X-000054' do
 
     Note: Only licensed VCF components that are version 9.0 or later and are not part of enhanced link mode are supported for enabling SSO access.
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-APP-000149'
   tag satisfies: ['SRG-APP-000080', 'SRG-APP-000148', 'SRG-APP-000150', 'SRG-APP-000154', 'SRG-APP-000155', 'SRG-APP-000163', 'SRG-APP-000180', 'SRG-APP-000820', 'SRG-APP-000825']
   tag gid: 'V-VCFA-9X-000054'

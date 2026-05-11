@@ -5,7 +5,7 @@ control 'VCFC-9X-000144' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SHOW logging_collector;\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SHOW logging_collector;\"
 
     Example result:
 
@@ -16,7 +16,7 @@ control 'VCFC-9X-000144' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET logging_collector TO 'on';\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET logging_collector TO 'on';\"
 
     Reload the PostgreSQL service by running the following command:
 

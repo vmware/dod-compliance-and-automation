@@ -13,7 +13,7 @@ control 'VCFC-9X-000010' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SHOW log_line_prefix;\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SHOW log_line_prefix;\"
 
     Example result:
 
@@ -24,7 +24,7 @@ control 'VCFC-9X-000010' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_line_prefix = '%m %c %x %d %u %r %p %l';\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_line_prefix = '%m %c %x %d %u %r %p %l';\"
 
     Reload the PostgreSQL service by running the following command:
 

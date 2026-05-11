@@ -1,8 +1,10 @@
 # Change Log
 
-## [9.1 STIG Readiness Guide Version 1 Release 2] (2026-05-12)
+## [9.x STIG Readiness Guide] (Y25M09)
 
 ### Release Notes
+- Updates to support VCF 9.0.1 and 9.0.2
+
 #### NGINX
 - Updated source DISA SRG to the Web Server Security Requirements Guide V4R4
 - VCFB-9X-000001 - Updated InSpec 
@@ -27,7 +29,7 @@
 - VCFC-9X-000144 - Updated Check and Fix
 
 
-## [VCF 9.x STIG Readiness Guide] (2025-06-17)
+## [VCF 9.x STIG Readiness Guide] (Y25M06)
 
 #### Release Notes
 - Initial release to support VCF 9.0.0.0

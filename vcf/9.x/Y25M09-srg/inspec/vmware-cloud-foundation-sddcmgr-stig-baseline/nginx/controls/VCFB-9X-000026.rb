@@ -17,7 +17,7 @@ control 'VCFB-9X-000026' do
 
     Example output:
 
-    configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --user=nginx --group=nginx --add-dynamic-module=njs-0.8.4/nginx --add-dynamic-module=./headers-more-nginx-module-0.37 --with-pcre --with-compat --with-http_ssl_module --modules-path=/etc/nginx/modules --with-http_auth_request_module --with-http_sub_module --with-http_stub_status_module --with-http_v2_module --with-http_realip_module --with-http_dav_module=dynamic --with-stream=dynamic --with-stream_ssl_preread_module=dynamic --with-stream_ssl_module
+    configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --user=nginx --group=nginx --add-dynamic-module=njs-0.8.4/nginx --add-dynamic-module=./headers-more-nginx-module-0.37 --with-pcre --with-compat --with-http_ssl_module --modules-path=/etc/nginx/modules --with-http_auth_request_module --with-http_sub_module --with-http_stub_status_module --with-http_v2_module --with-http_realip_module --with-http_dav_module=dynamic --with-stream=dynamic --with-stream_ssl_preread_module=dynamic
 
     Review the arguments that match \"--with-<module_name>_module\" for statically compiled modules. This does not include arguments appended with \"=dynamic\".
 
@@ -31,7 +31,7 @@ control 'VCFB-9X-000026' do
 
     The following modules are shipped with SDDC Manager and can be considered the approved baseline:
 
-    \"http_ssl\", \"http_auth_request\", \"http_sub\", \"http_stub_status\", \"http_v2\", \"http_realip\", \"stream_ssl\"
+    \"http_ssl\", \"http_auth_request\", \"http_sub\", \"http_stub_status\", \"http_v2\", \"http_realip\"
 
     If any modules are present that are not in the approved baseline, this is a finding.
   "

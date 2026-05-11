@@ -19,7 +19,7 @@ control 'VCFC-9X-000005' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SHOW shared_preload_libraries;\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SHOW shared_preload_libraries;\"
 
     Example result:
 

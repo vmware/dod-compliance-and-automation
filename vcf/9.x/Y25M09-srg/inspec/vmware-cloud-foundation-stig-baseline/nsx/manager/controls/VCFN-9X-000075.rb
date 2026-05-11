@@ -1,5 +1,5 @@
 control 'VCFN-9X-000075' do
-  title 'The VMware Cloud Foundation NSX Manager must be configured to implement cryptographic mechanisms using a FIPS 140-3 approved algorithm to protect the confidentiality of remote maintenance sessions.'
+  title 'The VMware Cloud Foundation NSX Manager must be configured to implement cryptographic mechanisms using a FIPS 140-2 approved algorithm to protect the confidentiality of remote maintenance sessions.'
   desc  'This requires the use of secure protocols instead of their unsecured counterparts, such as SSH instead of telnet, SCP instead of FTP, and HTTPS instead of HTTP. If unsecured protocols (lacking cryptographic mechanisms) are used for sessions, the contents of those sessions will be susceptible to eavesdropping, potentially putting sensitive data (including administrator passwords) at risk of compromise and potentially allowing hijacking of maintenance sessions.'
   desc  'rationale', ''
   desc  'check', "
@@ -34,11 +34,9 @@ control 'VCFN-9X-000075' do
 
     If any cipher suites are enabled that are not listed below, this is a finding.
 
-    TLS 1.2 Ciphers that may be enabled: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    TLS 1.2 Ciphers: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
 
-    TLS 1.3 Ciphers that may be enabled: TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384
-
-    FIPS 140-3 does not permit static RSA key exchange; suites named TLS_RSA_* must not be enabled. ECDHE_RSA suites that use SHA-1 (TLS_ECDHE_RSA_WITH_AES_*_CBC_SHA without SHA256/SHA384 in the suite name) must not be enabled.
+    TLS 1.3 Ciphers: TLS_AES_128_GCM_SHA256, TLS_AES_256_GCM_SHA384
   "
   desc 'fix', "
     Capture the output from the check GET command and update the TLS 1.1 protocol to false.
@@ -101,7 +99,7 @@ control 'VCFN-9X-000075' do
             },
             {
                 \"name\": \"TLS_RSA_WITH_AES_128_GCM_SHA256\",
-                \"enabled\": false
+                \"enabled\": true
             },
             {
                 \"name\": \"TLS_RSA_WITH_AES_256_CBC_SHA\",
@@ -113,7 +111,7 @@ control 'VCFN-9X-000075' do
             },
             {
                 \"name\": \"TLS_RSA_WITH_AES_256_GCM_SHA384\",
-                \"enabled\": false
+                \"enabled\": true
             },
             {
                 \"name\": \"TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384\",

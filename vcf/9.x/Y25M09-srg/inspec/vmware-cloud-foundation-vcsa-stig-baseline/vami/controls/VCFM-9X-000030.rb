@@ -24,7 +24,7 @@ control 'VCFM-9X-000030' do
   desc 'fix', "
     Navigate to and open:
 
-    /etc/lighttpd/vhosts.d/applmgmt-lighttpd.conf
+    /etc/applmgmt/appliance/applmgmt-lighttpd.conf
 
     Add or reconfigure the following value:
 

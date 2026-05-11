@@ -7,31 +7,34 @@ control 'VCFA-9X-000366' do
   "
   desc  'rationale', ''
   desc  'check', "
-    From VCF Operations, go to Fleet Management >> Fleet Settings.
+    From VCF Operations, go to Fleet Management >> Lifecycle >> VCF Management >> Overview.
 
-    Click the \"NTP Settings\" tile to view the currently configured NTP servers.
+    Click \"Manage\" on the operations capability and view the currently configured NTP servers.
 
     Verify at least one authorized time server is configured.
 
-    If no NTP servers are listed, or the NTP servers listed are not site specific authoritative time sources, this is a finding.
+    If the NTP servers listed are not site specific authoritative time sources, this is a finding.
   "
   desc 'fix', "
-    From VCF Operations, go to Fleet Management >> Fleet Settings.
+    From VCF Operations, go to Fleet Management >> Lifecycle >> VCF Management >> Overview.
 
-    Click the \"NTP Settings\" tile.
+    Click \"Manage\" on the operations capability.
 
-    Click to create a new setting, or select an existing setting for editing.
+    Click \"Update NTP Configuration\" and click \"Proceed\".
 
-    Ensure the \"Setting Name\" and \"NTP Server\" fields are accurate, and click \"Create\" or \"Update\".
+    Review the current NTP configuration and click \"Next\".
 
-    On the NTP Settings page, under \"Instances\", select a VCF Instance and click the \"Apply\" button.
+    Select \"Use NTP server\" and add or select existing authoritative time servers from the list and click \"Next\".
+
+    Update the server priority as needed and click \"Next\".
+
+    Click \"Run Precheck\" to verify connectivity to the selected NTP servers and click \"Finish\" to complete the configuration.
 
     Note: It is recommended to configure 1 or 3 or more NTP servers to help prevent \"split-brain\" scenarios.
   "
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000371'
-  tag satisfies: ['SRG-APP-000371', 'SRG-APP-000371', 'SRG-APP-000371', 'SRG-APP-000371']
   tag gid: 'V-VCFA-9X-000366'
   tag rid: 'SV-VCFA-9X-000366'
   tag stig_id: 'VCFA-9X-000366'

@@ -5,7 +5,7 @@ control 'VCFM-9X-000004' do
   desc  'check', "
     At the command prompt, run the following:
 
-    # /usr/sbin/lighttpd -p -f /etc/lighttpd/lighttpd.conf 2>/dev/null | awk '/^ *if / { exit } /ssl\\.engine/ { print }'
+    # /usr/sbin/lighttpd -p -f /etc/lighttpd/lighttpd.conf 2>/dev/null|grep \"ssl.engine\"
 
     Example result:
 
@@ -20,7 +20,7 @@ control 'VCFM-9X-000004' do
   desc 'fix', "
     Navigate to and open:
 
-    /etc/lighttpd/vhosts.d/applmgmt-lighttpd.conf
+    /etc/applmgmt/appliance/applmgmt-lighttpd.conf
 
     Add or reconfigure the following value:
 
@@ -40,7 +40,9 @@ control 'VCFM-9X-000004' do
   tag cci: ['CCI-000197', 'CCI-001453', 'CCI-002314', 'CCI-002418', 'CCI-002420', 'CCI-002422']
   tag nist: ['AC-17 (1)', 'AC-17 (2)', 'IA-5 (1) (c)', 'SC-8', 'SC-8 (2)']
 
-  describe command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')} 2>/dev/null | awk '/^ *if / { exit } /ssl\\.engine/ { split($0, a, \"= \"); print a[2] }'").stdout.strip do
+  runtime = command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')}").stdout
+
+  describe parse_config(runtime).params['ssl.engine'] do
     it { should cmp '"enable"' }
   end
 end

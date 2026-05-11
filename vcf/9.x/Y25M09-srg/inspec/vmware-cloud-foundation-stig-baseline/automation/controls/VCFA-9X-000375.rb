@@ -16,8 +16,8 @@ control 'VCFA-9X-000375' do
 
     Click the menu button next to the target feature flag and select \"Disable\".
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.3
+  tag severity: 'low'
   tag gtitle: 'SRG-APP-000516'
   tag gid: 'V-VCFA-9X-000375'
   tag rid: 'SV-VCFA-9X-000375'

@@ -42,8 +42,6 @@ control 'VCFL-9X-000121' do
           deleteStateOnFileDelete=\"on\"
           reopenOnTruncate=\"on\")
 
-    Note: If the entries for \"deleteStateOnFileDelete\" and \"reopenOnTruncate\" do not exist, this is not a finding.
-
     If the output does not match the expected result, this is a finding.
 
     As a database administrator, perform the following at the command prompt:
@@ -68,8 +66,6 @@ control 'VCFL-9X-000121' do
           Facility=\"local0\"
           deleteStateOnFileDelete=\"on\"
           reopenOnTruncate=\"on\")
-
-    Note: If the entries for \"deleteStateOnFileDelete\" and \"reopenOnTruncate\" do not exist, this is not a finding.
 
     If the output does not match the expected result, this is a finding.
   "
@@ -142,28 +138,15 @@ control 'VCFL-9X-000121' do
   tag cci: ['CCI-001851', 'CCI-003821', 'CCI-003831']
   tag nist: ['AU-4 (1)', 'AU-6 (4)', 'AU-9 b']
 
-  # VCF 9.0.1 has v1 of the file and VCF 9.0.2 has v2 of the file, check for both and pass if either is present
-  goodcontent_v1 = inspec.profile.file('vmware-services-vmware-vpostgres-v1.conf')
-  goodcontent_v2 = inspec.profile.file('vmware-services-vmware-vpostgres-v2.conf')
+  goodcontent = inspec.profile.file('vmware-services-vmware-vpostgres.conf')
 
-  describe.one do
-    describe file('/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf').content.strip do
-      it { should eq goodcontent_v1.strip }
-    end
-    describe file('/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf').content.strip do
-      it { should eq goodcontent_v2.strip }
-    end
+  describe file('/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf') do
+    its('content') { should eq goodcontent }
   end
 
-  goodcontentarch_v1 = inspec.profile.file('vmware-services-vmware-postgres-archiver-v1.conf')
-  goodcontentarch_v2 = inspec.profile.file('vmware-services-vmware-postgres-archiver-v2.conf')
+  goodcontentarch = inspec.profile.file('vmware-services-vmware-postgres-archiver.conf')
 
-  describe.one do
-    describe file('/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf').content.strip do
-      it { should eq goodcontentarch_v1.strip }
-    end
-    describe file('/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf').content.strip do
-      it { should eq goodcontentarch_v2.strip }
-    end
+  describe file('/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf') do
+    its('content') { should eq goodcontentarch }
   end
 end

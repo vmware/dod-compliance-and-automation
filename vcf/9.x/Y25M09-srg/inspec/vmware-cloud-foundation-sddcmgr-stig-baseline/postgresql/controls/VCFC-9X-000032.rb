@@ -11,14 +11,14 @@ control 'VCFC-9X-000032' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"select * from pg_extension where extname != 'plpgsql'\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"select * from pg_extension where extname != 'plpgsql'\"
 
     If any extensions are output, this is a finding.
   "
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    $ /usr/pgsql/16/bin/psql -h localhost -U postgres -c  \"DROP EXTENSION <extension name>\"
+    $ /usr/pgsql/15/bin/psql -h localhost -U postgres -c  \"DROP EXTENSION <extension name>\"
 
     Note: It is recommended that plpgsql not be removed.
   "

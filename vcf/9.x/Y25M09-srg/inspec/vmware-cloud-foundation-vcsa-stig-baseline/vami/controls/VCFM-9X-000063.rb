@@ -43,7 +43,7 @@ control 'VCFM-9X-000063' do
   desc 'fix', "
     Navigate to and open:
 
-    /etc/lighttpd/vhosts.d/applmgmt-lighttpd.conf
+    /etc/applmgmt/appliance/applmgmt-lighttpd.conf
 
     Delete the \"server.http-parseopts\" section.
 

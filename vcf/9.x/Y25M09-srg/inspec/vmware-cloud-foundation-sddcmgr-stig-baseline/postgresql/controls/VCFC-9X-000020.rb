@@ -11,7 +11,7 @@ control 'VCFC-9X-000020' do
 
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SHOW log_file_mode;\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SHOW log_file_mode;\"
 
     Example result:
 
@@ -28,7 +28,7 @@ control 'VCFC-9X-000020' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_file_mode = '0600';\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET log_file_mode = '0600';\"
 
     Reload the PostgreSQL service by running the following command:
 

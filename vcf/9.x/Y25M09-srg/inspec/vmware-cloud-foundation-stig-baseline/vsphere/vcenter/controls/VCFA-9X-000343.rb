@@ -21,7 +21,7 @@ control 'VCFA-9X-000343' do
 
     From the vSphere Client, go to Host and Clusters.
 
-    Select the vCenter Server >> Select the cluster >> Configure >> vSAN >> Services >> Data Reduction and Encryption.
+    Select the vCenter Server >> Select the cluster >> Configure >> vSAN >> Services >> Data Services.
 
     Review the \"Data-in-transit encryption\" status.
 
@@ -39,7 +39,7 @@ control 'VCFA-9X-000343' do
   desc 'fix', "
     From the vSphere Client, go to Host and Clusters.
 
-    Select the vCenter Server >> Select the target cluster >> Configure >> vSAN >> Services >> Data Reduction and Encryption.
+    Select the vCenter Server >> Select the target cluster >> Configure >> vSAN >> Services >> Data Services.
 
     Click \"Edit\".
 

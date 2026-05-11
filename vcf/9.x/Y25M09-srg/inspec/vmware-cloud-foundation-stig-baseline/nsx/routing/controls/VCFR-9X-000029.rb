@@ -30,8 +30,8 @@ control 'VCFR-9X-000029' do
 
     Note: The MD5 password can have a maximum of 16 characters.
   "
-  impact 0.5
-  tag severity: 'medium'
+  impact 0.7
+  tag severity: 'high'
   tag gtitle: 'SRG-NET-000168-RTR-000077'
   tag satisfies: ['SRG-NET-000230-RTR-000001']
   tag gid: 'V-VCFR-9X-000029'

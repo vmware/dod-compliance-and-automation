@@ -11,7 +11,7 @@ control 'VCFC-9X-000038' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SHOW password_encryption;\"
+    $ /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SHOW password_encryption;\"
 
     Example result:
 
@@ -22,7 +22,7 @@ control 'VCFC-9X-000038' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET password_encryption TO 'scram-sha-256';\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET password_encryption TO 'scram-sha-256';\"
 
     Reload the PostgreSQL service by running the following command:
 

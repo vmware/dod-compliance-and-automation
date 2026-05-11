@@ -13,7 +13,7 @@ control 'VCFC-9X-000035' do
   desc  'check', "
     As a database administrator, perform the following at the command prompt:
 
-    $ /usr/pgsql/16/bin/psql -h localhost -U postgres -A -t -c \"SHOW port;\"
+    $ /usr/pgsql/15/bin/psql -h localhost -U postgres -A -t -c \"SHOW port;\"
 
     Example result:
 
@@ -24,7 +24,7 @@ control 'VCFC-9X-000035' do
   desc 'fix', "
     As a database administrator, perform the following at the command prompt:
 
-    # /usr/pgsql/16/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET port = '5432';\"
+    # /usr/pgsql/15/bin/psql -h localhost -U postgres -c \"ALTER SYSTEM SET port = '5432';\"
 
     Reload the PostgreSQL service by running the following command:
 
