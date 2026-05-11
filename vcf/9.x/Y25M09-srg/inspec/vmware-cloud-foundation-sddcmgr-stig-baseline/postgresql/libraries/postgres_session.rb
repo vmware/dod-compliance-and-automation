@@ -83,13 +83,13 @@ module Inspec::Resources
         # Socket connection only enabled for non-windows platforms
         # Windows does not support unix domain sockets
         option_port = @port.nil? ? '' : "-p #{@port}" # add explicit port if specified
-        "/usr/pgsql/16/bin/psql -d postgresql://#{@user}:#{@pass}@/#{dbs}?host=#{@socket_path} #{option_port} -A -t -w -c #{escaped_query(query)}"
+        "/usr/pgsql/15/bin/psql -d postgresql://#{@user}:#{@pass}@/#{dbs}?host=#{@socket_path} #{option_port} -A -t -w -c #{escaped_query(query)}"
       # Host in connection string establishes tcp/ip connection
       elsif inspec.os.windows?
         warn 'Socket based connection not supported in windows, connecting using host' if @socket_path
         "psql -d postgresql://#{@user}:#{@pass}@#{@host}:#{@port}/#{dbs} -A -t -w -c \"#{query}\""
       else
-        "/usr/pgsql/16/bin/psql -d postgresql://#{@user}:#{@pass}@#{@host}:#{@port}/#{dbs} -A -t -w -c #{escaped_query(query)}"
+        "/usr/pgsql/15/bin/psql -d postgresql://#{@user}:#{@pass}@#{@host}:#{@port}/#{dbs} -A -t -w -c #{escaped_query(query)}"
       end
     end
   end
