@@ -1,8 +1,7 @@
 # vmware-cloud-foundation-stig-powercli-hardening
 VMware Cloud Foundation STIG Readiness Guide PowerCLI Scripts  
 Version: Release 1 Version 2  
-Updated: 2026-05-12  
-STIG Release: Y26M05  
+STIG Release: Y25M09  
 STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
 
@@ -31,23 +30,23 @@ The functions provided are: `Set-vCenterCredentials` `Get-vCenterCredentials` `S
 Install the module by unzipping it into a supported module path depending on the target platform and location preference.  
 
 ## Included Scripts
-`VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables.ps1` - Global variables used throughout all scripts.  
-`VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_InSpec_Runner_Attestations_Example.yml` - Example attestation file for the ESX InSpec runner script.  
-`VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_InSpec_Runner.ps1` - Audits target ESX hosts and facilitates creating accreditation artifacts that would require a more manual process with InSpec/CINC alone.  
-`VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation_Variables.ps1` - Variables specific to ESX remediation. Environment specific, rule enablement/disablement, expected stig values, default values for revert workflow.  
-`VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation.ps1` - Remediation script for ESX.  
-`VMware_Cloud_Foundation_vSphere_vCenter_9.0_STIG_Remediation_Variables.ps1` - Variables specific to vCenter remediation. Environment specific, rule enablement/disablement, expected stig values, default values for revert workflow.  
-`VMware_Cloud_Foundation_vSphere_vCenter_9.0_STIG_Remediation.ps1` - Remediation script for vCenter.  
-`VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_InSpec_Runner.ps1` - Audits target VMs and facilitates creating accreditation artifacts that would require a more manual process with InSpec/CINC alone.  
-`VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation_Variables.ps1` - Variables specific to VM remediation. Environment specific, rule enablement/disablement, expected stig values, default values for revert workflow.  
-`VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation.ps1` - Remediation script for VMs.  
+`VMware_Cloud_Foundation_vSphere_9.X_STIG_Global_Variables.ps1` - Global variables used throughout all scripts.  
+`VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_InSpec_Runner_Attestations_Example.yml` - Example attestation file for the ESX InSpec runner script.  
+`VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_InSpec_Runner.ps1` - Audits target ESX hosts and facilitates creating accreditation artifacts that would require a more manual process with InSpec/CINC alone.  
+`VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation_Variables.ps1` - Variables specific to ESX remediation. Environment specific, rule enablement/disablement, expected stig values, default values for revert workflow.  
+`VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation.ps1` - Remediation script for ESX.  
+`VMware_Cloud_Foundation_vSphere_vCenter_9.X_STIG_Remediation_Variables.ps1` - Variables specific to vCenter remediation. Environment specific, rule enablement/disablement, expected stig values, default values for revert workflow.  
+`VMware_Cloud_Foundation_vSphere_vCenter_9.X_STIG_Remediation.ps1` - Remediation script for vCenter.  
+`VMware_Cloud_Foundation_vSphere_VM_9.X_STIG_InSpec_Runner.ps1` - Audits target VMs and facilitates creating accreditation artifacts that would require a more manual process with InSpec/CINC alone.  
+`VMware_Cloud_Foundation_vSphere_VM_9.X_STIG_Remediation_Variables.ps1` - Variables specific to VM remediation. Environment specific, rule enablement/disablement, expected stig values, default values for revert workflow.  
+`VMware_Cloud_Foundation_vSphere_VM_9.X_STIG_Remediation.ps1` - Remediation script for VMs.  
 
 ## Running Remediation Scripts
 
 ### Prerequisites
 Prior to running any scripts it is recommended to get familiar with the scripts and the required parameters as well as test them out in a non-production environment.  
 
-Update the `VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables.ps1` file with the target environment values for remediation. The file provided can be used or a copy can be made an updated.  
+Update the `VMware_Cloud_Foundation_vSphere_9.X_STIG_Global_Variables.ps1` file with the target environment values for remediation. The file provided can be used or a copy can be made an updated.  
 
 **NOTE** Update paths as needed for the target environment environment.  
 
@@ -59,7 +58,7 @@ The follow parameters are available in all remediation scripts.
 | `vccred`          |`None`                     |Powershell credential object for use in connecting to the target vCenter server.|`Powershell Credential`|
 | `NoSafetyChecks`  |`$false`                   |Skip safety checks to verify PowerCLI, vCenter, and ESX versions before running script.|`Boolean`       |
 | `RevertToDefault` |`$false`                   |When specified the script will revert all settings back to the known default 'Out of the Box' values.|`Boolean`       |
-| `GlobalVarsFile`  |`VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables.ps1`|Global Variables file name. Must be in the same directory as the script.|`String`       |
+| `GlobalVarsFile`  |`VMware_Cloud_Foundation_vSphere_9.X_STIG_Global_Variables.ps1`|Global Variables file name. Must be in the same directory as the script.|`String`       |
 | `RemediationVarsFile`|`varies`                |Remediation Variables file name. Must be in the same directory as the script.   |`String`       |
 
 ### Create Powershell credential
@@ -73,45 +72,45 @@ Password for user administrator@vsphere.local: ********************
 ```
 
 ### ESX Remediation
-Update the `VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation_Variables.ps1` file with the target environment values for remediation. The file provided can be used or a copy can be made an updated.  
+Update the `VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation_Variables.ps1` file with the target environment values for remediation. The file provided can be used or a copy can be made an updated.  
 
 Run the ESX remediation script with the provided variables files against the target ESX hosts specified in the global variables file.
 ```
-./VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation.ps1 -vccred $vccred
+./VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation.ps1 -vccred $vccred
 ```
 
 Run the ESX remediation script with the provided variables files against the target ESX hosts specified in the global variables file and disable safety checks.
 ```
-./VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation.ps1 -vccred $vccred -NoSafetyChecks
+./VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation.ps1 -vccred $vccred -NoSafetyChecks
 ```
 
 Run the ESX remediation script with custom variables files against the target ESX hosts specified in the global variables file.
 ```
-./VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation.ps1 -vccred $vccred -GlobalVarsFile "VMware_Cloud_Foundation_vSphere_9.0_STIG_Global_Variables_Custom_East.ps1" -RemediationVarsFile "VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation_Variables_Custom_East.ps1"
+./VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation.ps1 -vccred $vccred -GlobalVarsFile "VMware_Cloud_Foundation_vSphere_9.X_STIG_Global_Variables_Custom_East.ps1" -RemediationVarsFile "VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation_Variables_Custom_East.ps1"
 ```
 
 **NOTE** ESX hosts must be in maintenance mode to fully remediate them in order to change the TLS profile and require a reboot once hardened.  
 
 ### vCenter Remediation
-Update the `VMware_Cloud_Foundation_vSphere_vCenter_9.0_STIG_Remediation_Variables.ps1` file with the target environment values for remediation. The file provided can be used or a copy can be made an updated.  
+Update the `VMware_Cloud_Foundation_vSphere_vCenter_9.X_STIG_Remediation_Variables.ps1` file with the target environment values for remediation. The file provided can be used or a copy can be made an updated.  
 
 Run the vCenter remediation script with the provided variables files against the target vCenter specified in the global variables file.
 ```
-./VMware_Cloud_Foundation_vSphere_vCenter_9.0_STIG_Remediation.ps1 -vccred $vccred
+./VMware_Cloud_Foundation_vSphere_vCenter_9.X_STIG_Remediation.ps1 -vccred $vccred
 ```
 
 ### VM Remediation
-Update the `VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation_Variables.ps1` file with the target environment values for remediation. The file provided can be used or a copy can be made an updated.  
+Update the `VMware_Cloud_Foundation_vSphere_VM_9.X_STIG_Remediation_Variables.ps1` file with the target environment values for remediation. The file provided can be used or a copy can be made an updated.  
 
 Run the VM remediation script with the provided variables files against the target vCenter specified in the global variables file.
 ```
-./VMware_Cloud_Foundation_vSphere_VM_9.0_STIG_Remediation.ps1 -vccred $vccred
+./VMware_Cloud_Foundation_vSphere_VM_9.X_STIG_Remediation.ps1 -vccred $vccred
 ```
 
 ### Disabling rules
 The need may arise to disable certain rules for an environment. This can be accomplished in the remediation variables file for each script.  
 
-For example to disable rule `VCFE-9X-000005` find the `$rulesenabled` section in the `VMware_Cloud_Foundation_vSphere_ESX_9.0_STIG_Remediation_Variables.ps1` file and update the value from `$true` to `$false` prior to running the script.
+For example to disable rule `VCFE-9X-000005` find the `$rulesenabled` section in the `VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation_Variables.ps1` file and update the value from `$true` to `$false` prior to running the script.
 ```
 $rulesenabled = [ordered]@{
   VCFE9X000005 = $false  # Account Lock Failures

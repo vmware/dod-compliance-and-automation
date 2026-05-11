@@ -1,7 +1,6 @@
 # vmware-cloud-foundation-stig-powercli-hardening
 VMware Cloud Foundation STIG Readiness Guide PowerCLI Scripts  
 Version: Release 1 Version 2  
-Updated: 2026-05-12  
 STIG Release: Y26M05  
 STIG Type: STIG Readiness Guide  
 Maintainers: Broadcom  
