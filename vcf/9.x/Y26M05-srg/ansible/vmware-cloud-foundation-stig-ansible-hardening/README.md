@@ -47,21 +47,11 @@ All ansible roles needed to remediation STIG compliance for VCF have been consol
     * SSH enabled
   * Product Rules
     * API token obtained and populated in the vault `var_vault_operations_session_token` variable.
-* Operations for Logs
-  * Appliance Rules
-    * SSH enabled
-  * Product Rules
-    * API token obtained and populated in the vault `var_vault_operations_logs_api_token` variable.
 * Operations for Networks
   * Appliance Rules
     * SSH enabled
   * Product Rules
     * API token obtained and populated in the vault `var_vault_operations_networks_api_token` variable.
-* Operations Fleet Management
-  * Appliance Rules
-    * SSH enabled
-  * Product Rules
-    * API token obtained and populated in the vault `var_vault_operations_fm_api_token` variable.
 * SDDC Manager
   * Appliance Rules
     * SSH enabled
@@ -87,9 +77,7 @@ The following table of variables are either required or optionally needed depend
 |`nsx_routing_defaults_t0_gateways_with_multicast_enabled`|`[]`                 |Array of T0 ids that should have multicast enabled.          |Array        |VCFR-9X-000110|
 |`nsx_routing_defaults_t1_gateways_with_dhcp_enabled`|`[]`                      |Array of T1 ids that should have dhcp enabled.               |Array        |VCFR-9X-000113|
 |`nsx_routing_defaults_t1_gateways_with_multicast_enabled`|`[]`                 |Array of T1 ids that should have multicast enabled.          |Array        |VCFR-9X-000115|
-|`ops_fm_defaults_time_servers`                     |`''`                       |Comma separated list of NTP servers with no spaces (i.e., '10.0.0.1,10.0.0.2').|String       |VCFA-9X-000371|
 |`ops_hcx_defaults_time_servers`                    |`[]`                       |Array of NTP servers.                                        |Array        |VCFA-9X-000383|
-|`ops_logs_defaults_ntp_servers`                    |`[]`                       |Array of NTP servers.                                        |Array        |VCFA-9X-000367|
 
 ## Scripts
 * `scripts/diff_ansible_tags_to_baseline.py` — Compares STIG IDs referenced in each Ansible role (tags and task names) to InSpec control filenames under mapped baseline `controls/` directories. Configuration is in `scripts/baseline_role_mapping.json`. Run from this repo with Python 3; set `VCF_STIG_REPOS_ROOT` to the parent folder that contains the `vmware-cloud-foundation-*-stig-baseline` repositories (or pass `--workspace /path/to/that/folder`). Use `--role <name>` to check one role, or `--json` for machine-readable output.
@@ -338,24 +326,6 @@ ansible-playbook playbook.yml -i inventory_vcf.yml -l operations_cloud_proxy -v 
 
 # Run all applicable product-based roles on the Operations Master node in inventory.
 ansible-playbook playbook_api.yml -i inventory_vcf.yml -l ops_master -v --ask-vault-pass -e @vault_vcf.yml
-```
-
-### Operations for Logs Remediation
-```
-# Run all applicable appliance-based roles on all Operations for Logs appliances in inventory.
-ansible-playbook playbook.yml -i inventory_vcf.yml -l operations_logs -v --ask-vault-pass -e @vault_vcf.yml
-
-# Run all applicable product-based roles on all Operations for Logs in inventory.
-ansible-playbook playbook_api.yml -i inventory_vcf.yml -l operations_logs -v --ask-vault-pass -e @vault_vcf.yml
-```
-
-### Operations Fleet Management Remediation
-```
-# Run all applicable appliance-based roles on all Operations Fleet Management appliances in inventory.
-ansible-playbook playbook.yml -i inventory_vcf.yml -l operations_fm -v --ask-vault-pass -e @vault_vcf.yml
-
-# Run all applicable product-based roles on all Operations Fleet Management targets in inventory.
-ansible-playbook playbook_api.yml -i inventory_vcf.yml -l operations_fm -v --ask-vault-pass -e @vault_vcf.yml
 ```
 
 ### Operations For Networks Remediation

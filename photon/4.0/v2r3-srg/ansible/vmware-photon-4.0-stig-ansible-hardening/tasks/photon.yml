@@ -567,7 +567,7 @@
     - name: PHTN-40-000040 - Check if telnet packages are installed
       ansible.builtin.shell: |
         set -o pipefail
-        rpm -qa | grep -E '^netkit-telnet'
+        rpm -qa | grep 'telnet'
       register: telnetinstalled
       failed_when: telnetinstalled.rc == 2
       changed_when: false
@@ -1757,7 +1757,7 @@
       ansible.builtin.lineinfile:
         path: '{{ var_pam_system_auth_file }}'
         state: present
-        regexp: '^#?auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$'
+        regexp: '^#?auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000.*$'
         line: auth       optional pam_faildelay.so delay=4000000
         insertafter: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+authfail$'
       when:

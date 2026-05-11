@@ -1,5 +1,5 @@
 # vmware-cloud-foundation-operations-hcx-stig-baseline
-VMware Cloud Foundation Operations HCX Appliance 9.0 STIG Readiness Guide Chef InSpec Profile  
+VMware Cloud Foundation Operations HCX Appliance 9.x STIG Readiness Guide Chef InSpec Profile  
 Version: Release 1 Version 2  
 Updated: 2026-05-12  
 STIG Release: Y26M05  
