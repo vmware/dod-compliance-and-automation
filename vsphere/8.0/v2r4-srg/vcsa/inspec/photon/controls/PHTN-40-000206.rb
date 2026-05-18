@@ -17,7 +17,7 @@ control 'PHTN-40-000206' do
 
     If the pam_faildelay.so module is not present with the delay set to at least four seconds, this is a finding.
 
-    Note: The delay is configured in milliseconds.
+    Note: The delay is configured in microseconds.
   "
   desc 'fix', "
     Navigate to and open:
