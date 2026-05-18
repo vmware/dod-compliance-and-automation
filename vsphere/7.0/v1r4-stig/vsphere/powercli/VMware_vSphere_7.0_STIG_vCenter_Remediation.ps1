@@ -183,7 +183,7 @@ If($reportpath){
 }
 
 #Modules needed to run script and load
-$modules = @("VMware.PowerCLI","VMware.Vsphere.SsoAdmin")
+$modules = @("VCF.PowerCLI","VMware.Vsphere.SsoAdmin")
 
 #Function to check for correct modules
 Function checkModule ($m){

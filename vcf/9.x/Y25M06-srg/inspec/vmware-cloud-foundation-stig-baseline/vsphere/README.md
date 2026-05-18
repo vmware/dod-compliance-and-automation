@@ -15,7 +15,7 @@ This is a compliance auditing profile that is based on Chef InSpec/CINC Auditor 
 - For ESX you can run it against a single host, all hosts in a cluster, or all hosts in a vCenter based on the inputs you provide.  
 - For VMs you can run against a single VM or all VMs in a vCenter based on the inputs you provide.  
 - This profile uses a custom InSpec vmware transport which must be installed by running "inspec plugin install /path/to/gem". The gem file is provided in this repo and is currently `train-vmware-1.0.0.gem`.  
-- The `VMware.PowerCLI`, `VMware.Vsphere.SsoAdmin`, and `VMware.VCF.STIG.Helpers` Powershell modules must be installed where this profile is being ran from.  
+- The `VCF.PowerCLI`, `VMware.Vsphere.SsoAdmin`, and `VMware.VCF.STIG.Helpers` Powershell modules must be installed where this profile is being ran from.  
 - When running the profile the custom vmware transport also connects to the sso admin server via "Connect-SsoAdminServer" and the credentials used to run the profile must also be an SSO admin.  
 
 ## Supported Versions
