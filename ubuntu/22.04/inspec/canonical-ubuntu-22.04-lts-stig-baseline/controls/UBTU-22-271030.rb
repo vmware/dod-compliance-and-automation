@@ -11,10 +11,10 @@ Note: If no graphical user interface is installed, this requirement is not appli
 If the "logout" key is bound to an action, is commented out, or is missing, this is a finding.'
   desc 'fix', 'Configure Ubuntu 22.04 LTS to disable the Ctrl-Alt-Delete sequence when using a graphical user interface.
 
-Create or edit a file named /etc/dconf/db/local.d/00-screensaver with the following contents:
+Create or edit a file named /etc/dconf/db/local.d/00-mediakeys with the following contents:
 
 [org/gnome/settings-daemon/plugins/media-keys]
-logout=""
+logout=@as []
 
 Update the dconf settings:
 
@@ -23,18 +23,19 @@ $ sudo dconf update'
   tag check_id: 'C-64268r953428_chk'
   tag severity: 'high'
   tag gid: 'V-260539'
-  tag rid: 'SV-260539r1069103_rule'
+  tag rid: 'SV-260539r1184066_rule'
   tag stig_id: 'UBTU-22-271030'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
-  tag fix_id: 'F-64176r1069102_fix'
+  tag fix_id: 'F-64176r1184065_fix'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
   xorg_status = command('which Xorg').exit_status
   if xorg_status == 0
-    describe command("grep -R logout='' /etc/dconf/db/local.d/").stdout.strip.split("\n").entries do
-      its('count') { should_not eq 0 }
+    describe command('grep -rF "logout=@as []" /etc/dconf/db/local.d/') do
+      its('exit_status') { should eq 0 }
+      its('stdout.strip') { should_not eq '' }
     end
   else
     impact 0.0

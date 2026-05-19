@@ -1,0 +1,11 @@
+{
+  "service_name": "ntp",
+  "service_properties": {
+    "start_on_boot": true,
+    "servers": [
+      {% for item in nsx_manager_defaults_ntp_servers %}
+      "{{ item }}",
+      {% endfor %}
+    ]
+  }
+}

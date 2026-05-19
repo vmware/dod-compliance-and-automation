@@ -2,6 +2,6 @@
 ESXI-80-000006:
   run: false
   justification: 'DoD Banner will not be configured out of the box.'
-ESXI-80-000006:
+ESXI-80-000007:
   run: false
   justification: 'AD integration is an optional configuration.'

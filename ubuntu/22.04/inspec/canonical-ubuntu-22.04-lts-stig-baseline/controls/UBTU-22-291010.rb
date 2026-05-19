@@ -26,7 +26,6 @@ Configure Ubuntu 22.04 LTS to disable the ability to use USB mass storage device
 
      $ sudo su -c "echo blacklist usb-storage >> /etc/modprobe.d/stig.conf"'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64269r953431_chk'
   tag severity: 'medium'
   tag gid: 'V-260540'

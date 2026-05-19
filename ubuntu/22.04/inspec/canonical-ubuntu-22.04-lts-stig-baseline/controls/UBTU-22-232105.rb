@@ -13,7 +13,6 @@ If "journalctl" is not group-owned by "root", this is a finding.'
 
      $ sudo chown :root /usr/bin/journalctl'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64235r953329_chk'
   tag severity: 'medium'
   tag gid: 'V-260506'

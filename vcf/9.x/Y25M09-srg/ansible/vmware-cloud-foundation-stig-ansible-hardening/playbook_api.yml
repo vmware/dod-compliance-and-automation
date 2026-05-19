@@ -1,0 +1,72 @@
+# Includes only API based tasks and roles. Having a separate playbook file eliminates some issues found when combined with tasks that run via SSH.
+- name: Include Playbook Variables
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Include playbook variables from ./vars/vars_playbook.yml
+      ansible.builtin.include_vars:
+        file: vars_playbook.yml
+      tags:
+        - always
+    - name: Include playbook variables overrides from ./vars/vars_playbook_overrides.yml
+      ansible.builtin.include_vars:
+        file: vars_playbook_overrides.yml
+      tags:
+        - always
+- name: vmware-cloud-foundation-sddcmgr-stig-ansible-hardening
+  hosts: sddcmanager
+  connection: local
+  gather_facts: false
+  serial: 1
+  roles:
+    - role: sddcmgr
+- name: vmware-cloud-foundation-nsx-stig-ansible-hardening
+  hosts: nsxmanager
+  connection: local
+  gather_facts: false
+  serial: 1
+  roles:
+    - role: nsx_manager
+    - role: nsx_routing
+- name: vmware-cloud-foundation-operations-stig-ansible-hardening
+  hosts: ops_master
+  connection: local
+  gather_facts: false
+  serial: 1
+  roles:
+    - role: operations
+- name: vmware-cloud-foundation-operations-for-logs-stig-ansible-hardening
+  hosts: operations_logs
+  connection: local
+  gather_facts: false
+  serial: 1
+  roles:
+    - role: ops_logs
+- name: vmware-cloud-foundation-operations-fleet-management-stig-ansible-hardening
+  hosts: operations_fm
+  connection: local
+  gather_facts: false
+  serial: 1
+  roles:
+    - role: ops_fm
+- name: vmware-cloud-foundation-operations-for-networks-stig-ansible-hardening
+  hosts: operations_networks_platform
+  connection: local
+  gather_facts: false
+  serial: 1
+  roles:
+    - role: ops_net
+- name: vmware-cloud-foundation-operations-hcx-stig-ansible-hardening
+  hosts: operations_hcx_mgr
+  connection: local
+  gather_facts: false
+  serial: 1
+  roles:
+    - role: ops_hcx
+- name: vmware-cloud-foundation-automation-stig-ansible-hardening
+  hosts: automation
+  connection: local
+  gather_facts: false
+  serial: 1
+  roles:
+    - role: automation

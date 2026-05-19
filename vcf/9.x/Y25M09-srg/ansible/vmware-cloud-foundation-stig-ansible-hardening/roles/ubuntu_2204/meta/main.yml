@@ -1,0 +1,11 @@
+galaxy_info:
+  author: Broadcom
+  description: Ubuntu 24.04 STIG Role (aligned with Canonical Ubuntu 24.04 LTS STIG V1R3/V1R4, 02 December 2025 / 05 January 2026)
+  company: Broadcom
+  license: Apache
+  min_ansible_version: '2.9'
+  galaxy_tags:
+    - vcf
+    - vmware
+    - ubuntu2404
+    - stig

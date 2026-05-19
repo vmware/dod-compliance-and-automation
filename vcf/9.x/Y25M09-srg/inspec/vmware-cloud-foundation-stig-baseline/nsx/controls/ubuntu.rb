@@ -1,0 +1,22 @@
+# include_controls 'ubuntu' do
+#   # These controls are N/A or not support for NSX appliances. See the waivers-ubuntu.yml file for more details.
+#   skip_control 'UBTU-22-215015'
+#   skip_control 'UBTU-22-215020'
+#   skip_control 'UBTU-22-215025'
+#   skip_control 'UBTU-22-231010'
+#   skip_control 'UBTU-22-251015'
+#   skip_control 'UBTU-22-251025'
+#   skip_control 'UBTU-22-251030'
+#   skip_control 'UBTU-22-252010'
+#   skip_control 'UBTU-22-252015'
+#   skip_control 'UBTU-22-412025'
+#   skip_control 'UBTU-22-612010'
+#   skip_control 'UBTU-22-612015'
+#   skip_control 'UBTU-22-612020'
+#   skip_control 'UBTU-22-612025'
+#   skip_control 'UBTU-22-612030'
+#   skip_control 'UBTU-22-612035'
+#   skip_control 'UBTU-22-612040'
+#   skip_control 'UBTU-22-631010'
+#   skip_control 'UBTU-22-671010'
+# end

@@ -47,7 +47,6 @@ deny = 3
 fail_interval = 900
 unlock_time = 0'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64278r953458_chk'
   tag severity: 'low'
   tag gid: 'V-260549'
@@ -72,8 +71,8 @@ unlock_time = 0'
 
   describe command('grep faillock /etc/pam.d/common-auth') do
     its('exit_status') { should eq 0 }
-    its('stdout.strip') { should match /^\s*auth\s+sufficient\s+pam_faillock.so\s+authsucc($|\s+.*$)/ }
-    its('stdout.strip') { should match /^\s*auth\s+\[default=die\]\s+pam_faillock.so\s+authfail($|\s+.*$)/ }
+    its('stdout.strip') { should match(/^\s*auth\s+sufficient\s+pam_faillock.so\s+authsucc($|\s+.*$)/) }
+    its('stdout.strip') { should match(/^\s*auth\s+\[default=die\]\s+pam_faillock.so\s+authfail($|\s+.*$)/) }
   end
 
   describe file('/etc/security/faillock.conf') do
@@ -90,7 +89,7 @@ unlock_time = 0'
   end
   describe command('egrep \'silent|audit\' /etc/security/faillock.conf | grep -v \'#\'') do
     its('exit_status') { should eq 0 }
-    its('stdout.strip') { should match /^audit($|\s+.*$)/ }
-    its('stdout.strip') { should match /^silent($|\s+.*$)/ }
+    its('stdout.strip') { should match(/^audit($|\s+.*$)/) }
+    its('stdout.strip') { should match(/^silent($|\s+.*$)/) }
   end
 end

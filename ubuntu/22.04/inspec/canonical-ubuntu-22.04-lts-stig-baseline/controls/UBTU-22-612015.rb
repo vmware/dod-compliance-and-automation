@@ -13,7 +13,6 @@ If the "opensc-pcks11" package is not installed, this is a finding.'
 
      $ sudo apt-get install opensc-pkcs11'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64303r953533_chk'
   tag severity: 'medium'
   tag gid: 'V-260574'

@@ -32,7 +32,6 @@ To deny access to ports, protocols, or services, use:
 
      $ sudo ufw deny <direction> <port/protocol/service>'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64247r953365_chk'
   tag severity: 'medium'
   tag gid: 'V-260518'

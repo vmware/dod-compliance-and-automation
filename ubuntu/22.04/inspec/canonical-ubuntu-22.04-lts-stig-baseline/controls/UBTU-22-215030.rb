@@ -14,7 +14,6 @@ If the "rsh-server" package is installed, this is a finding.'
 
      $ sudo apt-get remove rsh-server'
   impact 0.7
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64211r953257_chk'
   tag severity: 'high'
   tag gid: 'V-260482'

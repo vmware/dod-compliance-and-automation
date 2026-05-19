@@ -13,7 +13,6 @@ Add or modify the following line in the "/etc/pam.d/common-auth" file:
 
 auth     required     pam_faildelay.so     delay=4000000'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64279r953461_chk'
   tag severity: 'low'
   tag gid: 'V-260550'
@@ -31,7 +30,7 @@ auth     required     pam_faildelay.so     delay=4000000'
 
   describe command('grep pam_faildelay /etc/pam.d/common-auth') do
     its('exit_status') { should eq 0 }
-    its('stdout.strip') { should match /^\s*auth\s+required\s+pam_faildelay.so\s+.*delay=([4-9][\d]{6,}|[1-9][\d]{7,}).*$/ }
+    its('stdout.strip') { should match(/^\s*auth\s+required\s+pam_faildelay.so\s+.*delay=([4-9][\d]{6,}|[1-9][\d]{7,}).*$/) }
   end
 
   file('/etc/pam.d/common-auth').content.to_s.scan(/^\s*auth\s+required\s+pam_faildelay.so\s+.*delay=(\d+).*$/).flatten.each do |entry|

@@ -39,7 +39,6 @@ Add or modify the following line in the "/etc/ssh/sshd_config" file:
 
 PubkeyAuthentication yes'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64304r1044768_chk'
   tag severity: 'medium'
   tag gid: 'V-260575'

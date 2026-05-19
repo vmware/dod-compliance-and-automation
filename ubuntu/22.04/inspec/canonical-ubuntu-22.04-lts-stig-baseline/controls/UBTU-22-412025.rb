@@ -15,7 +15,6 @@ If "vlock" is not installed, this is a finding.'
 
      $ sudo apt-get install vlock'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64282r953470_chk'
   tag severity: 'medium'
   tag gid: 'V-260553'
@@ -25,8 +24,8 @@ If "vlock" is not installed, this is a finding.'
   tag fix_id: 'F-64190r953471_fix'
   tag satisfies: ['SRG-OS-000030-GPOS-00011', 'SRG-OS-000031-GPOS-00012']
   tag 'documentable'
-  tag cci: ['CCI-000058', 'CCI-000060', 'CCI-000057']
-  tag nist: ['AC-11 a', 'AC-11 (1)']
+  tag cci: ['CCI-000057', 'CCI-000060', 'CCI-000058']
+  tag nist: ['AC-11 a', 'AC-11 (1)', 'AC-11 a']
 
   describe package('vlock') do
     it { should be_installed }

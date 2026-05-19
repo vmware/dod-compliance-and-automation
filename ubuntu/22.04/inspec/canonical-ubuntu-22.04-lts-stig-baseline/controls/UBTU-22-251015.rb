@@ -15,7 +15,6 @@ If the above command returns the status as "inactive" or any type of error, this
 
      $ sudo ufw enable'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64244r953356_chk'
   tag severity: 'medium'
   tag gid: 'V-260515'
@@ -28,8 +27,8 @@ If the above command returns the status as "inactive" or any type of error, this
   tag nist: ['AC-17 (1)']
 
   if package('ufw').installed?
-    describe command('sudo ufw status') do
-      its('stdout') { should match /Status:\s+active/ }
+    describe command('ufw status') do
+      its('stdout') { should match(/Status:\s+active/) }
     end
   else
     describe 'UFW Package is not installed' do

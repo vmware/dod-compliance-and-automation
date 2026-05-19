@@ -13,7 +13,6 @@ If the "/var/log/syslog" file is not group-owned by "adm", this is a finding.'
 
      $ sudo chgrp adm /var/log/syslog'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64240r953344_chk'
   tag severity: 'medium'
   tag gid: 'V-260511'

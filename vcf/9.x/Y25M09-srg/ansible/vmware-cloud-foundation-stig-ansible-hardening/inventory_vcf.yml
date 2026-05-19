@@ -1,0 +1,160 @@
+vcenter:
+  hosts:
+    vcenter_mgmt:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_vcenter_mgmt_root_password }}"
+    vcenter_wld_1:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_vcenter_wld_1_root_password }}"
+sddcmanager:
+  hosts:
+    sddcmgr:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_sddcmgr_root_password }}"
+nsxmanager:
+  hosts:
+    nsx_mgmt_mgr_1:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_nsx_manager_nsx_mgmt_mgr_1_root_password }}"
+    nsx_mgmt_mgr_2:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_nsx_manager_nsx_mgmt_mgr_2_root_password }}"
+    nsx_mgmt_mgr_3:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_nsx_manager_nsx_mgmt_mgr_3_root_password }}"
+    nsx_wld_1_mgr_1:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_nsx_manager_nsx_wld_1_mgr_1_root_password }}"
+    nsx_wld_1_mgr_2:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_nsx_manager_nsx_wld_1_mgr_2_root_password }}"
+    nsx_wld_1_mgr_3:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_nsx_manager_nsx_wld_1_mgr_3_root_password }}"
+operations:
+  hosts:
+    ops_master:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_operations_master_root_password }}"
+    ops_replica:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_operations_replica_root_password }}"
+operations_data:
+  hosts:
+    ops_data_1:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_operations_data_1_root_password }}"
+operations_cloud_proxy:
+  hosts:
+    ops_cp_1:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_operations_cp_1_root_password }}"
+operations_fm:
+  hosts:
+    ops_fm:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_operations_fm_root_password }}"
+operations_logs:
+  hosts:
+    ops_logs_1:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_operations_logs_1_root_password }}"
+    ops_logs_2:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_operations_logs_2_root_password }}"
+    ops_logs_3:
+      ansible_host:
+      ansible_user: root
+      ansible_password: "{{ var_vault_operations_logs_3_root_password }}"
+operations_networks_platform:
+  hosts:
+    ops_networks_platform_1:
+      ansible_host:
+      ansible_user: support
+      ansible_password: "{{ var_vault_operations_networks_platform_1_support_password }}"
+      ansible_become: true
+      ansible_become_method: sudo
+      ansible_become_user: root
+    ops_networks_platform_2:
+      ansible_host:
+      ansible_user: support
+      ansible_password: "{{ var_vault_operations_networks_platform_2_support_password }}"
+      ansible_become: true
+      ansible_become_method: sudo
+      ansible_become_user: root
+    ops_networks_platform_3:
+      ansible_host:
+      ansible_user: support
+      ansible_password: "{{ var_vault_operations_networks_platform_3_support_password }}"
+      ansible_become: true
+      ansible_become_method: sudo
+      ansible_become_user: root
+operations_networks_proxy:
+  hosts:
+    ops_networks_proxy_1:
+      ansible_host:
+      ansible_user: support
+      ansible_password: "{{ var_vault_operations_networks_proxy_1_support_password }}"
+      ansible_become: true
+      ansible_become_method: sudo
+      ansible_become_user: root
+operations_hcx_mgr:
+  hosts:
+    ops_hcx_mgr:
+      ansible_host:
+      ansible_user: admin
+      ansible_password: "{{ var_vault_operations_hcx_mgr_admin_password }}"
+      ansible_become: true
+      ansible_become_method: su
+      ansible_become_user: root
+      ansible_become_password: "{{ var_vault_operations_hcx_mgr_root_password }}"
+operations_hcx_conn:
+  hosts:
+    ops_hcx_conn_1:
+      ansible_host:
+      ansible_user: admin
+      ansible_password: "{{ var_vault_operations_hcx_conn_1_admin_password }}"
+      ansible_become: true
+      ansible_become_method: su
+      ansible_become_user: root
+      ansible_become_password: "{{ var_vault_operations_hcx_conn_1_root_password }}"
+    ops_hcx_conn2:
+      ansible_host:
+      ansible_user: admin
+      ansible_password: "{{ var_vault_operations_hcx_conn_2_admin_password }}"
+      ansible_become: true
+      ansible_become_method: su
+      ansible_become_user: root
+      ansible_become_password: "{{ var_vault_operations_hcx_conn_2_root_password }}"
+automation:
+  hosts:
+    automation_vip:
+      ansible_host:
+    automation_1:
+      ansible_host:
+      ansible_user: vmware-system-user
+      ansible_password: "{{ var_vault_automation_1_vmware_system_user_password }}"
+    automation_2:
+      ansible_host:
+      ansible_user: vmware-system-user
+      ansible_password: "{{ var_vault_automation_2_vmware_system_user_password }}"
+    automation_3:
+      ansible_host:
+      ansible_user: vmware-system-user
+      ansible_password: "{{ var_vault_automation_3_vmware_system_user_password }}"

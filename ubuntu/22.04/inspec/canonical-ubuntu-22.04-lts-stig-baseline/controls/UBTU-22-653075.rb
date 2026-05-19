@@ -15,7 +15,6 @@ If "/etc/audit/audit.rules", "/etc/audit/auditd.conf", or "/etc/audit/rules.d/*"
 
      $ sudo chown -R :root /etc/audit/audit.rules /etc/audit/auditd.conf /etc/audit/rules.d/*'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64332r953620_chk'
   tag severity: 'medium'
   tag gid: 'V-260603'

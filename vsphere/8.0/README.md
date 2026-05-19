@@ -3,7 +3,7 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|      Version      |        V1R1*       |         V1R2*      |         V1R1       |         V2R1       |         V2R2       |         V2R3       |         V2R4       |
+|      Version      |        V1R1*       |         V1R2*      |         V1R1       |         V2R1       |         V2R2       |         V2R3       |         V2R4*      |
 |:-----------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|:------------------:|
 |     `8.0 GA`      |        :x:         |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |
 |     `8.0 U1`      | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |         :x:        |

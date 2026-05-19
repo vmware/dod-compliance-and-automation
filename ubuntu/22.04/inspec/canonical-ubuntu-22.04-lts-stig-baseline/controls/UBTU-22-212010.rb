@@ -31,11 +31,10 @@ Generate an updated "grub.conf" file with the new password by using the followin
 
      $ sudo update-grub)
   impact 0.7
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64199r953221_chk'
   tag severity: 'high'
   tag gid: 'V-260470'
-  tag rid: 'SV-260470r958472_rule'
+  tag rid: 'SV-260470r1137691_rule'
   tag stig_id: 'UBTU-22-212010'
   tag gtitle: 'SRG-OS-000080-GPOS-00048'
   tag fix_id: 'F-64107r953222_fix'
@@ -44,6 +43,6 @@ Generate an updated "grub.conf" file with the new password by using the followin
   tag nist: ['AC-3']
 
   describe file('/boot/grub/grub.cfg') do
-    its('content') { should match /^password_pbkdf2\sroot/ }
+    its('content') { should match(/^password_pbkdf2\sroot/) }
   end
 end

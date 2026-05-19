@@ -1,0 +1,401 @@
+---
+
+###################################################################################################################################
+- name: Get all Tier-0 Gateways for use in tasks
+  tags: [always]
+  block:
+    - name: Get all Tier-0 Gateways for use in tasks
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/infra/tier-0s"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: t0gateways
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFR-9X-000013
+  tags: [VCFR-9X-000013]
+  when: nsx_routing_defaults_run_vcfr_9x_000013 | bool
+  block:
+    - name: VCFR-9X-000013 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000013 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000013 - Loop through each Tier-0 Gateway found and disable multicast if not in approved list.
+      ansible.builtin.include_tasks:
+        file: nsx_routing_t0_disable_multicast_on_interfaces.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: VCFR-9X-000016
+  tags: [VCFR-9X-000016]
+  when: nsx_routing_defaults_run_vcfr_9x_000016 | bool
+  block:
+    - name: VCFR-9X-000016 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000016 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000016 - The VMware Cloud Foundation NSX Tier-0 Gateway must be configured to have all inactive interfaces removed.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000016 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+###################################################################################################################################
+- name: VCFR-9X-000027
+  tags: [VCFR-9X-000027]
+  when: nsx_routing_defaults_run_vcfr_9x_000027 | bool
+  block:
+    - name: VCFR-9X-000027 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000027 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000027 - Loop through Tier-0 Gateways and disable dhcp if not in approved list.
+      ansible.builtin.include_tasks:
+        file: nsx_routing_t0_disable_dhcp.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+        - var_outer_t0.dhcp_config_paths is defined
+        - var_outer_t0.id not in nsx_routing_defaults_t0_gateways_with_dhcp_enabled
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: VCFR-9X-000029
+  tags: [VCFR-9X-000029]
+  when: nsx_routing_defaults_run_vcfr_9x_000029 | bool
+  block:
+    - name: VCFR-9X-000029 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000029 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000029 - The VMware Cloud Foundation NSX Tier-0 Gateway router must be configured to use encryption for OSPF routing protocol authentication.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000029 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+###################################################################################################################################
+- name: VCFR-9X-000051
+  tags: [VCFR-9X-000051]
+  when: nsx_routing_defaults_run_vcfr_9x_000051 | bool
+  block:
+    - name: VCFR-9X-000051 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000051 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: "VCFR-9X-000051 - Loop through Tier-0 Gateways and configure URPF on interfaces if not configured to: {{ nsx_routing_defaults_t0_interface_urpf }}"
+      ansible.builtin.include_tasks:
+        file: nsx_routing_t0_configure_urpf_on_interfaces.yml
+      with_items:
+        - "{{ t0gateways.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_t0
+        label: "T0 Info: {{ var_outer_t0.id }}"
+
+###################################################################################################################################
+- name: VCFR-9X-000055
+  tags: [VCFR-9X-000055]
+  when: nsx_routing_defaults_run_vcfr_9x_000055 | bool
+  block:
+    - name: VCFR-9X-000055 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000055 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000055 - The VMware Cloud Foundation NSX Tier-0 Gateway must be configured to use a unique password for each autonomous system (AS) with which it peers.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000055 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+###################################################################################################################################
+- name: VCFR-9X-000067
+  tags: [VCFR-9X-000067]
+  when: nsx_routing_defaults_run_vcfr_9x_000067 | bool
+  block:
+    - name: VCFR-9X-000067 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000067 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: "VCFR-9X-000067 - Get BGP Neighbors with maximum routes not configured to {{ nsx_routing_defaults_t0_bgp_max_prefixes }}"
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/search?query=(resource_type:BgpNeighborConfig%20AND%20!route_filtering.maximum_routes:{{ nsx_routing_defaults_t0_bgp_max_prefixes }})"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: bgpnbrsmaxprefixes
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: VCFR-9X-000067 - Update BGP Neighbors route filtering maximum routes
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ item.path }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PATCH
+        body: "{{ lookup('template', './nsx_routing_t0_update_bgp_nbr_route_filter.json.j2') }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ bgpnbrsmaxprefixes.json.results }}"
+      register: bgpnbrupdate
+      when:
+        - t0gateways.json.result_count != 0
+        - bgpnbrsmaxprefixes.json.result_count != 0
+      changed_when:
+        - bgpnbrupdate.status == 200
+
+###################################################################################################################################
+- name: VCFR-9X-000091
+  tags: [VCFR-9X-000091]
+  when: nsx_routing_defaults_run_vcfr_9x_000091 | bool
+  block:
+    - name: VCFR-9X-000091 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000091 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000091 - The VMware Cloud Foundation NSX Tier-0 Gateway must be configured to use its loopback address as the source address for iBGP peering sessions.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000091 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+###################################################################################################################################
+- name: VCFR-9X-000102
+  tags: [VCFR-9X-000102]
+  when: nsx_routing_defaults_run_vcfr_9x_000102 | bool
+  block:
+    - name: VCFR-9X-000102 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000102 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000102 - Check to see if IPv6 forwarding is enabled
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/infra/global-config"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: ipv6enabled
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: VCFR-9X-000102 - Find IPv6 ND Profiles with a hop limit set incorrectly
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/search?query=(resource_type:Ipv6NdraProfile%20AND%20!ra_config.hop_limit:(64%20OR%20{{ nsx_routing_defaults_t0_ipv6_hop_limit }}))"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: badipv6profiles
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+        - ipv6enabled.json.l3_forwarding_mode == "IPV4_AND_IPV6"
+
+    - name: "VCFR-9X-000102 - Update IPv6 profiles with an incorrect hop limit to {{ nsx_routing_defaults_t0_ipv6_hop_limit }}"
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ item.path }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PATCH
+        body: "{{ lookup('template', './nsx_routing_t0_update_ipv6_ndra_profile.json.j2') | to_json }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ badipv6profiles.json.results }}"
+      register: ipv6ndraupdate
+      when:
+        - t0gateways.json.result_count != 0
+        - ipv6enabled.json.l3_forwarding_mode == "IPV4_AND_IPV6"
+        - badipv6profiles.json.result_count != 0
+      changed_when:
+        - ipv6ndraupdate.status == 200
+
+###################################################################################################################################
+- name: VCFR-9X-000109
+  tags: [VCFR-9X-000109]
+  when: nsx_routing_defaults_run_vcfr_9x_000109 | bool
+  block:
+    - name: VCFR-9X-000109 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000109 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000109 - Find Tier-0s with BGP enabled
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/search?query=(resource_type:BgpRoutingConfig%20AND%20enabled:true)"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: bgpenabled
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: VCFR-9X-000109 - Loop through BGP configs and disable if no neighbors configured
+      ansible.builtin.include_tasks:
+        file: nsx_routing_t0_disable_bgp_with_no_neighbors.yml
+      with_items:
+        - "{{ bgpenabled.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+        - bgpenabled.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_bgp
+
+    - name: VCFR-9X-000109 - Find Tier-0s with OSPF enabled
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/search?query=(resource_type:OspfRoutingConfig%20AND%20enabled:true)"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: ospfenabled
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: VCFR-9X-000109 - Loop through OSPF configs and disable if no areas configured
+      ansible.builtin.include_tasks:
+        file: nsx_routing_t0_disable_ospf_with_no_areas.yml
+      with_items:
+        - "{{ ospfenabled.json.results }}"
+      when:
+        - t0gateways.json.result_count != 0
+        - ospfenabled.json.result_count != 0
+      loop_control:
+        loop_var: var_outer_ospf
+
+###################################################################################################################################
+- name: VCFR-9X-000110
+  tags: [VCFR-9X-000110]
+  when: nsx_routing_defaults_run_vcfr_9x_000110 | bool
+  block:
+    - name: VCFR-9X-000110 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000110 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000110 - Find enabled Tier-0 Multicast Policies
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/search?query=(resource_type:PolicyMulticastConfig%20AND%20enabled:true)"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+        status_code: 200
+      register: multicastenabled
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0
+
+    - name: VCFR-9X-000110 - Disable multicast on Tier-0s if not in approved list
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ item.path }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PATCH
+        body: "{{ lookup('template', './nsx_routing_t0_disable_multicast_gateway.json.j2') }}"
+        body_format: json
+        status_code: 200
+      with_items:
+        - "{{ multicastenabled.json.results }}"
+      register: multicastupdate
+      when:
+        - t0gateways.json.result_count != 0
+        - multicastenabled.json.result_count != 0
+        # extract T0 ID from path and see if it's in list given
+        - item.path | regex_search('\/infra\/tier-0s\/(.*?)\/', '\\1') | first not in nsx_routing_defaults_t0_gateways_with_multicast_enabled
+      changed_when:
+        - multicastupdate.status == 200
+
+###################################################################################################################################
+- name: VCFR-9X-000111
+  tags: [VCFR-9X-000111]
+  when: nsx_routing_defaults_run_vcfr_9x_000111 | bool
+  block:
+    - name: VCFR-9X-000111 - Log no Tier-0 Gateways found.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000111 - No Tier-0 Gateways found."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count == 0
+
+    - name: VCFR-9X-000111 - The VMware Cloud Foundation NSX Tier-0 Gateway router must be configured to use encryption for BGP routing protocol authentication.
+      ansible.builtin.debug:
+        msg: "VCFR-9X-000111 - This control must be manually remediated."
+      changed_when: false
+      when:
+        - t0gateways.json.result_count != 0

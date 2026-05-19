@@ -1,0 +1,37 @@
+---
+- name: reload auditd
+  ansible.builtin.command: /sbin/augenrules --load
+  register: output
+  changed_when: output.rc == 0
+  when:
+    - not ansible_is_chroot
+
+- name: restart sshd
+  ansible.builtin.systemd:
+    name: sshd
+    state: restarted
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted
+
+- name: restart ntpd
+  ansible.builtin.systemd:
+    name: ntpd
+    state: restarted
+
+- name: restart chrony
+  ansible.builtin.systemd:
+    name: chrony
+    state: restarted
+
+- name: restart timesyncd
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: restarted
+
+- name: restart resolved
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: restarted

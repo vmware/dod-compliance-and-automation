@@ -12,7 +12,6 @@ If any systemwide shared library directory is returned, this is a finding.)
 
      $ sudo find /lib /usr/lib /lib64 ! -group root -type d -exec chgrp root '{}' \\;"
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64227r953305_chk'
   tag severity: 'medium'
   tag gid: 'V-260498'
@@ -26,7 +25,7 @@ If any systemwide shared library directory is returned, this is a finding.)
 
   library_directories = command('find /lib /usr/lib /lib64 ! \-group root \-type d').stdout.strip.split("\n").entries
 
-  if library_directories.count > 0
+  if library_directories.any?
     library_directories.each do |lib_file|
       describe file(lib_file) do
         its('group') { should cmp 'root' }

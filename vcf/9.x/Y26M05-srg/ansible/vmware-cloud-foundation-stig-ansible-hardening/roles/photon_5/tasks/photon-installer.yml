@@ -1,0 +1,14 @@
+---
+## Tasks specific to running playbook when ran against a chroot install of Photon
+
+###################################################################################################################################
+- name: Copy sysctl kernel parameters template
+  block:
+    - name: 'Copy zz-stig-hardening.conf template to {{ photon_5_vars_sysctl_conf_file }}.'
+      ansible.builtin.template:
+        src: zz-stig-hardening.conf
+        dest: '{{ photon_5_vars_sysctl_conf_file }}'
+        owner: root
+        group: root
+        mode: '0640'
+        force: true

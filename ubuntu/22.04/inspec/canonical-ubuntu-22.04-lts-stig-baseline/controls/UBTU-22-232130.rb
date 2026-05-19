@@ -13,7 +13,6 @@ If the "/var/log/syslog" file is not owned by "syslog", this is a finding.'
 
      $ sudo chown syslog /var/log/syslog'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64239r953341_chk'
   tag severity: 'medium'
   tag gid: 'V-260510'

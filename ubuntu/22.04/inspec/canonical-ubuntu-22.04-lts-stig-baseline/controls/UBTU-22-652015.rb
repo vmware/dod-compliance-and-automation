@@ -23,7 +23,6 @@ Restart "rsyslog.service" for the changes to take effect by using the following 
 
      $ sudo systemctl restart rsyslog.service'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64318r953578_chk'
   tag severity: 'medium'
   tag gid: 'V-260589'
@@ -35,7 +34,7 @@ Restart "rsyslog.service" for the changes to take effect by using the following 
   tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
-  describe command('grep -E -r \'^(auth,authpriv\.\*|daemon\.\*)\' /etc/rsyslog.*') do
-    its('stdout.strip') { should match(/auth,authpriv\.\*/).or match(/daemon\.\*/) }
+  describe command('grep -E -r \'^(auth\.\*,authpriv\.\*|daemon\.\*)\' /etc/rsyslog.*') do
+    its('stdout.strip') { should match(/auth\.\*,authpriv\.\*/).or match(/daemon\.\*/) }
   end
 end

@@ -13,7 +13,6 @@ If the "chrony" package is not installed, this is a finding.'
 
      $ sudo apt-get install chrony'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64208r953248_chk'
   tag severity: 'low'
   tag gid: 'V-260479'

@@ -1,0 +1,14 @@
+name: vmware-cloud-foundation-vcsa-envoy-stig-baseline
+title: VMware Cloud Foundation 9.X vCenter Server Appliance Envoy Service STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+inputs:
+- name: configXmlPath
+  description: Path to config.xml
+  type: string
+  value: "/etc/vmware-rhttpproxy/config.xml"

@@ -1,0 +1,43 @@
+---
+name: VMware Cloud Foundation 9.x ESX STIG Readiness Guide
+title: VMware Cloud Foundation 9.x ESX STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x ESX STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: esx_vmhostName
+    value: ''
+    type: string
+    description: 'The ESX host name to audit'
+  - name: esx_cluster
+    value: ''
+    type: string
+    description: 'The ESX cluster name to audit'
+  - name: esx_allHosts
+    value: false
+    type: boolean
+    description: 'Set to true to audit all hosts'
+  - name: esx_adJoined
+    value: false
+    type: boolean
+    description: ''
+  - name: esx_ntpServers
+    value: []
+    type: array
+    description: 'VCFE-9X-000121 Enter array of authorized NTP servers.'
+  - name: esx_vmotionVlanId
+    value: ''
+    type: string
+    description: 'VCFE-9X-000152 Enter the VLAN ID for the dedicated vMotion network.'
+  - name: esx_lockdownExceptionUsers
+    value: []
+    type: array
+    description: 'VCFE-9X-000205 Users allowed to bypass lockdown mode. Normally empty...use double quotes if including AD users with a /'
+  - name: esx_snmpEnabled
+    value: "false"
+    type: string
+    description: 'VCFE-9X-000215 Update to true if SNMP is used in the environment.'

@@ -1,0 +1,63 @@
+---
+###################################################################################################################################
+- name: VCFA-9X-000382
+  tags: [VCFA-9X-000382]
+  when: ops_hcx_defaults_run_vcfa_9x_000382 | bool
+  block:
+    - name: VCFA-9X-000382 - VMware Cloud Foundation Operations HCX must be configured to forward logs to a central log server.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000382 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000383
+  tags: [VCFA-9X-000383]
+  when: ops_hcx_defaults_run_vcfa_9x_000383 | bool
+  block:
+    - name: VCFA-9X-000383 - Get current time configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9443/system/timesettings"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Basic {{ lookup('vars', 'var_vault_operations_hcx_session_token') }}"
+        method: GET
+      register: timesettings
+      changed_when: false
+
+    - name: VCFA-9X-000383 - Update time server settings
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}:9443/system/timesettings"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Basic {{ lookup('vars', 'var_vault_operations_hcx_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './ops_hcx_update_time_servers.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+      register: response
+      when:
+        - not timesettings.json['ntpServer'] or
+          timesettings.json['ntpServer'] != ops_hcx_defaults_time_servers
+      changed_when:
+        - response.status == 200
+
+###################################################################################################################################
+- name: VCFA-9X-000384
+  tags: [VCFA-9X-000384]
+  when: ops_hcx_defaults_run_vcfa_9x_000384 | bool
+  block:
+    - name: VCFA-9X-000384 - VMware Cloud Foundation Operations HCX must only allow the use of DOD PKI established certificate authorities for verification of the establishment of protected sessions.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000384 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000385
+  tags: [VCFA-9X-000385]
+  when: ops_hcx_defaults_run_vcfa_9x_000385 | bool
+  block:
+    - name: VCFA-9X-000385 - VMware Cloud Foundation Operations HCX must include only approved trust anchors in trust stores or certificate stores managed by the organization.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000385 - This control must be manually remediated."
+      changed_when: false

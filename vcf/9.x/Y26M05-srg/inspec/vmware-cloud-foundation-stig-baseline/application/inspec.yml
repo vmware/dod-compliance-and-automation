@@ -1,0 +1,22 @@
+name: vmware-cloud-foundation-application-stig-baseline
+title: VMware Cloud Foundation 9.X Application STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+depends:
+  - name: automation
+    path: ../automation
+  - name: operations
+    path: ../operations
+  - name: opshcx
+    path: ../opshcx
+  - name: opsnet
+    path: ../opsnet
+  - name: sddcmgr
+    path: ../sddcmgr
+  - name: vcenter
+    path: ../vsphere/vcenter

@@ -1,5 +1,4 @@
 *.lock
 vendor/
 .vscode/
-resources/
 .DS_Store

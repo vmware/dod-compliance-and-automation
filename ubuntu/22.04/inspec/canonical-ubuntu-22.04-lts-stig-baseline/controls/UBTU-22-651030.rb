@@ -41,32 +41,34 @@ Add or modify the following lines in the "/etc/aide/aide.conf" file:
   tag cci: ['CCI-001496']
   tag nist: ['AU-9 (3)']
 
-  aide_conf = aide_conf input('aide_conf_path')
+  aide_conf_path = input('aide_conf_path')
 
-  aide_conf_exists = aide_conf.exist?
+  aide_conf_exists = file(aide_conf_path).exist?
+
+  conf = aide_conf(aide_conf_path)
 
   if aide_conf_exists
-    describe aide_conf.where { selection_line == '/sbin/auditctl' } do
+    describe conf.where { selection_line == '/sbin/auditctl' } do
       its('rules') { should include %w[p i n u g s b acl xattrs sha512] }
     end
 
-    describe aide_conf.where { selection_line == '/sbin/auditd' } do
+    describe conf.where { selection_line == '/sbin/auditd' } do
       its('rules') { should include %w[p i n u g s b acl xattrs sha512] }
     end
 
-    describe aide_conf.where { selection_line == '/sbin/ausearch' } do
+    describe conf.where { selection_line == '/sbin/ausearch' } do
       its('rules') { should include %w[p i n u g s b acl xattrs sha512] }
     end
 
-    describe aide_conf.where { selection_line == '/sbin/aureport' } do
+    describe conf.where { selection_line == '/sbin/aureport' } do
       its('rules') { should include %w[p i n u g s b acl xattrs sha512] }
     end
 
-    describe aide_conf.where { selection_line == '/sbin/autrace' } do
+    describe conf.where { selection_line == '/sbin/autrace' } do
       its('rules') { should include %w[p i n u g s b acl xattrs sha512] }
     end
 
-    describe aide_conf.where { selection_line == '/sbin/augenrules' } do
+    describe conf.where { selection_line == '/sbin/augenrules' } do
       its('rules') { should include %w[p i n u g s b acl xattrs sha512] }
     end
   else

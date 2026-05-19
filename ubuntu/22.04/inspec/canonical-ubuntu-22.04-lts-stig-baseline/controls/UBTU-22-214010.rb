@@ -17,7 +17,6 @@ Add or modify the following line in any file under the "/etc/apt/apt.conf.d/" di
 
 APT::Get::AllowUnauthenticated "false";'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64205r953239_chk'
   tag severity: 'low'
   tag gid: 'V-260476'

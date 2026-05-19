@@ -1,0 +1,35 @@
+---
+- name: update grub
+  ansible.builtin.command: grub-mkconfig -o {{ ubuntu_2404_defaults_boot_grub_cfg_file }}
+  register: output
+  changed_when: output.rc == 0
+  when:
+    - not ansible_is_chroot
+
+- name: restart sshd
+  ansible.builtin.systemd:
+    name: sshd
+    state: restarted
+
+- name: restart auditd
+  ansible.builtin.systemd:
+    name: auditd
+    state: restarted
+
+- name: restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted
+
+# Schedules reboot shortly after the handler returns — playbook does not wait for SSH to come back.
+- name: reboot system
+  ansible.builtin.shell: |
+    delay={{ ubuntu_2404_defaults_reboot_async_delay_seconds | int }}
+    if command -v systemd-run >/dev/null 2>&1 && systemd-run --on-active="${delay}s" --unit=ansible-stig-reboot systemctl reboot; then
+      exit 0
+    fi
+    nohup bash -c "sleep ${delay}; exec systemctl reboot" </dev/null >/dev/null 2>&1 &
+  args:
+    executable: /bin/bash
+  changed_when: true
+  when: not ansible_is_chroot | default(false) | bool

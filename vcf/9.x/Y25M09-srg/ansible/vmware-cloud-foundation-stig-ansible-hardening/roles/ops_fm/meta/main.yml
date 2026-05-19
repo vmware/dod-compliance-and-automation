@@ -1,0 +1,11 @@
+galaxy_info:
+  author: Broadcom
+  description: VMware Cloud Foundation Operations Fleet Management STIG Readiness Guide Role
+  company: Broadcom
+  license: Apache
+  min_ansible_version: '2.9'
+  galaxy_tags:
+    - stig
+    - vmware
+    - vcf
+    - opsfm

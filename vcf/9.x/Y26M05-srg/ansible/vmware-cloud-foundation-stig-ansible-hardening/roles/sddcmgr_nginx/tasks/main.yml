@@ -1,0 +1,41 @@
+---
+
+- name: Include SDDC Manager NGINX tasks
+  ansible.builtin.include_tasks:
+    file: nginx.yml
+    apply:
+      tags:
+        - sddcmgr-nginx
+  tags:
+    - sddcmgr-nginx
+    - VCFB-9X-000001
+    - VCFB-9X-000003
+    - VCFB-9X-000004
+    - VCFB-9X-000007
+    - VCFB-9X-000009
+    - VCFB-9X-000010
+    - VCFB-9X-000019
+    - VCFB-9X-000025
+    - VCFB-9X-000026
+    - VCFB-9X-000034
+    - VCFB-9X-000035
+    - VCFB-9X-000037
+    - VCFB-9X-000040
+    - VCFB-9X-000047
+    - VCFB-9X-000048
+    - VCFB-9X-000060
+    - VCFB-9X-000062
+    - VCFB-9X-000063
+    - VCFB-9X-000078
+    - VCFB-9X-000090
+    - VCFB-9X-000096
+    - VCFB-9X-000098
+    - VCFB-9X-000099
+    - VCFB-9X-000100
+    - VCFB-9X-000102
+    - VCFB-9X-000103
+    - VCFB-9X-000104
+    - VCFB-9X-000105
+    - VCFB-9X-000106
+    - VCFB-9X-000111
+    - VCFB-9X-000137

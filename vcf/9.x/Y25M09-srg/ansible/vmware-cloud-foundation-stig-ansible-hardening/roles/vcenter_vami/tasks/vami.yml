@@ -1,0 +1,1053 @@
+---
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible_backups_vcenter_vami_{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ vcenter_vami_vars_conf_file }}'
+        - '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        - '{{ vcenter_vami_vars_modules_conf_file }}'
+        - '{{ vcenter_vami_vars_access_log_conf_file }}'
+        - '{{ vcenter_vami_vars_mime_conf_file }}'
+        - '{{ vcenter_vami_vars_rsyslog_conf_file }}'
+
+###################################################################################################################################
+# Gather service facts to determine if vami service is running before tasks
+- name: Gather service facts
+  tags: [always]
+  block:
+    - name: Gather service facts
+      ansible.builtin.service_facts:
+
+    - name: Log lighttpd service status
+      ansible.builtin.debug:
+        msg: "The lighttpd service is {{ services['lighttpd.service']['status'] }} and {{ services['lighttpd.service']['state'] }}. If the service is not running then no action will be taken."
+
+###################################################################################################################################
+- name: VCFM-9X-000001
+  tags: [VCFM-9X-000001]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000001 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000001 - Check to see if server.max-connections is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "server.max-connections"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000001 - Add server.max-connections if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: 'server.max-connections = {{ vcenter_vami_vars_max_connections }}'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000001 - Update server.max-connections if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        regexp: '^(server\.max-connections\s*)=.*$'
+        line: '\1= {{ vcenter_vami_vars_max_connections }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000004
+  tags: [VCFM-9X-000004]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000004 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000004 - Check to see if ssl.engine is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "ssl.engine"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000004 - Add ssl.engine if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: 'ssl.engine = {{ vcenter_vami_vars_ssl_engine }}'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000004 - Update ssl.engine if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        regexp: '^(ssl\.engine\s*)=.*$'
+        line: '\1= {{ vcenter_vami_vars_ssl_engine }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000005
+  tags: [VCFM-9X-000005]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000005 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000005 - Check to see if mod_accesslog is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | awk '/server\.modules/,/\)/' | grep mod_accesslog
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000005 - Add mod_accesslog if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_modules_conf_file }}'
+        line: 'server.modules += ("mod_accesslog")'
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+###################################################################################################################################
+- name: VCFM-9X-000009
+  tags: [VCFM-9X-000009]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000009 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000009 - Check to see if accesslog.format is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "accesslog.format"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFM-9X-000009 - Remove accesslog.format in {{ vcenter_vami_vars_access_log_conf_file }}'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_access_log_conf_file }}'
+        regexp: '^accesslog\.format.*$'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000009 - Remove accesslog.format in {{ vcenter_vami_vars_conf_file }}'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        regexp: '^accesslog\.format.*$'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000009 - Remove accesslog.format in {{ vcenter_vami_vars_applmgmt_conf_file }}'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        regexp: '^accesslog\.format.*$'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000018
+  tags: [VCFM-9X-000018]
+  when: vcenter_vami_defaults_run_vcfm_9x_000018 | bool
+  block:
+    - name: 'VCFM-9X-000018 - Find logs with incorrect permissions in {{ vcenter_vami_vars_applmgmt_log_folder }} and {{ vcenter_vami_vars_applmgmt_audit_log_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_vami_vars_applmgmt_log_folder }} {{ vcenter_vami_vars_applmgmt_audit_log_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_vami_vars_applmgmt_log_owner }} -o -not -group {{ vcenter_vami_vars_applmgmt_log_group }} ')';
+      register: files
+      failed_when: files.rc == 2
+      changed_when: false
+
+    - name: 'VCFM-9X-000018 - Update permissions on log files found to be incorrect in {{ vcenter_vami_vars_applmgmt_log_folder }} and {{ vcenter_vami_vars_applmgmt_audit_log_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_vami_vars_applmgmt_log_owner }}'
+        group: '{{ vcenter_vami_vars_applmgmt_log_group }}'
+        mode: o-w
+      with_items:
+        - "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+    - name: 'VCFM-9X-000018 - Find logs with incorrect permissions in {{ vcenter_vami_vars_lighttpd_log_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_vami_vars_lighttpd_log_folder }} -xdev -type f -a '(' -perm -o+w -o -not -user {{ vcenter_vami_vars_lighttpd_log_owner }} -o -not -group {{ vcenter_vami_vars_lighttpd_log_group }} ')';
+      register: files
+      failed_when: files.rc == 2
+      changed_when: false
+
+    - name: 'VCFM-9X-000018 - Update permissions log files found to be incorrect in {{ vcenter_vami_vars_lighttpd_log_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_vami_vars_lighttpd_log_owner }}'
+        group: '{{ vcenter_vami_vars_lighttpd_log_group }}'
+        mode: o-w
+      with_items:
+        - "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000021
+  tags: [VCFM-9X-000021]
+  when: vcenter_vami_defaults_run_vcfm_9x_000021 | bool
+  block:
+    - name: 'VCFM-9X-000021 - Configure {{ vcenter_vami_vars_rsyslog_conf_file_name }}.'
+      ansible.builtin.template:
+        src: '{{ vcenter_vami_vars_rsyslog_conf_file_name }}'
+        dest: '/etc/vmware-syslog/{{ vcenter_vami_vars_rsyslog_conf_file_name }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+
+###################################################################################################################################
+- name: VCFM-9X-000030
+  tags: [VCFM-9X-000030]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000030 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000030 - Check to see if mimetype.use-xattr is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "mimetype.use-xattr"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000030 - Add mimetype.use-xattr if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: 'mimetype.use-xattr = {{ vcenter_vami_vars_mimetype_usexattr }}'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000030 - Update mimetype.use-xattr if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        regexp: '^(mimetype\.use-xattr\s*)=.*$'
+        line: '\1= {{ vcenter_vami_vars_mimetype_usexattr }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000032
+  tags: [VCFM-9X-000032]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000032 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000032 - Check to see if url.access-deny is present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        regexp: '^url\.access-deny.*$'
+        state: absent
+      check_mode: true
+      register: check
+      changed_when: false
+
+    - name: VCFM-9X-000032 - Add url.access-deny if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        line: 'url.access-deny = ( "~", ".inc" )'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.found == 0
+
+    - name: VCFM-9X-000032 - Update url.access-deny if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        regexp: '^(url\.access-deny\s*)=.*$'
+        line: '\1= ( "~", ".inc" )'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.found == 1
+
+###################################################################################################################################
+- name: VCFM-9X-000033
+  tags: [VCFM-9X-000033]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000033 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000033 - Check to see if mod_webdav is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | awk '/server\.modules/,/\)/' | grep mod_webdav
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFM-9X-000033 - Remove mod_webdav if present in multi-line configuration in {{ vcenter_vami_vars_modules_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_modules_conf_file }}'
+        state: absent
+        regexp: '^\s+"mod_webdav",?$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000033 - Remove mod_webdav if present in single-line configuration in {{ vcenter_vami_vars_modules_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_modules_conf_file }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_webdav",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000033 - Remove mod_webdav if present in multi-line configuration in {{ vcenter_vami_vars_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        state: absent
+        regexp: '^\s+"mod_webdav",?$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000033 - Remove mod_webdav if present in single-line configuration in {{ vcenter_vami_vars_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_webdav",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000033 - Remove mod_webdav if present in multi-line configuration in {{ vcenter_vami_vars_applmgmt_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: absent
+        regexp: '^\s+"mod_webdav",?$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000033 - Remove mod_webdav if present in single-line configuration in {{ vcenter_vami_vars_applmgmt_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_webdav",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000039
+  tags: [VCFM-9X-000039]
+  when: vcenter_vami_defaults_run_vcfm_9x_000039 | bool
+  block:
+    - name: 'VCFM-9X-000039 - Update permissions on SSL key file: {{ vcenter_vami_vars_ssl_key_file }}'
+      ansible.builtin.file:
+        path: '{{ vcenter_vami_vars_ssl_key_file }}'
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '0600'
+
+###################################################################################################################################
+- name: VCFM-9X-000061
+  tags: [VCFM-9X-000061]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000061 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000061 - Check to see if server.max-fds is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "server.max-fds"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000061 - Add server.max-fds if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        line: 'server.max-fds = {{ vcenter_vami_vars_max_fds }}'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000061 - Update server.max-fds if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        regexp: '^(server\.max-fds\s*)=.*$'
+        line: '\1= {{ vcenter_vami_vars_max_fds }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000062
+  tags: [VCFM-9X-000062]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000062 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000062 - Find text mime types without charset
+      ansible.builtin.shell: >
+        set -o pipefail && \
+        grep 'text/' '{{ vcenter_vami_vars_mime_conf_file }}' | grep -v 'charset=utf-8'
+      register: mimetypes
+      changed_when: false
+      failed_when: "mimetypes.rc == 2"
+
+    - name: VCFM-9X-000062 - Parse previous steps results and set fact.
+      ansible.builtin.set_fact:
+        mimetypes: "{{ mimetypes.stdout_lines }}"
+      when:
+        - mimetypes | length | int > 0
+
+    - name: VCFM-9X-000062 - Update any found text mime types without charset=utf-8.
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_mime_conf_file }}'
+        state: present
+        regexp: "{{ item }}"
+        line: "{{ item | regex_replace('\",$', '') }}; charset=utf-8\","
+      with_items:
+        - "{{ mimetypes }}"
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - mimetypes | length | int > 0
+
+###################################################################################################################################
+- name: VCFM-9X-000063
+  tags: [VCFM-9X-000063]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000063 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000063 - Check to see if server.http-parseopts is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "server.http-parseopts"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFM-9X-000063 - Remove server.http-parseopts if present in {{ vcenter_vami_vars_applmgmt_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: absent
+        regexp: '^server\.http-parseopts(\n|.)*?\)$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000063 - Remove server.http-parseopts if present in {{ vcenter_vami_vars_applmgmt_conf_file }}.'
+      ansible.builtin.replace:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        replace: ''
+        regexp: '^server\.http-parseopts[^)]+\)$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000065
+  tags: [VCFM-9X-000065]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000065 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000065 - Check to see if mod_dirlisting is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | awk '/server\.modules/,/\)/' | grep mod_dirlisting
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFM-9X-000065 - Remove mod_dirlisting if present in multi-line configuration in {{ vcenter_vami_vars_modules_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_modules_conf_file }}'
+        state: absent
+        regexp: '^\s+"mod_dirlisting",?$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000065 - Remove mod_dirlisting if present in single-line configuration in {{ vcenter_vami_vars_modules_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_modules_conf_file }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_dirlisting",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000065 - Remove mod_dirlisting if present in multi-line configuration in {{ vcenter_vami_vars_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        state: absent
+        regexp: '^\s+"mod_dirlisting",?$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000065 - Remove mod_dirlisting if present in single-line configuration in {{ vcenter_vami_vars_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_dirlisting",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000065 - Remove mod_dirlisting if present in multi-line configuration in {{ vcenter_vami_vars_applmgmt_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: absent
+        regexp: '^\s+"mod_dirlisting",?$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000065 - Remove mod_dirlisting if present in single-line configuration in {{ vcenter_vami_vars_applmgmt_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_dirlisting",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000066
+  tags: [VCFM-9X-000066]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000066 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000066 - Check to see if mod_status is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | awk '/server\.modules/,/\)/' | grep mod_status
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFM-9X-000066 - Remove mod_status if present in multi-line configuration in {{ vcenter_vami_vars_modules_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_modules_conf_file }}'
+        state: absent
+        regexp: '^\s+"mod_status",?$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000066 - Remove mod_status if present in single-line configuration in {{ vcenter_vami_vars_modules_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_modules_conf_file }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_status",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000066 - Remove mod_status if present in multi-line configuration in {{ vcenter_vami_vars_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        state: absent
+        regexp: '^\s+"mod_status",?$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000066 - Remove mod_status if present in single-line configuration in {{ vcenter_vami_vars_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_status",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000066 - Remove mod_status if present in multi-line configuration in {{ vcenter_vami_vars_applmgmt_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: absent
+        regexp: '^\s+"mod_status",?$'
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000066 - Remove mod_status if present in single-line configuration in {{ vcenter_vami_vars_applmgmt_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^server\.modules\s+)(=|\+=\s+)(.*)("mod_status",?\s?)(.*$)'
+        line: '\1\2\3\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000067
+  tags: [VCFM-9X-000067]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000067 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000067 - Check to see if debug.log-request-handling is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "debug.log-request-handling"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000067 - Add debug.log-request-handling if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: 'debug.log-request-handling = {{ vcenter_vami_vars_debug_log_request_handling }}'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000067 - Update debug.log-request-handling if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        regexp: '^(debug\.log-request-handling\s*)=.*$'
+        line: '\1= {{ vcenter_vami_vars_debug_log_request_handling }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000101
+  tags: [VCFM-9X-000101]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000101 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000101 - Check to see if ssl.disable-client-renegotiation is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "ssl.disable-client-renegotiation"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: 'VCFM-9X-000101 - Remove ssl.disable-client-renegotiation in {{ vcenter_vami_vars_conf_file }}'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_conf_file }}'
+        regexp: '^ssl\.disable-client-renegotiation.*$'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: 'VCFM-9X-000101 - Remove ssl.disable-client-renegotiation in {{ vcenter_vami_vars_applmgmt_conf_file }}'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        regexp: '^ssl\.disable-client-renegotiation.*$'
+        state: absent
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000125
+  tags: [VCFM-9X-000125]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000125 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000125 - Check to see if server.max-keep-alive-idle is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "server.max-keep-alive-idle"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000125 - Add server.max-keep-alive-idle if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: 'server.max-keep-alive-idle = {{ vcenter_vami_vars_max_keep_alive_idle }}'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000125 - Update server.max-keep-alive-idle if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        regexp: '^(server\.max-keep-alive-idle\s*)=.*$'
+        line: '\1= {{ vcenter_vami_vars_max_keep_alive_idle }}'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000126
+  tags: [VCFM-9X-000126]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000126 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000126 - Check to see if server.tag is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | grep "server.tag"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000126 - Add server.tag if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: 'server.tag = "vami"'
+        insertafter: EOF
+        state: present
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000126 - Update server.tag if incorrect while preserving existing whitespace
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        regexp: '^(server\.tag\s*)=.*$'
+        line: '\1= "vami"'
+        state: present
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000127
+  tags: [VCFM-9X-000127]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000127 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000127 - Check to see if header "Strict-Transport-Security" present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | awk '/setenv\.add-response-header/,/\)/' | grep "Strict-Transport-Security"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000127 - Add header "Strict-Transport-Security" => "max-age=31536000; includeSubDomains; preload" if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: 'setenv.add-response-header += ("Strict-Transport-Security" => "max-age=31536000; includeSubDomains; preload")'
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000127 - Update header "Strict-Transport-Security" if present in multi-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^\s+"Strict-Transport-Security"\s+=>\s+)(".*")(.*$)'
+        line: '\1"max-age=31536000; includeSubDomains; preload"\3'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCFM-9X-000127 - Update header "Strict-Transport-Security" if present in single-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^setenv\.add-response-header\s+)(=|\+=)(\s+\("Strict-Transport-Security"\s+=>\s+)(".*")(.*$)'
+        line: '\1\2\3"max-age=31536000; includeSubDomains; preload"\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000128
+  tags: [VCFM-9X-000128]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000128 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000128 - Check to see if header "X-Frame-Options" is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | awk '/setenv\.add-response-header/,/\)/' | grep "X-Frame-Options"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000128 - Add header "X-Frame-Options" => "Deny" if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: 'setenv.add-response-header += ("X-Frame-Options" => "Deny")'
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000128 - Update header "X-Frame-Options" if present in multi-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^\s+"X-Frame-Options"\s+=>\s+)(".*")(.*$)'
+        line: '\1"Deny"\3'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCFM-9X-000128 - Update header "X-Frame-Options" if present in single-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^setenv\.add-response-header\s+)(=|\+=)(\s+\("X-Frame-Options"\s+=>\s+)(".*")(.*$)'
+        line: '\1\2\3"Deny"\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000129
+  tags: [VCFM-9X-000129]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000129 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000129 - Check to see if header "X-Content-Type-Options" is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | awk '/setenv\.add-response-header/,/\)/' | grep "X-Content-Type-Options"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000129 - Add header "X-Content-Type-Options" => "nosniff" if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: 'setenv.add-response-header += ("X-Content-Type-Options" => "nosniff")'
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000129 - Update header "X-Content-Type-Options" if present in multi-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^\s+"X-Content-Type-Options"\s+=>\s+)(".*")(.*$)'
+        line: '\1"nosniff"\3'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCFM-9X-000129 - Update header "X-Content-Type-Options" if present in single-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^setenv\.add-response-header\s+)(=|\+=)(\s+\("X-Content-Type-Options"\s+=>\s+)(".*")(.*$)'
+        line: '\1\2\3"nosniff"\5'
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+###################################################################################################################################
+- name: VCFM-9X-000130
+  tags: [VCFM-9X-000130]
+  when:
+    - vcenter_vami_defaults_run_vcfm_9x_000130 | bool
+    - ansible_facts.services['lighttpd.service'].state == 'running'
+    - ansible_facts.services['lighttpd.service'].status == 'enabled'
+  block:
+    - name: VCFM-9X-000130 - Check to see if header "Content-Security-Policy" is present
+      ansible.builtin.shell: |
+        set -o pipefail
+        {{ vcenter_vami_vars_lighttpd_bin_file }} -p -f {{ vcenter_vami_vars_conf_file }} 2>/dev/null | awk '/setenv\.add-response-header/,/\)/' | grep "Content-Security-Policy"
+      register: check
+      failed_when: check.rc == 2
+      changed_when: false
+
+    - name: VCFM-9X-000130 - Add header "Content-Security-Policy" if not present
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        line: "setenv.add-response-header += (\"Content-Security-Policy\" => \"default-src 'self'; img-src 'self' data: https://vcsa.vmware.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\")"
+        state: present
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout == ""
+
+    - name: VCFM-9X-000130 - Update header "Content-Security-Policy" if present in multi-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^\s+"Content-Security-Policy"\s+=>\s+)(".*")(.*$)'
+        line: "\\1\"default-src 'self'; img-src 'self' data: https://vcsa.vmware.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\"\\3"
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""
+
+    - name: VCFM-9X-000130 - Update header "Content-Security-Policy" if present in single-line configuration
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
+        state: present
+        regexp: '(^setenv\.add-response-header\s+)(=|\+=)(\s+\("Content-Security-Policy"\s+=>\s+)(".*")(.*$)'
+        line: "\\1\\2\\3\"default-src 'self'; img-src 'self' data: https://vcsa.vmware.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\"\\5"
+        backrefs: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
+      when:
+        - check.stdout != ""

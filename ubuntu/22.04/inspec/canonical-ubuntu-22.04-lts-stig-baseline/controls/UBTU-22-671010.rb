@@ -17,7 +17,6 @@ A subscription to the "Ubuntu Pro" plan is required to obtain the FIPS Kernel cr
 
 Note: Ubuntu Pro security certification instructions can be found at: https://ubuntu.com/security/certifications/docs/fips-enablement'
   impact 0.7
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64379r953761_chk'
   tag severity: 'high'
   tag gid: 'V-260650'

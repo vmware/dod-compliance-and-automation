@@ -5,7 +5,7 @@ copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: "This Security Technical Implementation Guide is published as a tool to improve the security of Department of Defense (DoD) information systems. The requirements are derived from the National Institute of Standards and Technology (NIST) 800-53 and related documents. Comments or proposed revisions to this document should be sent via email to the following address: disa.stig_spt@mail.mil."
-version: 2.0.4
+version: 2.0.8
 supports:
   - platform-name: ubuntu
     release: 22.04
@@ -19,7 +19,7 @@ inputs:
     type: Array
     value: []
   - name: tmout
-    desciption:  Inactivity timeouts, in seconds, after which operating system automatically terminates a user session.
+    description: Inactivity timeouts, in seconds, after which operating system automatically terminates a user session.
     type: numeric
     value: 900
   - name: action_mail_acct
@@ -49,6 +49,10 @@ inputs:
     description: Path to aide.conf
     type: String
     value: '/etc/aide/aide.conf'
+  - name: common_password_file
+    description: 'File to configure password-related policies'
+    type: String
+    value: '/etc/pam.d/common-password'
   - name: maxlogins
     description: Maximum number of concurrent sessions
     type: Numeric
@@ -61,6 +65,10 @@ inputs:
     description: Path to sssd.conf
     type: String
     value: '/etc/sssd/sssd.conf'
+  - name: sssd_conf_d_directory
+    description: Path to sssd conf.d directory
+    type: String
+    value: '/etc/sssd/conf.d'
   - name: approved_wireless_network_interfaces
     description: Array of approved network interfaces (wired & wireless)
     type: Array
@@ -69,6 +77,10 @@ inputs:
     description: Path to chrony conf file
     type: String
     value: /etc/chrony/chrony.conf
+  - name: audisp_remote_config_file
+    description: Audisp remote Configuration file
+    type: String
+    value: '/etc/audit/plugins.d/au-remote.conf'
   - name: audit_sp_remote_server
     description: Address of the remote server receiving the audit log
     type: String

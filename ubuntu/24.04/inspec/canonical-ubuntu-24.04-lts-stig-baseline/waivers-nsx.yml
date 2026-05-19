@@ -1,0 +1,31 @@
+# Waiver file to document rules that are not applicable or not supported on NSX appliances.
+UBTU-24-100700:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+UBTU-24-100010:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+UBTU-24-100310:
+  run: false
+  justification: 'Iptables is used instead of UFW for the local firewall solution.'
+UBTU-24-600160:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+UBTU-24-100910:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-100900:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400020:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400060:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400375:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400380:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'

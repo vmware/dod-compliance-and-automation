@@ -32,7 +32,6 @@ For each module from the system, execute the following command to remove it:
 
      $ sudo modprobe -r <module_name>'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64270r953434_chk'
   tag severity: 'medium'
   tag gid: 'V-260541'
@@ -47,7 +46,7 @@ For each module from the system, execute the following command to remove it:
   approved_Wireless_network_interfaces = input('approved_wireless_network_interfaces')
   wireless_interfaces = command("cat /proc/net/wireless | awk 'NR>2 {print $1}' | sed 's/://g'").stdout.split
 
-  if wireless_interfaces.count > 0
+  if wireless_interfaces.any?
     wireless_interfaces.each do |interface|
       describe "Wireleess Interface '#{interface}'" do
         it 'should be in the list of approved wireless network interfaces' do

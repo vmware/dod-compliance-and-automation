@@ -34,7 +34,7 @@ Click "Save".'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
-  command = 'Invoke-GetLoggingForwarding | Select-Object -ExpandProperty hostname'
+  command = 'Invoke-GetLoggingForwarding -Confirm:$false | Select-Object -ExpandProperty hostname'
   logservers = powercli_command(command).stdout.gsub("\r\n", "\n").split("\n")
 
   if logservers.empty?
@@ -49,7 +49,7 @@ Click "Save".'
         it { should be_in input('syslogServers') }
       end
     end
-    logserverstatuscommand = 'Invoke-TestLoggingForwarding | Select-Object -ExpandProperty state'
+    logserverstatuscommand = 'Invoke-TestLoggingForwarding -Confirm:$false | Select-Object -ExpandProperty state'
     logserverstatus = powercli_command(logserverstatuscommand).stdout.gsub("\r\n", "\n").split("\n")
     logserverstatus.each do |status|
       describe status do

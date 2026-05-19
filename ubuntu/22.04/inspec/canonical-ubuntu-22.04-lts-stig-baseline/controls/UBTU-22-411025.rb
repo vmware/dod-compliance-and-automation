@@ -13,7 +13,6 @@ Add or modify the following line in the "/etc/login.defs" file:
 
 PASS_MIN_DAYS    1'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64274r986278_chk'
   tag severity: 'medium'
   tag gid: 'V-260545'
@@ -22,8 +21,8 @@ PASS_MIN_DAYS    1'
   tag gtitle: 'SRG-OS-000075-GPOS-00043'
   tag fix_id: 'F-64182r986279_fix'
   tag 'documentable'
-  tag cci: ['CCI-000198', 'CCI-004066']
-  tag nist: ['IA-5 (1) (d)', 'IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000198']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (d)']
 
   describe login_defs do
     its('PASS_MIN_DAYS') { should cmp >= 1 }

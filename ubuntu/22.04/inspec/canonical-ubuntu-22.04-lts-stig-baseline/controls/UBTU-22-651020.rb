@@ -17,7 +17,6 @@ Add or modify the following line in the "/etc/default/aide" file:
 
 SILENTREPORTS=no'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64313r953563_chk'
   tag severity: 'medium'
   tag gid: 'V-260584'

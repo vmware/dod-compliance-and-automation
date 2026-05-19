@@ -1,5 +1,5 @@
-# Based on Ubuntu 22.04 STIG V2R4
-# Updated 6/17/2024
+# Based on Ubuntu 22.04 STIG V2R7
+# Updated 01/05/2026
 
 # UBTU-22-654010
 -a always,exit -F path=/sbin/apparmor_parser -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng
@@ -107,3 +107,6 @@
 -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k execpriv
 # UBTU-22-654235
 -w /var/log/sudo.log -p wa -k maintenance
+# UBTU-22-654041
+-w /etc/cron.d/ -p wa -k cronjobs
+-w /var/spool/cron/ -p wa -k cronjobs

@@ -12,7 +12,6 @@ If any systemwide library directory is returned, this is a finding.)
 
      $ sudo find /lib /usr/lib /lib64 ! -user root -type d -exec chown root '{}' \\;"
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64226r953302_chk'
   tag severity: 'medium'
   tag gid: 'V-260497'
@@ -26,7 +25,7 @@ If any systemwide library directory is returned, this is a finding.)
 
   library_dirs = command('find /lib /usr/lib /lib64 ! \-user root \-type d').stdout.strip.split("\n").entries
 
-  if library_dirs.count > 0
+  if library_dirs.any?
     library_dirs.each do |lib_file|
       describe file(lib_file) do
         its('owner') { should cmp 'root' }

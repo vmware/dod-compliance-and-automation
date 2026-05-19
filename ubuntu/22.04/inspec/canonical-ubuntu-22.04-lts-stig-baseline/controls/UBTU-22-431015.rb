@@ -35,7 +35,6 @@ If no profiles are loaded and enforced, this is a finding.'
 
 Note: AppArmor must have properly configured profiles for applications and home directories. All configurations will be based on the actual system setup and organization and normally are on a per role basis. See the AppArmor documentation for more information on configuring profiles.'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64286r953482_chk'
   tag severity: 'medium'
   tag gid: 'V-260557'
