@@ -5,7 +5,7 @@ copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile that runs PowerCLI audit tests on ESXI, VMs, and vCenter
-version: 2.0.3
+version: 2.0.4
 
 depends:
   - name: esxi
