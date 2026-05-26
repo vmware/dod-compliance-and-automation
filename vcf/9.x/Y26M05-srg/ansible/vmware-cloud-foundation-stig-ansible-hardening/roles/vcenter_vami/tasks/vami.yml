@@ -1020,7 +1020,7 @@
     - name: VCFM-9X-000130 - Add header "Content-Security-Policy" if not present
       ansible.builtin.lineinfile:
         path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
-        line: "setenv.add-response-header += (\"Content-Security-Policy\" => \"default-src 'self'; img-src 'self' data: https://vcsa.vmware.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\")"
+        line: "setenv.add-response-header += (\"Content-Security-Policy\" => \"default-src 'self'; img-src 'self' data: https://scapi.telemetry.broadcom.com; connect-src 'self' https://scapi.telemetry.broadcom.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\")"
         state: present
         insertafter: EOF
       notify:
@@ -1033,7 +1033,7 @@
         path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
         state: present
         regexp: '(^\s+"Content-Security-Policy"\s+=>\s+)(".*")(.*$)'
-        line: "\\1\"default-src 'self'; img-src 'self' data: https://vcsa.vmware.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\"\\3"
+        line: "\\1\"default-src 'self'; img-src 'self' data: https://scapi.telemetry.broadcom.com; connect-src 'self' https://scapi.telemetry.broadcom.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\"\\3"
         backrefs: true
       notify:
         - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
@@ -1045,7 +1045,7 @@
         path: '{{ vcenter_vami_vars_applmgmt_conf_file }}'
         state: present
         regexp: '(^setenv\.add-response-header\s+)(=|\+=)(\s+\("Content-Security-Policy"\s+=>\s+)(".*")(.*$)'
-        line: "\\1\\2\\3\"default-src 'self'; img-src 'self' data: https://vcsa.vmware.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\"\\5"
+        line: "\\1\\2\\3\"default-src 'self'; img-src 'self' data: https://scapi.telemetry.broadcom.com; connect-src 'self' https://scapi.telemetry.broadcom.com; font-src 'self' data:; object-src 'none'; style-src 'self' 'unsafe-inline'\"\\5"
         backrefs: true
       notify:
         - '{{ role_name }} : restart {{ vcenter_vami_vars_notify_service_name }}'
