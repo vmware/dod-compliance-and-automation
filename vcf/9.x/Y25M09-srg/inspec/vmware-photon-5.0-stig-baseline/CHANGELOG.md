@@ -4,19 +4,20 @@
 
 #### Release Notes
 - Updated source DISA SRG to the GPOS SRG V3R3.
- - PHTN-50-000092 Updated InSpec test.
- - PHTN-50-000093 Updated Inspec test.
- - PHTN-50-000133 Updated Inspec test.
- - PHTN-50-000192 updated check and fix and InSpec test.
- - PHTN-50-000197 updated check.
- - PHTN-50-000203 updated check and fix and InSpec test.
- - PHTN-50-000206 updated check.
- - PHTN-50-000219 updated check and InSpec test.
- - PHTN-50-000237 updated InSpec test.
- - PHTN-50-000245 updated check and fix and InSpec test.
- - PHTN-50-000247 updated severity to match SRG.
- - PHTN-50-000266 new control.
- - PHTN-50-000267 new control.
+- PHTN-50-000082 Updated InSpec test.
+- PHTN-50-000092 Updated InSpec test.
+- PHTN-50-000093 Updated Inspec test.
+- PHTN-50-000133 Updated Inspec test.
+- PHTN-50-000192 updated check and fix and InSpec test.
+- PHTN-50-000197 updated check.
+- PHTN-50-000203 updated check and fix and InSpec test.
+- PHTN-50-000206 updated check.
+- PHTN-50-000219 updated check and InSpec test.
+- PHTN-50-000237 updated InSpec test.
+- PHTN-50-000245 updated check and fix and InSpec test.
+- PHTN-50-000247 updated severity to match SRG.
+- PHTN-50-000266 new control.
+- PHTN-50-000267 new control.
 
 ## [5.0 Version 3 Release 1] (2025-03-28)
 
