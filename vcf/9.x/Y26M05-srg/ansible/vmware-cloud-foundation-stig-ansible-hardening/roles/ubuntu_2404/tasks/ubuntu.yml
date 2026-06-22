@@ -1,0 +1,3038 @@
+---
+###################################################################################################################################
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-ubuntu-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      when: not ansible_check_mode
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ ubuntu_2404_vars_grub_default_file }}'
+        - '{{ ubuntu_2404_defaults_boot_grub_cfg_file }}'
+        - '{{ ubuntu_2404_vars_sysctl_conf_file }}'
+        - '{{ ubuntu_2404_defaults_sysctl_files }}'
+        - '{{ ubuntu_2404_vars_apt_conf_folder }}'
+        - '{{ ubuntu_2404_defaults_unattended_upgrades_file_path }}'
+        - '{{ ubuntu_2404_defaults_etc_issue_file }}'
+        - '{{ ubuntu_2404_vars_sshd_config_file }}'
+        - '{{ ubuntu_2404_defaults_sudoers_file }}'
+        - '{{ ubuntu_2404_defaults_sudoers_d_folder }}'
+        - '{{ ubuntu_2404_defaults_sssd_conf_path }}'
+        - '{{ ubuntu_2404_vars_login_defs_file }}'
+        - '{{ ubuntu_2404_vars_useradd_file }}'
+        - '{{ ubuntu_2404_vars_limits_conf_file }}'
+        - '{{ ubuntu_2404_defaults_limits_d_folder }}'
+        - '{{ ubuntu_2404_vars_profile_tmout_sh }}'
+        - '{{ ubuntu_2404_vars_pam_pwquality_conf_file }}'
+        - '{{ ubuntu_2404_vars_auditd_conf_file }}'
+        - '{{ ubuntu_2404_vars_auditd_rule_file }}'
+        - '{{ ubuntu_2404_defaults_systemd_journal }}'
+        - '{{ ubuntu_2404_vars_pamd_common_password_file }}'
+        - '{{ ubuntu_2404_vars_pamd_login_file }}'
+        - '{{ ubuntu_2404_vars_pamd_common_auth_file }}'
+        - '{{ ubuntu_2404_vars_faillock_conf_file }}'
+        - '{{ ubuntu_2404_defaults_rsyslog_conf_file }}'
+
+###################################################################################################################################
+# This task is at the top so ensure auditd is installed for all other dependent tasks that configure auditd
+- name: UBTU-24-100400
+  tags: [UBTU-24-100400, auditd]
+  when: ubuntu_2404_defaults_run_ubtu_24_100400 | bool
+  block:
+    - name: UBTU-24-100400 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100400 - Install auditd
+      ansible.builtin.apt:
+        name: auditd
+        state: present
+      register: output
+      changed_when: output.changed
+      when:
+        - ubuntu_2404_defaults_run_ubtu_24_100400_install | bool
+        - auditdinstalled.stdout == ""
+
+###################################################################################################################################
+# This task is at the top so ensure auditd is installed for all other dependent tasks that configure auditd
+- name: UBTU-24-100410
+  tags: [UBTU-24-100410, auditd]
+  when: ubuntu_2404_defaults_run_ubtu_24_100410 | bool
+  block:
+    - name: UBTU-24-100410 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100410 - Enable and start the auditd service
+      ansible.builtin.systemd:
+        name: auditd
+        state: started
+        enabled: true
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+# This task is at the top so ensure ssh is installed for all other dependent tasks that configure ssh
+- name: UBTU-24-100800
+  tags: [UBTU-24-100800, ssh]
+  when: ubuntu_2404_defaults_run_ubtu_24_100800 | bool
+  block:
+    - name: UBTU-24-100800 - Check to see if ssh is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep openssh
+      args:
+        executable: /bin/bash
+      register: sshinstalled
+      failed_when: sshinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100800 - Install ssh
+      ansible.builtin.apt:
+        name: ssh
+        state: present
+      register: output
+      changed_when: output.changed
+      when:
+        - ubuntu_2404_defaults_run_ubtu_24_100800_install | bool
+        - sshinstalled.stdout == ""
+
+###################################################################################################################################
+# This task is at the top so ensure ssh is installed for all other dependent tasks that configure ssh
+- name: UBTU-24-100810
+  tags: [UBTU-24-100810, ssh]
+  when: ubuntu_2404_defaults_run_ubtu_24_100810 | bool
+  block:
+    - name: UBTU-24-100810 - Check to see if ssh is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep openssh
+      args:
+        executable: /bin/bash
+      register: sshinstalled
+      failed_when: sshinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100810 - Enable and activate the ssh service
+      ansible.builtin.systemd:
+        name: sshd
+        state: started
+        enabled: true
+      when:
+        - sshinstalled.stdout != ""
+
+###################################################################################################################################
+# This task is at the top so ensure apparmor is installed for all other dependent tasks that configure apparmor
+- name: UBTU-24-100500
+  tags: [UBTU-24-100500]
+  when: ubuntu_2404_defaults_run_ubtu_24_100500 | bool
+  block:
+    - name: UBTU-24-100500 - Check to see if apparmor is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep apparmor
+      args:
+        executable: /bin/bash
+      register: apparmorinstalled
+      failed_when: apparmorinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100500 - Install apparmor
+      ansible.builtin.apt:
+        name: apparmor
+        state: present
+      register: output
+      changed_when: output.changed
+      when:
+        - ubuntu_2404_defaults_run_ubtu_24_100500_install | bool
+        - apparmorinstalled.stdout == ""
+
+###################################################################################################################################
+# This task is at the top so ensure apparmor is installed for all other dependent tasks that configure apparmor
+- name: UBTU-24-100510
+  tags: [UBTU-24-100510]
+  when: ubuntu_2404_defaults_run_ubtu_24_100510 | bool
+  block:
+    - name: UBTU-24-100510 - Check to see if apparmor is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep apparmor
+      args:
+        executable: /bin/bash
+      register: apparmorinstalled
+      failed_when: apparmorinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100510 - Enable and activate the apparmor service
+      ansible.builtin.systemd:
+        name: apparmor
+        state: started
+        enabled: true
+      when:
+        - apparmorinstalled.stdout != ""
+
+###################################################################################################################################
+# This task is at the top so ensure libpam-pwquality is installed for all other dependent tasks that configure libpam-pwquality
+- name: UBTU-24-100600
+  tags: [UBTU-24-100600]
+  when: ubuntu_2404_defaults_run_ubtu_24_100600 | bool
+  block:
+    - name: UBTU-24-100600 - Check to see if libpam-pwquality is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep libpam-pwquality
+      args:
+        executable: /bin/bash
+      register: pwqualityinstalled
+      failed_when: pwqualityinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100600 - Install "libpam-pwquality" package
+      ansible.builtin.apt:
+        name: libpam-pwquality
+        state: present
+      register: output
+      changed_when: output.changed
+      when:
+        - ubuntu_2404_defaults_run_ubtu_24_100600_install | bool
+        - pwqualityinstalled.stdout == ""
+
+###################################################################################################################################
+# This task is at the top so ensure rsyslog is installed for all other dependent tasks that configure rsyslog
+- name: UBTU-24-100200
+  tags: [UBTU-24-100200]
+  when: ubuntu_2404_defaults_run_ubtu_24_100200 | bool
+  block:
+    - name: UBTU-24-100200 - Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep rsyslog
+      args:
+        executable: /bin/bash
+      register: rsysloginstalled
+      failed_when: rsysloginstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100200 - Install "rsyslog" package
+      ansible.builtin.apt:
+        name: rsyslog
+        state: present
+      register: output
+      changed_when: output.changed
+      when:
+        - ubuntu_2404_defaults_run_ubtu_24_100200_install | bool
+        - rsysloginstalled.stdout == ""
+
+    - name: UBTU-24-100510 - Enable and activate the rsyslog service
+      ansible.builtin.systemd:
+        name: rsyslog
+        state: started
+        enabled: true
+      when:
+        - rsysloginstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-300026
+  tags: [UBTU-24-300026]
+  when: ubuntu_2404_defaults_run_ubtu_24_300026 | bool
+  block:
+    - name: UBTU-24-300026 - Disable and mask ctrl-alt-del.target
+      ansible.builtin.systemd:
+        name: ctrl-alt-del.target
+        enabled: false
+        masked: true
+        daemon_reload: true
+
+###################################################################################################################################
+- name: UBTU-24-102000
+  tags: [UBTU-24-102000]
+  when: ubuntu_2404_defaults_run_ubtu_24_102000 | bool
+  block:
+    - name: UBTU-24-102000 - Configure grub boot password
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+# UBTU-24-102010: session audit at boot — edit /etc/default/grub (Canonical STIG), then update-grub
+- name: UBTU-24-102010
+  tags: [UBTU-24-102010]
+  when: ubuntu_2404_defaults_run_ubtu_24_102010 | bool
+  block:
+    - name: UBTU-24-102010 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-102010 - Add audit=1 to GRUB_CMDLINE_LINUX in /etc/default/grub
+      ansible.builtin.replace:
+        path: '{{ ubuntu_2404_vars_grub_default_file }}'
+        regexp: '^(GRUB_CMDLINE_LINUX=")((?:(?!audit=1).)*)(")$'
+        replace: '\1audit=1 \2\3'
+        backup: true
+      when: auditdinstalled.rc == 0
+      notify:
+        - '{{ role_name }} : update grub'
+
+    - name: UBTU-24-102010 - Add audit=1 to GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub
+      ansible.builtin.replace:
+        path: '{{ ubuntu_2404_vars_grub_default_file }}'
+        regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=")((?:(?!audit=1).)*)(")$'
+        replace: '\1audit=1 \2\3'
+        backup: true
+      when: auditdinstalled.rc == 0
+      notify:
+        - '{{ role_name }} : update grub'
+
+###################################################################################################################################
+- name: UBTU-24-600140
+  tags: [UBTU-24-600140]
+  when: ubuntu_2404_defaults_run_ubtu_24_600140 | bool
+  block:
+    - name: UBTU-24-600140 - Check present kernel.dmesg_restrict value
+      ansible.builtin.command: sysctl -n kernel.dmesg_restrict
+      register: dmesg_restrict
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-600140 - Configure kernel parameter kernel.dmesg_restrict
+      ansible.posix.sysctl:
+        name: kernel.dmesg_restrict
+        value: 1
+        state: present
+        sysctl_file: '{{ ubuntu_2404_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: (dmesg_restrict.stdout | default('0') | trim | int) < 1
+
+    - name: UBTU-24-600140 - Remove duplicate kernel.dmesg_restrict entries in sysctl file
+      ansible.posix.sysctl:
+        name: kernel.dmesg_restrict
+        value: 1
+        state: absent
+        sysctl_file: '{{ ubuntu_2404_defaults_sysctl_files }}'
+        reload: true
+      when: (dmesg_restrict.stdout | default('0') | trim | int) >= 1
+
+###################################################################################################################################
+- name: UBTU-24-600070
+  tags: [UBTU-24-600070]
+  when: ubuntu_2404_defaults_run_ubtu_24_600070 | bool
+  block:
+    - name: UBTU-24-600070 - Check to see if kdump is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep kdump-tools
+      args:
+        executable: /bin/bash
+      register: kdumpinstalled
+      failed_when: kdumpinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-600070 - masking and disabling kernel core dumps
+      ansible.builtin.systemd:
+        name: kdump-tools.service
+        enabled: false
+        masked: true
+        daemon_reload: true
+      when: kdumpinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-700310
+  tags: [UBTU-24-700310]
+  when: ubuntu_2404_defaults_run_ubtu_24_700310 | bool
+  block:
+    - name: UBTU-24-700310 - Check present kernel.randomize_va_space value
+      ansible.builtin.command: sysctl -n kernel.randomize_va_space
+      register: randomize_va_space
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-700310 - Configure kernel parameter kernel.randomize_va_space
+      ansible.posix.sysctl:
+        name: kernel.randomize_va_space
+        value: 2
+        state: present
+        sysctl_file: '{{ ubuntu_2404_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: (randomize_va_space.stdout | default('0') | trim | int) < 2
+
+###################################################################################################################################
+- name: UBTU-24-700300
+  tags: [UBTU-24-700300]
+  when: ubuntu_2404_defaults_run_ubtu_24_700300 | bool
+  block:
+    - name: UBTU-24-700300 - Protect its memory from unauthorized code execution
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-300001
+  tags: [UBTU-24-300001]
+  when: ubuntu_2404_defaults_run_ubtu_24_300001 | bool
+  block:
+    - name: UBTU-24-300001 - Get list of files in apt.conf.d folder
+      ansible.builtin.find:
+        paths: '{{ ubuntu_2404_vars_apt_conf_folder }}'
+        file_type: file
+        recurse: true
+      register: apt_files_unauthenticated
+
+    - name: UBTU-24-300001 - Check if APT::Get::AllowUnauthenticated is present in any file
+      ansible.builtin.shell: 'grep -l "APT::Get::AllowUnauthenticated" "{{ ubuntu_2404_vars_apt_conf_folder }}"/*'
+      register: apt_files_with_unauthenticated
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-300001 - Ensure APT::Get::AllowUnauthenticated is set to false in found files
+      ansible.builtin.lineinfile:
+        path: "{{ item }}"
+        regexp: '^APT::Get::AllowUnauthenticated'
+        line: 'APT::Get::AllowUnauthenticated "false";'
+        state: present
+      with_items:
+        - "{{ apt_files_with_unauthenticated.stdout_lines }}"
+      when:
+        - apt_files_with_unauthenticated.stdout != ""
+
+    - name: UBTU-24-300001 - Add APT::Get::AllowUnauthenticated to any file if not found
+      ansible.builtin.lineinfile:
+        path: "{{ apt_files_unauthenticated.files[0].path }}"
+        regexp: '^APT::Get::AllowUnauthenticated'
+        line: 'APT::Get::AllowUnauthenticated "false";'
+        mode: '0644'
+        create: true
+        state: present
+      when:
+        - apt_files_with_unauthenticated.stdout == ""
+
+###################################################################################################################################
+- name: UBTU-24-700320
+  tags: [UBTU-24-700320]
+  when: ubuntu_2404_defaults_run_ubtu_24_700320 | bool
+  block:
+    - name: UBTU-24-700320 - Check if Unattended-Upgrade::Remove-Unused-Kernel-Packages is present
+      ansible.builtin.command: 'grep -l "Unattended-Upgrade::Remove-Unused-Kernel-Packages" "{{ ubuntu_2404_defaults_unattended_upgrades_file_path }}"'
+      register: unused_kernel_packages
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-700320 - Ensure Unattended-Upgrade::Remove-Unused-Kernel-Packages is set to true if present
+      ansible.builtin.lineinfile:
+        path: "{{ item }}"
+        regexp: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages'
+        line: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";'
+        state: present
+      with_items:
+        - "{{ unused_kernel_packages.stdout_lines }}"
+      when:
+        - unused_kernel_packages.stdout != ""
+
+    - name: UBTU-24-700320 - Add line Unattended-Upgrade::Remove-Unused-Kernel-Packages and set to true if not present
+      ansible.builtin.lineinfile:
+        path: "{{ ubuntu_2404_defaults_unattended_upgrades_file_path }}"
+        regexp: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages'
+        line: 'Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";'
+        state: present
+        create: true
+        mode: "0644"
+        owner: root
+        group: root
+      when:
+        - unused_kernel_packages.stdout == ""
+
+    - name: UBTU-24-700320 - Check if Unattended-Upgrade::Remove-Unused-Dependencies is present
+      ansible.builtin.command: 'grep -l "Unattended-Upgrade::Remove-Unused-Dependencies" "{{ ubuntu_2404_defaults_unattended_upgrades_file_path }}"'
+      register: unused_dependencies
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-700320 - Ensure Unattended-Upgrade::Remove-Unused-Dependencies is set to true
+      ansible.builtin.lineinfile:
+        path: "{{ item }}"
+        regexp: 'Unattended-Upgrade::Remove-Unused-Dependencies'
+        line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";'
+        state: present
+      with_items:
+        - "{{ unused_dependencies.stdout_lines }}"
+      when:
+        - unused_dependencies.stdout != ""
+
+    - name: UBTU-24-700320 - Add line Unattended-Upgrade::Remove-Unused-Dependencies and set to true if not present
+      ansible.builtin.lineinfile:
+        path: "{{ ubuntu_2404_defaults_unattended_upgrades_file_path }}"
+        regexp: 'Unattended-Upgrade::Remove-Unused-Dependencies'
+        line: 'Unattended-Upgrade::Remove-Unused-Dependencies "true";'
+        state: present
+        create: true
+        mode: "0644"
+        owner: root
+        group: root
+      when:
+        - unused_dependencies.stdout == ""
+
+###################################################################################################################################
+- name: UBTU-24-100700
+  tags: [UBTU-24-100700]
+  when: ubuntu_2404_defaults_run_ubtu_24_100700 | bool
+  block:
+    - name: UBTU-24-100700 - Install chrony package
+      ansible.builtin.debug:
+        msg: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+
+###################################################################################################################################
+- name: UBTU-24-100010
+  tags: [UBTU-24-100010]
+  when: ubuntu_2404_defaults_run_ubtu_24_100010 | bool
+  block:
+    - name: UBTU-24-100010 - Remove systemd-timesyncd package
+      ansible.builtin.debug:
+        msg: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+
+###################################################################################################################################
+# Marking it manual
+- name: UBTU-24-100020
+  tags: [UBTU-24-100020]
+  when: ubuntu_2404_defaults_run_ubtu_24_100020 | bool
+  block:
+    - name: UBTU-24-100020 - Ubuntu 22.04 LTS must not have the "ntp" package installed.
+      ansible.builtin.debug:
+        msg: 'NTP is configured through product and not through the OS.'
+
+###################################################################################################################################
+- name: UBTU-24-100040
+  tags: [UBTU-24-100040]
+  when: ubuntu_2404_defaults_run_ubtu_24_100040 | bool
+  block:
+    - name: UBTU-24-100040 - Checking if rsh-server is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep rsh-server
+      args:
+        executable: /bin/bash
+      register: rsh_server_installed
+      failed_when: rsh_server_installed.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100040 - Removing rsh-server if installed
+      ansible.builtin.apt:
+        name: rsh-server
+        state: absent
+        purge: true
+      when: rsh_server_installed.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-100030
+  tags: [UBTU-24-100030]
+  when: ubuntu_2404_defaults_run_ubtu_24_100030 | bool
+  block:
+    - name: UBTU-24-100030 - Checking if telnetd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep telnetd
+      args:
+        executable: /bin/bash
+      register: rsh_server_installed
+      failed_when: rsh_server_installed.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100030 - removing telnetd if installed
+      ansible.builtin.apt:
+        name: telnetd
+        state: absent
+        purge: true
+      when: rsh_server_installed.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-100050
+  tags: [UBTU-24-100050]
+  when: ubuntu_2404_defaults_run_ubtu_24_100050 | bool
+  block:
+    - name: UBTU-24-100050 - Check if nfs-common or nfs-kernel-server is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep -E 'nfs-common|nfs-kernel-server' || true
+      args:
+        executable: /bin/bash
+      register: nfs_installed
+      changed_when: false
+
+    - name: UBTU-24-100050 - Remove nfs-common and nfs-kernel-server packages
+      ansible.builtin.apt:
+        name:
+          - nfs-common
+          - nfs-kernel-server
+        state: absent
+        purge: true
+      when: nfs_installed.stdout != ""
+
+    - name: UBTU-24-100050 - Autoremove unneeded dependencies
+      ansible.builtin.apt:
+        autoremove: true
+        purge: true
+      when: nfs_installed.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-600090
+  tags: [UBTU-24-600090]
+  when: ubuntu_2404_defaults_run_ubtu_24_600090 | bool
+  block:
+    - name: UBTU-24-600090 - Encryption of data at rest
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-901260
+  tags: [UBTU-24-901260]
+  when: ubuntu_2404_defaults_run_ubtu_24_901260 | bool
+  block:
+    - name: UBTU-24-901260 - Get System Commands Directories Folder List
+      ansible.builtin.command: |
+        find \
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin \
+        -perm /022 \
+        -type d \
+        -exec stat -c "%n %a" '{}' \;
+      register: systemcmddirectory
+      changed_when: false
+
+    - name: UBTU-24-901260 - Set System Command Directory permissions to 755
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        mode: '0755'
+        state: directory
+      loop: "{{ systemcmddirectory.stdout_lines }}"
+      when: systemcmddirectory.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-300011
+  tags: [UBTU-24-300011]
+  when: ubuntu_2404_defaults_run_ubtu_24_300011 | bool
+  block:
+    - name: UBTU-24-300011 - Get System Commands List
+      ansible.builtin.command: |
+        find \
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin \
+        -perm /022 \
+        -type f \
+        -exec stat -c "%n %a" '{}' \;
+      register: systemcmd
+      changed_when: false
+
+    - name: UBTU-24-300011 - Set System Commands permissions to 755
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        mode: '0755'
+        state: file
+      loop: "{{ systemcmd.stdout_lines }}"
+      when: systemcmd.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-300006
+  tags: [UBTU-24-300006]
+  when: ubuntu_2404_defaults_run_ubtu_24_300006 | bool
+  block:
+    - name: UBTU-24-300006 - Get library files
+      ansible.builtin.command: |
+        find \
+        /lib /lib64 /usr/lib \
+        -perm /022 -type f -exec stat -c "%n %a" '{}' \;
+      register: libraryfiles
+      changed_when: false
+
+    - name: UBTU-24-300006 - Set library files permissions to 755
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        mode: '0755'
+        state: file
+      loop: "{{ libraryfiles.stdout_lines }}"
+      when: libraryfiles.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-700120
+  tags: [UBTU-24-700120]
+  when: ubuntu_2404_defaults_run_ubtu_24_700120 | bool
+  block:
+    - name: UBTU-24-700120 - Set "/var/log" directory permissions to 755
+      ansible.builtin.file:
+        path: "{{ ubuntu_2404_vars_log_directroty_file }}"
+        mode: '0755'
+        state: directory
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-700010
+  tags: [UBTU-24-700010]
+  when: ubuntu_2404_defaults_run_ubtu_24_700010 | bool
+  block:
+    - name: UBTU-24-700010 -  Set log files permissions to 640
+      ansible.builtin.command: |
+        find /var/log -perm /137 ! -name '*[bw]tmp' ! -name '*lastlog' -type f -exec chmod 640 '{}' \;
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-700150
+  tags: [UBTU-24-700150]
+  when: ubuntu_2404_defaults_run_ubtu_24_700150 | bool
+  block:
+    - name: UBTU-24-700150 - Set syslog file permission to 640
+      ansible.builtin.file:
+        path: "{{ ubuntu_2404_vars_syslog_file }}"
+        mode: '0640'
+        state: file
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-901230
+  tags: [UBTU-24-901230]
+  when: ubuntu_2404_defaults_run_ubtu_24_901230 | bool
+  block:
+    - name: UBTU-24-901230 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-901230 - Set audit tools permission to 755
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: '0755'
+        state: file
+      with_items: "{{ ubuntu_2404_defaults_audit_tools }}"
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-901270
+  tags: [UBTU-24-901270]
+  when: ubuntu_2404_defaults_run_ubtu_24_901270 | bool
+  block:
+    - name: UBTU-24-901270 - Get System Commands Directories Folder List
+      ansible.builtin.command: |
+        find \
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin \
+        ! -user root -type d -exec stat -c "%n %U" '{}' \;
+      register: systemcmddirectory
+      changed_when: false
+
+    - name: UBTU-24-901270 - Set System Command Directory owner to root
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        owner: root
+        mode: '0755'
+        state: directory
+      loop: "{{ systemcmddirectory.stdout_lines }}"
+      when: systemcmddirectory.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-901280
+  tags: [UBTU-24-901280]
+  when: ubuntu_2404_defaults_run_ubtu_24_901280 | bool
+  block:
+    - name: UBTU-24-901280 - Get System Commands Directories Folder List
+      ansible.builtin.command: |
+        find \
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin \
+        ! -group root -type d -exec stat -c "%n %G" '{}' \;
+      register: systemcmddirectory
+      changed_when: false
+
+    - name: UBTU-24-901280 - Set System Command Directory group-owner to root
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        group: root
+        mode: '0755'
+        state: directory
+      loop: "{{ systemcmddirectory.stdout_lines }}"
+      when: systemcmddirectory.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-300012
+  tags: [UBTU-24-300012]
+  when: ubuntu_2404_defaults_run_ubtu_24_300012 | bool
+  block:
+    - name: UBTU-24-300012 - Get System Commands List
+      ansible.builtin.command: |
+        find \
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin \
+        ! -user root -type f -exec stat -c "%n %U" '{}' \;
+      register: systemcmd
+      changed_when: false
+
+    - name: UBTU-24-300012 - Set System Commands owner to root
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        owner: root
+        state: file
+      loop: "{{ systemcmd.stdout_lines }}"
+      when: systemcmd.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-300013
+  tags: [UBTU-24-300013]
+  when: ubuntu_2404_defaults_run_ubtu_24_300013 | bool
+  block:
+    - name: UBTU-24-300013 - Get System Commands List
+      ansible.builtin.command: |
+        find \
+        /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin \
+        ! -group root -type f ! -perm /2000 -exec stat -c "%n %G" '{}' \;
+      register: systemcmd
+      changed_when: false
+
+    - name: UBTU-24-300013 - Set System Commands group-owner to root
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        group: root
+        state: file
+      loop: "{{ systemcmd.stdout_lines }}"
+      when: systemcmd.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-300008
+  tags: [UBTU-24-300008]
+  when: ubuntu_2404_defaults_run_ubtu_24_300008 | bool
+  block:
+    - name: UBTU-24-300008 - Get library directories
+      ansible.builtin.command: |
+        find \
+        /lib /lib64 /usr/lib \
+        ! -user root -type d -exec stat -c "%n %U" '{}' \;
+      register: librarydirectory
+      changed_when: false
+
+    - name: UBTU-24-300008 - Set library directory owner to root
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        owner: root
+        mode: '0755'
+        state: directory
+      loop: "{{ librarydirectory.stdout_lines }}"
+      when: librarydirectory.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-300010
+  tags: [UBTU-24-300010]
+  when: ubuntu_2404_defaults_run_ubtu_24_300010 | bool
+  block:
+    - name: UBTU-24-300010 - Get library directories
+      ansible.builtin.command: |
+        find \
+        /lib /lib64 /usr/lib \
+        ! -group root -type d -exec stat -c "%n %G" '{}' \;
+      register: librarydirectory
+      changed_when: false
+
+    - name: UBTU-24-300010 - Set library directory group-owner to root
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        group: root
+        mode: '0755'
+        state: directory
+      loop: "{{ librarydirectory.stdout_lines }}"
+      when: librarydirectory.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-300009
+  tags: [UBTU-24-300009]
+  when: ubuntu_2404_defaults_run_ubtu_24_300009 | bool
+  block:
+    - name: UBTU-24-300009 - Get library files
+      ansible.builtin.command: |
+        find \
+        /lib /lib64 /usr/lib \
+        ! -user root -type f -exec stat -c "%n %U" '{}' \;
+      register: libraryfiles
+      changed_when: false
+
+    - name: UBTU-24-300009 - Set library files owner to root
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        owner: root
+        state: file
+      loop: "{{ libraryfiles.stdout_lines }}"
+      when: libraryfiles.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-300007
+  tags: [UBTU-24-300007]
+  when: ubuntu_2404_defaults_run_ubtu_24_300007 | bool
+  block:
+    - name: UBTU-24-300007 - Get library files
+      ansible.builtin.command: |
+        find \
+        /lib /lib64 /usr/lib /usr/lib64 \
+        ! -group root -type f -exec stat -c "%n %G" '{}' \;
+      register: libraryfiles
+      changed_when: false
+
+    - name: UBTU-24-300007 - Set library files group-owner to root
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        group: root
+        state: file
+      loop: "{{ libraryfiles.stdout_lines }}"
+      when: libraryfiles.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-700040
+  tags: [UBTU-24-700040]
+  when: ubuntu_2404_defaults_run_ubtu_24_700040 | bool
+  block:
+    - name: UBTU-24-700040 - Set "journalctl" command owner to root
+      ansible.builtin.file:
+        path: "{{ ubuntu_2404_defaults_journalctl_command_path }}"
+        owner: root
+        state: file
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-700050
+  tags: [UBTU-24-700050]
+  when: ubuntu_2404_defaults_run_ubtu_24_700050 | bool
+  block:
+    - name: UBTU-24-700050 - Set "journalctl" command group-owner to root
+      ansible.builtin.file:
+        path: "{{ ubuntu_2404_defaults_journalctl_command_path }}"
+        group: root
+        state: file
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-901240
+  tags: [UBTU-24-901240]
+  when: ubuntu_2404_defaults_run_ubtu_24_901240 | bool
+  block:
+    - name: UBTU-24-901240 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-901240 - Set audit tools owner to root
+      ansible.builtin.file:
+        path: "{{ item }}"
+        owner: root
+        state: file
+      with_items: "{{ ubuntu_2404_defaults_audit_tools }}"
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-700110
+  tags: [UBTU-24-700110]
+  when: ubuntu_2404_defaults_run_ubtu_24_700110 | bool
+  block:
+    - name: UBTU-24-700110 - Set "/var/log" directory owner to root
+      ansible.builtin.file:
+        path: "{{ ubuntu_2404_vars_log_directroty_file }}"
+        owner: root
+        mode: '0755'
+        state: directory
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-700100
+  tags: [UBTU-24-700100]
+  when: ubuntu_2404_defaults_run_ubtu_24_700100 | bool
+  block:
+    - name: UBTU-24-700100 - Set "/var/log" directory group-owner to syslog
+      ansible.builtin.file:
+        path: "{{ ubuntu_2404_vars_log_directroty_file }}"
+        group: syslog
+        mode: '0755'
+        state: directory
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-700140
+  tags: [UBTU-24-700140]
+  when: ubuntu_2404_defaults_run_ubtu_24_700140 | bool
+  block:
+    - name: UBTU-24-700140 - Set syslog file owner to syslog
+      ansible.builtin.file:
+        path: "{{ ubuntu_2404_vars_syslog_file }}"
+        owner: syslog
+        state: file
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-700130
+  tags: [UBTU-24-700130]
+  when: ubuntu_2404_defaults_run_ubtu_24_700130 | bool
+  block:
+    - name: UBTU-24-700130 - Set syslog file group-owner to adm
+      ansible.builtin.file:
+        path: "{{ ubuntu_2404_vars_syslog_file }}"
+        group: adm
+        state: file
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-700030
+  tags: [UBTU-24-700030]
+  when: ubuntu_2404_defaults_run_ubtu_24_700030 | bool
+  block:
+    - name: UBTU-24-700030 - Set "journalctl" command permission to '0740'
+      ansible.builtin.file:
+        path: "{{ ubuntu_2404_defaults_journalctl_command_path }}"
+        mode: '0740'
+        state: file
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-600150
+  tags: [UBTU-24-600150]
+  when: ubuntu_2404_defaults_run_ubtu_24_600150 | bool
+  block:
+    - name: UBTU-24-600150 - Find all public directories without sticky bit
+      ansible.builtin.command: |
+        find / -xdev -type d  \( -perm -0002 -a ! -perm -1000 \)
+      register: nonstickydir
+      changed_when: false
+
+    - name: UBTU-24-600150 - Set a sticky bit on all public directories
+      ansible.builtin.file:
+        path: "{{ item.split()[0] }}"
+        mode: '01000'
+        state: directory
+      loop: "{{ nonstickydir.stdout_lines }}"
+      when: nonstickydir.stdout_lines | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-100300
+  tags: [UBTU-24-100300]
+  when: ubuntu_2404_defaults_run_ubtu_24_100300 | bool
+  block:
+    - name: UBTU-24-100300 - Install the Uncomplicated Firewall (ufw)
+      ansible.builtin.debug:
+        msg: 'Iptables is used instead of UFW for the local firewall solution.'
+
+###################################################################################################################################
+- name: UBTU-24-100310
+  tags: [UBTU-24-100310]
+  when: ubuntu_2404_defaults_run_ubtu_24_100310 | bool
+  block:
+    - name: UBTU-24-100310 - Enable and run the Uncomplicated Firewall (ufw)
+      ansible.builtin.debug:
+        msg: 'Iptables is used instead of UFW for the local firewall solution.'
+
+###################################################################################################################################
+- name: UBTU-24-300041
+  tags: [UBTU-24-300041]
+  when: ubuntu_2404_defaults_run_ubtu_24_300041 | bool
+  block:
+    - name: UBTU-24-300041 - Enable application firewall
+      ansible.builtin.debug:
+        msg: 'Iptables is used instead of UFW for the local firewall solution.'
+
+###################################################################################################################################
+- name: UBTU-24-600200
+  tags: [UBTU-24-600200]
+  when: ubuntu_2404_defaults_run_ubtu_24_600200 | bool
+  block:
+    - name: UBTU-24-600200 - Configure the Uncomplicated Firewall (ufw) to rate-limit impacted network interfaces
+      ansible.builtin.debug:
+        msg: 'Status listings for any allowed services, ports, or applications must be documented with the organization. Status listings fixes must be preformed manually.'
+
+###################################################################################################################################
+- name: UBTU-24-300041
+  tags: [UBTU-24-300041]
+  when: ubuntu_2404_defaults_run_ubtu_24_300041 | bool
+  block:
+    - name: UBTU-24-300041 - Prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments
+      ansible.builtin.debug:
+        msg: 'Status listings for any allowed services, ports, or applications must be documented with the organization. Status listings fixes must be preformed manually.'
+
+###################################################################################################################################
+- name: UBTU-24-600160
+  tags: [UBTU-24-600160]
+  when: ubuntu_2404_defaults_run_ubtu_24_600160 | bool
+  block:
+    - name: UBTU-24-600160 - Synchronizing internal information system clocks
+      ansible.builtin.debug:
+        msg: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+
+###################################################################################################################################
+- name: UBTU-24-600180
+  tags: [UBTU-24-600180]
+  when: ubuntu_2404_defaults_run_ubtu_24_600180 | bool
+  block:
+    - name: UBTU-24-600180 - Synchronizing internal information system clocks to the authoritative time source when the time difference is greater than one second
+      ansible.builtin.debug:
+        msg: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+
+###################################################################################################################################
+- name: UBTU-24-901220
+  tags: [UBTU-24-901220]
+  when: ubuntu_2404_defaults_run_ubtu_24_901220 | bool
+  block:
+    - name: UBTU-24-901220 - Set timezone to UTC
+      community.general.timezone:
+        name: UTC
+      changed_when: false
+
+###################################################################################################################################
+- name: UBTU-24-600190
+  tags: [UBTU-24-600190]
+  when: ubuntu_2404_defaults_run_ubtu_24_600190 | bool
+  block:
+    - name: UBTU-24-600190 - Check present net.ipv4.tcp_syncookies value
+      ansible.builtin.command: sysctl -n net.ipv4.tcp_syncookies
+      register: tcp_syncookies
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-600190 - Configure parameter net.ipv4.tcp_syncookies
+      ansible.posix.sysctl:
+        name: net.ipv4.tcp_syncookies
+        value: 1
+        state: present
+        sysctl_file: '{{ ubuntu_2404_vars_sysctl_conf_file }}'
+        sysctl_set: true
+        reload: true
+      when: (tcp_syncookies.stdout | default('0') | trim | int) < 1
+
+    - name: UBTU-24-600190 - Remove duplicate net.ipv4.tcp_syncookies entries in sysctl file
+      ansible.posix.sysctl:
+        name: net.ipv4.tcp_syncookies
+        value: 1
+        state: absent
+        sysctl_file: '{{ ubuntu_2404_defaults_sysctl_files }}'
+        reload: true
+      when: (tcp_syncookies.stdout | default('0') | trim | int) >= 1
+
+###################################################################################################################################
+- name: UBTU-24-200640
+  tags: [UBTU-24-200640]
+  when: ubuntu_2404_defaults_run_ubtu_24_200640 | bool
+  block:
+    - name: UBTU-24-200640 - Configure DoD Banner in /etc/issue file
+      ansible.builtin.template:
+        src: issue.net
+        dest: '{{ ubuntu_2404_defaults_etc_issue_file }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      when:
+        - ubuntu_2404_defaults_run_ubtu_24_200640_dod_banner | bool
+
+    - name: UBTU-24-200640 - Configure Banner in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*Banner\s'
+        line: Banner {{ ubuntu_2404_defaults_etc_issue_file }}
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: UBTU-24-300031
+  tags: [UBTU-24-300031]
+  when: ubuntu_2404_defaults_run_ubtu_24_300031 | bool
+  block:
+    - name: UBTU-24-300031 - Configure PermitEmptyPasswords in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*PermitEmptyPasswords\s'
+        line: PermitEmptyPasswords {{ ubuntu_2404_vars_sshd_permitemptypasswords }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+    - name: UBTU-24-300031 - Configure PermitUserEnvironment in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*PermitUserEnvironment\s'
+        line: PermitUserEnvironment {{ ubuntu_2404_vars_sshd_permituserenvironment }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: UBTU-24-600000
+  tags: [UBTU-24-600000]
+  when: ubuntu_2404_defaults_run_ubtu_24_600000 | bool
+  block:
+    - name: UBTU-24-600000 - Check present ClientAliveCountMax value
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^#?\s*ClientAliveCountMax\s+\K\d+' {{ ubuntu_2404_vars_sshd_config_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: sshd_clientalivecount_cur
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-600000 - Configure ClientAliveCountMax in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*ClientAliveCountMax\s'
+        line: ClientAliveCountMax {{ ubuntu_2404_vars_sshd_clientalivecountmax }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+      when: (sshd_clientalivecount_cur.stdout | default('999') | trim | int) > (ubuntu_2404_vars_sshd_clientalivecountmax | int)
+
+###################################################################################################################################
+- name: UBTU-24-600010
+  tags: [UBTU-24-600010]
+  when: ubuntu_2404_defaults_run_ubtu_24_600010 | bool
+  block:
+    - name: UBTU-24-600010 - Check present ClientAliveInterval value
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^#?\s*ClientAliveInterval\s+\K\d+' {{ ubuntu_2404_vars_sshd_config_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: sshd_clientaliveinterval_cur
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-600010 - Configure clientaliveinterval in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*ClientAliveInterval\s'
+        line: ClientAliveInterval {{ ubuntu_2404_vars_sshd_clientaliveinterval }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+      when: (sshd_clientaliveinterval_cur.stdout | default('') | trim | length == 0) or ((sshd_clientaliveinterval_cur.stdout | trim | int) > (ubuntu_2404_vars_sshd_clientaliveinterval | int))
+
+###################################################################################################################################
+- name: UBTU-24-300022
+  tags: [UBTU-24-300022]
+  when: ubuntu_2404_defaults_run_ubtu_24_300022 | bool
+  block:
+    - name: UBTU-24-300022 - Configure X11Forwarding in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*X11Forwarding\s'
+        line: X11Forwarding {{ ubuntu_2404_vars_sshd_x11forwarding }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: UBTU-24-300023
+  tags: [UBTU-24-300023]
+  when: ubuntu_2404_defaults_run_ubtu_24_300023 | bool
+  block:
+    - name: UBTU-24-300023 - Configure x11uselocalhost in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*X11UseLocalhost\s'
+        line: X11UseLocalhost {{ ubuntu_2404_vars_sshd_x11uselocalhost }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+# This must be before we install the OpenSSL FIPS Provider or the default OpenSSH Ciphers will cause issues with connecting over SSH
+- name: UBTU-24-100820
+  tags: [UBTU-24-100820]
+  when: ubuntu_2404_defaults_run_ubtu_24_100820 | bool
+  block:
+    - name: UBTU-24-100820 - Configure Ciphers in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*Ciphers\s'
+        line: Ciphers {{ ubuntu_2404_vars_sshd_ciphers }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: UBTU-24-100830
+  tags: [UBTU-24-100830]
+  when: ubuntu_2404_defaults_run_ubtu_24_100830 | bool
+  block:
+    - name: UBTU-24-100830 - Configure MACs in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*MACs\s'
+        line: MACs {{ ubuntu_2404_vars_sshd_macs }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: UBTU-24-100840
+  tags: [UBTU-24-100840]
+  when: ubuntu_2404_defaults_run_ubtu_24_100840 | bool
+  block:
+    - name: UBTU-24-100840 - Configure KexAlgorithms in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*KexAlgorithms\s'
+        line: KexAlgorithms {{ ubuntu_2404_vars_sshd_kexalgorithms }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: UBTU-24-500050
+  tags: [UBTU-24-500050]
+  when: ubuntu_2404_defaults_run_ubtu_24_500050 | bool
+  block:
+    - name: UBTU-24-500050 - Configure UsePAM in sshd_config
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_sshd_config_file }}'
+        state: present
+        regexp: '^#?\s*UsePAM\s'
+        line: UsePAM {{ ubuntu_2404_vars_sshd_usepam }}
+      notify:
+        - '{{ role_name }} : restart sshd'
+
+###################################################################################################################################
+- name: UBTU-24-200650
+  tags: [UBTU-24-200650]
+  when: ubuntu_2404_defaults_run_ubtu_24_200650 | bool
+  block:
+    - name: UBTU-24-200650 - Standard Mandatory DOD Notice and Consent Banner for GUI
+      ansible.builtin.debug:
+        msg: 'GUI not installed.'
+
+###################################################################################################################################
+- name: UBTU-24-200660
+  tags: [UBTU-24-200660]
+  when: ubuntu_2404_defaults_run_ubtu_24_200660 | bool
+  block:
+    - name: UBTU-24-200660 - Login banner for GUI
+      ansible.builtin.debug:
+        msg: 'GUI not installed.'
+
+###################################################################################################################################
+- name: UBTU-24-200060
+  tags: [UBTU-24-200060]
+  when: ubuntu_2404_defaults_run_ubtu_24_200060 | bool
+  block:
+    - name: UBTU-24-200060 - Check present TMOUT value
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^TMOUT=\K\d+' "{{ ubuntu_2404_vars_profile_tmout_sh }}" 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: profile_tmout_cur
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-200060 - Deploy 99-terminal_tmout.sh profile script
+      ansible.builtin.template:
+        src: '{{ ubuntu_2404_defaults_timeout_script_file }}'
+        dest: '{{ ubuntu_2404_vars_profile_tmout_sh }}'
+        force: true
+        group: root
+        owner: root
+        mode: "0644"
+      when: (profile_tmout_cur.stdout | default('') | trim | length == 0) or ((profile_tmout_cur.stdout | trim | int) > (ubuntu_2404_defaults_terminal_tmout_seconds | int))
+
+    - name: UBTU-24-200060 - User session lock for GUI
+      ansible.builtin.debug:
+        msg: 'GUI not installed.'
+
+###################################################################################################################################
+- name: UBTU-24-200020
+  tags: [UBTU-24-200020]
+  when: ubuntu_2404_defaults_run_ubtu_24_200020 | bool
+  block:
+    - name: UBTU-24-200020 - Initiate a graphical session lock after 15 minutes of inactivity
+      ansible.builtin.debug:
+        msg: 'GUI not installed.'
+
+###################################################################################################################################
+- name: UBTU-24-300025
+  tags: [UBTU-24-300025]
+  when: ubuntu_2404_defaults_run_ubtu_24_300025 | bool
+  block:
+    - name: UBTU-24-300025 - Disable the x86 Ctrl-Alt-Delete key sequence for GUI
+      ansible.builtin.debug:
+        msg: 'GUI not installed.'
+
+###################################################################################################################################
+- name: UBTU-24-300039
+  tags: [UBTU-24-300039]
+  when: ubuntu_2404_defaults_run_ubtu_24_300039 | bool
+  block:
+    - name: UBTU-24-300039 - Disable automatic mounting of Universal Serial Bus (USB) mass storage driver
+      ansible.builtin.debug:
+        msg: 'The USB mass storage driver not available.'
+    # - name: UBTU-24-300039 - Disable automatic mounting of Universal Serial Bus (USB) mass storage driver
+    #   ansible.builtin.lineinfile:
+    #     path: /etc/modprobe.d/stig.conf
+    #     state: present
+    #     create: yes
+    #     owner: root
+    #     group: root
+    #     mode: '0644'
+    #     regexp: "{{ item.regexp }}"
+    #     line: "{{ item.line }}"
+    #     firstmatch: yes
+    #   with_items:
+    #     - { regexp: '^#?install usb-storage', line: 'install usb-storage /bin/false' }
+    #     - { regexp: '^#?blacklist usb-storage', line: 'blacklist usb-storage' }
+
+###################################################################################################################################
+- name: UBTU-24-600230
+  tags: [UBTU-24-600230]
+  when: ubuntu_2404_defaults_run_ubtu_24_600230 | bool
+  block:
+    - name: UBTU-24-600230 - Disable all wireless network adapters
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-400110
+  tags: [UBTU-24-400110]
+  when: ubuntu_2404_defaults_run_ubtu_24_400110 | bool
+  block:
+    - name: UBTU-24-400110 - Get current root login setting
+      ansible.builtin.command: passwd -S root
+      register: lockrootsetting
+      changed_when: false
+
+    - name: UBTU-24-400110 - Prevent root login
+      ansible.builtin.command: passwd -l root
+      when: lockrootsetting.stdout! == "" | regex_search("^root\s+L\s+.*$")
+      changed_when: true
+
+###################################################################################################################################
+- name: UBTU-24-400000
+  tags: [UBTU-24-400000]
+  when: ubuntu_2404_defaults_run_ubtu_24_400000 | bool
+  block:
+    - name: UBTU-24-400000 - No duplicate User IDs (UIDs) for interactive users
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-400300
+  tags: [UBTU-24-400300]
+  when: ubuntu_2404_defaults_run_ubtu_24_400300 | bool
+  block:
+    - name: UBTU-24-400300 - Check present PASS_MIN_DAYS value
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^#?\s*PASS_MIN_DAYS\s+\K\d+' {{ ubuntu_2404_vars_login_defs_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: logindefs_pass_min_days
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-400300 - Configure login.defs PASS_MIN_DAYS
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_login_defs_file }}'
+        state: present
+        regexp: '^\s*#?\s*PASS_MIN_DAYS\s'
+        line: PASS_MIN_DAYS {{ ubuntu_2404_vars_login_defs_pass_min_days }}
+      when: (logindefs_pass_min_days.stdout | default('0') | trim | int) < (ubuntu_2404_vars_login_defs_pass_min_days | int)
+
+###################################################################################################################################
+- name: UBTU-24-400310
+  tags: [UBTU-24-400310]
+  when: ubuntu_2404_defaults_run_ubtu_24_400310 | bool
+  block:
+    - name: UBTU-24-400310 - Check present PASS_MAX_DAYS value
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^#?\s*PASS_MAX_DAYS\s+\K\d+' {{ ubuntu_2404_vars_login_defs_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: logindefs_pass_max_days
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-400310 - Configure login.defs PASS_MAX_DAYS
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_login_defs_file }}'
+        state: present
+        regexp: '^\s*#?\s*PASS_MAX_DAYS\s'
+        line: PASS_MAX_DAYS {{ ubuntu_2404_vars_login_defs_pass_max_days }}
+      when: (logindefs_pass_max_days.stdout | default('99999') | trim | int) > (ubuntu_2404_vars_login_defs_pass_max_days | int)
+
+###################################################################################################################################
+- name: UBTU-24-200260
+  tags: [UBTU-24-200260]
+  when: ubuntu_2404_defaults_run_ubtu_24_200260 | bool
+  block:
+    - name: UBTU-24-200260 - Check present INACTIVE value
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^\s*INACTIVE\s*=\s*\K-?\d+' {{ ubuntu_2404_vars_useradd_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: useradd_inactive
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-200260 - Set User Inactive Period
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_useradd_file }}'
+        regexp: '^#*\s*INACTIVE\s*=\s*'
+        line: 'INACTIVE={{ ubuntu_2404_vars_user_account_inactive_days }}'
+      when: (useradd_inactive.stdout | default('-1') | trim | int) == -1 or (useradd_inactive.stdout | default('-1') | trim | int) > (ubuntu_2404_vars_user_account_inactive_days | int)
+
+###################################################################################################################################
+- name: UBTU-24-200250
+  tags: [UBTU-24-200250]
+  when: ubuntu_2404_defaults_run_ubtu_24_200250 | bool
+  block:
+    - name: UBTU-24-200250 - Set temporary accounts expiry to 72 hours
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-200610
+  tags: [UBTU-24-200610]
+  when: ubuntu_2404_defaults_run_ubtu_24_200610 | bool
+  block:
+    - name: 'UBTU-24-200610 - Get current contents of {{ ubuntu_2404_vars_pamd_common_auth_file }}'
+      ansible.builtin.slurp:
+        src: '{{ ubuntu_2404_vars_pamd_common_auth_file }}'
+      register: systemauthslurp
+
+    - name: 'UBTU-24-200610 - Decode current contents of {{ ubuntu_2404_vars_pamd_common_auth_file }} and set fact'
+      # Note: Jinja template in name is required for this control
+      ansible.builtin.set_fact:
+        systemauthcontent: "{{ systemauthslurp['content'] | b64decode }}"
+
+    - name: 'UBTU-24-200610 - Check to see if pam_faillock.so authfail and authsucc rule exists in {{ ubuntu_2404_vars_pamd_common_auth_file }} and is after the pam_unix.so rule'
+      # Note: Jinja template in name is required for this control
+      ansible.builtin.set_fact:
+        auth_rule_check: "{{ systemauthcontent | regex_search('^auth\\s+(required|requisite)\\s+pam_unix\\.so.*$\\nauth\\s+\\[default=die\\]\\s+pam_faillock\\.so\\sauthfail$\\nauth\\s+sufficient\\s+pam_faillock\\.so\\sauthsucc$', multiline=True) }}"
+
+    - name: 'UBTU-24-200610 - Remove existing pam_faillock.so rules in {{ ubuntu_2404_vars_pamd_common_auth_file }} if one not found or incorrect'
+      # Note: Jinja template in name is required for this control
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pamd_common_auth_file }}'
+        state: absent
+        regexp: '^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so.*$'
+      when:
+        - auth_rule_check == ""
+
+    - name: UBTU-24-200610 - Add pam_faillock.so authfail to common-auth if it doesn't exist
+      community.general.pamd:
+        name: common-auth
+        type: auth
+        control: '[success=1 default=ignore]'
+        module_path: pam_unix.so
+        new_type: auth
+        new_control: '[default=die]'
+        new_module_path: pam_faillock.so
+        module_arguments:
+          - authfail
+        state: after
+
+    - name: UBTU-24-200610 - Add pam_faillock.so authsucc to common-auth if it doesn't exist
+      community.general.pamd:
+        name: common-auth
+        type: auth
+        control: '[default=die]'
+        module_path: pam_faillock.so
+        new_type: auth
+        new_control: sufficient
+        new_module_path: pam_faillock.so
+        module_arguments:
+          - authsucc
+        state: after
+
+    - name: UBTU-24-200610 - Configure faillock.conf audit
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_faillock_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*audit\s'
+        line: audit
+        firstmatch: true
+
+    - name: UBTU-24-200610 - Configure faillock.conf silent
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_faillock_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*silent\s'
+        line: silent
+        firstmatch: true
+
+    - name: UBTU-24-200610 - Check present faillock deny value
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^\s*deny\s*=\s*\K\d+' {{ ubuntu_2404_vars_faillock_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: faillock_deny_cur
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-200610 - Configure faillock.conf deny
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_faillock_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*deny\s'
+        line: 'deny = {{ ubuntu_2404_vars_deny_faillock_conf }}'
+        firstmatch: true
+      when: (faillock_deny_cur.stdout | default('999') | trim | int) > (ubuntu_2404_vars_deny_faillock_conf | int)
+
+    - name: UBTU-24-200610 - Check present faillock fail_interval value
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^\s*fail_interval\s*=\s*\K\d+' {{ ubuntu_2404_vars_faillock_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: faillock_interval_cur
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-200610 - Configure faillock.conf fail_interval
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_faillock_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*fail_interval\s'
+        line: 'fail_interval = {{ ubuntu_2404_vars_fail_interval_faillock_conf }}'
+        firstmatch: true
+      when: (faillock_interval_cur.stdout | default('') | trim | length == 0) or ((faillock_interval_cur.stdout | trim | int) > (ubuntu_2404_vars_fail_interval_faillock_conf | int))
+
+    - name: UBTU-24-200610 - Check present faillock unlock_time value
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^\s*unlock_time\s*=\s*\K\d+' {{ ubuntu_2404_vars_faillock_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: faillock_unlock_cur
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-200610 - Configure faillock.conf unlock_time
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_faillock_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*unlock_time\s'
+        line: 'unlock_time = {{ ubuntu_2404_vars_unlock_time_faillock_conf }}'
+        firstmatch: true
+      when: (((ubuntu_2404_vars_unlock_time_faillock_conf | int) == 0) and ((faillock_unlock_cur.stdout | default('') | trim) != '0')) or (((ubuntu_2404_vars_unlock_time_faillock_conf | int) != 0) and (((faillock_unlock_cur.stdout | default('') | trim | length == 0) or ((faillock_unlock_cur.stdout | trim | int) > (ubuntu_2404_vars_unlock_time_faillock_conf | int)))))
+
+###################################################################################################################################
+- name: UBTU-24-300017
+  tags: [UBTU-24-300017]
+  when: ubuntu_2404_defaults_run_ubtu_24_300017 | bool
+  block:
+    - name: UBTU-24-300017 - Check to see if pam_faildelay.so rule exists
+      ansible.builtin.command:
+        argv:
+          - grep
+          - -E
+          - '^auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$'
+          - '{{ ubuntu_2404_vars_pamd_common_auth_file }}'
+      register: sysauthfaildelay
+      failed_when: sysauthfaildelay.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-300017 - Remove existing pam_faildelay.so rule in common-auth if it is incorrect
+      community.general.pamd:
+        name: common-auth
+        type: auth
+        control: optional
+        module_path: pam_faildelay.so
+        state: absent
+      when:
+        - sysauthfaildelay.stdout == ""
+
+    # Need to use lininfile instead of pam because of the placement this needs to go can't be dealt with by the ansible pam module
+    - name: UBTU-24-300017 - Add pam_faildelay.so to common-auth if it doesn't exist
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pamd_common_auth_file }}'
+        state: present
+        regexp: '^#?auth\s+(required|requisite|optional)\s+pam_faildelay\.so\sdelay=4000000$'
+        line: auth  required      pam_faildelay.so delay=4000000
+
+###################################################################################################################################
+- name: UBTU-24-200000
+  tags: [UBTU-24-200000]
+  when: ubuntu_2404_defaults_run_ubtu_24_200000 | bool
+  block:
+    - name: UBTU-24-200000 - Check present maxlogins value
+      ansible.builtin.shell: |
+        set -o pipefail
+        shopt -s nullglob
+        f="{{ ubuntu_2404_vars_limits_conf_file }}"
+        d="{{ ubuntu_2404_defaults_limits_d_folder }}"
+        mins=""
+        for src in "$f" "$d"/*.conf; do
+          [ -f "$src" ] || continue
+          while read -r n; do
+            [ -n "$n" ] && mins="$mins $n"
+          done < <(grep -E '^\*[[:space:]]+hard[[:space:]]+maxlogins' "$src" 2>/dev/null | grep -v '^#' | awk '{print $NF}' | grep -E '^[0-9]+$')
+          while read -r n; do
+            [ -n "$n" ] && mins="$mins $n"
+          done < <(grep -E '^\*[[:space:]]+-[[:space:]]+maxlogins' "$src" 2>/dev/null | grep -v '^#' | awk '{print $NF}' | grep -E '^[0-9]+$')
+          while read -r n; do
+            [ -n "$n" ] && mins="$mins $n"
+          done < <(grep -E '^\*.*maxlogins' "$src" 2>/dev/null | grep -v '^#' | awk '{print $NF}' | grep -E '^[0-9]+$')
+        done
+        if [ -n "$mins" ]; then
+          echo "$mins" | tr ' ' '\n' | grep -E '^[0-9]+$' | sort -n | head -1
+        else
+          echo ""
+        fi
+      args:
+        executable: /bin/bash
+      register: limits_maxlogins_cur
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-200000 - Configure maxlogins in limits.conf
+      community.general.pam_limits:
+        limit_item: maxlogins
+        domain: "*"
+        limit_type: hard
+        value: "{{ ubuntu_2404_vars_limits_maxlogins }}"
+      when: (limits_maxlogins_cur.stdout | default('99999') | trim | int) > (ubuntu_2404_vars_limits_maxlogins | int)
+
+###################################################################################################################################
+# Marking it manual as package installation should be done by Product teams.
+- name: UBTU-24-101000
+  tags: [UBTU-24-101000]
+  when: ubuntu_2404_defaults_run_ubtu_24_101000 | bool
+  block:
+    - name: UBTU-24-101000 - Install vlock
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-300030
+  tags: [UBTU-24-300030]
+  when: ubuntu_2404_defaults_run_ubtu_24_300030 | bool
+  block:
+    - name: UBTU-24-300030 - Check present UMASK value
+      ansible.builtin.shell: |
+        set -o pipefail
+        cur=$(grep -oP '^UMASK\s+\K[0-7]+' "{{ ubuntu_2404_vars_login_defs_file }}" 2>/dev/null | head -1 || true)
+        tgt="{{ ubuntu_2404_vars_login_defs_umask | string | trim }}"
+        if [ -z "$cur" ]; then exit 0; fi
+        if [ $((8#$cur)) -lt $((8#$tgt)) ]; then exit 0; fi
+        exit 1
+      args:
+        executable: /bin/bash
+      register: logindefs_umask_need_set
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-300030 - Configure login.defs UMASK
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_login_defs_file }}'
+        state: present
+        regexp: '^\s*#?\s*UMASK\s'
+        line: UMASK {{ ubuntu_2404_vars_login_defs_umask }}
+      when: logindefs_umask_need_set.rc == 0
+
+###################################################################################################################################
+- name: UBTU-24-300021
+  tags: [UBTU-24-300021]
+  when: ubuntu_2404_defaults_run_ubtu_24_300021 | bool
+  block:
+    - name: UBTU-24-300021 - Review sudoers for NOPASSWD
+      ansible.builtin.debug:
+        msg: 'Review sudoers for NOPASSWD. Set ubuntu_2404_defaults_ubtu_24_300021_remediate_sudoers true to comment matching lines (validate with visudo). For !authenticate use UBTU-24-300019.'
+      when: not (ubuntu_2404_defaults_ubtu_24_300021_remediate_sudoers | default(false) | bool)
+
+    - name: UBTU-24-300021 - Find sudoers.d files for NOPASSWD remediation
+      ansible.builtin.find:
+        paths: '{{ ubuntu_2404_defaults_sudoers_d_folder }}'
+        patterns: '*'
+        hidden: false
+      register: sudoers_d_files_300021
+      when: ubuntu_2404_defaults_ubtu_24_300021_remediate_sudoers | default(false) | bool
+
+    - name: UBTU-24-300021 - Comment out lines containing NOPASSWD in /etc/sudoers
+      ansible.builtin.replace:
+        path: '{{ ubuntu_2404_defaults_sudoers_file }}'
+        regexp: '^([^#].*NOPASSWD.*)$'
+        replace: '# \1'
+        backup: true
+      when: ubuntu_2404_defaults_ubtu_24_300021_remediate_sudoers | default(false) | bool
+
+    - name: UBTU-24-300021 - Comment out lines containing NOPASSWD in sudoers.d files
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^([^#].*NOPASSWD.*)$'
+        replace: '# \1'
+        backup: true
+      loop: "{{ sudoers_d_files_300021.files | default([]) }}"
+      when:
+        - ubuntu_2404_defaults_ubtu_24_300021_remediate_sudoers | default(false) | bool
+        - sudoers_d_files_300021.files is defined
+        - sudoers_d_files_300021.files | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-600130
+  tags: [UBTU-24-600130]
+  when: ubuntu_2404_defaults_run_ubtu_24_600130 | bool
+  block:
+    - name: UBTU-24-600130 - Ensure only users who need access to security functions are part of sudo group
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+# pwquality: tighten toward STIG only.
+###################################################################################################################################
+- name: Ubuntu 24.04 - Check libpam-pwquality package is installed
+  ansible.builtin.command:
+    argv:
+      - dpkg-query
+      - -W
+      - libpam-pwquality
+  register: ubuntu_2404_libpam_pwquality_installed
+  changed_when: false
+  failed_when: false
+  tags:
+    - UBTU-24-400260
+    - UBTU-24-400270
+    - UBTU-24-400280
+    - UBTU-24-400330
+    - UBTU-24-300014
+    - UBTU-24-400320
+    - UBTU-24-400290
+    - UBTU-24-300016
+
+###################################################################################################################################
+- name: UBTU-24-400260
+  tags: [UBTU-24-400260]
+  when:
+    - ubuntu_2404_defaults_run_ubtu_24_400260 | bool
+    - (ubuntu_2404_libpam_pwquality_installed.rc | default(1)) == 0
+  block:
+    - name: UBTU-24-400260 - Check present ucredit in pwquality.conf
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^ucredit\s*=\s*\K.*' {{ ubuntu_2404_vars_pam_pwquality_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: pwq_ucredit_current
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-400260 - Set password complexity by requiring at least one uppercase character
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*ucredit\s*=\s*.*$'
+        line: ucredit = {{ ubuntu_2404_vars_pam_pwquality_ucredit }}
+      when: (pwq_ucredit_current.stdout | default('') | trim | int) > (ubuntu_2404_vars_pam_pwquality_ucredit | int)
+
+###################################################################################################################################
+- name: UBTU-24-400270
+  tags: [UBTU-24-400270]
+  when:
+    - ubuntu_2404_defaults_run_ubtu_24_400270 | bool
+    - (ubuntu_2404_libpam_pwquality_installed.rc | default(1)) == 0
+  block:
+    - name: UBTU-24-400270 - Check present lcredit in pwquality.conf
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^lcredit\s*=\s*\K.*' {{ ubuntu_2404_vars_pam_pwquality_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: pwq_lcredit_current
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-400270 - Set password complexity by requiring at least one lowercase character
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*lcredit\s*=\s*.*$'
+        line: lcredit = {{ ubuntu_2404_vars_pam_pwquality_lcredit }}
+      when: (pwq_lcredit_current.stdout | default('') | trim | int) > (ubuntu_2404_vars_pam_pwquality_lcredit | int)
+
+###################################################################################################################################
+- name: UBTU-24-400280
+  tags: [UBTU-24-400280]
+  when:
+    - ubuntu_2404_defaults_run_ubtu_24_400280 | bool
+    - (ubuntu_2404_libpam_pwquality_installed.rc | default(1)) == 0
+  block:
+    - name: UBTU-24-400280 - Check present dcredit in pwquality.conf
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^dcredit\s*=\s*\K.*' {{ ubuntu_2404_vars_pam_pwquality_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: pwq_dcredit_current
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-400280 - Set password complexity by requiring that at least one numeric character
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*dcredit\s*=\s*.*$'
+        line: dcredit = {{ ubuntu_2404_vars_pam_pwquality_dcredit }}
+      when: (pwq_dcredit_current.stdout | default('') | trim | int) > (ubuntu_2404_vars_pam_pwquality_dcredit | int)
+
+###################################################################################################################################
+- name: UBTU-24-400330
+  tags: [UBTU-24-400330]
+  when:
+    - ubuntu_2404_defaults_run_ubtu_24_400330 | bool
+    - (ubuntu_2404_libpam_pwquality_installed.rc | default(1)) == 0
+  block:
+    - name: UBTU-24-400330 - Check present ocredit in pwquality.conf
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^ocredit\s*=\s*\K.*' {{ ubuntu_2404_vars_pam_pwquality_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: pwq_ocredit_current
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-400330 - Set password complexity by requiring that at least one special character
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*ocredit\s*=\s*.*$'
+        line: ocredit = {{ ubuntu_2404_vars_pam_pwquality_ocredit }}
+      when: (pwq_ocredit_current.stdout | default('') | trim | int) > (ubuntu_2404_vars_pam_pwquality_ocredit | int)
+
+###################################################################################################################################
+- name: UBTU-24-300014
+  tags: [UBTU-24-300014]
+  when:
+    - ubuntu_2404_defaults_run_ubtu_24_300014 | bool
+    - (ubuntu_2404_libpam_pwquality_installed.rc | default(1)) == 0
+  block:
+    - name: UBTU-24-300014 - Check present dictcheck in pwquality.conf
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^dictcheck\s*=\s*\K.*' {{ ubuntu_2404_vars_pam_pwquality_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: pwq_dictcheck_current
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-300014 - Set password complexity by preventing the use of dictionary words for passwords
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*dictcheck\s*=\s*.*$'
+        line: dictcheck = {{ ubuntu_2404_vars_pam_pwquality_dictcheck }}
+      when: (pwq_dictcheck_current.stdout | default('0') | trim | int) < (ubuntu_2404_vars_pam_pwquality_dictcheck | int)
+
+###################################################################################################################################
+- name: UBTU-24-400320
+  tags: [UBTU-24-400320]
+  when:
+    - ubuntu_2404_defaults_run_ubtu_24_400320 | bool
+    - (ubuntu_2404_libpam_pwquality_installed.rc | default(1)) == 0
+  block:
+    - name: UBTU-24-400320 - Check present minlen in pwquality.conf
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^minlen\s*=\s*\K.*' {{ ubuntu_2404_vars_pam_pwquality_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: pwq_minlen_current
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-400320 - Set password complexity by enforcing a minimum 15-character password length
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*minlen\s*=\s*.*$'
+        line: minlen = {{ ubuntu_2404_vars_pam_pwquality_minlen }}
+      when: (pwq_minlen_current.stdout | default('0') | trim | int) < (ubuntu_2404_vars_pam_pwquality_minlen | int)
+
+###################################################################################################################################
+- name: UBTU-24-400290
+  tags: [UBTU-24-400290]
+  when:
+    - ubuntu_2404_defaults_run_ubtu_24_400290 | bool
+    - (ubuntu_2404_libpam_pwquality_installed.rc | default(1)) == 0
+  block:
+    - name: UBTU-24-400290 - Check present difok in pwquality.conf
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^difok\s*=\s*\K.*' {{ ubuntu_2404_vars_pam_pwquality_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: pwq_difok_current
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-400290 - Set password complexity by requiring the change of at least eight characters when passwords are changed
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*difok\s*=\s*.*$'
+        line: difok = {{ ubuntu_2404_vars_pam_pwquality_difok }}
+      when: (pwq_difok_current.stdout | default('0') | trim | int) < (ubuntu_2404_vars_pam_pwquality_difok | int)
+
+###################################################################################################################################
+- name: UBTU-24-300016
+  tags: [UBTU-24-300016]
+  when:
+    - ubuntu_2404_defaults_run_ubtu_24_300016 | bool
+    - (ubuntu_2404_libpam_pwquality_installed.rc | default(1)) == 0
+  block:
+    - name: UBTU-24-300016 - Check present enforcing in pwquality.conf
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -oP '^enforcing\s*=\s*\K.*' {{ ubuntu_2404_vars_pam_pwquality_conf_file }} 2>/dev/null | head -1 || true
+      args:
+        executable: /bin/bash
+      register: pwq_enforcing_current
+      failed_when: false
+      changed_when: false
+
+    - name: UBTU-24-300016 - Configure pwquality.conf enforcing
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_pam_pwquality_conf_file }}'
+        state: present
+        regexp: '^\s*#?\s*enforcing\s*=\s*.*$'
+        line: enforcing = {{ ubuntu_2404_vars_pam_pwquality_enforcing }}
+      when: (pwq_enforcing_current.stdout | default('0') | trim | int) < (ubuntu_2404_vars_pam_pwquality_enforcing | int)
+
+    - name: UBTU-24-300016 - Check to see if pam_pwquality.so rule exists
+      ansible.builtin.command: 'grep -E "pam_pwquality.so.*retry=3" {{ ubuntu_2404_vars_pamd_common_password_file }}'
+      register: syspasspwq
+      failed_when: syspasspwq.rc > 1
+      changed_when: false
+
+    - name: UBTU-24-300016 - Remove incorrect pam_pwquality.so entries
+      ansible.builtin.lineinfile:
+        path: "{{ ubuntu_2404_vars_pamd_common_password_file }}"
+        regexp: '^password\s*(requisite|required)\s*pam_pwquality.so.*$'
+        state: absent
+      when:
+        - syspasspwq.stdout == ""
+
+    - name: UBTU-24-300016 - When passwords are changed or new passwords are established, pwquality must be used
+      community.general.pamd:
+        name: common-password
+        type: password
+        control: '[success=1 default=ignore]'
+        module_path: pam_unix.so
+        new_type: password
+        new_control: requisite
+        new_module_path: pam_pwquality.so
+        module_arguments:
+          - retry=3
+        state: before
+      when:
+        - syspasspwq.stdout == ""
+
+###################################################################################################################################
+- name: UBTU-24-400220
+  tags: [UBTU-24-400220]
+  when: ubuntu_2404_defaults_run_ubtu_24_400220 | bool
+  block:
+    - name: UBTU-24-400220 - Check if pam_unix.so already has yescrypt or sha512
+      ansible.builtin.command: 'grep -E "pam_unix.so.*(yescrypt|sha512)" {{ ubuntu_2404_vars_pamd_common_password_file }}'
+      register: pam_check
+      changed_when: false
+      failed_when: pam_check.rc > 1
+
+    - name: UBTU-24-400220 - Configure pam_unix.so sha512 in common-password
+      community.general.pamd:
+        name: common-password
+        type: password
+        control: '[success=1 default=ignore]'
+        module_path: pam_unix.so
+        module_arguments:
+          - '{{ ubuntu_2404_defaults_pamd_pam_unix_module_argument }}'
+        state: args_present
+      when: "'yescrypt' not in pam_check.stdout and 'sha512' not in pam_check.stdout"
+
+###################################################################################################################################
+- name: UBTU-24-300028
+  tags: [UBTU-24-300028]
+  when: ubuntu_2404_defaults_run_ubtu_24_300028 | bool
+  block:
+    - name: UBTU-24-300028 - Remove nullock from common-password
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-300027
+  tags: [UBTU-24-300027]
+  when: ubuntu_2404_defaults_run_ubtu_24_300027 | bool
+  block:
+    - name: UBTU-24-300027 - Accounts should not be configured with blank or null passwords
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-400400
+  tags: [UBTU-24-400400]
+  when: ubuntu_2404_defaults_run_ubtu_24_400400 | bool
+  block:
+    - name: UBTU-24-400400 - Configure login.defs ENCRYPT_METHOD
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_login_defs_file }}'
+        state: present
+        regexp: '^#?\s*ENCRYPT_METHOD\s'
+        line: ENCRYPT_METHOD {{ ubuntu_2404_vars_login_defs_encrypt_method }}
+
+###################################################################################################################################
+- name: UBTU-24-400030
+  tags: [UBTU-24-400030]
+  when: ubuntu_2404_defaults_run_ubtu_24_400030 | bool
+  block:
+    - name: UBTU-24-400030 - Implement multifactor authentication for remote access to privileged accounts
+      ansible.builtin.debug:
+        msg: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+
+###################################################################################################################################
+- name: UBTU-24-100900
+  tags: [UBTU-24-100900]
+  when: ubuntu_2404_defaults_run_ubtu_24_100900 | bool
+  block:
+    - name: UBTU-24-100900 - Accept personal identity verification (PIV) credentials
+      ansible.builtin.debug:
+        msg: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+
+###################################################################################################################################
+- name: UBTU-24-400020
+  tags: [UBTU-24-400020]
+  when: ubuntu_2404_defaults_run_ubtu_24_400020 | bool
+  block:
+    - name: UBTU-24-400020 - Implement smart card logins for multifactor authentication for local and network access to privileged and nonprivileged accounts
+      ansible.builtin.debug:
+        msg: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+
+###################################################################################################################################
+- name: UBTU-24-400060
+  tags: [UBTU-24-400060]
+  when: ubuntu_2404_defaults_run_ubtu_24_400060 | bool
+  block:
+    - name: UBTU-24-400060 - Electronically verify personal identity verification (PIV) credentials
+      ansible.builtin.debug:
+        msg: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+
+###################################################################################################################################
+- name: UBTU-24-400360
+  tags: [UBTU-24-400360]
+  when: ubuntu_2404_defaults_run_ubtu_24_400360 | bool
+  block:
+    - name: UBTU-24-400360 - PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor
+      ansible.builtin.debug:
+        msg: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+
+###################################################################################################################################
+- name: UBTU-24-400380
+  tags: [UBTU-24-400380]
+  when: ubuntu_2404_defaults_run_ubtu_24_400380 | bool
+  block:
+    - name: UBTU-24-400380 - PKI-based authentication, must implement a local cache of revocation data in case of the inability to access revocation information via the network
+      ansible.builtin.debug:
+        msg: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+
+###################################################################################################################################
+- name: UBTU-24-400370
+  tags: [UBTU-24-400370]
+  when: ubuntu_2404_defaults_run_ubtu_24_400370 | bool
+  block:
+    - name: UBTU-24-400370 - Map the authenticated identity to the user or group account for PKI-based authentication
+      ansible.builtin.debug:
+        msg: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+
+###################################################################################################################################
+- name: UBTU-24-600060
+  tags: [UBTU-24-600060]
+  when: ubuntu_2404_defaults_run_ubtu_24_600060 | bool
+  block:
+    - name: UBTU-24-600060 - Use DOD PKI-established certificate authorities for verification of the establishment of protected sessions
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-400340
+  tags: [UBTU-24-400340]
+  when: ubuntu_2404_defaults_run_ubtu_24_400340 | bool
+  block:
+    - name: UBTU-24-400340 - Pluggable Authentication Module (PAM) to prohibits the use of cached authentications after one day
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-100100
+  tags: [UBTU-24-100100]
+  when: ubuntu_2404_defaults_run_ubtu_24_100100 | bool
+  block:
+    - name: UBTU-24-100100 - Use a file integrity tool to verify correct operation of all security functions
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-100110
+  tags: [UBTU-24-100110]
+  when: ubuntu_2404_defaults_run_ubtu_24_100110 | bool
+  block:
+    - name: UBTU-24-100110 - Configure AIDE to perform file integrity checking on the file system
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-100130
+  tags: [UBTU-24-100130]
+  when: ubuntu_2404_defaults_run_ubtu_24_100130 | bool
+  block:
+    - name: UBTU-24-100130 - Notify designated personnel if baseline configurations are changed in an unauthorized manner
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-100120
+  tags: [UBTU-24-100120]
+  when: ubuntu_2404_defaults_run_ubtu_24_100120 | bool
+  block:
+    - name: UBTU-24-100120 - AIDE default script used to check file integrity each 30 days or less is unchanged
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-909890
+  tags: [UBTU-24-909890]
+  when: ubuntu_2404_defaults_run_ubtu_24_909890 | bool
+  block:
+    - name: UBTU-24-909890 - Use cryptographic mechanisms to protect the integrity of audit tools
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation.'
+
+###################################################################################################################################
+- name: UBTU-24-900950
+  tags: [UBTU-24-900950]
+  when: ubuntu_2404_defaults_run_ubtu_24_900950 | bool
+  block:
+    - name: UBTU-24-900950 - Crontab script running weekly to offload audit events of standalone systems
+      ansible.builtin.debug:
+        msg: 'Offloading is part of product and not requred to do explicitly.'
+
+###################################################################################################################################
+- name: UBTU-24-200090
+  tags: [UBTU-24-200090]
+  when: ubuntu_2404_defaults_run_ubtu_24_900950 | bool
+  block:
+    - name: UBTU-24-200090- Check to see if rsyslog is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep rsyslog
+      args:
+        executable: /bin/bash
+      register: rsysloginstalled
+      failed_when: rsysloginstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-200090- Configure auth/authpriv/daemon logging in rsyslog.conf
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_defaults_rsyslog_conf_file }}'
+        state: present
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        firstmatch: true
+      with_items:
+        - { regexp: '^auth.*,authpriv.*', line: 'auth.*,authpriv.* {{ ubuntu_2404_defaults_rsyslog_authpriv_log }}' }
+        - { regexp: '^daemon.*', line: 'daemon.* {{ ubuntu_2404_defaults_rsyslog_deamon_log }}' }
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+      when:
+        - rsysloginstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-100450
+  tags: [UBTU-24-100450]
+  when: ubuntu_2404_defaults_run_ubtu_24_100450 | bool
+  block:
+    - name: UBTU-24-100450 - Configure event multiplexor
+      ansible.builtin.debug:
+        msg: 'Offloading is part of product and not requred to do explicitly.'
+
+###################################################################################################################################
+- name: UBTU-24-900980
+  tags: [UBTU-24-900980]
+  when: ubuntu_2404_defaults_run_ubtu_24_900980 | bool
+  block:
+    - name: UBTU-24-900980 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-900980 - Configure action_mail_acct in auditd.conf
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*action_mail_acct\s'
+        line: action_mail_acct = {{ ubuntu_2404_defaults_auditd_action_mail_acct }}
+      notify:
+        - '{{ role_name }} : restart auditd'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-900920
+  tags: [UBTU-24-900920]
+  when: ubuntu_2404_defaults_run_ubtu_24_900920 | bool
+  block:
+    - name: UBTU-24-900920 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-900920 - Configure disk_full_action in auditd.conf
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*disk_full_action\s'
+        line: disk_full_action = {{ ubuntu_2404_defaults_auditd_disk_full_action }}
+      notify:
+        - '{{ role_name }} : restart auditd'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-900920
+  tags: [UBTU-24-900920]
+  when: ubuntu_2404_defaults_run_ubtu_24_900920 | bool
+  block:
+    - name: UBTU-24-900920 - Allocate audit record storage capacity to store at least one weeks' worth of audit records
+      ansible.builtin.debug:
+        msg: 'Offloading is part of product and not requred to do explicitly.'
+
+###################################################################################################################################
+- name: UBTU-24-900960
+  tags: [UBTU-24-900960]
+  when: ubuntu_2404_defaults_run_ubtu_24_900960 | bool
+  block:
+    - name: UBTU-24-900960 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-900960 - Configure space_left in auditd.conf
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*space_left\s'
+        line: space_left = {{ ubuntu_2404_defaults_auditd_space_left }}
+      notify:
+        - '{{ role_name }} : restart auditd'
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: UBTU-24-900960 - Configure space_left_action in auditd.conf
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*space_left_action\s'
+        line: space_left_action = {{ ubuntu_2404_defaults_auditd_space_left_action }}
+      notify:
+        - '{{ role_name }} : restart auditd'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-901300
+  tags: [UBTU-24-901300]
+  when: ubuntu_2404_defaults_run_ubtu_24_901300 | bool
+  block:
+    - name: UBTU-24-901300 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-901300 - Get audit log file path
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -iw log_file {{ ubuntu_2404_vars_auditd_conf_file }} | awk -F'=' '{print $2}' | xargs | xargs dirname
+      args:
+        executable: /bin/bash
+      register: auditlogdirectory
+      changed_when: false
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: UBTU-24-901300 - Get list of audit log files
+      ansible.builtin.find:
+        paths: "{{ auditlogdirectory.stdout }}"
+        patterns: "audit.log*"
+        file_type: file
+      register: auditlogfiles
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: UBTU-24-901300 - Set audit log file permissions to 600
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        mode: '0600'
+        state: file
+      loop: "{{ auditlogfiles.files }}"
+      when:
+        - auditlogfiles.files | length > 0
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-901310
+  tags: [UBTU-24-901310]
+  when: ubuntu_2404_defaults_run_ubtu_24_901310 | bool
+  block:
+    - name: UBTU-24-901310 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-901310 - Get audit log file path
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -iw log_file {{ ubuntu_2404_vars_auditd_conf_file }} | awk -F'=' '{print $2}' | xargs | xargs dirname
+      args:
+        executable: /bin/bash
+      register: auditlogdirectory
+      changed_when: false
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: UBTU-24-901310 - Get list of audit log files
+      ansible.builtin.find:
+        paths: "{{ auditlogdirectory.stdout }}"
+        patterns: "audit.log*"
+        file_type: file
+      register: auditlogfiles
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: UBTU-24-901310 - Set audit log file owner to root
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        owner: root
+        state: file
+      loop: "{{ auditlogfiles.files }}"
+      when:
+        - auditdinstalled.stdout != ""
+        - auditlogfiles.files | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-901350
+  tags: [UBTU-24-901350]
+  when: ubuntu_2404_defaults_run_ubtu_24_901350 | bool
+  block:
+    - name: UBTU-24-901350 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-901350 - Configure log_group in auditd.conf
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_auditd_conf_file }}'
+        state: present
+        regexp: '^#?\s*log_group\s'
+        line: log_group = {{ ubuntu_2404_defaults_auditd_log_group }}
+      notify:
+        - '{{ role_name }} : restart auditd'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-901380
+  tags: [UBTU-24-901380]
+  when: ubuntu_2404_defaults_run_ubtu_24_901380 | bool
+  block:
+    - name: UBTU-24-901380 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-901380 - Get audit log directory
+      ansible.builtin.shell: |
+        set -o pipefail
+        grep -iw log_file {{ ubuntu_2404_vars_auditd_conf_file }} | awk -F'=' '{print $2}' | xargs | xargs dirname
+      args:
+        executable: /bin/bash
+      register: auditlogdirectory
+      changed_when: false
+      when:
+        - auditdinstalled.stdout != ""
+
+    - name: UBTU-24-901380 - Set audit log directory permissions to 750
+      ansible.builtin.file:
+        path: "{{ auditlogdirectory.stdout }}"
+        mode: '0750'
+        state: directory
+      when:
+        - auditdinstalled.stdout != ""
+        - auditlogdirectory.stdout | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-900040
+  tags: [UBTU-24-900040]
+  when: ubuntu_2404_defaults_run_ubtu_24_900040 | bool
+  block:
+    - name: UBTU-24-900040 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-900040 - Get list of audit configuration files
+      ansible.builtin.find:
+        paths: "{{ ubuntu_2404_vars_audit_directory }}"
+        patterns:
+          - "*.rules"
+          - "*.conf"
+        recurse: true
+        file_type: file
+      register: audit_conf_files
+      when: auditdinstalled.stdout != ""
+
+    - name: UBTU-24-900040 - Set audit configuration files permissions to 640
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        mode: '0640'
+        state: file
+      loop: "{{ audit_conf_files.files }}"
+      when:
+        - auditdinstalled.stdout != ""
+        - audit_conf_files.files | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-900050
+  tags: [UBTU-24-900050]
+  when: ubuntu_2404_defaults_run_ubtu_24_900050 | bool
+  block:
+    - name: UBTU-24-900050 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-900050 - Get list of audit configuration files
+      ansible.builtin.find:
+        paths: "{{ ubuntu_2404_vars_audit_directory }}"
+        patterns:
+          - "*.rules"
+          - "*.conf"
+        recurse: true
+        file_type: file
+      register: audit_conf_files
+      when: auditdinstalled.stdout != ""
+
+    - name: UBTU-24-900050 - Set audit configuration files owner to root
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        owner: root
+        state: file
+      loop: "{{ audit_conf_files.files }}"
+      when:
+        - auditdinstalled.stdout != ""
+        - audit_conf_files.files | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-900060
+  tags: [UBTU-24-900060]
+  when: ubuntu_2404_defaults_run_ubtu_24_900060 | bool
+  block:
+    - name: UBTU-24-900060 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-900060 - Get list of audit configuration files
+      ansible.builtin.find:
+        paths: "{{ ubuntu_2404_vars_audit_directory }}"
+        patterns:
+          - "*.rules"
+          - "*.conf"
+        recurse: true
+        file_type: file
+      register: audit_conf_files
+      when: auditdinstalled.stdout != ""
+
+    - name: UBTU-24-900060 - Set audit configuration files group-owner to root
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        group: root
+        state: file
+      loop: "{{ audit_conf_files.files }}"
+      when:
+        - auditdinstalled.stdout != ""
+        - audit_conf_files.files | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-900220
+  tags: [UBTU-24-900220, UBTU-24-900240, UBTU-24-900300, UBTU-24-900210, UBTU-24-900080, UBTU-24-900190, UBTU-24-900320, UBTU-24-900750, UBTU-24-900290, UBTU-24-900740, UBTU-24-900730, UBTU-24-900090, UBTU-24-900200, UBTU-24-900330, UBTU-24-900270, UBTU-24-900230, UBTU-24-900110, UBTU-24-900120, UBTU-24-900070, UBTU-24-900170, UBTU-24-900180, UBTU-24-900100, UBTU-24-900280, UBTU-24-900310, UBTU-24-200290, UBTU-24-200310, UBTU-24-200320, UBTU-24-200280, UBTU-24-200300, UBTU-24-900150, UBTU-24-900140, UBTU-24-900160, UBTU-24-900350, UBTU-24-900340, UBTU-24-900130, UBTU-24-900540, UBTU-24-300029, UBTU-24-900610, UBTU-24-900590, UBTU-24-900600, UBTU-24-900250, UBTU-24-900260, UBTU-24-900510, UBTU-24-900520, UBTU-24-200580, UBTU-24-500010, auditd]
+  when: ubuntu_2404_defaults_run_ubtu_24_900220 | bool
+  block:
+    - name: UBTU-24-900220 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-900220 - Copy auditd rules template
+      ansible.builtin.template:
+        src: '{{ ubuntu_2404_defaults_auditd_rule_template_file }}'
+        dest: '{{ ubuntu_2404_vars_auditd_rule_file }}'
+        owner: root
+        group: root
+        mode: '0640'
+        force: true
+      notify:
+        - '{{ role_name }} : restart auditd'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-600030
+  tags: [UBTU-24-600030]
+  when: ubuntu_2404_defaults_run_ubtu_24_600030 | bool
+  block:
+    - name: UBTU-24-600030 - Enable FIPS
+      ansible.builtin.debug:
+        msg: 'This controls requires manual remediation as ubuntu pro subscription is required for FIPS Enablement.'
+
+###################################################################################################################################
+- name: UBTU-24-100650
+  tags: [UBTU-24-100650]
+  when: ubuntu_2404_defaults_run_ubtu_24_100650 | bool
+  block:
+    - name: UBTU-24-100650 - Check to see if sssd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep sssd
+      args:
+        executable: /bin/bash
+      register: sssdinstalled
+      failed_when: sssdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100650 - Install sssd and libpam-sss
+      ansible.builtin.apt:
+        name:
+          - sssd
+          - libpam-sss
+          - libnss-sss
+        state: present
+      register: output
+      changed_when: output.changed
+      when:
+        - ubuntu_2404_defaults_run_ubtu_24_100650_install | bool
+        - sssdinstalled.stdout == ""
+
+###################################################################################################################################
+- name: UBTU-24-100660
+  tags: [UBTU-24-100660]
+  when: ubuntu_2404_defaults_run_ubtu_24_100660 | bool
+  block:
+    - name: UBTU-24-100660 - Ubuntu 24.04 LTS must use the "SSSD" package for multifactor authentication services.
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation. Refer to the STIG fix description for implementation details.'
+
+###################################################################################################################################
+- name: UBTU-24-100850
+  tags: [UBTU-24-100850]
+  when: ubuntu_2404_defaults_run_ubtu_24_100850 | bool
+  block:
+    - name: UBTU-24-100850 - Configure SSH client
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation. Configure SSH client settings in /etc/ssh/ssh_config'
+
+###################################################################################################################################
+- name: UBTU-24-100860
+  tags: [UBTU-24-100860]
+  when: ubuntu_2404_defaults_run_ubtu_24_100860 | bool
+  block:
+    - name: UBTU-24-100860 - Configure SSH client
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation. Configure SSH client settings in /etc/ssh/ssh_config'
+
+###################################################################################################################################
+- name: UBTU-24-100910
+  tags: [UBTU-24-100910]
+  when: ubuntu_2404_defaults_run_ubtu_24_100910 | bool
+  block:
+    - name: UBTU-24-100910 - Check to see if libpam-pkcs11 is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep libpam-pkcs11
+      args:
+        executable: /bin/bash
+      register: pkcs11installed
+      failed_when: pkcs11installed.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-100910 - Install libpam-pkcs11
+      ansible.builtin.apt:
+        name: libpam-pkcs11
+        state: present
+      register: output
+      changed_when: output.changed
+      when:
+        - ubuntu_2404_defaults_run_ubtu_24_100910_install | bool
+        - pkcs11installed.stdout == ""
+
+###################################################################################################################################
+- name: UBTU-24-200040
+  tags: [UBTU-24-200040]
+  when: ubuntu_2404_defaults_run_ubtu_24_200040 | bool
+  block:
+    - name: UBTU-24-200040 - Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user interface automount function.
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation for GUI configuration.'
+
+###################################################################################################################################
+- name: UBTU-24-200041
+  tags: [UBTU-24-200041]
+  when: ubuntu_2404_defaults_run_ubtu_24_200041 | bool
+  block:
+    - name: UBTU-24-200041 - Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user interface autorun function.
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation for GUI configuration.'
+
+###################################################################################################################################
+- name: UBTU-24-200042
+  tags: [UBTU-24-200042]
+  when: ubuntu_2404_defaults_run_ubtu_24_200042 | bool
+  block:
+    - name: UBTU-24-200042 - Ubuntu 24.04 LTS must prevent a user from overriding the disabling of the graphical user smart card removal action.
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation for GUI configuration.'
+
+###################################################################################################################################
+- name: UBTU-24-200043
+  tags: [UBTU-24-200043]
+  when: ubuntu_2404_defaults_run_ubtu_24_200043 | bool
+  block:
+    - name: UBTU-24-200043 - Ubuntu 24.04 LTS must conceal, via the session lock, information previously visible on the display with a publicly viewable image.
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation for GUI configuration.'
+
+###################################################################################################################################
+- name: UBTU-24-200270
+  tags: [UBTU-24-200270]
+  when: ubuntu_2404_defaults_run_ubtu_24_200270 | bool
+  block:
+    - name: UBTU-24-200270 - Configure audit rules for cron
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation. Add audit rules for cron execution.'
+
+###################################################################################################################################
+- name: UBTU-24-300019
+  tags: [UBTU-24-300019]
+  when: ubuntu_2404_defaults_run_ubtu_24_300019 | bool
+  block:
+    - name: UBTU-24-300019 - Review sudoers for authenticate settings
+      ansible.builtin.debug:
+        msg: 'Review /etc/sudoers and sudoers.d for !authenticate. Set ubuntu_2404_defaults_ubtu_24_300019_remediate_sudoers true to comment matching lines (validate with visudo).'
+      when: not (ubuntu_2404_defaults_ubtu_24_300019_remediate_sudoers | default(false) | bool)
+
+    - name: UBTU-24-300019 - Find sudoers.d files for !authenticate remediation
+      ansible.builtin.find:
+        paths: '{{ ubuntu_2404_defaults_sudoers_d_folder }}'
+        patterns: '*'
+        hidden: false
+      register: sudoers_d_files_300019
+      when: ubuntu_2404_defaults_ubtu_24_300019_remediate_sudoers | default(false) | bool
+
+    - name: UBTU-24-300019 - Comment out lines containing !authenticate in /etc/sudoers
+      ansible.builtin.replace:
+        path: '{{ ubuntu_2404_defaults_sudoers_file }}'
+        regexp: '(?i)^([^#].*!authenticate.*)$'
+        replace: '# \1'
+        backup: true
+      when: ubuntu_2404_defaults_ubtu_24_300019_remediate_sudoers | default(false) | bool
+
+    - name: UBTU-24-300019 - Comment out lines containing !authenticate in sudoers.d files
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '(?i)^([^#].*!authenticate.*)$'
+        replace: '# \1'
+        backup: true
+      loop: "{{ sudoers_d_files_300019.files | default([]) }}"
+      when:
+        - ubuntu_2404_defaults_ubtu_24_300019_remediate_sudoers | default(false) | bool
+        - sudoers_d_files_300019.files is defined
+        - sudoers_d_files_300019.files | length > 0
+
+###################################################################################################################################
+- name: UBTU-24-300020
+  tags: [UBTU-24-300020]
+  when: ubuntu_2404_defaults_run_ubtu_24_300020 | bool
+  block:
+    - name: UBTU-24-300020 - Find sudoers.d files for prohibited ALL remediation
+      ansible.builtin.find:
+        paths: '{{ ubuntu_2404_defaults_sudoers_d_folder }}'
+        patterns: '*'
+      register: sudoers_d_files_300020
+
+    - name: UBTU-24-300020 - Check for prohibited ALL ALL=(ALL) ALL in sudoers
+      ansible.builtin.shell: set -o pipefail && grep -h -v '^#' {{ ubuntu_2404_defaults_sudoers_file }} {{ ubuntu_2404_defaults_sudoers_d_folder }}/* 2>/dev/null | grep -E '^ALL\s+ALL=\(ALL\)\s+ALL$|^ALL\s+ALL=\(ALL:ALL\)\s+ALL$' || true
+      args:
+        executable: /bin/bash
+      register: sudoers_bad_all_300020
+      changed_when: false
+
+    - name: UBTU-24-300020 - Report prohibited privilege elevation entries
+      ansible.builtin.debug:
+        msg: 'Remove "ALL ALL=(ALL) ALL" or "ALL ALL=(ALL:ALL) ALL" from {{ ubuntu_2404_defaults_sudoers_file }} and {{ ubuntu_2404_defaults_sudoers_d_folder }}/. Set ubuntu_2404_defaults_ubtu_24_300020_remediate_sudoers true to comment (validate with visudo).'
+      when: sudoers_bad_all_300020.stdout | length > 0
+
+    - name: UBTU-24-300020 - Comment out prohibited ALL ALL=(ALL) ALL entries in sudoers
+      ansible.builtin.replace:
+        path: '{{ ubuntu_2404_defaults_sudoers_file }}'
+        regexp: '^(ALL\s+ALL=\(ALL\)\s+ALL|ALL\s+ALL=\(ALL:ALL\)\s+ALL)\s*$'
+        replace: '# \1'
+        backup: true
+      when:
+        - ubuntu_2404_defaults_ubtu_24_300020_remediate_sudoers | default(false) | bool
+        - sudoers_bad_all_300020.stdout is search('ALL')
+
+    - name: UBTU-24-300020 - Comment out prohibited entries in sudoers.d
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^(ALL\s+ALL=\(ALL\)\s+ALL|ALL\s+ALL=\(ALL:ALL\)\s+ALL)\s*$'
+        replace: '# \1'
+        backup: true
+      loop: "{{ sudoers_d_files_300020.files | default([]) }}"
+      when:
+        - ubuntu_2404_defaults_ubtu_24_300020_remediate_sudoers | default(false) | bool
+        - sudoers_d_files_300020.files | length > 0
+      loop_control:
+        label: "{{ item.path }}"
+
+###################################################################################################################################
+- name: UBTU-24-400375
+  tags: [UBTU-24-400375]
+  when: ubuntu_2404_defaults_run_ubtu_24_400375 | bool
+  block:
+    - name: UBTU-24-400375 - Check to see if libpam-pkcs11 is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep libpam-pkcs11
+      args:
+        executable: /bin/bash
+      register: pkcs11installed
+      failed_when: pkcs11installed.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-400375 - Install libpam-pkcs11
+      ansible.builtin.apt:
+        name: libpam-pkcs11
+        state: present
+      register: output
+      changed_when: output.changed
+      when:
+        - ubuntu_2404_defaults_run_ubtu_24_400375_install | bool
+        - pkcs11installed.stdout == ""
+
+###################################################################################################################################
+- name: UBTU-24-600030
+  tags: [UBTU-24-600030]
+  when: ubuntu_2404_defaults_run_ubtu_24_600030 | bool
+  block:
+    - name: 'UBTU-24-600030 - Ubuntu 24.04 LTS must implement NIST FIPS-validated cryptography to protect classified information and for the following: To provision digital signatures, to generate cryptographic hashes, and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.'
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation. Refer to the STIG fix description for implementation details.'
+
+###################################################################################################################################
+- name: UBTU-24-700400
+  tags: [UBTU-24-700400]
+  when: ubuntu_2404_defaults_run_ubtu_24_700400 | bool
+  block:
+    - name: UBTU-24-700400 - Ubuntu 24.04 LTS must be a vendor-supported release.
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation. Refer to the STIG fix description for implementation details.'
+
+###################################################################################################################################
+- name: UBTU-24-901310
+  tags: [UBTU-24-901310]
+  when: ubuntu_2404_defaults_run_ubtu_24_901310 | bool
+  block:
+    - name: UBTU-24-901310 - Ubuntu 24.04 LTS must be configured to permit only authorized users ownership of the audit log files.
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation. Refer to the STIG fix description for implementation details.'
+
+###################################################################################################################################
+- name: UBTU-24-901350
+  tags: [UBTU-24-901350]
+  when: ubuntu_2404_defaults_run_ubtu_24_901350 | bool
+  block:
+    - name: UBTU-24-901350 - Ubuntu 24.04 LTS must permit only authorized groups ownership of the audit log files.
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation. Refer to the STIG fix description for implementation details.'
+
+###################################################################################################################################
+- name: UBTU-24-200680
+  tags: [UBTU-24-200680]
+  when: ubuntu_2404_defaults_run_ubtu_24_200680 | bool
+  block:
+    - name: UBTU-24-200680 - Configure SSH banner acknowledgement script
+      ansible.builtin.debug:
+        msg: 'This control requires manual remediation. Create /etc/profile.d/ssh_confirm.sh script as described in the STIG.'
+
+###################################################################################################################################
+- name: UBTU-24-901250
+  tags: [UBTU-24-901250]
+  when: ubuntu_2404_defaults_run_ubtu_24_901250 | bool
+  block:
+    - name: UBTU-24-901250 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-901250 - Set audit tools group-owner to root
+      ansible.builtin.file:
+        path: "{{ item }}"
+        group: root
+        state: file
+      with_items: "{{ ubuntu_2404_defaults_audit_tools }}"
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+- name: UBTU-24-909000
+  tags: [UBTU-24-909000]
+  when: ubuntu_2404_defaults_run_ubtu_24_909000 | bool
+  block:
+    - name: UBTU-24-909000 - Check to see if auditd is installed
+      ansible.builtin.shell: |
+        set -o pipefail
+        dpkg -l | grep auditd
+      args:
+        executable: /bin/bash
+      register: auditdinstalled
+      failed_when: auditdinstalled.rc == 2
+      changed_when: false
+
+    - name: UBTU-24-909000 - Make audit rules immutable
+      ansible.builtin.lineinfile:
+        path: '{{ ubuntu_2404_vars_auditd_rule_file }}'
+        state: present
+        regexp: '^-e\s+2$'
+        line: '-e 2'
+        insertafter: EOF
+      notify:
+        - '{{ role_name }} : restart auditd'
+      when:
+        - auditdinstalled.stdout != ""
+
+###################################################################################################################################
+# Putting it at the end as these control requires reboot of System.
+- name: UBTU-24-700020
+  tags: [UBTU-24-700020, UBTU-24-700080, UBTU-24-700060, UBTU-24-700090, UBTU-24-700070]
+  when: ubuntu_2404_defaults_run_ubtu_24_700020 | bool
+  block:
+    # UBTU-24-700020 (2750/0640), UBTU-24-700080/700060 (dirs), UBTU-24-700090/700070 (files)
+    - name: UBTU-24-700020 - Set the appropriate permissions to the files and directories used by the systemd journal
+      ansible.builtin.lineinfile:
+        path: "{{ ubuntu_2404_defaults_systemd_journal }}"
+        state: present
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+        firstmatch: true
+        backup: true
+      with_items:
+        - { regexp: '^#?\s*z /run/log/journal 275[50] root systemd-journal - -', line: 'z /run/log/journal 2750 root systemd-journal - -' }
+        - { regexp: '^#?\s*Z /run/log/journal/%m ~275[50] root systemd-journal - -', line: 'Z /run/log/journal/%m ~2750 root systemd-journal - -' }
+        - { regexp: '^#?\s*z /var/log/journal 275[50] root systemd-journal - -', line: 'z /var/log/journal 2750 root systemd-journal - -' }
+        - { regexp: '^#?\s*z /var/log/journal/%m 275[50] root systemd-journal - -', line: 'z /var/log/journal/%m 2750 root systemd-journal - -' }
+        - { regexp: '^#?\s*z /var/log/journal/%m/system.journal [0-7][0-6][0-4][0-7] root systemd-journal - -', line: 'z /var/log/journal/%m/system.journal 0640 root systemd-journal - -' }
+      notify:
+        - '{{ role_name }} : reboot system'

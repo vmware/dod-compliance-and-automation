@@ -1,0 +1,260 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+# Aligned with Canonical Ubuntu 24.04 LTS STIG Version 1 Release 3/4 (02 December 2025 / 05 January 2026).
+
+ubuntu_2404_defaults_run_ubtu_24_300026: true
+ubuntu_2404_defaults_run_ubtu_24_102000: true
+ubuntu_2404_defaults_run_ubtu_24_102010: true
+ubuntu_2404_defaults_run_ubtu_24_600140: true
+ubuntu_2404_defaults_run_ubtu_24_600070: true
+ubuntu_2404_defaults_run_ubtu_24_700310: true
+ubuntu_2404_defaults_run_ubtu_24_700300: true
+ubuntu_2404_defaults_run_ubtu_24_300001: true
+ubuntu_2404_defaults_run_ubtu_24_700320: true
+ubuntu_2404_defaults_run_ubtu_24_100600: true
+# false when apt cannot install packages (locked/air-gapped/product image).
+ubuntu_2404_defaults_run_ubtu_24_100600_install: false
+ubuntu_2404_defaults_run_ubtu_24_100700: true
+ubuntu_2404_defaults_run_ubtu_24_100010: true
+ubuntu_2404_defaults_run_ubtu_24_100020: true
+ubuntu_2404_defaults_run_ubtu_24_100040: true
+ubuntu_2404_defaults_run_ubtu_24_100050: true
+ubuntu_2404_defaults_run_ubtu_24_100030: true
+ubuntu_2404_defaults_run_ubtu_24_600090: true
+ubuntu_2404_defaults_run_ubtu_24_901260: true
+ubuntu_2404_defaults_run_ubtu_24_300011: true
+ubuntu_2404_defaults_run_ubtu_24_300006: true
+ubuntu_2404_defaults_run_ubtu_24_700120: true
+ubuntu_2404_defaults_run_ubtu_24_700010: false
+ubuntu_2404_defaults_run_ubtu_24_700020: true
+ubuntu_2404_defaults_run_ubtu_24_700150: true
+ubuntu_2404_defaults_run_ubtu_24_901230: true
+ubuntu_2404_defaults_run_ubtu_24_901270: true
+ubuntu_2404_defaults_run_ubtu_24_901280: true
+ubuntu_2404_defaults_run_ubtu_24_300012: false
+ubuntu_2404_defaults_run_ubtu_24_300013: false
+ubuntu_2404_defaults_run_ubtu_24_300008: false
+ubuntu_2404_defaults_run_ubtu_24_300010: false
+ubuntu_2404_defaults_run_ubtu_24_300009: false
+ubuntu_2404_defaults_run_ubtu_24_300007: false
+ubuntu_2404_defaults_run_ubtu_24_700080: true
+ubuntu_2404_defaults_run_ubtu_24_700040: true
+ubuntu_2404_defaults_run_ubtu_24_700050: true
+ubuntu_2404_defaults_run_ubtu_24_901240: true
+ubuntu_2404_defaults_run_ubtu_24_700110: true
+ubuntu_2404_defaults_run_ubtu_24_700100: true
+ubuntu_2404_defaults_run_ubtu_24_700140: true
+ubuntu_2404_defaults_run_ubtu_24_700130: true
+ubuntu_2404_defaults_run_ubtu_24_700030: true
+ubuntu_2404_defaults_run_ubtu_24_600150: true
+ubuntu_2404_defaults_run_ubtu_24_100300: true
+ubuntu_2404_defaults_run_ubtu_24_100310: true
+ubuntu_2404_defaults_run_ubtu_24_300041: true
+ubuntu_2404_defaults_run_ubtu_24_600200: true
+ubuntu_2404_defaults_run_ubtu_24_600160: true
+ubuntu_2404_defaults_run_ubtu_24_600180: true
+ubuntu_2404_defaults_run_ubtu_24_901220: true
+ubuntu_2404_defaults_run_ubtu_24_600190: true
+ubuntu_2404_defaults_run_ubtu_24_100800: true
+ubuntu_2404_defaults_run_ubtu_24_100800_install: false
+ubuntu_2404_defaults_run_ubtu_24_100810: true
+ubuntu_2404_defaults_run_ubtu_24_200640: false
+ubuntu_2404_defaults_run_ubtu_24_200640_dod_banner: false
+ubuntu_2404_defaults_run_ubtu_24_300031: true
+ubuntu_2404_defaults_run_ubtu_24_600000: true
+ubuntu_2404_defaults_run_ubtu_24_600010: true
+ubuntu_2404_defaults_run_ubtu_24_300022: true
+ubuntu_2404_defaults_run_ubtu_24_300023: true
+ubuntu_2404_defaults_run_ubtu_24_100820: true
+ubuntu_2404_defaults_run_ubtu_24_100830: true
+ubuntu_2404_defaults_run_ubtu_24_100840: true
+ubuntu_2404_defaults_run_ubtu_24_500050: true
+ubuntu_2404_defaults_run_ubtu_24_200650: true
+ubuntu_2404_defaults_run_ubtu_24_200660: true
+ubuntu_2404_defaults_run_ubtu_24_200060: true
+ubuntu_2404_defaults_run_ubtu_24_200020: true
+ubuntu_2404_defaults_run_ubtu_24_300025: true
+ubuntu_2404_defaults_run_ubtu_24_300039: true
+ubuntu_2404_defaults_run_ubtu_24_600230: true
+ubuntu_2404_defaults_run_ubtu_24_400110: false
+ubuntu_2404_defaults_run_ubtu_24_400000: true
+ubuntu_2404_defaults_run_ubtu_24_400300: true
+ubuntu_2404_defaults_run_ubtu_24_400310: true
+ubuntu_2404_defaults_run_ubtu_24_200260: true
+ubuntu_2404_defaults_run_ubtu_24_200250: true
+ubuntu_2404_defaults_run_ubtu_24_200610: true
+ubuntu_2404_defaults_run_ubtu_24_300017: true
+ubuntu_2404_defaults_run_ubtu_24_200000: true
+ubuntu_2404_defaults_run_ubtu_24_101000: true
+ubuntu_2404_defaults_run_ubtu_24_300030: true
+ubuntu_2404_defaults_run_ubtu_24_300021: true
+# When true, comment out NOPASSWD lines in sudoers (validate with visudo).
+ubuntu_2404_defaults_ubtu_24_300021_remediate_sudoers: false
+ubuntu_2404_defaults_run_ubtu_24_600130: true
+ubuntu_2404_defaults_run_ubtu_24_100500: true
+ubuntu_2404_defaults_run_ubtu_24_100500_install: false
+ubuntu_2404_defaults_run_ubtu_24_100510: true
+ubuntu_2404_defaults_run_ubtu_24_400260: true
+ubuntu_2404_defaults_run_ubtu_24_400270: true
+ubuntu_2404_defaults_run_ubtu_24_400280: true
+ubuntu_2404_defaults_run_ubtu_24_400330: true
+ubuntu_2404_defaults_run_ubtu_24_300014: true
+ubuntu_2404_defaults_run_ubtu_24_400320: true
+ubuntu_2404_defaults_run_ubtu_24_400290: true
+ubuntu_2404_defaults_run_ubtu_24_300016: true
+ubuntu_2404_defaults_run_ubtu_24_400220: true
+ubuntu_2404_defaults_run_ubtu_24_300028: true
+ubuntu_2404_defaults_run_ubtu_24_300027: true
+ubuntu_2404_defaults_run_ubtu_24_400400: true
+ubuntu_2404_defaults_run_ubtu_24_400030: true
+ubuntu_2404_defaults_run_ubtu_24_100900: true
+ubuntu_2404_defaults_run_ubtu_24_400020: true
+ubuntu_2404_defaults_run_ubtu_24_400060: true
+ubuntu_2404_defaults_run_ubtu_24_400360: true
+ubuntu_2404_defaults_run_ubtu_24_400380: true
+ubuntu_2404_defaults_run_ubtu_24_400370: true
+ubuntu_2404_defaults_run_ubtu_24_600060: true
+ubuntu_2404_defaults_run_ubtu_24_400340: true
+ubuntu_2404_defaults_run_ubtu_24_100100: true
+ubuntu_2404_defaults_run_ubtu_24_100110: true
+ubuntu_2404_defaults_run_ubtu_24_100130: true
+ubuntu_2404_defaults_run_ubtu_24_100120: true
+ubuntu_2404_defaults_run_ubtu_24_909890: true
+ubuntu_2404_defaults_run_ubtu_24_900950: true
+ubuntu_2404_defaults_run_ubtu_24_200090: true
+ubuntu_2404_defaults_run_ubtu_24_100200: true
+ubuntu_2404_defaults_run_ubtu_24_100200_install: false
+ubuntu_2404_defaults_run_ubtu_24_100400: true
+ubuntu_2404_defaults_run_ubtu_24_100400_install: false
+ubuntu_2404_defaults_run_ubtu_24_100410: true
+ubuntu_2404_defaults_run_ubtu_24_100450: true
+ubuntu_2404_defaults_run_ubtu_24_900980: true
+ubuntu_2404_defaults_run_ubtu_24_900920: true
+ubuntu_2404_defaults_run_ubtu_24_900960: true
+ubuntu_2404_defaults_run_ubtu_24_901300: true
+ubuntu_2404_defaults_run_ubtu_24_901310: true
+ubuntu_2404_defaults_run_ubtu_24_901350: true
+ubuntu_2404_defaults_run_ubtu_24_901380: true
+ubuntu_2404_defaults_run_ubtu_24_900040: true
+ubuntu_2404_defaults_run_ubtu_24_900050: true
+ubuntu_2404_defaults_run_ubtu_24_900060: true
+ubuntu_2404_defaults_run_ubtu_24_900220: true
+ubuntu_2404_defaults_run_ubtu_24_600030: true
+ubuntu_2404_defaults_run_ubtu_24_100650: true
+ubuntu_2404_defaults_run_ubtu_24_100650_install: false
+ubuntu_2404_defaults_run_ubtu_24_100660: true
+ubuntu_2404_defaults_run_ubtu_24_100850: true
+ubuntu_2404_defaults_run_ubtu_24_100860: true
+ubuntu_2404_defaults_run_ubtu_24_100910: true
+ubuntu_2404_defaults_run_ubtu_24_100910_install: false
+ubuntu_2404_defaults_run_ubtu_24_200040: true
+ubuntu_2404_defaults_run_ubtu_24_200041: true
+ubuntu_2404_defaults_run_ubtu_24_200042: true
+ubuntu_2404_defaults_run_ubtu_24_200043: true
+ubuntu_2404_defaults_run_ubtu_24_200270: true
+ubuntu_2404_defaults_run_ubtu_24_200680: true
+ubuntu_2404_defaults_run_ubtu_24_300019: true
+# When true, comment out lines matching !authenticate in sudoers (validate with visudo).
+ubuntu_2404_defaults_ubtu_24_300019_remediate_sudoers: false
+ubuntu_2404_defaults_run_ubtu_24_300020: true
+# When true, comment prohibited ALL ALL=(ALL) ALL lines (validate with visudo).
+ubuntu_2404_defaults_ubtu_24_300020_remediate_sudoers: false
+ubuntu_2404_defaults_run_ubtu_24_400375: true
+ubuntu_2404_defaults_run_ubtu_24_400375_install: false
+ubuntu_2404_defaults_run_ubtu_24_700400: true
+ubuntu_2404_defaults_run_ubtu_24_901250: true
+ubuntu_2404_defaults_run_ubtu_24_909000: true
+
+ubuntu_2404_defaults_run_ubtu_24_200280: true
+ubuntu_2404_defaults_run_ubtu_24_200290: true
+ubuntu_2404_defaults_run_ubtu_24_200300: true
+ubuntu_2404_defaults_run_ubtu_24_200310: true
+ubuntu_2404_defaults_run_ubtu_24_200320: true
+ubuntu_2404_defaults_run_ubtu_24_200580: true
+ubuntu_2404_defaults_run_ubtu_24_300029: true
+ubuntu_2404_defaults_run_ubtu_24_500010: true
+ubuntu_2404_defaults_run_ubtu_24_700060: true
+ubuntu_2404_defaults_run_ubtu_24_700070: true
+ubuntu_2404_defaults_run_ubtu_24_700090: true
+ubuntu_2404_defaults_run_ubtu_24_900070: true
+ubuntu_2404_defaults_run_ubtu_24_900080: true
+ubuntu_2404_defaults_run_ubtu_24_900090: true
+ubuntu_2404_defaults_run_ubtu_24_900100: true
+ubuntu_2404_defaults_run_ubtu_24_900110: true
+ubuntu_2404_defaults_run_ubtu_24_900120: true
+ubuntu_2404_defaults_run_ubtu_24_900130: true
+ubuntu_2404_defaults_run_ubtu_24_900140: true
+ubuntu_2404_defaults_run_ubtu_24_900150: true
+ubuntu_2404_defaults_run_ubtu_24_900160: true
+ubuntu_2404_defaults_run_ubtu_24_900170: true
+ubuntu_2404_defaults_run_ubtu_24_900180: true
+ubuntu_2404_defaults_run_ubtu_24_900190: true
+ubuntu_2404_defaults_run_ubtu_24_900200: true
+ubuntu_2404_defaults_run_ubtu_24_900210: true
+ubuntu_2404_defaults_run_ubtu_24_900230: true
+ubuntu_2404_defaults_run_ubtu_24_900240: true
+ubuntu_2404_defaults_run_ubtu_24_900250: true
+ubuntu_2404_defaults_run_ubtu_24_900260: true
+ubuntu_2404_defaults_run_ubtu_24_900270: true
+ubuntu_2404_defaults_run_ubtu_24_900280: true
+ubuntu_2404_defaults_run_ubtu_24_900290: true
+ubuntu_2404_defaults_run_ubtu_24_900300: true
+ubuntu_2404_defaults_run_ubtu_24_900310: true
+ubuntu_2404_defaults_run_ubtu_24_900320: true
+ubuntu_2404_defaults_run_ubtu_24_900330: true
+ubuntu_2404_defaults_run_ubtu_24_900340: true
+ubuntu_2404_defaults_run_ubtu_24_900350: true
+ubuntu_2404_defaults_run_ubtu_24_900510: true
+ubuntu_2404_defaults_run_ubtu_24_900520: true
+ubuntu_2404_defaults_run_ubtu_24_900540: true
+ubuntu_2404_defaults_run_ubtu_24_900590: true
+ubuntu_2404_defaults_run_ubtu_24_900600: true
+ubuntu_2404_defaults_run_ubtu_24_900610: true
+ubuntu_2404_defaults_run_ubtu_24_900730: true
+ubuntu_2404_defaults_run_ubtu_24_900740: true
+ubuntu_2404_defaults_run_ubtu_24_900750: true
+
+
+# Ubuntu Configurations
+ubuntu_2404_defaults_unattended_upgrades_file_path: '/etc/apt/apt.conf.d/50unattended-upgrades'
+ubuntu_2404_defaults_auditd_rule_template_file: 'audit.STIG.rules'
+ubuntu_2404_defaults_sysctl_files:
+  - /run/sysctl.d/*
+  - /etc/sysctl.d/*
+  - /usr/local/lib/sysctl.d/*
+  - /usr/lib/sysctl.d/*
+  - /lib/sysctl.d/*
+ubuntu_2404_defaults_audit_tools:
+  - /sbin/auditctl
+  - /sbin/aureport
+  - /sbin/ausearch
+  - /sbin/autrace
+  - /sbin/auditd
+  - /sbin/augenrules
+ubuntu_2404_defaults_journalctl_command_path: '/bin/journalctl'
+ubuntu_2404_defaults_systemd_journal: '/usr/lib/tmpfiles.d/systemd.conf'
+ubuntu_2404_defaults_sudoers_file: '/etc/sudoers'
+ubuntu_2404_defaults_sudoers_d_folder: '/etc/sudoers.d'
+ubuntu_2404_defaults_boot_grub_cfg_file: '/boot/grub/grub.cfg'
+ubuntu_2404_defaults_limits_d_folder: '/etc/security/limits.d'
+ubuntu_2404_defaults_sssd_conf_path: '/etc/sssd/sssd.conf'
+ubuntu_2404_defaults_etc_issue_file: '/etc/issue.net'
+ubuntu_2404_defaults_timeout_script_file: '99-terminal_tmout.sh'
+ubuntu_2404_defaults_terminal_tmout_seconds: 900
+
+# Handler "reboot system": seconds before reboot after playbook finishes (no wait for host to return).
+ubuntu_2404_defaults_reboot_async_delay_seconds: 10
+
+ubuntu_2404_defaults_auditd_action_mail_acct: 'root'
+ubuntu_2404_defaults_auditd_disk_full_action: 'HALT'
+ubuntu_2404_defaults_auditd_space_left: '25%'
+ubuntu_2404_defaults_auditd_space_left_action: 'email'
+ubuntu_2404_defaults_auditd_log_group: 'root'
+
+ubuntu_2404_defaults_pamd_pam_unix_module_argument: 'yescrypt'
+
+ubuntu_2404_defaults_rsyslog_conf_file: '/etc/rsyslog.d/50-default.conf'
+ubuntu_2404_defaults_rsyslog_authpriv_log: '/var/log/secure'
+ubuntu_2404_defaults_rsyslog_deamon_log: '/var/log/messages'

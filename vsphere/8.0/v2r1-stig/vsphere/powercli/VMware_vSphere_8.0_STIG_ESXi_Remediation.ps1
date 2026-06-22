@@ -315,7 +315,7 @@ If($reportpath){
 }
 
 #Modules needed to run script and load
-$modules = @("VMware.PowerCLI")
+$modules = @("VCF.PowerCLI")
 
 #Function to check for correct modules
 Function checkModule ($m){
