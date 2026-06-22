@@ -509,7 +509,7 @@
           x: http://java.sun.com/xml/ns/javaee
       notify:
         - '{{ role_name }} : restart {{ var_notify_service_name }}'
-      when: filter_class_current.matches[0]['filter-class'] | trim != 'org.apache.catalina.filters.SetCharacterEncodingFilter'
+      when: filter_class_current.matches | length == 0 or filter_class_current.matches[0].values() | list | first | trim != 'org.apache.catalina.filters.SetCharacterEncodingFilter'
 
     - name: VCPF-80-000127 - Configure filter async
       community.general.xml:
