@@ -4,7 +4,6 @@
 
 #### Release Notes
 - Updated source DISA SRG to the GPOS SRG V3R3.
-- PHTN-50-000082 Updated InSpec test.
 - PHTN-50-000092 Updated InSpec test.
 - PHTN-50-000093 Updated Inspec test.
 - PHTN-50-000133 Updated Inspec test.
