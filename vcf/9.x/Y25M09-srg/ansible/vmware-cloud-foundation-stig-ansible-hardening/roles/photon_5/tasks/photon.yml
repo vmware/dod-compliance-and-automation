@@ -924,33 +924,47 @@
       failed_when: auditdinstalled.rc == 2
       changed_when: false
 
-    - name: PHTN-50-000082 - Update permissions on auditing tools 750.
-      ansible.builtin.file:
-        path: "{{ item.file }}"
-        state: file
-        owner: root
-        group: root
-        mode: "0750"
-      with_items:
-        - {file: '/usr/sbin/augenrules'}
+    - name: PHTN-50-000082 - Check which auditing tools exist (755).
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      register: audit_tools_755_stat
+      loop:
+        - /usr/sbin/auditctl
+        - /usr/sbin/auditd
+        - /usr/sbin/aureport
+        - /usr/sbin/ausearch
+        - /usr/sbin/autrace
+        - /usr/sbin/augenrules
       when:
         - auditdinstalled.stdout != ""
 
     - name: PHTN-50-000082 - Update permissions on auditing tools 755.
       ansible.builtin.file:
-        path: "{{ item.file }}"
+        path: "{{ item.stat.path }}"
         state: file
         owner: root
         group: root
         mode: "0755"
-      with_items:
-        - {file: '/usr/sbin/auditctl'}
-        - {file: '/usr/sbin/auditd'}
-        - {file: '/usr/sbin/aureport'}
-        - {file: '/usr/sbin/ausearch'}
-        - {file: '/usr/sbin/autrace'}
+      loop: "{{ audit_tools_755_stat.results }}"
       when:
         - auditdinstalled.stdout != ""
+        - item.stat is defined
+        - item.stat.exists
+        - item.item != '/usr/sbin/augenrules'
+
+    - name: PHTN-50-000082 - Update permissions on augenrules 750.
+      ansible.builtin.file:
+        path: "{{ item.stat.path }}"
+        state: file
+        owner: root
+        group: root
+        mode: "0750"
+      loop: "{{ audit_tools_755_stat.results }}"
+      when:
+        - auditdinstalled.stdout != ""
+        - item.stat is defined
+        - item.stat.exists
+        - item.item == '/usr/sbin/augenrules'
 
 ###################################################################################################################################
 - name: PHTN-50-000085
