@@ -9,3 +9,6 @@ warn_list:
   - command-instead-of-module
 exclude_paths:
   - ~/.ansible/roles
+rules:
+  complexity:
+    max_tasks: 450

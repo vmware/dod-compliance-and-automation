@@ -5,3 +5,6 @@ skip_list:
 warn_list:
   - command-instead-of-module
   - no-changed-when
+rules:
+  complexity:
+    max_tasks: 450

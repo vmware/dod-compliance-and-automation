@@ -246,6 +246,8 @@
 
 ###################################################################################################################################
 # This must be before we install the OpenSSL FIPS Provider or the default OpenSSH Ciphers will cause issues with connecting over SSH
+# NOTE: This will always flag as "changed" on first run regardless of the cipher list, as the original file has a tab character,
+#       and the line being replaced below just has a space. But spaces are the preferred option. Subsequent runs will be fine.
 - name: PHTN-40-000079 - Configure sshd ciphers
   tags: [PHTN-40-000079, sshd]
   when: run_sshd_ciphers | bool
@@ -2595,6 +2597,8 @@
         - '{{ role_name }} : restart resolved'
 
 ###################################################################################################################################
+# NOTE: This will always flag as "changed" on first run regardless of the MAC list, as the original file has a tab character,
+#       and the line being replaced below just has spaces. But spaces are the preferred option. Subsequent runs will be fine.
 - name: PHTN-40-000239 - Configure sshd MACs
   tags: [PHTN-40-000239, sshd]
   when: run_sshd_macs | bool
