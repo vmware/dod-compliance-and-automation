@@ -1,0 +1,5 @@
+roles/lookup/tasks/lookup.yml complexity[tasks] # temporary until task file is split into include_tasks
+roles/eam/tasks/eam.yml complexity[tasks] # temporary until task file is split into include_tasks
+roles/sts/tasks/sts.yml complexity[tasks] # temporary until task file is split into include_tasks
+roles/ui/tasks/ui.yml complexity[tasks] # temporary until task file is split into include_tasks
+roles/perfcharts/tasks/perfcharts.yml complexity[tasks] # temporary until task file is split into include_tasks

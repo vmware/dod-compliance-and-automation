@@ -1,0 +1,5 @@
+roles/ubuntu_2204/tasks/ubuntu.yml complexity[tasks] # temporary until task file is split into include_tasks
+roles/photon_5/tasks/photon.yml complexity[tasks] # temporary until task file is split into include_tasks
+roles/vcenter_vami/tasks/vami.yml complexity[tasks] # temporary until task file is split into include_tasks
+roles/ops_apache_httpd/tasks/httpd.yml complexity[tasks] # temporary until task file is split into include_tasks
+roles/ops_hcx_mgr_apache_httpd/tasks/httpd.yml complexity[tasks] # temporary until task file is split into include_tasks

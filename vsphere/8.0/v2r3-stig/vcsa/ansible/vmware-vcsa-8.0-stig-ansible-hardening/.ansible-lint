@@ -1,4 +1,0 @@
-offline: true
-rules:
-  complexity:
-    max_tasks: 450
