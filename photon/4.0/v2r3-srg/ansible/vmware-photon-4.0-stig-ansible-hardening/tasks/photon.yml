@@ -1630,7 +1630,7 @@
 ###################################################################################################################################
 # Remediations for controls PHTN-40-000192, PHTN-40-000206, and PHTN-40-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-40-000192
-  tags: [PHTN-40-000192,PHTN-40-000206,PHTN-40-000267]
+  tags: [PHTN-40-000192, PHTN-40-000206, PHTN-40-000267]
   when:
     - run_pam_add_deny_so | bool
     - run_pam_add_faildelay_so | bool
@@ -1730,7 +1730,7 @@
 ###################################################################################################################################
 # Remediations for controls PHTN-40-000192, PHTN-40-000206, and PHTN-40-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-40-000206
-  tags: [PHTN-40-000206,PHTN-40-000192,PHTN-40-000267]
+  tags: [PHTN-40-000206, PHTN-40-000192, PHTN-40-000267]
   when:
     - run_pam_add_deny_so | bool
     - run_pam_add_faildelay_so | bool
@@ -1768,7 +1768,7 @@
 ###################################################################################################################################
 # Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-40-000267
-  tags: [PHTN-40-000267,PHTN-40-000192,PHTN-40-000206]
+  tags: [PHTN-40-000267, PHTN-40-000192, PHTN-40-000206]
   when:
     - run_pam_add_deny_so | bool
     - run_pam_add_faildelay_so | bool
