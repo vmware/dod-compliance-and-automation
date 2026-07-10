@@ -1,7 +1,0 @@
----
-# defaults file for vrlcm
-vrlcm_hostname: "25.0.3.194"
-vrlcm_username: "admin@local"
-vrlcm_password: "password"
-
-vrlcm_ntp_servers: "time-a-b.nist.gov,time.google.com"
