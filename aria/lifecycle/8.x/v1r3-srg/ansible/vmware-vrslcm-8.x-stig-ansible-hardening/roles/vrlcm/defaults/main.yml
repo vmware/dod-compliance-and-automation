@@ -1,7 +1,7 @@
 ---
 # defaults file for vrlcm
-vrlcm_hostname: "https://25.0.3.194"
+vrlcm_hostname: "https://lifecycle.domain.com"
 vrlcm_username: "admin@local"
-vrlcm_password: "VMware123!VMware123!"
+vrlcm_password: "password"
 
-vrlcm_ntp_servers: "ntp.broadcom.net"
+vrlcm_ntp_servers: "time-a-b.nist.gov,time.google.com"
