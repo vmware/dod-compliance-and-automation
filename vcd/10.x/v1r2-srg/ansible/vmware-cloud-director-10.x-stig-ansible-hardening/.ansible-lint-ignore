@@ -1,0 +1,1 @@
+roles/vmware-photon-4.0-stig-ansible-hardening/tasks/photon.yml complexity[tasks] # temporary until task file is split into include_tasks

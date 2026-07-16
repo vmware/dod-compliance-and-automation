@@ -1,0 +1,3 @@
+offline: true
+warn_list:
+  - fqcn[action-core]

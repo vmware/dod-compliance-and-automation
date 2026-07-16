@@ -1,12 +1,10 @@
-![Linting](https://github.com/vmware/dod-compliance-and-automation/actions/workflows/code-linting-push.yml/badge.svg?master)
-![Docs Deployment](https://github.com/vmware/dod-compliance-and-automation/actions/workflows/deploy-docs.yml/badge.svg?docs)
 # dod-compliance-and-automation
 
 > [!CAUTION]
 > Prior to using the STIG automation provided here it is assumed the user has familiarity with the rules contained in the various VMware STIGs and has evaluated those for impact and implementation considerations in their environment.
 
 ## Announcements
-Please visit our new documentation page at: https://vmware.github.io/dod-compliance-and-automation/  
+Please visit our new documentation page at: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/stig/9-0/vcf-stig-documentation/docs-overview-overview.html
 
 ## Overview
 VMware is a trusted partner in highly secure, mission critical systems around the world, including the US Department of Defense (DoD). In the DoD, all IT systems must adhere to the rigorous Risk Management Framework (RMF) as defined in DoDI 8510.01. A critical component of RMF is the mandatory implementation of Security Technical Implementation Guides (STIGs) and Security Requirements Guidelines (SRGs) as maintained by the Defense Information Systems Agency (DISA). Where a product specific STIG is not available, the relevant SRGs must be used instead.

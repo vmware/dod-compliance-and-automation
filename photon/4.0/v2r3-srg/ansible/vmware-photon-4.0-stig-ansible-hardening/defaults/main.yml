@@ -217,3 +217,5 @@ run_systemd_tmp_mount: true
 run_kernel_fs_suid_dumpable: true
 # PHTN-40-000247
 run_pam_remove_nullok: true
+# PHTN-40-000267
+run_pam_add_deny_so: true

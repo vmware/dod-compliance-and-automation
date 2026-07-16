@@ -246,6 +246,8 @@
 
 ###################################################################################################################################
 # This must be before we install the OpenSSL FIPS Provider or the default OpenSSH Ciphers will cause issues with connecting over SSH
+# NOTE: This will always flag as "changed" on first run regardless of the cipher list, as the original file has a tab character,
+#       and the line being replaced below just has a space. But spaces are the preferred option. Subsequent runs will be fine.
 - name: PHTN-40-000079 - Configure sshd ciphers
   tags: [PHTN-40-000079, sshd]
   when: run_sshd_ciphers | bool
@@ -1628,7 +1630,7 @@
 ###################################################################################################################################
 # Remediations for controls PHTN-40-000192, PHTN-40-000206, and PHTN-40-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-40-000192
-  tags: [PHTN-40-000192]
+  tags: [PHTN-40-000192, PHTN-40-000206, PHTN-40-000267]
   when:
     - run_pam_add_deny_so | bool
     - run_pam_add_faildelay_so | bool
@@ -1728,9 +1730,9 @@
 ###################################################################################################################################
 # Remediations for controls PHTN-40-000192, PHTN-40-000206, and PHTN-40-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-40-000206
-  tags: [PHTN-40-000206]
+  tags: [PHTN-40-000206, PHTN-40-000192, PHTN-40-000267]
   when:
-    - run_pam_add_faildelay_so | bool
+    - run_pam_add_deny_so | bool
     - run_pam_add_faildelay_so | bool
     - run_pam_add_faillock_so | bool
   block:
@@ -1766,7 +1768,7 @@
 ###################################################################################################################################
 # Remediations for controls PHTN-50-000192, PHTN-50-000206, and PHTN-50-000267 are required to be applied together to ensure compliance and achieve the desired outcome.
 - name: PHTN-40-000267
-  tags: [PHTN-40-000267]
+  tags: [PHTN-40-000267, PHTN-40-000192, PHTN-40-000206]
   when:
     - run_pam_add_deny_so | bool
     - run_pam_add_faildelay_so | bool
@@ -2595,6 +2597,8 @@
         - '{{ role_name }} : restart resolved'
 
 ###################################################################################################################################
+# NOTE: This will always flag as "changed" on first run regardless of the MAC list, as the original file has a tab character,
+#       and the line being replaced below just has spaces. But spaces are the preferred option. Subsequent runs will be fine.
 - name: PHTN-40-000239 - Configure sshd MACs
   tags: [PHTN-40-000239, sshd]
   when: run_sshd_macs | bool
