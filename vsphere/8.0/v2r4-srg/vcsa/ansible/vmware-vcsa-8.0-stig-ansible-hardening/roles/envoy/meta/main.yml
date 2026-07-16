@@ -1,0 +1,10 @@
+galaxy_info:
+  author: VMware
+  description: VMware vCenter 8.0 Appliance Envoy Service STIG Role
+  company: VMware
+  license: Apache
+  min_ansible_version: '2.9'
+  galaxy_tags:
+    - vcenter
+    - vmware
+    - stig

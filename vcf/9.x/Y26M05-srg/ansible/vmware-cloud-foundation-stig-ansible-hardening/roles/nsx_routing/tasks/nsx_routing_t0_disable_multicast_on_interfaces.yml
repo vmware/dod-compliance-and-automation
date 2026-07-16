@@ -1,0 +1,33 @@
+---
+
+- name: "VCFR-9X-000013 - Get external interfaces with multicast enabled for Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1/search?query=(resource_type:Tier0Interface%20AND%20type:EXTERNAL%20AND%20multicast.enabled:true%20AND%20parent_path:?infra?tier-0s?{{ var_outer_t0.id }}*)"
+    validate_certs: "{{ validate_certificate_uri }}"
+    headers:
+      Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+      X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+    method: GET
+    status_code: 200
+  register: t0interfaces
+  changed_when: false
+
+- name: "VCFR-9X-000013 - Disable multicast on for Tier-0 Gateway: {{ var_outer_t0.id }}"
+  ansible.builtin.uri:
+    url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ item.path }}"
+    validate_certs: "{{ validate_certificate_uri }}"
+    headers:
+      Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+      X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+    method: PATCH
+    body: "{{ lookup('template', './nsx_routing_t0_disable_multicast_on_interface.json.j2') }}"
+    body_format: json
+    status_code: 200
+  when:
+    - t0interfaces.json.result_count != 0
+    - item.id not in nsx_routing_defaults_t0_gateway_interfaces_with_multicast_enabled
+  with_items:
+    - "{{ t0interfaces.json.results }}"
+  register: response
+  changed_when:
+    - response.status == 200

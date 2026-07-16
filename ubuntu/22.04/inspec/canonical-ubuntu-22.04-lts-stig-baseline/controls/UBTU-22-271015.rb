@@ -44,7 +44,6 @@ Update GDM with the new configuration by using the following commands:
 
      $ sudo systemctl restart gdm3'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64265r953419_chk'
   tag severity: 'medium'
   tag gid: 'V-260536'

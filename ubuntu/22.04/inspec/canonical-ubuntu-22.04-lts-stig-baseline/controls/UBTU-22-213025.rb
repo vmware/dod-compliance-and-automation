@@ -18,7 +18,6 @@ If no output is returned, this is a finding.'
 
 If the installed CPU is hardware capable of NX protection, check if the system's BIOS/UEFI setup configuration permits toggling the "NX bit" or "no execution bit", and set it to "enabled".)
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64204r953236_chk'
   tag severity: 'medium'
   tag gid: 'V-260475'
@@ -32,7 +31,7 @@ If the installed CPU is hardware capable of NX protection, check if the system's
 
   describe.one do
     describe command('dmesg | grep -i "execute disable"').stdout.strip do
-      it { should match /.+(NX \(Execute Disable\) protection: active)/ }
+      it { should match(/.+(NX \(Execute Disable\) protection: active)/) }
     end
     describe command('grep flags /proc/cpuinfo | grep -o nx | sort -u') do
       its('stdout') { should match 'nx' }

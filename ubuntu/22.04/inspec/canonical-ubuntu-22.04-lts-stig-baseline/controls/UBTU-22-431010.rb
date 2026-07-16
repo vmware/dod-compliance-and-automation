@@ -17,7 +17,6 @@ If the "apparmor" package is not installed, this is a finding.'
 
      $ sudo apt-get install apparmor'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64285r953479_chk'
   tag severity: 'medium'
   tag gid: 'V-260556'

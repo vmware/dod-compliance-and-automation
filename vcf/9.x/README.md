@@ -3,9 +3,13 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|      Version      |        Y25M06*     |
-|:-----------------:|:------------------:|
-|     `9.0.0.0`     | :heavy_check_mark: |
+|      Version      |    Y25M06-srg*     |    Y25M09-srg*     |    Y26M05-srg*     |
+|:-----------------:|:------------------:|:------------------:|:------------------:|
+|     `9.0.0.0`     | :heavy_check_mark: |         :x:        |         :x:        |
+|     `9.0.1.0`     |         :x:        | :heavy_check_mark: |         :x:        |
+|     `9.0.2.0`     |         :x:        | :heavy_check_mark: |         :x:        |
+|     `9.1.0.0`     |         :x:        |         :x:        | :heavy_check_mark: |
+
 
 > [!NOTE]
 > - \* Denotes STIG Readiness Guide    
@@ -25,15 +29,18 @@ The VMware Cloud Foundation 9.x Security Technical Implementation Guides (STIGs)
   - VCF 9.x Photon OS 5.0 STIG Readiness Guide
   - VCF 9.x Operations Appliance Apache HTTP Server STIG Readiness Guide
   - VCF 9.x Operations Appliance PostgreSQL Service STIG Readiness Guide
-  - VCF 9.x Operations for Logs Appliance Loginsight Service STIG Readiness Guide
+  - VCF 9.x Operations for Logs Appliance Loginsight Service STIG Readiness Guide*
   - VCF 9.x Operations for Networks Appliance Platform NGINX Service STIG Readiness Guide
-  - VCF 9.x Operations Fleet Management Appliance NGINX Service STIG Readiness Guide
+  - VCF 9.x Operations Fleet Management Appliance NGINX Service STIG Readiness Guide*
   - VCF 9.x Operations HCX Manager Appliance Apache HTTP Server STIG Readiness Guide
   - VCF 9.x SDDC Manager Appliance NGINX Service STIG Readiness Guide
   - VCF 9.x SDDC Manager Appliance PostgreSQL Service STIG Readiness Guide
   - VCF 9.x vCenter Server Appliance Envoy Service STIG Readiness Guide
   - VCF 9.x vCenter Server Appliance PostgreSQL Service STIG Readiness Guide
   - VCF 9.x vCenter Server Appliance VAMI Service STIG Readiness Guide
+
+> [!NOTE]
+> - \* Applicable to versions 9.0.X only 
 
 The VMware Cloud Foundation 9.x STIGs presume operation in an environment compliant with all applicable DOD guidance.
 

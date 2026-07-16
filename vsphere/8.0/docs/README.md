@@ -36,6 +36,8 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |     `V2R1`        |    Official STIG   |     2024/07/16     |[U_VMW_vSphere_8-0_Y24M08_STIG.zip](U_VMW_vSphere_8-0_Y24M08_STIG.zip)|
 |     `V2R2`        |    Official STIG   |     2025/01/30     |[U_VMW_vSphere_8-0_Y25M01_STIG.zip](U_VMW_vSphere_8-0_Y25M01_STIG.zip)|
 |     `V2R3`        |    Official STIG   |     2025/04/02     |[U_VMW_vSphere_8-0_Y25M04_STIG.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMW_vSphere_8-0_Y25M04_STIG.zip)| 
+|     `V2R4`        |STIG Readiness Guide|     2026/05/12     |[U_VMware_vSphere_8-0_Y26M05_STIG_Readiness_Guide.zip](https://dl.dod.cyber.mil/wp-content/uploads/stigs/zip/U_VMware_vSphere_8-0_Y26M05_STIG_Readiness_Guide.zip)| 
+
 
 ## Viewing
 The XML files provided can be loaded into and viewed in [STIG Viewer](https://public.cyber.mil/stigs/stig-viewing-tools/).  

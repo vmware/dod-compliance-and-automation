@@ -25,7 +25,6 @@ Restart the "auditd" service for the changes to take effect:
 
 Note: If the "space_left_action" parameter is set to "exec", ensure the command being executed notifies the SA and ISSO.'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64325r953599_chk'
   tag severity: 'low'
   tag gid: 'V-260596'
@@ -39,7 +38,7 @@ Note: If the "space_left_action" parameter is set to "exec", ensure the command 
 
   describe auditd_conf do
     its('space_left') { should cmp >= '25%' }
-    its('space_left') { should match /\d{2}%/ }
+    its('space_left') { should match(/\d{2}%/) }
     its('space_left_action') { should cmp 'email' }
   end
 end

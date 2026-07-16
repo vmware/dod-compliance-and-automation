@@ -3,30 +3,31 @@ control 'UBTU-22-232020' do
   desc 'If the operating system were to allow any user to make changes to software libraries, then those changes might be implemented without undergoing the appropriate testing and approvals that are part of a robust change management process.
 
 This requirement applies to operating systems with software libraries that are accessible and configurable, as in the case of interpreted languages. Software libraries also include privileged programs that execute with escalated privileges. Only qualified and authorized individuals must be allowed to obtain access to information system components for purposes of initiating changes, including upgrades and modifications.'
-  desc 'check', %q(Verify the systemwide shared library files contained in the directories "/lib", "/lib64", and "/usr/lib" have mode "755" or less permissive by using the following command:
+  desc 'check', %q(Verify the systemwide shared library files contained in the directories "/lib", "/lib64", "/usr/lib", and "/usr/lib64" have mode 0755 or less permissive.
 
-     $ sudo find /lib /lib64 /usr/lib -perm /022 -type f -exec stat -c "%n %a" '{}' \;
+Check that the systemwide shared library files have mode 0755 or less permissive with the following command:
 
-If any files are found to be group-writable or world-writable, this is a finding.)
-  desc 'fix', "Configure the library files to be protected from unauthorized access. Run the following command:
+$ sudo find /lib /lib64 /usr/lib /usr/lib64 -type f -name '*.so*' -perm /022 -exec stat -c "%n %a" {} +
 
-     $ sudo find /lib /lib64 /usr/lib -perm /022 -type f -exec chmod 755 '{}' \\;"
+If any output is returned, this is a finding.)
+  desc 'fix', %q(Configure the systemwide shared library files contained in the directories "/lib", "/lib64", "/usr/lib", and "/usr/lib64" to have mode 0755 or less permissive with the following command:
+
+$ sudo find /lib /lib64 /usr/lib /usr/lib64 -type f -name '*.so*' -perm /022 -exec chmod go-w {} +)
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
-  tag check_id: 'C-64216r953272_chk'
+  tag check_id: 'C-64216r1101716_chk'
   tag severity: 'medium'
   tag gid: 'V-260487'
-  tag rid: 'SV-260487r991560_rule'
+  tag rid: 'SV-260487r1107262_rule'
   tag stig_id: 'UBTU-22-232020'
   tag gtitle: 'SRG-OS-000259-GPOS-00100'
-  tag fix_id: 'F-64124r953273_fix'
+  tag fix_id: 'F-64124r1107261_fix'
   tag 'documentable'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  library_files = command('find /lib /lib64 /usr/lib -perm /022 -type f').stdout.strip.split("\n").entries
+  library_files = command("find /lib /lib64 /usr/lib /usr/lib64 -type f -name '*.so*' -perm /022").stdout.strip.split("\n").entries
 
-  if library_files.count > 0
+  if library_files.any?
     library_files.each do |lib_file|
       describe file(lib_file) do
         it { should_not be_more_permissive_than('0755') }

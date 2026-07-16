@@ -25,7 +25,6 @@ Restart the "auditd" service for the changes to take effect:
 
 Note: If system availability has been determined to be more important, and this decision is documented with the ISSO, configure Ubuntu 22.04 LTS to notify system administration staff and ISSO staff in the event of an audit processing failure by setting the "disk_full_action" to "SYSLOG" or "SINGLE".'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64323r953593_chk'
   tag severity: 'medium'
   tag gid: 'V-260594'
@@ -39,6 +38,6 @@ Note: If system availability has been determined to be more important, and this 
 
   describe auditd_conf do
     its('disk_full_action') { should_not be_empty }
-    its('disk_full_action') { should cmp /(?:SYSLOG|SINGLE|HALT)/i }
+    its('disk_full_action') { should cmp(/(?:SYSLOG|SINGLE|HALT)/i) }
   end
 end

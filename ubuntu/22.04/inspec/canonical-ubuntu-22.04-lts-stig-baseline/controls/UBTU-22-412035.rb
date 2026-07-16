@@ -15,7 +15,6 @@ Add or modify the following line in the "/etc/login.defs" file:
 
 UMASK 077'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64284r953476_chk'
   tag severity: 'medium'
   tag gid: 'V-260555'

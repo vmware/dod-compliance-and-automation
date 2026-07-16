@@ -1,0 +1,27 @@
+- name: vmware-vcsa-8.0-stig-ansible-hardening
+  hosts: all
+  roles:
+    - role: vmware-photon-4.0-stig-ansible-hardening
+      vars:
+        # Set to true or false to configure dod banner for ssh
+        run_etc_issue_dod: false
+        # Disable N/A Photon Controls
+        run_rsyslog_server: false
+        run_enable_selinux: false
+        run_selinux_install: false
+        run_usr_lib_perms: false
+        run_time_sync: false
+        run_systemd_tmp_mount: false
+        run_pam_add_pwquality_so: false
+        run_install_aide: false
+      when:
+        - photon_version == '4'
+    - role: misc
+    - role: eam
+    - role: envoy
+    - role: lookup
+    - role: perfcharts
+    - role: postgresql
+    - role: sts
+    - role: ui
+    - role: vami

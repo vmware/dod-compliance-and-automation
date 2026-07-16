@@ -14,7 +14,6 @@ If any system commands directories are returned, this is a finding.)
 
      $ sudo find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -user root -type d -exec chown root '{}' \\;"
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64222r953290_chk'
   tag severity: 'medium'
   tag gid: 'V-260493'

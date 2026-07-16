@@ -15,7 +15,6 @@ If there is no application installed to perform integrity checks, this is a find
 
      $ sudo apt install aide'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64311r953557_chk'
   tag severity: 'medium'
   tag gid: 'V-260582'

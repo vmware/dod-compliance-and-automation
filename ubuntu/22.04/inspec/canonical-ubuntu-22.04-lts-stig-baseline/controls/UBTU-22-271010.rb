@@ -43,7 +43,6 @@ Update GDM with the new configuration by using the following commands:
      $ sudo dconf update
      $ sudo systemctl restart gdm3'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64264r953416_chk'
   tag severity: 'medium'
   tag gid: 'V-260535'
@@ -59,7 +58,7 @@ Update GDM with the new configuration by using the following commands:
   if xorg_status == 0
     describe 'banner-message-enable must be set to true' do
       subject { command('grep banner-message-enable /etc/dconf/db/local.d/*') }
-      its('stdout') { should match /(banner-message-enable).+=.+(true)/ }
+      its('stdout') { should match(/(banner-message-enable).+=.+(true)/) }
     end
   else
     impact 0.0

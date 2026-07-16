@@ -14,7 +14,6 @@ If the "telnetd" package is installed, this is a finding.'
 
      $ sudo apt-get remove telnetd'
   impact 0.7
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64212r953260_chk'
   tag severity: 'high'
   tag gid: 'V-260483'

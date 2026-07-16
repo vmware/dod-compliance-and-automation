@@ -14,7 +14,6 @@ If any directories are found to be group-writable or world-writable, this is a f
 
      $ sudo find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin -perm /022 -type d -exec chmod -R 755 '{}' \\;"
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64214r953266_chk'
   tag severity: 'medium'
   tag gid: 'V-260485'

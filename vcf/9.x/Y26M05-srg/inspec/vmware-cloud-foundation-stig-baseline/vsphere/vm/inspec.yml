@@ -1,0 +1,26 @@
+name: vmware-cloud-foundation-vsphere-vm-app-stig-baseline
+title: VMware Cloud Foundation 9.X Virtual Machine STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 1.0.2
+
+depends:
+  - name: vmware-vsphere-app-inspec-resources
+    path: ../resources
+
+inputs:
+  - name: vm_Name
+    value: ''
+    type: string
+    description: "The virtual machine name to audit."
+  - name: vm_cluster
+    value: ''
+    type: string
+    description: 'The vSphere cluster to audit target VMs in.'
+  - name: vm_allvms
+    value: false
+    type: boolean
+    description: "Set to true to audit all virtual machines in the target vCenter."

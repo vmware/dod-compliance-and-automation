@@ -19,7 +19,6 @@ If the "openssh" server package is not installed, this is a finding.'
 
      $ sudo apt install ssh'
   impact 0.7
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64252r953380_chk'
   tag severity: 'high'
   tag gid: 'V-260523'

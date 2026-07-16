@@ -13,7 +13,6 @@ Add or modify the following line in the "/etc/security/pwquality.conf" file:
 
 dictcheck = 1'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64293r953503_chk'
   tag severity: 'medium'
   tag gid: 'V-260564'

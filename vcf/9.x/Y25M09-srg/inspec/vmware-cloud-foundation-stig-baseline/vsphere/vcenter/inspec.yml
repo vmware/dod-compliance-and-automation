@@ -1,0 +1,35 @@
+name: VMware Cloud Foundation 9.x Application vCenter Server STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Application STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Application vCenter Server STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: vcenter_ntpServers
+    type: array
+    value: []
+    description: 'Enter an array of authorized NTP servers'
+  - name: vcenter_ipfixCollectorAddresses
+    type: array
+    value: []
+    description: 'If IpFix is used enter an array collector addresses that are authorized.'
+  - name: vcenter_allowedTrunkingPortgroups
+    type: array
+    value: []
+    description: 'If any portgroups are authorized to be configuring for trunking provide an array of portgroup names.'
+  - name: vcenter_bashShellAdminUsers
+    type: array
+    description: 'Array of authorized users that should be in the SystemConfiguration.BashShellAdministrators SSO group.'
+    value:
+      - 'Administrator'
+  - name: vcenter_bashShellAdminGroups
+    type: array
+    description: 'Array of authorized groups that should be in the SystemConfiguration.BashShellAdministrators SSO group.'
+    value: []
+  - name: vcenter_portMirrorSessions
+    type: array
+    description: 'Array of authorized port mirroring sessions by session name.'
+    value: []

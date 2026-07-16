@@ -1,0 +1,10 @@
+---
+# Pull Photon role from Gitlab
+roles:
+  - src: https://github-vcf.devops.broadcom.net/vcf/vmware-photon-4.0-stig-ansible-hardening
+    scm: git
+    version: main
+
+collections:
+  - name: community.general
+  - name: ansible.posix

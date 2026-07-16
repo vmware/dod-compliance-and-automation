@@ -1,0 +1,7 @@
+name: vmware-vsphere-app-inspec-resources
+title: VMware Cloud Foundation 9.X Application InSpec Shared Resources
+maintainer: Broadcom
+copyright: Broadcom
+license: Apache-2.0
+summary: Shared InSpec resources for VMware vSphere profiles
+version: 1.0.2

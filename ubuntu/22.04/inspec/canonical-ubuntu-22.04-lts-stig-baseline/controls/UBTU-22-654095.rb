@@ -23,7 +23,6 @@ To reload the rules file, issue the following command:
 
 Note: The "-k <keyname>" at the end of the line gives the rule a unique meaning to help during an audit investigation. The <keyname> does not need to match the example above.'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64350r953674_chk'
   tag severity: 'medium'
   tag gid: 'V-260621'

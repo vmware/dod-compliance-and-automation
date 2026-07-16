@@ -45,7 +45,6 @@ Rate-limiting can also be done on an interface. An example of adding a rate limi
 
      $ sudo ufw limit in on ens160'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64246r953362_chk'
   tag severity: 'medium'
   tag gid: 'V-260517'

@@ -31,7 +31,7 @@ Check that audisp-remote plugin is configured to send audit logs to a different 
 If the "remote_server" parameter is not set, is set with a local IP address, or is set with an invalid IP address, this is a finding.'
   desc 'fix', %q(Configure the audit event multiplexor to offload audit records to a different system from the system being audited.
 
-Install the "audisp-plugins" package by using the following command:
+Install the "audispd-plugins" package by using the following command:
 
      $ sudo apt-get install audispd-plugins
 
@@ -47,36 +47,34 @@ Restart the "auditd.service" for the changes to take effect:
 
      $ sudo systemctl restart auditd.service)
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64321r953587_chk'
   tag severity: 'low'
   tag gid: 'V-260592'
-  tag rid: 'SV-260592r958754_rule'
+  tag rid: 'SV-260592r1101709_rule'
   tag stig_id: 'UBTU-22-653020'
   tag gtitle: 'SRG-OS-000342-GPOS-00133'
-  tag fix_id: 'F-64229r953588_fix'
+  tag fix_id: 'F-64229r1101708_fix'
   tag satisfies: ['SRG-OS-000342-GPOS-00133', 'SRG-OS-000479-GPOS-00224']
   tag 'documentable'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']
 
-  config_file = '/etc/audisp/plugins.d/au-remote.conf'
-  config_file_exists = file(config_file).exist?
+  audisp_remote_config_file = input('audisp_remote_config_file')
+
   audit_sp_remote_server = input('audit_sp_remote_server')
 
   describe package('audispd-plugins') do
     it { should be_installed }
   end
 
-  if config_file_exists
-    describe parse_config_file(config_file) do
+  if file(audisp_remote_config_file).exist?
+    describe parse_config_file(audisp_remote_config_file) do
       its('active') { should cmp 'yes' }
       its('remote_server') { should cmp audit_sp_remote_server }
     end
   else
-    describe("#{config_file} exists") do
-      subject { config_file_exists }
-      it { should be true }
+    describe file(audisp_remote_config_file) do
+      it { should exist }
     end
   end
 end

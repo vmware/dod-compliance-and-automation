@@ -15,7 +15,6 @@ If "/etc/audit/audit.rules", "/etc/audit/auditd.conf", or "/etc/audit/rules.d/*"
 
      $ sudo chmod -R 640 /etc/audit/audit.rules /etc/audit/auditd.conf /etc/audit/rules.d/*'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64330r953614_chk'
   tag severity: 'medium'
   tag gid: 'V-260601'
@@ -34,7 +33,7 @@ If "/etc/audit/audit.rules", "/etc/audit/auditd.conf", or "/etc/audit/rules.d/*"
 
   audit_conf_files.each do |conf|
     describe file(conf) do
-      it { should_not be_more_permissive_than('0640') }
+      its('mode') { should cmp <= 0o640 }
     end
   end
 end

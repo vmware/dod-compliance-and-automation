@@ -1,13 +1,13 @@
 control 'UBTU-22-651015' do
-  title 'Ubuntu 22.04 LTS must configure AIDE to perform file integrity checking on the file system.'
+  title 'Ubuntu 22.04 LTS must configure Advanced Intrusion Detection Environment (AIDE) to perform file integrity checking on the file system.'
   desc 'Without verification of the security functions, security functions may not operate correctly and the failure may go unnoticed. Security function is defined as the hardware, software, and/or firmware of the information system responsible for enforcing the system security policy and supporting the isolation of code and data on which the protection is based. Security functionality includes, but is not limited to, establishing system accounts, configuring access authorizations (i.e., permissions, privileges), setting events to be audited, and setting intrusion detection parameters.
 
 This requirement applies to Ubuntu 22.04 LTS performing security function verification/testing and/or systems and environments that require this functionality.'
-  desc 'check', 'Verify that Advanced Intrusion Detection Environment (AIDE) is configured and operating correctly by using the following command (this will take a few minutes):
+  desc 'check', 'Note: If a file integrity tool other than AIDE is employed, this requirement is not applicable.
 
-Note: If AIDE is not installed, this requirement is not applicable.
+Verify AIDE is configured and operating correctly by using the following command (this will take a few minutes):
 
-     $ sudo aide -c /etc/aide/aide.conf --check
+$ sudo aide -c /etc/aide/aide.conf --check
 
 Example output:
 
@@ -19,7 +19,7 @@ Ignored e2fs attributes: EIh
 If AIDE is being used to perform file integrity checks but the command fails, this is a finding.'
   desc 'fix', 'Initialize AIDE (this will take a few minutes):
 
-     $ sudo aideinit
+$ sudo aideinit
      Running aide --init...
 
 Example output:
@@ -53,20 +53,26 @@ The attributes of the (uncompressed) database(s):
 
 End timestamp: 2024-04-01 04:29:16 +1300 (run time: 9m 16s)'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
-  tag check_id: 'C-64312r953560_chk'
+  tag check_id: 'C-64312r1155180_chk'
   tag severity: 'medium'
   tag gid: 'V-260583'
-  tag rid: 'SV-260583r958944_rule'
+  tag rid: 'SV-260583r1155208_rule'
   tag stig_id: 'UBTU-22-651015'
   tag gtitle: 'SRG-OS-000445-GPOS-00199'
-  tag fix_id: 'F-64220r953561_fix'
+  tag fix_id: 'F-64220r1155181_fix'
   tag 'documentable'
   tag cci: ['CCI-002696']
   tag nist: ['SI-6 a']
 
-  describe command('aide -c /etc/aide/aide.conf --check') do
-    its('stdout.strip') { should match /AIDE found/ }
-    its('stdout.strip') { should_not match /Couldn't open file/ }
+  if package('aide').installed?
+    describe command('aide -c /etc/aide/aide.conf --check') do
+      its('stdout.strip') { should match(/AIDE found/) }
+      its('stdout.strip') { should_not match(/Couldn't open file/) }
+    end
+  else
+    impact 0.0
+    describe 'AIDE service not istalled this requirement is not applicable.' do
+      skip 'AIDE service not istalled this requirement is not applicable.'
+    end
   end
 end

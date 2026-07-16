@@ -17,7 +17,6 @@ Add or modify the following line in the "/etc/security/pwquality.conf" file:
 
 ocredit = -1'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64292r953500_chk'
   tag severity: 'medium'
   tag gid: 'V-260563'
@@ -26,8 +25,8 @@ ocredit = -1'
   tag gtitle: 'SRG-OS-000266-GPOS-00101'
   tag fix_id: 'F-64200r953501_fix'
   tag 'documentable'
-  tag cci: ['CCI-001619', 'CCI-004066']
-  tag nist: ['IA-5 (1) (a)', 'IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-001619']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (a)']
 
   config_file = '/etc/security/pwquality.conf'
   config_file_exists = file(config_file).exist?

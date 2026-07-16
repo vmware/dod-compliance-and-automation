@@ -1,0 +1,117 @@
+name: VMware Cloud Foundation 9.x Operations Fleet Management Appliance NGINX Service STIG Readiness Guide
+title: VMware Cloud Foundation 9.x Operations Fleet Management Appliance NGINX Service STIG Readiness Guide
+maintainer: Broadcom
+copyright: Broadcom
+copyright_email: stigs@broadcom.com
+license: Apache-2.0
+summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x Operations Fleet Management Appliance NGINX Service STIG Readiness Guide
+version: 1.0.1
+
+inputs:
+  - name: nginx_bin_path
+    description: Path to NGINX bin file
+    type: string
+    value: '/usr/sbin/nginx'
+  - name: nginx_conf_path
+    description: Path to NGINX conf file
+    type: string
+    value: '/etc/nginx/nginx.conf'
+  - name: limit_conn_server_limit
+    description: Connection limit for per server connections
+    type: string
+    value: '1000'
+  - name: hsts_header
+    description: HSTS header settings
+    type: array
+    value: ["Strict-Transport-Security", "max-age=31536000; includeSubDomains"]
+  - name: nginx_error_log_file
+    description: NGINX error log file path
+    type: string
+    value: '/var/log/nginx/error.log'
+  - name: nginx_error_log_level
+    description: NGINX error log level. Should be info or debug.
+    type: string
+    value: 'info'
+  - name: nginx_access_log_file
+    description: NGINX access log file path
+    type: string
+    value: '/var/log/nginx/access.log'
+  - name: nginx_access_log_format_name
+    description: NGINX access log format name
+    type: string
+    value: 'main'
+  - name: nginx_log_dir
+    description: NGINX log directory path
+    type: string
+    value: '/var/log/nginx/'
+  - name: nginx_log_owner
+    description: NGINX log owner
+    type: string
+    value: 'root'
+  - name: nginx_log_group
+    description: NGINX log group
+    type: string
+    value: 'root'
+  - name: approved_modules
+    description: List of approved modules listed without _module
+    type: array
+    value:
+      - http_auth_request
+      - http_v2
+      - http_ssl
+      - http_sub
+      - http_stub_status
+      - http_realip
+      - stream_ssl_preread
+  - name: nginx_user
+    description: NGINX worker process user account
+    type: string
+    value: 'nginx'
+  - name: nginx_group
+    description: NGINX worker process group
+    type: string
+    value: 'nginx'
+  - name: listen_addresses_ports
+    description: List of approved IP address:Port listen addresses
+    type: array
+    value:
+      - '80'
+      - '443'
+  - name: nginx_ssl_session_timeout
+    description: NGINX ssl_session_timeout in minutes
+    type: string
+    value: '5m'
+  - name: nginx_limit_req_zone_name
+    description: NGINX limit_req_zone name
+    type: string
+    value: 'mylimit'
+  - name: nginx_limit_req_rate
+    description: NGINX limit_req_zone limit rate
+    type: string
+    value: '50r/s'
+  - name: nginx_limit_req_zone_size
+    description: NGINX limit_req_zone size
+    type: string
+    value: '10m'
+  - name: nginx_limit_req_burst
+    description: NGINX limit_req burst rate
+    type: string
+    value: '100'
+  - name: nginx_error_log_level
+    description: NGINX error log level
+    type: string
+    value: 'info'
+  - name: approved_sites
+    description: List of approved sites that are enabled
+    type: array
+    value:
+      - changeme
+      - deleteme
+  - name: nginx_content_security_policy
+    description: Content Security Policy
+    type: array
+    value: ["Content-Security-Policy", "frame-ancestors 'self'"]
+  - name: limit_conn_ip_limit
+    description: Connection limit for per ip connections
+    type: string
+    value: '100'

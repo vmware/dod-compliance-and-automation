@@ -1,0 +1,108 @@
+- control_id: ESXI-80-000052
+  explanation: 'Manual check output "ignorerhosts yes" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000094
+  explanation: 'Secureboot is enabled.'
+  frequency: 1y
+  status: failed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000160
+  explanation: 'vMotion network is not isolated'
+  frequency: 1y
+  status: failed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000187
+  explanation: 'Manual check output "ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000192
+  explanation: 'Manual check output "banner /etc/issue" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000202
+  explanation: 'Manual check output "hostbasedauthentication no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000203
+  explanation: 'Manual check output "permitemptypasswords no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000204
+  explanation: 'Manual check output "permituserenvironment no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000205
+  explanation: 'Manual check output "strictmodes yes" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000206
+  explanation: 'Manual check output "compression no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000207
+  explanation: 'Manual check output "gatewayports no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000208
+  explanation: 'Manual check output "x11forwarding no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000209
+  explanation: 'Manual check output "permittunnel no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000210
+  explanation: 'Manual check output "clientalivecountmax 3" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000211
+  explanation: 'Manual check output "clientaliveinterval 200" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000230
+  explanation: 'Manual check output "allowtcpforwarding no" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000236
+  explanation: 'Manual check output "0" is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe
+- control_id: ESXI-80-000237
+  explanation: 'Manual check with no output is compliant.'
+  frequency: 1y
+  status: passed
+  updated: 2023-05-30T00:00:00.000Z
+  updated_by: John Doe

@@ -1,0 +1,39 @@
+---
+
+###################################################################################################################################
+- name: VCFR-9X-000028
+  tags: [VCFR-9X-000028]
+  when: nsx_routing_defaults_run_vcfr_9x_000028 | bool
+  block:
+    - name: VCFR-9X-000028 - Get current telemetry config
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/telemetry/config"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: GET
+      register: telemetryconfig
+      changed_when: false
+
+    - name: VCFR-9X-000028 - Disable CEIP and telemetry schedule
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/api/v1/telemetry/config"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+          X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+        method: PUT
+        body: "{{ lookup('template', './nsx_routing_update_telemetry_config.json.j2') | to_json }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      with_items:
+        - "{{ telemetryconfig.json }}"
+      register: response
+      when:
+        - telemetryconfig.json.ceip_acceptance != nsx_routing_defaults_ceip_acceptance or
+          telemetryconfig.json.schedule_enabled != nsx_routing_defaults_telemetry_schedule_enabled
+      changed_when:
+        - response.status == 200 or response.status == 202

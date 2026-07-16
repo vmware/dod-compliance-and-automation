@@ -1,0 +1,40 @@
+---
+# VMware vSphere 8.0 vCenter Server Appliance Misc Ansible Role
+############################################
+- name: Persisting PAM changes by copying system-auth to /etc/applmgmt/appliance
+  ansible.builtin.copy:
+    remote_src: true
+    src: '/etc/pam.d/system-auth'
+    dest: '{{ var_pamd_systemauth_file }}'
+    mode: preserve
+    force: true
+  register: copyresult
+  failed_when:
+    - copyresult.msg is defined
+    - "'not found' not in copyresult.msg"
+
+- name: Persisting PAM changes by copying system-password to /etc/applmgmt/appliance
+  ansible.builtin.copy:
+    remote_src: true
+    src: '/etc/pam.d/system-password'
+    dest: '{{ var_pamd_systempassword_file }}'
+    mode: preserve
+    force: true
+  register: copyresult
+  failed_when:
+    - copyresult.msg is defined
+    - "'not found' not in copyresult.msg"
+
+- name: Persisting PAM changes by copying faillock.conf to /etc/applmgmt/appliance
+  ansible.builtin.copy:
+    remote_src: true
+    src: '/etc/security/faillock.conf'
+    dest: '{{ var_pamd_faillockconf_file }}'
+    mode: preserve
+    force: true
+  register: copyresult
+  failed_when:
+    - copyresult.msg is defined
+    - "'not found' not in copyresult.msg"
+  when:
+    - photon_version == '4'

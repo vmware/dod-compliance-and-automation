@@ -1,0 +1,14 @@
+# Is Automation deployed in the environment? Set to false to mark Automation related rules N/A.
+automation_deployed: true
+# Enter target VCF Automation URL IP or FQDN.
+automation_url: ''
+# Enter bearer token for API authentication.
+automation_sessionToken: ''
+# Enter an array of trusted certificate common names that are validated and trusted. The internal Automation CAs are provided here by default.
+automation_trustedCertificateCNs:
+  - 'tenant-manager-0.tenant-manager.prelude.svc.cluster.local'
+  - 'tenant-manager-1.tenant-manager.prelude.svc.cluster.local'
+  - 'tenant-manager-2.tenant-manager.prelude.svc.cluster.local'
+  - 'vcf-cluster-ca'
+# Enter an array of feature flags that are approved to be enabled
+automation_approvedFeatureFlags: []

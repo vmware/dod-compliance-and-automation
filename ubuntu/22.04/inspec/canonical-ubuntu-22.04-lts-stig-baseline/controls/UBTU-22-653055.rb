@@ -21,7 +21,6 @@ Reload the configuration file of the audit service to update the group ownership
 
      $ sudo systemctl kill auditd -s SIGHUP'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64328r953608_chk'
   tag severity: 'medium'
   tag gid: 'V-260599'

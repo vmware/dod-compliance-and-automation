@@ -33,11 +33,10 @@ Reload settings from all system configuration files by using the following comma
 
      $ sudo sysctl --system'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64201r953227_chk'
   tag severity: 'low'
   tag gid: 'V-260472'
-  tag rid: 'SV-260472r958524_rule'
+  tag rid: 'SV-260472r1137695_rule'
   tag stig_id: 'UBTU-22-213010'
   tag gtitle: 'SRG-OS-000138-GPOS-00069'
   tag fix_id: 'F-64109r953228_fix'

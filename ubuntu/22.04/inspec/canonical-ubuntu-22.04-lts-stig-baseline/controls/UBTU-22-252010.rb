@@ -34,7 +34,6 @@ Restart "chrony.service" for the changes to take effect by using the following c
 
      $ sudo systemctl restart chrony.service'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64248r953368_chk'
   tag severity: 'low'
   tag gid: 'V-260519'

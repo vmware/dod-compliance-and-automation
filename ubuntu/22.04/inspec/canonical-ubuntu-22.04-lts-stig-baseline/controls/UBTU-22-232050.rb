@@ -12,7 +12,6 @@ If any system commands are returned and are not owned by a required system accou
 
      $ sudo chown root <command_name>'
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64224r953296_chk'
   tag severity: 'medium'
   tag gid: 'V-260495'
@@ -27,7 +26,7 @@ If any system commands are returned and are not owned by a required system accou
   system_commands = command('find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin ! -user root -type f').stdout.strip.split("\n").entries
   valid_system_commands = Set[]
 
-  if system_commands.count > 0
+  if system_commands.any?
     system_commands.each do |sys_cmd|
       if file(sys_cmd).exist?
         valid_system_commands <<= sys_cmd
@@ -35,7 +34,7 @@ If any system commands are returned and are not owned by a required system accou
     end
   end
 
-  if valid_system_commands.count > 0
+  if valid_system_commands.any?
     valid_system_commands.each do |val_sys_cmd|
       describe file(val_sys_cmd) do
         its('owner') { should cmp 'root' }

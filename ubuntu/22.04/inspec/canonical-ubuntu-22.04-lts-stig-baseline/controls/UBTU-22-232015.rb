@@ -12,7 +12,6 @@ If any files are found to be group-writable or world-writable, this is a finding
 
      $ sudo find /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin -perm /022 -type f -exec chmod 755 '{}' \\;"
   impact 0.5
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64215r953269_chk'
   tag severity: 'medium'
   tag gid: 'V-260486'
@@ -27,7 +26,7 @@ If any files are found to be group-writable or world-writable, this is a finding
   system_commands = command('find -L /bin /sbin /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin -perm /022 -type f').stdout.strip.split("\n").entries
   valid_system_commands = Set[]
 
-  if system_commands.count > 0
+  if system_commands.any?
     system_commands.each do |sys_cmd|
       if file(sys_cmd).exist?
         valid_system_commands <<= sys_cmd
@@ -35,7 +34,7 @@ If any files are found to be group-writable or world-writable, this is a finding
     end
   end
 
-  if valid_system_commands.count > 0
+  if valid_system_commands.any?
     valid_system_commands.each do |val_sys_cmd|
       describe file(val_sys_cmd) do
         it { should_not be_more_permissive_than('0755') }

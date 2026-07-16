@@ -12,7 +12,6 @@ If the "systemd-timesyncd" package is installed, this is a finding.'
 
      $ sudo dpkg -P --force-all systemd-timesyncd'
   impact 0.3
-  ref 'DPMS Target Canonical Ubuntu 22.04 LTS'
   tag check_id: 'C-64209r953251_chk'
   tag severity: 'low'
   tag gid: 'V-260480'
@@ -29,6 +28,6 @@ If the "systemd-timesyncd" package is installed, this is a finding.'
   end
 
   describe command('dpkg -l | grep systemd-timesyncd') do
-    its('stdout') { should_not match /rc/ }
+    its('stdout') { should_not match(/rc/) }
   end
 end
