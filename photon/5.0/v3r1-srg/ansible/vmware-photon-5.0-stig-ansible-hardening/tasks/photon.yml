@@ -173,7 +173,7 @@
         path: '{{ photon_5_vars_pam_faillock_conf_file }}'
         state: present
         regexp: '^#?\s*deny.*$'
-        line: deny = {{ photon_5_defaults_pam_faillock_deny }}v
+        line: deny = {{ photon_5_defaults_pam_faillock_deny }}
 
     - name: 'PHTN-50-000004 - Configure pam_faillock fail_interval in {{ photon_5_vars_pam_faillock_conf_file }}.'
       ansible.builtin.lineinfile:
