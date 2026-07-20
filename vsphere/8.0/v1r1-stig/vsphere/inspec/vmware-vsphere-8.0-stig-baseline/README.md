@@ -38,6 +38,8 @@ For Windows from PowerShell setup the following variables for the existing sessi
 $env:VISERVER="vcenter.test.local"
 $env:VISERVER_USERNAME="Administrator@vsphere.local"
 $env:VISERVER_PASSWORD="password"
+# For Powershell Core only
+$env:NO_COLOR=$true
 ```
 
 Run all profiles against a target vCenter with needed inputs and output results to CLI  
