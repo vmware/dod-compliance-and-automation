@@ -1,5 +1,11 @@
 # Change Log
 
+## [InSpec Automation Update] (2026-07-21)
+
+#### Release Notes
+- InSpec test code only. No change to official STIG check or fix text.
+- VCSA-80-000290, VCSA-80-000291 Relaxed stderr assertion to tolerate the known "Idm client exception: null" message returned by Get-SsoGroup when no nested group members exist, which was causing a false FAILED result.
+
 ## [8.0 Official STIG Version 2 Release 1] (2024-08-01)
 
 #### Release Notes
