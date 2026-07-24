@@ -1,4 +1,6 @@
 offline: true
+mock_roles:
+  - vmware-photon-3.0-stig-ansible-hardening
 skip_list:
   - name
   - var-naming[no-role-prefix]

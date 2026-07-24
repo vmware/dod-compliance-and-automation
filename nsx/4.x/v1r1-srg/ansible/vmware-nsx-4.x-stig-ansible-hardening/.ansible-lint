@@ -7,3 +7,4 @@ warn_list:
   - command-instead-of-module
   - risky-file-permissions
   - no-changed-when
+  - var-naming[no-role-prefix]
