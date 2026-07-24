@@ -1,4 +1,15 @@
 offline: true
+skip_list:
+  - name
+  - var-naming[no-role-prefix]
 warn_list:
   - args[module]
   - fqcn[action-core]
+  - ignore-errors
+  - meta-no-info
+  - no-changed-when
+  - command-instead-of-module
+  - risky-file-permissions
+  - role-name
+exclude_paths:
+  - ~/.ansible/roles

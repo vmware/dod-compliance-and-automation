@@ -1,4 +1,6 @@
 offline: true
+mock_roles:
+  - vmware-photon-3.0-stig-ansible-hardening
 skip_list:
   - name
   - var-naming[no-role-prefix]
@@ -11,5 +13,3 @@ warn_list:
   - command-instead-of-module
   - risky-file-permissions
   - role-name
-exclude_paths:
-  - ~/.ansible/roles

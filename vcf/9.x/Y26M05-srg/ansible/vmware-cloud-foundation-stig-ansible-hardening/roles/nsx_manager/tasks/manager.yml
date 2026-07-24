@@ -1084,4 +1084,3 @@
       ansible.builtin.debug:
         msg: "VCFN-9X-000115 - This control must be manually remediated."
       changed_when: false
-      
