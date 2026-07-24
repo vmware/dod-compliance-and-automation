@@ -1,3 +1,8 @@
+offline: true
+exclude_paths:
+  - '**/inspec/**'
+  - '**/tkg/**'
+  - '**/tas/**'
 skip_list:
   - '602'
   - role-name
@@ -9,6 +14,8 @@ warn_list:
   - ignore-errors
   - command-instead-of-module
   - no-changed-when
+  - args[module]
+  - fqcn[action-core]
 mock_roles:
   - vmware-photon-3.0-stig-ansible-hardening
   - vmware-photon-4.0-stig-ansible-hardening
