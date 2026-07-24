@@ -37,9 +37,9 @@ Select "Remove Member".'
   trustedAdminUsers = input('trustedAdminUsers')
   users = powercli_command('Get-SsoGroup -Domain vsphere.local -Name TrustedAdmins | Get-SsoPersonUser | Select-Object -ExpandProperty Name')
   if users.stdout.empty?
-    describe 'Stderr should be empty if no users found' do
+    describe 'Stderr should be empty or only contain the known "no users found" SSO exception' do
       subject { users.stderr }
-      it { should be_empty }
+      it { should match(/\A\s*\z|Idm client exception: null/) }
     end
     describe 'No users found in TrustedAdmins' do
       subject { users.stdout }
@@ -55,9 +55,9 @@ Select "Remove Member".'
   trustedAdminGroups = input('trustedAdminGroups')
   groups = powercli_command('Get-SsoGroup -Domain vsphere.local -Name TrustedAdmins | Get-SsoGroup | Select-Object -ExpandProperty Name')
   if groups.stdout.empty?
-    describe 'Stderr should be empty if no groups found' do
+    describe 'Stderr should be empty or only contain the known "no groups found" SSO exception' do
       subject { groups.stderr }
-      it { should be_empty }
+      it { should match(/\A\s*\z|Idm client exception: null/) }
     end
     describe 'No groups found in TrustedAdmins' do
       subject { groups.stdout }
