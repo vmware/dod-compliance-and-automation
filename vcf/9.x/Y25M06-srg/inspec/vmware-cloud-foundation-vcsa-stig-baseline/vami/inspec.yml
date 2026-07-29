@@ -1,11 +1,11 @@
-name: VMware Cloud Foundation 9.x vCenter Server Appliance VAMI Service STIG Readiness Guide
+name: vmware-cloud-foundation-vcsa-vami-stig-baseline
 title: VMware Cloud Foundation 9.x vCenter Server Appliance VAMI Service STIG Readiness Guide
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: InSpec compliance profile for the VMware Cloud Foundation 9.x vCenter Server Appliance VAMI Service STIG Readiness Guide
-version: 1.0.1
+version: 1.1.0
 
 inputs:
 - name: lighttpdConf

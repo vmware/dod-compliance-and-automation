@@ -1,7 +1,7 @@
 {
   "profiles": [
     {
-      "name": "VMware Cloud Foundation 9.x Operations for Networks Platform NGINX Service STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-operations-networks-nginx-platform-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Operations for Networks Platform NGINX Service STIG Readiness Guide",
       "version": 1,
       "releasenumber": 1,

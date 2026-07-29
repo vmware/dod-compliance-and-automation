@@ -1,7 +1,7 @@
 {
   "profiles": [
     {
-      "name": "VMware Cloud Foundation 9.x Operations Fleet Management Appliance NGINX Service STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-operations-fleet-management-nginx-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Operations Fleet Management Appliance NGINX Service STIG Readiness Guide",
       "version": 1,
       "releasenumber": 1,
