@@ -1,90 +1,80 @@
 {
   "profiles": [
     {
-      "name": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-application-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
       "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x ESX STIG Readiness Guide",
-      "title": "VMware Cloud Foundation 9.x ESX STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
+      "name": "vmware-cloud-foundation-automation-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x Automation Application STIG Readiness Guide",
       "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application vCenter Server STIG Readiness Guide",
-      "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
-      "releasedate": "12 May 2026",
-      "showCalendar": true
-    },
-    {
-      "name": "VMware Cloud Foundation 9.x Virtual Machine STIG Readiness Guide",
-      "title": "VMware Cloud Foundation 9.x Virtual Machine STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
-      "releasedate": "12 May 2026",
-      "showCalendar": true
-    },
-    {
-      "name": "VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-nsx-manager-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
       "releasedate": "05 May 2026",
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x NSX Routing STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-nsx-routing-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x NSX Routing STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
       "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application Automation STIG Readiness Guide",
-      "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
+      "name": "vmware-cloud-foundation-operations-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x Operations Application STIG Readiness Guide",
       "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application Operations STIG Readiness Guide",
-      "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
+      "name": "vmware-cloud-foundation-opshcx-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x Operations HCX Application STIG Readiness Guide",
       "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application Operations HCX STIG Readiness Guide",
-      "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
+      "name": "vmware-cloud-foundation-opsnet-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x Operations for Networks Application STIG Readiness Guide",
       "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application Operations for Networks STIG Readiness Guide",
-      "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
+      "name": "vmware-cloud-foundation-sddcmgr-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x SDDC Manager Application STIG Readiness Guide",
       "releasedate": "12 May 2026",
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application SDDC Manager STIG Readiness Guide",
-      "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
-      "version": 1,
-      "releasenumber": 2,
+      "name": "vmware-cloud-foundation-vsphere-esx-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x ESX Application STIG Readiness Guide",
+      "releasedate": "12 May 2026",
+      "showCalendar": true
+    },
+    {
+      "name": "vmware-cloud-foundation-vsphere-vcenter-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x vCenter Application STIG Readiness Guide",
+      "releasedate": "12 May 2026",
+      "showCalendar": true
+    },
+    {
+      "name": "vmware-cloud-foundation-vsphere-vm-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x Virtual Machine Application STIG Readiness Guide",
+      "releasedate": "12 May 2026",
+      "showCalendar": true
+    },
+    {
+      "name": "vmware-cloud-foundation-fleetmanagement-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x Operations Fleet Management Application STIG Readiness Guide",
+      "releasedate": "12 May 2026",
+      "showCalendar": true
+    },
+    {
+      "name": "vmware-cloud-foundation-opslogs-app-stig-baseline",
+      "title": "VMware Cloud Foundation 9.x Operations for Logs Application STIG Readiness Guide",
       "releasedate": "12 May 2026",
       "showCalendar": true
     }

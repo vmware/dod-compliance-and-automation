@@ -18,6 +18,10 @@
 - PHTN-50-000266 new control.
 - PHTN-50-000267 new control.
 
+#### Checklist Generation / Metadata
+- Migrated version numbering to Version.Release.Patch scheme (previously Version.Patch.Release), fixing STIG Viewer's Version/Release display
+- Added `saf_cli_hdf2ckl_metadata.json` template for accurate checklist generation if only running Photon profile
+
 ## [5.0 Version 3 Release 1] (2025-03-28)
 
 #### Release Notes

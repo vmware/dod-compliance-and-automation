@@ -1,12 +1,12 @@
 ---
-name: VMware Cloud Foundation 9.x ESX STIG Readiness Guide
-title: VMware Cloud Foundation 9.x ESX STIG Readiness Guide
+name: vmware-cloud-foundation-vsphere-esx-app-stig-baseline
+title: VMware Cloud Foundation 9.x ESX Application STIG Readiness Guide
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec compliance profile for the VMware Cloud Foundation 9.x ESX STIG Readiness Guide
-version: 1.0.1
+version: 1.1.0
 
 inputs:
   - name: esx_vmhostName
