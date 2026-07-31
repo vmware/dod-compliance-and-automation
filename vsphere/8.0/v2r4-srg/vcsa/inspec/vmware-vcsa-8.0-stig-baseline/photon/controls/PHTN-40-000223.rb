@@ -36,7 +36,7 @@ control 'PHTN-40-000223' do
 
     # /sbin/sysctl --load /etc/sysctl.d/zz-stig-hardening.conf
 
-    Note: If the file zz-stig-hardening.conf does not exist it must be created.
+    Note: If the file zz-stig-hardening.conf does not exist, it must be created.
   "
   impact 0.5
   tag severity: 'medium'

@@ -1,6 +1,6 @@
 control 'PHTN-40-000112' do
-  title 'The Photon operating system must immediately notify the SA and ISSO when allocated audit record storage volume reaches 75% of the repository maximum audit record storage capacity.'
-  desc  'If security personnel are not notified immediately when storage volume reaches 75% utilization, they are unable to plan for audit record storage capacity expansion.'
+  title 'The Photon operating system must immediately notify the SA and ISSO when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.'
+  desc  'If security personnel are not notified immediately when storage volume reaches 75 percent utilization, they are unable to plan for audit record storage capacity expansion.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify auditd is alerting when low disk space is detected:

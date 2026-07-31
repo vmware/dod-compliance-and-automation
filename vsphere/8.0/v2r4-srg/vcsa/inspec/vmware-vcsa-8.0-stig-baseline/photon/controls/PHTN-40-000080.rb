@@ -1,9 +1,9 @@
 control 'PHTN-40-000080' do
-  title 'The Photon operating system must initiate session audits at system start-up.'
-  desc  'If auditing is enabled late in the start-up process, the actions of some start-up processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.'
+  title 'The Photon operating system must initiate session audits at system startup.'
+  desc  'If auditing is enabled late in the startup process, the actions of some startup processes may not be audited. Some audit systems also maintain state information only available if auditing is enabled before a given process is created.'
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following command to verify auditing is enabled at start-up:
+    At the command line, run the following command to verify auditing is enabled at startup:
 
     # grep 'audit' /proc/cmdline
 

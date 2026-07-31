@@ -1,6 +1,6 @@
 control 'PHTN-40-000236' do
   title 'The Photon operating system must disable systemd fallback DNS.'
-  desc  'Systemd contains an ability to set fallback DNS servers which is used for DNS lookups in the event no system level DNS servers are configured or other DNS servers are specified in the Systemd resolved.conf file. If uncommented this configuration contains Google DNS servers by default and could result in DNS leaking info unknowingly in the event DNS is absent or misconfigured at the system level.'
+  desc  'Systemd contains an ability to set fallback DNS servers, which is used for DNS lookups in the event no system level DNS servers are configured or other DNS servers are specified in the Systemd resolved.conf file. If uncommented, this configuration contains Google DNS servers by default and could result in DNS leaking info unknowingly in the event DNS is absent or misconfigured at the system level.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify systemd fallback DNS is disabled:
@@ -22,7 +22,7 @@ control 'PHTN-40-000236' do
 
     # systemctl restart systemd-resolved
 
-    Note: If this option is not given, a compiled-in list of DNS servers is used instead which is undesirable.
+    Note: If this option is not given, a compiled-in list of DNS servers is used instead, which is undesirable.
   "
   impact 0.5
   tag severity: 'medium'

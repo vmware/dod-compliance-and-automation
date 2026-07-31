@@ -22,13 +22,13 @@ control 'PHTN-40-000246' do
 
     fs.suid_dumpable = 0
 
-    Note: 0 is recommended for normal operation. If core dumps need to be captured for troubleshooting purposes then 2 is also an acceptable value.
+    Note: \"0\" is recommended for normal operation. If core dumps need to be captured for troubleshooting purposes, then \"2\" is also an acceptable value.
 
     At the command line, run the following command to load the new configuration:
 
     # /sbin/sysctl --load /etc/sysctl.d/zz-stig-hardening.conf
 
-    Note: If the file zz-stig-hardening.conf does not exist it must be created.
+    Note: If the file zz-stig-hardening.conf does not exist, it must be created.
   "
   impact 0.5
   tag severity: 'medium'

@@ -1,6 +1,6 @@
 control 'VCLD-80-000022' do
   title 'The vCenter VAMI service must off-load log records onto a different system or media from the system being logged.'
-  desc  'Protection of log data includes assuring log data is not accidentally lost or deleted. Backing up log records to an unrelated system or onto separate media than the system the web server is actually running on helps to assure that, in the event of a catastrophic system failure, the log records will be retained.'
+  desc  'Protection of log data includes ensuring log data is not accidentally lost or deleted. Backing up log records to an unrelated system or onto separate media than the system the web server is actually running on helps to ensure that, in the event of a catastrophic system failure, the log records will be retained.'
   desc  'rationale', ''
   desc  'check', "
     By default there is a vmware-services-applmgmt.conf rsyslog configuration file which includes the service logs when syslog is configured on vCenter that must be verified.

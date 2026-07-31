@@ -1,6 +1,6 @@
 control 'VCLD-80-000099' do
   title 'The vCenter VAMI service must implement HTTP Strict Transport Security (HSTS).'
-  desc  'HSTS instructs web browsers to only use secure connections for all future requests when communicating with a web site. Doing so helps prevent SSL protocol attacks, SSL stripping, cookie hijacking, and other attempts to circumvent SSL protection.'
+  desc  'HSTS instructs web browsers to only use secure connections for all future requests when communicating with a website. Doing so helps prevent SSL protocol attacks, SSL stripping, cookie hijacking, and other attempts to circumvent SSL protection.'
   desc  'rationale', ''
   desc  'check', "
     At the command prompt, run the following command:

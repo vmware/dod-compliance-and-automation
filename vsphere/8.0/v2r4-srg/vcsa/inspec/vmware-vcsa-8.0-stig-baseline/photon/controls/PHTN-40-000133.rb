@@ -1,13 +1,13 @@
 control 'PHTN-40-000133' do
   title 'The Photon operating system must require users to reauthenticate for privilege escalation.'
   desc  "
-    Without re-authentication, users may access resources or perform tasks for which they do not have authorization.
+    Without reauthentication, users may access resources or perform tasks for which they do not have authorization.
 
-    When operating systems provide the capability to escalate a functional capability, it is critical the user re-authenticate.
+    When operating systems provide the capability to escalate a functional capability, it is critical the user reauthenticate.
   "
   desc  'rationale', ''
   desc  'check', "
-    At the command line, run the following commands to verify users with a set password are not allowed to sudo without re-authentication:
+    At the command line, run the following commands to verify users with a set password are not allowed to sudo without reauthentication:
 
     # grep -ihs nopasswd /etc/sudoers /etc/sudoers.d/*|grep -vE '(^#|^%)'
 

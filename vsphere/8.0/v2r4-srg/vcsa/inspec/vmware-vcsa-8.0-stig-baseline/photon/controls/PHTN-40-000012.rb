@@ -1,6 +1,6 @@
 control 'PHTN-40-000012' do
   title 'The Photon operating system must monitor remote access logins.'
-  desc  'Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk and make remote user access management difficult at best. Remote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. Automated monitoring of remote access sessions allows organizations to detect cyber attacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).'
+  desc  'Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk and make remote user access management difficult at best. Remote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless. Automated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).'
   desc  'rationale', ''
   desc  'check', "
     If another package is used to offload logs, such as syslog-ng, and is properly configured, this is not applicable.
@@ -11,7 +11,7 @@ control 'PHTN-40-000012' do
 
     Example result:
 
-    auth.*;authpriv.*;daemon.* /var/log/messages
+    auth.*;authpriv.*;daemon.* /var/log/audit/sshinfo.log
 
     If \"auth.*\", \"authpriv.*\", and \"daemon.*\" are not configured to be logged, this is a finding.
   "
@@ -22,7 +22,7 @@ control 'PHTN-40-000012' do
 
     Add or update the following line:
 
-    auth.*;authpriv.*;daemon.* /var/log/messages
+    auth.*;authpriv.*;daemon.* /var/log/audit/sshinfo.log
 
     Note: The path can be substituted for another suitable log destination dedicated to authentication logs.
 

@@ -20,8 +20,8 @@ Expected result:
 
 Require Secure Boot: true
 
-If "Require Secure Boot" is not enable, this is a finding.'
-  desc 'fix', 'This setting cannot be configured until Secure Boot is properly enabled in the servers firmware.
+If "Require Secure Boot" is not set to "true", this is a finding.'
+  desc 'fix', 'This setting cannot be configured until Secure Boot is properly enabled in the server\'s firmware.
 
 From an ESXi shell, run the following commands:
 

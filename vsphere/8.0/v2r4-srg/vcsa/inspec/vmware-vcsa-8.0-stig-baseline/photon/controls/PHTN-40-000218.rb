@@ -1,6 +1,6 @@
 control 'PHTN-40-000218' do
   title 'The Photon operating system must configure Secure Shell (SSH) to ignore user-specific known_host files.'
-  desc  'SSH trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled. Individual users can have a local list of trusted remote machines which must also be ignored while disabling host-based authentication generally.'
+  desc  'SSH trust relationships enable trivial lateral spread after a host compromise and therefore must be explicitly disabled. Individual users can have a local list of trusted remote machines, which must also be ignored while disabling host-based authentication generally.'
   desc  'rationale', ''
   desc  'check', "
     At the command line, run the following command to verify the running configuration of sshd:

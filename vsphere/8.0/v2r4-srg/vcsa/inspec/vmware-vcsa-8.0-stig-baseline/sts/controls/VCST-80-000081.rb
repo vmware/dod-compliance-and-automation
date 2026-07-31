@@ -1,11 +1,11 @@
 control 'VCST-80-000081' do
-  title 'The vCenter STS service must offload log records onto a different system or media from the system being logged.'
+  title 'The vCenter STS service must off-load log records onto a different system or media from the system being logged.'
   desc  "
     Information system logging capability is critical for accurate forensic analysis. Log record content that may be necessary to satisfy the requirement of this control includes, but is not limited to, time stamps, source and destination IP addresses, user/process identifiers, event descriptions, application-specific events, success/fail indications, filenames involved, and access control or flow control rules invoked.
 
-    Offloading is a common process in information systems with limited log storage capacity.
+    Off-loading is a common process in information systems with limited log storage capacity.
 
-    Centralized management of log records provides for efficiency in maintenance and management of records, as well as the backup and archiving of those records. Application servers and their related components are required to offload log records onto a different system or media than the system being logged.
+    Centralized management of log records provides for efficiency in maintenance and management of records, as well as the backup and archiving of those records. Application servers and their related components are required to off-load log records onto a different system or media than the system being logged.
   "
   desc  'rationale', ''
   desc  'check', "

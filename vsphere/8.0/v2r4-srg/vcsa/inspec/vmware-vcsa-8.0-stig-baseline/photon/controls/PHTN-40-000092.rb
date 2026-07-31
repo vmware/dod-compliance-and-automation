@@ -24,9 +24,9 @@ control 'PHTN-40-000092' do
     If there is any output for files that are not configuration files, this is a finding.
   "
   desc 'fix', "
-    If the audit system binaries have been altered investigate the cause and then re-install the audit package to restore the integrity of the package.
+    If the audit system binaries have been altered investigate the cause and then reinstall the audit package to restore the integrity of the package.
 
-    If performed on a VMware re-installing the audit tools is not supported. The appliance should be restored from a backup or redeployed once the root cause is remediated.
+    If performed on a VMware reinstalling the audit tools is not supported. The appliance should be restored from a backup or redeployed once the root cause is remediated.
   "
   impact 0.7
   tag severity: 'high'

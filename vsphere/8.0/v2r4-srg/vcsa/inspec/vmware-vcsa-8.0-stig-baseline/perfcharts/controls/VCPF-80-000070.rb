@@ -9,7 +9,7 @@ control 'VCPF-80-000070' do
 
     Example result:
 
-    <session-timeout>6</session-timeout>
+    <session-timeout>30</session-timeout>
 
     If the value of \"session-timeout\" is not \"30\" or less, or is missing, this is a finding.
   "

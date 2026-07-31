@@ -1,7 +1,7 @@
 control 'VCPG-80-000036' do
   title 'The vCenter PostgreSQL service must require authentication on all connections.'
   desc  "
-    To assure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.
+    To ensure accountability and prevent unauthenticated access, organizational users must be identified and authenticated to prevent potential misuse and compromise of the system.
 
     Organizational users include organizational employees or individuals the organization deems to have equivalent status of employees (e.g., contractors). Organizational users (and any processes acting on behalf of users) must be uniquely identified and authenticated for all accesses, except the following:
 
@@ -23,7 +23,7 @@ control 'VCPG-80-000036' do
 
     Find and update any line that has a method of \"trust\" or \"password\" in the far-right column.
 
-    A correct, typical line will look like the below:
+    A correct, typical line will look like the following:
 
     # TYPE  DATABASE        USER            ADDRESS                 METHOD
     local       VCDB               vpxd                                            peer map=vcdb

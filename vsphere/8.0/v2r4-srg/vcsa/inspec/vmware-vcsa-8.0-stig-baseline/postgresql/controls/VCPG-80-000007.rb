@@ -22,7 +22,7 @@ control 'VCPG-80-000007' do
     # /opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py --action stig_enable --pg-data-dir /storage/db/vpostgres
     # chmod -x /opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py
 
-    Note: If this has already been run previously it does not need to be run again.
+    Note: If this has already been run previously, it does not need to be run again.
 
     Navigate to and edit the /storage/db/vpostgres/stig.conf file.
 
