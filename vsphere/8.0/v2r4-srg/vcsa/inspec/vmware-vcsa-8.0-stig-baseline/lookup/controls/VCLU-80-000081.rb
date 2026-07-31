@@ -4,8 +4,6 @@ control 'VCLU-80-000081' do
 
     Off-loading is a common process in information systems with limited log storage capacity.
 
-    
-
     Centralized management of log records provides for efficiency in maintenance and management of records, as well as the backup and archiving of those records. Application servers and their related components are required to off-load log records onto a different system or media than the system being logged.
   "
   desc  'rationale', ''
