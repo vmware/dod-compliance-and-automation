@@ -1,5 +1,14 @@
 # Change Log
 
+## [VCF 9.x STIG Readiness Guide] (Y26M05) - Updated July 2026
+
+#### Checklist Generation / Metadata
+- Corrected InSpec profile `name` fields to match the required machine-readable slug (was incorrectly set to the display title in some profiles, breaking `saf convert hdf2ckl` metadata matching)
+- Migrated version numbering in inspec.yml files to Version.Release.Patch scheme (previously Version.Patch.Release), fixing STIG Viewer's Version/Release display
+- Corrected/added `saf_cli_hdf2ckl_metadata.json` file so checklist generation reflects the right profile version, release, and date
+- Fixed ESX PowerCLI runner script's management IP/MAC lookup (`Get-VMHostNetworkAdapter` failed against hosts using VCF's integrated networking; replaced with a direct `ExtensionData` read)
+- ESX/VM PowerCLI runner scripts now generate checklist metadata via a per-host file (`-m`) instead of individual CLI flags, which SAF CLI was silently ignoring (specifically release date)
+
 ## [VCF 9.x STIG Readiness Guide] (2025-06-17)
 
 #### Release Notes
