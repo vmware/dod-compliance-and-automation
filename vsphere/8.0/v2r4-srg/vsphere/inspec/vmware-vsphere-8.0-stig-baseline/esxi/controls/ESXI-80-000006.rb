@@ -22,7 +22,7 @@ By using this IS (which includes any device attached to this IS), you consent to
 
 Use the following verbiage for VMMs that have severe limitations on the number of characters that can be displayed in the banner:
 
-"I've read (literal ampersand) consent to terms in IS user agreem't."
+"I've read & consent to terms in IS user agreem't."
 
 )
   desc 'check', 'From the vSphere Client, go to Hosts and Clusters.
