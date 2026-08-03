@@ -28,8 +28,8 @@ control 'PHTN-40-000039' do
   tag gid: 'V-PHTN-40-000039'
   tag rid: 'SV-PHTN-40-000039'
   tag stig_id: 'PHTN-40-000039'
-  tag cci: ['CCI-004062']
-  tag nist: ['IA-5 (1) (d)']
+  tag cci: ['CCI-004062', 'CCI-000196']
+  tag nist: ['IA-5 (1) (d)', 'IA-5 (1) (c)']
 
   describe login_defs do
     its('ENCRYPT_METHOD') { should cmp 'SHA512' }

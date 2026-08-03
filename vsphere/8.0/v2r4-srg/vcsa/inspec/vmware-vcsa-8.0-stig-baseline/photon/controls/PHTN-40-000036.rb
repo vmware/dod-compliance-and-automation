@@ -34,8 +34,8 @@ control 'PHTN-40-000036' do
   tag gid: 'V-PHTN-40-000036'
   tag rid: 'SV-PHTN-40-000036'
   tag stig_id: 'PHTN-40-000036'
-  tag cci: ['CCI-004066']
-  tag nist: ['IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000193']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (a)']
 
   if input('usePwqualityConf')
     describe parse_config_file('/etc/security/pwquality.conf') do

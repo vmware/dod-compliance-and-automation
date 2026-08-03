@@ -8,7 +8,7 @@ control 'VCLU-80-000081' do
   "
   desc  'rationale', ''
   desc  'check', "
-    By default, a vmware-services-lookupsvc.conf rsyslog configuration file that includes the service logs when syslog is configured on vCenter, but it must be verified.
+    By default, a vmware-services-lookupsvc.conf rsyslog configuration file includes the service logs when syslog is configured on vCenter, but it must be verified.
 
     At the command prompt, run the following command:
 

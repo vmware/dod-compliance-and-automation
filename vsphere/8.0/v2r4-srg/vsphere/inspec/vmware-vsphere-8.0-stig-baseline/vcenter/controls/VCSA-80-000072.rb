@@ -23,8 +23,8 @@ Set "lowercase characters" to at least "1" and click "Save".'
   tag stig_id: 'VCSA-80-000072'
   tag gtitle: 'SRG-APP-000167'
   tag fix_id: 'F-62563r934399_fix'
-  tag cci: ['CCI-004066']
-  tag nist: ['IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000193']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (a)']
 
   command = '(Get-SsoPasswordPolicy).MinLowercaseCount'
   describe powercli_command(command) do

@@ -23,8 +23,8 @@ Set "numeric characters" to at least "1" and click "Save".'
   tag stig_id: 'VCSA-80-000073'
   tag gtitle: 'SRG-APP-000168'
   tag fix_id: 'F-62564r934402_fix'
-  tag cci: ['CCI-004066']
-  tag nist: ['IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000194']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (a)']
 
   command = '(Get-SsoPasswordPolicy).MinNumericCount'
   describe powercli_command(command) do

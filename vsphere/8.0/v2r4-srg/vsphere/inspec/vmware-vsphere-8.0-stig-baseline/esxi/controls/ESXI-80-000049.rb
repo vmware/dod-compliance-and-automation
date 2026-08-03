@@ -44,8 +44,8 @@ If any local user accounts are present besides root and service accounts, delete
   tag gtitle: 'SRG-OS-000104-VMM-000500'
   tag fix_id: 'F-62386r933271_fix'
   tag satisfies: ['SRG-OS-000104-VMM-000500', 'SRG-OS-000109-VMM-000550', 'SRG-OS-000112-VMM-000560', 'SRG-OS-000113-VMM-000570', 'SRG-OS-000123-VMM-000620']
-  tag cci: ['CCI-000764', 'CCI-004045', 'CCI-001682', 'CCI-001941']
-  tag nist: ['IA-2', 'IA-2 (5)', 'AC-2 (2)', 'IA-2 (8)']
+  tag cci: ['CCI-000764', 'CCI-004045', 'CCI-001682', 'CCI-001941', 'CCI-001942', 'CCI-000770']
+  tag nist: ['IA-2', 'IA-2 (5)', 'AC-2 (2)', 'IA-2 (8)', 'IA-2 (9)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

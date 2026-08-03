@@ -30,8 +30,8 @@ control 'PHTN-40-000043' do
   tag gid: 'V-PHTN-40-000043'
   tag rid: 'SV-PHTN-40-000043'
   tag stig_id: 'PHTN-40-000043'
-  tag cci: ['CCI-000200']
-  tag nist: ['IA-5 (1) (e)']
+  tag cci: ['CCI-004061']
+  tag nist: ['IA-5 (1) (b)']
 
   if input('useHistoryConf')
     describe parse_config_file('/etc/security/pwhistory.conf') do

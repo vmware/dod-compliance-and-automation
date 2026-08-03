@@ -40,8 +40,8 @@ control 'VCPG-80-000038' do
   tag gid: 'V-VCPG-80-000038'
   tag rid: 'SV-VCPG-80-000038'
   tag stig_id: 'VCPG-80-000038'
-  tag cci: ['CCI-004062']
-  tag nist: ['IA-5 (1) (d)']
+  tag cci: ['CCI-004062', 'CCI-000196']
+  tag nist: ['IA-5 (1) (d)', 'IA-5 (1) (c)']
 
   sql = postgres_session("#{input('postgres_user')}", "#{input('postgres_pass')}", "#{input('postgres_host')}")
 

@@ -49,8 +49,8 @@ Note: "VMwareCertified" or "VMwareAccepted" may be substituted for "PartnerSuppo
   tag gtitle: 'SRG-OS-000366-VMM-001430'
   tag fix_id: 'F-62395r933298_fix'
   tag satisfies: ['SRG-OS-000366-VMM-001430', 'SRG-OS-000370-VMM-001460']
-  tag cci: ['CCI-003992', 'CCI-001774']
-  tag nist: ['CM-14', 'CM-7 (5) (b)']
+  tag cci: ['CCI-003992', 'CCI-001774', 'CCI-001749']
+  tag nist: ['CM-14', 'CM-7 (5) (b)', 'CM-5 (3)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

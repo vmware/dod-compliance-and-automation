@@ -24,8 +24,8 @@ control 'PHTN-40-000041' do
   tag gid: 'V-PHTN-40-000041'
   tag rid: 'SV-PHTN-40-000041'
   tag stig_id: 'PHTN-40-000041'
-  tag cci: ['CCI-004066']
-  tag nist: ['IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000198']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (d)']
 
   describe login_defs do
     its('PASS_MIN_DAYS') { should cmp '1' }

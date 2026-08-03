@@ -28,8 +28,8 @@ By default, both locations are pulled from the cert. CRL location can be overrid
   tag gtitle: 'SRG-APP-000175'
   tag fix_id: 'F-62568r1003599_fix'
   tag satisfies: ['SRG-APP-000175', 'SRG-APP-000392', 'SRG-APP-000401', 'SRG-APP-000403']
-  tag cci: ['CCI-000185', 'CCI-001954', 'CCI-004068', 'CCI-002010']
-  tag nist: ['IA-5 (2) (b) (1)', 'IA-2 (12)', 'IA-5 (2) (b) (2)', 'IA-8 (1)']
+  tag cci: ['CCI-000185', 'CCI-001954', 'CCI-004068', 'CCI-002010', 'CCI-001991']
+  tag nist: ['IA-5 (2) (b) (1)', 'IA-2 (12)', 'IA-5 (2) (b) (2)', 'IA-8 (1)', 'IA-5 (2) (d)']
 
   if input('embeddedIdp')
     describe.one do

@@ -29,8 +29,8 @@ Select "NTP" for "Mode" and enter a list of authorized time servers separated by
   tag stig_id: 'VCSA-80-000158'
   tag gtitle: 'SRG-APP-000371'
   tag fix_id: 'F-62576r934438_fix'
-  tag cci: ['CCI-004923']
-  tag nist: ['SC-45 (1) (a)']
+  tag cci: ['CCI-004923', 'CCI-001891']
+  tag nist: ['SC-45 (1) (a)', 'AU-8 (1) (a)']
 
   command = 'Invoke-GetTimesync'
   timesync = powercli_command(command).stdout.strip

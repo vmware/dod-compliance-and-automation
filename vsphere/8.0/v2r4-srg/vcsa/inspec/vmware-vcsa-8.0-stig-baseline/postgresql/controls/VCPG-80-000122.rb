@@ -9,7 +9,7 @@ control 'VCPG-80-000122' do
   "
   desc  'rationale', ''
   desc  'check', "
-    By default there is a vmware-services-vmware-vpostgres.conf rsyslog and vmware-services-vmware-postgres-archiver.conf configuration file that includes the service logs when syslog is configured on vCenter but it must be verified.
+    By default, a vmware-services-vmware-vpostgres.conf rsyslog and vmware-services-vmware-postgres-archiver.conf configuration file include the service logs when syslog is configured on vCenter, but they must be verified.
 
     At the command prompt, run the following command:
 

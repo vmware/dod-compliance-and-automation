@@ -38,8 +38,8 @@ $esxcli.system.ssh.server.config.set.Invoke($arguments)"
   tag stig_id: 'ESXI-80-000052'
   tag gtitle: 'SRG-OS-000107-VMM-000530'
   tag fix_id: 'F-62387r933274_fix'
-  tag cci: ['CCI-000765']
-  tag nist: ['IA-2 (1)']
+  tag cci: ['CCI-000765', 'CCI-000767']
+  tag nist: ['IA-2 (1)', 'IA-2 (3)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

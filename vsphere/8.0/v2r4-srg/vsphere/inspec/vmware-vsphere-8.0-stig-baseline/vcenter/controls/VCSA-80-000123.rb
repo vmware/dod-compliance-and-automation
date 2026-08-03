@@ -48,8 +48,8 @@ Click "Next". Click "Next" again. Click "Create".'
   tag gtitle: 'SRG-APP-000291'
   tag fix_id: 'F-62572r934426_fix'
   tag satisfies: ['SRG-APP-000291', 'SRG-APP-000292', 'SRG-APP-000293', 'SRG-APP-000294', 'SRG-APP-000320']
-  tag cci: ['CCI-000015']
-  tag nist: ['AC-2 (1)']
+  tag cci: ['CCI-000015', 'CCI-001685', 'CCI-002132', 'CCI-001683', 'CCI-001686', 'CCI-001684']
+  tag nist: ['AC-2 (1)', 'AC-2 (4)']
 
   command = 'Get-AlarmDefinition | Where-Object {$_.ExtensionData.Info.Expression.Expression.EventTypeId -eq "com.vmware.sso.PrincipalManagement"} | Select-Object -ExpandProperty Enabled'
   describe powercli_command(command) do

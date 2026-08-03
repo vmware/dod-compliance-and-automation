@@ -23,8 +23,8 @@ Set "uppercase characters" to at least "1" and click "Save".'
   tag stig_id: 'VCSA-80-000071'
   tag gtitle: 'SRG-APP-000166'
   tag fix_id: 'F-62562r934396_fix'
-  tag cci: ['CCI-004066']
-  tag nist: ['IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000192']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (a)']
 
   command = '(Get-SsoPasswordPolicy).MinUppercaseCount'
   describe powercli_command(command) do

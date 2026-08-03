@@ -28,8 +28,8 @@ control 'PHTN-40-000130' do
   tag gid: 'V-PHTN-40-000130'
   tag rid: 'SV-PHTN-40-000130'
   tag stig_id: 'PHTN-40-000130'
-  tag cci: ['CCI-003992']
-  tag nist: ['CM-14']
+  tag cci: ['CCI-003992', 'CCI-001749']
+  tag nist: ['CM-14', 'CM-5 (3)']
 
   # This config file has a [main] section header at the top
   describe.one do

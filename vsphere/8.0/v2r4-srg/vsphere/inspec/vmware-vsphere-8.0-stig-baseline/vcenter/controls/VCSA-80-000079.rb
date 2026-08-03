@@ -25,8 +25,8 @@ Set "Maximum lifetime" to "90" and click "Save".'
   tag stig_id: 'VCSA-80-000079'
   tag gtitle: 'SRG-APP-000174'
   tag fix_id: 'F-62567r934411_fix'
-  tag cci: ['CCI-004066']
-  tag nist: ['IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000199']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (d)']
 
   command = '(Get-SsoPasswordPolicy).PasswordLifetimeDays'
   describe powercli_command(command) do

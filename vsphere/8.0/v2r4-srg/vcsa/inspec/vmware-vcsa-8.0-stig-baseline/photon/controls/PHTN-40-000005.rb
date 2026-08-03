@@ -83,8 +83,8 @@ control 'PHTN-40-000005' do
   tag gid: 'V-PHTN-40-000005'
   tag rid: 'SV-PHTN-40-000005'
   tag stig_id: 'PHTN-40-000005'
-  tag cci: ['CCI-000048', 'CCI-001384', 'CCI-001385', 'CCI-001386', 'CCI-001387', 'CCI-001388']
-  tag nist: ['AC-8 a', 'AC-8 c 1', 'AC-8 c 2', 'AC-8 c 3']
+  tag cci: ['CCI-000048', 'CCI-001384']
+  tag nist: ['AC-8 a', 'AC-8 c 1']
 
   sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i Banner") do

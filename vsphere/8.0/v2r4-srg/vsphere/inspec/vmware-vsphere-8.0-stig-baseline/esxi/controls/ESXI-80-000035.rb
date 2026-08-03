@@ -36,8 +36,8 @@ Get-VMHost | Get-AdvancedSetting -Name Security.PasswordQualityControl | Set-Adv
   tag gtitle: 'SRG-OS-000069-VMM-000360'
   tag fix_id: 'F-62383r933262_fix'
   tag satisfies: ['SRG-OS-000069-VMM-000360', 'SRG-OS-000070-VMM-000370', 'SRG-OS-000071-VMM-000380', 'SRG-OS-000072-VMM-000390', 'SRG-OS-000072-VMM-000390', 'SRG-OS-000078-VMM-000450', 'SRG-OS-000266-VMM-000940']
-  tag cci: ['CCI-004066']
-  tag nist: ['IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000195', 'CCI-000193', 'CCI-000192', 'CCI-001619', 'CCI-000205', 'CCI-000194']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (b)', 'IA-5 (1) (a)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

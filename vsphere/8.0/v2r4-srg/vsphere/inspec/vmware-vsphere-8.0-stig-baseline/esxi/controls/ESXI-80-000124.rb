@@ -78,8 +78,8 @@ Select "Start and stop with host". Click "OK".'
   tag gtitle: 'SRG-OS-000355-VMM-001330'
   tag fix_id: 'F-62394r933295_fix'
   tag satisfies: ['SRG-OS-000355-VMM-001330', 'SRG-OS-000356-VMM-001340']
-  tag cci: ['CCI-004923', 'CCI-004926']
-  tag nist: ['SC-45 (1) (a)', 'SC-45 (1) (b)']
+  tag cci: ['CCI-004923', 'CCI-004926', 'CCI-001891', 'CCI-002046']
+  tag nist: ['SC-45 (1) (a)', 'SC-45 (1) (b)', 'AU-8 (1) (a)', 'AU-8 (1) (b)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

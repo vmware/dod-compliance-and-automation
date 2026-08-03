@@ -25,8 +25,8 @@ Set the "Minimum Length" to "15" and click "Save".'
   tag stig_id: 'VCSA-80-000069'
   tag gtitle: 'SRG-APP-000164'
   tag fix_id: 'F-62560r934390_fix'
-  tag cci: ['CCI-004066']
-  tag nist: ['IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-000205']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (a)']
 
   command = '(Get-SsoPasswordPolicy).MinLength'
   describe powercli_command(command) do

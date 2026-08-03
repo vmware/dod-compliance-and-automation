@@ -25,8 +25,8 @@ Set "special characters" to at least "1" and click "Save".'
   tag stig_id: 'VCSA-80-000074'
   tag gtitle: 'SRG-APP-000169'
   tag fix_id: 'F-62565r934405_fix'
-  tag cci: ['CCI-004066']
-  tag nist: ['IA-5 (1) (h)']
+  tag cci: ['CCI-004066', 'CCI-001619']
+  tag nist: ['IA-5 (1) (h)', 'IA-5 (1) (a)']
 
   command = '(Get-SsoPasswordPolicy).MinSpecialCharCount'
   describe powercli_command(command) do

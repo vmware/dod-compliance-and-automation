@@ -50,9 +50,10 @@ Enter the host into maintenance mode and reboot for changes to take effect.'
   tag rid: 'SV-258793r959010_rule'
   tag stig_id: 'ESXI-80-000238'
   tag gtitle: 'SRG-OS-000480-VMM-002000'
+  tag satisfies: ['SRG-OS-000780-VMM-000240']
   tag fix_id: 'F-62442r933439_fix'
-  tag cci: ['CCI-000366']
-  tag nist: ['CM-6 b']
+  tag cci: ['CCI-000366', 'CCI-004910']
+  tag nist: ['CM-6 b', 'SC-28 (3)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

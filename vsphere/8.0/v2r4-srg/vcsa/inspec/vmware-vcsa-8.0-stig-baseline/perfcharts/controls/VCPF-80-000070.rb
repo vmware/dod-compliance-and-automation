@@ -39,8 +39,8 @@ control 'VCPF-80-000070' do
   tag gid: 'V-VCPF-80-000070'
   tag rid: 'SV-VCPF-80-000070'
   tag stig_id: 'VCPF-80-000070'
-  tag cci: ['CCI-002361', 'CCI-004895']
-  tag nist: ['AC-12', 'SC-11 b']
+  tag cci: ['CCI-002361', 'CCI-004895', 'CCI-002038']
+  tag nist: ['AC-12', 'SC-11 b', 'IA-11']
 
   # Open web.xml
   xmlconf = xml(input('webXmlPath'))

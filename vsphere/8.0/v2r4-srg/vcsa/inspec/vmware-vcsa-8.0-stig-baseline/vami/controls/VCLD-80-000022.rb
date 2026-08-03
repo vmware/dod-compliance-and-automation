@@ -3,7 +3,7 @@ control 'VCLD-80-000022' do
   desc  'Protection of log data includes ensuring log data is not accidentally lost or deleted. Backing up log records to an unrelated system or onto separate media than the system the web server is actually running on helps to ensure that, in the event of a catastrophic system failure, the log records will be retained.'
   desc  'rationale', ''
   desc  'check', "
-    By default there is a vmware-services-applmgmt.conf rsyslog configuration file which includes the service logs when syslog is configured on vCenter that must be verified.
+    By default, a vmware-services-applmgmt.conf rsyslog configuration file includes the service logs when syslog is configured on vCenter, but it must be verified.
 
     At the command prompt, run the following command:
 

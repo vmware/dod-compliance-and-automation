@@ -36,8 +36,8 @@ control 'PHTN-40-000243' do
   tag gid: 'V-PHTN-40-000243'
   tag rid: 'SV-PHTN-40-000243'
   tag stig_id: 'PHTN-40-000243'
-  tag cci: ['CCI-000200']
-  tag nist: ['IA-5 (1) (e)']
+  tag cci: ['CCI-004061']
+  tag nist: ['IA-5 (1) (b)']
 
   describe file('/etc/pam.d/system-password') do
     its('content') { should match /^password\s+(required|requisite)\s+pam_pwhistory\.so\s+(?=.*\buse_authtok\b).*$/ }

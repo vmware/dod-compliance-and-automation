@@ -46,7 +46,7 @@ Invoke-GetTask -Task 66b247c2-fe02-4425-9338-1c88eb856138:com.vmware.appliance.t
   tag gtitle: 'SRG-APP-000014'
   tag fix_id: 'F-69804r1003612_fix'
   tag cci: ['CCI-000068', 'CCI-000382', 'CCI-001184', 'CCI-001453', 'CCI-001941', 'CCI-002418', 'CCI-002420', 'CCI-002421', 'CCI-002422', 'CCI-002450']
-  tag nist: ['AC-17 (2)', 'CM-7 b', 'SC-23', 'AC-17 (2)', 'IA-2 (8)', 'SC-8', 'SC-8 (2)', 'SC-8 (1)', 'SC-8 (2)', 'SC-13 b']
+  tag nist: ['AC-17 (2)', 'CM-7 b', 'SC-23', 'IA-2 (8)', 'SC-8', 'SC-8 (2)', 'SC-8 (1)', 'SC-13 b']
 
   command = 'Invoke-GetTlsProfilesGlobal | Select-Object -ExpandProperty profile'
   describe powercli_command(command) do

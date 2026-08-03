@@ -20,8 +20,8 @@ Click "Edit" and enter "15" minutes into the "Session timeout" setting. Click "S
   tag gtitle: 'SRG-APP-000190'
   tag fix_id: 'F-62569r934417_fix'
   tag satisfies: ['SRG-APP-000190', 'SRG-APP-000295', 'SRG-APP-000389']
-  tag cci: ['CCI-001133', 'CCI-004895', 'CCI-002361']
-  tag nist: ['SC-10', 'SC-11 b', 'AC-12']
+  tag cci: ['CCI-001133', 'CCI-004895', 'CCI-002361', 'CCI-002038']
+  tag nist: ['SC-10', 'SC-11 b', 'AC-12', 'IA-11']
 
   describe 'This check is a manual or policy based check and must be reviewed manually.' do
     skip 'This check is a manual or policy based check and must be reviewed manually.'

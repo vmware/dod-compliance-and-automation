@@ -45,8 +45,8 @@ Get-VMHost | Get-AdvancedSetting -Name Syslog.global.logHost | Set-AdvancedSetti
   tag gtitle: 'SRG-OS-000342-VMM-001230'
   tag fix_id: 'F-62393r933292_fix'
   tag satisfies: ['SRG-OS-000342-VMM-001230', 'SRG-OS-000274-VMM-000960', 'SRG-OS-000275-VMM-000970', 'SRG-OS-000277-VMM-000990', 'SRG-OS-000479-VMM-001990']
-  tag cci: ['CCI-000015', 'CCI-001851']
-  tag nist: ['AC-2 (1)', 'AU-4 (1)']
+  tag cci: ['CCI-000015', 'CCI-001851', 'CCI-001684', 'CCI-001686', 'CCI-001683']
+  tag nist: ['AC-2 (1)', 'AU-4 (1)', 'AC-2 (4)']
 
   vmhostName = input('vmhostName')
   cluster = input('cluster')

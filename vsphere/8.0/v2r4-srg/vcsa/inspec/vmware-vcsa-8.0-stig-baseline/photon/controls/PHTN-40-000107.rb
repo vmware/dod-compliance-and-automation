@@ -47,8 +47,8 @@ control 'PHTN-40-000107' do
   tag gid: 'V-PHTN-40-000107'
   tag rid: 'SV-PHTN-40-000107'
   tag stig_id: 'PHTN-40-000107'
-  tag cci: ['CCI-000172', 'CCI-001404', 'CCI-002234', 'CCI-004188']
-  tag nist: ['AC-2 (4)', 'AC-6 (9)', 'AU-12 c', 'MA-3 (5)']
+  tag cci: ['CCI-000172', 'CCI-001404', 'CCI-002234']
+  tag nist: ['AC-2 (4)', 'AC-6 (9)', 'AU-12 c']
 
   results = command('find / -xdev -path /var/lib/containerd -prune -o -path /var/lib/docker -prune -o \( -perm -4000 -type f -o -perm -2000 \) -type f -print').stdout.split("\n")
   if !results.empty?
