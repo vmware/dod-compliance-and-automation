@@ -33,6 +33,12 @@
   Enter the path for the InSpec inputs file, for example: C:\github\dod-compliance-and-automation\vsphere\8.0\vsphere\powercli\vmware-vsphere-8.0-stig-esxi-inspec-runner-inputs-example.yml
 .PARAMETER attestationFile
   Enter the path for the saf cli attestation file, for example: C:\github\dod-compliance-and-automation\vsphere\8.0\vsphere\powercli\vmware-vsphere-8.0-stig-esxi-inspec-runner-attestation-example.yml
+.PARAMETER profileName
+  InSpec Profile name to use for providing additional checklist metadata. Must be exactly as shown in the ESXi profile's inspec.yml "name" field. This default value is correct at the time of publication.
+.PARAMETER profileTitle
+  The human-readable STIG title to display in the checklist header. This default value is correct at the time of publication.
+.PARAMETER releaseDate
+  Release date to use for providing additional checklist metadata. This should match the format in STIG Viewer. For Example: 02 Jun 2025
 #>
 [CmdletBinding()]
 param (
@@ -55,7 +61,19 @@ param (
   [Parameter(Mandatory=$false,
   HelpMessage="Enter the path for the saf cli attestation file.")]
   [ValidateNotNullOrEmpty()]
-  [string]$attestationFile
+  [string]$attestationFile,
+  [Parameter(Mandatory=$false,
+  HelpMessage="InSpec Profile name (as shown in the ESXi profile's inspec.yml 'name' field) to use for providing additional checklist metadata.")]
+  [ValidateNotNullOrEmpty()]
+  [string]$profileName = "vmware-vsphere-8.0-esxi-stig-baseline",
+  [Parameter(Mandatory=$false,
+  HelpMessage="Human-readable STIG title to display in the checklist header.")]
+  [ValidateNotNullOrEmpty()]
+  [string]$profileTitle = "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
+  [Parameter(Mandatory=$false,
+  HelpMessage="Release date to use for providing additional checklist metadata. This should match the format in STIG Viewer. For Example: 02 Jun 2025")]
+  [ValidateNotNullOrEmpty()]
+  [string]$releaseDate = "01 Jul 2026"
 )
 
 #Get Current Date and Time
@@ -152,22 +170,45 @@ If($IsLinux){
       Invoke-Command -ScriptBlock $command
       If(Get-Command saf){
         Write-ToConsole "...Detected saf cli...generating STIG Viewer Checklist for $name"
-        #Get management IP for CKL report
-        $mgmtip = Get-VMHostNetworkAdapter -VMHost $vmhost | Where-Object {$_.Name -eq "vmk0"} | Select-Object -ExpandProperty IP
-        #Get management MAC Address for CKL report
-        $mgmtmac = Get-VMHostNetworkAdapter -VMHost $vmhost | Where-Object {$_.Name -eq "vmk0"} | Select-Object -ExpandProperty Mac
+
+        #Get IP address and MAC for the Checklist
+        $netSystem = $vmhost.ExtensionData.Config.Network
+        $vmk0 = $netSystem.Vnic | Where-Object { $_.Device -eq "vmk0" }
+        $mgmtip = $vmk0.Spec.Ip.IpAddress
+        $mgmtmac = $vmk0.Spec.Mac
+
+        # saf convert hdf2ckl's -m/--metadata flag cannot be combined with --hostname/--ip/--mac/etc,
+        # and the individual --version/--releasenumber/--releasedate flags do not populate the CKL header.
+        # All checklist metadata (host info, profile version/release/date) must go through this file instead.
+        $cklMetadata = @{
+          profiles = @(
+            @{
+              name        = $profileName
+              title       = $profileTitle
+              releasedate = $releaseDate
+            }
+          )
+          hostname     = $name
+          hostfqdn     = $name
+          hostip       = $mgmtip
+          hostmac      = $mgmtmac
+          vulidmapping = "gid"
+        }
+        $metadataFile = $reportPath + "/ckl_metadata_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
+        $cklMetadata | ConvertTo-Json -Depth 5 | Set-Content -Path $metadataFile
+
         If($attestationFile){
           Write-ToConsole "...Attestation file: $attestationFile detected...applying to results for $name"
           $reportFileWithAttestations = $reportPath + "/VMware_vSphere_8.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.json"
           $attestCommand = {saf attest apply -i $reportFile $attestationFile -o $reportFileWithAttestations}
           Invoke-Command -ScriptBlock $attestCommand
           $cklFile = $reportPath + "/VMware_vSphere_8.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.ckl"
-          $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
+          $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile -m $metadataFile}
           Invoke-Command -ScriptBlock $cklCommand
         }Else{
           Write-ToConsole "...No attestation file provided for $name"
           $cklFile = $reportPath + "/VMware_vSphere_8.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".ckl"
-          $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
+          $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile -m $metadataFile}
           Invoke-Command -ScriptBlock $cklCommand
         }
       }
@@ -205,22 +246,45 @@ If($IsLinux){
       Invoke-Command -ScriptBlock $command
       If(Get-Command saf){
         Write-ToConsole "...Detected saf cli...generating STIG Viewer Checklist for $name"
-        #Get management IP for CKL report
-        $mgmtip = Get-VMHostNetworkAdapter -VMHost $vmhost | Where-Object {$_.Name -eq "vmk0"} | Select-Object -ExpandProperty IP
-        #Get management MAC Address for CKL report
-        $mgmtmac = Get-VMHostNetworkAdapter -VMHost $vmhost | Where-Object {$_.Name -eq "vmk0"} | Select-Object -ExpandProperty Mac
+
+        #Get IP address and MAC for the Checklist
+        $netSystem = $vmhost.ExtensionData.Config.Network
+        $vmk0 = $netSystem.Vnic | Where-Object { $_.Device -eq "vmk0" }
+        $mgmtip = $vmk0.Spec.Ip.IpAddress
+        $mgmtmac = $vmk0.Spec.Mac
+
+        # saf convert hdf2ckl's -m/--metadata flag cannot be combined with --hostname/--ip/--mac/etc,
+        # and the individual --version/--releasenumber/--releasedate flags do not populate the CKL header.
+        # All checklist metadata (host info, profile version/release/date) must go through this file instead.
+        $cklMetadata = @{
+          profiles = @(
+            @{
+              name        = $profileName
+              title       = $profileTitle
+              releasedate = $releaseDate
+            }
+          )
+          hostname     = $name
+          hostfqdn     = $name
+          hostip       = $mgmtip
+          hostmac      = $mgmtmac
+          vulidmapping = "gid"
+        }
+        $metadataFile = $reportPath + "\ckl_metadata_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".json"
+        $cklMetadata | ConvertTo-Json -Depth 5 | Set-Content -Path $metadataFile
+
         If($attestationFile){
-          Write-ToConsole "...Attestion file: $attestationFile detected...applying to results for $name"
+          Write-ToConsole "...Attestation file: $attestationFile detected...applying to results for $name"
           $reportFileWithAttestations = $reportPath + "\VMware_vSphere_8.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.json"
           $attestCommand = {saf attest apply -i $reportFile $attestationFile -o $reportFileWithAttestations}
           Invoke-Command -ScriptBlock $attestCommand
           $cklFile = $reportPath + "\VMware_vSphere_8.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + "_with_Attestations.ckl"
-          $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
+          $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile -m $metadataFile}
           Invoke-Command -ScriptBlock $cklCommand
         }Else{
-          Write-ToConsole "...No attestion file provided for $name"
+          Write-ToConsole "...No attestation file provided for $name"
           $cklFile = $reportPath + "\VMware_vSphere_8.0_STIG_ESXi_Inspec_Report" + "_" + $name + "-" + $Date.Month + "-" + $Date.Day + "-" + $Date.Year + "_" + $Date.Hour + "-" + $Date.Minute + "-" + $Date.Second + ".ckl"
-          $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac}
+          $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile -m $metadataFile}
           Invoke-Command -ScriptBlock $cklCommand
         }
       }
