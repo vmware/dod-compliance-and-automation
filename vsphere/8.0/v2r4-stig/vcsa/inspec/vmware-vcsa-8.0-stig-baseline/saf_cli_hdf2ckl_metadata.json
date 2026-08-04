@@ -1,75 +1,75 @@
 {
   "profiles": [
     {
-      "name": "vCenter Virtual Appliance 8.0 EAM Service Profile",
+      "name": "vmware-vcsa-8.0-eam-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Appliance ESX Agent Manager (EAM) Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 3,
-      "releasedate": "12 May 2026",
+      "releasedate": "01 Jul 2026",
       "showCalendar": true
     },
     {
-      "name": "vCenter Virtual Appliance 8.0 Envoy Service Profile",
+      "name": "vmware-vcsa-8.0-envoy-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Appliance Envoy Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 2,
-      "releasedate": "12 May 2026",
+      "releasedate": "01 Jul 2026",
       "showCalendar": true
     },
     {
-      "name": "vCenter Virtual Appliance 8.0 Lookup Service Profile",
+      "name": "vmware-vcsa-8.0-lookup-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Appliance Lookup Service Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 2,
-      "releasedate": "12 May 2026",
+      "releasedate": "01 Jul 2026",
       "showCalendar": true
     },
     {
-      "name": "vCenter Virtual Appliance 8.0 Perfcharts Service Profile",
+      "name": "vmware-vcsa-8.0-perfcharts-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Appliance Perfcharts Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 2,
-      "releasedate": "12 May 2026",
+      "releasedate": "01 Jul 2026",
       "showCalendar": true
     },
     {
-      "name": "vCenter Virtual Appliance 8.0 Photon OS 4.0 Profile",
+      "name": "vmware-vcsa-8.0-photon-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Appliance Photon OS 4.0 Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 3,
-      "releasedate": "12 May 2026",
+      "releasenumber": 2,
+      "releasedate": "01 Jul 2026",
       "showCalendar": true
     },
     {
-      "name": "vCenter Virtual Appliance 8.0 PostgreSQL Service Profile",
+      "name": "vmware-vcsa-8.0-postgresql-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Appliance PostgreSQL Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 3,
-      "releasedate": "12 May 2026",
+      "releasedate": "01 Jul 2026",
       "showCalendar": true
     },
     {
-      "name": "vCenter Virtual Appliance 8.0 STS Service Profile",
+      "name": "vmware-vcsa-8.0-sts-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Appliance Secure Token Service (STS) Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 2,
-      "releasedate": "12 May 2026",
+      "releasedate": "01 Jul 2026",
       "showCalendar": true
     },
     {
-      "name": "vCenter Virtual Appliance 8.0 UI Service Profile",
+      "name": "vmware-vcsa-8.0-ui-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Appliance User Interface (UI) Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 2,
-      "releasedate": "12 May 2026",
+      "releasedate": "01 Jul 2026",
       "showCalendar": true
     },
     {
-      "name": "vCenter Virtual Appliance 8.0 VAMI Service Profile",
+      "name": "vmware-vcsa-8.0-vami-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Appliance Management Interface (VAMI) Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 2,
-      "releasedate": "12 May 2026",
+      "releasedate": "01 Jul 2026",
       "showCalendar": true
     }
   ],

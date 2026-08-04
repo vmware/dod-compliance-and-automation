@@ -1,11 +1,11 @@
 name: vmware-vcsa-8.0-stig-baseline
-title: InSpec Profile for VMware vCenter Service Appliance 8.0 STIG Version 2 Release 4
+title: InSpec Profile for VMware vCenter Service Appliance 8.0 STIG Version 2 Release 3
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 2.0.4
+version: 2.3.0
 
 depends:
   - name: eam

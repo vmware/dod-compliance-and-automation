@@ -1,12 +1,12 @@
 ---
-name: VMware vSphere 8.0 vCenter STIG
+name: vmware-vsphere-8.0-vcenter-stig-baseline
 title: VMware vSphere 8.0 vCenter STIG
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 2.0.2
+version: 2.2.0
 
 inputs:
   - name: embeddedIdp
