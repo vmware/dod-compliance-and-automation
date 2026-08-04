@@ -14,6 +14,9 @@
   - [RESOLVED PHTN-30-000114 Multiple umask entries in check output](#phtn-30-000114-multiple-umask-entries-in-check-output)
   - [RESOLVED VCLU-80-000037 Path incorrect in check](#vclu-80-000037-path-incorrect-in-check)
   - [VCPG-80-000007 pgaudit log generation exhausts disk space before rotation can occur](#vcpg-80-000007-pgaudit-log-generation-exhausts-disk-space-before-rotation-can-occur)
+  - [PHTN-40-000267 Fix text in official DISA release does not match the check text](#phtn-40-000267-fix-text-in-official-disa-release-does-not-match-the-check-text)
+  - [VCLU-80-000081 Official DISA release recommends a log entry that does not match the out-of-the-box configuration](#vclu-80-000081-official-disa-release-recommends-a-log-entry-that-does-not-match-the-out-of-the-box-configuration)
+  - [VCUI-80-000134 Check text in official DISA release contains an inaccurate comparison](#vcui-80-000134-check-text-in-official-disa-release-contains-an-inaccurate-comparison)
 
 # Known Issues
 
@@ -228,3 +231,33 @@ pgaudit.log_statement = off
 pgaudit.log = 'all, -misc, -read'
 ```
 - Restart PostgreSQL by running `vmon-cli --restart vmware-vpostgres` for the changes to take effect.  
+
+### [PHTN-40-000267] Fix text in official DISA release does not match the check text
+
+Related issue: None
+
+DISA's officially published V2R2 XCCDF for the VCSA Photon OS 4.0 STIG contains an incorrect `fixtext` value for this rule. The published fix text describes configuring `fs.suid_dumpable` via `/etc/sysctl.d/zz-stig-hardening.conf`, which is the fix text that correctly belongs to PHTN-40-000246 ("The Photon operating system must restrict core dumps."). It does not match this rule's own title or check text, both of which correctly describe configuring the `pam_deny.so` module as the last `auth` entry in `/etc/pam.d/system-auth`.
+
+**Workaround:**
+
+- This content will not be updated to match the incorrect officially published fix text. The existing fix text (`pam_deny.so` guidance) is correct and matches the check text; it should continue to be used.
+
+### [VCLU-80-000081] Official DISA release recommends a log entry that does not match the out-of-the-box configuration
+
+Related issue: None
+
+DISA's officially published V2R2 XCCDF for the VCSA Lookup Service STIG consolidates the `lookupsvc_stream.log.stdout` and `lookupsvc_stream.log.stderr` rsyslog `input()` entries into a single entry using a wildcard file path (`lookupsvc_stream.log.std*`). This does not match the actual out-of-the-box rsyslog configuration shipped with vCenter, which uses two separate entries for these files, as verified against the reference configuration files used by this control's automated check.
+
+**Workaround:**
+
+- This content will not be updated to match DISA's consolidated (wildcarded) entry. The existing check/fix text, which lists both entries separately, matches the real product default and should continue to be used.
+
+### [VCUI-80-000134] Check text in official DISA release contains an inaccurate comparison
+
+Related issue: None
+
+DISA's officially published V2R2 XCCDF for this rule changed the check text's comparison to: `If "port" does not equal "shutdown.port=-1", this is a finding.` This does not match either example result shown earlier in the same check text: the `xmllint` command's expected output is `port="${shutdown.port}"`, not `"shutdown.port=-1"`. The comparison target appears to have been mixed up with the second check (which correctly compares `shutdown.port` to `-1` via the `grep` output).
+
+**Workaround:**
+
+- This content will not be updated to match the inaccurate officially published check text. The existing comparison (`port` should equal `"${shutdown.port}"`) is internally consistent with the example output and should continue to be used.
