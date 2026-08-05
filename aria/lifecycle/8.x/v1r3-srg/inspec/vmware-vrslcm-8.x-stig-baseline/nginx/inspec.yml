@@ -46,6 +46,8 @@ inputs:
       - http_stub_status
       - http_sub
       - http_auth_request
+      - stream_ssl_preread
+      - stream_ssl
   - name: nginx_user
     description: NGNX-WB-000035 NGINX worker process user account
     type: string

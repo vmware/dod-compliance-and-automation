@@ -69,7 +69,7 @@ control 'VLMN-8X-000106' do
   # If header defined at the server level, ensure value is correct
   servers.each do |server|
     # next unless server.params['listen'].flatten.include?('ssl')
-    server_headers = server.params['add_header'].find { |item| item[0] == header_name }
+    server_headers = server.params['add_header']&.find { |item| item[0] == header_name }
     if server_headers
       describe "Found headers defined in server: #{server.params['server_name']}" do
         it "should have a #{header_name} header" do
