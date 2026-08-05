@@ -24,7 +24,7 @@
       ansible.builtin.shell: nginx -T 2>&1 | grep "^error_log"
       register: err_log
       changed_when: false
-      ignore_errors: true
+      failed_when: false
 
     - name: VLMN-8X-000007 - Add error_log directive in main context
       ansible.builtin.lineinfile:
@@ -124,7 +124,7 @@
       ansible.builtin.shell: nginx -T 2>&1 | grep "autoindex"
       register: auto_ind
       changed_when: false
-      ignore_errors: true
+      failed_when: false
 
     - name: VLMN-8X-000062 - Remove autoindex directive
       ansible.builtin.lineinfile:
@@ -146,7 +146,7 @@
       ansible.builtin.shell: nginx -T 2>&1 | grep "server_tokens"
       register: server_token
       changed_when: false
-      ignore_errors: true
+      failed_when: false
 
     - name: VLMN-8X-000063 - Remove server_tokens directive
       ansible.builtin.lineinfile:
@@ -206,7 +206,7 @@
       ansible.builtin.shell: nginx -T 2>&1 | grep "ssl_session_tickets"
       register: ssl_ssn_tckt
       changed_when: false
-      ignore_errors: true
+      failed_when: false
 
     - name: VLMN-8X-000102 - Remove ssl_session_tickets directive
       ansible.builtin.lineinfile:
