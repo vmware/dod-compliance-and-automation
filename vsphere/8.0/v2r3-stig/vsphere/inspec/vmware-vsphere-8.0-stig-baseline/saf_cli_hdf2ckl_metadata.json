@@ -1,7 +1,7 @@
 {
   "profiles": [
     {
-      "name": "VMware vSphere 8.0 ESXi STIG",
+      "name": "vmware-vsphere-8.0-esxi-stig-baseline",
       "title": "VMware vSphere 8.0 ESXi Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 3,
@@ -9,15 +9,15 @@
       "showCalendar": true
     },
     {
-      "name": "VMware vSphere 8.0 vCenter STIG",
+      "name": "vmware-vsphere-8.0-vcenter-stig-baseline",
       "title": "VMware vSphere 8.0 vCenter Security Technical Implementation Guide",
       "version": 2,
-      "releasenumber": 3,
+      "releasenumber": 2,
       "releasedate": "02 Jul 2025",
       "showCalendar": true
     },
     {
-      "name": "VMware vSphere 8.0 Virtual Machine STIG",
+      "name": "vmware-vsphere-8.0-vm-stig-baseline",
       "title": "VMware vSphere 8.0 Virtual Machine Security Technical Implementation Guide",
       "version": 2,
       "releasenumber": 1,

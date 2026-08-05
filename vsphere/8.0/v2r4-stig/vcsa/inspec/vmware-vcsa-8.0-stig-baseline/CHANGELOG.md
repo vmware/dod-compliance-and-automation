@@ -1,5 +1,10 @@
 # Change Log
 
+## [8.0 Official STIG Version 2 Release 4] (2026-07-01)
+
+#### Release Notes
+- Typo fixes, CCI and NIST ID updates to align with DISA officially released STIG.
+
 ## [8.0 STIG Readiness Guide Version 2 Release 4] (2026-05-12)
 
 #### Release Notes

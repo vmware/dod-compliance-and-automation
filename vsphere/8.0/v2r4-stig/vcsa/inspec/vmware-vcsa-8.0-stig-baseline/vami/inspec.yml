@@ -1,11 +1,11 @@
-name: vCenter Virtual Appliance 8.0 VAMI Service Profile
+name: vmware-vcsa-8.0-vami-stig-baseline
 title: vCenter Virtual Appliance 8.0 VAMI Service Profile
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 2.0.2
+version: 2.2.0
 
 inputs:
 - name: lighttpdConf

@@ -1,11 +1,11 @@
-name: vCenter Virtual Appliance 8.0 Envoy Service Profile
+name: vmware-vcsa-8.0-envoy-stig-baseline
 title: vCenter Virtual Appliance 8.0 Envoy Service Profile
 maintainer: Broadcom
 copyright: Broadcom
 copyright_email: stigs@broadcom.com
 license: Apache-2.0
 summary: An InSpec Compliance Profile
-version: 2.0.1
+version: 2.1.0
 
 inputs:
 - name: configXmlPath

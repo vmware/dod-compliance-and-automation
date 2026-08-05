@@ -1,5 +1,10 @@
 # Change Log
 
+## [8.0 Official STIG Version 2 Release 4] (2026-07-01)
+
+#### Release Notes
+- Typo fixes, CCI and NIST ID updates to align with DISA officially released STIG.
+
 ## [InSpec Automation Update] (2026-07-21)
 
 #### Release Notes
