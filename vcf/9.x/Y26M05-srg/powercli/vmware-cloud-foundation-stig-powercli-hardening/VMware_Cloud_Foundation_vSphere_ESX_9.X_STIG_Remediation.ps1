@@ -93,7 +93,7 @@ param (
 )
 
 # Script Variables
-$STIGVersion = "STIG Readiness Guide Version 1 Release 1"
+$STIGVersion = "STIG Readiness Guide Version 1 Release 2"
 $ReportNamePrefix = "VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation"
 $MinimumPowerCLIVersion = "9.0.0"
 $MinimumVCVersion = "9.0.0"
