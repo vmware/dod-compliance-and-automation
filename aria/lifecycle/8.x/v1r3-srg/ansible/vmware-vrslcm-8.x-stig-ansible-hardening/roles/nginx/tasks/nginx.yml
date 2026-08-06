@@ -234,30 +234,13 @@
 - name: VLMN-8X-000102 - The VMware Aria Suite Lifecycle web service must disable SSL session tickets
   tags: [VLMN-8X-000102]
   block:
-    - name: VLMN-8X-000102 - Verify ssl_session_tickets
-      ansible.builtin.shell: nginx -T 2>&1 | grep "ssl_session_tickets"
-      register: ssl_ssn_tckt
-      changed_when: false
-      failed_when: false
-
-    - name: VLMN-8X-000102 - Remove ssl_session_tickets directive
+    - name: VLMN-8X-000102 - Configure ssl_session_tickets directive in http block
       ansible.builtin.lineinfile:
         path: "{{ nginx_conf_file }}"
-        line: "{{ item }}"
-        state: absent
-      when: item != ""
-      with_items: "{{ ssl_ssn_tckt.stdout_lines }}"
-      notify:
-        - Reload NGINX
-
-    - name: VLMN-8X-000102 - Add ssl_session_tickets directive in http block
-      ansible.builtin.lineinfile:
-        path: "{{ nginx_conf_file }}"
+        regexp: '^\s*ssl_session_tickets\s'
         line: "  ssl_session_tickets off;"
         insertafter: "http *{"
         state: present
-      when: item != ""
-      with_items: "{{ ssl_ssn_tckt.stdout_lines }}"
       notify:
         - Reload NGINX
 
