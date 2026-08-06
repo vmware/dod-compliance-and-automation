@@ -111,8 +111,8 @@ param (
 )
 
 # Script Variables
-$STIGVersion = "STIG Readiness Guide Version 1 Release 1"
-$ReportNamePrefix = "VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation"
+$STIGVersion = "STIG Readiness Guide Version 1 Release 2"
+$ReportNamePrefix = "VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Compliance"
 $MinimumPowerCLIVersion = "9.0.0"
 $MinimumVCVersion = "9.0.0"
 $MaximumVCVersion = "9.1.1"
@@ -123,7 +123,7 @@ $ReportPrefix = "VMware_Cloud_Foundation_vSphere_ESX_9.x_STIG_InSpec_Report"
 # Determine correct directory separate for Windows or Linux
 $DirectorySep = [System.IO.Path]::DirectorySeparatorChar
 
-# Import Variables from Global and Remediation variables files
+# Import Variables from Global variables file
 $ScriptPath = (Split-Path ((Get-Variable MyInvocation).Value).MyCommand.Path)
 $GlobalVariables = $ScriptPath + $DirectorySep + $GlobalVarsFile
 Write-Message -Level "INFO" -Message "Importing Global Variables from: $GlobalVariables"
@@ -233,7 +233,7 @@ Try{
     }
   }
   Else{
-    Write-Message -Level "INFO" -Message "No targets specified for remediation detected in $GlobalVariables. Exiting script."
+    Write-Message -Level "INFO" -Message "No host or cluster targets specified in $GlobalVariables. Exiting script."
     Exit
   }
 }
