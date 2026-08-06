@@ -16,6 +16,22 @@
 
 ###################################################################################################################################
 
+# VLMN-8X-000004 - The VMware Aria Suite Lifecycle web service must implement HTTP Strict Transport Security (HSTS) to protect the integrity of remote sessions.
+- name: VLMN-8X-000004 - The VMware Aria Suite Lifecycle web service must implement HTTP Strict Transport Security (HSTS) to protect the integrity of remote sessions
+  tags: [VLMN-8X-000004]
+  block:
+    - name: VLMN-8X-000004 - Configure Strict-Transport-Security header directive in http block
+      ansible.builtin.lineinfile:
+        path: "{{ nginx_conf_file }}"
+        regexp: '^\s*add_header\s+Strict-Transport-Security\b'
+        line: "  add_header Strict-Transport-Security \"{{ hsts_header | default('max-age=31536000') }}\" always;"
+        insertafter: "http *{"
+        state: present
+      notify:
+        - Reload NGINX
+
+###################################################################################################################################
+
 # VLMN-8X-000007 - The VMware Aria Suite Lifecycle web service must generate log records for system events.
 - name: VLMN-8X-000007 - The VMware Aria Suite Lifecycle web service must generate log records for system events
   tags: [VLMN-8X-000007]
@@ -113,6 +129,22 @@
 ###################################################################################################################################
 # VLMN-8X-000041: The VMware Aria Suite Lifecycle web service must use FIPS 140-2 validated cryptographic modules.
 # This is a manual fix.
+
+###################################################################################################################################
+
+# VLMN-8X-000048 - Cookies exchanged between the VMware Aria Suite Lifecycle web service and a client, such as session cookies, must have security settings that disallow cookie access outside the originating web server and hosted application.
+- name: VLMN-8X-000048 - Cookies exchanged between the VMware Aria Suite Lifecycle web service and a client, such as session cookies, must have security settings that disallow cookie access outside the originating web server and hosted application
+  tags: [VLMN-8X-000048]
+  block:
+    - name: VLMN-8X-000048 - Configure Set-Cookie header directive in http block
+      ansible.builtin.lineinfile:
+        path: "{{ nginx_conf_file }}"
+        regexp: '^\s*add_header\s+Set-Cookie\b'
+        line: "  add_header Set-Cookie \"Path=/; HttpOnly; Secure\";"
+        insertafter: "http *{"
+        state: present
+      notify:
+        - Reload NGINX
 
 ###################################################################################################################################
 
@@ -226,5 +258,69 @@
         state: present
       when: item != ""
       with_items: "{{ ssl_ssn_tckt.stdout_lines }}"
+      notify:
+        - Reload NGINX
+
+###################################################################################################################################
+
+# VLMN-8X-000103 - The VMware Aria Suite Lifecycle web service must configure the X-Frame-Options header.
+- name: VLMN-8X-000103 - The VMware Aria Suite Lifecycle web service must configure the X-Frame-Options header
+  tags: [VLMN-8X-000103]
+  block:
+    - name: VLMN-8X-000103 - Configure X-Frame-Options header directive in http block
+      ansible.builtin.lineinfile:
+        path: "{{ nginx_conf_file }}"
+        regexp: '^\s*add_header\s+X-Frame-Options\b'
+        line: "  add_header X-Frame-Options \"SAMEORIGIN\";"
+        insertafter: "http *{"
+        state: present
+      notify:
+        - Reload NGINX
+
+###################################################################################################################################
+
+# VLMN-8X-000104 - The VMware Aria Suite Lifecycle web service must configure the X-Content-Type-Options header.
+- name: VLMN-8X-000104 - The VMware Aria Suite Lifecycle web service must configure the X-Content-Type-Options header
+  tags: [VLMN-8X-000104]
+  block:
+    - name: VLMN-8X-000104 - Configure X-Content-Type-Options header directive in http block
+      ansible.builtin.lineinfile:
+        path: "{{ nginx_conf_file }}"
+        regexp: '^\s*add_header\s+X-Content-Type-Options\b'
+        line: "  add_header X-Content-Type-Options \"nosniff\";"
+        insertafter: "http *{"
+        state: present
+      notify:
+        - Reload NGINX
+
+###################################################################################################################################
+
+# VLMN-8X-000105 - The VMware Aria Suite Lifecycle web service must configure the Content-Security-Policy header.
+- name: VLMN-8X-000105 - The VMware Aria Suite Lifecycle web service must configure the Content-Security-Policy header
+  tags: [VLMN-8X-000105]
+  block:
+    - name: VLMN-8X-000105 - Configure Content-Security-Policy header directive in http block
+      ansible.builtin.lineinfile:
+        path: "{{ nginx_conf_file }}"
+        regexp: '^\s*add_header\s+Content-Security-Policy\b'
+        line: "  add_header Content-Security-Policy \"frame-ancestors 'self'\";"
+        insertafter: "http *{"
+        state: present
+      notify:
+        - Reload NGINX
+
+###################################################################################################################################
+
+# VLMN-8X-000106 - The VMware Aria Suite Lifecycle web service must configure the Referrer-Policy header.
+- name: VLMN-8X-000106 - The VMware Aria Suite Lifecycle web service must configure the Referrer-Policy header
+  tags: [VLMN-8X-000106]
+  block:
+    - name: VLMN-8X-000106 - Configure Referrer-Policy header directive in http block
+      ansible.builtin.lineinfile:
+        path: "{{ nginx_conf_file }}"
+        regexp: '^\s*add_header\s+Referrer-Policy\b'
+        line: "  add_header Referrer-Policy \"no-referrer\";"
+        insertafter: "http *{"
+        state: present
       notify:
         - Reload NGINX
