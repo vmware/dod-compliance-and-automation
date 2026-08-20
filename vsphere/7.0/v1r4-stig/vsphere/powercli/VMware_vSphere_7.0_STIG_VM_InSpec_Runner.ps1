@@ -11,7 +11,7 @@
 .NOTES 
   File Name  : VMware_vSphere_7.0_STIG_VM_InSpec_Runner.ps1 
   Author     : Ryan Lakey
-  Version    : 1.0
+  Version    : 1.1
 
   Tested against
   -PowerCLI 13
@@ -25,6 +25,8 @@
 
 .PARAMETER vcenter
   Enter the vcenter to connect to and collect hosts to audit.
+.PARAMETER vccred
+  Passthrough the PSScredential object for vSphere credentials
 .PARAMETER reportPath
   Enter the folder path to store reports, for example: C:\InSpec\Reports.
 .PARAMETER inspecPath
@@ -38,6 +40,8 @@ param (
   HelpMessage="Enter the vCenter FQDN or IP to connect to")]
   [ValidateNotNullOrEmpty()]
   [string]$vcenter,
+  [Parameter(Mandatory=$false)]
+  [pscredential]$vccred,
   [Parameter(Mandatory=$true,
   HelpMessage="Enter the folder path to store reports for example...C:\InSpec\Reports")]
   [ValidateNotNullOrEmpty()]
@@ -88,9 +92,11 @@ Catch
   Exit -1
 }
 
-#Get Credentials for vCenter
-Write-ToConsole "...Enter credentials to connect to vCenter"
-$vccred = Get-Credential -Message "Enter credentials for vCenter"
+#Get Credentials for vCenter if not specified during initial run
+if ($null -eq $vccred) {
+  Write-ToConsole "...Enter credentials to connect to vCenter"
+  $vccred = Get-Credential -Message "Enter credentials for vCenter"
+}
 
 #Connect to vCenter Server
 Try
