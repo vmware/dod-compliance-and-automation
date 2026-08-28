@@ -95,6 +95,7 @@ $vccred = Get-Credential -Message "Enter credentials for vCenter"
 #Connect to vCenter Server
 Try
 {
+  Disconnect-VIServer * -Confirm:$false -ErrorAction SilentlyContinue
   Write-ToConsole "...Connecting to vCenter Server $vcenter"
   Connect-VIServer -Server $vcenter -Credential $vccred -Protocol https -ErrorAction Stop | Out-Null
 }
