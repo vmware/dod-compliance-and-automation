@@ -45,8 +45,80 @@ param (
   [string]$vcNetflowCollectorIp = "",
   [Parameter(Mandatory=$false,
   HelpMessage="To disable Netflow on all port groups if enabled set to true")]
-  [boolean]$vcNetflowDisableonallPortGroups = $false
+  [boolean]$vcNetflowDisableonallPortGroups = $false,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000009 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000023 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000024 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000034 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000057 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000059 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000060 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000069 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000070 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000071 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000072 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000073 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000074 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000077 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000079 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000080 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000089 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000095 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000110 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000123 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000145 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000148 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000158 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000195 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000196 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000248 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000253 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000265 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000266 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000267 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000268 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000269 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000270 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000271 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000272 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000273 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000274 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000275 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000276 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000277 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000278 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000279 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000280 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000281 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000282 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000283 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000284 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000285 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000286 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000287 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000288 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000289 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000290 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000291 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000292 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000293 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000294 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000295 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000296 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000298 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000299 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000300 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000301 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000302 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000303 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000304 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCSA8000305 = $true,
+  [Parameter(Mandatory=$false)] [boolean]$VCFCompatibility = $false
 )
+
+If($VCFCompatibility){
+  $VCSA8000303 = $false
+}
 
 $vcconfig = [ordered]@{
   tlsProfile           = "NIST_2024"  #VCSA-80-000009
@@ -79,75 +151,76 @@ $unchangedcount= 0
 $skipcount = 0
 $failedcount = 0
 
-##### Enable or Disable specific STIG Remediations #####
+
+
 $controlsenabled = [ordered]@{
-  VCSA8000009 = $true  #TLS Profile
-  VCSA8000023 = $true  #SSO Login Attempts
-  VCSA8000024 = $true  #SSO Banner - Manual
-  VCSA8000034 = $true  #config.log.level
-  VCSA8000057 = $true  #Plugins - Manual
-  VCSA8000059 = $true  #Identity Provider
-  VCSA8000060 = $true  #MFA
-  VCSA8000069 = $true  #SSO Password Length
-  VCSA8000070 = $true  #SSO Password Reuse
-  VCSA8000071 = $true  #SSO Password Upper
-  VCSA8000072 = $true  #SSO Password Lower
-  VCSA8000073 = $true  #SSO Password Number
-  VCSA8000074 = $true  #SSO Password Special
-  VCSA8000077 = $true  #FIPS
-  VCSA8000079 = $true  #SSO Password Lifetime
-  VCSA8000080 = $true  #SSO Revocation Checking
-  VCSA8000089 = $true  #Session Timeout
-  VCSA8000095 = $true  #User roles
-  VCSA8000110 = $true  #NIOC
-  VCSA8000123 = $true  #SSO Alarm
-  VCSA8000145 = $true  #SSO Failed Interval
-  VCSA8000148 = $true  #Syslog
-  VCSA8000158 = $true  #NTP
-  VCSA8000195 = $true  #DoD Cert
-  VCSA8000196 = $true  #vSAN DAR Encryption
-  VCSA8000248 = $true  #CEIP
-  VCSA8000253 = $true  #SNMP v3 security
-  VCSA8000265 = $true  #Disable SNMP v1/2
-  VCSA8000266 = $true  #SSO unlock time
-  VCSA8000267 = $true  #DVS health check
-  VCSA8000268 = $true  #DVPG Forged Transmits
-  VCSA8000269 = $true  #DVPG MAC Changes
-  VCSA8000270 = $true  #DVPG Promiscuous mode
-  VCSA8000271 = $true  #Netflow
-  VCSA8000272 = $true  #Native VLAN
-  VCSA8000273 = $true  #VLAN Trunking
-  VCSA8000274 = $true  #Reserved VLANs
-  VCSA8000275 = $true  #VPX user password change
-  VCSA8000276 = $true  #VPX user password length
-  VCSA8000277 = $true  #vLCM internet
-  VCSA8000278 = $true  #Service Accounts
-  VCSA8000279 = $true  #Isolate IP storage networks
-  VCSA8000280 = $true  #Send events to syslog
-  VCSA8000281 = $true  #VSAN HCL
-  VCSA8000282 = $true  #VSAN Datastore name
-  VCSA8000283 = $true  #Disable UN/PW and IWA
-  VCSA8000284 = $true  #Crypto role
-  VCSA8000285 = $true  #Crypto permissions
-  VCSA8000286 = $true  #iSCSI CHAP
-  VCSA8000287 = $true  #VSAN KEKs
-  VCSA8000288 = $true  #LDAPS
-  VCSA8000289 = $true  #LDAP Account
-  VCSA8000290 = $true  #Bash admins
-  VCSA8000291 = $true  #TrustedAdmins
-  VCSA8000292 = $true  #Backups
-  VCSA8000293 = $true  #Event Retention
-  VCSA8000294 = $true  #NKP
-  VCSA8000295 = $true  #Content Library Password
-  VCSA8000296 = $true  #Content Library Security Policy
-  VCSA8000298 = $true  #SSO groups for authorization
-  VCSA8000299 = $true  #Disable CDP/LLDP on VDS
-  VCSA8000300 = $true  #Port Mirroring
-  VCSA8000301 = $true  #DPG Override policies
-  VCSA8000302 = $true  #DPG reset at disconnect
-  VCSA8000303 = $true  #SSH Disable
-  VCSA8000304 = $true  #vSAN DIT Encryption
-  VCSA8000305 = $true  #Disable IWA Accounts
+  VCSA8000009 = $VCSA8000009 #TLS Profile
+  VCSA8000023 = $VCSA8000023 #SSO Login Attempts
+  VCSA8000024 = $VCSA8000024 #SSO Banner - Manual
+  VCSA8000034 = $VCSA8000034 #config.log.level
+  VCSA8000057 = $VCSA8000057 #Plugins - Manual
+  VCSA8000059 = $VCSA8000059 #Identity Provider
+  VCSA8000060 = $VCSA8000060 #MFA
+  VCSA8000069 = $VCSA8000069 #SSO Password Length
+  VCSA8000070 = $VCSA8000070 #SSO Password Reuse
+  VCSA8000071 = $VCSA8000071 #SSO Password Upper
+  VCSA8000072 = $VCSA8000072 #SSO Password Lower
+  VCSA8000073 = $VCSA8000073 #SSO Password Number
+  VCSA8000074 = $VCSA8000074 #SSO Password Special
+  VCSA8000077 = $VCSA8000077 #FIPS
+  VCSA8000079 = $VCSA8000079 #SSO Password Lifetime
+  VCSA8000080 = $VCSA8000080 #SSO Revocation Checking
+  VCSA8000089 = $VCSA8000089 #Session Timeout
+  VCSA8000095 = $VCSA8000095 #User roles
+  VCSA8000110 = $VCSA8000110 #NIOC
+  VCSA8000123 = $VCSA8000123 #SSO Alarm
+  VCSA8000145 = $VCSA8000145 #SSO Failed Interval
+  VCSA8000148 = $VCSA8000148 #Syslog
+  VCSA8000158 = $VCSA8000158 #NTP
+  VCSA8000195 = $VCSA8000195 #DoD Cert
+  VCSA8000196 = $VCSA8000196 #vSAN DAR Encryption
+  VCSA8000248 = $VCSA8000248 #CEIP
+  VCSA8000253 = $VCSA8000253 #SNMP v3 security
+  VCSA8000265 = $VCSA8000265 #Disable SNMP v1/2
+  VCSA8000266 = $VCSA8000266 #SSO unlock time
+  VCSA8000267 = $VCSA8000267 #DVS health check
+  VCSA8000268 = $VCSA8000268 #DVPG Forged Transmits
+  VCSA8000269 = $VCSA8000269 #DVPG MAC Changes
+  VCSA8000270 = $VCSA8000270 #DVPG Promiscuous mode
+  VCSA8000271 = $VCSA8000271 #Netflow
+  VCSA8000272 = $VCSA8000272 #Native VLAN
+  VCSA8000273 = $VCSA8000273 #VLAN Trunking
+  VCSA8000274 = $VCSA8000274 #Reserved VLANs
+  VCSA8000275 = $VCSA8000275 #VPX user password change
+  VCSA8000276 = $VCSA8000276 #VPX user password length
+  VCSA8000277 = $VCSA8000277 #vLCM internet
+  VCSA8000278 = $VCSA8000278 #Service Accounts
+  VCSA8000279 = $VCSA8000279 #Isolate IP storage networks
+  VCSA8000280 = $VCSA8000280 #Send events to syslog
+  VCSA8000281 = $VCSA8000281 #VSAN HCL
+  VCSA8000282 = $VCSA8000282 #VSAN Datastore name
+  VCSA8000283 = $VCSA8000283 #Disable UN/PW and IWA
+  VCSA8000284 = $VCSA8000284 #Crypto role
+  VCSA8000285 = $VCSA8000285 #Crypto permissions
+  VCSA8000286 = $VCSA8000286 #iSCSI CHAP
+  VCSA8000287 = $VCSA8000287 #VSAN KEKs
+  VCSA8000288 = $VCSA8000288 #LDAPS
+  VCSA8000289 = $VCSA8000289 #LDAP Account
+  VCSA8000290 = $VCSA8000290 #Bash admins
+  VCSA8000291 = $VCSA8000291 #TrustedAdmins
+  VCSA8000292 = $VCSA8000292 #Backups
+  VCSA8000293 = $VCSA8000293 #Event Retention
+  VCSA8000294 = $VCSA8000294 #NKP
+  VCSA8000295 = $VCSA8000295 #Content Library Password
+  VCSA8000296 = $VCSA8000296 #Content Library Security Policy
+  VCSA8000298 = $VCSA8000298 #SSO groups for authorization
+  VCSA8000299 = $VCSA8000299 #Disable CDP/LLDP on VDS
+  VCSA8000300 = $VCSA8000300 #Port Mirroring
+  VCSA8000301 = $VCSA8000301 #DPG Override policies
+  VCSA8000302 = $VCSA8000302 #DPG reset at disconnect
+  VCSA8000303 = $VCSA8000303 #SSH Disable
+  VCSA8000304 = $VCSA8000304 #vSAN DIT Encryption
+  VCSA8000305 = $VCSA8000305 #Disable IWA Accounts
 }
 
 Function Write-ToConsole ($Details){
