@@ -1,0 +1,11 @@
+---
+# tasks file for vrlcm
+
+- name: Include vrlcm
+  ansible.builtin.include_tasks:
+    file: vrlcm.yml
+    apply:
+      tags:
+        - vrlcm
+  tags:
+    - always
