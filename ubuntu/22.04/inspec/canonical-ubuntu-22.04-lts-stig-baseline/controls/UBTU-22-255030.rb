@@ -8,7 +8,7 @@ Terminating network connections associated with communications sessions includes
      $ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH 'clientalivecountmax'
      /etc/ssh/sshd_config:ClientAliveCountMax 1
 
-If "ClientAliveCountMax" is not to "1", if conflicting results are returned, is commented out, or is missing, this is a finding.)
+If "ClientAliveCountMax" is not set to "1", conflicting results are returned, or it is commented out or missing, this is a finding.)
   desc 'fix', 'Configure the SSH server to terminate a user session automatically after the SSH client has become unresponsive.
 
 Note: This setting must be applied in conjunction with UBTU-22-255040 to function correctly.
@@ -17,17 +17,17 @@ Add or modify the following line in the "/etc/ssh/sshd_config" file:
 
 ClientAliveCountMax 1
 
-Restart the SSH daemon for the changes to take effect:
+Restart SSH for the changes to take effect:
 
-     $ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.5
-  tag check_id: 'C-64256r953392_chk'
+  tag check_id: 'C-64256r1208679_chk'
   tag severity: 'medium'
   tag gid: 'V-260527'
-  tag rid: 'SV-260527r986275_rule'
+  tag rid: 'SV-260527r1208681_rule'
   tag stig_id: 'UBTU-22-255030'
   tag gtitle: 'SRG-OS-000126-GPOS-00066'
-  tag fix_id: 'F-64164r953393_fix'
+  tag fix_id: 'F-64164r1208680_fix'
   tag 'documentable'
   tag cci: ['CCI-001133']
   tag nist: ['SC-10']

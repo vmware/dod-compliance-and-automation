@@ -1,0 +1,5 @@
+_internal
+*.lock
+*creds.xml
+*_testing.ps1
+saf-cli.log

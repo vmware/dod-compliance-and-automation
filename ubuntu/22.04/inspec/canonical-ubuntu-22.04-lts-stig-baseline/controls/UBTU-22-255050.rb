@@ -6,7 +6,7 @@ Remote access (e.g., RDP) is access to DOD nonpublic information systems by an a
 
 Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network.
 
-Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection.
+Local maintenance and diagnostic activities are carried out by individuals physically present at the information system or information system component and not communicating across a network connection.
 
 Encrypting information for transmission protects information from unauthorized disclosure and modification. Cryptographic mechanisms implemented to protect information integrity include, for example, cryptographic hash functions, which have common application in digital signatures, checksums, and message authentication codes.
 
@@ -25,17 +25,17 @@ Add or modify the following line in the "/etc/ssh/sshd_config" file:
 
 Ciphers aes256-ctr,aes256-gcm@openssh.com,aes128-ctr,aes128-gcm@openssh.com
 
-Restart the SSH server for the changes to take effect:
+Restart SSH for the changes to take effect:
 
-$ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.5
   tag check_id: 'C-64260r1155190_chk'
   tag severity: 'medium'
   tag gid: 'V-260531'
-  tag rid: 'SV-260531r1155212_rule'
+  tag rid: 'SV-260531r1208689_rule'
   tag stig_id: 'UBTU-22-255050'
   tag gtitle: 'SRG-OS-000033-GPOS-00014'
-  tag fix_id: 'F-64168r1155191_fix'
+  tag fix_id: 'F-64168r1208688_fix'
   tag satisfies: ['SRG-OS-000033-GPOS-00014', 'SRG-OS-000394-GPOS-00174', 'SRG-OS-000424-GPOS-00188']
   tag 'documentable'
   tag cci: ['CCI-000068', 'CCI-002421', 'CCI-003123']

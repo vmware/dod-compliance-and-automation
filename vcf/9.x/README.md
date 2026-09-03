@@ -3,12 +3,13 @@
 ## Compatibility
 The table below provides supported interoperability between product and STIG versioning. Application of STIG content outside interoperable versions is not supported.
 
-|      Version      |    Y25M06-srg*     |    Y25M09-srg*     |    Y26M05-srg*     |
-|:-----------------:|:------------------:|:------------------:|:------------------:|
-|     `9.0.0.0`     | :heavy_check_mark: |         :x:        |         :x:        |
-|     `9.0.1.0`     |         :x:        | :heavy_check_mark: |         :x:        |
-|     `9.0.2.0`     |         :x:        | :heavy_check_mark: |         :x:        |
-|     `9.1.0.0`     |         :x:        |         :x:        | :heavy_check_mark: |
+|      Version      |    Y25M06-srg*     |    Y25M09-srg*     |    Y26M05-srg*     |    Y26M09-srg*     |
+|:-----------------:|:------------------:|:------------------:|:------------------:|:------------------:|
+|     `9.0.0.0`     | :heavy_check_mark: |         :x:        |         :x:        |         :x:        |
+|     `9.0.1.0`     |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |
+|     `9.0.2.0`     |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |
+|     `9.1.0.0`     |         :x:        |         :x:        | :heavy_check_mark: |         :x:        |
+|     `9.1.0.0`     |         :x:        |         :x:        |         :x:        | :heavy_check_mark: |
 
 
 > [!NOTE]

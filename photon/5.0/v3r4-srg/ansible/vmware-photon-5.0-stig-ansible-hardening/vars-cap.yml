@@ -1,0 +1,23 @@
+---
+# Vars file for CAP builds
+# disable backups to keep a clean image
+create_backups: false
+
+# Set to true if you want the playbook to install required packages. This requires access to a repo with the required packages.
+## rsyslog install
+photon_5_defaults_run_phtn_50_000241: false
+## openssl fips provider install
+photon_5_defaults_run_phtn_50_000013: false
+## auditd install
+photon_5_defaults_run_phtn_50_000016_auditd_install: true
+## aide install
+photon_5_defaults_run_phtn_50_000127: true
+
+# Misc
+photon_5_defaults_pam_pwquality_control: 'required'
+
+# Disabled Controls
+## DOD Banner
+photon_5_defaults_run_phtn_50_000005_dod_banner: false
+## noexec on /tmp
+photon_5_defaults_run_phtn_50_000245: false

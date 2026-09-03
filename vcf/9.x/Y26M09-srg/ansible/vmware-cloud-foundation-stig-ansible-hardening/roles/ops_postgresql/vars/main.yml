@@ -1,0 +1,25 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+## postgresql service variables
+ops_postgresql_vars_psql_file: '/opt/vmware/vpostgres/current/bin/psql'
+ops_postgresql_vars_psql_user: 'postgres'
+ops_postgresql_vars_notify_service_name: 'vpostgres-repl'
+ops_postgresql_vars_postgresql_conf_file: '/storage/db/vcops/vpostgres/repl/postgresql.conf'
+ops_postgresql_vars_data_folder: '/storage/db/vcops/vpostgres/data'
+ops_postgresql_vars_repl_folder: '/storage/db/vcops/vpostgres/repl'
+ops_postgresql_vars_log_folder: '/storage/log/postgres/repl'
+ops_postgresql_vars_rsyslog_conf_file: '/etc/rsyslog.d/stig-services-postgres.conf'
+ops_postgresql_vars_rsyslog_conf_file_name: 'stig-services-postgres.conf'
+
+## configuration values
+ops_postgresql_vars_conf_owner: 'postgres'
+ops_postgresql_vars_conf_group: 'users'
+ops_postgresql_vars_log_owner: 'postgres'
+ops_postgresql_vars_log_group: 'users'
+ops_postgresql_vars_pg_extension_plpgsql: 'plpgsql'
