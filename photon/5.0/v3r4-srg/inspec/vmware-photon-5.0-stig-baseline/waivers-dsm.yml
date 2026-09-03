@@ -1,0 +1,9 @@
+PHTN-50-000069:
+  expiration_date:
+  run: false
+  justification: 'Alternative Implementation: DSM utilizes OpenSSH ChannelTimeout session=600 to enforce a strict 10-minute application-layer idle timeout. This exceeds the 15-minute STIG requirement and prevents automated client network keepalives from bypassing the control.'
+
+PHTN-50-000203:
+  expiration_date:
+  run: false
+  justification: 'Alternative Implementation: DSM utilizes OpenSSH ChannelTimeout session=600 for direct application-layer idle termination. Legacy ClientAlive settings are intentionally reserved for dead-peer detection only.'
