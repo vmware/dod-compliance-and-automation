@@ -42,46 +42,34 @@ control 'PHTN-50-000082' do
   tag cci: ['CCI-001493', 'CCI-001494', 'CCI-001495']
   tag nist: ['AU-9', 'AU-9 a']
 
-  if file('/usr/sbin/auditctl').exist?
-    describe file('/usr/sbin/auditctl') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0755') }
-    end
+  describe file('/usr/sbin/auditctl') do
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0755') }
   end
-  if file('/usr/sbin/auditd').exist?
-    describe file('/usr/sbin/auditd') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0755') }
-    end
+  describe file('/usr/sbin/auditd') do
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0755') }
   end
-  if file('/usr/sbin/aureport').exist?
-    describe file('/usr/sbin/aureport') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0755') }
-    end
+  describe file('/usr/sbin/aureport') do
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0755') }
   end
-  if file('/usr/sbin/ausearch').exist?
-    describe file('/usr/sbin/ausearch') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0755') }
-    end
+  describe file('/usr/sbin/ausearch') do
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0755') }
   end
-  if file('/usr/sbin/autrace').exist?
-    describe file('/usr/sbin/autrace') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0755') }
-    end
+  describe file('/usr/sbin/augenrules') do
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0750') }
   end
-  if file('/usr/sbin/augenrules').exist?
-    describe file('/usr/sbin/augenrules') do
-      its('owner') { should cmp 'root' }
-      its('group') { should cmp 'root' }
-      it { should_not be_more_permissive_than('0750') }
-    end
+  describe file('/usr/sbin/autrace') do
+    its('owner') { should cmp 'root' }
+    its('group') { should cmp 'root' }
+    it { should_not be_more_permissive_than('0755') }
   end
 end
