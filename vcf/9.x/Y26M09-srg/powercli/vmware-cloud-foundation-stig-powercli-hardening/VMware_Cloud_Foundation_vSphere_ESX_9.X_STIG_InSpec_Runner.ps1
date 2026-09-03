@@ -57,13 +57,11 @@
   .PARAMETER AttestationFile
   Full path to an pre-configured attestation file to use with MITRE's SAF CLI to apply manual attestations to the report artifacts.
   .PARAMETER ProfileName
-  To provide the correct metadata for generating CKL files the InSpec profile name is needed and must be exactly as shown in the ESX profiles inspec.yml file. This default value is correct at the time of publication.
+  To provide the correct metadata for generating CKL files the InSpec profile name is needed and must be exactly as shown in the ESX profile's inspec.yml "name" field. This default value is correct at the time of publication.
+  .PARAMETER ProfileTitle
+  The human-readable STIG title to display in the checklist header. This default value is correct at the time of publication.
   .PARAMETER ReleaseDate
-  To provide the correct metadata for generating CKL files the release date as seen in STIG Viewer can be provided.
-  .PARAMETER ReleaseNumber
-  To provide the correct metadata for generating CKL files the release number as seen in STIG Viewer can be provided.
-  .PARAMETER ReleaseVersion
-  To provide the correct metadata for generating CKL files the release version as seen in STIG Viewer can be provided.
+  To provide the correct metadata for generating CKL files the release date as seen in STIG Viewer can be provided. Version and Release number are derived automatically from the InSpec profile's own version field in inspec.yml.
 
   .EXAMPLE
   PS> ./VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_InSpec_Runner -vccred $vccred -InspecPath /usr/share/stigs/vmware-cloud-foundation-stig-baseline/vsphere/esx/ -InspecInputsFile /usr/share/stigs/vmware-cloud-foundation-stig-baseline/vsphere/inputs-example.yml
@@ -73,9 +71,6 @@
 
   .EXAMPLE
   PS> ./VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_InSpec_Runner -vccred $vccred -InspecPath /usr/share/stigs/vmware-cloud-foundation-stig-baseline/vsphere/esx/ -InspecInputsFile /usr/share/stigs/vmware-cloud-foundation-stig-baseline/vsphere/inputs-example.yml -AttestationFile VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_InSpec_Runner_Attestations_Example.yml
-
-  .EXAMPLE
-  PS> ./VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_InSpec_Runner -vccred $vccred -InspecPath /usr/share/stigs/vmware-cloud-foundation-stig-baseline/vsphere/esx/ -InspecInputsFile /usr/share/stigs/vmware-cloud-foundation-stig-baseline/vsphere/inputs-example.yml -AttestationFile VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_InSpec_Runner_Attestations_Example.yml -ReleaseDate "02 Jun 2025" -ReleaseNumber "1" -ReleaseVersion "1"
 #>
 
 [CmdletBinding()]
@@ -102,31 +97,27 @@ param (
   [ValidateNotNullOrEmpty()]
   [string]$AttestationFile,
   [Parameter(Mandatory=$false,
-  HelpMessage="InSpec Profile name to use for providing additional metadata.")]
+  HelpMessage="InSpec Profile name (as shown in the ESX profile's inspec.yml 'name' field) to use for providing additional metadata.")]
   [ValidateNotNullOrEmpty()]
-  [string]$ProfileName = "VMware Cloud Foundation 9.X ESX STIG Readiness Guide",
+  [string]$ProfileName = "vmware-cloud-foundation-vsphere-esx-app-stig-baseline",
+  [Parameter(Mandatory=$false,
+  HelpMessage="Human-readable STIG title to display in the checklist header.")]
+  [ValidateNotNullOrEmpty()]
+  [string]$ProfileTitle = "VMware Cloud Foundation 9.X ESX Application STIG Readiness Guide",
   [Parameter(Mandatory=$false,
   HelpMessage="Release date to use for providing additional metadata. This should match the format in STIG Viewer. For Example: 02 Jun 2025")]
   [ValidateNotNullOrEmpty()]
-  [string]$ReleaseDate = "12 May 2026",
-  [Parameter(Mandatory=$false,
-  HelpMessage="Release number to use for providing additional metadata. This should match the format in STIG Viewer. For Example: 1")]
-  [ValidateNotNullOrEmpty()]
-  [string]$ReleaseNumber = "1",
-  [Parameter(Mandatory=$false,
-  HelpMessage="Release version to use for providing additional metadata. This should match the format in STIG Viewer. For Example: 1")]
-  [ValidateNotNullOrEmpty()]
-  [string]$ReleaseVersion = "2"
+  [string]$ReleaseDate = "03 September 2026"
 )
 
 # Script Variables
-$STIGVersion = "STIG Readiness Guide Version 1 Release 1"
-$ReportNamePrefix = "VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Remediation"
+$STIGVersion = "STIG Readiness Guide Version 1 Release 3"
+$ReportNamePrefix = "VMware_Cloud_Foundation_vSphere_ESX_9.X_STIG_Compliance"
 $MinimumPowerCLIVersion = "9.0.0"
 $MinimumVCVersion = "9.0.0"
-$MaximumVCVersion = "9.1.0"
+$MaximumVCVersion = "9.1.1"
 $MinimumESXVersion = "9.0.0"
-$MaximumESXVersion = "9.1.0"
+$MaximumESXVersion = "9.1.1"
 $ReportPrefix = "VMware_Cloud_Foundation_vSphere_ESX_9.x_STIG_InSpec_Report"
 
 # Determine correct directory separate for Windows or Linux
@@ -263,10 +254,33 @@ Try{
     Invoke-Command -ScriptBlock $command
     If(Get-Command saf){
       Write-Message -Level "INFO" -Message "Detected MITRE SAF CLI. Generating STIG Viewer Checklist for ESX host: $name"
-      #Get management IP for CKL report
-      $mgmtip = Get-VMHostNetworkAdapter -VMHost $vmhost | Where-Object {$_.Name -eq "vmk0"} | Select-Object -ExpandProperty IP
-      #Get management MAC Address for CKL report
-      $mgmtmac = Get-VMHostNetworkAdapter -VMHost $vmhost | Where-Object {$_.Name -eq "vmk0"} | Select-Object -ExpandProperty Mac
+
+      #Get IP address and MAC for the Checklist
+      $netSystem = $vmhost.ExtensionData.Config.Network
+      $vmk0 = $netSystem.Vnic | Where-Object { $_.Device -eq "vmk0" }
+      $mgmtip = $vmk0.Spec.Ip.IpAddress
+      $mgmtmac = $vmk0.Spec.Mac
+
+      # saf convert hdf2ckl's -m/--metadata flag cannot be combined with --hostname/--ip/--mac/etc,
+      # and the individual --version/--releasenumber/--releasedate flags do not populate the CKL header.
+      # All checklist metadata (host info, profile version/release/date) must go through this file instead.
+      $cklMetadata = @{
+        profiles = @(
+          @{
+            name        = $ProfileName
+            title       = $ProfileTitle
+            releasedate = $ReleaseDate
+          }
+        )
+        hostname     = $name
+        hostfqdn     = $name
+        hostip       = $mgmtip
+        hostmac      = $mgmtmac
+        vulidmapping = "gid"
+      }
+      $metadataFile = $ReportPath + $DirectorySep + "ckl_metadata_" + $name + $timestamp + ".json"
+      $cklMetadata | ConvertTo-Json -Depth 5 | Set-Content -Path $metadataFile
+
       If($AttestationFile){
         Write-Message -Level "INFO" -Message "Attestation file: $AttestationFile detected. Applying to results for ESX host: $name"
         $reportFileWithAttestations = $ReportPath + $DirectorySep + $ReportPrefix + "_" + $name + "_" + "with_Attestations" + $timestamp + ".json"
@@ -274,14 +288,14 @@ Try{
         Invoke-Command -ScriptBlock $attestCommand
         $cklFile = $ReportPath + $DirectorySep + $ReportPrefix + "_" + $name + "_" + "with_Attestations" + $timestamp + ".ckl"
         Write-Message -Level "INFO" -Message "Generating CKL file: $cklFile with attestations for ESX host: $name"
-        $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac --profilename "$ProfileName" --releasedate "$ReleaseDate" --releasenumber "$ReleaseNumber" --version "$ReleaseVersion" --vulidmapping "gid"}
+        $cklCommand = {saf convert hdf2ckl -i $reportFileWithAttestations -o $cklFile -m $metadataFile}
         Invoke-Command -ScriptBlock $cklCommand
       }
       Else{
         Write-Message -Level "INFO" -Message "Attestation file not detected. Generating STIG Viewer Checklist for ESX host: $name without attestations."
         $cklFile = $ReportPath + $DirectorySep + $ReportPrefix + "_" + $name + $timestamp + ".ckl"
         Write-Message -Level "INFO" -Message "Generating CKL file: $cklFile for ESX host: $name"
-        $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile --hostname $name --fqdn $name --ip $mgmtip --mac $mgmtmac --profilename "$ProfileName" --releasedate "$ReleaseDate" --releasenumber "$ReleaseNumber" --version "$ReleaseVersion" --vulidmapping "gid"}
+        $cklCommand = {saf convert hdf2ckl -i $reportFile -o $cklFile -m $metadataFile}
         Invoke-Command -ScriptBlock $cklCommand
       }
     }
