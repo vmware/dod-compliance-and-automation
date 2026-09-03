@@ -7,10 +7,6 @@ license: Apache-2.0
 summary: An InSpec Compliance Profile
 version: 1.3.0
 
-depends:
-  - name: vmware-vsphere-app-inspec-resources
-    path: ../resources
-
 inputs:
   - name: esx_vmhostName
     value: ''
