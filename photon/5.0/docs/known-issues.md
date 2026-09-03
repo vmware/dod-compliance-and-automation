@@ -1,8 +1,5 @@
 # Table of contents
 
-- [Photon](#photon)
-  - [PHTN-50-000192 The pam_faillock would record login failure regardless of pam_unix.so's return code, thus treating login success as failures.](#phtn-50-000192-the-pam-faillock-would-record-login-failure-regardless-of-pam_unix.so's-return-code-thus-treating-login-success-as-failures.)
-
 # Known Issues
 
 This document outlines known issues with the Photon 5.0 STIG Readiness Guide content, including workarounds if known.

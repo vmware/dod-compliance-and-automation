@@ -8,15 +8,15 @@ $ grep nullok /etc/pam.d/common-password /etc/pam.d/common-auth
 If this produces any output, this is a finding.'
   desc 'fix', 'If an account is configured for password authentication but does not have an assigned password, it is possible to log on to the account without authenticating.
 
-Remove any instances of the "nullok" option in "/etc/pam.d/common-password" to prevent logons with empty passwords.'
+Remove any instances of the "nullok" option in "/etc/pam.d/common-password" and "/etc/pam.d/common-auth" to prevent logons with empty passwords.'
   impact 0.7
   tag check_id: 'C-74747r1134807_chk'
   tag severity: 'high'
   tag gid: 'V-270714'
-  tag rid: 'SV-270714r1134808_rule'
+  tag rid: 'SV-270714r1208699_rule'
   tag stig_id: 'UBTU-24-300028'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
-  tag fix_id: 'F-74648r1066630_fix'
+  tag fix_id: 'F-74648r1208301_fix'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

@@ -2,8 +2,8 @@
 |:-|:-|:-|:-|
 # canonical_ubuntu_24.04_lts_stig_baseline
 Canonical Ubuntu 24.04 LTS STIG Chef InSpec Profile  
-Version: Version 1 Release 5  
-Date: 01 April 2026  
+Version: Version 1 Release 6  
+Date: 01 July 2026  
 STIG Type: Official STIG  
 Maintainers: Broadcom   
 

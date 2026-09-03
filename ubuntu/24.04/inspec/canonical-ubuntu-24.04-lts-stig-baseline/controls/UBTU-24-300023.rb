@@ -13,17 +13,17 @@ Edit the "/etc/ssh/sshd_config" file to uncomment or add the line for the "X11Us
 
 X11UseLocalhost yes
 
-Restart the SSH daemon for the changes to take effect:
+Restart SSH for the changes to take effect:
 
-$ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.5
   tag check_id: 'C-74742r1066614_chk'
   tag severity: 'medium'
   tag gid: 'V-270709'
-  tag rid: 'SV-270709r1066616_rule'
+  tag rid: 'SV-270709r1208698_rule'
   tag stig_id: 'UBTU-24-300023'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
-  tag fix_id: 'F-74643r1066615_fix'
+  tag fix_id: 'F-74643r1208294_fix'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

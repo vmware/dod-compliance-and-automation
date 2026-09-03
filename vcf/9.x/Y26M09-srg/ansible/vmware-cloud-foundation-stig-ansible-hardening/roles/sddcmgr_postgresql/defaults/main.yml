@@ -1,0 +1,43 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+sddcmgr_postgresql_defaults_run_vcfc_9x_000001: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000005: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000006: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000007: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000009: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000010: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000020: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000032: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000035: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000038: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000051: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000060: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000073: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000109: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000113: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000121: true
+sddcmgr_postgresql_defaults_run_vcfc_9x_000144: true
+
+# PostgreSQL Configuration
+sddcmgr_postgresql_defaults_max_connections: '100'
+sddcmgr_postgresql_defaults_pgaudit_log: 'all, -misc, -read'
+sddcmgr_postgresql_defaults_pgaudit_log_catalog: 'off'
+sddcmgr_postgresql_defaults_pgaudit_log_parameter: 'off'
+sddcmgr_postgresql_defaults_pgaudit_log_statement: 'off'
+sddcmgr_postgresql_defaults_pgaudit_log_relation: 'off'
+sddcmgr_postgresql_defaults_log_destination: 'stderr'
+sddcmgr_postgresql_defaults_log_line_prefix: '%m %c %x %d %u %r %p %l'
+sddcmgr_postgresql_defaults_log_file_mode: '0600'
+sddcmgr_postgresql_defaults_port: '5432'
+sddcmgr_postgresql_defaults_password_encryption: 'scram-sha-256'
+sddcmgr_postgresql_defaults_fsync: 'on'
+sddcmgr_postgresql_defaults_full_page_writes: 'on'
+sddcmgr_postgresql_defaults_synchronous_commit: 'on'
+sddcmgr_postgresql_defaults_client_min_messages: 'error'
+sddcmgr_postgresql_defaults_log_timezone: 'UTC'
+sddcmgr_postgresql_defaults_log_connections: 'on'
+sddcmgr_postgresql_defaults_log_disconnections: 'on'
+sddcmgr_postgresql_defaults_logging_collector: 'on'
