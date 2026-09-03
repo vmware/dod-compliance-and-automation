@@ -1,7 +1,7 @@
 {
   "profiles": [
     {
-      "name": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-application-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,
@@ -9,7 +9,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x ESX STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-vsphere-esx-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x ESX STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,
@@ -17,7 +17,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application vCenter Server STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-vsphere-vcenter-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,
@@ -25,7 +25,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Virtual Machine STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-vsphere-vm-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Virtual Machine STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,
@@ -33,7 +33,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-nsx-manager-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x NSX Manager STIG Readiness Guide",
       "version": 1,
       "releasenumber": 2,
@@ -41,7 +41,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x NSX Routing STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-nsx-routing-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x NSX Routing STIG Readiness Guide",
       "version": 1,
       "releasenumber": 2,
@@ -49,7 +49,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application Automation STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-automation-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,
@@ -57,7 +57,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application Operations STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-operations-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,
@@ -65,7 +65,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application Operations HCX STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-opshcx-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,
@@ -73,7 +73,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application Operations for Networks STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-opsnet-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,
@@ -81,7 +81,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x Application SDDC Manager STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-sddcmgr-app-stig-baseline",
       "title": "VMware Cloud Foundation 9.x Application STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,

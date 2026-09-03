@@ -1,7 +1,7 @@
 {
   "profiles": [
     {
-      "name": "VMware Cloud Foundation 9.x SDDC Manager Appliance NGINX Service STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-sddcmgr-nginx-stig-baseline",
       "title": "VMware Cloud Foundation 9.x SDDC Manager Appliance NGINX Service STIG Readiness Guide",
       "version": 1,
       "releasenumber": 3,
@@ -9,7 +9,7 @@
       "showCalendar": true
     },
     {
-      "name": "VMware Cloud Foundation 9.x SDDC Manager Appliance PostgreSQL Service STIG Readiness Guide",
+      "name": "vmware-cloud-foundation-sddcmgr-postgresql-stig-baseline",
       "title": "VMware Cloud Foundation 9.x SDDC Manager Appliance PostgreSQL Service STIG Readiness Guide",
       "version": 1,
       "releasenumber": 2,
