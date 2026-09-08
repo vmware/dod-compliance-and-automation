@@ -11,7 +11,7 @@
 .NOTES 
   File Name  : VMware_vSphere_8.0_STIG_ESXi_InSpec_Runner.ps1 
   Author     : Broadcom
-  Version    : 2.0.1
+  Version    : 2.0.3
 
   Minimum Requirements
   -PowerCLI 13.3
@@ -33,7 +33,9 @@
   Enter the path for the InSpec inputs file, for example: C:\github\dod-compliance-and-automation\vsphere\8.0\vsphere\powercli\vmware-vsphere-8.0-stig-esxi-inspec-runner-inputs-example.yml
 .PARAMETER attestationFile
   Enter the path for the saf cli attestation file, for example: C:\github\dod-compliance-and-automation\vsphere\8.0\vsphere\powercli\vmware-vsphere-8.0-stig-esxi-inspec-runner-attestation-example.yml
-#>
+.PARAMETER vccred
+  Passthrough the PSScredential object for vSphere credentials
+  #>
 [CmdletBinding()]
 param (
   [Parameter(Mandatory=$true,
@@ -41,6 +43,8 @@ param (
   [ValidateNotNullOrEmpty()]
   [string]$vcenter,
   [Parameter(Mandatory=$true,
+  [Parameter(Mandatory=$false)]
+  [pscredential]$vccred,
   HelpMessage="Enter the folder path to store reports for example...C:\InSpec\Reports")]
   [ValidateNotNullOrEmpty()]
   [string]$reportPath = "C:\InSpec\Reports",
@@ -94,9 +98,11 @@ Catch
   Exit -1
 }
 
-#Get Credentials for vCenter
-Write-ToConsole "...Enter credentials to connect to vCenter"
-$vccred = Get-Credential -Message "Enter credentials for vCenter"
+#Get Credentials for vCenter if not specified during initial run
+if ($null -eq $vccred) {
+  Write-ToConsole "...Enter credentials to connect to vCenter"
+  $vccred = Get-Credential -Message "Enter credentials for vCenter"
+}
 
 #Connect to vCenter Server
 Try
