@@ -1,0 +1,7 @@
+{
+    "local_as_num": "{{ var_outer_bgp.local_as_num }}",
+    {% if var_outer_bgp.route_aggregation is defined %}
+        "route_aggregation": "{{ var_outer_bgp.route_aggregation }}",
+    {% endif %}
+    "enabled": false
+}

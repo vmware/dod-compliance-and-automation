@@ -1,0 +1,6 @@
+useFaillockConf: true
+usePwqualityConf: true
+usePwhistoryConf: true
+sshdcommand: 'sshd -T'
+authprivlog: /var/log/messages
+containerHost: true

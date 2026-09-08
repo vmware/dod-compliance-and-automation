@@ -1,0 +1,73 @@
+# Waiver file to document rules that are not applicable or not supported on NSX appliances for the Canonical Ubuntu 24.04 LTS STIG.
+UBTU-24-100700:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose a time solution from the available options.'
+UBTU-24-100010:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose a time solution from the available options.'
+UBTU-24-100020:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose a time solution from the available options.'
+UBTU-24-600090:
+  run: false
+  justification: 'Data at rest encryption is not enabled via the OS. For VMware based appliances it is expected that the underlying storage provide DAR encryption such as with vSAN or another storage solution.'
+UBTU-24-100310:
+  run: false
+  justification: 'Iptables is used instead of UFW for the local firewall solution.'
+UBTU-24-600200:
+  run: false
+  justification: 'Iptables is used instead of UFW for the local firewall solution.'
+UBTU-24-300041:
+  run: false
+  justification: 'Ports and protocols in use can be found on ports.broadcom.com.'
+UBTU-24-600160:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+UBTU-24-600180:
+  run: false
+  justification: 'NTPD is used for time synchronization instead of Chrony as expected in the STIG. The use of Chrony is not for a security related reason according to DISA and they just chose one time solution.'
+UBTU-24-101000:
+  run: false
+  justification: 'The vlock package is not installed. Session locks for the console or SSH sessions are generally unsupported on VCF appliances and instead session timeouts are implemented to mitigate sessions that are left open. Logging out is recommended instead of session locking.'
+UBTU-24-100650:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-100660:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-100900:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-100910:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400020:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400030:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400060:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400360:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400370:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400375:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-400380:
+  run: false
+  justification: 'Configuring MFA to the local OS on VMware appliances is currently unsupported. MFA to product interface is supported via an identity provider.'
+UBTU-24-600060:
+  run: false
+  justification: 'Adding DOD Root CAs to the trust store by default is not appropriate for all customers and is N/A in this context.'
+UBTU-24-600030:
+  run: false
+  justification: 'Enabling FIPS for the kernel on Ubuntu requires a Ubuntu Pro subscription to obtain the FIPS Kernel cryptographic modules. This is not currently available on Ubuntu based VCF appliances.'
+UBTU-24-700400:
+  run: false
+  justification: 'Verifying vendor support status via the Ubuntu Pro subscription is not applicable to Ubuntu based VCF appliances as Ubuntu Pro is not available on these systems. Ubuntu 24.04 LTS standard support is valid until April 2029.'

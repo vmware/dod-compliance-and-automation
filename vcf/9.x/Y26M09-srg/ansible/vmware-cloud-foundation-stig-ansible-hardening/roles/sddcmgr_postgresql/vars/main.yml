@@ -1,0 +1,25 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+## postgresql service variables
+sddcmgr_postgresql_vars_psql_file: '/usr/pgsql/15/bin/psql'
+sddcmgr_postgresql_vars_psql_host: 'localhost'
+sddcmgr_postgresql_vars_psql_user: 'postgres'
+sddcmgr_postgresql_vars_notify_service_name: 'postgres'
+sddcmgr_postgresql_vars_postgresql_conf_file: '/data/pgdata/postgresql.conf'
+sddcmgr_postgresql_vars_data_folder: '/data/pgdata'
+sddcmgr_postgresql_vars_log_folder: '/var/log/postgres/'
+sddcmgr_postgresql_vars_rsyslog_conf_file: '/etc/rsyslog.d/stig-services-postgres.conf'
+sddcmgr_postgresql_vars_rsyslog_conf_file_name: 'stig-services-postgres.conf'
+
+## configuration values
+sddcmgr_postgresql_vars_conf_owner: 'postgres'
+sddcmgr_postgresql_vars_conf_group: 'users'
+sddcmgr_postgresql_vars_log_owner: 'postgres'
+sddcmgr_postgresql_vars_log_group: 'users'
+sddcmgr_postgresql_vars_pg_extension_plpgsql: "'plpgsql'"

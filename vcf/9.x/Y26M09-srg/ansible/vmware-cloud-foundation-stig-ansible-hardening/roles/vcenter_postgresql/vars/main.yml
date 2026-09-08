@@ -1,0 +1,25 @@
+---
+# This file contains role variables that provide role specific values.
+# Values defined here are static and not intended to be overwritten.
+# !!DO NOT EDIT THESE VALUES!!
+
+# Variable Naming Syntax: <rolename>_vars_description
+## Files should end in file, folders in folder
+
+## postgresql service variables
+vcenter_postgresql_vars_vmw_vpg_config_py_file: '/opt/vmware/vpostgres/current/bin/vmw_vpg_config/vmw_vpg_config.py'
+vcenter_postgresql_vars_postgresql_conf_file: '/storage/db/vpostgres/postgresql.conf'
+vcenter_postgresql_vars_stig_conf_file: '/storage/db/vpostgres/stig.conf'
+vcenter_postgresql_vars_data_folder: '/storage/db/vpostgres'
+vcenter_postgresql_vars_log_folder: '/var/log/vmware/vpostgres/'
+vcenter_postgresql_vars_rsyslog_conf_file: '/etc/vmware-syslog/vmware-services-vmware-vpostgres.conf'
+vcenter_postgresql_vars_rsyslog_conf_file_name: 'vmware-services-vmware-vpostgres.conf'
+vcenter_postgresql_vars_rsyslog_archiver_conf_file: '/etc/vmware-syslog/vmware-services-vmware-postgres-archiver.conf'
+vcenter_postgresql_vars_rsyslog_archiver_conf_file_name: 'vmware-services-vmware-postgres-archiver.conf'
+vcenter_postgresql_vars_notify_service_name: 'vpostgres'
+
+## configuration values
+vcenter_postgresql_vars_conf_owner: 'vpostgres'
+vcenter_postgresql_vars_conf_group: 'vpgmongrp'
+vcenter_postgresql_vars_log_owner: 'vpostgres'
+vcenter_postgresql_vars_log_group: 'vpgmongrp'

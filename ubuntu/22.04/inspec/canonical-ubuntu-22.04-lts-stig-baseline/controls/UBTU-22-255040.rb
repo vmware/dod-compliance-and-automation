@@ -17,17 +17,17 @@ Add or modify the following line in the "/etc/ssh/sshd_config" file:
 
 X11Forwarding no
 
-Restart the SSH daemon for the changes to take effect:
+Restart SSH for the changes to take effect:
 
-     $ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.7
   tag check_id: 'C-64258r953398_chk'
   tag severity: 'high'
   tag gid: 'V-260529'
-  tag rid: 'SV-260529r991589_rule'
+  tag rid: 'SV-260529r1208685_rule'
   tag stig_id: 'UBTU-22-255040'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
-  tag fix_id: 'F-64166r953399_fix'
+  tag fix_id: 'F-64166r1208684_fix'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

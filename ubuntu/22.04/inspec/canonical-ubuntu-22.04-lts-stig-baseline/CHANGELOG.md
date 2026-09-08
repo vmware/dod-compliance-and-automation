@@ -1,5 +1,13 @@
 # Change Log
 
+## [Version 2 Release 9] (2026-07-01)
+
+#### Release Notes
+- UBTU-22-215040 - Updated severity, removed nfs-common from exclusion, and added note.
+- UBTU-22-255025, UBTU-22-255030, UBTU-22-255035, UBTU-22-255040, UBTU-22-255045, UBTU-22-255050, UBTU-22-255060, UBTU-22-255065 - Updated Fix Text SSH restart command.
+- UBTU-22-271025 - Updated GNOME idle delay to 10 minutes.
+- UBTU-22-432010 - Removed “NOPASSWD” from Check.
+
 ## [Version 2 Release 8] (2026-04-01)
 
 #### Release Notes

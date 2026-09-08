@@ -1,0 +1,43 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+ops_postgresql_defaults_run_vcfi_9x_000001: true
+ops_postgresql_defaults_run_vcfi_9x_000005: true
+ops_postgresql_defaults_run_vcfi_9x_000006: true
+ops_postgresql_defaults_run_vcfi_9x_000007: true
+ops_postgresql_defaults_run_vcfi_9x_000009: true
+ops_postgresql_defaults_run_vcfi_9x_000010: true
+ops_postgresql_defaults_run_vcfi_9x_000020: true
+ops_postgresql_defaults_run_vcfi_9x_000032: true
+ops_postgresql_defaults_run_vcfi_9x_000035: true
+ops_postgresql_defaults_run_vcfi_9x_000038: true
+ops_postgresql_defaults_run_vcfi_9x_000051: true
+ops_postgresql_defaults_run_vcfi_9x_000060: true
+ops_postgresql_defaults_run_vcfi_9x_000073: true
+ops_postgresql_defaults_run_vcfi_9x_000109: true
+ops_postgresql_defaults_run_vcfi_9x_000113: true
+ops_postgresql_defaults_run_vcfi_9x_000121: true
+ops_postgresql_defaults_run_vcfi_9x_000144: true
+
+# Operations PostgreSQL Configuration
+ops_postgresql_defaults_max_connections: '200'
+ops_postgresql_defaults_pgaudit_log: 'all, -misc, -read'
+ops_postgresql_defaults_pgaudit_log_catalog: 'off'
+ops_postgresql_defaults_pgaudit_log_parameter: 'off'
+ops_postgresql_defaults_pgaudit_log_statement: 'off'
+ops_postgresql_defaults_pgaudit_log_relation: 'off'
+ops_postgresql_defaults_log_destination: 'stderr,syslog'
+ops_postgresql_defaults_log_line_prefix: '%m %c %x %d %u %r %p %l'
+ops_postgresql_defaults_log_file_mode: '0600'
+ops_postgresql_defaults_port: '5433'
+ops_postgresql_defaults_password_encryption: 'scram-sha-256'
+ops_postgresql_defaults_fsync: 'on'
+ops_postgresql_defaults_full_page_writes: 'on'
+ops_postgresql_defaults_synchronous_commit: 'on'
+ops_postgresql_defaults_client_min_messages: 'error'
+ops_postgresql_defaults_log_timezone: 'UTC'
+ops_postgresql_defaults_log_connections: 'on'
+ops_postgresql_defaults_log_disconnections: 'on'
+ops_postgresql_defaults_logging_collector: 'on'

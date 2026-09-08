@@ -1,0 +1,11 @@
+{
+    {% if item.edge_path is defined %}
+    "edge_path": "{{ item.edge_path }}",
+    {% endif %}
+    "segment_path": "{{ item.segment_path }}",
+    "type": "{{ item.type }}",
+    "urpf_mode": "{{ nsx_routing_defaults_t0_interface_urpf }}",
+    "resource_type": "{{ item.resource_type }}",
+    "id": "{{ item.id }}",
+    "subnets": {{ item.subnets }}
+}

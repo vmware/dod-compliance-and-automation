@@ -1,0 +1,28 @@
+---
+# tasks file for postgres
+
+- name: Include postgres tasks
+  ansible.builtin.include_tasks:
+    file: postgres.yml
+    apply:
+      tags:
+        - ops-postgres
+  tags:
+    - ops-postgres
+    - VCFI-9X-000001
+    - VCFI-9X-000005
+    - VCFI-9X-000006
+    - VCFI-9X-000007
+    - VCFI-9X-000009
+    - VCFI-9X-000010
+    - VCFI-9X-000020
+    - VCFI-9X-000032
+    - VCFI-9X-000035
+    - VCFI-9X-000038
+    - VCFI-9X-000051
+    - VCFI-9X-000060
+    - VCFI-9X-000073
+    - VCFI-9X-000109
+    - VCFI-9X-000113
+    - VCFI-9X-000121
+    - VCFI-9X-000144
