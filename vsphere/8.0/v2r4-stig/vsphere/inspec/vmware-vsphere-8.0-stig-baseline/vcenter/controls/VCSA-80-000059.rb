@@ -48,7 +48,7 @@ For additional information on configuring ADFS for use with vCenter, refer to th
   tag fix_id: 'F-62558r934384_fix'
   tag satisfies: ['SRG-APP-000148', 'SRG-APP-000153', 'SRG-APP-000163', 'SRG-APP-000180', 'SRG-APP-000234']
   tag cci: ['CCI-000764', 'CCI-004045', 'CCI-003627', 'CCI-000804', 'CCI-001682', 'CCI-000795', 'CCI-000770']
-  tag nist: ['IA-2', 'IA-2 (5)', 'AC-2 (3) (a)', 'IA-8', 'AC-2 (2)', 'IA-4 e']
+  tag nist: ['IA-2', 'IA-2 (5)', 'AC-2 (3) (a)', 'IA-8', 'AC-2 (2)', 'IA-4 e', 'IA-2 (5)']
 
   describe 'This check is a manual or policy based check and must be reviewed manually.' do
     skip 'This check is a manual or policy based check and must be reviewed manually.'
