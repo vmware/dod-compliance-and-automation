@@ -9,7 +9,7 @@ The table below provides supported interoperability between product and STIG ver
 |     `9.0.1.0`     |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |
 |     `9.0.2.0`     |         :x:        | :heavy_check_mark: |         :x:        |         :x:        |
 |     `9.1.0.0`     |         :x:        |         :x:        | :heavy_check_mark: |         :x:        |
-|     `9.1.0.0`     |         :x:        |         :x:        |         :x:        | :heavy_check_mark: |
+|     `9.1.1.0`     |         :x:        |         :x:        |         :x:        | :heavy_check_mark: |
 
 
 > [!NOTE]
