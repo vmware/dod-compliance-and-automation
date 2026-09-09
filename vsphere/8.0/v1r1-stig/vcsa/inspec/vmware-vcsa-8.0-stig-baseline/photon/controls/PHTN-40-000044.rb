@@ -37,8 +37,8 @@ Note: On vCenter appliances, the equivalent file must be edited under "/etc/appl
       its('minlen') { should cmp > 14 }
     end
   else
-    describe file('/etc/pam.d/system-password') do
-      its('content') { should match /^password\s+(required|requisite)\s+pam_pwquality\.so\s+(?=.*\bminlen=15\b).*$/ }
+    describe pam('/etc/pam.d/system-password') do
+      its('lines') { should match_pam_rule('password (required|requisite) pam_pwquality.so').all_with_integer_arg('minlen', '>=', 15) }
     end
   end
 end
