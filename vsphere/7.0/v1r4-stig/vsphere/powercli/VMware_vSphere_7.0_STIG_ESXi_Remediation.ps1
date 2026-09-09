@@ -1988,7 +1988,7 @@ Try {
         $unchangedcount++
       }
       Else {
-        $portgroups = Get-VirtualPortGroup -VMHost $vmhost -Standard -ErrorAction Stop | Where-Object { $_.VlanId -In 1001..1024 -or $_.VlanId -In 3968...4047 -or $_.VlanId -In 4094 }
+        $portgroups = Get-VirtualPortGroup -VMHost $vmhost -Standard -ErrorAction Stop | Where-Object { $_.VlanId -In 1001..1024 -or $_.VlanId -In 3968..4047 -or $_.VlanId -eq 4094 }
         If ($portgroups.count -eq 0) {
           Write-ToConsoleGreen "...No standard port groups found with reserved VLAN IDs on $($vmhost.name)"
           $unchangedcount++
