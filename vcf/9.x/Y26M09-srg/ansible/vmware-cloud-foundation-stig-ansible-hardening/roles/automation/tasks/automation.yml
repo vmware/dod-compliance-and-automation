@@ -1,0 +1,101 @@
+---
+###################################################################################################################################
+- name: VCFA-9X-000104
+  tags: [VCFA-9X-000104]
+  when: automation_defaults_run_vcfa_9x_000104 | bool
+  block:
+    - name: VCFA-9X-000104 - VMware Cloud Foundation Automation must restrict the ability of individuals to use information systems to launch denial-of-service (DoS) attacks against other information systems.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000104 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000373
+  tags: [VCFA-9X-000373]
+  when: automation_defaults_run_vcfa_9x_000373 | bool
+  block:
+    - name: VCFA-9X-000373 - VMware Cloud Foundation Automation must include only approved trust anchors in trust stores or certificate stores managed by the organization.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000373 - This control must be manually remediated."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFA-9X-000374
+  tags: [VCFA-9X-000374]
+  when: automation_defaults_run_vcfa_9x_000374 | bool
+  block:
+    - name: VCFA-9X-000374 - Get current backend.branding.requireAuthForBranding configuration
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/cloudapi/1.0.0/site/configurations/urn:vcloud:configuration:backend.branding.requireAuthForBranding"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_automation_session_token') }}"
+          Accept: "{{ automation_defaults_api_version }}"
+        method: GET
+      register: authforbranding
+      changed_when: false
+
+    - name: VCFA-9X-000374 - Update backend.branding.requireAuthForBranding
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/cloudapi/1.0.0/site/configurations/urn:vcloud:configuration:backend.branding.requireAuthForBranding"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_automation_session_token') }}"
+          Accept: "{{ automation_defaults_api_version }}"
+        method: PUT
+        body: "{{ lookup('template', './automation_update_branding_without_login.json.j2') }}"
+        body_format: json
+        status_code:
+          - 200
+          - 202
+      register: response
+      when:
+        - authforbranding.json.typedValue.value is defined
+        - authforbranding.json.typedValue.value != automation_defaults_disable_branding_without_login
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFA-9X-000375
+  tags: [VCFA-9X-000375]
+  when: automation_defaults_run_vcfa_9x_000375 | bool
+  block:
+    - name: VCFA-9X-000375 - Get list of feature flags
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/cloudapi/1.0.0/featureFlags"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_automation_session_token') }}"
+          Accept: "{{ automation_defaults_api_version }}"
+        method: GET
+      register: featureflags
+      changed_when: false
+
+    - name: VCFA-9X-000375 - Disable unapproved feature flags
+      ansible.builtin.uri:
+        url: "https://{{ lookup('vars', 'ansible_host') }}/cloudapi/1.0.0/featureFlags/{{ item.id }}"
+        validate_certs: "{{ validate_certificate_uri }}"
+        headers:
+          Authorization: "Bearer {{ lookup('vars', 'var_vault_automation_session_token') }}"
+          Accept: "{{ automation_defaults_api_version }}"
+        method: PUT
+        body: "{{ lookup('template', './automation_disable_feature_flag.json.j2') }}"
+        body_format: json
+      register: response
+      with_items:
+        - "{{ featureflags.json['values'] }}"
+      when:
+        - item.enabled
+        - item.displayName not in automation_defaults_approved_feature_flags
+      changed_when:
+        - response.status == 200 or response.status == 202
+
+###################################################################################################################################
+- name: VCFA-9X-000381
+  tags: [VCFA-9X-000381]
+  when: automation_defaults_run_vcfa_9x_000381 | bool
+  block:
+    - name: VCFA-9X-000381 - VMware Cloud Foundation Automation assigned roles and permissions must be verified.
+      ansible.builtin.debug:
+        msg: "VCFA-9X-000381 - This control must be manually remediated."
+      changed_when: false

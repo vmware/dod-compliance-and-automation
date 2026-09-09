@@ -1,0 +1,9 @@
+# Enter target SDDC Manager URL IP or FQDN.
+sddcmgr_url: ''
+# Enter session token for API authentication.
+sddcmgr_sessionToken: ''
+sddcmgr_authorizedPermissions:
+  - user: 'administrator@vsphere.local'
+    role: 'Administrator'
+  - user: 'vsphere.local\sddcadmins'
+    role: 'Administrator'

@@ -1,0 +1,17 @@
+# Waiver file for WCP pipeline runs of items that are known to fail and should not fail the pipeline as a regression.
+PHTN-50-000005:
+  expiration_date:
+  run: false
+  justification: 'The DOD login banner is not configured out of the box as it is not appropriate for all customers.'
+PHTN-50-000046:
+  expiration_date:
+  run: false
+  justification: 'Grub boot password is a customer specific implementation.'
+PHTN-50-000242:
+  expiration_date:
+  run: false
+  justification: 'Syslog configuration is inherited from vCenter.'
+PHTN-50-000245:
+  expiration_date:
+  run: false
+  justification: 'This control is not applicable to the vCenter Server.'

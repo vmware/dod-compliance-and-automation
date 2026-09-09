@@ -15,17 +15,17 @@ Add or modify the following lines in the "/etc/ssh/sshd_config" file:
 PermitEmptyPasswords no
 PermitUserEnvironment no
 
-Restart the SSH daemon for the changes to take effect:
+Restart SSH for the changes to take effect:
 
-     $ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.7
   tag check_id: 'C-64255r953389_chk'
   tag severity: 'high'
   tag gid: 'V-260526'
-  tag rid: 'SV-260526r991591_rule'
+  tag rid: 'SV-260526r1208678_rule'
   tag stig_id: 'UBTU-22-255025'
   tag gtitle: 'SRG-OS-000480-GPOS-00229'
-  tag fix_id: 'F-64163r953390_fix'
+  tag fix_id: 'F-64163r1208677_fix'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

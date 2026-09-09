@@ -15,17 +15,17 @@ If the "X11Forwarding" keyword is set to "yes" and is not documented with the in
 
 X11Forwarding no
 
-Restart the SSH daemon for the changes to take effect:
+Restart SSH for the changes to take effect:
 
-$ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.7
   tag check_id: 'C-74741r1066611_chk'
   tag severity: 'high'
   tag gid: 'V-270708'
-  tag rid: 'SV-270708r1066613_rule'
+  tag rid: 'SV-270708r1208697_rule'
   tag stig_id: 'UBTU-24-300022'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
-  tag fix_id: 'F-74642r1066612_fix'
+  tag fix_id: 'F-74642r1208292_fix'
   tag 'documentable'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

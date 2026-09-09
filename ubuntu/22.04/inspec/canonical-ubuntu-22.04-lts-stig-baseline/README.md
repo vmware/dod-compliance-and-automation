@@ -2,8 +2,8 @@
 |:-|:-|:-|:-|
 # canonical_ubuntu_22.04_lts_stig_baseline
 Canonical Ubuntu 22.04 LTS STIG Chef InSpec Profile  
-Version: Version 2 Release 8
-Date: 01 April 2026
+Version: Version 2 Release 9
+Date: 01 July 2026
 STIG Type: Official STIG  
 Maintainers: Broadcom   
 

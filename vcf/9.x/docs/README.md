@@ -28,6 +28,9 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |      Version      |        Type        |     Release Date   |      Download      |
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |     `Y25M06`      |STIG Readiness Guide|     2025/06/17     |[U_VMware_Cloud_Foundation_9.x_STIG_Readiness_Guide_Y25M06.zip](U_VMware_Cloud_Foundation_9.x_STIG_Readiness_Guide_Y25M06.zip)|
+|     `Y25M09`      |STIG Readiness Guide|     2025/05/12     |[U_VMware_Cloud_Foundation_9.x_STIG_Readiness_Guide_Y25M09.zip](U_VMware_Cloud_Foundation_9.x_STIG_Readiness_Guide_Y25M09.zip)|
+|     `Y26M05`      |STIG Readiness Guide|     2026/05/12     |[U_VMware_Cloud_Foundation_9.x_STIG_Readiness_Guide_Y26M05.zip](U_VMware_Cloud_Foundation_9.x_STIG_Readiness_Guide_Y26M05.zip)|
+|     `Y26M09`      |STIG Readiness Guide|     2026/09/03     |[U_VMware_Cloud_Foundation_9.x_STIG_Readiness_Guide_Y26M09.zip](U_VMware_Cloud_Foundation_9.x_STIG_Readiness_Guide_Y26M09.zip)|
 
 
 > [!NOTE]

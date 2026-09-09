@@ -1,6 +1,6 @@
 control 'UBTU-22-255065' do
   title 'Ubuntu 22.04 LTS must use strong authenticators in establishing nonlocal maintenance and diagnostic sessions.'
-  desc 'Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network. Local maintenance and diagnostic activities are those activities carried out by individuals physically present at the information system or information system component and not communicating across a network connection. Typically, strong authentication requires authenticators that are resistant to replay attacks and employ multifactor authentication. Strong authenticators include, for example, PKI where certificates are stored on a token protected by a password, passphrase, or biometric.'
+  desc 'Nonlocal maintenance and diagnostic activities are conducted by individuals communicating through either an external network (e.g., the internet) or an internal network. Local maintenance and diagnostic activities are carried out by individuals physically present at the information system or information system component and not communicating across a network connection. Typically, strong authentication requires authenticators that are resistant to replay attacks and employ multifactor authentication. Strong authenticators include, for example, PKI where certificates are stored on a token protected by a password, passphrase, or biometric.'
   desc 'check', %q(Verify Ubuntu 22.04 LTS is configured to use strong authenticators in the establishment of nonlocal maintenance and diagnostic maintenance by using the following command:
 
      $ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH 'usepam'
@@ -13,17 +13,17 @@ Add or modify the following line to /etc/ssh/sshd_config:
 
 UsePAM yes
 
-Restart the SSH server for changes to take effect:
+Restart SSH for the changes to take effect:
 
-     $ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.5
   tag check_id: 'C-64263r953413_chk'
   tag severity: 'medium'
   tag gid: 'V-260534'
-  tag rid: 'SV-260534r958510_rule'
+  tag rid: 'SV-260534r1208804_rule'
   tag stig_id: 'UBTU-22-255065'
   tag gtitle: 'SRG-OS-000125-GPOS-00065'
-  tag fix_id: 'F-64171r953414_fix'
+  tag fix_id: 'F-64171r1208691_fix'
   tag 'documentable'
   tag cci: ['CCI-000877']
   tag nist: ['MA-4 c']

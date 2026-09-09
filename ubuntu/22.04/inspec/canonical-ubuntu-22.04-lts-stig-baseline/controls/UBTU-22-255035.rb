@@ -8,7 +8,7 @@ Terminating network connections associated with communications sessions includes
      $ sudo /usr/sbin/sshd -dd 2>&1 | awk '/filename/ {print $4}' | tr -d '\r' | tr '\n' ' ' | xargs sudo grep -iH 'clientaliveinterval'
      /etc/ssh/sshd_config:ClientAliveInterval 600
 
-If "ClientAliveInterval" does not exist, is not set to a value of "600" or less, if conflicting results are returned, is commented out, or is missing, this is a finding.)
+If "ClientAliveInterval" does not exist or is not set to a value of "600" or less, conflicting results are returned, or it is commented out or missing, this is a finding.)
   desc 'fix', 'Configure the SSH server to terminate a user session automatically after the SSH client has been unresponsive for 10 minutes.
 
 Note: This setting must be applied in conjunction with UBTU-22-255040 to function correctly.
@@ -17,17 +17,17 @@ Add or modify the following line in the "/etc/ssh/sshd_config" file:
 
 ClientAliveInterval 600
 
-Restart the SSH daemon for the changes to take effect:
+Restart SSH for the changes to take effect:
 
-     $ sudo systemctl restart sshd.service'
+$ sudo systemctl restart ssh'
   impact 0.5
-  tag check_id: 'C-64257r953395_chk'
+  tag check_id: 'C-64257r1208803_chk'
   tag severity: 'medium'
   tag gid: 'V-260528'
-  tag rid: 'SV-260528r970703_rule'
+  tag rid: 'SV-260528r1208803_rule'
   tag stig_id: 'UBTU-22-255035'
   tag gtitle: 'SRG-OS-000163-GPOS-00072'
-  tag fix_id: 'F-64165r953396_fix'
+  tag fix_id: 'F-64165r1208280_fix'
   tag 'documentable'
   tag cci: ['CCI-001133']
   tag nist: ['SC-10']

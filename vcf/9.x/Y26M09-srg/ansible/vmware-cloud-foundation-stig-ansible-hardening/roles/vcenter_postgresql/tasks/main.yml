@@ -1,0 +1,27 @@
+---
+
+- name: Include vCenter PostgreSQL tasks
+  ansible.builtin.include_tasks:
+    file: postgresql.yml
+    apply:
+      tags:
+        - vcenter-postgresql
+  tags:
+    - vcenter-postgresql
+    - VCFL-9X-000001
+    - VCFL-9X-000005
+    - VCFL-9X-000006
+    - VCFL-9X-000007
+    - VCFL-9X-000009
+    - VCFL-9X-000010
+    - VCFL-9X-000020
+    - VCFL-9X-000032
+    - VCFL-9X-000035
+    - VCFL-9X-000038
+    - VCFL-9X-000051
+    - VCFL-9X-000060
+    - VCFL-9X-000073
+    - VCFL-9X-000109
+    - VCFL-9X-000113
+    - VCFL-9X-000121
+    - VCFL-9X-000144

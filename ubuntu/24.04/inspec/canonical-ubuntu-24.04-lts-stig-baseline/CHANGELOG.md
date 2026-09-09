@@ -1,5 +1,12 @@
 # Change Log
 
+## [Version 1 Release 6] (2026-07-01)
+
+#### Release Notes
+- UBTU-24-300022, UBTU-24-300023, UBTU-24-300031, UBTU-24-600010 - Updated Fix Text SSH restart command.
+- UBTU-24-300028 - Added /etc/pam.d/common-auth to Fix Text.
+
+
 ## [Version 1 Release 5] (2026-04-01)
 
 #### Release Notes
@@ -19,6 +26,7 @@
 - UBTU-24-400340 - Updated check and fix text. Update test.
 - UBTU-24-600070 - Updated check text.
 - UBTU-24-700400 - Updated check and fix text. Update test.
+
 
 ## [Version 1 Release 3] (2025-12-02)
 

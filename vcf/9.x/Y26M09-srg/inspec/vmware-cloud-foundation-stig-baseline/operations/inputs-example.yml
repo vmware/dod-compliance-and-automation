@@ -1,0 +1,4 @@
+# Enter target VCF Operations URL IP or FQDN.
+operations_apihostname: ''
+# Enter token for API authentication.
+operations_apitoken: ''

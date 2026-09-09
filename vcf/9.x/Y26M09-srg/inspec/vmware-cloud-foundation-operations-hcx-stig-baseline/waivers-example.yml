@@ -1,0 +1,4 @@
+# Example Waiver File
+PHTN-50-000005:
+  run: false
+  justification: 'The DOD login banner will not be configured in this environment.'

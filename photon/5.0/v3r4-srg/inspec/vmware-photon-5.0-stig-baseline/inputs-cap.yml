@@ -1,0 +1,4 @@
+useFaillockConf: true
+usePwqualityConf: true
+usePwhistoryConf: true
+authprivlog: /var/log/messages
