@@ -1,0 +1,8 @@
+---
+- name: VRLCM 8.x Remediation Automation
+  hosts: all
+  roles:
+    - role: vmware-photon-5.0-stig-ansible-hardening      
+    - role: nginx
+    - role: postgres
+    - role: vrlcm
