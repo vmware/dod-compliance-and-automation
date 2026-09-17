@@ -32,8 +32,8 @@ control 'PHTN-40-000110' do
   impact 0.3
   tag severity: 'low'
   tag gtitle: 'SRG-OS-000341-GPOS-00132'
-  tag gid: 'V-PHTN-40-000110'
-  tag rid: 'SV-PHTN-40-000110'
+  tag gid: 'V-258844'
+  tag rid: 'SV-258844r958752_rule'
   tag stig_id: 'PHTN-40-000110'
   tag cci: ['CCI-001849']
   tag nist: ['AU-4']

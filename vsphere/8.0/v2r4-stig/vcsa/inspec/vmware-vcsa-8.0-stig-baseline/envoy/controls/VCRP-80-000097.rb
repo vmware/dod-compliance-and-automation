@@ -93,8 +93,8 @@ control 'VCRP-80-000097' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000063'
-  tag gid: 'V-VCRP-80-000097'
-  tag rid: 'SV-VCRP-80-000097'
+  tag gid: 'V-259164'
+  tag rid: 'SV-259164r1212220_rule'
   tag stig_id: 'VCRP-80-000097'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']

@@ -37,8 +37,8 @@ control 'VCLD-80-000062' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-WSR-000142'
-  tag gid: 'V-VCLD-80-000062'
-  tag rid: 'SV-VCLD-80-000062'
+  tag gid: 'V-259151'
+  tag rid: 'SV-259151r1003715_rule'
   tag stig_id: 'VCLD-80-000062'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

@@ -386,8 +386,8 @@ control 'VCUI-80-000081' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-AS-000064'
-  tag gid: 'V-VCUI-80-000081'
-  tag rid: 'SV-VCUI-80-000081'
+  tag gid: 'V-259117'
+  tag rid: 'SV-259117r1210442_rule'
   tag stig_id: 'VCUI-80-000081'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']

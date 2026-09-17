@@ -42,8 +42,8 @@ control 'PHTN-40-000019' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000042-GPOS-00020'
   tag satisfies: ['SRG-OS-000326-GPOS-00126']
-  tag gid: 'V-PHTN-40-000019'
-  tag rid: 'SV-PHTN-40-000019'
+  tag gid: 'V-258809'
+  tag rid: 'SV-258809r958422_rule'
   tag stig_id: 'PHTN-40-000019'
   tag cci: ['CCI-000135', 'CCI-002233']
   tag nist: ['AC-6 (8)', 'AU-3 (1)']

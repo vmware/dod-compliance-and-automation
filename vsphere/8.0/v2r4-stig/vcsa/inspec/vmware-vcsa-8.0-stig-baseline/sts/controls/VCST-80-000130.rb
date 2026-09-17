@@ -42,8 +42,8 @@ control 'VCST-80-000130' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000033-AS-000024'
-  tag gid: 'V-VCST-80-000130'
-  tag rid: 'SV-VCST-80-000130'
+  tag gid: 'V-258989'
+  tag rid: 'SV-258989r1137578_rule'
   tag stig_id: 'VCST-80-000130'
   tag cci: ['CCI-000213']
   tag nist: ['AC-3']

@@ -36,8 +36,8 @@ control 'VCLU-80-000070' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000295-AS-000263'
   tag satisfies: ['SRG-APP-000389-AS-000253']
-  tag gid: 'V-VCLU-80-000070'
-  tag rid: 'SV-VCLU-80-000070'
+  tag gid: 'V-259049'
+  tag rid: 'SV-259049r1043182_rule'
   tag stig_id: 'VCLU-80-000070'
   tag cci: ['CCI-002361', 'CCI-004895', 'CCI-002038']
   tag nist: ['AC-12', 'SC-11 b', 'IA-11']

@@ -35,8 +35,8 @@ control 'VCEM-80-000034' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000133-AS-000092'
-  tag gid: 'V-VCEM-80-000034'
-  tag rid: 'SV-VCEM-80-000034'
+  tag gid: 'V-259008'
+  tag rid: 'SV-259008r960960_rule'
   tag stig_id: 'VCEM-80-000034'
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']

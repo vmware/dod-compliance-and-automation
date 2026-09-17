@@ -36,8 +36,8 @@ control 'VCLD-80-000010' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000095-WSR-000056'
   tag satisfies: ['SRG-APP-000096-WSR-000057', 'SRG-APP-000097-WSR-000058', 'SRG-APP-000098-WSR-000059', 'SRG-APP-000099-WSR-000061', 'SRG-APP-000100-WSR-000064', 'SRG-APP-000374-WSR-000172', 'SRG-APP-000375-WSR-000171']
-  tag gid: 'V-VCLD-80-000010'
-  tag rid: 'SV-VCLD-80-000010'
+  tag gid: 'V-259140'
+  tag rid: 'SV-259140r1003694_rule'
   tag stig_id: 'VCLD-80-000010'
   tag cci: ['CCI-000130', 'CCI-000131', 'CCI-000132', 'CCI-000133', 'CCI-000134', 'CCI-001487', 'CCI-001889', 'CCI-001890']
   tag nist: ['AU-3 a', 'AU-3 b', 'AU-3 c', 'AU-3 d', 'AU-3 e', 'AU-3 f', 'AU-8 b']

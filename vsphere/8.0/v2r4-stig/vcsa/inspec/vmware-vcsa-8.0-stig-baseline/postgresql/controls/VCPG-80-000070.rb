@@ -34,8 +34,8 @@ control 'VCPG-80-000070' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000356-DB-000314'
   tag satisfies: ['SRG-APP-000381-DB-000361']
-  tag gid: 'V-VCPG-80-000070'
-  tag rid: 'SV-VCPG-80-000070'
+  tag gid: 'V-259181'
+  tag rid: 'SV-259181r1015953_rule'
   tag stig_id: 'VCPG-80-000070'
   tag cci: ['CCI-003938', 'CCI-001814']
   tag nist: ['CM-5 (1) (b)', 'CM-5 (1)']

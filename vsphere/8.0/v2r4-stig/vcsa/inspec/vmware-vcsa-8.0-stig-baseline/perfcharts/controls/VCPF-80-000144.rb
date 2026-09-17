@@ -20,8 +20,8 @@ control 'VCPF-80-000144' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000380-AS-000088'
-  tag gid: 'V-VCPF-80-000144'
-  tag rid: 'SV-VCPF-80-000144'
+  tag gid: 'V-259099'
+  tag rid: 'SV-259099r961461_rule'
   tag stig_id: 'VCPF-80-000144'
   tag cci: ['CCI-001813']
   tag nist: ['CM-5 (1) (a)']

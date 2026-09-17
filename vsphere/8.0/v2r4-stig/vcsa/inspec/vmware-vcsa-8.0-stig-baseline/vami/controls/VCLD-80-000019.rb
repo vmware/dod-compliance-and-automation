@@ -31,8 +31,8 @@ control 'VCLD-80-000019' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000118-WSR-000068'
   tag satisfies: ['SRG-APP-000119-WSR-000069', 'SRG-APP-000120-WSR-000070']
-  tag gid: 'V-VCLD-80-000019'
-  tag rid: 'SV-VCLD-80-000019'
+  tag gid: 'V-259141'
+  tag rid: 'SV-259141r960930_rule'
   tag stig_id: 'VCLD-80-000019'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9 a']

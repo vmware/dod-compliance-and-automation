@@ -26,8 +26,8 @@ control 'PHTN-40-000013' do
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000033-GPOS-00014'
   tag satisfies: ['SRG-OS-000393-GPOS-00173', 'SRG-OS-000394-GPOS-00174', 'SRG-OS-000423-GPOS-00187', 'SRG-OS-000425-GPOS-00189', 'SRG-OS-000426-GPOS-00190']
-  tag gid: 'V-PHTN-40-000013'
-  tag rid: 'SV-PHTN-40-000013'
+  tag gid: 'V-258806'
+  tag rid: 'SV-258806r958408_rule'
   tag stig_id: 'PHTN-40-000013'
   tag cci: ['CCI-000068', 'CCI-002418', 'CCI-002420', 'CCI-002422', 'CCI-002890', 'CCI-003123']
   tag nist: ['AC-17 (2)', 'MA-4 (6)', 'SC-8', 'SC-8 (2)']

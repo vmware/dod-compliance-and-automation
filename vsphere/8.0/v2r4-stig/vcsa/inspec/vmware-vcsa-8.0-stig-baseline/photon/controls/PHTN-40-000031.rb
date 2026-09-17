@@ -44,8 +44,8 @@ control 'PHTN-40-000031' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000064-GPOS-00033'
   tag satisfies: ['SRG-OS-000462-GPOS-00206', 'SRG-OS-000466-GPOS-00210', 'SRG-OS-000468-GPOS-00212', 'SRG-OS-000474-GPOS-00219']
-  tag gid: 'V-PHTN-40-000031'
-  tag rid: 'SV-PHTN-40-000031'
+  tag gid: 'V-258813'
+  tag rid: 'SV-258813r958446_rule'
   tag stig_id: 'PHTN-40-000031'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']

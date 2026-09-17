@@ -33,8 +33,8 @@ control 'VCST-80-000065' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000251-AS-000165'
-  tag gid: 'V-VCST-80-000065'
-  tag rid: 'SV-VCST-80-000065'
+  tag gid: 'V-258981'
+  tag rid: 'SV-258981r961158_rule'
   tag stig_id: 'VCST-80-000065'
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']

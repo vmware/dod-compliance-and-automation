@@ -444,8 +444,8 @@ control 'VCLD-80-000022' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000125-WSR-000071'
   tag satisfies: ['SRG-APP-000358-WSR-000063', 'SRG-APP-000358-WSR-000163']
-  tag gid: 'V-VCLD-80-000022'
-  tag rid: 'SV-VCLD-80-000022'
+  tag gid: 'V-259142'
+  tag rid: 'SV-259142r1210449_rule'
   tag stig_id: 'VCLD-80-000022'
   tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']
