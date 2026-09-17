@@ -43,11 +43,11 @@ Select "NTP" for "Mode" and enter a list of authorized time servers separated by
         subject { server }
         it { should be_in input('ntpServers') }
       end
-      ntpstatuscommand = "Initialize-NtpTestRequestBody -Servers #{server} | Invoke-TestNtp | Select-Object -ExpandProperty status"
+      ntpstatuscommand = "Initialize-ApplianceNtpTestRequest -Servers #{server} | Invoke-TestNtp -Confirm:$false | ConvertTo-Json -Depth 1 -WarningAction SilentlyContinue"
       ntpstatus = powercli_command(ntpstatuscommand).stdout.strip
-      describe ntpstatus do
-        subject { ntpstatus }
-        it { should cmp 'SERVER_REACHABLE' }
+      describe "The NTP server: #{server}" do
+        subject { json(content: ntpstatus) }
+        its(['Status']) { should cmp 'SERVER_REACHABLE' }
       end
     end
   else

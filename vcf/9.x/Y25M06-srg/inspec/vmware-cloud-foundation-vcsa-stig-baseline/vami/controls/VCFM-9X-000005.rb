@@ -49,7 +49,7 @@ control 'VCFM-9X-000005' do
   tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
-  describe command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')} 2>/dev/null|awk '/server\\.modules/,/\\)/'|grep mod_accesslog|sed -e 's/^[ ]*//'").stdout.strip do
+  describe command("#{input('lighttpdBin')} -p -f #{input('lighttpdConf')} 2>/dev/null | awk '/^ *if / { exit } /server.modules/,/)/' | grep mod_accesslog").stdout.strip do
     it { should cmp '"mod_accesslog",' }
   end
 end

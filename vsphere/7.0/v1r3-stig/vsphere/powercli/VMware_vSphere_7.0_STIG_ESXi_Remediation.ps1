@@ -25,7 +25,7 @@
   .PARAMETER vcenter
   Enter the FQDN or IP of the vCenter Server to connect to
   .PARAMETER vccred
-  Enter the pscredential variable name to use for authentication to vCenter. This should be run before the script for example: $cred = get-pscredential 
+  Enter the pscredential variable name to use for authentication to vCenter. This should be run before the script for example: $cred = Get-Credential 
   .PARAMETER hostname
   Enter the hostname of a single ESXi host to remediate
   .PARAMETER cluster
@@ -1988,7 +1988,7 @@ Try {
         $unchangedcount++
       }
       Else {
-        $portgroups = Get-VirtualPortGroup -VMHost $vmhost -Standard -ErrorAction Stop | Where-Object { $_.VlanId -In 1001..1024 -or $_.VlanId -In 3968...4047 -or $_.VlanId -In 4094 }
+        $portgroups = Get-VirtualPortGroup -VMHost $vmhost -Standard -ErrorAction Stop | Where-Object { $_.VlanId -In 1001..1024 -or $_.VlanId -In 3968..4047 -or $_.VlanId -eq 4094 }
         If ($portgroups.count -eq 0) {
           Write-ToConsoleGreen "...No standard port groups found with reserved VLAN IDs on $($vmhost.name)"
           $unchangedcount++
