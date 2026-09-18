@@ -27,8 +27,8 @@ control 'PHTN-40-000108' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000329-GPOS-00128'
-  tag gid: 'V-PHTN-40-000108'
-  tag rid: 'SV-PHTN-40-000108'
+  tag gid: 'V-258843'
+  tag rid: 'SV-258843r958736_rule'
   tag stig_id: 'PHTN-40-000108'
   tag cci: ['CCI-002238']
   tag nist: ['AC-7 b']

@@ -42,8 +42,8 @@ control 'VCLU-80-000130' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000033-AS-000024'
-  tag gid: 'V-VCLU-80-000130'
-  tag rid: 'SV-VCLU-80-000130'
+  tag gid: 'V-259056'
+  tag rid: 'SV-259056r1137578_rule'
   tag stig_id: 'VCLU-80-000130'
   tag cci: ['CCI-000213']
   tag nist: ['AC-3']

@@ -43,8 +43,8 @@ control 'VCPG-80-000005' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000089-DB-000064'
-  tag gid: 'V-VCPG-80-000005'
-  tag rid: 'SV-VCPG-80-000005'
+  tag gid: 'V-259167'
+  tag rid: 'SV-259167r960879_rule'
   tag stig_id: 'VCPG-80-000005'
   tag cci: ['CCI-000169']
   tag nist: ['AU-12 a']

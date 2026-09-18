@@ -17,8 +17,8 @@ control 'VCLU-80-000142' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-AS-000095'
-  tag gid: 'V-VCLU-80-000142'
-  tag rid: 'SV-VCLU-80-000142'
+  tag gid: 'V-259064'
+  tag rid: 'SV-259064r960963_rule'
   tag stig_id: 'VCLU-80-000142'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

@@ -29,8 +29,8 @@ control 'VCPF-80-000013' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000092-AS-000053'
-  tag gid: 'V-VCPF-80-000013'
-  tag rid: 'SV-VCPF-80-000013'
+  tag gid: 'V-259073'
+  tag rid: 'SV-259073r960888_rule'
   tag stig_id: 'VCPF-80-000013'
   tag cci: ['CCI-001464']
   tag nist: ['AU-14 (1)']

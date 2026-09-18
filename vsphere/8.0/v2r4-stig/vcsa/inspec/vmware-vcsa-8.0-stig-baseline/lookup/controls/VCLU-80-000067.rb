@@ -35,8 +35,8 @@ control 'VCLU-80-000067' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000266-AS-000169'
-  tag gid: 'V-VCLU-80-000067'
-  tag rid: 'SV-VCLU-80-000067'
+  tag gid: 'V-259048'
+  tag rid: 'SV-259048r961167_rule'
   tag stig_id: 'VCLU-80-000067'
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']

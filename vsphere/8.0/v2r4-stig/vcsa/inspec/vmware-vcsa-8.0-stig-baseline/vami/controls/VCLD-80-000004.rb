@@ -38,8 +38,8 @@ control 'VCLD-80-000004' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000015-WSR-000014'
   tag satisfies: ['SRG-APP-000315-WSR-000003']
-  tag gid: 'V-VCLD-80-000004'
-  tag rid: 'SV-VCLD-80-000004'
+  tag gid: 'V-259138'
+  tag rid: 'SV-259138r1003688_rule'
   tag stig_id: 'VCLD-80-000004'
   tag cci: ['CCI-001453', 'CCI-002314']
   tag nist: ['AC-17 (1)', 'AC-17 (2)']

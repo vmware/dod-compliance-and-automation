@@ -38,8 +38,8 @@ control 'VCPG-80-000035' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000142-DB-000094'
   tag satisfies: ['SRG-APP-000383-DB-000364']
-  tag gid: 'V-VCPG-80-000035'
-  tag rid: 'SV-VCPG-80-000035'
+  tag gid: 'V-259174'
+  tag rid: 'SV-259174r1043177_rule'
   tag stig_id: 'VCPG-80-000035'
   tag cci: ['CCI-000382', 'CCI-001762']
   tag nist: ['CM-7 (1) (b)', 'CM-7 b']

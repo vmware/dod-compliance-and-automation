@@ -21,8 +21,8 @@ control 'VCEM-80-000025' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000118-AS-000078'
   tag satisfies: ['SRG-APP-000119-AS-000079', 'SRG-APP-000120-AS-000080']
-  tag gid: 'V-VCEM-80-000025'
-  tag rid: 'SV-VCEM-80-000025'
+  tag gid: 'V-259007'
+  tag rid: 'SV-259007r960930_rule'
   tag stig_id: 'VCEM-80-000025'
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9 a']

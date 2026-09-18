@@ -66,8 +66,8 @@ control 'VCEM-80-000127' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000251-AS-000165'
-  tag gid: 'V-VCEM-80-000127'
-  tag rid: 'SV-VCEM-80-000127'
+  tag gid: 'V-259020'
+  tag rid: 'SV-259020r1210397_rule'
   tag stig_id: 'VCEM-80-000127'
   tag cci: ['CCI-001310']
   tag nist: ['SI-10']

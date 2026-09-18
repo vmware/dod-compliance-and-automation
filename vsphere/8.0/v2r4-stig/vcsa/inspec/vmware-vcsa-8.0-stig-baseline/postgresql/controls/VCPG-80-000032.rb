@@ -26,8 +26,8 @@ control 'VCPG-80-000032' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-DB-000091'
   tag satisfies: ['SRG-APP-000141-DB-000093']
-  tag gid: 'V-VCPG-80-000032'
-  tag rid: 'SV-VCPG-80-000032'
+  tag gid: 'V-259173'
+  tag rid: 'SV-259173r960963_rule'
   tag stig_id: 'VCPG-80-000032'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

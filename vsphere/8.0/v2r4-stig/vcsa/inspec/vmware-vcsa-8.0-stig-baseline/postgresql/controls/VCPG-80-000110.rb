@@ -30,8 +30,8 @@ control 'VCPG-80-000110' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000503-DB-000350'
   tag satisfies: ['SRG-APP-000503-DB-000351', 'SRG-APP-000506-DB-000353', 'SRG-APP-000508-DB-000358']
-  tag gid: 'V-VCPG-80-000110'
-  tag rid: 'SV-VCPG-80-000110'
+  tag gid: 'V-259183'
+  tag rid: 'SV-259183r961824_rule'
   tag stig_id: 'VCPG-80-000110'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']

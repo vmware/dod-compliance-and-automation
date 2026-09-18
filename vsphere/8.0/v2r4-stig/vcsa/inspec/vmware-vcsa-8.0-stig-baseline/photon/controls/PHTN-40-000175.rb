@@ -42,8 +42,8 @@ control 'PHTN-40-000175' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000471-GPOS-00216'
   tag satisfies: ['SRG-OS-000477-GPOS-00222']
-  tag gid: 'V-PHTN-40-000175'
-  tag rid: 'SV-PHTN-40-000175'
+  tag gid: 'V-258851'
+  tag rid: 'SV-258851r991580_rule'
   tag stig_id: 'PHTN-40-000175'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']

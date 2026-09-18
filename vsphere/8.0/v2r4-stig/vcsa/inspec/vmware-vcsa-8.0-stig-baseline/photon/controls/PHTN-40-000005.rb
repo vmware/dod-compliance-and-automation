@@ -80,8 +80,8 @@ control 'PHTN-40-000005' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000023-GPOS-00006'
   tag satisfies: ['SRG-OS-000228-GPOS-00088']
-  tag gid: 'V-PHTN-40-000005'
-  tag rid: 'SV-PHTN-40-000005'
+  tag gid: 'V-258803'
+  tag rid: 'SV-258803r958390_rule'
   tag stig_id: 'PHTN-40-000005'
   tag cci: ['CCI-000048', 'CCI-001384']
   tag nist: ['AC-8 a', 'AC-8 c 1']

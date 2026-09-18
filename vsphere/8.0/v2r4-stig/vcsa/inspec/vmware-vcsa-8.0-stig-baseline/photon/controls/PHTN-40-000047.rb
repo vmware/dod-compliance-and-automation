@@ -70,8 +70,8 @@ control 'PHTN-40-000047' do
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000095-GPOS-00049'
   tag satisfies: ['SRG-OS-000114-GPOS-00059']
-  tag gid: 'V-PHTN-40-000047'
-  tag rid: 'SV-PHTN-40-000047'
+  tag gid: 'V-258825'
+  tag rid: 'SV-258825r1003641_rule'
   tag stig_id: 'PHTN-40-000047'
   tag cci: ['CCI-000381', 'CCI-000778']
   tag nist: ['CM-7 a', 'IA-3']

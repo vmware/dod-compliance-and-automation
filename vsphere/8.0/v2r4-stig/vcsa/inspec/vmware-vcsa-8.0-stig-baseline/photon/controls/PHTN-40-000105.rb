@@ -31,8 +31,8 @@ control 'PHTN-40-000105' do
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000324-GPOS-00125'
-  tag gid: 'V-PHTN-40-000105'
-  tag rid: 'SV-PHTN-40-000105'
+  tag gid: 'V-258841'
+  tag rid: 'SV-258841r958726_rule'
   tag stig_id: 'PHTN-40-000105'
   tag cci: ['CCI-002235']
   tag nist: ['AC-6 (10)']

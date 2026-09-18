@@ -135,8 +135,8 @@ control 'VCPG-80-000122' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000515-DB-000318'
-  tag gid: 'V-VCPG-80-000122'
-  tag rid: 'SV-VCPG-80-000122'
+  tag gid: 'V-259185'
+  tag rid: 'SV-259185r1210431_rule'
   tag stig_id: 'VCPG-80-000122'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']

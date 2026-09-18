@@ -25,8 +25,8 @@ control 'PHTN-40-000130' do
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000366-GPOS-00153'
-  tag gid: 'V-PHTN-40-000130'
-  tag rid: 'SV-PHTN-40-000130'
+  tag gid: 'V-258846'
+  tag rid: 'SV-258846r1015948_rule'
   tag stig_id: 'PHTN-40-000130'
   tag cci: ['CCI-003992', 'CCI-001749']
   tag nist: ['CM-14', 'CM-5 (3)']

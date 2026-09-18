@@ -45,8 +45,8 @@ control 'VCST-80-000136' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000141-AS-000095'
-  tag gid: 'V-VCST-80-000136'
-  tag rid: 'SV-VCST-80-000136'
+  tag gid: 'V-258991'
+  tag rid: 'SV-258991r960963_rule'
   tag stig_id: 'VCST-80-000136'
   tag cci: ['CCI-000381']
   tag nist: ['CM-7 a']

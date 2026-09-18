@@ -161,8 +161,8 @@ control 'VCEM-80-000081' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-AS-000064'
-  tag gid: 'V-VCEM-80-000081'
-  tag rid: 'SV-VCEM-80-000081'
+  tag gid: 'V-259016'
+  tag rid: 'SV-259016r1210396_rule'
   tag stig_id: 'VCEM-80-000081'
   tag cci: ['CCI-001851']
   tag nist: ['AU-4 (1)']

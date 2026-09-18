@@ -16,6 +16,9 @@ warn_list:
   - no-changed-when
   - args[module]
   - fqcn[action-core]
+  - risky-shell-pipe
+  - yaml[line-length]
+  - complexity[tasks]
 mock_roles:
   - vmware-photon-3.0-stig-ansible-hardening
   - vmware-photon-4.0-stig-ansible-hardening

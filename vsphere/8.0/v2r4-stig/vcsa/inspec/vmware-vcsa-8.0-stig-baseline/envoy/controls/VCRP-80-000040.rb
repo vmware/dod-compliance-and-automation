@@ -26,8 +26,8 @@ control 'VCRP-80-000040' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000176-WSR-000096'
-  tag gid: 'V-VCRP-80-000040'
-  tag rid: 'SV-VCRP-80-000040'
+  tag gid: 'V-259162'
+  tag rid: 'SV-259162r961041_rule'
   tag stig_id: 'VCRP-80-000040'
   tag cci: ['CCI-000186']
   tag nist: ['IA-5 (2) (a) (1)']

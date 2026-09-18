@@ -31,8 +31,8 @@ control 'PHTN-40-000112' do
   impact 0.3
   tag severity: 'low'
   tag gtitle: 'SRG-OS-000343-GPOS-00134'
-  tag gid: 'V-PHTN-40-000112'
-  tag rid: 'SV-PHTN-40-000112'
+  tag gid: 'V-258845'
+  tag rid: 'SV-258845r971542_rule'
   tag stig_id: 'PHTN-40-000112'
   tag cci: ['CCI-001855']
   tag nist: ['AU-5 (1)']

@@ -37,8 +37,8 @@ control 'VCPG-80-000038' do
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-APP-000171-DB-000074'
-  tag gid: 'V-VCPG-80-000038'
-  tag rid: 'SV-VCPG-80-000038'
+  tag gid: 'V-259176'
+  tag rid: 'SV-259176r1015952_rule'
   tag stig_id: 'VCPG-80-000038'
   tag cci: ['CCI-004062', 'CCI-000196']
   tag nist: ['IA-5 (1) (d)', 'IA-5 (1) (c)']

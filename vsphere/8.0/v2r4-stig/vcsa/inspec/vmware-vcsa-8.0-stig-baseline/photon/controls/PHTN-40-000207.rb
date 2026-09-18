@@ -29,8 +29,8 @@ control 'PHTN-40-000207' do
   impact 0.7
   tag severity: 'high'
   tag gtitle: 'SRG-OS-000480-GPOS-00229'
-  tag gid: 'V-PHTN-40-000207'
-  tag rid: 'SV-PHTN-40-000207'
+  tag gid: 'V-258870'
+  tag rid: 'SV-258870r991591_rule'
   tag stig_id: 'PHTN-40-000207'
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']

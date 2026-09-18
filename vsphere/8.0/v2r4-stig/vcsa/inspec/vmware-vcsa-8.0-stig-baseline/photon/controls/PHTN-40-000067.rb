@@ -31,8 +31,8 @@ control 'PHTN-40-000067' do
   impact 0.5
   tag severity: 'medium'
   tag gtitle: 'SRG-OS-000138-GPOS-00069'
-  tag gid: 'V-PHTN-40-000067'
-  tag rid: 'SV-PHTN-40-000067'
+  tag gid: 'V-258828'
+  tag rid: 'SV-258828r1137695_rule'
   tag stig_id: 'PHTN-40-000067'
   tag cci: ['CCI-001090']
   tag nist: ['SC-4']

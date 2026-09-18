@@ -78,8 +78,8 @@ control 'VCRP-80-000073' do
   tag severity: 'medium'
   tag gtitle: 'SRG-APP-000358-WSR-000063'
   tag satisfies: ['SRG-APP-000125-WSR-000071']
-  tag gid: 'V-VCRP-80-000073'
-  tag rid: 'SV-VCRP-80-000073'
+  tag gid: 'V-259163'
+  tag rid: 'SV-259163r1210400_rule'
   tag stig_id: 'VCRP-80-000073'
   tag cci: ['CCI-001348', 'CCI-001851']
   tag nist: ['AU-4 (1)', 'AU-9 (2)']
