@@ -33,6 +33,7 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |:-----------------:|:------------------:|:------------------:|:------------------:|
 |     `V1R1`        |STIG Readiness Guide|     2021/11/10     |[U_VMware_Aria_Suite_Lifecycle_8x_STIG_Readiness_Guide_v1r1.zip](U_VMware_Aria_Suite_Lifecycle_8x_STIG_Readiness_Guide_v1r1.zip)|
 |     `V1R2`        |STIG Readiness Guide|     2024/02/27     |[U_VMware_Aria_Suite_Lifecycle_8x_STIG_Readiness_Guide_v1r2.zip](U_VMware_Aria_Suite_Lifecycle_8x_STIG_Readiness_Guide_v1r2.zip)|
+|     `V1R3`        |STIG Readiness Guide|     2026/09/18     |[U_VMware_Aria_Suite_Lifecycle_8x_STIG_Readiness_Guide_v1r3.zip](U_VMware_Aria_Suite_Lifecycle_8x_STIG_Readiness_Guide_v1r3.zip)|
 
 
 ## Viewing
