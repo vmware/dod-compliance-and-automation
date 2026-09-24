@@ -89,7 +89,7 @@ $STIGVersion = "STIG Readiness Guide Version 1 Release 1"
 $ReportNamePrefix = "VMware_Cloud_Foundation_vSphere_vCenter_9.X_STIG_Remediation"
 $MinimumPowerCLIVersion = "9.0.0"
 $MinimumVCVersion = "9.0.0"
-$MaximumVCVersion = "9.1.0"
+$MaximumVCVersion = "9.1.1"
 
 # Initialize report variables
 $changedcount = 0
