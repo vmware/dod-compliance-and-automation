@@ -64,7 +64,7 @@ control 'VCFA-9X-000004' do
   else
     describe 'The vCenter TLS Profile:' do
       subject { json(content: result) }
-      its(['profile']) { should cmp 'NIST_2024' }
+      its(['Profile']) { should cmp 'NIST_2024' }
     end
   end
 end
