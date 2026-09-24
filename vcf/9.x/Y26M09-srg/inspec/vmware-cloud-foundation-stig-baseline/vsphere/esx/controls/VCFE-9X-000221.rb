@@ -76,11 +76,11 @@ control 'VCFE-9X-000221' do
     end
   else
     vmhosts.each do |vmhost|
-      command = "Get-VMHost -Name #{vmhost} | Get-VirtualSwitch | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
+      command = "Get-VMHost -Name #{vmhost} | Get-VirtualSwitch -Standard | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
       describe powercli_command(command) do
         its('stdout.strip') { should_not match 'True' }
       end
-      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
+      command = "Get-VMHost -Name #{vmhost} | Get-VirtualPortGroup -Standard | Get-SecurityPolicy | Select-Object -ExpandProperty AllowPromiscuous"
       describe powercli_command(command) do
         its('stdout.strip') { should_not match 'True' }
       end
