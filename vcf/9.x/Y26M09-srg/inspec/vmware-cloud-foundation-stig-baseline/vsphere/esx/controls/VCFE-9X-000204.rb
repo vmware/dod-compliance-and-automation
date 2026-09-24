@@ -99,16 +99,14 @@ control 'VCFE-9X-000204' do
         ivmks.split.each do |ivmk|
           commandvsck = "Get-VMHost -Name #{vmhost} | Get-VMHostNetworkAdapter -Name #{ivmk} | Where-Object {$_.ManagementTrafficEnabled -eq \"True\" -or $_.VsanTrafficEnabled -eq \"True\" -or $_.FaultToleranceLoggingEnabled -eq \"True\" -or $_.VMotionEnabled -eq \"True\" -or $_.VSphereReplicationEnabled -eq \"True\" -or $_.VSphereReplicationNFCEnabled -eq \"True\" -or $_.VSphereBackupNFCEnabled -eq \"True\"} | Select-Object -ExpandProperty DeviceName"
           describe powercli_command(commandvsck) do
-            its('stdout.strip') { should be_nil }
-            its('stdout.strip') { should be_empty } unless stdout.strip.nil?
+            its('stdout.strip') { should be_empty }
           end
         end
         # Does the vSAN VMK have any other services enabled?
         vsanvmks.split.each do |vmk|
           commandvsck = "Get-VMHost -Name #{vmhost} | Get-VMHostNetworkAdapter -Name #{vmk} | Where-Object {$_.ManagementTrafficEnabled -eq \"True\" -or $_.FaultToleranceLoggingEnabled -eq \"True\" -or $_.VMotionEnabled -eq \"True\" -or $_.VSphereReplicationEnabled -eq \"True\" -or $_.VSphereReplicationNFCEnabled -eq \"True\" -or $_.VSphereBackupNFCEnabled -eq \"True\"} | Select-Object -ExpandProperty DeviceName"
           describe powercli_command(commandvsck) do
-            its('stdout.strip') { should be_nil }
-            its('stdout.strip') { should be_empty } unless stdout.strip.nil?
+            its('stdout.strip') { should be_empty }
           end
         end
         # Do any VMKs used for NFS storage have any services enabled?

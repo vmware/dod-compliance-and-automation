@@ -74,8 +74,7 @@ control 'VCFE-9X-000152' do
           # Check to see if vMotion and any other services are enabled on the same VMkernel adapter
           command2 = "Get-VMHost -Name #{vmhost} | Get-VMHostNetworkAdapter -Name #{vmk} | Where-Object {$_.ManagementTrafficEnabled -eq \"True\" -or $_.FaultToleranceLoggingEnabled -eq \"True\" -or $_.VsanTrafficEnabled -eq \"True\" -or $_.VSphereReplicationEnabled -eq \"True\" -or $_.VSphereReplicationNFCEnabled -eq \"True\" -or $_.VSphereBackupNFCEnabled -eq \"True\"} | Select-Object -ExpandProperty DeviceName"
           describe powercli_command(command2) do
-            its('stdout.strip') { should be_nil }
-            its('stdout.strip') { should be_empty } unless stdout.strip.nil?
+            its('stdout.strip') { should be_empty }
           end
           # Get vMotion Port Group Name
           command3 = "Get-VMHost -Name #{vmhost} | Get-VMHostNetworkAdapter -Name #{vmk} | Select-Object -ExpandProperty PortGroupName"
