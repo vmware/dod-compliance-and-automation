@@ -27,7 +27,6 @@ Layout/EndOfLine:
 Layout/LineLength:
   Max: 1500
   AllowURI: true
-  IgnoreCopDirectives: true
 
 Lint/AmbiguousBlockAssociation:
   Enabled: false
