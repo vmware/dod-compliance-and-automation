@@ -16,6 +16,7 @@
   - [VCPG-80-000007 pgaudit log generation exhausts disk space before rotation can occur](#vcpg-80-000007-pgaudit-log-generation-exhausts-disk-space-before-rotation-can-occur)
   - [PHTN-40-000267 Fix text in official DISA release does not match the check text](#phtn-40-000267-fix-text-in-official-disa-release-does-not-match-the-check-text)
   - [VCLU-80-000081 Official DISA release recommends a log entry that does not match the out-of-the-box configuration](#vclu-80-000081-official-disa-release-recommends-a-log-entry-that-does-not-match-the-out-of-the-box-configuration)
+  - [VCLD-80-000022/VCUI-80-000081 Check and fix text only show one of two valid out-of-the-box rsyslog configurations](#vcld-80-000022/vcui-80-000081-check-and-fix-text-only-show-one-of-two-valid-out-of-the-box-rsyslog-configurations)
   - [VCUI-80-000134 Check text in official DISA release contains an inaccurate comparison](#vcui-80-000134-check-text-in-official-disa-release-contains-an-inaccurate-comparison)
 
 # Known Issues
@@ -251,6 +252,19 @@ DISA's officially published V2R2 XCCDF for the VCSA Lookup Service STIG consolid
 **Workaround:**
 
 - This content will not be updated to match DISA's consolidated (wildcarded) entry. The existing check/fix text, which lists both entries separately, matches the real product default and should continue to be used.
+
+### [VCLD-80-000022/VCUI-80-000081] Check and fix text only show one of two valid out-of-the-box rsyslog configurations
+
+<mark style="background-color: #78BC20">**Resolved in STIG Version 2 Release 4**</mark>
+
+Related issue: None
+
+The check and fix text for these rules show only the newer out-of-the-box format of the `vmware-services-applmgmt.conf` (VCLD-80-000022) and `vmware-services-vsphere-ui.conf` (VCUI-80-000081) rsyslog configuration files, where the `applmgmt_vmonsvc`/`vsphere-ui-runtime.log` stdout and stderr entries are split into two separate `input()` blocks and include the `deleteStateOnFileDelete`/`reopenOnTruncate` options. Older builds of vCenter ship a different, equally valid out-of-the-box format for these same entries that consolidates stdout/stderr into a single entry with a wildcarded `File=` path (e.g., `applmgmt_vmonsvc.std*`) and omits those two options. Manually diffing the live file against the single example shown in the check/fix text will report a mismatch on systems still running this older format, even though the system is not actually a finding.
+
+**Workaround:**
+
+- The automated check in v2r4 already accounts for both formats: it compares the live file against two reference configurations (the older wildcarded format and the newer split format) and passes if either one matches exactly.
+- If performing a manual line-by-line diff against the check/fix text's single printed example, or are using an older version of STIG content, either format should be considered a pass for these controls.
 
 ### [VCUI-80-000134] Check text in official DISA release contains an inaccurate comparison
 
