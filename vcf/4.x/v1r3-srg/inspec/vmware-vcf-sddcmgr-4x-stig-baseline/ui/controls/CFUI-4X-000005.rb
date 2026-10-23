@@ -1,7 +1,7 @@
 control 'CFUI-4X-000005' do
   title "SDDC Manager UI log files must be moved to a permanent repository in
 accordance with site policy."
-  desc  "A web server will typically utilize logging mechanisms for maintaining
+  desc "A web server will typically utilize logging mechanisms for maintaining
 a historical log of activity that occurs within a hosted application. This
 information can then be used for diagnostic purposes, forensics purposes, or
 other purposes relevant to ensuring the availability and integrity of the
@@ -17,8 +17,8 @@ each event logged is open to interpretation by a reviewer. By integrating the
 web server into an overall or organization-wide log review, a larger picture of
 events can be viewed, and analysis can be done in a timely and reliable manner.
   "
-  desc  'rationale', ''
-  desc  'check', "
+  desc 'rationale', ''
+  desc 'check', "
     At the command prompt, execute the following command:
 
     # grep -v \"^#\" /etc/rsyslog.d/stig-services-sddc-manager-ui-app.conf
