@@ -7,7 +7,7 @@
 Please visit our new documentation page at: https://techdocs.broadcom.com/us/en/vmware-cis/vcf/stig/9-0/vcf-stig-documentation/docs-overview-overview.html
 
 ## Overview
-VMware is a trusted partner in highly secure, mission critical systems around the world, including the US Department of Defense (DoD). In the DoD, all IT systems must adhere to the rigorous Risk Management Framework (RMF) as defined in DoDI 8510.01. A critical component of RMF is the mandatory implementation of Security Technical Implementation Guides (STIGs) and Security Requirements Guidelines (SRGs) as maintained by the Defense Information Systems Agency (DISA). Where a product specific STIG is not available, the relevant SRGs must be used instead.
+VMware is a trusted partner in highly secure, mission critical systems around the world, including the US Department of Defense (DoD). In the DoD, all IT systems must adhere to the rigorous Risk Management Framework (RMF) as defined in DoDI 8510.01. A critical component of RMF is the mandatory implementation of Security Technical Implementation Guides (STIGs) and Security Requirements Guidelines (SRGs) as maintained by the Defense Information Systems Agency (DISA). Where a product-specific STIG is not available, the relevant SRGs must be used instead.
 
 [DoDI 8510.01](http://acqnotes.com/wp-content/uploads/2014/09/DoD-Instruction-8510.01-Risk-Management-Framework-RMF-for-DoD-Information-Technology-IT-24-May-2016.pdf)
 
@@ -72,7 +72,7 @@ Depending on the product, there may be a need to host DOD specific whitepapers, 
 More information on support for STIGs and STIG Readiness Guides is available in the [Support](SUPPORT.md) document.
 
 ## Archives
-The `master` branch in this repo will contain only content for currently supported products. Access to older revisions of guidance and automation for products that are no longer supported and End of Life(EoL) will be available in the `archived_content` branch.  
+The `master` branch in this repo will contain only content for currently supported products. Access to older revisions of guidance and automation for products that are no longer supported and End of Life (EoL) will be available in the `archived_content` branch.  
 
 ## Contributing
 The dod-compliance-and-automation project team welcomes contributions from the community. If you wish to contribute code and you have not signed our contributor license agreement (CLA), our bot will update the issue when you open a Pull Request. For any questions about the CLA process, please refer to our [FAQ](https://cla.vmware.com/faq).
