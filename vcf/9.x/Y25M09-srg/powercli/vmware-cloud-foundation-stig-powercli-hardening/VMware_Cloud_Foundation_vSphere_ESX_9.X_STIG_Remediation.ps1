@@ -2847,13 +2847,13 @@ Try{
     }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+    Write-Message -Level "SKIPPED" -Message "Skipping disabled control STIG ID:$STIGID with Title: $Title"
     $skipcount++
   }
 }
 Catch{
-  Write-ToConsoleRed "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-  Write-ToConsoleRed $_.Exception
+  Write-Message -Level "ERROR" -Message "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
+  Write-Message -Level "ERROR" -Message $_.Exception
   $failedcount++
 }
 
@@ -2935,13 +2935,13 @@ Try{
     }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+    Write-Message -Level "SKIPPED" -Message "Skipping disabled control STIG ID:$STIGID with Title: $Title"
     $skipcount++
   }
 }
 Catch{
-  Write-ToConsoleRed "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-  Write-ToConsoleRed $_.Exception
+  Write-Message -Level "ERROR" -Message "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
+  Write-Message -Level "ERROR" -Message $_.Exception
   $failedcount++
 }
 
@@ -3023,13 +3023,13 @@ Try{
     }
   }
   Else{
-    Write-ToConsoleBlue "...Skipping disabled control STIG ID:$STIGID with Title: $Title"
+    Write-Message -Level "SKIPPED" -Message "Skipping disabled control STIG ID:$STIGID with Title: $Title"
     $skipcount++
   }
 }
 Catch{
-  Write-ToConsoleRed "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
-  Write-ToConsoleRed $_.Exception
+  Write-Message -Level "ERROR" -Message "Failed to STIG ID:$STIGID with Title: $Title on $($vmhost.name)"
+  Write-Message -Level "ERROR" -Message $_.Exception
   $failedcount++
 }
 
