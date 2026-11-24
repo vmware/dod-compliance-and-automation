@@ -21,8 +21,10 @@ $ sudo vi /etc/tmpfiles.d/zzz-systemd-stig.conf
 
 Add or modify the following lines in the "/usr/lib/tmpfiles.d/zzz-systemd-stig.conf" file:
 
-Z /run/log/journal/%m ~0640 root systemd-journal - -
-z /var/log/journal/%m 0640 root systemd-journal - -
+z /run/log/journal 2755 root systemd-journal - -
+Z /run/log/journal/%m ~2750 root systemd-journal - -
+z /var/log/journal 2755 root systemd-journal - -
+z /var/log/journal/%m 2755 root systemd-journal - -
 z /var/log/journal/%m/system.journal 0640 root systemd-journal - -
 
 Note: Restart the system for these settings to take effect.'
@@ -30,10 +32,10 @@ Note: Restart the system for these settings to take effect.'
   tag check_id: 'C-74797r1066779_chk'
   tag severity: 'medium'
   tag gid: 'V-270764'
-  tag rid: 'SV-270764r1184080_rule'
+  tag rid: 'SV-270764r1261499_rule'
   tag stig_id: 'UBTU-24-700090'
   tag gtitle: 'SRG-OS-000206-GPOS-00084'
-  tag fix_id: 'F-74698r1184079_fix'
+  tag fix_id: 'F-74698r1261498_fix'
   tag 'documentable'
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']

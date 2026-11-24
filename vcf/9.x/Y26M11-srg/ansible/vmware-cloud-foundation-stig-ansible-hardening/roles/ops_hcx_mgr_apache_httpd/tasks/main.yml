@@ -1,0 +1,36 @@
+---
+
+- name: Include Operations HCX Manager Apache HTTPD tasks
+  ansible.builtin.include_tasks:
+    file: httpd.yml
+    apply:
+      tags:
+        - ops-hcx-mgr-apache-httpd
+  tags:
+    - ops-hcx-mgr-apache-httpd
+    - VCFJ-9X-000001
+    - VCFJ-9X-000003
+    - VCFJ-9X-000007
+    - VCFJ-9X-000008
+    - VCFJ-9X-000009
+    - VCFJ-9X-000018
+    - VCFJ-9X-000023
+    - VCFJ-9X-000024
+    - VCFJ-9X-000030
+    - VCFJ-9X-000033
+    - VCFJ-9X-000034
+    - VCFJ-9X-000035
+    - VCFJ-9X-000039
+    - VCFJ-9X-000040
+    - VCFJ-9X-000043
+    - VCFJ-9X-000061
+    - VCFJ-9X-000063
+    - VCFJ-9X-000066
+    - VCFJ-9X-000067
+    - VCFJ-9X-000080
+    - VCFJ-9X-000081
+    - VCFJ-9X-000101
+    - VCFJ-9X-000125
+    - VCFJ-9X-000126
+    - VCFJ-9X-000127
+    - VCFJ-9X-000128

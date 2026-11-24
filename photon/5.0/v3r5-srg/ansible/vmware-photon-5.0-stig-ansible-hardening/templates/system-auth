@@ -1,0 +1,7 @@
+# Begin /etc/pam.d/system-auth
+auth    required      pam_faillock.so preauth
+auth    sufficient    pam_unix.so                        # Exit if returns success
+auth    required      pam_faillock.so authfail           # Else, record failure
+auth    optional      pam_faildelay.so delay=4000000
+auth    required      pam_deny.so                        # For failed auths/pam_unix, convert pam_faillock's return value of ignore to login failed.
+# End /etc/pam.d/system-auth

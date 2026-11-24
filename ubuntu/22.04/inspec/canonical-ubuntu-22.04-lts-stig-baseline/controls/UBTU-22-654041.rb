@@ -12,7 +12,7 @@ $ sudo auditctl -l | grep /var/spool/cron
 If either of these commands do not return the expected output, or the lines are commented out, this is a finding.'
   desc 'fix', 'Configure Ubuntu 22.04 LTS to audit the execution of any system call made by cron as root or as any privileged user.
 
-Add or update the following file system rules to "/etc/audit/rules.d/audit.rules":
+Add or update the following file system rules to "/etc/audit/rules.d/stig.rules":
 -w /etc/cron.d/ -p wa -k cronjobs
 -w /var/spool/cron/ -p wa -k cronjobs
 
@@ -23,10 +23,10 @@ $ sudo augenrules --load'
   tag check_id: 'C-78963r1155187_chk'
   tag severity: 'medium'
   tag gid: 'V-274862'
-  tag rid: 'SV-274862r1155211_rule'
+  tag rid: 'SV-274862r1261435_rule'
   tag stig_id: 'UBTU-22-654041'
   tag gtitle: 'SRG-OS-000396-GPOS-00176'
-  tag fix_id: 'F-78868r1155188_fix'
+  tag fix_id: 'F-78868r1261434_fix'
   tag 'documentable'
   tag cci: ['CCI-000172']
   tag nist: ['AU-12 c']

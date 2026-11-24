@@ -1,5 +1,16 @@
 # Change Log
 
+## [Version 2 Release 10] (2026-10-05)
+
+#### Release Notes
+- UBTU-22-231010 - Updated severity from medium to high.
+- UBTU-22-411030 - Updated maximum password lifetime from 60 to 180 days in title, check, fix and test. Updated CCI and NIST tags.
+- UBTU-22-412040 - Added new control. Added requirement to ensure the OS does not assign an interactive login shell for system accounts.
+- UBTU-22-654041 - Updated Fix to use "/etc/audit/rules.d/stig.rules".
+- UBTU-22-654126 - Added new control. Added requirement to audit the useradd command.
+- UBTU-22-654240 - Added new control. Added audit system immutability requirement.
+- Requirements were updated throughout to reflect the change from DOD to DoW.
+
 ## [Version 2 Release 9] (2026-07-01)
 
 #### Release Notes

@@ -13,7 +13,7 @@ Remove any instances of the "nullok" option in "/etc/pam.d/common-auth" and "/et
   tag check_id: 'C-64299r1082231_chk'
   tag severity: 'high'
   tag gid: 'V-260570'
-  tag rid: 'SV-260570r1082233_rule'
+  tag rid: 'SV-260570r1268251_rule'
   tag stig_id: 'UBTU-22-611060'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag fix_id: 'F-64207r1082232_fix'

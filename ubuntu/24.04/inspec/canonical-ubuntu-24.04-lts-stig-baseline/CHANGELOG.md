@@ -1,5 +1,22 @@
 # Change Log
 
+## [Version 1 Release 7] (2026-10-05)
+
+#### Release Notes
+- UBTU-24-100050 - Removed nfs-common from Check and Fix; now only checks the nfs-kernel-server package. Updated test.
+- UBTU-24-101100 - Added new control. Added requirement to ensure the OS does not assign an interactive login shell for system accounts.
+- UBTU-24-200270 - Updated Fix to use "/etc/audit/rules.d/stig.rules".
+- UBTU-24-200680 - Removed.
+- UBTU-24-300019 - Updated Check command.
+- UBTU-24-400310 - Updated maximum password lifetime from 60 to 180 days in title, check, fix and test. Updated CCI and NIST tags; removed satisfies tag.
+- UBTU-24-600090 - Updated severity from medium to high.
+- UBTU-24-700020 - Updated Check and Fix; journal directories now allow permissions up to 2755. Updated test.
+- UBTU-24-700060, UBTU-24-700080, UBTU-24-700090 - Updated Fix tmpfiles.d configuration.
+- UBTU-24-900315 - Added new control. Added requirement to audit the useradd command.
+- UBTU-24-909000 - Updated Check and Fix to verify the audit system is running immutable ("enabled 2") and "-e 2" is set in "/etc/audit/rules.d/". Updated test; removed audit_rules_file input.
+- UBTU-24-909890 - Updated Check and Fix to use AIDE sub-configuration directory and both "/usr/sbin" and "/sbin" paths. Updated test.
+- Requirements were updated throughout to reflect the change from DOD to DoW.
+
 ## [Version 1 Release 6] (2026-07-01)
 
 #### Release Notes

@@ -1,5 +1,5 @@
 control 'UBTU-22-653015' do
-  title 'Ubuntu 22.04 LTS must produce audit records and reports containing information to establish when, where, what type, the source, and the outcome for all DOD-defined auditable events and actions in near real time.'
+  title 'Ubuntu 22.04 LTS must produce audit records and reports containing information to establish when, where, what type, the source, and the outcome for all DoW-defined auditable events and actions in near real time.'
   desc 'Without establishing the when, where, type, source, and outcome of events that occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.
 
 Without the capability to generate audit records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
@@ -29,7 +29,7 @@ If the "auditd.service" is not enabled and active, this is a finding.'
   tag check_id: 'C-64320r953584_chk'
   tag severity: 'medium'
   tag gid: 'V-260591'
-  tag rid: 'SV-260591r1015023_rule'
+  tag rid: 'SV-260591r1261472_rule'
   tag stig_id: 'UBTU-22-653015'
   tag gtitle: 'SRG-OS-000037-GPOS-00015'
   tag fix_id: 'F-64228r953585_fix'

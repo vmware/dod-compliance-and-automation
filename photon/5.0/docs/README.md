@@ -31,6 +31,7 @@ For information on support for STIGs see: https://knowledge.broadcom.com/externa
 |     `V3R1`        |STIG Readiness Guide|     2025/06/17     |[U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r1.zip](U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r1.zip)|
 |     `V3R3`        |STIG Readiness Guide|     2026/05/12     |[U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r3.zip](U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r3.zip)|
 |     `V3R4`        |STIG Readiness Guide|     2026/09/03     |[U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r4.zip](U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r4.zip)|
+|     `V3R5`        |STIG Readiness Guide|     2026/11/24     |[U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r5.zip](U_VMware_Photon_OS_5.0_STIG_Readiness_Guide_v3r5.zip)|
 
 
 ## Viewing

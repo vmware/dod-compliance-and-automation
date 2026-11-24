@@ -1,5 +1,5 @@
-# Based on Ubuntu 22.04 STIG V2R7
-# Updated 01/05/2026
+# Based on Ubuntu 22.04 STIG V2R10
+# Updated 05/10/2026
 
 # UBTU-22-654010
 -a always,exit -F path=/sbin/apparmor_parser -F perm=x -F auid>=1000 -F auid!=unset -k perm_chng
@@ -49,6 +49,8 @@
 -a always,exit -F path=/sbin/unix_update -F perm=x -F auid>=1000 -F auid!=unset -k privileged-unix-update
 # UBTU-22-654125
 -a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid>=1000 -F auid!=unset -k privileged-usermod
+# UBTU-22-654126
+-a always,exit -F path=/usr/sbin/useradd -F perm=x -F auid>=1000 -F auid!=unset -k privileged-useradd
 # UBTU-22-654130
 -w /etc/group -p wa -k usergroup_modification
 # UBTU-22-654135
@@ -110,3 +112,5 @@
 # UBTU-22-654041
 -w /etc/cron.d/ -p wa -k cronjobs
 -w /var/spool/cron/ -p wa -k cronjobs
+# UBTU-22-654240
+-e 2

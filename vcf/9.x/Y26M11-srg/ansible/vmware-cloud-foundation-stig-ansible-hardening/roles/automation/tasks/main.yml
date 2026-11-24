@@ -1,0 +1,15 @@
+---
+
+- name: Include Automation tasks
+  ansible.builtin.include_tasks:
+    file: automation.yml
+    apply:
+      tags:
+        - automation
+  tags:
+    - automation
+    - VCFA-9X-000104
+    - VCFA-9X-000373
+    - VCFA-9X-000374
+    - VCFA-9X-000375
+    - VCFA-9X-000381

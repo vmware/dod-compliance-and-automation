@@ -23,7 +23,7 @@ If the installed version of Ubuntu 24.04 LTS is not supported, this is a finding
   tag check_id: 'C-83451r1155233_chk'
   tag severity: 'high'
   tag gid: 'V-278917'
-  tag rid: 'SV-278917r1155246_rule'
+  tag rid: 'SV-278917r1268251_rule'
   tag stig_id: 'UBTU-24-700400'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag fix_id: 'F-83356r1134999_fix'

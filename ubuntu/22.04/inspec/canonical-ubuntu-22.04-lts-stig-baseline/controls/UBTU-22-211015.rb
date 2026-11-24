@@ -22,7 +22,7 @@ Reload the daemon to take effect:
   tag check_id: 'C-64198r953218_chk'
   tag severity: 'high'
   tag gid: 'V-260469'
-  tag rid: 'SV-260469r991589_rule'
+  tag rid: 'SV-260469r1268251_rule'
   tag stig_id: 'UBTU-22-211015'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag fix_id: 'F-64106r953219_fix'

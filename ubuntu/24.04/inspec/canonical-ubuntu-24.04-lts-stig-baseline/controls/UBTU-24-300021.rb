@@ -13,7 +13,7 @@ If any occurrences of "!authenticate" return from the command, this is a finding
   tag check_id: 'C-74740r1101784_chk'
   tag severity: 'medium'
   tag gid: 'V-270707'
-  tag rid: 'SV-270707r1101786_rule'
+  tag rid: 'SV-270707r1268251_rule'
   tag stig_id: 'UBTU-24-300021'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag fix_id: 'F-74641r1101785_fix'

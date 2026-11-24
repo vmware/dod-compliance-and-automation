@@ -1,9 +1,7 @@
-| [![Lint InSpec on Pushes.](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-24.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml/badge.svg?branch=main)](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-24.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml) | Main | [![Lint InSpec on Pushes.](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-24.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml/badge.svg?branch=development)](https://github-vcf.devops.broadcom.net/vcf/canonical-ubuntu-24.04-lts-stig-baseline/actions/workflows/lint-inspec-on-push.yml) | Development |
-|:-|:-|:-|:-|
 # canonical_ubuntu_24.04_lts_stig_baseline
 Canonical Ubuntu 24.04 LTS STIG Chef InSpec Profile  
-Version: Version 1 Release 6  
-Date: 01 July 2026  
+Version: Version 1 Release 7  
+Date: 05 October 2026  
 STIG Type: Official STIG  
 Maintainers: Broadcom   
 
@@ -48,7 +46,6 @@ Inputs are used to provide variable information that customize how the profile i
 |audit_offload_script_name             |Empty                                                                                          |Script file name for audit offload in cron.weekly.                                                                     |String    |UBTU-24-900950                                                                                                            |
 |action_mail_acct                      |root                                                                                           |Email to be notified when allocated audit record storage volume reaches capacity.                                      |String    |UBTU-24-900960,UBTU-24-900980                                                                                             |
 |audit_tools                           |'/sbin/auditctl','/sbin/aureport','/sbin/ausearch','/sbin/autrace','/sbin/auditd','/sbin/augenrules'  |Array of audit tools to check ownership and permissions.                                                        |Array     |UBTU-24-901230,UBTU-24-901240,UBTU-24-901250                                                                              |
-|audit_rules_file                      |/etc/audit/audit.rules                                                                         |File to configure audit rules.                                                                                         |String    |UBTU-24-909000                                                                                                            |
 
 
 ## Running the profile

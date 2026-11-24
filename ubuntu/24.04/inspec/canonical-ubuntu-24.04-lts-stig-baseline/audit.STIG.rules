@@ -1,5 +1,5 @@
-# Based on Ubuntu 24.04 STIG V1R1
-# Updated 18/07/2025
+# Based on Ubuntu 24.04 STIG V1R7
+# Updated 05/10/2026
 
 # UBTU-24-200270
 -w /etc/cron.d/ -p wa -k cronjobs
@@ -81,6 +81,8 @@
 -a always,exit -F path=/usr/bin/chage -F perm=x -F auid>=1000 -F auid!=-1 -k privileged-chage
 # UBTU-24-900310
 -a always,exit -F path=/usr/sbin/usermod -F perm=x -F auid>=1000 -F auid!=-1 -k privileged-usermod
+# UBTU-24-900315
+-a always,exit -F path=/usr/sbin/useradd -F perm=x -F auid>=1000 -F auid!=-1 -k privileged-useradd
 # UBTU-24-900320
 -a always,exit -F path=/usr/bin/crontab -F perm=x -F auid>=1000 -F auid!=-1 -k privileged-crontab
 # UBTU-24-900330

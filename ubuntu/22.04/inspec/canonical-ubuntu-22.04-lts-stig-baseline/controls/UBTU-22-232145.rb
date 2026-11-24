@@ -2,7 +2,7 @@ control 'UBTU-22-232145' do
   title 'Ubuntu 22.04 LTS must set a sticky bit on all public directories to prevent unauthorized and unintended information transferred via shared system resources.'
   desc 'Preventing unauthorized information transfers mitigates the risk of information, including encrypted representations of information, produced by the actions of prior users/roles (or the actions of processes acting on behalf of prior users/roles) from being available to any current users/roles (or current processes) that obtain access to shared system resources (e.g., registers, main memory, hard disks) after those resources have been released back to information systems. The control of information in shared resources is also commonly referred to as object reuse and residual information protection.
 
-This requirement generally applies to the design of an information technology product, but it can also apply to the configuration of particular information system components that are, or use, such products. This can be verified by acceptance/validation processes in DOD or other government agencies.
+This requirement generally applies to the design of an information technology product, but it can also apply to the configuration of particular information system components that are, or use, such products. This can be verified by acceptance/validation processes in DoW or other government agencies.
 
 There may be shared resources with configurable protections (e.g., files in storage) that may be assessed on specific information system components.'
   desc 'check', 'Verify that all public directories have the public sticky bit set by using the following command:
@@ -19,7 +19,7 @@ Set the sticky bit on all public directories using the following command, replac
   tag check_id: 'C-64242r953350_chk'
   tag severity: 'medium'
   tag gid: 'V-260513'
-  tag rid: 'SV-260513r1137695_rule'
+  tag rid: 'SV-260513r1268233_rule'
   tag stig_id: 'UBTU-22-232145'
   tag gtitle: 'SRG-OS-000138-GPOS-00069'
   tag fix_id: 'F-64150r953351_fix'

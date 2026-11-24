@@ -1,0 +1,89 @@
+{
+  "service_name": "manager",
+  "service_properties": {
+      "logging_level": "{{ nsx_manager_defaults_service_log_level }}",
+      "modified_package_logging_levels": "",
+      "package_logging_level": [
+          {
+              "package_name": "org.corfudb",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "org.corfudb.client.metricsdata",
+              "logging_level": "DEBUG"
+          },
+          {
+              "package_name": "com.vmware.nsx.platform.container.restartor",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.vmc",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "org.springframework.beans",
+              "logging_level": "DEBUG"
+          },
+          {
+              "package_name": "org.springframework.context",
+              "logging_level": "DEBUG"
+          },
+          {
+              "package_name": "com.vmware.nsx.management.clustering.config.service.impl.ApplicationContextManager",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.nsx.management.configuration.FeatureAwareApplicationContextInitializer",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.nsx.management.container.loggers.InterceptLogger.profiledMethod",
+              "logging_level": "WARN"
+          },
+          {
+              "package_name": "com.vmware.metricsdata",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "io.micrometer.core.instrument.logging.LoggingMeterRegistry",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.nsx.management.search",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.nsx.management.statesync.full.data",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.nsx.management.ods.data",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.nsx.platform.clustering.activity_framework.stats",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "UI_LOG",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.nsx.common.dashboard",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.nsx.management.nsxe",
+              "logging_level": "INFO"
+          },
+          {
+              "package_name": "com.vmware.nsx.management.truststore.utils.RetryExecutionManager",
+              "logging_level": "DEBUG"
+          },
+          {
+              "package_name": "com.vmware.nsx.management.truststore.service.impl.CdpCacheServiceImpl",
+              "logging_level": "DEBUG"
+          }
+      ]
+  }
+}

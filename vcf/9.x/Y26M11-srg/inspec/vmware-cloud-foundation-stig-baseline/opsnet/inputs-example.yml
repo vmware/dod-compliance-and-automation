@@ -1,0 +1,8 @@
+# Is VCF Operations for Networks deployed in the environment? Set to false to mark VCF Operations for Networks related rules N/A.
+opsnet_deployed: true
+# Enter target VCF Operations for Networks URL IP or FQDN.
+opsnet_apihostname: ''
+# Enter api token for API authentication.
+opsnet_apitoken: ''
+# Enter the environment specific syslog server Operations for Networks should be forwarding logs to.
+opsnet_syslogServers: []

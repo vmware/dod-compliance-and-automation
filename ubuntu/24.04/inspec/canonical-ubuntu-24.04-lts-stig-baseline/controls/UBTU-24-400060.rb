@@ -2,7 +2,7 @@ control 'UBTU-24-400060' do
   title 'Ubuntu 24.04 LTS must electronically verify Personal Identity Verification (PIV) credentials.'
   desc 'The use of PIV credentials facilitates standardization and reduces the risk of unauthorized access.
 
-DOD has mandated the use of the common access card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.'
+DoW has mandated the use of the common access card (CAC) to support identity management and personal authentication for systems covered under Homeland Security Presidential Directive (HSPD) 12, as well as making the CAC a primary component of layered protection for national security systems.'
   desc 'check', %q(Verify Ubuntu 24.04 LTS electronically verifies PIV credentials via certificate status checking with the following command:
 
 $ sudo grep use_pkcs11_module /etc/pam_pkcs11/pam_pkcs11.conf | awk '/pkcs11_module opensc {/,/}/' /etc/pam_pkcs11/pam_pkcs11.conf | grep cert_policy | grep ocsp_on
@@ -17,7 +17,7 @@ Modify all of the "cert_policy" lines in "/etc/pam_pkcs11/pam_pkcs11.conf" to in
   tag check_id: 'C-74756r1066656_chk'
   tag severity: 'medium'
   tag gid: 'V-270723'
-  tag rid: 'SV-270723r1066658_rule'
+  tag rid: 'SV-270723r1268244_rule'
   tag stig_id: 'UBTU-24-400060'
   tag gtitle: 'SRG-OS-000377-GPOS-00162'
   tag fix_id: 'F-74657r1066657_fix'

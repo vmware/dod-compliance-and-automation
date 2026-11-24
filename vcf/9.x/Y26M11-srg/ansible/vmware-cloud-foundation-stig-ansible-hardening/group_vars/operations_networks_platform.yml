@@ -1,0 +1,145 @@
+# Variables defined here are to override role variables in /default/main.yml and apply to all nodes in the ansible inventory group with the same name as this file.
+# For example, if you want to disable a specific STIG ID, the variable that controls that rule can be placed in here and disabled.
+
+## ---- DO NOT EDIT THIS SECTION ----
+# Disable Unsupported Ubuntu Controls
+# Ubuntu 24.04 (VCF Operations for Networks 9.1.2): ported from the 22.04 overrides; the comment names the 22.04 rule each one replaces
+ubuntu_2404_defaults_run_ubtu_24_100010: false  # UBTU-22-215020
+ubuntu_2404_defaults_run_ubtu_24_100020: false  # UBTU-22-215025
+ubuntu_2404_defaults_run_ubtu_24_100030: false  # UBTU-22-215035
+ubuntu_2404_defaults_run_ubtu_24_100040: false  # UBTU-22-215030
+ubuntu_2404_defaults_run_ubtu_24_100100: false  # UBTU-22-651010
+ubuntu_2404_defaults_run_ubtu_24_100110: false  # UBTU-22-651015 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_100120: false  # UBTU-22-651025
+ubuntu_2404_defaults_run_ubtu_24_100130: false  # UBTU-22-651020
+ubuntu_2404_defaults_run_ubtu_24_100200: false  # UBTU-22-652010
+ubuntu_2404_defaults_run_ubtu_24_100200_install: false  # UBTU-22-652010_install
+ubuntu_2404_defaults_run_ubtu_24_100300: false  # UBTU-22-251010, UBTU-22-251020 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_100310: false  # UBTU-22-251015, UBTU-22-251020 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_100400: false  # UBTU-22-653010
+ubuntu_2404_defaults_run_ubtu_24_100400_install: false  # UBTU-22-653010_install
+ubuntu_2404_defaults_run_ubtu_24_100410: false  # UBTU-22-653015
+ubuntu_2404_defaults_run_ubtu_24_100450: false  # UBTU-22-653020
+ubuntu_2404_defaults_run_ubtu_24_100510: false  # UBTU-22-431015
+ubuntu_2404_defaults_run_ubtu_24_100600: false  # UBTU-22-215010
+ubuntu_2404_defaults_run_ubtu_24_100600_install: false  # UBTU-22-215010_install
+ubuntu_2404_defaults_run_ubtu_24_100700: false  # UBTU-22-215015, UBTU-22-431010, UBTU-22-431010_install
+ubuntu_2404_defaults_run_ubtu_24_100800: false  # UBTU-22-255010
+ubuntu_2404_defaults_run_ubtu_24_100800_install: false  # UBTU-22-255010_install
+ubuntu_2404_defaults_run_ubtu_24_100810: false  # UBTU-22-255015
+ubuntu_2404_defaults_run_ubtu_24_100820: true  # UBTU-22-255050
+ubuntu_2404_defaults_run_ubtu_24_100830: true  # UBTU-22-255055
+ubuntu_2404_defaults_run_ubtu_24_100840: true  # UBTU-22-255060
+ubuntu_2404_defaults_run_ubtu_24_100900: false  # UBTU-22-612015
+ubuntu_2404_defaults_run_ubtu_24_100910: false  # InSpec waiver
+ubuntu_2404_defaults_run_ubtu_24_101000: false  # UBTU-22-412025
+ubuntu_2404_defaults_run_ubtu_24_102000: false  # UBTU-22-212010
+ubuntu_2404_defaults_run_ubtu_24_102010: false  # UBTU-22-212015
+ubuntu_2404_defaults_run_ubtu_24_200000: true  # UBTU-22-412020
+ubuntu_2404_defaults_run_ubtu_24_200020: false  # UBTU-22-271020 (best guess), UBTU-22-271025
+ubuntu_2404_defaults_run_ubtu_24_200043: false  # UBTU-22-271020 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_200060: false  # UBTU-22-412030 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_200090: false  # UBTU-22-652015
+ubuntu_2404_defaults_run_ubtu_24_200250: false  # UBTU-22-411040 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_200260: false  # UBTU-22-411035
+ubuntu_2404_defaults_run_ubtu_24_200610: false  # UBTU-22-411045
+ubuntu_2404_defaults_run_ubtu_24_200650: false  # UBTU-22-271010
+ubuntu_2404_defaults_run_ubtu_24_200660: false  # UBTU-22-271015
+ubuntu_2404_defaults_run_ubtu_24_300001: false  # UBTU-22-214010 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_300006: false  # UBTU-22-232020
+ubuntu_2404_defaults_run_ubtu_24_300007: false  # UBTU-22-232070, UBTU-22-232075
+ubuntu_2404_defaults_run_ubtu_24_300008: false  # UBTU-22-232060
+ubuntu_2404_defaults_run_ubtu_24_300010: false  # UBTU-22-232065
+ubuntu_2404_defaults_run_ubtu_24_300011: false  # UBTU-22-232015
+ubuntu_2404_defaults_run_ubtu_24_300012: false  # UBTU-22-232050
+ubuntu_2404_defaults_run_ubtu_24_300013: false  # UBTU-22-232055
+ubuntu_2404_defaults_run_ubtu_24_300014: false  # UBTU-22-611030
+ubuntu_2404_defaults_run_ubtu_24_300016: false  # UBTU-22-611045
+ubuntu_2404_defaults_run_ubtu_24_300017: false  # UBTU-22-412010
+ubuntu_2404_defaults_run_ubtu_24_300021: false  # UBTU-22-432010
+ubuntu_2404_defaults_run_ubtu_24_300022: false  # UBTU-22-255040
+ubuntu_2404_defaults_run_ubtu_24_300023: false  # UBTU-22-255045
+ubuntu_2404_defaults_run_ubtu_24_300025: false  # UBTU-22-271030
+ubuntu_2404_defaults_run_ubtu_24_300026: true  # UBTU-22-211015
+ubuntu_2404_defaults_run_ubtu_24_300027: false  # UBTU-22-611060, UBTU-22-611065
+ubuntu_2404_defaults_run_ubtu_24_300030: false  # UBTU-22-412035
+ubuntu_2404_defaults_run_ubtu_24_300031: false  # UBTU-22-255025
+ubuntu_2404_defaults_run_ubtu_24_300039: false  # UBTU-22-291010
+ubuntu_2404_defaults_run_ubtu_24_300041: false  # UBTU-22-251030 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_400000: false  # UBTU-22-411015
+ubuntu_2404_defaults_run_ubtu_24_400020: false  # UBTU-22-612010 (best guess), UBTU-22-612020
+ubuntu_2404_defaults_run_ubtu_24_400030: false  # UBTU-22-612010 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_400060: false  # UBTU-22-612025
+ubuntu_2404_defaults_run_ubtu_24_400110: false  # UBTU-22-411010
+ubuntu_2404_defaults_run_ubtu_24_400220: false  # UBTU-22-611055
+ubuntu_2404_defaults_run_ubtu_24_400260: false  # UBTU-22-611010
+ubuntu_2404_defaults_run_ubtu_24_400270: false  # UBTU-22-611015
+ubuntu_2404_defaults_run_ubtu_24_400280: false  # UBTU-22-611020
+ubuntu_2404_defaults_run_ubtu_24_400290: false  # UBTU-22-611040
+ubuntu_2404_defaults_run_ubtu_24_400300: true  # UBTU-22-411025
+ubuntu_2404_defaults_run_ubtu_24_400310: true  # UBTU-22-411030
+ubuntu_2404_defaults_run_ubtu_24_400320: false  # UBTU-22-611035
+ubuntu_2404_defaults_run_ubtu_24_400330: false  # UBTU-22-611025
+ubuntu_2404_defaults_run_ubtu_24_400340: false  # UBTU-22-631015
+ubuntu_2404_defaults_run_ubtu_24_400360: false  # UBTU-22-612030
+ubuntu_2404_defaults_run_ubtu_24_400370: false  # UBTU-22-612040
+ubuntu_2404_defaults_run_ubtu_24_400375: false  # InSpec waiver
+ubuntu_2404_defaults_run_ubtu_24_400380: false  # UBTU-22-612035
+ubuntu_2404_defaults_run_ubtu_24_400400: false  # UBTU-22-611070
+ubuntu_2404_defaults_run_ubtu_24_500050: false  # UBTU-22-255065
+ubuntu_2404_defaults_run_ubtu_24_600030: false  # UBTU-22-671010
+ubuntu_2404_defaults_run_ubtu_24_600060: false  # UBTU-22-631010
+ubuntu_2404_defaults_run_ubtu_24_600070: false  # UBTU-22-213015 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_600090: false  # UBTU-22-231010 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_600130: false  # UBTU-22-432015
+ubuntu_2404_defaults_run_ubtu_24_600140: false  # UBTU-22-213010
+ubuntu_2404_defaults_run_ubtu_24_600150: false  # UBTU-22-232145
+ubuntu_2404_defaults_run_ubtu_24_600160: false  # UBTU-22-252010 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_600180: false  # UBTU-22-252015
+ubuntu_2404_defaults_run_ubtu_24_600190: false  # UBTU-22-253010
+ubuntu_2404_defaults_run_ubtu_24_600200: false  # UBTU-22-251025
+ubuntu_2404_defaults_run_ubtu_24_600230: false  # UBTU-22-291015
+ubuntu_2404_defaults_run_ubtu_24_700010: false  # UBTU-22-232026
+ubuntu_2404_defaults_run_ubtu_24_700020: true  # UBTU-22-232027
+ubuntu_2404_defaults_run_ubtu_24_700030: false  # UBTU-22-232140
+ubuntu_2404_defaults_run_ubtu_24_700040: false  # UBTU-22-232100
+ubuntu_2404_defaults_run_ubtu_24_700050: false  # UBTU-22-232105
+ubuntu_2404_defaults_run_ubtu_24_700080: false  # UBTU-22-232080
+ubuntu_2404_defaults_run_ubtu_24_700100: false  # UBTU-22-232125
+ubuntu_2404_defaults_run_ubtu_24_700110: false  # UBTU-22-232120
+ubuntu_2404_defaults_run_ubtu_24_700120: false  # UBTU-22-232025
+ubuntu_2404_defaults_run_ubtu_24_700130: false  # UBTU-22-232135
+ubuntu_2404_defaults_run_ubtu_24_700140: false  # UBTU-22-232130
+ubuntu_2404_defaults_run_ubtu_24_700150: false  # UBTU-22-232030
+ubuntu_2404_defaults_run_ubtu_24_700300: false  # UBTU-22-213025
+ubuntu_2404_defaults_run_ubtu_24_700310: false  # UBTU-22-213020
+ubuntu_2404_defaults_run_ubtu_24_700320: false  # UBTU-22-214015
+ubuntu_2404_defaults_run_ubtu_24_900040: false  # UBTU-22-653065
+ubuntu_2404_defaults_run_ubtu_24_900050: false  # UBTU-22-653070
+ubuntu_2404_defaults_run_ubtu_24_900060: false  # UBTU-22-653075
+ubuntu_2404_defaults_run_ubtu_24_900220: true  # UBTU-22-654010
+ubuntu_2404_defaults_run_ubtu_24_900920: false  # UBTU-22-653035
+ubuntu_2404_defaults_run_ubtu_24_900950: false  # UBTU-22-651035
+ubuntu_2404_defaults_run_ubtu_24_900960: false  # UBTU-22-653040 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_900980: false  # UBTU-22-653025 (best guess)
+ubuntu_2404_defaults_run_ubtu_24_901220: false  # UBTU-22-252020
+ubuntu_2404_defaults_run_ubtu_24_901230: false  # UBTU-22-232035
+ubuntu_2404_defaults_run_ubtu_24_901240: false  # UBTU-22-232110
+ubuntu_2404_defaults_run_ubtu_24_901260: false  # UBTU-22-232010
+ubuntu_2404_defaults_run_ubtu_24_901270: false  # UBTU-22-232040
+ubuntu_2404_defaults_run_ubtu_24_901280: false  # UBTU-22-232045
+ubuntu_2404_defaults_run_ubtu_24_901300: false  # UBTU-22-653045
+ubuntu_2404_defaults_run_ubtu_24_901310: false  # UBTU-22-653050
+ubuntu_2404_defaults_run_ubtu_24_901350: false  # UBTU-22-653055
+ubuntu_2404_defaults_run_ubtu_24_901380: false  # UBTU-22-653060
+ubuntu_2404_defaults_run_ubtu_24_909890: false  # UBTU-22-651030
+## ---- DO NOT EDIT THIS SECTION ----
+
+# Enable the login banner
+ops_net_defaults_login_banner_enabled: true
+# Set the Title for the Login Banner popup dialog
+ops_net_defaults_login_banner_title: 'The Standard Mandatory DOD Notice and Consent Banner'
+# Set the description for the Login Banner popup dialog
+ops_net_defaults_login_banner_description: 'You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.\n\n    By using this IS (which includes any device attached to this IS), you consent to the following conditions:\n    -The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.\n    -At any time, the USG may inspect and seize data stored on this IS.\n    -Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.\n    -This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.\n    -Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.'
+# Optionally set a value that appears on the main login page below the login button
+ops_net_defaults_login_banner_message: ''

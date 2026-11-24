@@ -1,10 +1,10 @@
 control 'UBTU-22-271010' do
-  title 'Ubuntu 22.04 LTS must enable the graphical user logon banner to display the Standard Mandatory DOD Notice and Consent Banner before granting local access to the system via a graphical user logon.'
+  title 'Ubuntu 22.04 LTS must enable the graphical user logon banner to display the Standard Mandatory DoW Notice and Consent Banner before granting local access to the system via a graphical user logon.'
   desc %q(Display of a standardized and approved use notification before granting access to Ubuntu 22.04 LTS ensures privacy and security notification verbiage used is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.
 
 System use notifications are required only for access via logon interfaces with human users and are not required when such human interfaces do not exist.
 
-The banner must be formatted in accordance with applicable DOD policy. Use the following verbiage for operating systems that can accommodate banners of 1300 characters:
+The banner must be formatted in accordance with applicable DoW policy. Use the following verbiage for operating systems that can accommodate banners of 1300 characters:
 
 "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
 
@@ -23,7 +23,7 @@ By using this IS (which includes any device attached to this IS), you consent to
 Use the following verbiage for operating systems that have severe limitations on the number of characters that can be displayed in the banner:
 
 "I've read (literal ampersand) consent to terms in IS user agreem't.")
-  desc 'check', 'Verify Ubuntu 22.04 LTS is configured to display the Standard Mandatory DOD Notice and Consent Banner before granting access to the operating system via a graphical user logon by using the following command:
+  desc 'check', 'Verify Ubuntu 22.04 LTS is configured to display the Standard Mandatory DoW Notice and Consent Banner before granting access to the operating system via a graphical user logon by using the following command:
 
 Note: If no graphical user interface is installed, this requirement is not applicable.
 
@@ -31,7 +31,7 @@ Note: If no graphical user interface is installed, this requirement is not appli
      banner-message-enable=true
 
 If the value for "banner-message-enable" is set to "false", the line is commented out, or no value is returned, this is a finding.'
-  desc 'fix', 'Configure Ubuntu 22.04 LTS to display the Standard Mandatory DOD Notice and Consent Banner before granting access to the operating system via a graphical user logon.
+  desc 'fix', 'Configure Ubuntu 22.04 LTS to display the Standard Mandatory DoW Notice and Consent Banner before granting access to the operating system via a graphical user logon.
 
 Add or modify the following line in the "/etc/gdm3/greeter.dconf-defaults" file:
 
@@ -43,13 +43,13 @@ Update GDM with the new configuration by using the following commands:
      $ sudo dconf update
      $ sudo systemctl restart gdm3'
   impact 0.5
-  tag check_id: 'C-64264r953416_chk'
+  tag check_id: 'C-64264r1261456_chk'
   tag severity: 'medium'
   tag gid: 'V-260535'
-  tag rid: 'SV-260535r958390_rule'
+  tag rid: 'SV-260535r1268215_rule'
   tag stig_id: 'UBTU-22-271010'
   tag gtitle: 'SRG-OS-000023-GPOS-00006'
-  tag fix_id: 'F-64172r953417_fix'
+  tag fix_id: 'F-64172r1261457_fix'
   tag 'documentable'
   tag cci: ['CCI-000048']
   tag nist: ['AC-8 a']

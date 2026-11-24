@@ -13,7 +13,7 @@ A privileged account is defined as an information system account with authorizat
 
 Network access is defined as access to an information system by a user (or a process acting on behalf of a user) communicating through a network (e.g., local area network, wide area network, or the internet).
 
-The DOD common access card (CAC) with DOD-approved PKI is an example of multifactor authentication.
+The DoW common access card (CAC) with DoW-approved PKI is an example of multifactor authentication.
 
 '
   desc 'check', 'Verify Ubuntu 24.04 LTS has the packages required for multifactor authentication installed with the following command:
@@ -51,7 +51,7 @@ $ sudo apt install -y libnss-sss'
   tag check_id: 'C-74695r1066473_chk'
   tag severity: 'medium'
   tag gid: 'V-270662'
-  tag rid: 'SV-270662r1067156_rule'
+  tag rid: 'SV-270662r1261510_rule'
   tag stig_id: 'UBTU-24-100650'
   tag gtitle: 'SRG-OS-000705-GPOS-00150'
   tag fix_id: 'F-74596r1067155_fix'

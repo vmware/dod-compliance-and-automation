@@ -4,7 +4,7 @@ control 'UBTU-24-300001' do
 
 Accordingly, patches, service packs, device drivers, or operating system components must be signed with a certificate recognized and approved by the organization.
 
-Verifying the authenticity of the software prior to installation validates the integrity of the patch or upgrade received from a vendor. This ensures the software has not been tampered with and that it has been provided by a trusted vendor. Self-signed certificates are disallowed by this requirement. Ubuntu 24.04 LTS will not have to verify the software again. This requirement does not mandate DOD certificates for this purpose; however, the certificate used to verify the software must be from an approved CA.'
+Verifying the authenticity of the software prior to installation validates the integrity of the patch or upgrade received from a vendor. This ensures the software has not been tampered with and that it has been provided by a trusted vendor. Self-signed certificates are disallowed by this requirement. Ubuntu 24.04 LTS will not have to verify the software again. This requirement does not mandate DoW certificates for this purpose; however, the certificate used to verify the software must be from an approved CA.'
   desc 'check', 'Verify that APT is configured to prevent the installation of patches, service packs, device drivers, or Ubuntu 24.04 LTS components without verification they have been digitally signed using a certificate recognized and approved by the organization with the following command:
 
 $ grep AllowUnauthenticated /etc/apt/apt.conf.d/*
@@ -19,7 +19,7 @@ APT::Get::AllowUnauthenticated "false";'
   tag check_id: 'C-74728r1066572_chk'
   tag severity: 'low'
   tag gid: 'V-270695'
-  tag rid: 'SV-270695r1066574_rule'
+  tag rid: 'SV-270695r1268241_rule'
   tag stig_id: 'UBTU-24-300001'
   tag gtitle: 'SRG-OS-000366-GPOS-00153'
   tag fix_id: 'F-74629r1066573_fix'

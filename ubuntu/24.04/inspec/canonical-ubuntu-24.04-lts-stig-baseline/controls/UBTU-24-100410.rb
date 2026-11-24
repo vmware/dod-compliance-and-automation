@@ -1,5 +1,5 @@
 control 'UBTU-24-100410' do
-  title 'Ubuntu 24.04 LTS must produce audit records and reports containing information to establish when, where, what type, the source, and the outcome for all DOD-defined auditable events and actions in near real time.'
+  title 'Ubuntu 24.04 LTS must produce audit records and reports containing information to establish when, where, what type, the source, and the outcome for all DoW-defined auditable events and actions in near real time.'
   desc 'Without establishing the when, where, type, source, and outcome of events that occurred, it would be difficult to establish, correlate, and investigate the events leading up to an outage or attack.
 
 Without the capability to generate audit records, it would be difficult to establish, correlate, and investigate the events relating to an incident or identify those responsible for one.
@@ -39,7 +39,7 @@ $ sudo augenrules --load'
   tag check_id: 'C-74690r1066458_chk'
   tag severity: 'medium'
   tag gid: 'V-270657'
-  tag rid: 'SV-270657r1066460_rule'
+  tag rid: 'SV-270657r1261509_rule'
   tag stig_id: 'UBTU-24-100410'
   tag gtitle: 'SRG-OS-000365-GPOS-00152'
   tag fix_id: 'F-74591r1066459_fix'
