@@ -23,7 +23,7 @@ If the installed version of Ubuntu 22.04 LTS is not supported, this is a finding
   tag check_id: 'C-83485r1155197_chk'
   tag severity: 'high'
   tag gid: 'V-278951'
-  tag rid: 'SV-278951r1155215_rule'
+  tag rid: 'SV-278951r1268251_rule'
   tag stig_id: 'UBTU-22-211000'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag fix_id: 'F-83390r1135402_fix'

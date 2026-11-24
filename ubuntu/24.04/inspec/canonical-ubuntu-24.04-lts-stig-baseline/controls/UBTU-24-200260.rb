@@ -19,15 +19,15 @@ Run the following command to change the configuration for adduser:
 
 $ sudo useradd -D -f 35
 
-Note: DOD recommendation is 35 days, but a lower value is acceptable. The value "0" will disable the account immediately after the password expires.'
+Note: DoW recommendation is 35 days, but a lower value is acceptable. The value "0" will disable the account immediately after the password expires.'
   impact 0.5
   tag check_id: 'C-74716r1066536_chk'
   tag severity: 'medium'
   tag gid: 'V-270683'
-  tag rid: 'SV-270683r1066538_rule'
+  tag rid: 'SV-270683r1261521_rule'
   tag stig_id: 'UBTU-24-200260'
   tag gtitle: 'SRG-OS-000118-GPOS-00060'
-  tag fix_id: 'F-74617r1066537_fix'
+  tag fix_id: 'F-74617r1261520_fix'
   tag satisfies: ['SRG-OS-000118-GPOS-00060', 'SRG-OS-000590-GPOS-00110']
   tag 'documentable'
   tag cci: ['CCI-003627', 'CCI-003628']

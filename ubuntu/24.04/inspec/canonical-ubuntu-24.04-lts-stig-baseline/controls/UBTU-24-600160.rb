@@ -14,7 +14,7 @@ Verify Ubuntu 24.04 LTS is configured to compare the system clock at least every
 $ sudo grep -ir maxpoll /etc/chrony*
 server [source] iburst maxpoll 16
 
-If the parameter "server" is not set, is not set to an authoritative DOD time source, or is commented out, this is a finding.
+If the parameter "server" is not set, is not set to an authoritative DoW time source, or is commented out, this is a finding.
 
 If the "maxpoll" option is set to a number greater than 16, the line is commented out, or is missing, this is a finding.'
   desc 'fix', 'To configure the system clock to compare to the authoritative time source at least every 24 hours, edit the "/etc/chrony/chrony.conf" file. Add or correct the following lines, by replacing "[source]" in the following line with an authoritative time source:
@@ -25,10 +25,10 @@ If the "chrony" service was running and the value of "maxpoll" or "server" was u
 
 $ sudo systemctl restart chrony.service'
   impact 0.3
-  tag check_id: 'C-74784r1066740_chk'
+  tag check_id: 'C-74784r1261539_chk'
   tag severity: 'low'
   tag gid: 'V-270751'
-  tag rid: 'SV-270751r1066742_rule'
+  tag rid: 'SV-270751r1261540_rule'
   tag stig_id: 'UBTU-24-600160'
   tag gtitle: 'SRG-OS-000785-GPOS-00250'
   tag fix_id: 'F-74685r1066741_fix'

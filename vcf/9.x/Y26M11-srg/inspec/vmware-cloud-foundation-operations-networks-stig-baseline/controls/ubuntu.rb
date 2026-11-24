@@ -1,0 +1,21 @@
+include_controls 'ubuntu' do
+  # These controls are N/A or not support for Operations for Networks appliances. See the waivers-ubuntu.yml file for more details.
+  skip_control 'UBTU-24-100700'
+  skip_control 'UBTU-24-100010'
+  skip_control 'UBTU-24-600090'
+  skip_control 'UBTU-24-100310'
+  skip_control 'UBTU-24-600200'
+  skip_control 'UBTU-24-300041'
+  skip_control 'UBTU-24-600160'
+  skip_control 'UBTU-24-600180'
+  skip_control 'UBTU-24-101000'
+  skip_control 'UBTU-24-100910'
+  skip_control 'UBTU-24-100900'
+  skip_control 'UBTU-24-400020'
+  skip_control 'UBTU-24-400060'
+  skip_control 'UBTU-24-400375'
+  skip_control 'UBTU-24-400380'
+  skip_control 'UBTU-24-400370'
+  skip_control 'UBTU-24-600060'
+  skip_control 'UBTU-24-600030'
+end

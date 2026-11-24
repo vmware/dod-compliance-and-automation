@@ -1,0 +1,10 @@
+# Waiver file for CAP builds to exclude controls that should not be audited.
+
+PHTN-50-000005:
+  expiration_date:
+  run: false
+  justification: 'DoD banner should not be configured.'
+PHTN-50-000046:
+  expiration_date:
+  run: false
+  justification: 'Grub boot password is a customer specific implementation.'

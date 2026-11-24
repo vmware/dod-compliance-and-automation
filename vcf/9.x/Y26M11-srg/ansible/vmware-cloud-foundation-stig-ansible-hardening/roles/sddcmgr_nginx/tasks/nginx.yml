@@ -1,0 +1,170 @@
+---
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-sddcmgr-nginx-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ sddcmgr_nginx_vars_nginx_conf_file }}'
+
+###################################################################################################################################
+# To update the NGINX configuration a template is used that contains all settings for the SDDC Manager NGINX configuration.
+# Targeted individual setting updates to the NGINX configuration are not feasible with the typical Ansible modules due to the non-standard format of the NGINX configuration.
+- name: 'NGINX - Copy configuration template to overwrite {{ sddcmgr_nginx_vars_nginx_conf_file }}'
+  tags:
+    - VCFB-9X-000001
+    - VCFB-9X-000003
+    - VCFB-9X-000004
+    - VCFB-9X-000007
+    - VCFB-9X-000009
+    - VCFB-9X-000010
+    - VCFB-9X-000037
+    - VCFB-9X-000047
+    - VCFB-9X-000048
+    - VCFB-9X-000060
+    - VCFB-9X-000062
+    - VCFB-9X-000063
+    - VCFB-9X-000090
+    - VCFB-9X-000098
+    - VCFB-9X-000099
+    - VCFB-9X-000100
+    - VCFB-9X-000102
+    - VCFB-9X-000103
+    - VCFB-9X-000104
+    - VCFB-9X-000105
+    - VCFB-9X-000106
+    - VCFB-9X-000111
+    - VCFB-9X-000137
+  when:
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000001 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000003 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000004 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000007 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000009 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000010 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000037 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000047 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000048 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000060 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000062 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000063 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000090 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000098 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000099 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000100 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000102 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000103 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000104 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000105 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000106 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000111 | bool
+    - sddcmgr_nginx_defaults_run_vcfb_9x_000137 | bool
+  block:
+    - name: 'NGINX - Copy configuration template to overwrite {{ sddcmgr_nginx_vars_nginx_conf_file }}.'
+      ansible.builtin.template:
+        src: 'nginx.conf'
+        dest: '{{ sddcmgr_nginx_vars_nginx_conf_file }}'
+        owner: root
+        group: root
+        mode: '0600'
+        force: true
+      notify:
+        - '{{ role_name }} : restart nginx'
+
+###################################################################################################################################
+- name: VCFB-9X-000019
+  tags: [VCFB-9X-000019]
+  when: sddcmgr_nginx_defaults_run_vcfb_9x_000019 | bool
+  block:
+    - name: 'VCFB-9X-000019 - Find logs with incorrect permissions in {{ sddcmgr_nginx_vars_log_folder }}.'
+      ansible.builtin.shell: find {{ sddcmgr_nginx_vars_log_folder }} -xdev -type f -a \( -not -perm 640 -o \( -not -user root -a -not -user {{ sddcmgr_nginx_vars_log_owner }} \) -o \( -not -group root -a -not -group {{ sddcmgr_nginx_vars_log_group }} \) \);
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFB-9X-000019 - Update permissions on log files found to be incorrect in {{ sddcmgr_nginx_vars_log_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ sddcmgr_nginx_vars_log_owner }}'
+        group: '{{ sddcmgr_nginx_vars_log_group }}'
+        mode: '{{ sddcmgr_nginx_vars_log_file_mode }}'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFB-9X-000025
+  tags: [VCFB-9X-000025]
+  when: sddcmgr_nginx_defaults_run_vcfb_9x_000025 | bool
+  block:
+    - name: 'VCFB-9X-000025 - Update permissions on file: {{ sddcmgr_nginx_vars_htpasswd_file }}'
+      ansible.builtin.file:
+        path: '{{ sddcmgr_nginx_vars_htpasswd_file }}'
+        state: file
+        owner: 'root'
+        group: 'nginx'
+        mode: '0640'
+
+###################################################################################################################################
+# Placeholder for 26, 34, 35
+
+###################################################################################################################################
+- name: VCFB-9X-000040
+  tags: [VCFB-9X-000040]
+  when: sddcmgr_nginx_defaults_run_vcfb_9x_000040 | bool
+  block:
+    - name: 'VCFB-9X-000040 - Update permissions on SSL key file: {{ sddcmgr_nginx_vars_ssl_key_file }}'
+      ansible.builtin.file:
+        path: '{{ sddcmgr_nginx_vars_ssl_key_file }}'
+        state: file
+        owner: 'root'
+        group: 'root'
+        mode: '0640'
+
+###################################################################################################################################
+- name: VCFB-9X-000078
+  tags: [VCFB-9X-000078]
+  when: sddcmgr_nginx_defaults_run_vcfb_9x_000078 | bool
+  block:
+    - name: 'VCFB-9X-000078 - Find configuration files with incorrect permissions in {{ sddcmgr_nginx_vars_conf_folder }}.'
+      ansible.builtin.shell: find {{ sddcmgr_nginx_vars_conf_folder }} -xdev -type f ! -name .htpasswd -a '(' -perm -o+w -o -not -user {{ sddcmgr_nginx_vars_conf_owner }} -o -not -group {{ sddcmgr_nginx_vars_conf_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFB-9X-000078 - Update permissions on configuration files found to be incorrect in {{ sddcmgr_nginx_vars_conf_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ sddcmgr_nginx_vars_conf_owner }}'
+        group: '{{ sddcmgr_nginx_vars_conf_group }}'
+        mode: '{{ sddcmgr_nginx_vars_conf_file_mode }}'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFB-9X-000096
+  tags: [VCFB-9X-000096]
+  when: sddcmgr_nginx_defaults_run_vcfb_9x_000096 | bool
+  block:
+    - name: VCFB-9X-000096 - Remove /etc/nginx/sites-enabled/default file if it exists.
+      ansible.builtin.file:
+        path: '/etc/nginx/sites-enabled/default'
+        state: absent
+      notify:
+        - '{{ role_name }} : reload nginx'

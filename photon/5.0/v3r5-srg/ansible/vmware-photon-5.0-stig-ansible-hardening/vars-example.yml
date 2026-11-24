@@ -1,0 +1,15 @@
+---
+# Example vars file to use when running this playbook to update any required variables
+# To create backups of files modified under /tmp set to true
+create_backups: true
+# Enable the DoD login banner
+photon_5_defaults_run_phtn_50_000005_dod_banner: true
+# Set to true if you want the playbook to install required packages. This requires access to a repo with the required packages.
+## rsyslog install
+photon_5_defaults_run_phtn_50_000241: false
+## openssl fips provider install
+photon_5_defaults_run_phtn_50_000013: false
+## auditd install
+photon_5_defaults_run_phtn_50_000016_auditd_install: false
+## aide install
+photon_5_defaults_run_phtn_50_000127: false

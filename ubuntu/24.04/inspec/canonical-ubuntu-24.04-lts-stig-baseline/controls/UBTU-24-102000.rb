@@ -1,6 +1,6 @@
 control 'UBTU-24-102000' do
   title 'Ubuntu 24.04 LTS when booted must require authentication upon booting into single-user and maintenance modes.'
-  desc 'To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DOD-approved PKIs, all DOD systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access.
+  desc 'To mitigate the risk of unauthorized access to sensitive information by entities that have been issued certificates by DoW-approved PKIs, all DoW systems (e.g., web servers and web portals) must be properly configured to incorporate access control methods that do not rely solely on the possession of a certificate for access.
 
 Successful authentication must not automatically give an entity access to an asset or security boundary. Authorization procedures and controls must be implemented to ensure each authenticated entity also has a validated and current authorization. Authorization is the process of determining whether an entity, once authenticated, is permitted to access a specific asset. Information systems use access control policies and enforcement mechanisms to implement this requirement.
 
@@ -33,7 +33,7 @@ $ sudo update-grub)
   tag check_id: 'C-74708r1066512_chk'
   tag severity: 'high'
   tag gid: 'V-270675'
-  tag rid: 'SV-270675r1137691_rule'
+  tag rid: 'SV-270675r1268226_rule'
   tag stig_id: 'UBTU-24-102000'
   tag gtitle: 'SRG-OS-000080-GPOS-00048'
   tag fix_id: 'F-74609r1066513_fix'

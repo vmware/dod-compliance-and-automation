@@ -35,7 +35,7 @@ Reload settings from all system configuration files with the following command:
   tag check_id: 'C-74782r1067179_chk'
   tag severity: 'low'
   tag gid: 'V-270749'
-  tag rid: 'SV-270749r1137695_rule'
+  tag rid: 'SV-270749r1268233_rule'
   tag stig_id: 'UBTU-24-600140'
   tag gtitle: 'SRG-OS-000138-GPOS-00069'
   tag fix_id: 'F-74683r1066735_fix'

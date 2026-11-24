@@ -19,7 +19,7 @@ Or lock the account:
   tag check_id: 'C-64300r953524_chk'
   tag severity: 'high'
   tag gid: 'V-260571'
-  tag rid: 'SV-260571r991589_rule'
+  tag rid: 'SV-260571r1268251_rule'
   tag stig_id: 'UBTU-22-611065'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag fix_id: 'F-64208r953525_fix'

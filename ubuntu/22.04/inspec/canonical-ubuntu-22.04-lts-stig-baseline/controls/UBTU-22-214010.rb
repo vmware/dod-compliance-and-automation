@@ -4,7 +4,7 @@ control 'UBTU-22-214010' do
 
 Accordingly, patches, service packs, device drivers, or operating system components must be signed with a certificate recognized and approved by the organization.
 
-Verifying the authenticity of the software prior to installation validates the integrity of the patch or upgrade received from a vendor. This ensures the software has not been tampered with and that it has been provided by a trusted vendor. Self-signed certificates are disallowed by this requirement. The operating system should not have to verify the software again. This requirement does not mandate DOD certificates for this purpose; however, the certificate used to verify the software must be from an approved certificate authority (CA).'
+Verifying the authenticity of the software prior to installation validates the integrity of the patch or upgrade received from a vendor. This ensures the software has not been tampered with and that it has been provided by a trusted vendor. Self-signed certificates are disallowed by this requirement. The operating system should not have to verify the software again. This requirement does not mandate DoW certificates for this purpose; however, the certificate used to verify the software must be from an approved certificate authority (CA).'
   desc 'check', 'Verify that APT is configured to prevent the installation of patches, service packs, device drivers, or Ubuntu operating system components without verification they have been digitally signed using a certificate that is recognized and approved by the organization by using the following command:
 
      $ grep -i allowunauthenticated /etc/apt/apt.conf.d/*
@@ -20,7 +20,7 @@ APT::Get::AllowUnauthenticated "false";'
   tag check_id: 'C-64205r953239_chk'
   tag severity: 'low'
   tag gid: 'V-260476'
-  tag rid: 'SV-260476r1015003_rule'
+  tag rid: 'SV-260476r1268241_rule'
   tag stig_id: 'UBTU-22-214010'
   tag gtitle: 'SRG-OS-000366-GPOS-00153'
   tag fix_id: 'F-64113r953240_fix'

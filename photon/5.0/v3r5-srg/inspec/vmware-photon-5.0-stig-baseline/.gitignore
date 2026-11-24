@@ -1,0 +1,4 @@
+inspec.lock
+vendor*
+*.DS_Store
+*.json

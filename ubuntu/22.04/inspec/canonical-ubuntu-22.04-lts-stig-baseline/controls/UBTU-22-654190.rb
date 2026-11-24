@@ -26,7 +26,7 @@ Note: The "-k <keyname>" at the end of the line gives the rule a unique meaning 
   tag check_id: 'C-64369r953731_chk'
   tag severity: 'medium'
   tag gid: 'V-260640'
-  tag rid: 'SV-260640r991589_rule'
+  tag rid: 'SV-260640r1268251_rule'
   tag stig_id: 'UBTU-22-654190'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag fix_id: 'F-64277r953732_fix'

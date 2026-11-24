@@ -13,7 +13,7 @@ Remove any instances of the "nullok" option in "/etc/pam.d/common-password" and 
   tag check_id: 'C-74747r1134807_chk'
   tag severity: 'high'
   tag gid: 'V-270714'
-  tag rid: 'SV-270714r1208699_rule'
+  tag rid: 'SV-270714r1268251_rule'
   tag stig_id: 'UBTU-24-300028'
   tag gtitle: 'SRG-OS-000480-GPOS-00227'
   tag fix_id: 'F-74648r1208301_fix'

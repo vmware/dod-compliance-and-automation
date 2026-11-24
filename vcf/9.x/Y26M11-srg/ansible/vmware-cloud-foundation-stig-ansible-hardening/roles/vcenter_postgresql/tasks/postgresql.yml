@@ -1,0 +1,407 @@
+---
+# Backup files that may be modified in case restoration is needed
+- name: Backup files that may be modified in case restoration is needed
+  tags: [always, backup]
+  when: create_backups | bool
+  block:
+    - name: Backup files - Create time stamp
+      ansible.builtin.set_fact:
+        backup_timestamp: "{{ lookup('pipe', 'date +%Y-%m-%d-%H-%M-%S') }}"
+
+    - name: Backup files - If restoring be sure to restore permissions that original file had!!
+      ansible.builtin.copy:
+        remote_src: true
+        src: "{{ item }}"
+        dest: "/tmp/ansible-backups-vcsa-postgresql-{{ backup_timestamp }}/"
+        mode: preserve
+      changed_when: false
+      register: backupresult
+      failed_when:
+        - backupresult.msg is defined
+        - "'not found' not in backupresult.msg"
+      with_items:
+        - '{{ vcenter_postgresql_vars_postgresql_conf_file }}'
+        - '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        - '{{ vcenter_postgresql_vars_rsyslog_conf_file }}'
+        - '{{ vcenter_postgresql_vars_rsyslog_archiver_conf_file }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000005
+  tags: [VCFL-9X-000005, always]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000005 | bool
+  block:
+    - name: 'VCFL-9X-000005 - Determine if {{ vcenter_postgresql_vars_stig_conf_file }} exists.'
+      ansible.builtin.stat:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+      register: stigconf
+
+    - name: 'VCFL-9X-000005 - Update {{ vcenter_postgresql_vars_vmw_vpg_config_py_file }} to be executable.'
+      ansible.builtin.file:
+        path: '{{ vcenter_postgresql_vars_vmw_vpg_config_py_file }}'
+        state: file
+        mode: '0744'
+      when:
+        - not stigconf.stat.exists
+
+    - name: 'VCFL-9X-000005 - Run {{ vcenter_postgresql_vars_vmw_vpg_config_py_file }} --action stig_enable --pg-data-dir {{ vcenter_postgresql_vars_data_folder }}.'
+      ansible.builtin.command: '{{ vcenter_postgresql_vars_vmw_vpg_config_py_file }} --action stig_enable --pg-data-dir {{ vcenter_postgresql_vars_data_folder }}'
+      register: stigenable
+      failed_when: stigenable.rc != 0
+      changed_when: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+      when:
+        - not stigconf.stat.exists
+
+    - name: 'VCFL-9X-000005 - Update {{ vcenter_postgresql_vars_vmw_vpg_config_py_file }} to not be executable.'
+      ansible.builtin.file:
+        path: '{{ vcenter_postgresql_vars_vmw_vpg_config_py_file }}'
+        state: file
+        mode: '0644'
+      when:
+        - not stigconf.stat.exists
+
+###################################################################################################################################
+- name: VCFL-9X-000001
+  tags: [VCFL-9X-000001]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000001 | bool
+  block:
+    - name: VCFL-9X-000001 - The vCenter PostgreSQL service must limit the number of concurrent sessions.
+      ansible.builtin.debug:
+        msg: "VCFL-9X-000001 - No remediation needed for this control as it will be configured automatically by vCenter upon a PostgreSQL reboot."
+      changed_when: false
+
+    - name: VCFL-9X-000001 - Check max_connections value
+      ansible.builtin.command: /opt/vmware/vpostgres/current/bin/psql -U postgres -A -t -c "SHOW max_connections;"
+      register: result
+      changed_when: false
+      failed_when:
+        - result.stderr != ''
+        - result.rc != 0
+
+    - name: VCFL-9X-000001 - Set max_connections value
+      ansible.builtin.debug:
+        msg: 'VCFL-9X-000001 - PostgreSQL max_connections of {{ result.stdout }} detected as out of range, restarting PostgreSQL.'
+      changed_when: psqlresult.rc == 0
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+      when:
+        - result.stdout | int < 100
+        - result.stdout | int > 1000
+
+###################################################################################################################################
+- name: VCFL-9X-000006
+  tags: [VCFL-9X-000006]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000006 | bool
+  block:
+    - name: 'VCFL-9X-000006 - Find configuration files with incorrect permissions in {{ vcenter_postgresql_vars_data_folder }}.'
+      ansible.builtin.shell: find {{ vcenter_postgresql_vars_data_folder }}/*conf* -xdev -type f -a '(' -not -perm 600 -o -not -user {{ vcenter_postgresql_vars_conf_owner }} -o -not -group {{ vcenter_postgresql_vars_conf_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+      failed_when:
+        - files.stderr != ''
+        - files.rc != 0
+
+    - name: 'VCFL-9X-000006 - Update permissions on files found to be incorrect in {{ vcenter_postgresql_vars_data_folder }}.'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_postgresql_vars_conf_owner }}'
+        group: '{{ vcenter_postgresql_vars_conf_group }}'
+        mode: '0600'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFL-9X-000007
+  tags: [VCFL-9X-000007]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000007 | bool
+  block:
+    - name: 'VCFL-9X-000007 - Configure pgaudit.log in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log ='
+        line: "pgaudit.log = '{{ vcenter_postgresql_defaults_pgaudit_log }}'"
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFL-9X-000007 - Configure pgaudit.log_catalog in {{ vcenter_postgresql_vars_stig_conf_file }}. **OPTIONAL** for log tuning.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log_catalog ='
+        line: 'pgaudit.log_catalog = {{ vcenter_postgresql_defaults_pgaudit_log_catalog }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFL-9X-000007 - Configure pgaudit.log_parameter in {{ vcenter_postgresql_vars_stig_conf_file }}. **OPTIONAL** for log tuning.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log_parameter ='
+        line: 'pgaudit.log_parameter = {{ vcenter_postgresql_defaults_pgaudit_log_parameter }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFL-9X-000007 - Configure pgaudit.log_statement in {{ vcenter_postgresql_vars_stig_conf_file }}. **OPTIONAL** for log tuning.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log_statement ='
+        line: 'pgaudit.log_statement = {{ vcenter_postgresql_defaults_pgaudit_log_statement }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFL-9X-000007 - Configure pgaudit.log_relation in {{ vcenter_postgresql_vars_stig_conf_file }}. **OPTIONAL** for log tuning.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^pgaudit.log_relation ='
+        line: 'pgaudit.log_relation = {{ vcenter_postgresql_defaults_pgaudit_log_relation }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000009
+  tags: [VCFL-9X-000009]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000009 | bool
+  block:
+    - name: 'VCFL-9X-000009 - Configure log_destination in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^log_destination ='
+        line: 'log_destination = {{ vcenter_postgresql_defaults_log_destination }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000010
+  tags: [VCFL-9X-000010]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000010 | bool
+  block:
+    - name: 'VCFL-9X-000010 - Configure log_line_prefix in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^log_line_prefix ='
+        line: "log_line_prefix = '{{ vcenter_postgresql_defaults_log_line_prefix }}'"
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000020
+  tags: [VCFL-9X-000020]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000020 | bool
+  block:
+    - name: 'VCFL-9X-000020 - Configure log_file_mode in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^log_file_mode ='
+        line: 'log_file_mode = {{ vcenter_postgresql_defaults_log_file_mode }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFL-9X-000020 - Find logs with incorrect permissions in {{ vcenter_postgresql_vars_log_folder }}'
+      ansible.builtin.shell: find {{ vcenter_postgresql_vars_log_folder }} -xdev -type f -a '(' -not -perm 600 -o -not -user {{ vcenter_postgresql_vars_log_owner }} -o -not -group {{ vcenter_postgresql_vars_log_group }} ')';
+      register: files
+      changed_when: files.stdout != ""
+
+    - name: 'VCFL-9X-000020 - Update permissions on log files found to be incorrect in {{ vcenter_postgresql_vars_log_folder }}'
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: file
+        owner: '{{ vcenter_postgresql_vars_log_owner }}'
+        group: '{{ vcenter_postgresql_vars_log_group }}'
+        mode: '{{ vcenter_postgresql_defaults_log_file_mode }}'
+      with_items: "{{ files.stdout_lines }}"
+      when:
+        - files.stdout != ""
+
+###################################################################################################################################
+- name: VCFL-9X-000032
+  tags: [VCFL-9X-000032]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000032 | bool
+  block:
+    - name: VCFL-9X-000032 - The vCenter PostgreSQL service must not load unused database components, software, and database objects.
+      ansible.builtin.debug:
+        msg: "VCFL-9X-000032 - This control is compliant by default but should be manually remediated if needed."
+      changed_when: false
+
+###################################################################################################################################
+- name: VCFL-9X-000035
+  tags: [VCFL-9X-000035]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000035 | bool
+  block:
+    - name: 'VCFL-9X-000035 - Configure port in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^port ='
+        line: 'port = {{ vcenter_postgresql_defaults_port }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000038
+  tags: [VCFL-9X-000038]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000038 | bool
+  block:
+    - name: 'VCFL-9X-000038 - Configure password_encryption in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^password_encryption ='
+        line: 'password_encryption = {{ vcenter_postgresql_defaults_password_encryption }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000051
+  tags: [VCFL-9X-000051]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000051 | bool
+  block:
+    - name: 'VCFL-9X-000051 - Configure fsync in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^fsync ='
+        line: 'fsync = {{ vcenter_postgresql_defaults_fsync }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFL-9X-000051 - Configure full_page_writes in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^full_page_writes ='
+        line: 'full_page_writes = {{ vcenter_postgresql_defaults_full_page_writes }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+    - name: 'VCFL-9X-000051 - Configure synchronous_commit in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^synchronous_commit ='
+        line: 'synchronous_commit = {{ vcenter_postgresql_defaults_synchronous_commit }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000060
+  tags: [VCFL-9X-000060]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000060 | bool
+  block:
+    - name: 'VCFL-9X-000060 - Configure client_min_messages in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^client_min_messages ='
+        line: 'client_min_messages = {{ vcenter_postgresql_defaults_client_min_messages }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000073
+  tags: [VCFL-9X-000073]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000073 | bool
+  block:
+    - name: 'VCFL-9X-000073 - Configure log_timezone in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^log_timezone ='
+        line: 'log_timezone = {{ vcenter_postgresql_defaults_log_timezone }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000109
+  tags: [VCFL-9X-000109]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000109 | bool
+  block:
+    - name: 'VCFL-9X-000109 - Configure log_connections in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^log_connections ='
+        line: 'log_connections = {{ vcenter_postgresql_defaults_log_connections }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000113
+  tags: [VCFL-9X-000113]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000113 | bool
+  block:
+    - name: 'VCFL-9X-000113 - Configure log_disconnections in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^log_disconnections ='
+        line: 'log_disconnections = {{ vcenter_postgresql_defaults_log_disconnections }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'
+
+###################################################################################################################################
+- name: VCFL-9X-000121
+  tags: [VCFL-9X-000121]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000121 | bool
+  block:
+    - name: 'VCFL-9X-000121 - Configure log forwarding in {{ vcenter_postgresql_vars_rsyslog_conf_file }}'
+      ansible.builtin.template:
+        src: '{{ vcenter_postgresql_vars_rsyslog_conf_file_name }}'
+        dest: '{{ vcenter_postgresql_vars_rsyslog_conf_file }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+
+    - name: 'VCFL-9X-000121 - Configure log forwarding in {{ vcenter_postgresql_vars_rsyslog_archiver_conf_file }}'
+      ansible.builtin.template:
+        src: '{{ vcenter_postgresql_vars_rsyslog_archiver_conf_file_name }}'
+        dest: '{{ vcenter_postgresql_vars_rsyslog_archiver_conf_file }}'
+        owner: root
+        group: root
+        mode: '0644'
+        force: true
+      notify:
+        - '{{ role_name }} : restart rsyslog'
+
+###################################################################################################################################
+- name: VCFL-9X-000144
+  tags: [VCFL-9X-000144]
+  when: vcenter_postgresql_defaults_run_vcfl_9x_000144 | bool
+  block:
+    - name: 'VCFL-9X-000144 - Configure logging_collector in {{ vcenter_postgresql_vars_stig_conf_file }}.'
+      ansible.builtin.lineinfile:
+        path: '{{ vcenter_postgresql_vars_stig_conf_file }}'
+        state: present
+        regexp: '^logging_collector ='
+        line: 'logging_collector = {{ vcenter_postgresql_defaults_logging_collector }}'
+        firstmatch: true
+      notify:
+        - '{{ role_name }} : restart {{ vcenter_postgresql_vars_notify_service_name }}'

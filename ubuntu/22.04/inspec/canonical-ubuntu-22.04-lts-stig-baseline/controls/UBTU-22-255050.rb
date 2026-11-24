@@ -2,7 +2,7 @@ control 'UBTU-22-255050' do
   title 'Ubuntu 22.04 LTS must configure the SSH daemon to use FIPS 140-3-approved ciphers to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.'
   desc 'Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
 
-Remote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+Remote access (e.g., RDP) is access to DoW nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
 
 Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network.
 
@@ -32,7 +32,7 @@ $ sudo systemctl restart ssh'
   tag check_id: 'C-64260r1155190_chk'
   tag severity: 'medium'
   tag gid: 'V-260531'
-  tag rid: 'SV-260531r1208689_rule'
+  tag rid: 'SV-260531r1268222_rule'
   tag stig_id: 'UBTU-22-255050'
   tag gtitle: 'SRG-OS-000033-GPOS-00014'
   tag fix_id: 'F-64168r1208688_fix'

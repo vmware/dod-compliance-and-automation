@@ -1,0 +1,14 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+sddcmgr_defaults_run_vcfa_9x_000354: true
+sddcmgr_defaults_run_vcfa_9x_000355: true
+sddcmgr_defaults_run_vcfa_9x_000356: true
+sddcmgr_defaults_run_vcfa_9x_000364: true
+sddcmgr_defaults_run_vcfa_9x_000372: true
+
+# SDDC Manager Configuration
+# ENABLED or DISABLED
+sddcmgr_defaults_basic_auth: 'DISABLED'

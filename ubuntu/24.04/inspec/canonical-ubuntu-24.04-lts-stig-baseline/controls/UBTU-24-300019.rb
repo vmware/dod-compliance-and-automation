@@ -1,13 +1,13 @@
 control 'UBTU-24-300019' do
   title 'Ubuntu 24.04 LTS must restrict privilege elevation to authorized personnel.'
   desc 'If the "sudoers" file is not configured correctly, any user defined on the system can initiate privileged actions on the target system.'
-  desc 'check', "Verify the operating system restricts privilege elevation to authorized personnel with the following command:
+  desc 'check', 'Verify the operating system restricts privilege elevation to authorized personnel with the following command:
 
-$ sudo grep -iwR '^ALL' /etc/sudoers /etc/sudoers.d/ | grep -v '#'
+$ sudo grep -iwR \'ALL\' /etc/sudoers /etc/sudoers.d/ | grep -v \'#\'
 
 If either of the following entries are returned, this is a finding:
 ALL     ALL=(ALL) ALL
-ALL     ALL=(ALL:ALL) ALL"
+ALL     ALL=(ALL:ALL) ALL'
   desc 'fix', 'Configure the operating system to restrict privilege elevation to authorized personnel.
 
 Remove the following entries from the /etc/sudoers file or any configuration file under /etc/sudoers.d/:

@@ -30,11 +30,11 @@ If any partitions other than the boot partition or pseudo file systems (such as 
   desc 'fix', 'To encrypt an entire partition, dedicate a partition for encryption in the partition layout.
 
 Note: Encrypting a partition in an already-installed system is more difficult because it will need to be resized and existing partitions changed.'
-  impact 0.5
+  impact 0.7
   tag check_id: 'C-64213r953263_chk'
-  tag severity: 'medium'
+  tag severity: 'high'
   tag gid: 'V-260484'
-  tag rid: 'SV-260484r958552_rule'
+  tag rid: 'SV-260484r1261427_rule'
   tag stig_id: 'UBTU-22-231010'
   tag gtitle: 'SRG-OS-000185-GPOS-00079'
   tag fix_id: 'F-64121r953264_fix'

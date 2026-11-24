@@ -1,0 +1,13 @@
+galaxy_info:
+  author: Broadcom
+  description: VMware Cloud Foundation Operations for Networks Platform Appliance NGINX Service STIG Readiness Guide Role
+  company: Broadcom
+  license: Apache
+  min_ansible_version: '2.9'
+  galaxy_tags:
+    - vcf
+    - vmware
+    - opsnet
+    - platform
+    - nginx
+    - stig

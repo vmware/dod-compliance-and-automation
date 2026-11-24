@@ -1,0 +1,8 @@
+# Is Operations HCX deployed in the environment? Set to false to mark Operations HCX related rules N/A.
+opshcx_deployed: true
+# Enter target VCF Operations HCX Manager URL IP or FQDN.
+opshcx_url: ''
+# Enter api token for API authentication.
+opshcx_apiToken: ''
+# 'Enter an array of NTP servers.'
+opshcx_ntpServers: []

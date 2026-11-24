@@ -2,7 +2,7 @@ control 'UBTU-24-100850' do
   title 'Ubuntu 24.04 LTS must configure the SSH client to use FIPS 140-3 approved ciphers to prevent the unauthorized disclosure of information and/or detect changes to information during transmission.'
   desc 'Without cryptographic integrity protections, information can be altered by unauthorized users without detection.
 
-Remote access (e.g., RDP) is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+Remote access (e.g., RDP) is access to DoW nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
 
 Nonlocal maintenance and diagnostic activities are those activities conducted by individuals communicating through a network, either an external network (e.g., the internet) or an internal network.
 
@@ -28,7 +28,7 @@ $ sudo systemctl restart ssh'
   tag check_id: 'C-74703r1067113_chk'
   tag severity: 'medium'
   tag gid: 'V-270670'
-  tag rid: 'SV-270670r1067115_rule'
+  tag rid: 'SV-270670r1268237_rule'
   tag stig_id: 'UBTU-24-100850'
   tag gtitle: 'SRG-OS-000250-GPOS-00093'
   tag fix_id: 'F-74604r1067114_fix'

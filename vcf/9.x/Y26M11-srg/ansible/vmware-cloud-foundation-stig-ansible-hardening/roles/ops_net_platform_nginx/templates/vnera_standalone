@@ -1,0 +1,230 @@
+proxy_cache_path /var/cache/nginx keys_zone=vip_cache:1m max_size=100m inactive=600m use_temp_path=off;
+
+upstream lbrest {
+    server localhost:8080;
+}
+
+# UI Assets Cache Expires map
+map $request_uri $expires {
+    # Default
+    default                                               epoch;
+
+    # For Stable Static Assets
+    ~*\.(js|css|png|svg|jpg|gif|woff|woff2|eot|ttf)$     max;
+}
+
+# In below block please DO NOT REMOVE : #federation-ssl-verify, it is used to reconfigure nginx while federation paring.
+# This is applicable only for onprem setups, when it tries to pair with Federation Primary OnSaas
+server {
+    listen localhost:6060;
+    server_tokens off;
+    resolver 127.0.0.1 valid=60s ipv6=off;
+
+    proxy_ssl_protocols TLSv1.2 TLSv1.3;
+    proxy_ssl_ciphers   !aNULL:ECDHE+AESGCM;
+
+    location ~* /(.*)/fedpeertosaasservlet$ {
+        set $FEDERATION_PRIMARY_FQDN $1;
+        rewrite ^/(.*)/(.*) /saas$2 break;
+        proxy_pass https://$FEDERATION_PRIMARY_FQDN;
+        proxy_redirect off;
+        proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+        proxy_ssl_verify off; #federation-ssl-verify
+        proxy_ssl_verify_depth 7;
+        proxy_ssl_session_reuse on;
+    }
+    location ~* /(.*)/saastofedpeerservlet$ {
+        set $FEDERATION_PRIMARY_FQDN $1;
+        rewrite ^/(.*)/(.*) /saas$2 break;
+        proxy_pass https://$FEDERATION_PRIMARY_FQDN;
+        proxy_redirect off;
+        proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+        proxy_ssl_verify off; #federation-ssl-verify
+        proxy_ssl_verify_depth 7;
+        proxy_ssl_session_reuse on;
+    }
+}
+
+# This virtual server hosts static assets.
+server {
+    listen localhost:3100;
+    server_name localhost;
+    server_tokens off;
+
+    root /usr/share/nginx/www;
+    index index.html index.htm;
+    client_max_body_size 1M;
+
+    location / {
+        # First attempt to serve request as file, then
+        # as directory, then fall back to index.html
+        try_files $uri $uri/ /index.html;
+
+
+        # Set Caching Headers
+        expires $expires;
+
+        # Content-security
+        add_header Content-Security-Policy "default-src 'self' data: blob: https://vcsa.vmware.com https://console.cloud.vmware.com https://console-stg.cloud.vmware.com https://feedback.esp.vmware.com https://feedback.esp-staging.vmware-aws.com; script-src 'self' https://vcsa.vmware.com https://console.cloud.vmware.com https://console-stg.cloud.vmware.com https://feedback.esp.vmware.com https://feedback.esp-staging.vmware-aws.com; style-src 'self'; worker-src 'self' blob:; frame-src 'self' https://www.youtube.com; font-src 'self' data:; object-src 'none'; frame-ancestors 'self';" always;
+        add_header X-XSS-Protection "1; mode=block";
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header Set-Cookie "Path=/; HttpOnly; Secure";
+        add_header X-Content-Type-Options nosniff;
+        add_header Referrer-Policy "no-referrer";
+
+        # Restrict browser's invasive hardware APIs (camera, microphone, geolocation, payment, USB)
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), unload=(self)" always;
+    }
+}
+
+# HTTPS server
+server {
+    listen 443 ssl;
+    http2 on;
+    server_tokens off;
+
+    client_max_body_size 10G;
+    lingering_time 60m;
+
+    ssl_certificate /etc/nginx/ssl/vnera.com.crt;
+    ssl_certificate_key /etc/nginx/ssl/vnera.com.key;
+    ssl_dhparam /etc/nginx/dhparams.pem;
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header Set-Cookie "Path=/; HttpOnly; Secure";
+    add_header X-Content-Type-Options nosniff;
+    add_header Referrer-Policy "no-referrer";
+    add_header Content-Security-Policy "default-src 'self'; font-src 'self' data:; img-src 'self' data:; style-src 'self' 'unsafe-inline';";
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers !aNULL:ECDHE+AESGCM;
+    ssl_conf_command Ciphersuites TLS_AES_256_GCM_SHA384:TLS_AES_128_GCM_SHA256;
+    ssl_prefer_server_ciphers on;
+    proxy_ssl_protocols TLSv1.2 TLSv1.3;
+    proxy_ssl_ciphers   !aNULL:ECDHE+AESGCM;
+
+    location / {
+        if ($arg_state) {
+            rewrite ^/ /api/auth/vidm/callback last;
+        }
+        proxy_pass http://localhost:3100;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    # VIP service endpoint to get the i18n translations
+    location /api/vip {
+        proxy_cache vip_cache;
+        proxy_cache_valid 30m;
+        proxy_ignore_headers Cache-Control X-Accel-Expires Expires;
+        rewrite ^/api/vip/(.*)$ /$1 break;
+        proxy_pass https://localhost:10001;
+        proxy_redirect off;
+        proxy_buffering on;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    # To route upload requests only to platform1/singlenode
+    # This entry is added just to keep endpoint uniform across singlenode and cluster
+    location /api/uploads {
+        auth_request /api/auth/validate;
+        rewrite ^/api/uploads/upgrade-bundle$ /management/upgrade/uploadbundle break;
+        proxy_pass http://lbrest;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location = /api/auth/validate {
+        proxy_pass http://lbrest/auth/validate;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+    }
+    location /le-mans {
+        return 403 'Forbidden';
+    }
+    location /api/le-mans {
+        return 403 'Forbidden';
+    }
+    location /api/csp/gateway {
+        return 403 'Forbidden';
+    }
+    location /api {
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://lbrest;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header        X-Http-Scheme   $scheme;
+    }
+    location = /saassaastocollectorservlet {
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://localhost:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location = /saassaastocollectordatalinkservlet {
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://localhost:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location /saasresttosaasservlet {
+        allow 127.0.0.1;
+        deny all;
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location = /saasfedpeertosaasservlet {
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location = /saassaastofedpeerservlet {
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location /saas {
+        # To fix security issue restrict any resttosaas called externally.
+        location ~ resttosaas {
+          deny all;
+        }
+        rewrite ^/saas(.*)$ /$1 break;
+        proxy_pass http://127.0.0.1:9090;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location /upgradetarget {
+        alias /usr/share/nginx/upgradebundle/;
+    }
+    location /saasupgradetarget {
+        alias /usr/share/nginx/upgradebundle/;
+    }
+}

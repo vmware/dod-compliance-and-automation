@@ -23,7 +23,7 @@ If any temporary accounts have no expiration date set or do not expire within 72
   tag check_id: 'C-64277r953455_chk'
   tag severity: 'medium'
   tag gid: 'V-260548'
-  tag rid: 'SV-260548r958364_rule'
+  tag rid: 'SV-260548r1268212_rule'
   tag stig_id: 'UBTU-22-411040'
   tag gtitle: 'SRG-OS-000002-GPOS-00002'
   tag fix_id: 'F-64185r953456_fix'

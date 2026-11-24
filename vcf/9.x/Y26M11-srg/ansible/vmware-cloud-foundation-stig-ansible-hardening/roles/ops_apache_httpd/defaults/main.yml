@@ -1,0 +1,94 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+ops_apache_httpd_defaults_run_vcfh_9x_000001: true
+ops_apache_httpd_defaults_run_vcfh_9x_000003: true
+ops_apache_httpd_defaults_run_vcfh_9x_000007: true
+ops_apache_httpd_defaults_run_vcfh_9x_000008: true
+ops_apache_httpd_defaults_run_vcfh_9x_000009: true
+ops_apache_httpd_defaults_run_vcfh_9x_000018: true
+ops_apache_httpd_defaults_run_vcfh_9x_000023: true
+ops_apache_httpd_defaults_run_vcfh_9x_000024: true
+ops_apache_httpd_defaults_run_vcfh_9x_000030: true
+ops_apache_httpd_defaults_run_vcfh_9x_000033: true
+ops_apache_httpd_defaults_run_vcfh_9x_000034: true
+ops_apache_httpd_defaults_run_vcfh_9x_000035: true
+ops_apache_httpd_defaults_run_vcfh_9x_000039: true
+ops_apache_httpd_defaults_run_vcfh_9x_000043: true
+ops_apache_httpd_defaults_run_vcfh_9x_000061: true
+ops_apache_httpd_defaults_run_vcfh_9x_000063: true
+ops_apache_httpd_defaults_run_vcfh_9x_000066: true
+ops_apache_httpd_defaults_run_vcfh_9x_000067: true
+ops_apache_httpd_defaults_run_vcfh_9x_000080: true
+ops_apache_httpd_defaults_run_vcfh_9x_000094: true
+ops_apache_httpd_defaults_run_vcfh_9x_000081: true
+ops_apache_httpd_defaults_run_vcfh_9x_000101: true
+ops_apache_httpd_defaults_run_vcfh_9x_000125: true
+ops_apache_httpd_defaults_run_vcfh_9x_000126: true
+ops_apache_httpd_defaults_run_vcfh_9x_000127: true
+ops_apache_httpd_defaults_run_vcfh_9x_000128: true
+
+# Apache HTTPD Configuration
+ops_apache_httpd_defaults_keepalive: 'On'
+ops_apache_httpd_defaults_max_keepalive_requests: '100'
+ops_apache_httpd_defaults_ssl_module_file: '/usr/lib64/httpd/modules/mod_ssl.so'
+ops_apache_httpd_defaults_ssl_protocol: '-All +TLSv1.2 +TLSv1.3'
+ops_apache_httpd_defaults_log_format_common: '{% raw %}"%h %l %u %t \"%r\" %>s %b" {% endraw %}' # Added trailing space to this line
+ops_apache_httpd_defaults_log_format_combined: '{% raw %}"%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" {% endraw %}' # Added trailing space to this line
+ops_apache_httpd_defaults_log_config_module_file: '/usr/lib/httpd/modules/mod_log_config.so'
+ops_apache_httpd_defaults_custom_log_file: '"/var/log/httpd/access.log" ' # Added trailing space to this line
+ops_apache_httpd_defaults_custom_log_format_name: 'common'
+ops_apache_httpd_defaults_error_log_file: '"/var/log/httpd/error.log"'
+ops_apache_httpd_defaults_log_level: 'info'
+ops_apache_httpd_defaults_approved_modules:
+  - 'access_compat_module'
+  - 'actions_module'
+  - 'alias_module'
+  - 'auth_basic_module'
+  - 'authn_core_module'
+  - 'authn_dbm_module'
+  - 'authn_file_module'
+  - 'authz_core_module'
+  - 'authz_groupfile_module'
+  - 'authz_host_module'
+  - 'authz_user_module'
+  - 'autoindex_module'
+  - 'core_module'
+  - 'deflate_module'
+  - 'dir_module'
+  - 'env_module'
+  - 'expires_module'
+  - 'filter_module'
+  - 'headers_module'
+  - 'http2_module'
+  - 'include_module'
+  - 'jk_module'
+  - 'log_config_module'
+  - 'mime_module'
+  - 'mpm_worker_module'
+  - 'negotiation_module'
+  - 'proxy_http_module'
+  - 'proxy_module'
+  - 'reqtimeout_module'
+  - 'rewrite_module'
+  - 'setenvif_module'
+  - 'socache_shmcb_module'
+  - 'ssl_module'
+  - 'status_module'
+  - 'unixd_module'
+  - 'userdir_module'
+  - 'version_module'
+ops_apache_httpd_defaults_http2_module_file: '/usr/lib/httpd/modules/mod_http2.so'
+ops_apache_httpd_defaults_service_user: 'apache'
+ops_apache_httpd_defaults_service_group: 'apache'
+ops_apache_httpd_defaults_timeout: '60'
+ops_apache_httpd_defaults_server_signature: 'Off'
+ops_apache_httpd_defaults_server_tokens: 'Prod'
+ops_apache_httpd_defaults_trace_enable: 'Off'
+ops_apache_httpd_defaults_header_hsts: "max-age=31536000; includeSubDomains"
+ops_apache_httpd_defaults_header_xframe_options: 'SAMEORIGIN'
+ops_apache_httpd_defaults_header_xcontent_type_options: 'nosniff'
+ops_apache_httpd_defaults_header_csp: "default-src https: wss: data: 'unsafe-inline' 'unsafe-eval'; child-src *; worker-src 'self' blob:"
+ops_apache_httpd_defaults_header_referrer_policy: 'no-referrer'

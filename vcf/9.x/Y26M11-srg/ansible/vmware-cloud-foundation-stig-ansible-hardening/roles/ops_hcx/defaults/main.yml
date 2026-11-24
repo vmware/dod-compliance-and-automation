@@ -1,0 +1,12 @@
+---
+# This file contains role variables that provide default values for rules and variables that control rule execution.
+# Values defined here are intended to be reasonable but also easy to override.
+# !!DO NOT EDIT THESE VALUES!! Instead override these variable values in the inventory group_vars or host_vars files.
+
+ops_hcx_defaults_run_vcfa_9x_000382: true
+ops_hcx_defaults_run_vcfa_9x_000383: true
+ops_hcx_defaults_run_vcfa_9x_000384: true
+ops_hcx_defaults_run_vcfa_9x_000385: true
+
+# Provide an array of authorized NTP servers
+ops_hcx_defaults_time_servers: []

@@ -2,7 +2,7 @@ control 'UBTU-24-200090' do
   title 'Ubuntu 24.04 LTS must monitor remote access methods.'
   desc 'Remote access services, such as those providing remote access to network devices and information systems, which lack automated monitoring capabilities, increase risk, and make remote user access management difficult at best.
 
-Remote access is access to DOD nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
+Remote access is access to DoW nonpublic information systems by an authorized user (or an information system) communicating through an external, nonorganization-controlled network. Remote access methods include, for example, dial-up, broadband, and wireless.
 
 Automated monitoring of remote access sessions allows organizations to detect cyberattacks and also ensure ongoing compliance with remote access policies by auditing connection activities of remote access capabilities, such as Remote Desktop Protocol (RDP), on a variety of information system components (e.g., servers, workstations, notebook computers, smartphones, and tablets).'
   desc 'check', %q(Verify that Ubuntu 24.04 LTS monitors all remote access methods with the following command:
@@ -23,7 +23,7 @@ $ sudo systemctl restart rsyslog.service'
   tag check_id: 'C-74714r1134805_chk'
   tag severity: 'medium'
   tag gid: 'V-270681'
-  tag rid: 'SV-270681r1134806_rule'
+  tag rid: 'SV-270681r1268219_rule'
   tag stig_id: 'UBTU-24-200090'
   tag gtitle: 'SRG-OS-000032-GPOS-00013'
   tag fix_id: 'F-74615r1066531_fix'

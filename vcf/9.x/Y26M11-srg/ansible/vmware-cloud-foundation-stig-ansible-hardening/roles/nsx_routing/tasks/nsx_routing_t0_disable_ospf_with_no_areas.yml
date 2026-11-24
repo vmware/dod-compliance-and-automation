@@ -1,0 +1,28 @@
+- name: "VCFR-9X-000109 - Check to see if OSPF areas exist for: {{ var_outer_ospf.path }}"
+  ansible.builtin.uri:
+    url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ var_outer_ospf.path }}/areas"
+    validate_certs: "{{ validate_certificate_uri }}"
+    headers:
+      Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+      X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+    method: GET
+    status_code: 200
+  register: ospfareas
+  changed_when: false
+
+- name: "VCFR-9X-000109 - Disable OSPF on the target tier-0 gateway."
+  ansible.builtin.uri:
+    url: "https://{{ lookup('vars', 'ansible_host') }}/policy/api/v1{{ var_outer_ospf.path }}"
+    validate_certs: "{{ validate_certificate_uri }}"
+    headers:
+      Cookie: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_jsession_id') }}"
+      X-XSRF-TOKEN: "{{ lookup('vars', 'var_vault_nsx_manager_' + inventory_hostname + '_session_token') }}"
+    method: PATCH
+    body: "{{ lookup('template', './nsx_routing_t0_disable_ospf.json.j2') }}"
+    body_format: json
+    status_code: 200
+  when:
+    - ospfareas.json.result_count == 0
+  register: response
+  changed_when:
+    - response.status == 200

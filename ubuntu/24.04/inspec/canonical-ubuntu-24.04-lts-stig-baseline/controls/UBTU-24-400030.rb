@@ -13,7 +13,7 @@ A privileged account is defined as an information system account with authorizat
 
 Network access is defined as access to an information system by a user (or a process acting on behalf of a user) communicating through a network (e.g., local area network, wide area network, or the internet).
 
-The DOD common access card (CAC) with DOD-approved PKI is an example of multifactor authentication.
+The DoW common access card (CAC) with DoW-approved PKI is an example of multifactor authentication.
 
 '
   desc 'check', 'Verify the sshd daemon allows public key authentication with the following command:
@@ -31,7 +31,7 @@ PubkeyAuthentication yes'
   tag check_id: 'C-74755r1067129_chk'
   tag severity: 'medium'
   tag gid: 'V-270722'
-  tag rid: 'SV-270722r1067130_rule'
+  tag rid: 'SV-270722r1268228_rule'
   tag stig_id: 'UBTU-24-400030'
   tag gtitle: 'SRG-OS-000105-GPOS-00052'
   tag fix_id: 'F-74656r1066654_fix'
